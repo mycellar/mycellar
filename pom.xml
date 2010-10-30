@@ -41,6 +41,16 @@
       </roles>
       <timezone>+1</timezone>
     </developer>
+    <developer>
+      <id>bperalta</id>
+      <name>Bertrand</name>
+      <email>bertrand@peralta.fr</email>
+      <url>http://bertrand.peralta.fr</url>
+      <roles>
+        <role>developer</role>
+      </roles>
+      <timezone>+1</timezone>
+    </developer>
   </developers>
 
 </project>
