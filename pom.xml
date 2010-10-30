@@ -39,7 +39,7 @@
         <role>architect</role>
         <role>developer</role>
       </roles>
-      <timezone>+1</timezone>
+      <timezone>+2</timezone>
     </developer>
     <developer>
       <id>bperalta</id>
@@ -49,7 +49,7 @@
       <roles>
         <role>developer</role>
       </roles>
-      <timezone>+1</timezone>
+      <timezone>+2</timezone>
     </developer>
   </developers>
 
