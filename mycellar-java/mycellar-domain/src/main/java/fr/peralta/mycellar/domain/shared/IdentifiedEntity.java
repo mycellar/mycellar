@@ -24,10 +24,6 @@ import javax.persistence.Version;
 /**
  * @author speralta
  */
-/**
- * @author speralta
- * 
- */
 @MappedSuperclass
 public abstract class IdentifiedEntity {
 
