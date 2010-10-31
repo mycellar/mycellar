@@ -23,39 +23,25 @@
   http://maven.apache.org/xsd/maven-4.0.0.xsd">
   <modelVersion>4.0.0</modelVersion>
 
-  <groupId>fr.peralta.mycellar</groupId>
-  <version>0.1.0-SNAPSHOT</version>
-  <artifactId>mycellar-parent</artifactId>
-  <packaging>pom</packaging>
-  <name>MyCellar</name>
-  
-  <modules>
-    <module>mycellar-db</module>
-    <module>mycellar-java</module>
-  </modules>
+  <parent>
+    <groupId>fr.peralta.mycellar</groupId>
+    <artifactId>mycellar-java</artifactId>
+    <version>0.1.0-SNAPSHOT</version>
+    <relativePath>../pom.xml</relativePath>
+  </parent>
+  <artifactId>mycellar-domain</artifactId>
+  <packaging>jar</packaging>
+  <name>MyCellar - Domain</name>
 
-  <developers>
-    <developer>
-      <id>speralta</id>
-      <name>Sébastien</name>
-      <email>sebastien@peralta.fr</email>
-      <url>http://sebastien.peralta.fr</url>
-      <roles>
-        <role>architect</role>
-        <role>developer</role>
-      </roles>
-      <timezone>+2</timezone>
-    </developer>
-    <developer>
-      <id>bperalta</id>
-      <name>Bertrand</name>
-      <email>bertrand@peralta.fr</email>
-      <url>http://bertrand.peralta.fr</url>
-      <roles>
-        <role>developer</role>
-      </roles>
-      <timezone>+2</timezone>
-    </developer>
-  </developers>
+  <dependencies>
+    <dependency>
+      <groupId>org.hibernate.javax.persistence</groupId>
+      <artifactId>hibernate-jpa-2.0-api</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>javax.validation</groupId>
+      <artifactId>validation-api</artifactId>
+    </dependency>
+  </dependencies>
 
 </project>
