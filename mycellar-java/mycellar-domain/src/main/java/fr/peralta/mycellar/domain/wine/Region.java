@@ -21,7 +21,7 @@ import fr.peralta.mycellar.domain.shared.ValidationPattern;
 @SequenceGenerator(name = "REGION_ID_GENERATOR", allocationSize = 1)
 public class Region extends NamedEntity implements Serializable {
 
-    private static final long serialVersionUID = -1598656202686164016L;
+    private static final long serialVersionUID = 201010311741L;
 
     @Pattern(regexp = ValidationPattern.URL_PATTERN)
     @Column(name = "MAP_URL")

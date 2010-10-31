@@ -39,7 +39,7 @@ import fr.peralta.mycellar.domain.shared.ValidationPattern;
 @SequenceGenerator(name = "COUNTRY_ID_GENERATOR", allocationSize = 1)
 public class Country extends NamedEntity implements Serializable {
 
-    private static final long serialVersionUID = -3723703147792796215L;
+    private static final long serialVersionUID = 201010311742L;
 
     @Pattern(regexp = ValidationPattern.URL_PATTERN)
     @Column(name = "MAP_URL")
