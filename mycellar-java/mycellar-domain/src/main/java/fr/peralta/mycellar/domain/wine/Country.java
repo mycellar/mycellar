@@ -66,7 +66,6 @@ public class Country extends NamedEntity implements Serializable {
      * Needed by hibernate.
      */
     Country() {
-        super();
     }
 
     /**

@@ -74,7 +74,6 @@ public class Appellation extends NamedEntity {
      * Needed by hibernate.
      */
     Appellation() {
-        super();
     }
 
     /**
