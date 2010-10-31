@@ -10,6 +10,8 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.SequenceGenerator;
+import javax.persistence.Table;
+import javax.persistence.UniqueConstraint;
 import javax.validation.Valid;
 import javax.validation.constraints.Pattern;
 
@@ -17,7 +19,9 @@ import fr.peralta.mycellar.domain.shared.NamedEntity;
 import fr.peralta.mycellar.domain.shared.ValidationPattern;
 
 @Entity
-@AttributeOverride(name = "name", column = @Column(name = "NAME", nullable = false, unique = true))
+@Table(name = "REGION", uniqueConstraints = @UniqueConstraint(columnNames = {
+        "NAME", "COUNTRY" }))
+@AttributeOverride(name = "name", column = @Column(name = "NAME", nullable = false))
 @SequenceGenerator(name = "REGION_ID_GENERATOR", allocationSize = 1)
 public class Region extends NamedEntity implements Serializable {
 
@@ -36,7 +40,7 @@ public class Region extends NamedEntity implements Serializable {
     private Country country;
 
     @Id
-    @GeneratedValue(generator = "COUNTRY_ID_GENERATOR")
+    @GeneratedValue(generator = "REGION_ID_GENERATOR")
     @Column(name = "ID", nullable = false, unique = true)
     private int id;
 

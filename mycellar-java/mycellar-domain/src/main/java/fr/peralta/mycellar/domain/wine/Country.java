@@ -26,6 +26,7 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.SequenceGenerator;
+import javax.persistence.Table;
 import javax.validation.constraints.Pattern;
 
 import fr.peralta.mycellar.domain.shared.NamedEntity;
@@ -35,6 +36,7 @@ import fr.peralta.mycellar.domain.shared.ValidationPattern;
  * @author speralta
  */
 @Entity
+@Table(name = "COUNTRY")
 @AttributeOverride(name = "name", column = @Column(name = "NAME", nullable = false, unique = true))
 @SequenceGenerator(name = "COUNTRY_ID_GENERATOR", allocationSize = 1)
 public class Country extends NamedEntity implements Serializable {
