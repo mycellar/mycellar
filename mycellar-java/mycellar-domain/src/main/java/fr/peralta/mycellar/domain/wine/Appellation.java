@@ -30,6 +30,8 @@ import javax.persistence.Table;
 import javax.persistence.UniqueConstraint;
 import javax.validation.constraints.Pattern;
 
+import org.apache.commons.lang3.ObjectUtils;
+
 import fr.peralta.mycellar.domain.shared.NamedEntity;
 import fr.peralta.mycellar.domain.shared.ValidationPattern;
 
@@ -41,7 +43,7 @@ import fr.peralta.mycellar.domain.shared.ValidationPattern;
         "NAME", "REGION" }))
 @AttributeOverride(name = "name", column = @Column(name = "NAME", nullable = false))
 @SequenceGenerator(name = "APPELLATION_ID_GENERATOR", allocationSize = 1)
-public class Appellation extends NamedEntity {
+public class Appellation extends NamedEntity<Appellation> {
 
     private static final long serialVersionUID = 201010311742L;
 
@@ -59,15 +61,20 @@ public class Appellation extends NamedEntity {
     @Id
     @GeneratedValue(generator = "APPELLATION_ID_GENERATOR")
     @Column(name = "ID", nullable = false, unique = true)
-    private int id;
+    private Integer id;
 
     /**
      * @param name
      * @param region
+     * @param mapUrl
+     * @param description
      */
-    public Appellation(String name, Region region) {
+    public Appellation(String name, Region region, String mapUrl,
+            String description) {
         super(name);
         this.region = region;
+        this.mapUrl = mapUrl;
+        this.description = description;
     }
 
     /**
@@ -80,7 +87,7 @@ public class Appellation extends NamedEntity {
      * @return the id
      */
     @Override
-    public int getId() {
+    public Integer getId() {
         return id;
     }
 
@@ -92,26 +99,10 @@ public class Appellation extends NamedEntity {
     }
 
     /**
-     * @param mapUrl
-     *            the mapUrl to set
-     */
-    public void setMapUrl(String mapUrl) {
-        this.mapUrl = mapUrl;
-    }
-
-    /**
      * @return the description
      */
     public String getDescription() {
         return description;
-    }
-
-    /**
-     * @param description
-     *            the description to set
-     */
-    public void setDescription(String description) {
-        this.description = description;
     }
 
     /**
@@ -121,12 +112,27 @@ public class Appellation extends NamedEntity {
         return region;
     }
 
-    /**
-     * @param region
-     *            the region to set
+    /*
+     * (non-Javadoc)
+     * 
+     * @see fr.peralta.mycellar.domain.shared.IdentifiedEntity#getHashCodeData()
      */
-    public void setRegion(Region region) {
-        this.region = region;
+    @Override
+    protected Object[] getHashCodeData() {
+        return new Object[] { getName() };
+    }
+
+    /*
+     * (non-Javadoc)
+     * 
+     * @see
+     * fr.peralta.mycellar.domain.shared.IdentifiedEntity#dataEquals(fr.peralta
+     * .mycellar.domain.shared.IdentifiedEntity)
+     */
+    @Override
+    protected boolean dataEquals(Appellation other) {
+        return ObjectUtils.equals(getName(), other.getName())
+                && ObjectUtils.equals(getRegion(), other.getRegion());
     }
 
 }

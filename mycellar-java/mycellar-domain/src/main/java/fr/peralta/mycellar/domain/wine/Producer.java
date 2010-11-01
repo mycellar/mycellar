@@ -18,21 +18,14 @@
  */
 package fr.peralta.mycellar.domain.wine;
 
-import java.util.Collections;
-import java.util.HashSet;
-import java.util.Set;
-
 import javax.persistence.AttributeOverride;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
-import javax.persistence.OneToMany;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 import javax.validation.constraints.Pattern;
-
-import org.apache.commons.lang3.ObjectUtils;
 
 import fr.peralta.mycellar.domain.shared.NamedEntity;
 import fr.peralta.mycellar.domain.shared.ValidationPattern;
@@ -41,43 +34,51 @@ import fr.peralta.mycellar.domain.shared.ValidationPattern;
  * @author speralta
  */
 @Entity
-@Table(name = "COUNTRY")
-@AttributeOverride(name = "name", column = @Column(name = "NAME", nullable = false, unique = true))
-@SequenceGenerator(name = "COUNTRY_ID_GENERATOR", allocationSize = 1)
-public class Country extends NamedEntity<Country> {
+@Table(name = "PRODUCER")
+@AttributeOverride(name = "name", column = @Column(name = "NAME", nullable = false))
+@SequenceGenerator(name = "PRODUCER_ID_GENERATOR", allocationSize = 1)
+public class Producer extends NamedEntity<Producer> {
 
     private static final long serialVersionUID = 201010311742L;
 
     @Pattern(regexp = ValidationPattern.URL_PATTERN)
-    @Column(name = "MAP_URL")
-    private String mapUrl;
+    @Column(name = "WEBSITE_URL")
+    private String websiteUrl;
 
     @Column(name = "DESCRIPTION")
     private String description;
 
-    @OneToMany(mappedBy = "country")
-    private final Set<Region> regions = new HashSet<Region>();
+    @Column(name = "ADDRESS")
+    private String address;
+
+    @Column(name = "POSITION")
+    private String position;
 
     @Id
-    @GeneratedValue(generator = "COUNTRY_ID_GENERATOR")
+    @GeneratedValue(generator = "PRODUCER_ID_GENERATOR")
     @Column(name = "ID", nullable = false, unique = true)
     private Integer id;
 
     /**
      * @param name
-     * @param mapUrl
+     * @param websiteUrl
      * @param description
+     * @param address
+     * @param position
      */
-    public Country(String name, String mapUrl, String description) {
+    public Producer(String name, String websiteUrl, String description,
+            String address, String position) {
         super(name);
-        this.mapUrl = mapUrl;
+        this.websiteUrl = websiteUrl;
         this.description = description;
+        this.address = address;
+        this.position = position;
     }
 
     /**
      * Needed by hibernate.
      */
-    Country() {
+    Producer() {
     }
 
     /**
@@ -89,10 +90,10 @@ public class Country extends NamedEntity<Country> {
     }
 
     /**
-     * @return the mapUrl
+     * @return the websiteUrl
      */
-    public String getMapUrl() {
-        return mapUrl;
+    public String getWebsiteUrl() {
+        return websiteUrl;
     }
 
     /**
@@ -103,10 +104,17 @@ public class Country extends NamedEntity<Country> {
     }
 
     /**
-     * @return the regions
+     * @return the address
      */
-    public Set<Region> getRegions() {
-        return Collections.unmodifiableSet(regions);
+    public String getAddress() {
+        return address;
+    }
+
+    /**
+     * @return the position
+     */
+    public String getPosition() {
+        return position;
     }
 
     /*
@@ -127,8 +135,8 @@ public class Country extends NamedEntity<Country> {
      * .mycellar.domain.shared.IdentifiedEntity)
      */
     @Override
-    protected boolean dataEquals(Country other) {
-        return ObjectUtils.equals(getName(), other.getName());
+    protected boolean dataEquals(Producer other) {
+        return false;
     }
 
 }

@@ -24,7 +24,10 @@ import javax.persistence.MappedSuperclass;
  * @author speralta
  */
 @MappedSuperclass
-public abstract class NamedEntity extends IdentifiedEntity {
+public abstract class NamedEntity<E extends NamedEntity<E>> extends
+        IdentifiedEntity<E> {
+
+    private static final long serialVersionUID = 201010311742L;
 
     private String name;
 
@@ -52,7 +55,7 @@ public abstract class NamedEntity extends IdentifiedEntity {
      * @param name
      *            the name to set
      */
-    public void setName(String name) {
+    protected void setName(String name) {
         this.name = name;
     }
 

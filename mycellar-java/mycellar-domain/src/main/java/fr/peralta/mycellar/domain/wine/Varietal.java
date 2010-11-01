@@ -18,66 +18,65 @@
  */
 package fr.peralta.mycellar.domain.wine;
 
-import java.util.Collections;
-import java.util.HashSet;
-import java.util.Set;
-
 import javax.persistence.AttributeOverride;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
-import javax.persistence.OneToMany;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
-import javax.validation.constraints.Pattern;
 
 import org.apache.commons.lang3.ObjectUtils;
 
 import fr.peralta.mycellar.domain.shared.NamedEntity;
-import fr.peralta.mycellar.domain.shared.ValidationPattern;
 
 /**
  * @author speralta
  */
 @Entity
-@Table(name = "COUNTRY")
+@Table(name = "VARIETAL")
 @AttributeOverride(name = "name", column = @Column(name = "NAME", nullable = false, unique = true))
-@SequenceGenerator(name = "COUNTRY_ID_GENERATOR", allocationSize = 1)
-public class Country extends NamedEntity<Country> {
+@SequenceGenerator(name = "VARIETAL_ID_GENERATOR", allocationSize = 1)
+public class Varietal extends NamedEntity<Varietal> {
 
     private static final long serialVersionUID = 201010311742L;
-
-    @Pattern(regexp = ValidationPattern.URL_PATTERN)
-    @Column(name = "MAP_URL")
-    private String mapUrl;
 
     @Column(name = "DESCRIPTION")
     private String description;
 
-    @OneToMany(mappedBy = "country")
-    private final Set<Region> regions = new HashSet<Region>();
+    @Column(name = "SKIN")
+    @Enumerated(EnumType.STRING)
+    private VarietalColorEnum skin;
+
+    @Column(name = "FLESH")
+    @Enumerated(EnumType.STRING)
+    private VarietalColorEnum flesh;
 
     @Id
-    @GeneratedValue(generator = "COUNTRY_ID_GENERATOR")
+    @GeneratedValue(generator = "VARIETAL_ID_GENERATOR")
     @Column(name = "ID", nullable = false, unique = true)
     private Integer id;
 
     /**
      * @param name
-     * @param mapUrl
+     * @param skin
+     * @param flesh
      * @param description
      */
-    public Country(String name, String mapUrl, String description) {
+    public Varietal(String name, VarietalColorEnum skin,
+            VarietalColorEnum flesh, String description) {
         super(name);
-        this.mapUrl = mapUrl;
+        this.skin = skin;
+        this.flesh = flesh;
         this.description = description;
     }
 
     /**
      * Needed by hibernate.
      */
-    Country() {
+    Varietal() {
     }
 
     /**
@@ -89,13 +88,6 @@ public class Country extends NamedEntity<Country> {
     }
 
     /**
-     * @return the mapUrl
-     */
-    public String getMapUrl() {
-        return mapUrl;
-    }
-
-    /**
      * @return the description
      */
     public String getDescription() {
@@ -103,10 +95,17 @@ public class Country extends NamedEntity<Country> {
     }
 
     /**
-     * @return the regions
+     * @return the skin
      */
-    public Set<Region> getRegions() {
-        return Collections.unmodifiableSet(regions);
+    public VarietalColorEnum getSkin() {
+        return skin;
+    }
+
+    /**
+     * @return the flesh
+     */
+    public VarietalColorEnum getFlesh() {
+        return flesh;
     }
 
     /*
@@ -127,7 +126,7 @@ public class Country extends NamedEntity<Country> {
      * .mycellar.domain.shared.IdentifiedEntity)
      */
     @Override
-    protected boolean dataEquals(Country other) {
+    protected boolean dataEquals(Varietal other) {
         return ObjectUtils.equals(getName(), other.getName());
     }
 
