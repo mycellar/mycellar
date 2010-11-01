@@ -114,10 +114,8 @@ public abstract class IdentifiedEntity<E extends IdentifiedEntity<E>>
      */
     protected abstract boolean dataEquals(E other);
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see java.lang.Object#toString()
+    /**
+     * {@inheritDoc}
      */
     @Override
     public String toString() {

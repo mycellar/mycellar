@@ -20,7 +20,6 @@ package fr.peralta.mycellar.domain.shared;
 
 /**
  * @author speralta
- * 
  */
 public final class ValidationPattern {
 

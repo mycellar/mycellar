@@ -217,22 +217,16 @@ public class Wine extends NamedEntity<Wine> {
         return Collections.unmodifiableMap(composition);
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see fr.peralta.mycellar.domain.shared.IdentifiedEntity#getHashCodeData()
+    /**
+     * {@inheritDoc}
      */
     @Override
     protected Object[] getHashCodeData() {
         return new Object[] { getName(), getVintage(), getColor(), getType() };
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see
-     * fr.peralta.mycellar.domain.shared.IdentifiedEntity#dataEquals(fr.peralta
-     * .mycellar.domain.shared.IdentifiedEntity)
+    /**
+     * {@inheritDoc}
      */
     @Override
     protected boolean dataEquals(Wine other) {

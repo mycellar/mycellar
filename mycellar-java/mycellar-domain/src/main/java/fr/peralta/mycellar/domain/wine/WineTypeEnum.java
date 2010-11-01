@@ -20,7 +20,6 @@ package fr.peralta.mycellar.domain.wine;
 
 /**
  * @author speralta
- * 
  */
 public enum WineTypeEnum {
 

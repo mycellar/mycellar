@@ -108,22 +108,16 @@ public class Varietal extends NamedEntity<Varietal> {
         return flesh;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see fr.peralta.mycellar.domain.shared.IdentifiedEntity#getHashCodeData()
+    /**
+     * {@inheritDoc}
      */
     @Override
     protected Object[] getHashCodeData() {
         return new Object[] { getName() };
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see
-     * fr.peralta.mycellar.domain.shared.IdentifiedEntity#dataEquals(fr.peralta
-     * .mycellar.domain.shared.IdentifiedEntity)
+    /**
+     * {@inheritDoc}
      */
     @Override
     protected boolean dataEquals(Varietal other) {
