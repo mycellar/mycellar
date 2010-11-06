@@ -1,0 +1,22 @@
+<wicket:panel>
+  <table>
+    <thead>
+      <tr>
+        <th><wicket:message key="label">Label</wicket:message></th>
+        <th><wicket:message key="quantity">Quantity</wicket:message></th>
+        <th><a wicket:id="addBottle"><wicket:message key="addBottle">Add bottle</wicket:message></a></th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr wicket:id="bottles">
+        <td wicket:id="label">Label</td>
+        <td wicket:id="quantity">Quantity</td>
+        <td wicket:id="remove"><a wicket:id="removeBottle"><wicket:message key="removeBottle">Remove bottle</wicket:message></a></td>
+      </tr>
+    </tbody>
+  </table>
+  <form wicket:id="bottle">
+    <div wicket:id="newBottle" />
+    <input wicket:id="saveBottle" type="submit" wicket:message="value:saveBottle" />
+  </form>
+</wicket:panel>

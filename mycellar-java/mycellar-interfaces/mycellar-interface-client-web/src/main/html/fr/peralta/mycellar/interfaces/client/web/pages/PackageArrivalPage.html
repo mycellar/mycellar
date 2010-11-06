@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="fr">
+  <head>
+    <title>MyCellar</title>
+    <meta charset="utf-8">
+  </head>
+  <body>
+    <h1><wicket:message key="title">Title</wicket:message></h1>
+    <form wicket:id="form">
+      <fieldset>
+        <legend><wicket:message key="package">Fieldset legend</wicket:message></legend>
+        <p>
+          <label for="arrival"><wicket:message key="arrival">Arrival</wicket:message></label>
+          <input if="arrival" wicket:id="date" type="text" value="" />
+        </p>
+        <p>
+          <label for="source"><wicket:message key="source">Source</wicket:message></label>
+          <input id="source" wicket:id="source" type="text" value="" />
+        </p>
+        <p>
+          <label for="otherCharges"><wicket:message key="otherCharges">Other charges</wicket:message></label>
+          <input id="otherCharges" wicket:id="otherCharges" type="text" value="" />
+        </p>
+      </fieldset>
+      <fieldset>
+        <legend><wicket:message key="bottles">Bottles</wicket:message></legend>
+        <div wicket:id="bottles" />
+      </fieldset>
+      <input type="submit" wicket:message="value:saveArrival" />
+    </form>
+  </body>
+</html>

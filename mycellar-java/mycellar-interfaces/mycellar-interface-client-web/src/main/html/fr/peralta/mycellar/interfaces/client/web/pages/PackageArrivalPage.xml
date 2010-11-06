@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE properties SYSTEM "http://java.sun.com/dtd/properties.dtd">
+<properties>
+  <entry key="title">Cas d'utilisation : Entrée d'un colis dans la cave</entry>
+  <entry key="package">Identification du colis</entry>
+  <entry key="arrival">Date d'arrivée</entry>
+  <entry key="source">Source</entry>
+  <entry key="otherCharges">Frais annexes</entry>
+  <entry key="bottles">Bouteilles</entry>
+  <entry key="name">Nom</entry>
+  <entry key="saveArrival">Enregistrer l'entrée</entry>
+</properties> 

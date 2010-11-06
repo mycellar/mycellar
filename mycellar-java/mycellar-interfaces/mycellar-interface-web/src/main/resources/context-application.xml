@@ -1,0 +1,16 @@
+<?xml version="1.0"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.5.xsd">
+
+  <bean id="stockService"
+    class="fr.peralta.mycellar.application.stock.impl.StockServiceImpl">
+    <property name="stockRepository" ref="stockRepository" />
+  </bean>
+
+  <bean id="countryService"
+    class="fr.peralta.mycellar.application.wine.impl.CountryServiceImpl">
+    <property name="countryRepository" ref="countryRepository" />
+  </bean>
+
+</beans>
