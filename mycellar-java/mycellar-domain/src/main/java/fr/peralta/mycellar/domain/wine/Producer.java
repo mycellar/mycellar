@@ -20,6 +20,7 @@ package fr.peralta.mycellar.domain.wine;
 
 import javax.persistence.AttributeOverride;
 import javax.persistence.Column;
+import javax.persistence.Embedded;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
@@ -27,6 +28,7 @@ import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 import javax.validation.constraints.Pattern;
 
+import fr.peralta.mycellar.domain.position.Address;
 import fr.peralta.mycellar.domain.shared.NamedEntity;
 import fr.peralta.mycellar.domain.shared.ValidationPattern;
 
@@ -39,7 +41,7 @@ import fr.peralta.mycellar.domain.shared.ValidationPattern;
 @SequenceGenerator(name = "PRODUCER_ID_GENERATOR", allocationSize = 1)
 public class Producer extends NamedEntity<Producer> {
 
-    private static final long serialVersionUID = 201010311742L;
+    private static final long serialVersionUID = 201011071626L;
 
     @Pattern(regexp = ValidationPattern.URL_PATTERN)
     @Column(name = "WEBSITE_URL")
@@ -48,11 +50,8 @@ public class Producer extends NamedEntity<Producer> {
     @Column(name = "DESCRIPTION")
     private String description;
 
-    @Column(name = "ADDRESS")
-    private String address;
-
-    @Column(name = "POSITION")
-    private String position;
+    @Embedded
+    private Address address;
 
     @Id
     @GeneratedValue(generator = "PRODUCER_ID_GENERATOR")
@@ -66,13 +65,11 @@ public class Producer extends NamedEntity<Producer> {
      * @param address
      * @param position
      */
-    public Producer(String name, String websiteUrl, String description,
-            String address, String position) {
+    public Producer(String name, String websiteUrl, String description, Address address) {
         super(name);
         this.websiteUrl = websiteUrl;
         this.description = description;
         this.address = address;
-        this.position = position;
     }
 
     /**
@@ -106,15 +103,8 @@ public class Producer extends NamedEntity<Producer> {
     /**
      * @return the address
      */
-    public String getAddress() {
+    public Address getAddress() {
         return address;
-    }
-
-    /**
-     * @return the position
-     */
-    public String getPosition() {
-        return position;
     }
 
     /**

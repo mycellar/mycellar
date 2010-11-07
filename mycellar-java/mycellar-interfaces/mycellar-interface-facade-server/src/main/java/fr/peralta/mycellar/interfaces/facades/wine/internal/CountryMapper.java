@@ -28,16 +28,15 @@ import fr.peralta.mycellar.domain.wine.Country;
  */
 public class CountryMapper {
 
-    public Country map(
-            fr.peralta.mycellar.interfaces.facades.wine.dto.Country dto) {
-        return new Country(dto.getName(), dto.getMapUrl(), dto.getDescription());
+    // TODO : gérer les Map
+    public Country map(fr.peralta.mycellar.interfaces.facades.wine.dto.Country dto) {
+        return new Country(dto.getName(), null, dto.getDescription());
     }
 
-    public fr.peralta.mycellar.interfaces.facades.wine.dto.Country map(
-            Country country) {
+    public fr.peralta.mycellar.interfaces.facades.wine.dto.Country map(Country country) {
         fr.peralta.mycellar.interfaces.facades.wine.dto.Country dto = new fr.peralta.mycellar.interfaces.facades.wine.dto.Country();
         dto.setDescription(country.getDescription());
-        dto.setMapUrl(country.getMapUrl());
+        dto.setMap(null);
         dto.setName(country.getName());
         dto.setId(country.getId());
         return dto;
@@ -47,8 +46,7 @@ public class CountryMapper {
      * @param all
      * @return
      */
-    public List<fr.peralta.mycellar.interfaces.facades.wine.dto.Country> map(
-            List<Country> countries) {
+    public List<fr.peralta.mycellar.interfaces.facades.wine.dto.Country> map(List<Country> countries) {
         List<fr.peralta.mycellar.interfaces.facades.wine.dto.Country> result = new ArrayList<fr.peralta.mycellar.interfaces.facades.wine.dto.Country>(
                 countries.size());
         for (Country country : countries) {

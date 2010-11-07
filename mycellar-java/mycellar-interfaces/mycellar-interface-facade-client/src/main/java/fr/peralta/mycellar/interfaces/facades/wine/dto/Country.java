@@ -20,6 +20,8 @@ package fr.peralta.mycellar.interfaces.facades.wine.dto;
 
 import java.io.Serializable;
 
+import fr.peralta.mycellar.interfaces.facades.position.dto.Map;
+
 /**
  * @author speralta
  */
@@ -31,24 +33,9 @@ public class Country implements Serializable {
 
     private String name;
 
-    private String mapUrl;
+    private Map map;
 
     private String description;
-
-    /**
-     * @return the mapUrl
-     */
-    public String getMapUrl() {
-        return mapUrl;
-    }
-
-    /**
-     * @param mapUrl
-     *            the mapUrl to set
-     */
-    public void setMapUrl(String mapUrl) {
-        this.mapUrl = mapUrl;
-    }
 
     /**
      * @return the description
@@ -93,6 +80,21 @@ public class Country implements Serializable {
      */
     public void setName(String name) {
         this.name = name;
+    }
+
+    /**
+     * @param map
+     *            the map to set
+     */
+    public void setMap(Map map) {
+        this.map = map;
+    }
+
+    /**
+     * @return the map
+     */
+    public Map getMap() {
+        return map;
     }
 
 }

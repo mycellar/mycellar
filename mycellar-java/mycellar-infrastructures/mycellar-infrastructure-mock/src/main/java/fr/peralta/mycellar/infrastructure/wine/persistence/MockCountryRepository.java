@@ -51,7 +51,7 @@ public class MockCountryRepository implements CountryRepository {
     public Map<Country, Integer> getAllWithCounts() {
         Map<Country, Integer> result = new HashMap<Country, Integer>();
         for (int i = 0; i < 10; i++) {
-            Country country = new Country(names[i], "", "");
+            Country country = new Country(names[i], null, "");
             new DirectPropertyAccessor().getSetter(Country.class, "id").set(country, i, null);
             int a = (i + 5) % 10;
             if (a == 0) {
