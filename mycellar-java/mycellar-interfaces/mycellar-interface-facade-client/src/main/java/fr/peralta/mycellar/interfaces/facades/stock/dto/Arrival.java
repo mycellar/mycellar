@@ -29,7 +29,7 @@ import org.joda.time.LocalDate;
  */
 public class Arrival implements Serializable {
 
-    private static final long serialVersionUID = -3717763371275928822L;
+    private static final long serialVersionUID = 201011071626L;
 
     private LocalDate date;
 

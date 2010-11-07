@@ -27,7 +27,7 @@ import fr.peralta.mycellar.interfaces.facades.wine.dto.Country;
  */
 public class Bottle implements Serializable {
 
-    private static final long serialVersionUID = 685255958663623266L;
+    private static final long serialVersionUID = 201011071626L;
 
     private int id;
 

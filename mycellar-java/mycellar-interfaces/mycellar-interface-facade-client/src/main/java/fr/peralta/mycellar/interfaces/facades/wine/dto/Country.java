@@ -25,7 +25,7 @@ import java.io.Serializable;
  */
 public class Country implements Serializable {
 
-    private static final long serialVersionUID = 4386116950298240490L;
+    private static final long serialVersionUID = 201011071626L;
 
     private int id;
 

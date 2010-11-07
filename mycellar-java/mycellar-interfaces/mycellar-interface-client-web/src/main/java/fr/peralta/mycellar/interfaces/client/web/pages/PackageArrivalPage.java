@@ -46,17 +46,15 @@ public class PackageArrivalPage extends WebPage {
      */
     public PackageArrivalPage(PageParameters parameters) {
         super(parameters);
-        Form<Arrival> form = new Form<Arrival>("form",
-                new CompoundPropertyModel<Arrival>(arrival)) {
-            private static final long serialVersionUID = -5943230106768403188L;
+        Form<Arrival> form = new Form<Arrival>("form", new CompoundPropertyModel<Arrival>(arrival)) {
+            private static final long serialVersionUID = 201011071626L;
 
             /**
              * {@inheritDoc}
              */
             @Override
             protected void onSubmit() {
-                IFormSubmittingComponent submit = getRootForm()
-                        .findSubmittingButton();
+                IFormSubmittingComponent submit = getRootForm().findSubmittingButton();
                 if (submit == null || submit.getForm() == this) {
                     stockServiceFacade.arrival(getModelObject());
                 }

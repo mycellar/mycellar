@@ -35,7 +35,7 @@ import fr.peralta.mycellar.interfaces.facades.stock.dto.Bottle;
  */
 public class BottlesEditPanel extends Panel {
 
-    private static final long serialVersionUID = -4215338295303606205L;
+    private static final long serialVersionUID = 201011071626L;
 
     private static final String BOTTLE_COMPONENT_ID = "bottle";
 
@@ -61,8 +61,8 @@ public class BottlesEditPanel extends Panel {
             displayBottleForm();
             break;
         case SAVE:
-            ((List<Bottle>) getDefaultModelObject()).add((Bottle) get(
-                    BOTTLE_COMPONENT_ID).getDefaultModelObject());
+            ((List<Bottle>) getDefaultModelObject()).add((Bottle) get(BOTTLE_COMPONENT_ID)
+                    .getDefaultModelObject());
             replace(createHiddenBottleForm());
             break;
         default:
@@ -74,9 +74,8 @@ public class BottlesEditPanel extends Panel {
      * @return
      */
     private Component createHiddenBottleForm() {
-        return new ObjectForm<Bottle>(BOTTLE_COMPONENT_ID, new Bottle())
-                .replace(
-                        new BottleEditPanel(ObjectForm.EDIT_PANEL_COMPONENT_ID))
+        return new ObjectForm<Bottle>(BOTTLE_COMPONENT_ID, new Bottle()).replace(
+                new BottleEditPanel(ObjectForm.EDIT_PANEL_COMPONENT_ID))
                 .setVisibilityAllowed(false);
     }
 

@@ -27,7 +27,7 @@ import org.apache.wicket.markup.html.panel.Panel;
  */
 public class CountryEditPanel extends Panel {
 
-    private static final long serialVersionUID = -4529022577457265483L;
+    private static final long serialVersionUID = 201011071626L;
 
     /**
      * @param id

@@ -33,7 +33,7 @@ import fr.peralta.mycellar.interfaces.facades.stock.dto.Bottle;
  */
 public class BottlesView extends PropertyListView<Bottle> {
 
-    private static final long serialVersionUID = -4215338295303606205L;
+    private static final long serialVersionUID = 201011071626L;
 
     /**
      * @param id
@@ -65,8 +65,7 @@ public class BottlesView extends PropertyListView<Bottle> {
     protected void populateItem(ListItem<Bottle> item) {
         item.add(new Label("label"));
         item.add(new Label("quantity"));
-        item.add(new WebMarkupContainer("remove").add(removeLink(
-                "removeBottle", item)));
+        item.add(new WebMarkupContainer("remove").add(removeLink("removeBottle", item)));
     }
 
 }

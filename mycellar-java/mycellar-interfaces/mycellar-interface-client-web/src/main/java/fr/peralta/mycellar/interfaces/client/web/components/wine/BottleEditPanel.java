@@ -31,7 +31,7 @@ import fr.peralta.mycellar.interfaces.facades.wine.WineServiceFacade;
  */
 public class BottleEditPanel extends Panel {
 
-    private static final long serialVersionUID = -4529022577457265483L;
+    private static final long serialVersionUID = 201011071626L;
 
     @SpringBean
     private WineServiceFacade wineServiceFacade;
@@ -41,8 +41,7 @@ public class BottleEditPanel extends Panel {
      */
     public BottleEditPanel(String id) {
         super(id);
-        add(new CountryComplexTagCloud("country", new StringResourceModel(
-                "country", this, null),
+        add(new CountryComplexTagCloud("country", new StringResourceModel("country", this, null),
                 wineServiceFacade.getCountriesWithCounts()));
         add(new TextField<Integer>("quantity").setRequired(true));
     }

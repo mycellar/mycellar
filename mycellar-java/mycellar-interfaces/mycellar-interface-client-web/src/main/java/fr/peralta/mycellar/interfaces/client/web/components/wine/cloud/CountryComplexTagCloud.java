@@ -32,15 +32,14 @@ import fr.peralta.mycellar.interfaces.facades.wine.dto.Country;
  */
 public class CountryComplexTagCloud extends ComplexTagCloud<Country> {
 
-    private static final long serialVersionUID = -2644777151353325518L;
+    private static final long serialVersionUID = 201011071626L;
 
     /**
      * @param id
      * @param label
      * @param objects
      */
-    public CountryComplexTagCloud(String id, IModel<?> label,
-            Map<Country, Integer> objects) {
+    public CountryComplexTagCloud(String id, IModel<?> label, Map<Country, Integer> objects) {
         super(id, label, objects);
     }
 

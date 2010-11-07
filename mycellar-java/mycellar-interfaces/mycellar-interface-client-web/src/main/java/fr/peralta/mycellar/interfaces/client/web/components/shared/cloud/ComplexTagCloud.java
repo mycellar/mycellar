@@ -46,14 +46,14 @@ import fr.peralta.mycellar.interfaces.client.web.components.shared.form.ObjectFo
  */
 public abstract class ComplexTagCloud<O> extends Panel {
 
-    private static final long serialVersionUID = -1786797376163865217L;
+    private static final long serialVersionUID = 201011071626L;
 
     private static final String CLOUD_COMPONENT_ID = "cloud";
     private static final String CREATE_FORM_COMPONENT_ID = "createForm";
     private static final String VALUE_COMPONENT_ID = "value";
 
     static final class CloudView<O> extends PropertyListView<TagData<O>> {
-        private static final long serialVersionUID = -6292717746797109745L;
+        private static final long serialVersionUID = 201011071626L;
 
         /**
          * @param id
@@ -75,7 +75,7 @@ public abstract class ComplexTagCloud<O> extends Panel {
 
     static final class TagData<O> implements Serializable {
 
-        private static final long serialVersionUID = -6504434954168189696L;
+        private static final long serialVersionUID = 201011071626L;
 
         private final float size;
 
@@ -115,7 +115,7 @@ public abstract class ComplexTagCloud<O> extends Panel {
 
     static final class Tag<O> extends Link<TagData<O>> {
 
-        private static final long serialVersionUID = -4321725610886144164L;
+        private static final long serialVersionUID = 201011071626L;
 
         /**
          * @param id
@@ -131,8 +131,7 @@ public abstract class ComplexTagCloud<O> extends Panel {
          */
         @Override
         public void onClick() {
-            send(findParent(ComplexTagCloud.class), Broadcast.EXACT,
-                    Action.SELECT);
+            send(findParent(ComplexTagCloud.class), Broadcast.EXACT, Action.SELECT);
         }
     }
 
@@ -201,10 +200,8 @@ public abstract class ComplexTagCloud<O> extends Panel {
         case SELECT:
             setDefaultModelObject(((Tag<?>) event.getSource()).getModelObject());
             get("add").setVisibilityAllowed(false);
-            get(VALUE_COMPONENT_ID).setVisibilityAllowed(true)
-                    .setDefaultModel(
-                            new Model<String>(
-                                    getLabelFor((O) getDefaultModelObject())));
+            get(VALUE_COMPONENT_ID).setVisibilityAllowed(true).setDefaultModel(
+                    new Model<String>(getLabelFor((O) getDefaultModelObject())));
             get(CLOUD_COMPONENT_ID).setVisibilityAllowed(false);
             break;
         case ADD:
@@ -213,12 +210,9 @@ public abstract class ComplexTagCloud<O> extends Panel {
             get(CREATE_FORM_COMPONENT_ID).setVisibilityAllowed(true);
             break;
         case SAVE:
-            setDefaultModelObject(get(CREATE_FORM_COMPONENT_ID)
-                    .getDefaultModelObject());
-            get(VALUE_COMPONENT_ID).setVisibilityAllowed(true)
-                    .setDefaultModel(
-                            new Model<String>(
-                                    getLabelFor((O) getDefaultModelObject())));
+            setDefaultModelObject(get(CREATE_FORM_COMPONENT_ID).getDefaultModelObject());
+            get(VALUE_COMPONENT_ID).setVisibilityAllowed(true).setDefaultModel(
+                    new Model<String>(getLabelFor((O) getDefaultModelObject())));
             replace(createHiddenCreateForm());
             break;
         default:
@@ -227,9 +221,8 @@ public abstract class ComplexTagCloud<O> extends Panel {
     }
 
     private Component createHiddenCreateForm() {
-        return new ObjectForm<O>(CREATE_FORM_COMPONENT_ID, createObject())
-                .replace(
-                        createComponentForCreation(ObjectForm.EDIT_PANEL_COMPONENT_ID))
+        return new ObjectForm<O>(CREATE_FORM_COMPONENT_ID, createObject()).replace(
+                createComponentForCreation(ObjectForm.EDIT_PANEL_COMPONENT_ID))
                 .setVisibilityAllowed(false);
     }
 }

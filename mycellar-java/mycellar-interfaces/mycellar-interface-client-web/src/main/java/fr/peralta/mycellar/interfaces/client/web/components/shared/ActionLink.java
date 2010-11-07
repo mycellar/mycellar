@@ -26,7 +26,7 @@ import org.apache.wicket.model.Model;
  * @author speralta
  */
 public class ActionLink extends Link<Action> {
-    private static final long serialVersionUID = -6376848852342238461L;
+    private static final long serialVersionUID = 201011071626L;
 
     /**
      * @param id

@@ -32,7 +32,7 @@ import fr.peralta.mycellar.interfaces.client.web.components.shared.Action;
  */
 public class ObjectForm<O> extends Form<O> {
 
-    private static final long serialVersionUID = 5193024912810513000L;
+    private static final long serialVersionUID = 201011071626L;
 
     public static final String EDIT_PANEL_COMPONENT_ID = "newObject";
 
