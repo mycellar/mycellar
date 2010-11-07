@@ -114,7 +114,12 @@
       </dependency>
       <dependency>
         <groupId>${project.groupId}</groupId>
-        <artifactId>mycellar-infrastructure</artifactId>
+        <artifactId>mycellar-infrastructure-mock</artifactId>
+        <version>${project.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>${project.groupId}</groupId>
+        <artifactId>mycellar-infrastructure-persistence</artifactId>
         <version>${project.version}</version>
       </dependency>
       <dependency>

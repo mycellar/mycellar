@@ -16,20 +16,33 @@
  * You should have received a copy of the GNU General Public License
  * along with MyCellar. If not, see <http://www.gnu.org/licenses/>.
  */
-package fr.peralta.mycellar.domain.wine;
+package fr.peralta.mycellar.infrastructure.stock.persistence;
 
-import java.util.Map;
-
-import fr.peralta.mycellar.domain.shared.Repository;
+import fr.peralta.mycellar.domain.stock.Bottle;
+import fr.peralta.mycellar.domain.stock.Input;
+import fr.peralta.mycellar.domain.stock.StockRepository;
 
 /**
  * @author speralta
  */
-public interface CountryRepository extends Repository<Country> {
+public class MockStockRepository implements StockRepository {
 
     /**
-     * @return
+     * {@inheritDoc}
      */
-    Map<Country, Integer> getAllWithCounts();
+    @Override
+    public void stockInput(Input input) {
+        // TODO Auto-generated method stub
+
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public Bottle findBottle(int id) {
+        // TODO Auto-generated method stub
+        return null;
+    }
 
 }

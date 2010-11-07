@@ -49,14 +49,10 @@ public class WineServiceFacadeImpl implements WineServiceFacade {
     @Override
     public Map<Country, Integer> getCountriesWithCounts() {
         Map<Country, Integer> result = new HashMap<Country, Integer>();
-        for (int i = 0; i < 10; i++) {
-            Country country = new Country();
-            country.setName("TEST" + i);
-            int a = (i + 5) % 10;
-            if (a == 0) {
-                a = 2;
-            }
-            result.put(country, 23 % a);
+        Map<fr.peralta.mycellar.domain.wine.Country, Integer> map = countryService
+                .getAllWithCounts();
+        for (fr.peralta.mycellar.domain.wine.Country country : map.keySet()) {
+            result.put(countryMapper.map(country), map.get(country));
         }
         return result;
     }

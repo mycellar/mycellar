@@ -18,6 +18,8 @@
  */
 package fr.peralta.mycellar.application.wine.impl;
 
+import java.util.Map;
+
 import fr.peralta.mycellar.application.shared.impl.AbstractEntityService;
 import fr.peralta.mycellar.application.wine.CountryService;
 import fr.peralta.mycellar.domain.wine.Country;
@@ -31,6 +33,14 @@ public class CountryServiceImpl extends
         CountryService {
 
     private CountryRepository countryRepository;
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public Map<Country, Integer> getAllWithCounts() {
+        return countryRepository.getAllWithCounts();
+    }
 
     /**
      * {@inheritDoc}

@@ -25,13 +25,13 @@
 
   <parent>
     <groupId>fr.peralta.mycellar</groupId>
-    <artifactId>mycellar-java</artifactId>
+    <artifactId>mycellar-infrastructures</artifactId>
     <version>0.1.0-SNAPSHOT</version>
     <relativePath>../pom.xml</relativePath>
   </parent>
-  <artifactId>mycellar-infrastructure</artifactId>
+  <artifactId>mycellar-infrastructure-mock</artifactId>
   <packaging>jar</packaging>
-  <name>MyCellar - Infrastructure</name>
+  <name>MyCellar - Mock Infrastructure</name>
 
   <dependencies>
     <dependency>

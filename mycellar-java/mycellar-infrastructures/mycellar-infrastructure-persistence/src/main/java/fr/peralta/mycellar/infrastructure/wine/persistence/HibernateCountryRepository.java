@@ -19,6 +19,7 @@
 package fr.peralta.mycellar.infrastructure.wine.persistence;
 
 import java.util.List;
+import java.util.Map;
 
 import fr.peralta.mycellar.domain.wine.Country;
 import fr.peralta.mycellar.domain.wine.CountryRepository;
@@ -33,6 +34,15 @@ public class HibernateCountryRepository implements CountryRepository {
      */
     @Override
     public List<Country> getAll() {
+        // TODO Auto-generated method stub
+        return null;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public Map<Country, Integer> getAllWithCounts() {
         // TODO Auto-generated method stub
         return null;
     }

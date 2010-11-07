@@ -37,7 +37,7 @@
     <module>mycellar-domain</module>
     <module>mycellar-application</module>
     <module>mycellar-interfaces</module>
-    <module>mycellar-infrastructure</module>
+    <module>mycellar-infrastructures</module>
   </modules>
 
   <build>

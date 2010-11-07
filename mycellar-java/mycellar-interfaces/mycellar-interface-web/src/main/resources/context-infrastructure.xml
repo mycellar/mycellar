@@ -4,11 +4,11 @@
   xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.5.xsd">
 
   <bean id="stockRepository"
-    class="fr.peralta.mycellar.infrastructure.stock.persistence.HibernateStockRepository">
+    class="fr.peralta.mycellar.infrastructure.stock.persistence.MockStockRepository">
   </bean>
 
   <bean id="countryRepository"
-    class="fr.peralta.mycellar.infrastructure.wine.persistence.HibernateCountryRepository">
+    class="fr.peralta.mycellar.infrastructure.wine.persistence.MockCountryRepository">
   </bean>
 
 </beans>

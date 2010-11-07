@@ -44,7 +44,11 @@
     </dependency>
     <dependency>
       <groupId>${project.groupId}</groupId>
-      <artifactId>mycellar-infrastructure</artifactId>
+      <artifactId>mycellar-infrastructure-persistence</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>${project.groupId}</groupId>
+      <artifactId>mycellar-infrastructure-mock</artifactId>
     </dependency>
     <dependency>
       <groupId>org.springframework</groupId>
