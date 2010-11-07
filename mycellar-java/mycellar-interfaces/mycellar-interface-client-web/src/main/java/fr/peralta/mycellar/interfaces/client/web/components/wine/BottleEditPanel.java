@@ -16,16 +16,15 @@
  * You should have received a copy of the GNU General Public License
  * along with MyCellar. If not, see <http://www.gnu.org/licenses/>.
  */
-package fr.peralta.mycellar.interfaces.client.web.components;
+package fr.peralta.mycellar.interfaces.client.web.components.wine;
 
 import org.apache.wicket.markup.html.form.TextField;
 import org.apache.wicket.markup.html.panel.Panel;
 import org.apache.wicket.model.StringResourceModel;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 
-import fr.peralta.mycellar.interfaces.client.web.components.cloud.ComplexTagCloud;
+import fr.peralta.mycellar.interfaces.client.web.components.wine.cloud.CountryComplexTagCloud;
 import fr.peralta.mycellar.interfaces.facades.wine.WineServiceFacade;
-import fr.peralta.mycellar.interfaces.facades.wine.dto.Country;
 
 /**
  * @author speralta
@@ -42,19 +41,9 @@ public class BottleEditPanel extends Panel {
      */
     public BottleEditPanel(String id) {
         super(id);
-        add(new ComplexTagCloud<Country>("country", new StringResourceModel(
+        add(new CountryComplexTagCloud("country", new StringResourceModel(
                 "country", this, null),
-                wineServiceFacade.getCountriesWithCounts()) {
-            private static final long serialVersionUID = -1134198832819662620L;
-
-            /**
-             * {@inheritDoc}
-             */
-            @Override
-            protected String getLabelFor(Country object) {
-                return object.getName();
-            }
-        });
+                wineServiceFacade.getCountriesWithCounts()));
         add(new TextField<Integer>("quantity").setRequired(true));
     }
 }

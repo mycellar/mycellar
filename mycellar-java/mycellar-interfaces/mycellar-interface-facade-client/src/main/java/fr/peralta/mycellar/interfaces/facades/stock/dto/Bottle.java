@@ -24,7 +24,6 @@ import fr.peralta.mycellar.interfaces.facades.wine.dto.Country;
 
 /**
  * @author speralta
- * 
  */
 public class Bottle implements Serializable {
 
@@ -65,7 +64,7 @@ public class Bottle implements Serializable {
      *            the quantity to set
      */
     public void setQuantity(int number) {
-        this.quantity = number;
+        quantity = number;
     }
 
     /**

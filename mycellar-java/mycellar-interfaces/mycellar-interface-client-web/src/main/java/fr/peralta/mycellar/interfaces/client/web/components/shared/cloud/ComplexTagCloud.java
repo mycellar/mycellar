@@ -16,13 +16,14 @@
  * You should have received a copy of the GNU General Public License
  * along with MyCellar. If not, see <http://www.gnu.org/licenses/>.
  */
-package fr.peralta.mycellar.interfaces.client.web.components.cloud;
+package fr.peralta.mycellar.interfaces.client.web.components.shared.cloud;
 
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.wicket.Component;
 import org.apache.wicket.behavior.AttributeAppender;
 import org.apache.wicket.event.Broadcast;
 import org.apache.wicket.event.IEvent;
@@ -35,12 +36,21 @@ import org.apache.wicket.model.ComponentPropertyModel;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.Model;
 
+import sun.reflect.generics.reflectiveObjects.NotImplementedException;
+import fr.peralta.mycellar.interfaces.client.web.components.shared.Action;
+import fr.peralta.mycellar.interfaces.client.web.components.shared.ActionLink;
+import fr.peralta.mycellar.interfaces.client.web.components.shared.form.ObjectForm;
+
 /**
  * @author speralta
  */
 public abstract class ComplexTagCloud<O> extends Panel {
 
     private static final long serialVersionUID = -1786797376163865217L;
+
+    private static final String CLOUD_COMPONENT_ID = "cloud";
+    private static final String CREATE_FORM_COMPONENT_ID = "createForm";
+    private static final String VALUE_COMPONENT_ID = "value";
 
     static final class CloudView<O> extends PropertyListView<TagData<O>> {
         private static final long serialVersionUID = -6292717746797109745L;
@@ -122,20 +132,22 @@ public abstract class ComplexTagCloud<O> extends Panel {
         @Override
         public void onClick() {
             send(findParent(ComplexTagCloud.class), Broadcast.EXACT,
-                    getModelObject());
+                    Action.SELECT);
         }
     }
 
     /**
      * @param id
      * @param label
+     * @param objects
      */
     public ComplexTagCloud(String id, IModel<?> label, Map<O, Integer> objects) {
         super(id);
         add(new Label("label", label));
-        add(new CloudView<O>("cloud", getListFrom(objects)));
-        add(new Label("edit", "toto").setVisibilityAllowed(false));
-        add(new Label("value").setVisibilityAllowed(false));
+        add(new CloudView<O>(CLOUD_COMPONENT_ID, getListFrom(objects)));
+        add(new Label(VALUE_COMPONENT_ID).setVisibilityAllowed(false));
+        add(createHiddenCreateForm());
+        add(new ActionLink("add", Action.ADD));
     }
 
     /**
@@ -161,7 +173,22 @@ public abstract class ComplexTagCloud<O> extends Panel {
         return list;
     }
 
+    /**
+     * @param object
+     * @return
+     */
     protected abstract String getLabelFor(O object);
+
+    /**
+     * @param id
+     * @return
+     */
+    protected abstract Component createComponentForCreation(String id);
+
+    /**
+     * @return
+     */
+    protected abstract O createObject();
 
     /**
      * {@inheritDoc}
@@ -169,9 +196,40 @@ public abstract class ComplexTagCloud<O> extends Panel {
     @SuppressWarnings("unchecked")
     @Override
     public void onEvent(IEvent<?> event) {
-        setDefaultModelObject(event.getPayload());
-        get("value").setVisibilityAllowed(true).setDefaultModel(
-                new Model<String>(getLabelFor((O) getDefaultModelObject())));
-        get("cloud").setVisibilityAllowed(false);
+        Action action = (Action) event.getPayload();
+        switch (action) {
+        case SELECT:
+            setDefaultModelObject(((Tag<?>) event.getSource()).getModelObject());
+            get("add").setVisibilityAllowed(false);
+            get(VALUE_COMPONENT_ID).setVisibilityAllowed(true)
+                    .setDefaultModel(
+                            new Model<String>(
+                                    getLabelFor((O) getDefaultModelObject())));
+            get(CLOUD_COMPONENT_ID).setVisibilityAllowed(false);
+            break;
+        case ADD:
+            get("add").setVisibilityAllowed(false);
+            get(CLOUD_COMPONENT_ID).setVisibilityAllowed(false);
+            get(CREATE_FORM_COMPONENT_ID).setVisibilityAllowed(true);
+            break;
+        case SAVE:
+            setDefaultModelObject(get(CREATE_FORM_COMPONENT_ID)
+                    .getDefaultModelObject());
+            get(VALUE_COMPONENT_ID).setVisibilityAllowed(true)
+                    .setDefaultModel(
+                            new Model<String>(
+                                    getLabelFor((O) getDefaultModelObject())));
+            replace(createHiddenCreateForm());
+            break;
+        default:
+            throw new NotImplementedException();
+        }
+    }
+
+    private Component createHiddenCreateForm() {
+        return new ObjectForm<O>(CREATE_FORM_COMPONENT_ID, createObject())
+                .replace(
+                        createComponentForCreation(ObjectForm.EDIT_PANEL_COMPONENT_ID))
+                .setVisibilityAllowed(false);
     }
 }

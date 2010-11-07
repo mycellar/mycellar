@@ -7,6 +7,12 @@
       <a wicket:id="object"><span wicket:id="label">Tag</span></a>
     </span>
   </div>
-  <div wicket:id="edit" />
+  <p>
+    <a wicket:id="add"><wicket:message key="addLink">Add</wicket:message></a>
+    <form wicket:id="createForm">
+      <div wicket:id="newObject" />
+      <input wicket:id="saveObject" type="submit" wicket:message="value:createButton" />
+    </form>
+  </p>
   <div wicket:id="value" />
 </wicket:panel>

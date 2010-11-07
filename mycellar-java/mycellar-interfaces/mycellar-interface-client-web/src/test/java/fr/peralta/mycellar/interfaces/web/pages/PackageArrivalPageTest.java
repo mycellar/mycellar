@@ -37,7 +37,7 @@ import fr.peralta.mycellar.interfaces.facades.wine.dto.Country;
 public class PackageArrivalPageTest extends AbstractPageTest {
 
     @Test
-    public void constructor() {
+    public void selectCountry() {
         WineServiceFacade wineServiceFacade = createMock(WineServiceFacade.class);
         StockServiceFacade stockServiceFacade = createMock(StockServiceFacade.class);
 
@@ -59,10 +59,54 @@ public class PackageArrivalPageTest extends AbstractPageTest {
         FormTester formTester = getWicketTester().newFormTester("form");
         formTester.setValue("otherCharges", "0");
         getWicketTester().clickLink(
-                "form:bottles:bottle:newBottle:country:cloud:0:object");
+                "form:bottles:bottle:newObject:country:cloud:0:object");
         FormTester bottleFormTester = getWicketTester().newFormTester(
                 "form:bottles:bottle");
-        bottleFormTester.setValue("newBottle:quantity", "2");
+        bottleFormTester.setValue("newObject:quantity", "2");
+        bottleFormTester.submit();
+        getWicketTester().assertRenderedPage(PackageArrivalPage.class);
+        verify(wineServiceFacade, stockServiceFacade);
+    }
+
+    @Test
+    public void createCountry() {
+        WineServiceFacade wineServiceFacade = createMock(WineServiceFacade.class);
+        StockServiceFacade stockServiceFacade = createMock(StockServiceFacade.class);
+
+        Map<Country, Integer> map = new HashMap<Country, Integer>();
+        Country country = new Country();
+        country.setName("Toto");
+        map.put(country, 10);
+        expect(wineServiceFacade.getCountriesWithCounts()).andReturn(map)
+                .times(2);
+
+        replay(wineServiceFacade, stockServiceFacade);
+        getApplicationContext().putBean("wineServiceFacade", wineServiceFacade);
+        getApplicationContext().putBean("stockServiceFacade",
+                stockServiceFacade);
+
+        getWicketTester().startPage(PackageArrivalPage.class);
+        getWicketTester().assertRenderedPage(PackageArrivalPage.class);
+        getWicketTester().clickLink("form:bottles:addBottle");
+
+        FormTester formTester = getWicketTester().newFormTester("form");
+        formTester.setValue("otherCharges", "0");
+
+        getWicketTester()
+                .clickLink("form:bottles:bottle:newObject:country:add");
+
+        FormTester countryFormTester = getWicketTester().newFormTester(
+                "form:bottles:bottle:newObject:country:createForm");
+        countryFormTester.setValue("newObject:name", "Nom");
+        countryFormTester.submit();
+
+        getWicketTester().assertRenderedPage(PackageArrivalPage.class);
+        getWicketTester().assertLabel(
+                "form:bottles:bottle:newObject:country:value", "Nom");
+
+        FormTester bottleFormTester = getWicketTester().newFormTester(
+                "form:bottles:bottle");
+        bottleFormTester.setValue("newObject:quantity", "2");
         bottleFormTester.submit();
         getWicketTester().assertRenderedPage(PackageArrivalPage.class);
         verify(wineServiceFacade, stockServiceFacade);
