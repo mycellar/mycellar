@@ -50,16 +50,10 @@ import fr.peralta.mycellar.domain.shared.ValidationPattern;
 @SequenceGenerator(name = "WINE_ID_GENERATOR", allocationSize = 1)
 public class Wine extends NamedEntity<Wine> {
 
-    private static final long serialVersionUID = 201010311742L;
+    private static final long serialVersionUID = 201011071858L;
 
     @Column(name = "DESCRIPTION")
     private String description;
-
-    @Column(name = "ADDRESS")
-    private String address;
-
-    @Column(name = "POSITION")
-    private String position;
 
     @Column(name = "COLOR")
     @Enumerated(EnumType.STRING)
@@ -99,8 +93,6 @@ public class Wine extends NamedEntity<Wine> {
     /**
      * @param name
      * @param description
-     * @param address
-     * @param position
      * @param color
      * @param type
      * @param ranking
@@ -109,14 +101,10 @@ public class Wine extends NamedEntity<Wine> {
      * @param producer
      * @param photoUrl
      */
-    public Wine(String name, String description, String address,
-            String position, WineColorEnum color, WineTypeEnum type,
-            String ranking, int vintage, Appellation appellation,
-            Producer producer, String photoUrl) {
+    public Wine(String name, String description, WineColorEnum color, WineTypeEnum type,
+            String ranking, int vintage, Appellation appellation, Producer producer, String photoUrl) {
         super(name);
         this.description = description;
-        this.address = address;
-        this.position = position;
         this.color = color;
         this.type = type;
         this.ranking = ranking;
@@ -145,20 +133,6 @@ public class Wine extends NamedEntity<Wine> {
      */
     public String getDescription() {
         return description;
-    }
-
-    /**
-     * @return the address
-     */
-    public String getAddress() {
-        return address;
-    }
-
-    /**
-     * @return the position
-     */
-    public String getPosition() {
-        return position;
     }
 
     /**

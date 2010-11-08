@@ -29,7 +29,7 @@
     <version>0.1.0-SNAPSHOT</version>
     <relativePath>../pom.xml</relativePath>
   </parent>
-  <artifactId>mycellar-web-config</artifactId>
+  <artifactId>mycellar-config-web</artifactId>
   <packaging>jar</packaging>
   <name>MyCellar - Web Config</name>
 

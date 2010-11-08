@@ -18,6 +18,7 @@
  */
 package fr.peralta.mycellar.infrastructure.wine.persistence;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -40,8 +41,13 @@ public class MockCountryRepository implements CountryRepository {
      */
     @Override
     public List<Country> getAll() {
-        // TODO Auto-generated method stub
-        return null;
+        List<Country> result = new ArrayList<Country>();
+        for (int i = 0; i < names.length; i++) {
+            Country country = new Country(names[i], null, "");
+            new DirectPropertyAccessor().getSetter(Country.class, "id").set(country, i, null);
+            result.add(country);
+        }
+        return result;
     }
 
     /**
@@ -50,7 +56,7 @@ public class MockCountryRepository implements CountryRepository {
     @Override
     public Map<Country, Integer> getAllWithCounts() {
         Map<Country, Integer> result = new HashMap<Country, Integer>();
-        for (int i = 0; i < 10; i++) {
+        for (int i = 0; i < names.length; i++) {
             Country country = new Country(names[i], null, "");
             new DirectPropertyAccessor().getSetter(Country.class, "id").set(country, i, null);
             int a = (i + 5) % 10;

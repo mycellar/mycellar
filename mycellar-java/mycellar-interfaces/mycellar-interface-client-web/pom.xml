@@ -69,11 +69,6 @@
       <groupId>org.easymock</groupId>
       <artifactId>easymock</artifactId>
     </dependency>
-    <dependency>
-      <groupId>${project.groupId}</groupId>
-      <artifactId>mycellar-web-config</artifactId>
-      <scope>test</scope>
-    </dependency>
   </dependencies>
 
   <build>

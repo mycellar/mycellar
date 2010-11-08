@@ -28,6 +28,7 @@ import org.junit.Test;
 
 import fr.peralta.mycellar.interfaces.client.web.pages.PackageArrivalPage;
 import fr.peralta.mycellar.interfaces.facades.stock.StockServiceFacade;
+import fr.peralta.mycellar.interfaces.facades.stock.dto.Arrival;
 import fr.peralta.mycellar.interfaces.facades.wine.WineServiceFacade;
 import fr.peralta.mycellar.interfaces.facades.wine.dto.Country;
 
@@ -45,23 +46,19 @@ public class PackageArrivalPageTest extends AbstractPageTest {
         Country country = new Country();
         country.setName("Toto");
         map.put(country, 10);
-        expect(wineServiceFacade.getCountriesWithCounts()).andReturn(map)
-                .times(2);
+        expect(wineServiceFacade.getCountriesWithCounts()).andReturn(map).times(2);
 
         replay(wineServiceFacade, stockServiceFacade);
         getApplicationContext().putBean("wineServiceFacade", wineServiceFacade);
-        getApplicationContext().putBean("stockServiceFacade",
-                stockServiceFacade);
+        getApplicationContext().putBean("stockServiceFacade", stockServiceFacade);
 
         getWicketTester().startPage(PackageArrivalPage.class);
         getWicketTester().assertRenderedPage(PackageArrivalPage.class);
         getWicketTester().clickLink("form:bottles:addBottle");
         FormTester formTester = getWicketTester().newFormTester("form");
         formTester.setValue("otherCharges", "0");
-        getWicketTester().clickLink(
-                "form:bottles:bottle:newObject:country:cloud:0:object");
-        FormTester bottleFormTester = getWicketTester().newFormTester(
-                "form:bottles:bottle");
+        getWicketTester().clickLink("form:bottles:bottle:newObject:country:cloud:0:object");
+        FormTester bottleFormTester = getWicketTester().newFormTester("form:bottles:bottle");
         bottleFormTester.setValue("newObject:quantity", "2");
         bottleFormTester.submit();
         getWicketTester().assertRenderedPage(PackageArrivalPage.class);
@@ -77,13 +74,11 @@ public class PackageArrivalPageTest extends AbstractPageTest {
         Country country = new Country();
         country.setName("Toto");
         map.put(country, 10);
-        expect(wineServiceFacade.getCountriesWithCounts()).andReturn(map)
-                .times(2);
+        expect(wineServiceFacade.getCountriesWithCounts()).andReturn(map).times(2);
 
         replay(wineServiceFacade, stockServiceFacade);
         getApplicationContext().putBean("wineServiceFacade", wineServiceFacade);
-        getApplicationContext().putBean("stockServiceFacade",
-                stockServiceFacade);
+        getApplicationContext().putBean("stockServiceFacade", stockServiceFacade);
 
         getWicketTester().startPage(PackageArrivalPage.class);
         getWicketTester().assertRenderedPage(PackageArrivalPage.class);
@@ -92,8 +87,7 @@ public class PackageArrivalPageTest extends AbstractPageTest {
         FormTester formTester = getWicketTester().newFormTester("form");
         formTester.setValue("otherCharges", "0");
 
-        getWicketTester()
-                .clickLink("form:bottles:bottle:newObject:country:add");
+        getWicketTester().clickLink("form:bottles:bottle:newObject:country:add");
 
         FormTester countryFormTester = getWicketTester().newFormTester(
                 "form:bottles:bottle:newObject:country:createForm");
@@ -101,14 +95,44 @@ public class PackageArrivalPageTest extends AbstractPageTest {
         countryFormTester.submit();
 
         getWicketTester().assertRenderedPage(PackageArrivalPage.class);
-        getWicketTester().assertLabel(
-                "form:bottles:bottle:newObject:country:value", "Nom");
+        getWicketTester().assertLabel("form:bottles:bottle:newObject:country:value", "Nom");
 
-        FormTester bottleFormTester = getWicketTester().newFormTester(
-                "form:bottles:bottle");
+        FormTester bottleFormTester = getWicketTester().newFormTester("form:bottles:bottle");
         bottleFormTester.setValue("newObject:quantity", "2");
         bottleFormTester.submit();
         getWicketTester().assertRenderedPage(PackageArrivalPage.class);
+        verify(wineServiceFacade, stockServiceFacade);
+    }
+
+    @Test
+    public void arrival() {
+        WineServiceFacade wineServiceFacade = createMock(WineServiceFacade.class);
+        StockServiceFacade stockServiceFacade = createMock(StockServiceFacade.class);
+
+        Map<Country, Integer> map = new HashMap<Country, Integer>();
+        Country country = new Country();
+        country.setName("Toto");
+        map.put(country, 10);
+        expect(wineServiceFacade.getCountriesWithCounts()).andReturn(map).times(2);
+        stockServiceFacade.arrival((Arrival) anyObject());
+        expectLastCall();
+
+        replay(wineServiceFacade, stockServiceFacade);
+        getApplicationContext().putBean("wineServiceFacade", wineServiceFacade);
+        getApplicationContext().putBean("stockServiceFacade", stockServiceFacade);
+
+        getWicketTester().startPage(PackageArrivalPage.class);
+        getWicketTester().assertRenderedPage(PackageArrivalPage.class);
+        getWicketTester().clickLink("form:bottles:addBottle");
+        FormTester formTester = getWicketTester().newFormTester("form");
+        formTester.setValue("otherCharges", "0");
+        getWicketTester().clickLink("form:bottles:bottle:newObject:country:cloud:0:object");
+        FormTester bottleFormTester = getWicketTester().newFormTester("form:bottles:bottle");
+        bottleFormTester.setValue("newObject:quantity", "2");
+        bottleFormTester.submit();
+        getWicketTester().assertRenderedPage(PackageArrivalPage.class);
+
+        getWicketTester().newFormTester("form").submit();
         verify(wineServiceFacade, stockServiceFacade);
     }
 }

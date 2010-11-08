@@ -16,26 +16,24 @@
  * You should have received a copy of the GNU General Public License
  * along with MyCellar. If not, see <http://www.gnu.org/licenses/>.
  */
-package fr.peralta.mycellar.interfaces.facades.wine;
+package fr.peralta.mycellar.interfaces.facades.stock.mappers;
 
-import java.util.List;
-import java.util.Map;
-
-import fr.peralta.mycellar.interfaces.facades.wine.dto.Country;
+import fr.peralta.mycellar.domain.stock.Bottle;
+import fr.peralta.mycellar.interfaces.facades.shared.mappers.IMapper;
 
 /**
  * @author speralta
  */
-public interface WineServiceFacade {
+public class BottleMapper implements
+        IMapper<fr.peralta.mycellar.interfaces.facades.stock.dto.Bottle, Bottle> {
 
     /**
-     * @return
+     * {@inheritDoc}
      */
-    List<Country> getAllCountries();
-
-    /**
-     * @return
-     */
-    Map<Country, Integer> getCountriesWithCounts();
+    @Override
+    public Bottle map(fr.peralta.mycellar.interfaces.facades.stock.dto.Bottle from) {
+        // FIXME when bottle dto will be complete
+        return new Bottle(null, null);
+    }
 
 }

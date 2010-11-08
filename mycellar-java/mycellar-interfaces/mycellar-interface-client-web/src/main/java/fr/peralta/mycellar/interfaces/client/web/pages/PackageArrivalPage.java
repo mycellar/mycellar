@@ -20,7 +20,6 @@ package fr.peralta.mycellar.interfaces.client.web.pages;
 
 import org.apache.wicket.markup.html.WebPage;
 import org.apache.wicket.markup.html.form.Form;
-import org.apache.wicket.markup.html.form.IFormSubmittingComponent;
 import org.apache.wicket.markup.html.form.TextField;
 import org.apache.wicket.model.CompoundPropertyModel;
 import org.apache.wicket.request.mapper.parameter.PageParameters;
@@ -47,17 +46,14 @@ public class PackageArrivalPage extends WebPage {
     public PackageArrivalPage(PageParameters parameters) {
         super(parameters);
         Form<Arrival> form = new Form<Arrival>("form", new CompoundPropertyModel<Arrival>(arrival)) {
-            private static final long serialVersionUID = 201011071626L;
+            private static final long serialVersionUID = 201011071905L;
 
             /**
              * {@inheritDoc}
              */
             @Override
             protected void onSubmit() {
-                IFormSubmittingComponent submit = getRootForm().findSubmittingButton();
-                if (submit == null || submit.getForm() == this) {
-                    stockServiceFacade.arrival(getModelObject());
-                }
+                stockServiceFacade.arrival(getModelObject());
             }
         };
         form.add(new TextField<LocalDate>("date"));

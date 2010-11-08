@@ -28,6 +28,7 @@ import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 import fr.peralta.mycellar.interfaces.client.web.components.shared.Action;
 import fr.peralta.mycellar.interfaces.client.web.components.shared.ActionLink;
 import fr.peralta.mycellar.interfaces.client.web.components.shared.form.ObjectForm;
+import fr.peralta.mycellar.interfaces.client.web.components.wine.edit.BottleEditPanel;
 import fr.peralta.mycellar.interfaces.facades.stock.dto.Bottle;
 
 /**

@@ -34,7 +34,7 @@
   <name>MyCellar - Config</name>
   
   <modules>
-    <module>mycellar-web-config</module>
+    <module>mycellar-config-web</module>
   </modules>
 
 </project>

@@ -23,8 +23,8 @@ import java.util.List;
 import java.util.Map;
 
 import fr.peralta.mycellar.application.wine.CountryService;
+import fr.peralta.mycellar.interfaces.facades.shared.MapperServiceFacade;
 import fr.peralta.mycellar.interfaces.facades.wine.dto.Country;
-import fr.peralta.mycellar.interfaces.facades.wine.internal.CountryMapper;
 
 /**
  * @author speralta
@@ -33,14 +33,14 @@ public class WineServiceFacadeImpl implements WineServiceFacade {
 
     private CountryService countryService;
 
-    private final CountryMapper countryMapper = new CountryMapper();
+    private MapperServiceFacade mapperServiceFacade;
 
     /**
      * {@inheritDoc}
      */
     @Override
     public List<Country> getAllCountries() {
-        return countryMapper.map(countryService.getAll());
+        return mapperServiceFacade.mapList(countryService.getAll(), Country.class);
     }
 
     /**
@@ -52,7 +52,7 @@ public class WineServiceFacadeImpl implements WineServiceFacade {
         Map<fr.peralta.mycellar.domain.wine.Country, Integer> map = countryService
                 .getAllWithCounts();
         for (fr.peralta.mycellar.domain.wine.Country country : map.keySet()) {
-            result.put(countryMapper.map(country), map.get(country));
+            result.put(mapperServiceFacade.map(country, Country.class), map.get(country));
         }
         return result;
     }

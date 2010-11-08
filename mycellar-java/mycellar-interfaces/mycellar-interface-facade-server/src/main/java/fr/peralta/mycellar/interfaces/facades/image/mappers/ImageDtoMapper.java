@@ -16,26 +16,29 @@
  * You should have received a copy of the GNU General Public License
  * along with MyCellar. If not, see <http://www.gnu.org/licenses/>.
  */
-package fr.peralta.mycellar.interfaces.facades.wine;
+package fr.peralta.mycellar.interfaces.facades.image.mappers;
 
-import java.util.List;
-import java.util.Map;
-
-import fr.peralta.mycellar.interfaces.facades.wine.dto.Country;
+import fr.peralta.mycellar.interfaces.facades.image.dto.Image;
+import fr.peralta.mycellar.interfaces.facades.shared.mappers.IMapper;
 
 /**
  * @author speralta
  */
-public interface WineServiceFacade {
+public class ImageDtoMapper implements IMapper<fr.peralta.mycellar.domain.mage.Image, Image> {
 
     /**
-     * @return
+     * {@inheritDoc}
      */
-    List<Country> getAllCountries();
-
-    /**
-     * @return
-     */
-    Map<Country, Integer> getCountriesWithCounts();
+    @Override
+    public Image map(fr.peralta.mycellar.domain.mage.Image from) {
+        Image image = new Image();
+        image.setContent(from.getContent());
+        image.setContentType(from.getContentType());
+        image.setHeight(from.getHeight());
+        image.setId(from.getId());
+        image.setName(from.getName());
+        image.setWidth(from.getWidth());
+        return image;
+    }
 
 }

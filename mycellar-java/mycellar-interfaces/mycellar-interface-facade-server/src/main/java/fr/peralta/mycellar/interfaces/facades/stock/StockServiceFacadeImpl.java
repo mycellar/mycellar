@@ -18,12 +18,14 @@
  */
 package fr.peralta.mycellar.interfaces.facades.stock;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import fr.peralta.mycellar.application.stock.StockService;
+import fr.peralta.mycellar.domain.stock.Bottle;
 import fr.peralta.mycellar.domain.stock.Input;
+import fr.peralta.mycellar.interfaces.facades.shared.MapperServiceFacade;
 import fr.peralta.mycellar.interfaces.facades.stock.dto.Arrival;
-import fr.peralta.mycellar.interfaces.facades.stock.internal.ArrivalMapper;
 
 /**
  * @author speralta
@@ -32,14 +34,21 @@ public class StockServiceFacadeImpl implements StockServiceFacade {
 
     private StockService stockService;
 
-    private final ArrivalMapper arrivalMapper = new ArrivalMapper();
+    private MapperServiceFacade mapperServiceFacade;
 
     /**
      * {@inheritDoc}
      */
     @Override
     public void arrival(Arrival arrival) {
-        List<Input> inputs = arrivalMapper.map(arrival, stockService);
+        List<Input> inputs = new ArrayList<Input>();
+        float unitCharges = arrival.getOtherCharges() / arrival.getBottles().size();
+        for (fr.peralta.mycellar.interfaces.facades.stock.dto.Bottle bottleDto : arrival
+                .getBottles()) {
+            inputs.add(new Input(arrival.getDate(), mapperServiceFacade
+                    .map(bottleDto, Bottle.class), bottleDto.getQuantity(), bottleDto.getPrice(),
+                    arrival.getSource(), unitCharges));
+        }
         stockService.stock(inputs);
     }
 
@@ -49,6 +58,14 @@ public class StockServiceFacadeImpl implements StockServiceFacade {
      */
     public void setStockService(StockService stockService) {
         this.stockService = stockService;
+    }
+
+    /**
+     * @param mapperServiceFacade
+     *            the mapperServiceFacade to set
+     */
+    public void setMapperServiceFacade(MapperServiceFacade mapperServiceFacade) {
+        this.mapperServiceFacade = mapperServiceFacade;
     }
 
 }

@@ -127,6 +127,11 @@
         <artifactId>mycellar-domain</artifactId>
         <version>${project.version}</version>
       </dependency>
+      <dependency>
+        <groupId>${project.groupId}</groupId>
+        <artifactId>mycellar-web-config</artifactId>
+        <version>${project.version}</version>
+      </dependency>
     
       <dependency>
         <groupId>org.apache.commons</groupId>
@@ -210,12 +215,6 @@
         <groupId>org.easymock</groupId>
         <artifactId>easymock</artifactId>
         <version>3.0</version>
-        <scope>test</scope>
-      </dependency>
-      <dependency>
-        <groupId>${project.groupId}</groupId>
-        <artifactId>mycellar-web-config</artifactId>
-        <version>${project.version}</version>
         <scope>test</scope>
       </dependency>
     </dependencies>

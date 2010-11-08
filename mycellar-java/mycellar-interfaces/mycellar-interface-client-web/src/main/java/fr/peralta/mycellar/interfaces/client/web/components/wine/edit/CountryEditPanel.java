@@ -16,33 +16,25 @@
  * You should have received a copy of the GNU General Public License
  * along with MyCellar. If not, see <http://www.gnu.org/licenses/>.
  */
-package fr.peralta.mycellar.interfaces.client.web.components.wine;
+package fr.peralta.mycellar.interfaces.client.web.components.wine.edit;
 
+import org.apache.wicket.markup.html.form.TextArea;
 import org.apache.wicket.markup.html.form.TextField;
 import org.apache.wicket.markup.html.panel.Panel;
-import org.apache.wicket.model.StringResourceModel;
-import org.apache.wicket.spring.injection.annot.SpringBean;
-
-import fr.peralta.mycellar.interfaces.client.web.components.wine.cloud.CountryComplexTagCloud;
-import fr.peralta.mycellar.interfaces.facades.wine.WineServiceFacade;
 
 /**
  * @author speralta
  */
-public class BottleEditPanel extends Panel {
+public class CountryEditPanel extends Panel {
 
     private static final long serialVersionUID = 201011071626L;
-
-    @SpringBean
-    private WineServiceFacade wineServiceFacade;
 
     /**
      * @param id
      */
-    public BottleEditPanel(String id) {
+    public CountryEditPanel(String id) {
         super(id);
-        add(new CountryComplexTagCloud("country", new StringResourceModel("country", this, null),
-                wineServiceFacade.getCountriesWithCounts()));
-        add(new TextField<Integer>("quantity").setRequired(true));
+        add(new TextField<String>("name").setRequired(true));
+        add(new TextArea<String>("description"));
     }
 }

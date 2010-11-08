@@ -16,26 +16,26 @@
  * You should have received a copy of the GNU General Public License
  * along with MyCellar. If not, see <http://www.gnu.org/licenses/>.
  */
-package fr.peralta.mycellar.interfaces.facades.wine;
+package fr.peralta.mycellar.interfaces.facades.position.mappers;
 
-import java.util.List;
-import java.util.Map;
-
-import fr.peralta.mycellar.interfaces.facades.wine.dto.Country;
+import fr.peralta.mycellar.interfaces.facades.position.dto.Position;
+import fr.peralta.mycellar.interfaces.facades.shared.mappers.IMapper;
 
 /**
  * @author speralta
  */
-public interface WineServiceFacade {
+public class PositionDtoMapper implements
+        IMapper<fr.peralta.mycellar.domain.position.Position, Position> {
 
     /**
-     * @return
+     * {@inheritDoc}
      */
-    List<Country> getAllCountries();
-
-    /**
-     * @return
-     */
-    Map<Country, Integer> getCountriesWithCounts();
+    @Override
+    public Position map(fr.peralta.mycellar.domain.position.Position from) {
+        Position position = new Position();
+        position.setLatitude(from.getLatitude());
+        position.setLongitude(from.getLongitude());
+        return position;
+    }
 
 }

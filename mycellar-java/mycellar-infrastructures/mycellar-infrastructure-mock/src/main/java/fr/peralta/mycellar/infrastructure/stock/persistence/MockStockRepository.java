@@ -18,22 +18,31 @@
  */
 package fr.peralta.mycellar.infrastructure.stock.persistence;
 
+import org.hibernate.property.DirectPropertyAccessor;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import fr.peralta.mycellar.domain.stock.Bottle;
 import fr.peralta.mycellar.domain.stock.Input;
 import fr.peralta.mycellar.domain.stock.StockRepository;
+import fr.peralta.mycellar.domain.wine.Format;
+import fr.peralta.mycellar.domain.wine.Wine;
+import fr.peralta.mycellar.domain.wine.WineColorEnum;
+import fr.peralta.mycellar.domain.wine.WineTypeEnum;
 
 /**
  * @author speralta
  */
 public class MockStockRepository implements StockRepository {
 
+    private static final Logger logger = LoggerFactory.getLogger(MockStockRepository.class);
+
     /**
      * {@inheritDoc}
      */
     @Override
     public void stockInput(Input input) {
-        // TODO Auto-generated method stub
-
+        logger.info("Stocks " + input.getNumber() + " " + input.getBottle());
     }
 
     /**
@@ -41,8 +50,10 @@ public class MockStockRepository implements StockRepository {
      */
     @Override
     public Bottle findBottle(int id) {
-        // TODO Auto-generated method stub
-        return null;
+        Bottle bottle = new Bottle(new Wine("Vin", "", WineColorEnum.RED, WineTypeEnum.STILL, "",
+                2000, null, null, null), new Format("Bouteille", 1.5f));
+        new DirectPropertyAccessor().getSetter(Bottle.class, "id").set(bottle, id, null);
+        return bottle;
     }
 
 }

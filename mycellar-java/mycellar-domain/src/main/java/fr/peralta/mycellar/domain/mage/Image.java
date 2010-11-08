@@ -16,7 +16,7 @@
  * You should have received a copy of the GNU General Public License
  * along with MyCellar. If not, see <http://www.gnu.org/licenses/>.
  */
-package fr.peralta.mycellar.domain.Image;
+package fr.peralta.mycellar.domain.mage;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -31,17 +31,12 @@ import fr.peralta.mycellar.domain.shared.IdentifiedEntity;
 
 /**
  * @author bperalta
- * 
- */
-/**
- * @author bperalta
- * 
  */
 @Entity
 @Table(name = "IMAGE")
 @SequenceGenerator(name = "IMAGE_ID_GENERATOR", allocationSize = 1)
 public class Image extends IdentifiedEntity<Image> {
-    private static final long serialVersionUID = 201011071516L;
+    private static final long serialVersionUID = 201011082031L;
 
     @Column(name = "NAME", nullable = false)
     private String name;
