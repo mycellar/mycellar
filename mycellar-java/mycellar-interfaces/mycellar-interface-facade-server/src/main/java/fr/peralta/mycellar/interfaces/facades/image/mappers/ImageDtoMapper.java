@@ -24,13 +24,13 @@ import fr.peralta.mycellar.interfaces.facades.shared.mappers.IMapper;
 /**
  * @author speralta
  */
-public class ImageDtoMapper implements IMapper<fr.peralta.mycellar.domain.mage.Image, Image> {
+public class ImageDtoMapper implements IMapper<fr.peralta.mycellar.domain.image.Image, Image> {
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public Image map(fr.peralta.mycellar.domain.mage.Image from) {
+    public Image map(fr.peralta.mycellar.domain.image.Image from) {
         Image image = new Image();
         image.setContent(from.getContent());
         image.setContentType(from.getContentType());

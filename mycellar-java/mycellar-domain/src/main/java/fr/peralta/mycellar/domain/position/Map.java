@@ -24,7 +24,7 @@ import javax.persistence.Embedded;
 import javax.persistence.JoinColumn;
 import javax.persistence.OneToOne;
 
-import fr.peralta.mycellar.domain.mage.Image;
+import fr.peralta.mycellar.domain.image.Image;
 
 /**
  * @author bperalta

@@ -18,7 +18,7 @@
  */
 package fr.peralta.mycellar.interfaces.facades.image.mappers;
 
-import fr.peralta.mycellar.domain.mage.Image;
+import fr.peralta.mycellar.domain.image.Image;
 import fr.peralta.mycellar.interfaces.facades.shared.mappers.IMapper;
 
 /**

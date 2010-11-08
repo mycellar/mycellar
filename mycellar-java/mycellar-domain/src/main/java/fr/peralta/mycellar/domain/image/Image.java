@@ -16,7 +16,7 @@
  * You should have received a copy of the GNU General Public License
  * along with MyCellar. If not, see <http://www.gnu.org/licenses/>.
  */
-package fr.peralta.mycellar.domain.mage;
+package fr.peralta.mycellar.domain.image;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
