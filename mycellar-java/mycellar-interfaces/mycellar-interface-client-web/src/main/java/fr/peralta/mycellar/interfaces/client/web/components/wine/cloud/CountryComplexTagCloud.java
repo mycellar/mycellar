@@ -25,7 +25,7 @@ import org.apache.wicket.model.IModel;
 
 import fr.peralta.mycellar.interfaces.client.web.components.shared.cloud.ComplexTagCloud;
 import fr.peralta.mycellar.interfaces.client.web.components.wine.edit.CountryEditPanel;
-import fr.peralta.mycellar.interfaces.facades.wine.dto.Country;
+import fr.peralta.mycellar.interfaces.facades.wine.Country;
 
 /**
  * @author speralta

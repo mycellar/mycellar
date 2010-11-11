@@ -25,13 +25,13 @@ import fr.peralta.mycellar.interfaces.facades.shared.mappers.AbstractMapper;
  * @author speralta
  */
 public class PositionMapper extends
-        AbstractMapper<fr.peralta.mycellar.interfaces.facades.position.dto.Position, Position> {
+        AbstractMapper<fr.peralta.mycellar.interfaces.facades.position.Position, Position> {
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public Position map(fr.peralta.mycellar.interfaces.facades.position.dto.Position from) {
+    public Position map(fr.peralta.mycellar.interfaces.facades.position.Position from) {
         return new Position(from.getLatitude(), from.getLongitude());
     }
 
@@ -39,8 +39,8 @@ public class PositionMapper extends
      * {@inheritDoc}
      */
     @Override
-    protected Class<fr.peralta.mycellar.interfaces.facades.position.dto.Position> getFromClass() {
-        return fr.peralta.mycellar.interfaces.facades.position.dto.Position.class;
+    protected Class<fr.peralta.mycellar.interfaces.facades.position.Position> getFromClass() {
+        return fr.peralta.mycellar.interfaces.facades.position.Position.class;
     }
 
     /**

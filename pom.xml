@@ -37,6 +37,10 @@
 
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    
+    <!-- Versions -->
+    <slf4j.version>1.6.1</slf4j.version>
+    <wicket.version>1.5-M2.1</wicket.version>
   </properties>
 
   <developers>
@@ -75,6 +79,11 @@
           <groupId>org.apache.maven.plugins</groupId>
           <artifactId>maven-compiler-plugin</artifactId>
           <version>2.3.2</version>
+        </plugin>
+        <plugin>
+          <groupId>org.apache.maven.plugins</groupId>
+          <artifactId>maven-jar-plugin</artifactId>
+          <version>2.3.1</version>
         </plugin>
         <plugin>
           <groupId>org.mortbay.jetty</groupId>
@@ -139,6 +148,17 @@
         <version>3.0-SNAPSHOT</version>
       </dependency>
       <dependency>
+        <groupId>commons-beanutils</groupId>
+        <artifactId>commons-beanutils</artifactId>
+        <version>1.8.3</version>
+        <exclusions>
+          <exclusion>
+            <groupId>commons-logging</groupId>
+            <artifactId>commons-logging</artifactId>
+          </exclusion>
+        </exclusions>
+      </dependency>
+      <dependency>
         <groupId>org.hibernate.javax.persistence</groupId>
         <artifactId>hibernate-jpa-2.0-api</artifactId>
         <version>1.0.0.Final</version>
@@ -179,17 +199,24 @@
       <dependency>
         <groupId>org.apache.wicket</groupId>
         <artifactId>wicket</artifactId>
-        <version>1.5-M2.1</version>
+        <version>${wicket.version}</version>
       </dependency>
       <dependency>
         <groupId>org.apache.wicket</groupId>
         <artifactId>wicket-spring</artifactId>
-        <version>1.5-M2.1</version>
+        <version>${wicket.version}</version>
       </dependency>
+      
+      <!-- SLF4J -->
       <dependency>
         <groupId>org.slf4j</groupId>
         <artifactId>slf4j-api</artifactId>
-        <version>1.6.1</version>
+        <version>${slf4j.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>org.slf4j</groupId>
+        <artifactId>jcl-over-slf4j</artifactId>
+        <version>${slf4j.version}</version>
       </dependency>
       <dependency>
         <groupId>ch.qos.logback</groupId>
@@ -197,6 +224,7 @@
         <version>0.9.26</version>
       </dependency>
       
+      <!-- JAVAX -->
       <dependency>
         <groupId>javax.servlet</groupId>
         <artifactId>servlet-api</artifactId>
@@ -208,19 +236,16 @@
         <groupId>junit</groupId>
         <artifactId>junit-dep</artifactId>
         <version>4.8.2</version>
-        <scope>test</scope>
       </dependency>
       <dependency>
         <groupId>org.hamcrest</groupId>
         <artifactId>hamcrest-core</artifactId>
         <version>1.2</version>
-        <scope>test</scope>
       </dependency>
       <dependency>
         <groupId>org.mockito</groupId>
         <artifactId>mockito-core</artifactId>
         <version>1.8.5</version>
-        <scope>test</scope>
       </dependency>
       <dependency>
         <groupId>${project.groupId}</groupId>
@@ -232,6 +257,19 @@
         <groupId>${project.groupId}</groupId>
         <artifactId>mycellar-config-test</artifactId>
         <version>${project.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>${project.groupId}</groupId>
+        <artifactId>mycellar-interface-facade-client</artifactId>
+        <version>${project.version}</version>
+        <type>test-jar</type>
+        <scope>test</scope>
+      </dependency>
+      <dependency>
+        <groupId>${project.groupId}</groupId>
+        <artifactId>mycellar-domain</artifactId>
+        <version>${project.version}</version>
+        <type>test-jar</type>
         <scope>test</scope>
       </dependency>
     </dependencies>

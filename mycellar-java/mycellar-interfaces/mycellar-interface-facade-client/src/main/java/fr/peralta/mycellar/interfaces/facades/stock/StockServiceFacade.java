@@ -18,7 +18,6 @@
  */
 package fr.peralta.mycellar.interfaces.facades.stock;
 
-import fr.peralta.mycellar.interfaces.facades.stock.dto.Arrival;
 
 /**
  * @author speralta

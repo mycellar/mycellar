@@ -25,7 +25,6 @@ import fr.peralta.mycellar.application.stock.StockService;
 import fr.peralta.mycellar.domain.stock.Bottle;
 import fr.peralta.mycellar.domain.stock.Input;
 import fr.peralta.mycellar.interfaces.facades.shared.MapperServiceFacade;
-import fr.peralta.mycellar.interfaces.facades.stock.dto.Arrival;
 
 /**
  * @author speralta
@@ -43,7 +42,7 @@ public class StockServiceFacadeImpl implements StockServiceFacade {
     public void arrival(Arrival arrival) {
         List<Input> inputs = new ArrayList<Input>();
         float unitCharges = arrival.getOtherCharges() / arrival.getBottles().size();
-        for (fr.peralta.mycellar.interfaces.facades.stock.dto.Bottle bottleDto : arrival
+        for (fr.peralta.mycellar.interfaces.facades.stock.Bottle bottleDto : arrival
                 .getBottles()) {
             inputs.add(new Input(arrival.getDate(), mapperServiceFacade
                     .map(bottleDto, Bottle.class), bottleDto.getQuantity(), bottleDto.getPrice(),

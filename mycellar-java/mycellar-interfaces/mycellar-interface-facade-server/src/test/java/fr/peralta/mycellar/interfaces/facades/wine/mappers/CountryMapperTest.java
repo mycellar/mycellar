@@ -18,9 +18,11 @@
  */
 package fr.peralta.mycellar.interfaces.facades.wine.mappers;
 
-import static fr.peralta.mycellar.interfaces.facades.Matchers.*;
-import static org.hamcrest.MatcherAssert.*;
-import static org.mockito.BDDMockito.*;
+import static fr.peralta.mycellar.domain.DomainMatchers.hasSameProperties;
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.mockito.BDDMockito.given;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.verify;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -52,21 +54,23 @@ public class CountryMapperTest {
 
     /**
      * Test method for
-     * {@link fr.peralta.mycellar.interfaces.facades.wine.mappers.CountryMapper#map(fr.peralta.mycellar.interfaces.facades.wine.dto.Country)}
+     * {@link fr.peralta.mycellar.interfaces.facades.wine.mappers.CountryMapper#map(fr.peralta.mycellar.interfaces.facades.wine.Country)}
      * .
      */
     @Test
     public void testMap() {
         Country expected = new Country("name", new Map(new Position(1f, 1f), new Image("imageName",
                 "jpg", 10, 10, new byte[] { 2, 3, 4 })), "description");
-        fr.peralta.mycellar.interfaces.facades.wine.dto.Country input = new fr.peralta.mycellar.interfaces.facades.wine.dto.Country();
+        fr.peralta.mycellar.interfaces.facades.wine.Country input = new fr.peralta.mycellar.interfaces.facades.wine.Country();
         input.setName("name");
         input.setDescription("description");
-        input.setMap(new fr.peralta.mycellar.interfaces.facades.position.dto.Map());
+        input.setMap(new fr.peralta.mycellar.interfaces.facades.position.Map());
 
         given(mapperServiceFacade.map(input.getMap(), Map.class)).willReturn(expected.getMap());
 
-        assertThat(countryMapper.map(input), hasSameProperties(expected));
+        Country result = countryMapper.map(input);
+
+        assertThat(result, hasSameProperties(expected));
     }
 
     /**
@@ -78,6 +82,6 @@ public class CountryMapperTest {
     public void testInitialize() {
         countryMapper.initialize();
         verify(mapperServiceFacade).registerMapper(countryMapper,
-                fr.peralta.mycellar.interfaces.facades.wine.dto.Country.class, Country.class);
+                fr.peralta.mycellar.interfaces.facades.wine.Country.class, Country.class);
     }
 }

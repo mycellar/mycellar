@@ -26,10 +26,10 @@ import fr.peralta.mycellar.interfaces.facades.shared.mappers.AbstractMapper;
  * @author speralta
  */
 public class CountryMapper extends
-        AbstractMapper<fr.peralta.mycellar.interfaces.facades.wine.dto.Country, Country> {
+        AbstractMapper<fr.peralta.mycellar.interfaces.facades.wine.Country, Country> {
 
     @Override
-    public Country map(fr.peralta.mycellar.interfaces.facades.wine.dto.Country dto) {
+    public Country map(fr.peralta.mycellar.interfaces.facades.wine.Country dto) {
         return new Country(dto.getName(), getMapperServiceFacade().map(dto.getMap(), Map.class),
                 dto.getDescription());
     }
@@ -38,8 +38,8 @@ public class CountryMapper extends
      * {@inheritDoc}
      */
     @Override
-    protected Class<fr.peralta.mycellar.interfaces.facades.wine.dto.Country> getFromClass() {
-        return fr.peralta.mycellar.interfaces.facades.wine.dto.Country.class;
+    protected Class<fr.peralta.mycellar.interfaces.facades.wine.Country> getFromClass() {
+        return fr.peralta.mycellar.interfaces.facades.wine.Country.class;
     }
 
     /**

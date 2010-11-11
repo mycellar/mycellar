@@ -27,8 +27,8 @@ import org.apache.wicket.spring.injection.annot.SpringBean;
 import org.joda.time.LocalDate;
 
 import fr.peralta.mycellar.interfaces.client.web.components.wine.BottlesEditPanel;
+import fr.peralta.mycellar.interfaces.facades.stock.Arrival;
 import fr.peralta.mycellar.interfaces.facades.stock.StockServiceFacade;
-import fr.peralta.mycellar.interfaces.facades.stock.dto.Arrival;
 
 /**
  * @author speralta

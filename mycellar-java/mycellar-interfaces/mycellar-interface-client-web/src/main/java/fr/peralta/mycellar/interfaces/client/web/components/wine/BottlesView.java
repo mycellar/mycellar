@@ -26,7 +26,7 @@ import org.apache.wicket.markup.html.list.ListItem;
 import org.apache.wicket.markup.html.list.PropertyListView;
 import org.apache.wicket.model.IModel;
 
-import fr.peralta.mycellar.interfaces.facades.stock.dto.Bottle;
+import fr.peralta.mycellar.interfaces.facades.stock.Bottle;
 
 /**
  * @author speralta

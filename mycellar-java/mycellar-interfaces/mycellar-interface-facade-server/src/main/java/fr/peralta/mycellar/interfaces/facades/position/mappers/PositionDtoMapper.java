@@ -18,7 +18,7 @@
  */
 package fr.peralta.mycellar.interfaces.facades.position.mappers;
 
-import fr.peralta.mycellar.interfaces.facades.position.dto.Position;
+import fr.peralta.mycellar.interfaces.facades.position.Position;
 import fr.peralta.mycellar.interfaces.facades.shared.mappers.AbstractMapper;
 
 /**

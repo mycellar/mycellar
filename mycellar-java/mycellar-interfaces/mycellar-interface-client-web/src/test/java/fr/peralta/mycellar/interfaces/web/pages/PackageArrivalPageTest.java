@@ -32,10 +32,10 @@ import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
 
 import fr.peralta.mycellar.interfaces.client.web.pages.PackageArrivalPage;
+import fr.peralta.mycellar.interfaces.facades.stock.Arrival;
 import fr.peralta.mycellar.interfaces.facades.stock.StockServiceFacade;
-import fr.peralta.mycellar.interfaces.facades.stock.dto.Arrival;
+import fr.peralta.mycellar.interfaces.facades.wine.Country;
 import fr.peralta.mycellar.interfaces.facades.wine.WineServiceFacade;
-import fr.peralta.mycellar.interfaces.facades.wine.dto.Country;
 
 /**
  * @author speralta

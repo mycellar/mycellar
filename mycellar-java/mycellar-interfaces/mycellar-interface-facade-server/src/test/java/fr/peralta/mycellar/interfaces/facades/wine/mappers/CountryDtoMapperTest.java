@@ -18,9 +18,10 @@
  */
 package fr.peralta.mycellar.interfaces.facades.wine.mappers;
 
-import static fr.peralta.mycellar.interfaces.facades.Matchers.*;
-import static org.hamcrest.MatcherAssert.*;
-import static org.mockito.BDDMockito.*;
+import static fr.peralta.mycellar.interfaces.facades.FacadeMatchers.hasSameProperties;
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.mockito.BDDMockito.given;
+import static org.mockito.Mockito.verify;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -64,16 +65,16 @@ public class CountryDtoMapperTest {
         Country input = new Country("name", new Map(new Position(1f, 1f), new Image("imageName",
                 "jpg", 10, 10, new byte[] { 2, 3, 4 })), "description");
 
-        fr.peralta.mycellar.interfaces.facades.wine.dto.Country expected = new fr.peralta.mycellar.interfaces.facades.wine.dto.Country();
+        fr.peralta.mycellar.interfaces.facades.wine.Country expected = new fr.peralta.mycellar.interfaces.facades.wine.Country();
         expected.setName("name");
         expected.setDescription("description");
-        fr.peralta.mycellar.interfaces.facades.position.dto.Map expectedMap = new fr.peralta.mycellar.interfaces.facades.position.dto.Map();
-        fr.peralta.mycellar.interfaces.facades.image.dto.Image expectedImage = new fr.peralta.mycellar.interfaces.facades.image.dto.Image();
+        fr.peralta.mycellar.interfaces.facades.position.Map expectedMap = new fr.peralta.mycellar.interfaces.facades.position.Map();
+        fr.peralta.mycellar.interfaces.facades.image.Image expectedImage = new fr.peralta.mycellar.interfaces.facades.image.Image();
         expectedImage.setContent(new byte[] { 2, 3, 4 });
         expectedImage.setContentType("jpg");
         expectedImage.setName("imageName");
         expectedMap.setImage(expectedImage);
-        fr.peralta.mycellar.interfaces.facades.position.dto.Position expectedPosition = new fr.peralta.mycellar.interfaces.facades.position.dto.Position();
+        fr.peralta.mycellar.interfaces.facades.position.Position expectedPosition = new fr.peralta.mycellar.interfaces.facades.position.Position();
         expectedPosition.setLatitude(1f);
         expectedPosition.setLongitude(1f);
         expectedMap.setPosition(expectedPosition);
@@ -81,10 +82,12 @@ public class CountryDtoMapperTest {
 
         given(
                 mapperServiceFacade.map(input.getMap(),
-                        fr.peralta.mycellar.interfaces.facades.position.dto.Map.class)).willReturn(
+                        fr.peralta.mycellar.interfaces.facades.position.Map.class)).willReturn(
                 expected.getMap());
 
-        assertThat(countryDtoMapper.map(input), hasSameProperties(expected));
+        fr.peralta.mycellar.interfaces.facades.wine.Country result = countryDtoMapper.map(input);
+
+        assertThat(result, hasSameProperties(expected));
     }
 
     /**
@@ -96,6 +99,6 @@ public class CountryDtoMapperTest {
     public void testInitialize() {
         countryDtoMapper.initialize();
         verify(mapperServiceFacade).registerMapper(countryDtoMapper, Country.class,
-                fr.peralta.mycellar.interfaces.facades.wine.dto.Country.class);
+                fr.peralta.mycellar.interfaces.facades.wine.Country.class);
     }
 }

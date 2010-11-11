@@ -24,7 +24,6 @@ import java.util.Map;
 
 import fr.peralta.mycellar.application.wine.CountryService;
 import fr.peralta.mycellar.interfaces.facades.shared.MapperServiceFacade;
-import fr.peralta.mycellar.interfaces.facades.wine.dto.Country;
 
 /**
  * @author speralta

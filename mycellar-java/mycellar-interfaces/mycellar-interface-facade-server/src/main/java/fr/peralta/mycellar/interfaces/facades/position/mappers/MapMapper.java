@@ -27,13 +27,13 @@ import fr.peralta.mycellar.interfaces.facades.shared.mappers.AbstractMapper;
  * @author speralta
  */
 public class MapMapper extends
-        AbstractMapper<fr.peralta.mycellar.interfaces.facades.position.dto.Map, Map> {
+        AbstractMapper<fr.peralta.mycellar.interfaces.facades.position.Map, Map> {
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public Map map(fr.peralta.mycellar.interfaces.facades.position.dto.Map from) {
+    public Map map(fr.peralta.mycellar.interfaces.facades.position.Map from) {
         return new Map(getMapperServiceFacade().map(from.getPosition(), Position.class),
                 getMapperServiceFacade().map(from.getImage(), Image.class));
     }
@@ -42,8 +42,8 @@ public class MapMapper extends
      * {@inheritDoc}
      */
     @Override
-    protected Class<fr.peralta.mycellar.interfaces.facades.position.dto.Map> getFromClass() {
-        return fr.peralta.mycellar.interfaces.facades.position.dto.Map.class;
+    protected Class<fr.peralta.mycellar.interfaces.facades.position.Map> getFromClass() {
+        return fr.peralta.mycellar.interfaces.facades.position.Map.class;
     }
 
     /**

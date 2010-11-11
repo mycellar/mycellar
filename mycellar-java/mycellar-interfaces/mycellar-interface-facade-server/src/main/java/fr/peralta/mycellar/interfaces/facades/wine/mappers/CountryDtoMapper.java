@@ -18,9 +18,9 @@
  */
 package fr.peralta.mycellar.interfaces.facades.wine.mappers;
 
-import fr.peralta.mycellar.interfaces.facades.position.dto.Map;
+import fr.peralta.mycellar.interfaces.facades.position.Map;
 import fr.peralta.mycellar.interfaces.facades.shared.mappers.AbstractMapper;
-import fr.peralta.mycellar.interfaces.facades.wine.dto.Country;
+import fr.peralta.mycellar.interfaces.facades.wine.Country;
 
 /**
  * @author speralta
@@ -30,7 +30,7 @@ public class CountryDtoMapper extends
 
     @Override
     public Country map(fr.peralta.mycellar.domain.wine.Country country) {
-        Country dto = new fr.peralta.mycellar.interfaces.facades.wine.dto.Country();
+        Country dto = new fr.peralta.mycellar.interfaces.facades.wine.Country();
         dto.setDescription(country.getDescription());
         dto.setMap(getMapperServiceFacade().map(country.getMap(), Map.class));
         dto.setName(country.getName());
