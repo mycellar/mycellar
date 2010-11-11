@@ -19,13 +19,13 @@
 package fr.peralta.mycellar.interfaces.facades.image.mappers;
 
 import fr.peralta.mycellar.domain.image.Image;
-import fr.peralta.mycellar.interfaces.facades.shared.mappers.IMapper;
+import fr.peralta.mycellar.interfaces.facades.shared.mappers.AbstractMapper;
 
 /**
  * @author speralta
  */
-public class ImageMapper implements
-        IMapper<fr.peralta.mycellar.interfaces.facades.image.dto.Image, Image> {
+public class ImageMapper extends
+        AbstractMapper<fr.peralta.mycellar.interfaces.facades.image.dto.Image, Image> {
 
     /**
      * {@inheritDoc}
@@ -34,6 +34,22 @@ public class ImageMapper implements
     public Image map(fr.peralta.mycellar.interfaces.facades.image.dto.Image from) {
         return new Image(from.getName(), from.getContentType(), from.getHeight(), from.getWidth(),
                 from.getContent());
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    protected Class<fr.peralta.mycellar.interfaces.facades.image.dto.Image> getFromClass() {
+        return fr.peralta.mycellar.interfaces.facades.image.dto.Image.class;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    protected Class<Image> getToClass() {
+        return Image.class;
     }
 
 }

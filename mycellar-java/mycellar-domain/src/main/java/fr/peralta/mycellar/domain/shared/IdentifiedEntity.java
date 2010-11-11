@@ -24,14 +24,14 @@ import javax.persistence.MappedSuperclass;
 import javax.persistence.Version;
 
 import org.apache.commons.lang3.builder.HashCodeBuilder;
+import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.hibernate.Hibernate;
 
 /**
  * @author speralta
  */
 @MappedSuperclass
-public abstract class IdentifiedEntity<E extends IdentifiedEntity<E>>
-        implements Serializable {
+public abstract class IdentifiedEntity<E extends IdentifiedEntity<E>> implements Serializable {
 
     private static final long serialVersionUID = 201010311742L;
 
@@ -89,8 +89,7 @@ public abstract class IdentifiedEntity<E extends IdentifiedEntity<E>>
         }
 
         // looks into the target class of a proxy if necessary
-        if (other == null
-                || !Hibernate.getClass(other).equals(Hibernate.getClass(this))) {
+        if (other == null || !Hibernate.getClass(other).equals(Hibernate.getClass(this))) {
             return false;
         }
 
@@ -119,7 +118,7 @@ public abstract class IdentifiedEntity<E extends IdentifiedEntity<E>>
      */
     @Override
     public String toString() {
-        return getClass().getSimpleName() + "(id:" + getId() + ")";
+        return ToStringBuilder.reflectionToString(this);
     }
 
 }

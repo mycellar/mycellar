@@ -19,13 +19,13 @@
 package fr.peralta.mycellar.interfaces.facades.stock.mappers;
 
 import fr.peralta.mycellar.domain.stock.Bottle;
-import fr.peralta.mycellar.interfaces.facades.shared.mappers.IMapper;
+import fr.peralta.mycellar.interfaces.facades.shared.mappers.AbstractMapper;
 
 /**
  * @author speralta
  */
-public class BottleMapper implements
-        IMapper<fr.peralta.mycellar.interfaces.facades.stock.dto.Bottle, Bottle> {
+public class BottleMapper extends
+        AbstractMapper<fr.peralta.mycellar.interfaces.facades.stock.dto.Bottle, Bottle> {
 
     /**
      * {@inheritDoc}
@@ -34,6 +34,22 @@ public class BottleMapper implements
     public Bottle map(fr.peralta.mycellar.interfaces.facades.stock.dto.Bottle from) {
         // FIXME when bottle dto will be complete
         return new Bottle(null, null);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    protected Class<fr.peralta.mycellar.interfaces.facades.stock.dto.Bottle> getFromClass() {
+        return fr.peralta.mycellar.interfaces.facades.stock.dto.Bottle.class;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    protected Class<Bottle> getToClass() {
+        return Bottle.class;
     }
 
 }

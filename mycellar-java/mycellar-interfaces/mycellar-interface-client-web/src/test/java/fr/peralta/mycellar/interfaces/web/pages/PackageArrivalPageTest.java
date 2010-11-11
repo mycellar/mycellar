@@ -18,13 +18,18 @@
  */
 package fr.peralta.mycellar.interfaces.web.pages;
 
-import static org.easymock.EasyMock.*;
+import static org.mockito.BDDMockito.*;
+import static org.mockito.Matchers.*;
+import static org.mockito.Mockito.*;
 
 import java.util.HashMap;
 import java.util.Map;
 
 import org.apache.wicket.util.tester.FormTester;
 import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.mockito.Mock;
+import org.mockito.runners.MockitoJUnitRunner;
 
 import fr.peralta.mycellar.interfaces.client.web.pages.PackageArrivalPage;
 import fr.peralta.mycellar.interfaces.facades.stock.StockServiceFacade;
@@ -35,20 +40,23 @@ import fr.peralta.mycellar.interfaces.facades.wine.dto.Country;
 /**
  * @author speralta
  */
+@RunWith(MockitoJUnitRunner.class)
 public class PackageArrivalPageTest extends AbstractPageTest {
+
+    @Mock
+    private WineServiceFacade wineServiceFacade;
+
+    @Mock
+    private StockServiceFacade stockServiceFacade;
 
     @Test
     public void selectCountry() {
-        WineServiceFacade wineServiceFacade = createMock(WineServiceFacade.class);
-        StockServiceFacade stockServiceFacade = createMock(StockServiceFacade.class);
-
         Map<Country, Integer> map = new HashMap<Country, Integer>();
         Country country = new Country();
         country.setName("Toto");
         map.put(country, 10);
-        expect(wineServiceFacade.getCountriesWithCounts()).andReturn(map).times(2);
+        given(wineServiceFacade.getCountriesWithCounts()).willReturn(map);
 
-        replay(wineServiceFacade, stockServiceFacade);
         getApplicationContext().putBean("wineServiceFacade", wineServiceFacade);
         getApplicationContext().putBean("stockServiceFacade", stockServiceFacade);
 
@@ -62,21 +70,16 @@ public class PackageArrivalPageTest extends AbstractPageTest {
         bottleFormTester.setValue("newObject:quantity", "2");
         bottleFormTester.submit();
         getWicketTester().assertRenderedPage(PackageArrivalPage.class);
-        verify(wineServiceFacade, stockServiceFacade);
     }
 
     @Test
     public void createCountry() {
-        WineServiceFacade wineServiceFacade = createMock(WineServiceFacade.class);
-        StockServiceFacade stockServiceFacade = createMock(StockServiceFacade.class);
-
         Map<Country, Integer> map = new HashMap<Country, Integer>();
         Country country = new Country();
         country.setName("Toto");
         map.put(country, 10);
-        expect(wineServiceFacade.getCountriesWithCounts()).andReturn(map).times(2);
+        given(wineServiceFacade.getCountriesWithCounts()).willReturn(map);
 
-        replay(wineServiceFacade, stockServiceFacade);
         getApplicationContext().putBean("wineServiceFacade", wineServiceFacade);
         getApplicationContext().putBean("stockServiceFacade", stockServiceFacade);
 
@@ -101,23 +104,16 @@ public class PackageArrivalPageTest extends AbstractPageTest {
         bottleFormTester.setValue("newObject:quantity", "2");
         bottleFormTester.submit();
         getWicketTester().assertRenderedPage(PackageArrivalPage.class);
-        verify(wineServiceFacade, stockServiceFacade);
     }
 
     @Test
     public void arrival() {
-        WineServiceFacade wineServiceFacade = createMock(WineServiceFacade.class);
-        StockServiceFacade stockServiceFacade = createMock(StockServiceFacade.class);
-
         Map<Country, Integer> map = new HashMap<Country, Integer>();
         Country country = new Country();
         country.setName("Toto");
         map.put(country, 10);
-        expect(wineServiceFacade.getCountriesWithCounts()).andReturn(map).times(2);
-        stockServiceFacade.arrival((Arrival) anyObject());
-        expectLastCall();
+        given(wineServiceFacade.getCountriesWithCounts()).willReturn(map);
 
-        replay(wineServiceFacade, stockServiceFacade);
         getApplicationContext().putBean("wineServiceFacade", wineServiceFacade);
         getApplicationContext().putBean("stockServiceFacade", stockServiceFacade);
 
@@ -133,6 +129,7 @@ public class PackageArrivalPageTest extends AbstractPageTest {
         getWicketTester().assertRenderedPage(PackageArrivalPage.class);
 
         getWicketTester().newFormTester("form").submit();
-        verify(wineServiceFacade, stockServiceFacade);
+
+        doNothing().when(stockServiceFacade).arrival((Arrival) anyObject());
     }
 }

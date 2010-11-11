@@ -8,11 +8,69 @@
   <bean id="stockServiceFacade"
     class="fr.peralta.mycellar.interfaces.facades.stock.StockServiceFacadeImpl">
     <property name="stockService" ref="stockService" />
+    <property name="mapperServiceFacade" ref="mapperServiceFacade" />
   </bean>
 
   <bean id="wineServiceFacade"
     class="fr.peralta.mycellar.interfaces.facades.wine.WineServiceFacadeImpl">
     <property name="countryService" ref="countryService" />
+    <property name="mapperServiceFacade" ref="mapperServiceFacade" />
+  </bean>
+
+  <bean id="mapperServiceFacade"
+    class="fr.peralta.mycellar.interfaces.facades.shared.MapperServiceFacade" />
+
+  <!-- Image aggregate -->
+  <bean id="imageMapper"
+    class="fr.peralta.mycellar.interfaces.facades.image.mappers.ImageMapper"
+    init-method="initialize">
+    <property name="mapperServiceFacade" ref="mapperServiceFacade" />
+  </bean>
+  <bean id="imageDtoMapper"
+    class="fr.peralta.mycellar.interfaces.facades.image.mappers.ImageDtoMapper"
+    init-method="initialize">
+    <property name="mapperServiceFacade" ref="mapperServiceFacade" />
+  </bean>
+
+  <!-- Position aggregate -->
+  <bean id="mapMapper"
+    class="fr.peralta.mycellar.interfaces.facades.position.mappers.MapMapper"
+    init-method="initialize">
+    <property name="mapperServiceFacade" ref="mapperServiceFacade" />
+  </bean>
+  <bean id="mapDtoMapper"
+    class="fr.peralta.mycellar.interfaces.facades.position.mappers.MapDtoMapper"
+    init-method="initialize">
+    <property name="mapperServiceFacade" ref="mapperServiceFacade" />
+  </bean>
+  <bean id="positionMapper"
+    class="fr.peralta.mycellar.interfaces.facades.position.mappers.PositionMapper"
+    init-method="initialize">
+    <property name="mapperServiceFacade" ref="mapperServiceFacade" />
+  </bean>
+  <bean id="positionDtoMapper"
+    class="fr.peralta.mycellar.interfaces.facades.position.mappers.PositionDtoMapper"
+    init-method="initialize">
+    <property name="mapperServiceFacade" ref="mapperServiceFacade" />
+  </bean>
+
+  <!-- Stock aggregate -->
+  <bean id="bottleMapper"
+    class="fr.peralta.mycellar.interfaces.facades.stock.mappers.BottleMapper"
+    init-method="initialize">
+    <property name="mapperServiceFacade" ref="mapperServiceFacade" />
+  </bean>
+
+  <!-- Wine aggregate -->
+  <bean id="countryMapper"
+    class="fr.peralta.mycellar.interfaces.facades.wine.mappers.CountryMapper"
+    init-method="initialize">
+    <property name="mapperServiceFacade" ref="mapperServiceFacade" />
+  </bean>
+  <bean id="countryDtoMapper"
+    class="fr.peralta.mycellar.interfaces.facades.wine.mappers.CountryDtoMapper"
+    init-method="initialize">
+    <property name="mapperServiceFacade" ref="mapperServiceFacade" />
   </bean>
 
 </beans>

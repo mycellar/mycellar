@@ -1,0 +1,11 @@
+<matchers>
+
+  <!-- Hamcrest library -->
+  <factory class="org.hamcrest.core.Is" />
+  <factory class="org.hamcrest.core.IsEqual" />
+
+  <!-- Custom extension -->
+  <factory class="fr.peralta.mycellar.interfaces.facades.position.MapMatchers"/>
+  <factory class="fr.peralta.mycellar.interfaces.facades.wine.CountryMatchers"/>
+
+</matchers>

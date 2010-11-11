@@ -97,11 +97,14 @@ public class MapperServiceFacade {
             toMap = map.get(fromClass);
         } else {
             toMap = new HashMap<Class<?>, IMapper<?, ?>>();
+            map.put(fromClass, toMap);
         }
         if (toMap.containsKey(toClass)) {
-            logger.warn("Mapper already registered for " + fromClass.getSimpleName() + " to "
-                    + toClass.getSimpleName() + ".");
+            logger.warn("Mapper already registered for " + fromClass.getName() + " to "
+                    + toClass.getName() + ".");
         } else {
+            logger.trace("Register mapper for " + fromClass.getName() + " to " + toClass.getName()
+                    + ".");
             toMap.put(toClass, mapper);
         }
     }
@@ -109,16 +112,16 @@ public class MapperServiceFacade {
     @SuppressWarnings("unchecked")
     private <FROM, TO> IMapper<FROM, TO> getMapper(Class<FROM> fromClass, Class<TO> toClass) {
         if (map.containsKey(fromClass)) {
-            logger.trace("Mappers found for from class " + fromClass.getSimpleName() + ".");
+            logger.trace("Mappers found for from class " + fromClass.getName() + ".");
             Map<Class<?>, IMapper<?, ?>> toMap = map.get(fromClass);
             if (toMap.containsKey(toClass)) {
-                logger.trace("Mapper found for to class " + toClass.getSimpleName() + ".");
+                logger.trace("Mapper found for to class " + toClass.getName() + ".");
                 IMapper<FROM, TO> mapper = (IMapper<FROM, TO>) toMap.get(toClass);
                 return mapper;
             }
         }
-        throw new IllegalStateException("Cannot find mapper for " + fromClass.getSimpleName()
-                + " to " + toClass.getSimpleName());
+        throw new IllegalStateException("Cannot find mapper for " + fromClass.getName() + " to "
+                + toClass.getName());
     }
 
 }

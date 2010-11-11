@@ -40,5 +40,13 @@
     <module>mycellar-interface-client-web</module>
     <module>mycellar-interface-web</module>
   </modules>
+  
+  <dependencies>
+    <dependency>
+      <groupId>${project.groupId}</groupId>
+      <artifactId>mycellar-test</artifactId>
+      <scope>test</scope>
+    </dependency>
+  </dependencies>
 
 </project>

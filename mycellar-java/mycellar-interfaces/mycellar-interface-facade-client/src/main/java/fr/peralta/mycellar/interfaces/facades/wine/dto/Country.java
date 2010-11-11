@@ -29,7 +29,7 @@ public class Country implements Serializable {
 
     private static final long serialVersionUID = 201011071626L;
 
-    private int id;
+    private Integer id;
 
     private String name;
 
@@ -55,7 +55,7 @@ public class Country implements Serializable {
     /**
      * @return the id
      */
-    public int getId() {
+    public Integer getId() {
         return id;
     }
 
@@ -63,7 +63,7 @@ public class Country implements Serializable {
      * @param id
      *            the id to set
      */
-    public void setId(int id) {
+    public void setId(Integer id) {
         this.id = id;
     }
 

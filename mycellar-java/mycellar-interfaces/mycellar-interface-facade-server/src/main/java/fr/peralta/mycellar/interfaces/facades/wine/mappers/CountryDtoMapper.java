@@ -19,33 +19,39 @@
 package fr.peralta.mycellar.interfaces.facades.wine.mappers;
 
 import fr.peralta.mycellar.interfaces.facades.position.dto.Map;
-import fr.peralta.mycellar.interfaces.facades.shared.MapperServiceFacade;
-import fr.peralta.mycellar.interfaces.facades.shared.mappers.IMapper;
+import fr.peralta.mycellar.interfaces.facades.shared.mappers.AbstractMapper;
 import fr.peralta.mycellar.interfaces.facades.wine.dto.Country;
 
 /**
  * @author speralta
  */
-public class CountryDtoMapper implements IMapper<fr.peralta.mycellar.domain.wine.Country, Country> {
-
-    private MapperServiceFacade mapperServiceFacade;
+public class CountryDtoMapper extends
+        AbstractMapper<fr.peralta.mycellar.domain.wine.Country, Country> {
 
     @Override
     public Country map(fr.peralta.mycellar.domain.wine.Country country) {
         Country dto = new fr.peralta.mycellar.interfaces.facades.wine.dto.Country();
         dto.setDescription(country.getDescription());
-        dto.setMap(mapperServiceFacade.map(country.getMap(), Map.class));
+        dto.setMap(getMapperServiceFacade().map(country.getMap(), Map.class));
         dto.setName(country.getName());
         dto.setId(country.getId());
         return dto;
     }
 
     /**
-     * @param mapperServiceFacade
-     *            the mapperServiceFacade to set
+     * {@inheritDoc}
      */
-    public void setMapperServiceFacade(MapperServiceFacade mapperServiceFacade) {
-        this.mapperServiceFacade = mapperServiceFacade;
+    @Override
+    protected Class<fr.peralta.mycellar.domain.wine.Country> getFromClass() {
+        return fr.peralta.mycellar.domain.wine.Country.class;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    protected Class<Country> getToClass() {
+        return Country.class;
     }
 
 }

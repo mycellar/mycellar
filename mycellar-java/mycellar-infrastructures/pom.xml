@@ -37,5 +37,13 @@
     <module>mycellar-infrastructure-mock</module>
     <module>mycellar-infrastructure-persistence</module>
   </modules>
+  
+  <dependencies>
+    <dependency>
+      <groupId>${project.groupId}</groupId>
+      <artifactId>mycellar-test</artifactId>
+      <scope>test</scope>
+    </dependency>
+  </dependencies>
 
 </project>

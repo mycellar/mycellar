@@ -21,32 +21,37 @@ package fr.peralta.mycellar.interfaces.facades.position.mappers;
 import fr.peralta.mycellar.domain.image.Image;
 import fr.peralta.mycellar.domain.position.Map;
 import fr.peralta.mycellar.domain.position.Position;
-import fr.peralta.mycellar.interfaces.facades.shared.MapperServiceFacade;
-import fr.peralta.mycellar.interfaces.facades.shared.mappers.IMapper;
+import fr.peralta.mycellar.interfaces.facades.shared.mappers.AbstractMapper;
 
 /**
  * @author speralta
  */
-public class MapMapper implements
-        IMapper<fr.peralta.mycellar.interfaces.facades.position.dto.Map, Map> {
-
-    private MapperServiceFacade mapperServiceFacade;
+public class MapMapper extends
+        AbstractMapper<fr.peralta.mycellar.interfaces.facades.position.dto.Map, Map> {
 
     /**
      * {@inheritDoc}
      */
     @Override
     public Map map(fr.peralta.mycellar.interfaces.facades.position.dto.Map from) {
-        return new Map(mapperServiceFacade.map(from.getPosition(), Position.class),
-                mapperServiceFacade.map(from.getImage(), Image.class));
+        return new Map(getMapperServiceFacade().map(from.getPosition(), Position.class),
+                getMapperServiceFacade().map(from.getImage(), Image.class));
     }
 
     /**
-     * @param mapperServiceFacade
-     *            the mapperServiceFacade to set
+     * {@inheritDoc}
      */
-    public void setMapperServiceFacade(MapperServiceFacade mapperServiceFacade) {
-        this.mapperServiceFacade = mapperServiceFacade;
+    @Override
+    protected Class<fr.peralta.mycellar.interfaces.facades.position.dto.Map> getFromClass() {
+        return fr.peralta.mycellar.interfaces.facades.position.dto.Map.class;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    protected Class<Map> getToClass() {
+        return Map.class;
     }
 
 }

@@ -5,5 +5,5 @@
 
   <import resource="context-infrastructure.xml" />
   <import resource="context-facades.xml" />
-  
+
 </beans>

@@ -128,7 +128,6 @@ public class Image extends IdentifiedEntity<Image> {
     @Override
     protected boolean dataEquals(Image other) {
         boolean result;
-
         if (getContent() == null || other.getContent() == null) {
             result = ObjectUtils.equals(getName(), other.getName())
                     && ObjectUtils.equals(getContentType(), other.getContentType());

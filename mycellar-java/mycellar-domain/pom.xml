@@ -58,6 +58,11 @@
       <groupId>joda-time</groupId>
       <artifactId>joda-time-hibernate</artifactId>
     </dependency>
+    <dependency>
+      <groupId>${project.groupId}</groupId>
+      <artifactId>mycellar-test</artifactId>
+      <scope>test</scope>
+    </dependency>
   </dependencies>
-
+  
 </project>

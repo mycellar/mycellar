@@ -58,6 +58,14 @@ public class WineServiceFacadeImpl implements WineServiceFacade {
     }
 
     /**
+     * @param mapperServiceFacade
+     *            the mapperServiceFacade to set
+     */
+    public void setMapperServiceFacade(MapperServiceFacade mapperServiceFacade) {
+        this.mapperServiceFacade = mapperServiceFacade;
+    }
+
+    /**
      * @param countryService
      *            the countryService to set
      */

@@ -19,13 +19,13 @@
 package fr.peralta.mycellar.interfaces.facades.position.mappers;
 
 import fr.peralta.mycellar.interfaces.facades.position.dto.Position;
-import fr.peralta.mycellar.interfaces.facades.shared.mappers.IMapper;
+import fr.peralta.mycellar.interfaces.facades.shared.mappers.AbstractMapper;
 
 /**
  * @author speralta
  */
-public class PositionDtoMapper implements
-        IMapper<fr.peralta.mycellar.domain.position.Position, Position> {
+public class PositionDtoMapper extends
+        AbstractMapper<fr.peralta.mycellar.domain.position.Position, Position> {
 
     /**
      * {@inheritDoc}
@@ -36,6 +36,22 @@ public class PositionDtoMapper implements
         position.setLatitude(from.getLatitude());
         position.setLongitude(from.getLongitude());
         return position;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    protected Class<fr.peralta.mycellar.domain.position.Position> getFromClass() {
+        return fr.peralta.mycellar.domain.position.Position.class;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    protected Class<Position> getToClass() {
+        return Position.class;
     }
 
 }
