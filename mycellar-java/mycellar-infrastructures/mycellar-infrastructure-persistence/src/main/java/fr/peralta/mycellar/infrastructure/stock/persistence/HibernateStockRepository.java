@@ -18,6 +18,9 @@
  */
 package fr.peralta.mycellar.infrastructure.stock.persistence;
 
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
+
 import fr.peralta.mycellar.domain.stock.Bottle;
 import fr.peralta.mycellar.domain.stock.Input;
 import fr.peralta.mycellar.domain.stock.StockRepository;
@@ -27,13 +30,15 @@ import fr.peralta.mycellar.domain.stock.StockRepository;
  */
 public class HibernateStockRepository implements StockRepository {
 
+    @PersistenceContext
+    private EntityManager entityManager;
+
     /**
      * {@inheritDoc}
      */
     @Override
     public void stockInput(Input input) {
-        // TODO Auto-generated method stub
-
+        entityManager.persist(input);
     }
 
     /**
@@ -41,8 +46,7 @@ public class HibernateStockRepository implements StockRepository {
      */
     @Override
     public Bottle findBottle(int id) {
-        // TODO Auto-generated method stub
-        return null;
+        return entityManager.find(Bottle.class, id);
     }
 
 }

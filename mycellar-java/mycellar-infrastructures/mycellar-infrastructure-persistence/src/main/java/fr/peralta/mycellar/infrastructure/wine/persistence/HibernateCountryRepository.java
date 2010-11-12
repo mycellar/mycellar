@@ -21,6 +21,9 @@ package fr.peralta.mycellar.infrastructure.wine.persistence;
 import java.util.List;
 import java.util.Map;
 
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
+
 import fr.peralta.mycellar.domain.wine.Country;
 import fr.peralta.mycellar.domain.wine.CountryRepository;
 
@@ -29,13 +32,16 @@ import fr.peralta.mycellar.domain.wine.CountryRepository;
  */
 public class HibernateCountryRepository implements CountryRepository {
 
+    @PersistenceContext
+    private EntityManager entityManager;
+
     /**
      * {@inheritDoc}
      */
     @Override
     public List<Country> getAll() {
-        // TODO Auto-generated method stub
-        return null;
+        return entityManager.createQuery(
+                entityManager.getCriteriaBuilder().createQuery(Country.class)).getResultList();
     }
 
     /**

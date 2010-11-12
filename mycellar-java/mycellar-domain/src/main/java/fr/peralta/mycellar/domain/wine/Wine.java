@@ -24,6 +24,7 @@ import java.util.Map;
 
 import javax.persistence.AttributeOverride;
 import javax.persistence.Column;
+import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
@@ -31,6 +32,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.MapKeyJoinColumn;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 import javax.validation.Valid;
@@ -50,7 +52,7 @@ import fr.peralta.mycellar.domain.shared.ValidationPattern;
 @SequenceGenerator(name = "WINE_ID_GENERATOR", allocationSize = 1)
 public class Wine extends NamedEntity<Wine> {
 
-    private static final long serialVersionUID = 201011071858L;
+    private static final long serialVersionUID = 201011121600L;
 
     @Column(name = "DESCRIPTION")
     private String description;
@@ -83,10 +85,12 @@ public class Wine extends NamedEntity<Wine> {
     @Column(name = "PHOTO_URL")
     private String photoUrl;
 
+    @ElementCollection
+    @MapKeyJoinColumn(name = "VARIETAL_ID", table = "WINE_VARIETAL")
     private final Map<Varietal, Integer> composition = new HashMap<Varietal, Integer>();
 
     @Id
-    @GeneratedValue(generator = "PRODUCER_ID_GENERATOR")
+    @GeneratedValue(generator = "WINE_ID_GENERATOR")
     @Column(name = "ID", nullable = false, unique = true)
     private Integer id;
 
