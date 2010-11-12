@@ -36,6 +36,7 @@ public class ImageDtoMapper extends AbstractMapper<fr.peralta.mycellar.domain.im
         image.setContentType(from.getContentType());
         image.setHeight(from.getHeight());
         image.setId(from.getId());
+        image.setVersion(from.getVersion());
         image.setName(from.getName());
         image.setWidth(from.getWidth());
         return image;

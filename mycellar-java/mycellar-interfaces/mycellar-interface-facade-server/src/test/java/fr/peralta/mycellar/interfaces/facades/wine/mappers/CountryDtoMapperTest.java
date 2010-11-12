@@ -19,86 +19,82 @@
 package fr.peralta.mycellar.interfaces.facades.wine.mappers;
 
 import static fr.peralta.mycellar.interfaces.facades.FacadeMatchers.hasSameProperties;
-import static org.hamcrest.MatcherAssert.assertThat;
 import static org.mockito.BDDMockito.given;
-import static org.mockito.Mockito.verify;
 
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.mockito.Mock;
-import org.mockito.runners.MockitoJUnitRunner;
+import java.util.List;
 
-import fr.peralta.mycellar.domain.image.Image;
-import fr.peralta.mycellar.domain.position.Map;
-import fr.peralta.mycellar.domain.position.Position;
-import fr.peralta.mycellar.domain.wine.Country;
-import fr.peralta.mycellar.interfaces.facades.shared.MapperServiceFacade;
+import org.hamcrest.Matcher;
+
+import fr.peralta.mycellar.interfaces.facades.position.Map;
+import fr.peralta.mycellar.interfaces.facades.shared.mappers.AbstractMapperTest;
+import fr.peralta.mycellar.interfaces.facades.wine.Country;
+import fr.peralta.mycellar.test.TestValue;
 
 /**
  * @author speralta
  */
-@RunWith(MockitoJUnitRunner.class)
-public class CountryDtoMapperTest {
-
-    private CountryDtoMapper countryDtoMapper;
-
-    @Mock
-    private MapperServiceFacade mapperServiceFacade;
+public class CountryDtoMapperTest extends
+        AbstractMapperTest<fr.peralta.mycellar.domain.wine.Country, Country, CountryDtoMapper> {
 
     /**
-     * @throws java.lang.Exception
+     * {@inheritDoc}
      */
-    @Before
-    public void setUp() throws Exception {
-        countryDtoMapper = new CountryDtoMapper();
-        countryDtoMapper.setMapperServiceFacade(mapperServiceFacade);
+    @Override
+    protected Matcher<? super Country> matches(Country expected) {
+        return hasSameProperties(expected);
     }
 
     /**
-     * Test method for
-     * {@link fr.peralta.mycellar.interfaces.facades.wine.mappers.CountryDtoMapper#map(fr.peralta.mycellar.domain.wine.Country)}
-     * .
+     * {@inheritDoc}
      */
-    @Test
-    public void testMap() {
-        Country input = new Country("name", new Map(new Position(1f, 1f), new Image("imageName",
-                "jpg", 10, 10, new byte[] { 2, 3, 4 })), "description");
+    @Override
+    protected Class<fr.peralta.mycellar.domain.wine.Country> getFromClass() {
+        return fr.peralta.mycellar.domain.wine.Country.class;
+    }
 
-        fr.peralta.mycellar.interfaces.facades.wine.Country expected = new fr.peralta.mycellar.interfaces.facades.wine.Country();
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    protected Class<Country> getToClass() {
+        return Country.class;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    protected CountryDtoMapper createObjectToTest() {
+        return new CountryDtoMapper();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    protected void fillTestValues(
+            List<TestValue<fr.peralta.mycellar.domain.wine.Country, Country>> testValues) {
+        fr.peralta.mycellar.domain.wine.Country input = new fr.peralta.mycellar.domain.wine.Country(
+                "name", new fr.peralta.mycellar.domain.position.Map(null, null), "description");
+
+        Country expected = new Country();
         expected.setName("name");
         expected.setDescription("description");
-        fr.peralta.mycellar.interfaces.facades.position.Map expectedMap = new fr.peralta.mycellar.interfaces.facades.position.Map();
-        fr.peralta.mycellar.interfaces.facades.image.Image expectedImage = new fr.peralta.mycellar.interfaces.facades.image.Image();
-        expectedImage.setContent(new byte[] { 2, 3, 4 });
-        expectedImage.setContentType("jpg");
-        expectedImage.setName("imageName");
-        expectedMap.setImage(expectedImage);
-        fr.peralta.mycellar.interfaces.facades.position.Position expectedPosition = new fr.peralta.mycellar.interfaces.facades.position.Position();
-        expectedPosition.setLatitude(1f);
-        expectedPosition.setLongitude(1f);
-        expectedMap.setPosition(expectedPosition);
-        expected.setMap(expectedMap);
+        expected.setMap(new Map());
 
-        given(
-                mapperServiceFacade.map(input.getMap(),
-                        fr.peralta.mycellar.interfaces.facades.position.Map.class)).willReturn(
-                expected.getMap());
-
-        fr.peralta.mycellar.interfaces.facades.wine.Country result = countryDtoMapper.map(input);
-
-        assertThat(result, hasSameProperties(expected));
+        testValues.add(new TestValue<fr.peralta.mycellar.domain.wine.Country, Country>(input,
+                expected));
     }
 
     /**
-     * Test method for
-     * {@link fr.peralta.mycellar.interfaces.facades.shared.mappers.AbstractMapper#initialize()}
-     * .
+     * {@inheritDoc}
      */
-    @Test
-    public void testInitialize() {
-        countryDtoMapper.initialize();
-        verify(mapperServiceFacade).registerMapper(countryDtoMapper, Country.class,
-                fr.peralta.mycellar.interfaces.facades.wine.Country.class);
+    @Override
+    protected void mock(fr.peralta.mycellar.domain.wine.Country input, Country expected) {
+        given(
+                getMapperServiceFacade().map(input.getMap(),
+                        fr.peralta.mycellar.interfaces.facades.position.Map.class)).willReturn(
+                expected.getMap());
     }
+
 }

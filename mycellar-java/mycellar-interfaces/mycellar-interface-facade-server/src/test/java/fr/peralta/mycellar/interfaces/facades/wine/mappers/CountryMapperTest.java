@@ -19,69 +19,79 @@
 package fr.peralta.mycellar.interfaces.facades.wine.mappers;
 
 import static fr.peralta.mycellar.domain.DomainMatchers.hasSameProperties;
-import static org.hamcrest.MatcherAssert.assertThat;
 import static org.mockito.BDDMockito.given;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.verify;
 
-import org.junit.Before;
-import org.junit.Test;
+import java.util.List;
 
-import fr.peralta.mycellar.domain.image.Image;
+import org.hamcrest.Matcher;
+
 import fr.peralta.mycellar.domain.position.Map;
-import fr.peralta.mycellar.domain.position.Position;
 import fr.peralta.mycellar.domain.wine.Country;
-import fr.peralta.mycellar.interfaces.facades.shared.MapperServiceFacade;
+import fr.peralta.mycellar.interfaces.facades.shared.mappers.AbstractMapperTest;
+import fr.peralta.mycellar.test.TestValue;
 
 /**
  * @author speralta
  */
-public class CountryMapperTest {
-
-    private CountryMapper countryMapper;
-
-    private MapperServiceFacade mapperServiceFacade;
+public class CountryMapperTest
+        extends
+        AbstractMapperTest<fr.peralta.mycellar.interfaces.facades.wine.Country, Country, CountryMapper> {
 
     /**
-     * @throws java.lang.Exception
+     * {@inheritDoc}
      */
-    @Before
-    public void setUp() throws Exception {
-        countryMapper = new CountryMapper();
-        mapperServiceFacade = mock(MapperServiceFacade.class);
-        countryMapper.setMapperServiceFacade(mapperServiceFacade);
+    @Override
+    protected Matcher<? super Country> matches(Country expected) {
+        return hasSameProperties(expected);
     }
 
     /**
-     * Test method for
-     * {@link fr.peralta.mycellar.interfaces.facades.wine.mappers.CountryMapper#map(fr.peralta.mycellar.interfaces.facades.wine.Country)}
-     * .
+     * {@inheritDoc}
      */
-    @Test
-    public void testMap() {
-        Country expected = new Country("name", new Map(new Position(1f, 1f), new Image("imageName",
-                "jpg", 10, 10, new byte[] { 2, 3, 4 })), "description");
+    @Override
+    protected Class<fr.peralta.mycellar.interfaces.facades.wine.Country> getFromClass() {
+        return fr.peralta.mycellar.interfaces.facades.wine.Country.class;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    protected Class<Country> getToClass() {
+        return Country.class;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    protected CountryMapper createObjectToTest() {
+        return new CountryMapper();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    protected void fillTestValues(
+            List<TestValue<fr.peralta.mycellar.interfaces.facades.wine.Country, Country>> testValues) {
+        Country expected = new Country("name", new Map(null, null), "description");
         fr.peralta.mycellar.interfaces.facades.wine.Country input = new fr.peralta.mycellar.interfaces.facades.wine.Country();
         input.setName("name");
         input.setDescription("description");
         input.setMap(new fr.peralta.mycellar.interfaces.facades.position.Map());
 
-        given(mapperServiceFacade.map(input.getMap(), Map.class)).willReturn(expected.getMap());
-
-        Country result = countryMapper.map(input);
-
-        assertThat(result, hasSameProperties(expected));
+        testValues.add(new TestValue<fr.peralta.mycellar.interfaces.facades.wine.Country, Country>(
+                input, expected));
     }
 
     /**
-     * Test method for
-     * {@link fr.peralta.mycellar.interfaces.facades.shared.mappers.AbstractMapper#initialize()}
-     * .
+     * {@inheritDoc}
      */
-    @Test
-    public void testInitialize() {
-        countryMapper.initialize();
-        verify(mapperServiceFacade).registerMapper(countryMapper,
-                fr.peralta.mycellar.interfaces.facades.wine.Country.class, Country.class);
+    @Override
+    protected void mock(fr.peralta.mycellar.interfaces.facades.wine.Country input, Country expected) {
+        given(getMapperServiceFacade().map(input.getMap(), Map.class))
+                .willReturn(expected.getMap());
     }
+
 }

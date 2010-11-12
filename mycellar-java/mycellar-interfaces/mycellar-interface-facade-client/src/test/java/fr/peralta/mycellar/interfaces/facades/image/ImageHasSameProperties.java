@@ -18,7 +18,8 @@
  */
 package fr.peralta.mycellar.interfaces.facades.image;
 
-import static org.hamcrest.CoreMatchers.*;
+import static org.hamcrest.CoreMatchers.equalTo;
+import static org.hamcrest.CoreMatchers.is;
 import fr.peralta.mycellar.test.matchers.PropertiesMatcher;
 
 /**
@@ -31,6 +32,7 @@ public class ImageHasSameProperties extends PropertiesMatcher<Image> {
         addProperty("contentType", is(equalTo(image.getContentType())));
         addProperty("height", is(equalTo(image.getHeight())));
         addProperty("id", is(equalTo(image.getId())));
+        addProperty("version", is(equalTo(image.getVersion())));
         addProperty("name", is(equalTo(image.getName())));
         addProperty("width", is(equalTo(image.getWidth())));
     }

@@ -22,11 +22,10 @@ import java.io.Serializable;
 
 /**
  * @author bperalta
- * 
  */
 public class Image implements Serializable {
 
-    private static final long serialVersionUID = 201011071705L;
+    private static final long serialVersionUID = 201011110900L;
 
     private String name;
     private String contentType;
@@ -34,6 +33,22 @@ public class Image implements Serializable {
     private int width;
     private byte[] content;
     private Integer id;
+    private int version;
+
+    /**
+     * @return the version
+     */
+    public int getVersion() {
+        return version;
+    }
+
+    /**
+     * @param version
+     *            the version to set
+     */
+    public void setVersion(int version) {
+        this.version = version;
+    }
 
     /**
      * @return the name
