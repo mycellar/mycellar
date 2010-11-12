@@ -1,0 +1,100 @@
+/* Makeshift CSS Reset */
+* {
+  margin: 0;
+  padding: 0;
+}
+
+/* Tell the browser to render HTML 5 elements as block */
+header,footer,aside,nav,article {
+  display: block;
+}
+
+body {
+  margin: 0 auto;
+  font-family: Verdana, Arial, sans-serif;
+  font-size: 12px;
+  background: #ffdc95;
+  padding: 10px;
+}
+
+/** NAV **/
+nav {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 100%;
+  background: #3c0017;
+  color: #ed5f4a;
+}
+
+nav ul {
+  margin: 0 auto;
+  padding: 0 5px;
+  list-style: none;
+}
+
+nav ul li {
+  float: left;
+}
+
+nav ul li a {
+  display: block;
+  margin-right: 20px;
+  width: 140px;
+  line-height: 30px;
+  text-align: center;
+  text-decoration: none;
+  color: #ed5f4a;
+}
+
+nav ul li a:hover {
+  color: #ffdc95;
+  background: #c42d30;
+}
+
+nav ul li.selected a {
+  color: #ffdc95;
+  background: #c42d30;
+}
+
+
+/** HEADER **/
+body>header {
+  margin-top: 30px;
+}
+
+/** MAIN **/
+body>section>div {
+  background: #ffffff;
+  margin: 0 auto;
+  padding: 10px;
+  border-style: solid;
+  border-width: 2px;
+  border-color: #ffb36f;
+  border-radius: 5px;
+  -moz-border-radius: 5px;
+}
+
+/** FOOTER **/
+body>footer {
+  margin-top: 20px;
+  padding: 10px 0;
+  position: absolute;
+  left: 0;
+  width: 100%;
+  background: #3c0017;
+  color: #ed5f4a; 
+}
+
+body>footer a {
+  color: #ed5f4a;
+}
+
+body>footer>div {
+  margin: 0 auto;
+  width: 90%;
+}
+
+body>footer>div>p {
+  text-align: center;
+}

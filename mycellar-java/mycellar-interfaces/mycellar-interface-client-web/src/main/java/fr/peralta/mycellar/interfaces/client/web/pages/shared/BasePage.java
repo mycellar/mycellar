@@ -16,24 +16,31 @@
  * You should have received a copy of the GNU General Public License
  * along with MyCellar. If not, see <http://www.gnu.org/licenses/>.
  */
-package fr.peralta.mycellar.interfaces.client.web.pages;
+package fr.peralta.mycellar.interfaces.client.web.pages.shared;
 
-import org.apache.wicket.markup.html.link.BookmarkablePageLink;
+import org.apache.wicket.markup.html.IHeaderResponse;
+import org.apache.wicket.markup.html.WebPage;
 import org.apache.wicket.request.mapper.parameter.PageParameters;
-
-import fr.peralta.mycellar.interfaces.client.web.pages.shared.BasePage;
+import org.apache.wicket.request.resource.PackageResourceReference;
 
 /**
  * @author speralta
  */
-public class HomePage extends BasePage {
+public abstract class BasePage extends WebPage {
 
     /**
      * @param parameters
      */
-    public HomePage(PageParameters parameters) {
+    public BasePage(PageParameters parameters) {
         super(parameters);
-        add(new BookmarkablePageLink<Void>("packageArrival", PackageArrivalPage.class));
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void renderHead(IHeaderResponse response) {
+        response.renderCSSReference(new PackageResourceReference(BasePage.class, "master.css"));
     }
 
 }

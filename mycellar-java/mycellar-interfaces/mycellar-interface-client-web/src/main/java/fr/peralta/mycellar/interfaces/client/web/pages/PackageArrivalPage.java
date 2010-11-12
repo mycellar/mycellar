@@ -18,7 +18,6 @@
  */
 package fr.peralta.mycellar.interfaces.client.web.pages;
 
-import org.apache.wicket.markup.html.WebPage;
 import org.apache.wicket.markup.html.form.Form;
 import org.apache.wicket.markup.html.form.TextField;
 import org.apache.wicket.model.CompoundPropertyModel;
@@ -27,13 +26,14 @@ import org.apache.wicket.spring.injection.annot.SpringBean;
 import org.joda.time.LocalDate;
 
 import fr.peralta.mycellar.interfaces.client.web.components.wine.BottlesEditPanel;
+import fr.peralta.mycellar.interfaces.client.web.pages.shared.BasePage;
 import fr.peralta.mycellar.interfaces.facades.stock.Arrival;
 import fr.peralta.mycellar.interfaces.facades.stock.StockServiceFacade;
 
 /**
  * @author speralta
  */
-public class PackageArrivalPage extends WebPage {
+public class PackageArrivalPage extends BasePage {
 
     private final Arrival arrival = new Arrival();
 

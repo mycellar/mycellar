@@ -3,24 +3,23 @@
   <head>
     <title>MyCellar</title>
     <meta charset="utf-8">
-    <link rel="stylesheet" href="shared/master.css" type="text/css" media="screen" />
+    <wicket:head>
+    </wicket:head>
   </head>
   <body>
     <header>
-      <h1>Page d'accueil</h1>
+      <h1><wicket:message key="header">Header</wicket:message></h1>
     </header>
     <nav>
       <ul>
-        <li><a>Nav 1</a></li>
-        <li><a>Nav 2</a></li>
-        <li><a>Nav 3</a></li>
+        <li><a href="#">Nav 1</a></li>
+        <li><a href="#">Nav 2</a></li>
+        <li><a href="#">Nav 3</a></li>
       </ul>
     </nav>
     <section>
       <div>
-        <wicket:extend>
-          <a href="#" wicket:id="packageArrival"><wicket:message key="packageArrivalLink">Package arrival</wicket:message></a>
-        </wicket:extend>
+        <wicket:child />
       </div>
     </section>
     <footer>
@@ -30,7 +29,7 @@
           |
           <a href="http://jigsaw.w3.org/css-validator/check/referer">CSS</a>
           |
-          Copyright
+          <wicket:message key="copyright">Copyright</wicket:message>
         </p>
       </div>
     </footer>

@@ -3,30 +3,58 @@
   <head>
     <title>MyCellar</title>
     <meta charset="utf-8">
+    <link rel="stylesheet" href="shared/master.css" type="text/css" media="screen" />
   </head>
   <body>
-    <h1><wicket:message key="title">Title</wicket:message></h1>
-    <form wicket:id="form">
-      <fieldset>
-        <legend><wicket:message key="package">Fieldset legend</wicket:message></legend>
+    <header>
+      <h1>Page d'accueil</h1>
+    </header>
+    <nav>
+      <ul>
+        <li><a>Nav 1</a></li>
+        <li><a>Nav 2</a></li>
+        <li><a>Nav 3</a></li>
+      </ul>
+    </nav>
+    <section>
+      <div>
+        <wicket:extend>
+          <form wicket:id="form">
+            <fieldset>
+              <legend><wicket:message key="package">Fieldset legend</wicket:message></legend>
+              <p>
+                <label for="arrival"><wicket:message key="arrival">Arrival</wicket:message></label>
+                <input if="arrival" wicket:id="date" type="text" value="" />
+              </p>
+              <p>
+                <label for="source"><wicket:message key="source">Source</wicket:message></label>
+                <input id="source" wicket:id="source" type="text" value="" />
+              </p>
+              <p>
+                <label for="otherCharges"><wicket:message key="otherCharges">Other charges</wicket:message></label>
+                <input id="otherCharges" wicket:id="otherCharges" type="text" value="" />
+              </p>
+            </fieldset>
+            <fieldset>
+              <legend><wicket:message key="bottles">Bottles</wicket:message></legend>
+              <div wicket:id="bottles" />
+            </fieldset>
+            <input type="submit" wicket:message="value:saveArrival" />
+          </form>
+        </wicket:extend>
+      </div>
+    </section>
+    <footer>
+      <div>
         <p>
-          <label for="arrival"><wicket:message key="arrival">Arrival</wicket:message></label>
-          <input if="arrival" wicket:id="date" type="text" value="" />
+          <a href="http://validator.w3.org/check?uri=referer">HTML 5</a>
+          |
+          <a href="http://jigsaw.w3.org/css-validator/check/referer">CSS</a>
+          |
+          Copyright
         </p>
-        <p>
-          <label for="source"><wicket:message key="source">Source</wicket:message></label>
-          <input id="source" wicket:id="source" type="text" value="" />
-        </p>
-        <p>
-          <label for="otherCharges"><wicket:message key="otherCharges">Other charges</wicket:message></label>
-          <input id="otherCharges" wicket:id="otherCharges" type="text" value="" />
-        </p>
-      </fieldset>
-      <fieldset>
-        <legend><wicket:message key="bottles">Bottles</wicket:message></legend>
-        <div wicket:id="bottles" />
-      </fieldset>
-      <input type="submit" wicket:message="value:saveArrival" />
-    </form>
+      </div>
+    </footer>
   </body>
 </html>
+
