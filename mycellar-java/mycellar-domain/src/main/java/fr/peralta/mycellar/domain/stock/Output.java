@@ -34,69 +34,70 @@ import org.joda.time.LocalDate;
 import fr.peralta.mycellar.domain.shared.IdentifiedEntity;
 
 /**
- * @author speralta
+ * @author bperalta
  */
 @Entity
-@Table(name = "INPUT")
-@SequenceGenerator(name = "INPUT_ID_GENERATOR", allocationSize = 1)
-public class Input extends IdentifiedEntity<Input> {
+@Table(name = "OUTPUT")
+@SequenceGenerator(name = "OUTPUT_ID_GENERATOR", allocationSize = 1)
+public class Output extends IdentifiedEntity<Output> {
 
-    private static final long serialVersionUID = 201010311742L;
+    private static final long serialVersionUID = 201011111800L;
 
-    @Column(name = "ARRIVAL")
+    @Column(name = "OUTPUT")
     @Type(type = "org.joda.time.contrib.hibernate.PersistentLocalDate")
-    private final LocalDate arrival;
+    private LocalDate output;
 
     @ManyToOne
     @JoinColumn(name = "CELLAR", nullable = false)
-    private final Cellar cellar;
+    private Cellar cellar;
 
     @ManyToOne
     @JoinColumn(name = "WINE", nullable = false)
-    private final Bottle bottle;
+    private Bottle bottle;
 
     @Column(name = "NUMBER")
-    private final int number;
+    private int number;
 
     @Column(name = "PRICE")
-    private final float price;
+    private float price;
 
-    @Column(name = "SOURCE")
-    private final String source;
-
-    @Column(name = "CHARGES")
-    private final float charges;
+    @Column(name = "DESTINATION")
+    private String destination;
 
     @Id
-    @GeneratedValue(generator = "INPUT_ID_GENERATOR")
+    @GeneratedValue(generator = "OUTPUT_ID_GENERATOR")
     @Column(name = "ID", nullable = false, unique = true)
     private Integer id;
 
     /**
-     * @param arrival
+     * @param output
      * @param cellar
      * @param bottle
      * @param number
      * @param price
-     * @param source
-     * @param charges
+     * @param destination
      */
-    public Input(LocalDate arrival, Cellar cellar, Bottle bottle, int number, float price,
-            String source, float charges) {
-        this.arrival = arrival;
+    public Output(LocalDate output, Cellar cellar, Bottle bottle, int number, float price,
+            String destination) {
+        this.output = output;
         this.cellar = cellar;
         this.bottle = bottle;
         this.number = number;
         this.price = price;
-        this.source = source;
-        this.charges = charges;
+        this.destination = destination;
     }
 
     /**
-     * @return the arrival
+     * 
      */
-    public LocalDate getArrival() {
-        return arrival;
+    Output() {
+    }
+
+    /**
+     * @return the output
+     */
+    public LocalDate getOutput() {
+        return output;
     }
 
     /**
@@ -128,23 +129,15 @@ public class Input extends IdentifiedEntity<Input> {
     }
 
     /**
-     * @return the source
+     * @return the destination
      */
-    public String getSource() {
-        return source;
+    public String getDestination() {
+        return destination;
     }
 
     /**
-     * @return the charges
+     * @return the id
      */
-    public float getCharges() {
-        return charges;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
     public Integer getId() {
         return id;
     }
@@ -153,22 +146,18 @@ public class Input extends IdentifiedEntity<Input> {
      * {@inheritDoc}
      */
     @Override
-    protected Object[] getHashCodeData() {
-        return new Object[] { getArrival(), getCellar(), getSource() };
+    protected boolean dataEquals(Output other) {
+        return ObjectUtils.equals(getOutput(), other.getOutput())
+                && ObjectUtils.equals(getCellar(), other.getCellar())
+                && ObjectUtils.equals(getBottle(), other.getBottle())
+                && ObjectUtils.equals(getNumber(), other.getNumber());
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    protected boolean dataEquals(Input other) {
-        return ObjectUtils.equals(getArrival(), other.getArrival())
-                && ObjectUtils.equals(getCellar(), other.getCellar())
-                && ObjectUtils.equals(getCharges(), other.getCharges())
-                && ObjectUtils.equals(getNumber(), other.getNumber())
-                && ObjectUtils.equals(getPrice(), other.getPrice())
-                && ObjectUtils.equals(getSource(), other.getSource())
-                && ObjectUtils.equals(getBottle(), other.getBottle());
+    protected Object[] getHashCodeData() {
+        return new Object[] { getOutput() };
     }
-
 }
