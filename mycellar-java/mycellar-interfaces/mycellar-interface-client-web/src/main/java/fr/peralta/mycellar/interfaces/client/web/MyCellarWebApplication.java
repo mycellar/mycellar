@@ -25,6 +25,8 @@ import org.apache.wicket.spring.injection.annot.SpringComponentInjector;
 import org.springframework.context.ApplicationContext;
 
 import fr.peralta.mycellar.interfaces.client.web.pages.HomePage;
+import fr.peralta.mycellar.interfaces.client.web.pages.ListUsersPage;
+import fr.peralta.mycellar.interfaces.client.web.pages.NewUserPage;
 import fr.peralta.mycellar.interfaces.client.web.pages.PackageArrivalPage;
 
 /**
@@ -38,12 +40,12 @@ public abstract class MyCellarWebApplication extends WebApplication {
     @Override
     protected void init() {
         super.init();
-        addComponentInstantiationListener(new SpringComponentInjector(this,
-                getApplicationContext()));
-        getRootRequestMapperAsCompound().add(
-                new MountedMapper("/home", getHomePage()));
+        addComponentInstantiationListener(new SpringComponentInjector(this, getApplicationContext()));
+        getRootRequestMapperAsCompound().add(new MountedMapper("/home", getHomePage()));
         getRootRequestMapperAsCompound().add(
                 new MountedMapper("/packageArrival", PackageArrivalPage.class));
+        getRootRequestMapperAsCompound().add(new MountedMapper("/newUser", NewUserPage.class));
+        getRootRequestMapperAsCompound().add(new MountedMapper("/listUsers", ListUsersPage.class));
     }
 
     protected abstract ApplicationContext getApplicationContext();

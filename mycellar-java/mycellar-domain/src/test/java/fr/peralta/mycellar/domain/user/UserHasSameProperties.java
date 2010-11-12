@@ -16,26 +16,27 @@
  * You should have received a copy of the GNU General Public License
  * along with MyCellar. If not, see <http://www.gnu.org/licenses/>.
  */
-package fr.peralta.mycellar.interfaces.client.web.pages;
+package fr.peralta.mycellar.domain.user;
 
-import org.apache.wicket.markup.html.link.BookmarkablePageLink;
-import org.apache.wicket.request.mapper.parameter.PageParameters;
-
-import fr.peralta.mycellar.interfaces.client.web.pages.shared.BasePage;
+import static org.hamcrest.CoreMatchers.equalTo;
+import static org.hamcrest.CoreMatchers.is;
+import fr.peralta.mycellar.test.matchers.PropertiesMatcher;
 
 /**
  * @author speralta
  */
-public class HomePage extends BasePage {
+public class UserHasSameProperties extends PropertiesMatcher<User> {
 
     /**
-     * @param parameters
+     * @param user
      */
-    public HomePage(PageParameters parameters) {
-        super(parameters);
-        add(new BookmarkablePageLink<Void>("packageArrival", PackageArrivalPage.class));
-        add(new BookmarkablePageLink<Void>("newUser", NewUserPage.class));
-        add(new BookmarkablePageLink<Void>("listUsers", ListUsersPage.class));
+    public UserHasSameProperties(User user) {
+        addProperty("email", is(equalTo(user.getEmail())));
+        addProperty("firstname", is(equalTo(user.getFirstname())));
+        addProperty("id", is(equalTo(user.getId())));
+        addProperty("lastname", is(equalTo(user.getLastname())));
+        addProperty("password", is(equalTo(user.getPassword())));
+        addProperty("version", is(equalTo(user.getVersion())));
     }
 
 }

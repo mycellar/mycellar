@@ -19,9 +19,14 @@
     <section>
       <div>
         <wicket:extend>
-          <a href="#" wicket:id="packageArrival"><wicket:message key="packageArrivalLink">Package arrival</wicket:message></a>
-          <a href="#" wicket:id="newUser"><wicket:message key="newUserLink">New User</wicket:message></a>
-          <a href="#" wicket:id="listUsers"><wicket:message key="listUsersLink">List Users</wicket:message></a>
+          <ul>
+            <li wicket:id="users">
+              <span wicket:id="email">email</span><br/>
+              <span wicket:id="firstname">firstname</span><br/>
+              <span wicket:id="lastname">lastname</span><br/>
+              <span wicket:id="password">password</span>
+            </li>
+          </ul>
         </wicket:extend>
       </div>
     </section>
@@ -38,3 +43,4 @@
     </footer>
   </body>
 </html>
+

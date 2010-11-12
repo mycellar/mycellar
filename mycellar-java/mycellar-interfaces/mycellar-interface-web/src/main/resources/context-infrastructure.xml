@@ -35,6 +35,9 @@
   <bean id="stockRepository"
     class="fr.peralta.mycellar.infrastructure.stock.persistence.HibernateStockRepository" />
 
+  <bean id="userRepository"
+    class="fr.peralta.mycellar.infrastructure.user.persistence.HibernateUserRepository" />
+
   <bean id="countryRepository"
     class="fr.peralta.mycellar.infrastructure.wine.persistence.MockCountryRepository" />
 

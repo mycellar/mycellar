@@ -16,12 +16,17 @@
  * You should have received a copy of the GNU General Public License
  * along with MyCellar. If not, see <http://www.gnu.org/licenses/>.
  */
-package fr.peralta.mycellar.domain.stock;
+package fr.peralta.mycellar.domain.user;
+
+import java.util.Collections;
+import java.util.HashSet;
+import java.util.Set;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.OneToMany;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 import javax.persistence.UniqueConstraint;
@@ -29,6 +34,7 @@ import javax.persistence.UniqueConstraint;
 import org.apache.commons.lang3.ObjectUtils;
 
 import fr.peralta.mycellar.domain.shared.IdentifiedEntity;
+import fr.peralta.mycellar.domain.stock.Cellar;
 
 /**
  * @author bperalta
@@ -38,7 +44,7 @@ import fr.peralta.mycellar.domain.shared.IdentifiedEntity;
 @SequenceGenerator(name = "USER_ID_GENERATOR", allocationSize = 1)
 public class User extends IdentifiedEntity<User> {
 
-    private static final long serialVersionUID = 201011111720L;
+    private static final long serialVersionUID = 201011121629L;
 
     @Column(name = "EMAIL", nullable = false)
     private String email;
@@ -56,6 +62,9 @@ public class User extends IdentifiedEntity<User> {
     @GeneratedValue(generator = "USER_ID_GENERATOR")
     @Column(name = "ID", nullable = false, unique = true)
     private Integer id;
+
+    @OneToMany(mappedBy = "user")
+    private final Set<Cellar> cellars = new HashSet<Cellar>();
 
     /**
      * @param email
@@ -110,6 +119,13 @@ public class User extends IdentifiedEntity<User> {
      */
     public String getLastname() {
         return lastname;
+    }
+
+    /**
+     * @return the cellars
+     */
+    public Set<Cellar> getCellars() {
+        return Collections.unmodifiableSet(cellars);
     }
 
     /**

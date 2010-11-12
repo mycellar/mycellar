@@ -16,35 +16,38 @@
  * You should have received a copy of the GNU General Public License
  * along with MyCellar. If not, see <http://www.gnu.org/licenses/>.
  */
-package fr.peralta.mycellar.infrastructure.wine.persistence;
+package fr.peralta.mycellar.infrastructure.user.persistence;
 
 import java.util.List;
-import java.util.Map;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Root;
 
-import fr.peralta.mycellar.domain.wine.Country;
-import fr.peralta.mycellar.domain.wine.CountryRepository;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import fr.peralta.mycellar.domain.user.User;
+import fr.peralta.mycellar.domain.user.UserRepository;
 
 /**
  * @author speralta
  */
-public class HibernateCountryRepository implements CountryRepository {
+public class HibernateUserRepository implements UserRepository {
 
     @PersistenceContext
     private EntityManager entityManager;
+
+    private static Logger logger = LoggerFactory.getLogger(HibernateUserRepository.class);
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public List<Country> getAll() {
-        CriteriaQuery<Country> query = entityManager.getCriteriaBuilder()
-                .createQuery(Country.class);
-        Root<Country> root = query.from(Country.class);
+    public List<User> getAll() {
+        CriteriaQuery<User> query = entityManager.getCriteriaBuilder().createQuery(User.class);
+        Root<User> root = query.from(User.class);
         return entityManager.createQuery(query.select(root)).getResultList();
     }
 
@@ -52,9 +55,9 @@ public class HibernateCountryRepository implements CountryRepository {
      * {@inheritDoc}
      */
     @Override
-    public Map<Country, Integer> getAllWithCounts() {
-        // TODO Auto-generated method stub
-        return null;
+    public void newUser(User user) {
+        entityManager.persist(user);
+        logger.debug("User persisted {}", user);
     }
 
 }

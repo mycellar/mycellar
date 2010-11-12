@@ -27,6 +27,8 @@ import fr.peralta.mycellar.domain.position.Map;
 import fr.peralta.mycellar.domain.position.MapHasSameProperties;
 import fr.peralta.mycellar.domain.position.Position;
 import fr.peralta.mycellar.domain.position.PositionHasSameProperties;
+import fr.peralta.mycellar.domain.user.User;
+import fr.peralta.mycellar.domain.user.UserHasSameProperties;
 import fr.peralta.mycellar.domain.wine.Country;
 import fr.peralta.mycellar.domain.wine.CountryHasSameProperties;
 import fr.peralta.mycellar.test.matchers.MatcherHelper;
@@ -35,6 +37,11 @@ import fr.peralta.mycellar.test.matchers.MatcherHelper;
  * @author speralta
  */
 public class DomainMatchers {
+
+    @Factory
+    public static Matcher<? super User> hasSameProperties(User user) {
+        return MatcherHelper.hasSameProperties(user, UserHasSameProperties.class);
+    }
 
     @Factory
     public static Matcher<? super Map> hasSameProperties(Map map) {

@@ -3,4 +3,6 @@
 <properties>
   <entry key="header">Page d'accueil</entry>
   <entry key="packageArrivalLink">Arrivée d'un colis</entry>
+  <entry key="newUserLink">Créer un nouvel utilisateur</entry>
+  <entry key="listUsersLink">Lister tous les utilisateurs</entry>
 </properties> 

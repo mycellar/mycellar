@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="fr">
+  <head>
+    <title>MyCellar</title>
+    <meta charset="utf-8">
+    <link rel="stylesheet" href="shared/master.css" type="text/css" media="screen" />
+  </head>
+  <body>
+    <header>
+      <h1>Page d'accueil</h1>
+    </header>
+    <nav>
+      <ul>
+        <li><a>Nav 1</a></li>
+        <li><a>Nav 2</a></li>
+        <li><a>Nav 3</a></li>
+      </ul>
+    </nav>
+    <section>
+      <div>
+        <wicket:extend>
+          <form wicket:id="form">
+            <fieldset>
+              <legend><wicket:message key="details">User details</wicket:message></legend>
+              <p>
+                <label for="email"><wicket:message key="email">Email</wicket:message></label>
+                <input if="email" wicket:id="email" type="text" value="" />
+              </p>
+              <p>
+                <label for="lastname"><wicket:message key="lastname">Lastname</wicket:message></label>
+                <input id="lastname" wicket:id="lastname" type="text" value="" />
+              </p>
+              <p>
+                <label for="firstname"><wicket:message key="firstname">Firstname</wicket:message></label>
+                <input id="firstname" wicket:id="firstname" type="text" value="" />
+              </p>
+              <p>
+                <label for="password"><wicket:message key="password">Password</wicket:message></label>
+                <input id="password" wicket:id="password" type="password" value="" />
+              </p>
+            </fieldset>
+            <input type="submit" wicket:message="value:newUser" />
+          </form>
+        </wicket:extend>
+      </div>
+    </section>
+    <footer>
+      <div>
+        <p>
+          <a href="http://validator.w3.org/check?uri=referer">HTML 5</a>
+          |
+          <a href="http://jigsaw.w3.org/css-validator/check/referer">CSS</a>
+          |
+          Copyright
+        </p>
+      </div>
+    </footer>
+  </body>
+</html>
+

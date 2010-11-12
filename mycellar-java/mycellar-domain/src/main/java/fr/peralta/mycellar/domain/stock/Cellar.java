@@ -30,6 +30,7 @@ import javax.persistence.Table;
 import org.apache.commons.lang3.ObjectUtils;
 
 import fr.peralta.mycellar.domain.shared.IdentifiedEntity;
+import fr.peralta.mycellar.domain.user.User;
 
 /**
  * @author bperalta

@@ -9,6 +9,10 @@
     class="fr.peralta.mycellar.application.stock.impl.StockServiceImpl"
     p:stockRepository-ref="stockRepository" />
 
+  <bean id="userService"
+    class="fr.peralta.mycellar.application.user.impl.UserServiceImpl"
+    p:userRepository-ref="userRepository" />
+
   <bean id="countryService"
     class="fr.peralta.mycellar.application.wine.impl.CountryServiceImpl"
     p:countryRepository-ref="countryRepository" />

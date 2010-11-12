@@ -16,26 +16,17 @@
  * You should have received a copy of the GNU General Public License
  * along with MyCellar. If not, see <http://www.gnu.org/licenses/>.
  */
-package fr.peralta.mycellar.interfaces.client.web.pages;
+package fr.peralta.mycellar.interfaces.facades.user;
 
-import org.apache.wicket.markup.html.link.BookmarkablePageLink;
-import org.apache.wicket.request.mapper.parameter.PageParameters;
-
-import fr.peralta.mycellar.interfaces.client.web.pages.shared.BasePage;
+import java.util.List;
 
 /**
  * @author speralta
  */
-public class HomePage extends BasePage {
+public interface UserServiceFacade {
 
-    /**
-     * @param parameters
-     */
-    public HomePage(PageParameters parameters) {
-        super(parameters);
-        add(new BookmarkablePageLink<Void>("packageArrival", PackageArrivalPage.class));
-        add(new BookmarkablePageLink<Void>("newUser", NewUserPage.class));
-        add(new BookmarkablePageLink<Void>("listUsers", ListUsersPage.class));
-    }
+    void newUser(User user);
+
+    List<User> getAllUsers();
 
 }

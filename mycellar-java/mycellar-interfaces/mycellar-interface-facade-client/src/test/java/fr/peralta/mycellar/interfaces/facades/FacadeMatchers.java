@@ -27,6 +27,8 @@ import fr.peralta.mycellar.interfaces.facades.position.Map;
 import fr.peralta.mycellar.interfaces.facades.position.MapHasSameProperties;
 import fr.peralta.mycellar.interfaces.facades.position.Position;
 import fr.peralta.mycellar.interfaces.facades.position.PositionHasSameProperties;
+import fr.peralta.mycellar.interfaces.facades.user.User;
+import fr.peralta.mycellar.interfaces.facades.user.UserHasSameProperties;
 import fr.peralta.mycellar.interfaces.facades.wine.Country;
 import fr.peralta.mycellar.interfaces.facades.wine.CountryHasSameProperties;
 import fr.peralta.mycellar.test.matchers.MatcherHelper;
@@ -35,6 +37,11 @@ import fr.peralta.mycellar.test.matchers.MatcherHelper;
  * @author speralta
  */
 public class FacadeMatchers {
+
+    @Factory
+    public static Matcher<? super User> hasSameProperties(User user) {
+        return MatcherHelper.hasSameProperties(user, UserHasSameProperties.class);
+    }
 
     @Factory
     public static Matcher<? super Map> hasSameProperties(Map map) {
