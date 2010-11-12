@@ -20,6 +20,7 @@ package fr.peralta.mycellar.domain.position;
 
 import java.io.Serializable;
 
+import javax.persistence.Embeddable;
 import javax.persistence.Embedded;
 import javax.persistence.JoinColumn;
 import javax.persistence.OneToOne;
@@ -28,18 +29,18 @@ import fr.peralta.mycellar.domain.image.Image;
 
 /**
  * @author bperalta
- * 
  */
+@Embeddable
 public class Map implements Serializable {
 
     private static final long serialVersionUID = 201011071647L;
 
     @Embedded
-    private Position position;
+    private final Position position;
 
     @OneToOne
     @JoinColumn(name = "IMAGE", nullable = false)
-    private Image image;
+    private final Image image;
 
     /**
      * @param position
