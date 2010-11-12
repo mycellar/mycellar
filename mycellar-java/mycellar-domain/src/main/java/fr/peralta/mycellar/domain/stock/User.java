@@ -35,20 +35,20 @@ import fr.peralta.mycellar.domain.shared.IdentifiedEntity;
  */
 @Entity
 @Table(name = "USER", uniqueConstraints = @UniqueConstraint(columnNames = { "EMAIL" }))
-@SequenceGenerator(name = "EMAIL_ID_GENERATOR", allocationSize = 1)
+@SequenceGenerator(name = "USER_ID_GENERATOR", allocationSize = 1)
 public class User extends IdentifiedEntity<User> {
 
     private static final long serialVersionUID = 201011111720L;
 
     @Column(name = "EMAIL", nullable = false)
     private String email;
-    
+
     @Column(name = "PASSWORD", nullable = false)
     private String password;
-    
+
     @Column(name = "FIRSTNAME", nullable = false)
     private String firstname;
-    
+
     @Column(name = "LASTNAME", nullable = false)
     private String lastname;
 
