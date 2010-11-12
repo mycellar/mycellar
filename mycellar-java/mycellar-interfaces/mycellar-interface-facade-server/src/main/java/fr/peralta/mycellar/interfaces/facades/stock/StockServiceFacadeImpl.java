@@ -22,6 +22,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import fr.peralta.mycellar.application.stock.StockService;
+import fr.peralta.mycellar.domain.stock.Cellar;
 import fr.peralta.mycellar.domain.stock.Input;
 import fr.peralta.mycellar.interfaces.facades.shared.MapperServiceFacade;
 
@@ -41,12 +42,10 @@ public class StockServiceFacadeImpl implements StockServiceFacade {
     public void arrival(Arrival arrival) {
         List<Input> inputs = new ArrayList<Input>();
         float unitCharges = arrival.getOtherCharges() / arrival.getBottles().size();
-        for (fr.peralta.mycellar.interfaces.facades.stock.Bottle bottleDto : arrival
-                .getBottles()) {
-            // inputs.add(new Input(arrival.getDate(), mapperServiceFacade
-            // .map(bottleDto, Bottle.class), bottleDto.getQuantity(),
-            // bottleDto.getPrice(),
-            // arrival.getSource(), unitCharges));
+        for (Bottle bottleDto : arrival.getBottles()) {
+            inputs.add(new Input(arrival.getDate(), (Cellar) null, mapperServiceFacade.map(
+                    bottleDto, fr.peralta.mycellar.domain.stock.Bottle.class), bottleDto
+                    .getQuantity(), bottleDto.getPrice(), arrival.getSource(), unitCharges));
         }
         stockService.stock(inputs);
     }
