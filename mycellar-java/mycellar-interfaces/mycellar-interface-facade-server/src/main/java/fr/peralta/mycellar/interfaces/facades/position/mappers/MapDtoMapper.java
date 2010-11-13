@@ -18,6 +18,8 @@
  */
 package fr.peralta.mycellar.interfaces.facades.position.mappers;
 
+import org.springframework.stereotype.Service;
+
 import fr.peralta.mycellar.interfaces.facades.image.Image;
 import fr.peralta.mycellar.interfaces.facades.position.Map;
 import fr.peralta.mycellar.interfaces.facades.position.Position;
@@ -26,6 +28,7 @@ import fr.peralta.mycellar.interfaces.facades.shared.mappers.AbstractMapper;
 /**
  * @author speralta
  */
+@Service
 public class MapDtoMapper extends AbstractMapper<fr.peralta.mycellar.domain.position.Map, Map> {
 
     /**

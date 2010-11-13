@@ -27,6 +27,7 @@ import javax.persistence.criteria.Root;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.stereotype.Repository;
 
 import fr.peralta.mycellar.domain.user.User;
 import fr.peralta.mycellar.domain.user.UserRepository;
@@ -34,6 +35,7 @@ import fr.peralta.mycellar.domain.user.UserRepository;
 /**
  * @author speralta
  */
+@Repository
 public class HibernateUserRepository implements UserRepository {
 
     @PersistenceContext

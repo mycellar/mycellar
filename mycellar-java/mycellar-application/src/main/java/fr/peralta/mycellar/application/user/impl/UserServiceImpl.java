@@ -20,14 +20,17 @@ package fr.peralta.mycellar.application.user.impl;
 
 import java.util.List;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
 import fr.peralta.mycellar.application.user.UserService;
 import fr.peralta.mycellar.domain.user.User;
 import fr.peralta.mycellar.domain.user.UserRepository;
 
 /**
  * @author speralta
- * 
  */
+@Service
 public class UserServiceImpl implements UserService {
 
     private UserRepository userRepository;
@@ -52,6 +55,7 @@ public class UserServiceImpl implements UserService {
      * @param userRepository
      *            the userRepository to set
      */
+    @Autowired
     public void setUserRepository(UserRepository userRepository) {
         this.userRepository = userRepository;
     }

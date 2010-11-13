@@ -20,6 +20,10 @@ package fr.peralta.mycellar.application.stock.impl;
 
 import java.util.List;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.stereotype.Service;
+
 import fr.peralta.mycellar.application.stock.StockService;
 import fr.peralta.mycellar.domain.stock.Bottle;
 import fr.peralta.mycellar.domain.stock.Input;
@@ -27,8 +31,8 @@ import fr.peralta.mycellar.domain.stock.StockRepository;
 
 /**
  * @author speralta
- * 
  */
+@Service
 public class StockServiceImpl implements StockService {
 
     private StockRepository stockRepository;
@@ -55,6 +59,8 @@ public class StockServiceImpl implements StockService {
      * @param stockRepository
      *            the stockRepository to set
      */
+    @Autowired
+    @Qualifier("hibernate")
     public void setStockRepository(StockRepository stockRepository) {
         this.stockRepository = stockRepository;
     }

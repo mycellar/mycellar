@@ -31,7 +31,7 @@ public class MyCellarSpringWebApplication extends MyCellarWebApplication {
      */
     @Override
     protected ApplicationContext getApplicationContext() {
-        return new ClassPathXmlApplicationContext("context-web.xml");
+        return new ClassPathXmlApplicationContext("context-interface-web.xml");
     }
 
 }

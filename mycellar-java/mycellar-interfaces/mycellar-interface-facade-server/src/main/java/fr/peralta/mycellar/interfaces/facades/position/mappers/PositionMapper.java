@@ -18,12 +18,15 @@
  */
 package fr.peralta.mycellar.interfaces.facades.position.mappers;
 
+import org.springframework.stereotype.Service;
+
 import fr.peralta.mycellar.domain.position.Position;
 import fr.peralta.mycellar.interfaces.facades.shared.mappers.AbstractMapper;
 
 /**
  * @author speralta
  */
+@Service
 public class PositionMapper extends
         AbstractMapper<fr.peralta.mycellar.interfaces.facades.position.Position, Position> {
 

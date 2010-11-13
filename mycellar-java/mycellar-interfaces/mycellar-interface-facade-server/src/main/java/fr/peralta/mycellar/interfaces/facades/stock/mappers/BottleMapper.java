@@ -18,12 +18,15 @@
  */
 package fr.peralta.mycellar.interfaces.facades.stock.mappers;
 
+import org.springframework.stereotype.Service;
+
 import fr.peralta.mycellar.domain.stock.Bottle;
 import fr.peralta.mycellar.interfaces.facades.shared.mappers.AbstractMapper;
 
 /**
  * @author speralta
  */
+@Service
 public class BottleMapper extends
         AbstractMapper<fr.peralta.mycellar.interfaces.facades.stock.Bottle, Bottle> {
 

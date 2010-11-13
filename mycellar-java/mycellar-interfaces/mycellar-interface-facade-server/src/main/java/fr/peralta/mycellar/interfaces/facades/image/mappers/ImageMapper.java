@@ -18,12 +18,15 @@
  */
 package fr.peralta.mycellar.interfaces.facades.image.mappers;
 
+import org.springframework.stereotype.Service;
+
 import fr.peralta.mycellar.domain.image.Image;
 import fr.peralta.mycellar.interfaces.facades.shared.mappers.AbstractMapper;
 
 /**
  * @author speralta
  */
+@Service
 public class ImageMapper extends
         AbstractMapper<fr.peralta.mycellar.interfaces.facades.image.Image, Image> {
 

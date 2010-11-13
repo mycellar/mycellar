@@ -21,6 +21,9 @@ package fr.peralta.mycellar.infrastructure.stock.persistence;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 
+import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.stereotype.Repository;
+
 import fr.peralta.mycellar.domain.stock.Bottle;
 import fr.peralta.mycellar.domain.stock.Input;
 import fr.peralta.mycellar.domain.stock.StockRepository;
@@ -28,6 +31,8 @@ import fr.peralta.mycellar.domain.stock.StockRepository;
 /**
  * @author speralta
  */
+@Repository
+@Qualifier("hibernate")
 public class HibernateStockRepository implements StockRepository {
 
     @PersistenceContext

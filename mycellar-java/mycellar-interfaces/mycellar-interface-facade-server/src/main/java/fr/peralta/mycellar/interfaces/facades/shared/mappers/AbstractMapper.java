@@ -18,6 +18,9 @@
  */
 package fr.peralta.mycellar.interfaces.facades.shared.mappers;
 
+import javax.annotation.PostConstruct;
+import javax.annotation.Resource;
+
 import fr.peralta.mycellar.interfaces.facades.shared.MapperServiceFacade;
 
 /**
@@ -27,6 +30,7 @@ public abstract class AbstractMapper<FROM, TO> implements IMapper<FROM, TO> {
 
     private MapperServiceFacade mapperServiceFacade;
 
+    @PostConstruct
     public void initialize() {
         mapperServiceFacade.registerMapper(this, getFromClass(), getToClass());
     }
@@ -46,6 +50,7 @@ public abstract class AbstractMapper<FROM, TO> implements IMapper<FROM, TO> {
      * @param mapperServiceFacade
      *            the mapperServiceFacade to set
      */
+    @Resource
     public final void setMapperServiceFacade(MapperServiceFacade mapperServiceFacade) {
         this.mapperServiceFacade = mapperServiceFacade;
     }
