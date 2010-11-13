@@ -145,6 +145,7 @@
         <version>${project.version}</version>
       </dependency>
     
+      <!-- APACHE COMMONS -->
       <dependency>
         <groupId>org.apache.commons</groupId>
         <artifactId>commons-lang3</artifactId>
@@ -250,6 +251,17 @@
         <artifactId>wicket-spring</artifactId>
         <version>${wicket.version}</version>
       </dependency>
+      <dependency>
+        <groupId>org.odlabs.wiquery</groupId>
+        <artifactId>wiquery</artifactId>
+        <version>1.1</version>
+        <exclusions>
+          <exclusion>
+            <groupId>log4j</groupId>
+            <artifactId>log4j</artifactId>
+          </exclusion>
+        </exclusions>
+      </dependency>
       
       <!-- SLF4J -->
       <dependency>
@@ -260,6 +272,11 @@
       <dependency>
         <groupId>org.slf4j</groupId>
         <artifactId>jcl-over-slf4j</artifactId>
+        <version>${slf4j.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>org.slf4j</groupId>
+        <artifactId>log4j-over-slf4j</artifactId>
         <version>${slf4j.version}</version>
       </dependency>
       <dependency>
@@ -351,6 +368,11 @@
       <releases>
         <enabled>false</enabled>
       </releases>
+    </repository>
+    <repository>
+      <id>wiquery</id>
+      <name>wiquery wicket components</name>
+      <url>http://wiquery.googlecode.com/svn/repo/</url>
     </repository>
   </repositories>
 
