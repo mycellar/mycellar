@@ -45,7 +45,7 @@ public class BottlesEditPanel extends Panel {
      */
     public BottlesEditPanel(String id) {
         super(id);
-        BottlesView bottlesView = new BottlesView("bottles");
+        ArrivalBottlesView bottlesView = new ArrivalBottlesView("bottles");
         add(bottlesView);
         add(new ActionLink("addBottle", Action.ADD));
         add(createHiddenBottleForm());

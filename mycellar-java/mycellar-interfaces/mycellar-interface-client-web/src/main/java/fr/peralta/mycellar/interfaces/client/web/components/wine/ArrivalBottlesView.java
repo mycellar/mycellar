@@ -26,19 +26,21 @@ import org.apache.wicket.markup.html.list.ListItem;
 import org.apache.wicket.markup.html.list.PropertyListView;
 import org.apache.wicket.model.IModel;
 
-import fr.peralta.mycellar.interfaces.facades.stock.Bottle;
+import fr.peralta.mycellar.interfaces.client.web.renderers.shared.Renderer;
+import fr.peralta.mycellar.interfaces.client.web.renderers.stock.BottleRenderer;
+import fr.peralta.mycellar.interfaces.facades.stock.ArrivalBottle;
 
 /**
  * @author speralta
  */
-public class BottlesView extends PropertyListView<Bottle> {
+public class ArrivalBottlesView extends PropertyListView<ArrivalBottle> {
 
     private static final long serialVersionUID = 201011071626L;
 
     /**
      * @param id
      */
-    public BottlesView(String id) {
+    public ArrivalBottlesView(String id) {
         super(id);
     }
 
@@ -46,7 +48,7 @@ public class BottlesView extends PropertyListView<Bottle> {
      * @param id
      * @param model
      */
-    public BottlesView(String id, IModel<? extends List<? extends Bottle>> model) {
+    public ArrivalBottlesView(String id, IModel<? extends List<? extends ArrivalBottle>> model) {
         super(id, model);
     }
 
@@ -54,7 +56,7 @@ public class BottlesView extends PropertyListView<Bottle> {
      * @param id
      * @param list
      */
-    public BottlesView(String id, List<? extends Bottle> list) {
+    public ArrivalBottlesView(String id, List<? extends ArrivalBottle> list) {
         super(id, list);
     }
 
@@ -62,10 +64,15 @@ public class BottlesView extends PropertyListView<Bottle> {
      * {@inheritDoc}
      */
     @Override
-    protected void populateItem(ListItem<Bottle> item) {
-        item.add(new Label("label"));
+    protected void populateItem(ListItem<ArrivalBottle> item) {
+        ArrivalBottle arrivalBottle = item.getModelObject();
+        String bottleLabel;
+        if (arrivalBottle != null)
+            bottleLabel = new BottleRenderer().getLabel(arrivalBottle.getBottle());
+        else
+            bottleLabel = Renderer.NULL_OBJECT;
+        item.add(new Label("label", bottleLabel));
         item.add(new Label("quantity"));
         item.add(new WebMarkupContainer("remove").add(removeLink("removeBottle", item)));
     }
-
 }

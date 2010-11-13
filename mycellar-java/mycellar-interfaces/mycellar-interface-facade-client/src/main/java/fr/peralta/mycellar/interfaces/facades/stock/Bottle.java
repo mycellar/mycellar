@@ -19,8 +19,8 @@
 package fr.peralta.mycellar.interfaces.facades.stock;
 
 import java.io.Serializable;
-import java.text.Format;
 
+import fr.peralta.mycellar.interfaces.facades.wine.Format;
 import fr.peralta.mycellar.interfaces.facades.wine.Wine;
 
 /**

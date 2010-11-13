@@ -59,7 +59,7 @@ public class PackageArrivalPage extends BasePage {
         form.add(new TextField<LocalDate>("date"));
         form.add(new TextField<String>("source"));
         form.add(new TextField<Float>("otherCharges"));
-        form.add(new BottlesEditPanel("bottles"));
+        form.add(new BottlesEditPanel("arrivalBottles"));
         add(form);
     }
 
