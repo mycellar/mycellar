@@ -41,11 +41,11 @@ public class StockServiceFacadeImpl implements StockServiceFacade {
     @Override
     public void arrival(Arrival arrival) {
         List<Input> inputs = new ArrayList<Input>();
-        float unitCharges = arrival.getOtherCharges() / arrival.getBottles().size();
-        for (Bottle bottleDto : arrival.getBottles()) {
+        float unitCharges = arrival.getOtherCharges() / arrival.getArrivalBottles().size();
+        for (ArrivalBottle arrivalBottle : arrival.getArrivalBottles()) {
             inputs.add(new Input(arrival.getDate(), (Cellar) null, mapperServiceFacade.map(
-                    bottleDto, fr.peralta.mycellar.domain.stock.Bottle.class), bottleDto
-                    .getQuantity(), bottleDto.getPrice(), arrival.getSource(), unitCharges));
+                    arrivalBottle, fr.peralta.mycellar.domain.stock.Bottle.class), arrivalBottle
+                    .getQuantity(), arrivalBottle.getPrice(), arrival.getSource(), unitCharges));
         }
         stockService.stock(inputs);
     }

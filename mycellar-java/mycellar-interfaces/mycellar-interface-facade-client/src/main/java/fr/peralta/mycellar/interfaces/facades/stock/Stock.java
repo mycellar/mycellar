@@ -19,49 +19,62 @@
 package fr.peralta.mycellar.interfaces.facades.stock;
 
 import java.io.Serializable;
-import java.text.Format;
-
-import fr.peralta.mycellar.interfaces.facades.wine.Wine;
 
 /**
- * @author speralta
+ * @author bperalta
+ * 
  */
-public class Bottle implements Serializable {
+public class Stock implements Serializable {
+    private static final long serialVersionUID = 201011111811L;
 
-    private static final long serialVersionUID = 201010311742L;
-
-    private Wine wine;
-    private Format format;
+    private Bottle bottle;
+    private Cellar cellar;
+    private Integer quantity;
     private Integer id;
 
     /**
-     * @return the wine
+     * @return the bottle
      */
-    public Wine getWine() {
-        return wine;
+    public Bottle getBottle() {
+        return bottle;
     }
 
     /**
-     * @param wine
-     *            the wine to set
+     * @param bottle
+     *            the bottle to set
      */
-    public void setWine(Wine wine) {
-        this.wine = wine;
+    public void setBottle(Bottle bottle) {
+        this.bottle = bottle;
     }
 
     /**
-     * @return the format
+     * @return the cellar
      */
-    public Format getFormat() {
-        return format;
+    public Cellar getCellar() {
+        return cellar;
     }
 
     /**
-     * @param format
-     *            the format to set
+     * @param cellar
+     *            the cellar to set
      */
-    public void setFormat(Format format) {
-        this.format = format;
+    public void setCellar(Cellar cellar) {
+        this.cellar = cellar;
+    }
+
+    /**
+     * @return the quantity
+     */
+    public Integer getQuantity() {
+        return quantity;
+    }
+
+    /**
+     * @param quantity
+     *            the quantity to set
+     */
+    public void setQuantity(Integer quantity) {
+        this.quantity = quantity;
     }
 
     /**
@@ -78,4 +91,5 @@ public class Bottle implements Serializable {
     public void setId(Integer id) {
         this.id = id;
     }
+
 }

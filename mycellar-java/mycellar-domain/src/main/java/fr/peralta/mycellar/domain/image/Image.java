@@ -27,7 +27,7 @@ import javax.persistence.Table;
 
 import org.apache.commons.lang3.ObjectUtils;
 
-import fr.peralta.mycellar.domain.shared.IdentifiedEntity;
+import fr.peralta.mycellar.domain.shared.NamedEntity;
 
 /**
  * @author bperalta
@@ -35,11 +35,8 @@ import fr.peralta.mycellar.domain.shared.IdentifiedEntity;
 @Entity
 @Table(name = "IMAGE")
 @SequenceGenerator(name = "IMAGE_ID_GENERATOR", allocationSize = 1)
-public class Image extends IdentifiedEntity<Image> {
+public class Image extends NamedEntity<Image> {
     private static final long serialVersionUID = 201011082031L;
-
-    @Column(name = "NAME", nullable = false)
-    private String name;
 
     @Column(name = "CONTENT_TYPE", nullable = false)
     private String contentType;
@@ -72,18 +69,11 @@ public class Image extends IdentifiedEntity<Image> {
      * @param content
      */
     public Image(String name, String contentType, int height, int width, byte[] content) {
-        this.name = name;
+        super(name);
         this.contentType = contentType;
         this.height = height;
         this.width = width;
         this.content = content;
-    }
-
-    /**
-     * @return the name
-     */
-    public String getName() {
-        return name;
     }
 
     /**

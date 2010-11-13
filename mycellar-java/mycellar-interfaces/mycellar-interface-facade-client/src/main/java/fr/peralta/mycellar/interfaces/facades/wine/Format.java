@@ -16,33 +16,49 @@
  * You should have received a copy of the GNU General Public License
  * along with MyCellar. If not, see <http://www.gnu.org/licenses/>.
  */
-package fr.peralta.mycellar.domain.shared;
+package fr.peralta.mycellar.interfaces.facades.wine;
 
-import javax.persistence.Column;
-import javax.persistence.MappedSuperclass;
+import java.io.Serializable;
 
 /**
- * @author speralta
+ * @author bperalta
+ * 
  */
-@MappedSuperclass
-public abstract class NamedEntity<E extends NamedEntity<E>> extends IdentifiedEntity<E> {
-
+public class Format implements Serializable {
     private static final long serialVersionUID = 201010311742L;
 
-    @Column(name = "NAME", nullable = false)
+    private float capacity;
+    private Integer id;
     private String name;
 
     /**
-     * Default Constructor.
+     * @return the capacity
      */
-    protected NamedEntity() {
+    public float getCapacity() {
+        return capacity;
     }
 
     /**
-     * @param name
+     * @param capacity
+     *            the capacity to set
      */
-    protected NamedEntity(String name) {
-        this.name = name;
+    public void setCapacity(float capacity) {
+        this.capacity = capacity;
+    }
+
+    /**
+     * @return the id
+     */
+    public Integer getId() {
+        return id;
+    }
+
+    /**
+     * @param id
+     *            the id to set
+     */
+    public void setId(Integer id) {
+        this.id = id;
     }
 
     /**
@@ -56,16 +72,8 @@ public abstract class NamedEntity<E extends NamedEntity<E>> extends IdentifiedEn
      * @param name
      *            the name to set
      */
-    protected void setName(String name) {
+    public void setName(String name) {
         this.name = name;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public String toString() {
-        return super.toString() + "[name=" + name + "]";
     }
 
 }

@@ -16,34 +16,22 @@
  * You should have received a copy of the GNU General Public License
  * along with MyCellar. If not, see <http://www.gnu.org/licenses/>.
  */
-package fr.peralta.mycellar.domain.shared;
+package fr.peralta.mycellar.interfaces.facades.stock;
 
-import javax.persistence.Column;
-import javax.persistence.MappedSuperclass;
+import java.io.Serializable;
+
+import fr.peralta.mycellar.interfaces.facades.user.User;
 
 /**
- * @author speralta
+ * @author bperalta
+ * 
  */
-@MappedSuperclass
-public abstract class NamedEntity<E extends NamedEntity<E>> extends IdentifiedEntity<E> {
+public class Cellar implements Serializable {
+    private static final long serialVersionUID = 201011130029L;
 
-    private static final long serialVersionUID = 201010311742L;
-
-    @Column(name = "NAME", nullable = false)
     private String name;
-
-    /**
-     * Default Constructor.
-     */
-    protected NamedEntity() {
-    }
-
-    /**
-     * @param name
-     */
-    protected NamedEntity(String name) {
-        this.name = name;
-    }
+    private User user;
+    private Integer id;
 
     /**
      * @return the name
@@ -56,16 +44,38 @@ public abstract class NamedEntity<E extends NamedEntity<E>> extends IdentifiedEn
      * @param name
      *            the name to set
      */
-    protected void setName(String name) {
+    public void setName(String name) {
         this.name = name;
     }
 
     /**
-     * {@inheritDoc}
+     * @return the user
      */
-    @Override
-    public String toString() {
-        return super.toString() + "[name=" + name + "]";
+    public User getUser() {
+        return user;
+    }
+
+    /**
+     * @param user
+     *            the user to set
+     */
+    public void setUser(User user) {
+        this.user = user;
+    }
+
+    /**
+     * @return the id
+     */
+    public Integer getId() {
+        return id;
+    }
+
+    /**
+     * @param id
+     *            the id to set
+     */
+    public void setId(Integer id) {
+        this.id = id;
     }
 
 }

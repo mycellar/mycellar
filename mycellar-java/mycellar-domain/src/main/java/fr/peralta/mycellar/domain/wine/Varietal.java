@@ -35,6 +35,10 @@ import fr.peralta.mycellar.domain.shared.NamedEntity;
 /**
  * @author speralta
  */
+/*
+ * Varietal (EN) = Cépage (FR)
+ */
+
 @Entity
 @Table(name = "VARIETAL")
 @AttributeOverride(name = "name", column = @Column(name = "NAME", nullable = false, unique = true))
@@ -65,8 +69,7 @@ public class Varietal extends NamedEntity<Varietal> {
      * @param flesh
      * @param description
      */
-    public Varietal(String name, VarietalColorEnum skin,
-            VarietalColorEnum flesh, String description) {
+    public Varietal(String name, VarietalColorEnum skin, VarietalColorEnum flesh, String description) {
         super(name);
         this.skin = skin;
         this.flesh = flesh;

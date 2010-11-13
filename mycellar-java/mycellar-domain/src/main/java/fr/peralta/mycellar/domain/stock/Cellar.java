@@ -29,7 +29,7 @@ import javax.persistence.Table;
 
 import org.apache.commons.lang3.ObjectUtils;
 
-import fr.peralta.mycellar.domain.shared.IdentifiedEntity;
+import fr.peralta.mycellar.domain.shared.NamedEntity;
 import fr.peralta.mycellar.domain.user.User;
 
 /**
@@ -39,12 +39,9 @@ import fr.peralta.mycellar.domain.user.User;
 @Entity
 @Table(name = "CELLAR")
 @SequenceGenerator(name = "CELLAR_ID_GENERATOR", allocationSize = 1)
-public class Cellar extends IdentifiedEntity<Cellar> {
+public class Cellar extends NamedEntity<Cellar> {
 
     private static final long serialVersionUID = 201011111734L;
-
-    @Column(name = "NAME", nullable = false)
-    private String name;
 
     @ManyToOne
     @JoinColumn(name = "USER", nullable = false)
@@ -60,7 +57,7 @@ public class Cellar extends IdentifiedEntity<Cellar> {
      * @param capacity
      */
     public Cellar(String name, User user) {
-        this.name = name;
+        super(name);
         this.user = user;
     }
 
@@ -68,13 +65,6 @@ public class Cellar extends IdentifiedEntity<Cellar> {
      * Needed by Hibernate
      */
     Cellar() {
-    }
-
-    /**
-     * @return the name
-     */
-    public String getName() {
-        return name;
     }
 
     /**
