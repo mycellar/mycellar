@@ -42,6 +42,14 @@ public class Wine implements Serializable {
     private String name;
 
     /**
+     * Initialise par défaut les objets Appellation et Producer.
+     */
+    public Wine() {
+        appellation = new Appellation();
+        producer = new Producer();
+    }
+
+    /**
      * @return the description
      */
     public String getDescription() {

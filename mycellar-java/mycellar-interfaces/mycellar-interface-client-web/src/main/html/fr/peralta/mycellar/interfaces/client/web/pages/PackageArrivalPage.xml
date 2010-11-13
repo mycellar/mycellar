@@ -6,7 +6,7 @@
   <entry key="arrival">Date d'arrivée</entry>
   <entry key="source">Source</entry>
   <entry key="otherCharges">Frais annexes</entry>
-  <entry key="bottles">Bouteilles</entry>
+  <entry key="arrivalBottles">Bouteilles</entry>
   <entry key="name">Nom</entry>
   <entry key="saveArrival">Enregistrer l'entrée</entry>
 </properties> 

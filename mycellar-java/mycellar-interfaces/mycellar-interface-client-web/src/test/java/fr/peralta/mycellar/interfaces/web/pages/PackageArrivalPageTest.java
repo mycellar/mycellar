@@ -18,9 +18,9 @@
  */
 package fr.peralta.mycellar.interfaces.web.pages;
 
-import static org.mockito.BDDMockito.*;
-import static org.mockito.Matchers.*;
-import static org.mockito.Mockito.*;
+import static org.mockito.BDDMockito.given;
+import static org.mockito.Matchers.anyObject;
+import static org.mockito.Mockito.doNothing;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -62,11 +62,14 @@ public class PackageArrivalPageTest extends AbstractPageTest {
 
         getWicketTester().startPage(PackageArrivalPage.class);
         getWicketTester().assertRenderedPage(PackageArrivalPage.class);
-        getWicketTester().clickLink("form:bottles:addBottle");
+        getWicketTester().clickLink("form:arrivalBottles:addBottle");
         FormTester formTester = getWicketTester().newFormTester("form");
         formTester.setValue("otherCharges", "0");
-        getWicketTester().clickLink("form:bottles:bottle:newObject:country:cloud:0:object");
-        FormTester bottleFormTester = getWicketTester().newFormTester("form:bottles:bottle");
+        getWicketTester()
+                .clickLink(
+                        "form:arrivalBottles:arrivalBottle:newObject:bottle.wine.appellation.region.country:cloud:0:object");
+        FormTester bottleFormTester = getWicketTester().newFormTester(
+                "form:arrivalBottles:arrivalBottle");
         bottleFormTester.setValue("newObject:quantity", "2");
         bottleFormTester.submit();
         getWicketTester().assertRenderedPage(PackageArrivalPage.class);
@@ -85,22 +88,29 @@ public class PackageArrivalPageTest extends AbstractPageTest {
 
         getWicketTester().startPage(PackageArrivalPage.class);
         getWicketTester().assertRenderedPage(PackageArrivalPage.class);
-        getWicketTester().clickLink("form:bottles:addBottle");
+        getWicketTester().clickLink("form:arrivalBottles:addBottle");
 
         FormTester formTester = getWicketTester().newFormTester("form");
         formTester.setValue("otherCharges", "0");
 
-        getWicketTester().clickLink("form:bottles:bottle:newObject:country:add");
+        getWicketTester()
+                .clickLink(
+                        "form:arrivalBottles:arrivalBottle:newObject:bottle.wine.appellation.region.country:add");
 
-        FormTester countryFormTester = getWicketTester().newFormTester(
-                "form:bottles:bottle:newObject:country:createForm");
+        FormTester countryFormTester = getWicketTester()
+                .newFormTester(
+                        "form:arrivalBottles:arrivalBottle:newObject:bottle.wine.appellation.region.country:createForm");
         countryFormTester.setValue("newObject:name", "Nom");
         countryFormTester.submit();
 
         getWicketTester().assertRenderedPage(PackageArrivalPage.class);
-        getWicketTester().assertLabel("form:bottles:bottle:newObject:country:value", "Nom");
+        getWicketTester()
+                .assertLabel(
+                        "form:arrivalBottles:arrivalBottle:newObject:bottle.wine.appellation.region.country:value",
+                        "Nom");
 
-        FormTester bottleFormTester = getWicketTester().newFormTester("form:bottles:bottle");
+        FormTester bottleFormTester = getWicketTester().newFormTester(
+                "form:arrivalBottles:arrivalBottle");
         bottleFormTester.setValue("newObject:quantity", "2");
         bottleFormTester.submit();
         getWicketTester().assertRenderedPage(PackageArrivalPage.class);
@@ -119,11 +129,14 @@ public class PackageArrivalPageTest extends AbstractPageTest {
 
         getWicketTester().startPage(PackageArrivalPage.class);
         getWicketTester().assertRenderedPage(PackageArrivalPage.class);
-        getWicketTester().clickLink("form:bottles:addBottle");
+        getWicketTester().clickLink("form:arrivalBottles:addBottle");
         FormTester formTester = getWicketTester().newFormTester("form");
         formTester.setValue("otherCharges", "0");
-        getWicketTester().clickLink("form:bottles:bottle:newObject:country:cloud:0:object");
-        FormTester bottleFormTester = getWicketTester().newFormTester("form:bottles:bottle");
+        getWicketTester()
+                .clickLink(
+                        "form:arrivalBottles:arrivalBottle:newObject:bottle.wine.appellation.region.country:cloud:0:object");
+        FormTester bottleFormTester = getWicketTester().newFormTester(
+                "form:arrivalBottles:arrivalBottle");
         bottleFormTester.setValue("newObject:quantity", "2");
         bottleFormTester.submit();
         getWicketTester().assertRenderedPage(PackageArrivalPage.class);

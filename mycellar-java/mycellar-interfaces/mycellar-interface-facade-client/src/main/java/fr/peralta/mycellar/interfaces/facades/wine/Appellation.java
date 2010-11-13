@@ -36,6 +36,13 @@ public class Appellation implements Serializable {
     private String name;
 
     /**
+     * Initialise par defaut les objets Region.
+     */
+    public Appellation() {
+        region = new Region();
+    }
+
+    /**
      * @return the map
      */
     public Map getMap() {

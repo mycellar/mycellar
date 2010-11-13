@@ -35,6 +35,14 @@ public class Bottle implements Serializable {
     private Integer id;
 
     /**
+     * Initialise par defaut les objets Wine et Format.
+     */
+    public Bottle() {
+        wine = new Wine();
+        format = new Format();
+    }
+
+    /**
      * @return the wine
      */
     public Wine getWine() {

@@ -36,6 +36,13 @@ public class Producer implements Serializable {
     private String name;
 
     /**
+     * Initialise par défaut l'objet Address.
+     */
+    public Producer() {
+        address = new Address();
+    }
+
+    /**
      * @return the websiteUrl
      */
     public String getWebsiteUrl() {

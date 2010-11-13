@@ -34,6 +34,14 @@ public class Map implements Serializable {
     private Image image;
 
     /**
+     * Initialise les objets Position, Image.
+     */
+    public Map() {
+        position = new Position();
+        image = new Image();
+    }
+
+    /**
      * @return the position
      */
     public Position getPosition() {

@@ -92,8 +92,11 @@ public class Arrival implements Serializable {
         return arrivalBottles;
     }
 
-    public void addArrivalBootle(Bottle bottle, Integer quantity, float price) {
-        ArrivalBottle arrivalBootle = new ArrivalBottle(bottle, quantity, price);
-        arrivalBottles.add(arrivalBootle);
+    public void addArrivalBottle(Bottle bottle, Integer quantity, float price) {
+        ArrivalBottle arrivalBottle = new ArrivalBottle();
+        arrivalBottle.setBottle(bottle);
+        arrivalBottle.setPrice(price);
+        arrivalBottle.setQuantity(quantity);
+        arrivalBottles.add(arrivalBottle);
     }
 }

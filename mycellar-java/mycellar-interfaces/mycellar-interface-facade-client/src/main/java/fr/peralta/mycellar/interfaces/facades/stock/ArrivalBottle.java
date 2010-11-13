@@ -31,15 +31,8 @@ public class ArrivalBottle implements Serializable {
     private Integer quantity;
     private float price;
 
-    /**
-     * @param bottle
-     * @param quantity
-     * @param price
-     */
-    public ArrivalBottle(Bottle bottle, Integer quantity, float price) {
-        this.bottle = bottle;
-        this.quantity = quantity;
-        this.price = price;
+    public ArrivalBottle() {
+        bottle = new Bottle();
     }
 
     /**

@@ -34,6 +34,13 @@ public class Address implements Serializable {
     private Position position;
 
     /**
+     * Initialise l'objet Position.
+     */
+    public Address() {
+        position = new Position();
+    }
+
+    /**
      * @return the line1
      */
     public String getLine1() {

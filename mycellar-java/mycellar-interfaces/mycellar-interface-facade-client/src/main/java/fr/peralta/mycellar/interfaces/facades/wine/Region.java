@@ -39,6 +39,13 @@ public class Region implements Serializable {
     private String name;
 
     /**
+     * Initialise par defaut l'objet Country.
+     */
+    public Region() {
+        country = new Country();
+    }
+
+    /**
      * @return the map
      */
     public Map getMap() {

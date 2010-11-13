@@ -25,7 +25,7 @@ import org.apache.wicket.request.mapper.parameter.PageParameters;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 import org.joda.time.LocalDate;
 
-import fr.peralta.mycellar.interfaces.client.web.components.wine.BottlesEditPanel;
+import fr.peralta.mycellar.interfaces.client.web.components.stock.ArrivalBottlesEditPanel;
 import fr.peralta.mycellar.interfaces.client.web.pages.shared.CellarSuperPage;
 import fr.peralta.mycellar.interfaces.facades.stock.Arrival;
 import fr.peralta.mycellar.interfaces.facades.stock.StockServiceFacade;
@@ -60,7 +60,7 @@ public class PackageArrivalPage extends CellarSuperPage {
         form.add(new TextField<LocalDate>("date"));
         form.add(new TextField<String>("source"));
         form.add(new TextField<Float>("otherCharges"));
-        form.add(new BottlesEditPanel("arrivalBottles"));
+        form.add(new ArrivalBottlesEditPanel("arrivalBottles"));
         add(form);
     }
 
