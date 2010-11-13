@@ -24,6 +24,8 @@ import java.util.List;
 import java.util.Map;
 
 import org.hibernate.property.DirectPropertyAccessor;
+import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.stereotype.Repository;
 
 import fr.peralta.mycellar.domain.wine.Country;
 import fr.peralta.mycellar.domain.wine.CountryRepository;
@@ -31,6 +33,8 @@ import fr.peralta.mycellar.domain.wine.CountryRepository;
 /**
  * @author speralta
  */
+@Repository
+@Qualifier("mock")
 public class MockCountryRepository implements CountryRepository {
 
     private final String[] names = new String[] { "France", "Espagne", "Italie", "Hongrie",

@@ -23,6 +23,8 @@ import org.apache.wicket.markup.html.WebPage;
 import org.apache.wicket.request.mapper.parameter.PageParameters;
 import org.apache.wicket.request.resource.PackageResourceReference;
 
+import fr.peralta.mycellar.interfaces.client.web.components.shared.menu.MenuPanel;
+
 /**
  * @author speralta
  */
@@ -33,6 +35,7 @@ public abstract class BasePage extends WebPage {
      */
     public BasePage(PageParameters parameters) {
         super(parameters);
+        add(new MenuPanel("menu", getMenuClass()));
     }
 
     /**
@@ -42,5 +45,10 @@ public abstract class BasePage extends WebPage {
     public void renderHead(IHeaderResponse response) {
         response.renderCSSReference(new PackageResourceReference(BasePage.class, "master.css"));
     }
+
+    /**
+     * @return the class of the menu page (for selecting it in {@link MenuPanel}
+     */
+    protected abstract Class<? extends BasePage> getMenuClass();
 
 }

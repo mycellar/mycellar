@@ -18,6 +18,8 @@
  */
 package fr.peralta.mycellar.interfaces.facades.wine.mappers;
 
+import org.springframework.stereotype.Service;
+
 import fr.peralta.mycellar.domain.position.Map;
 import fr.peralta.mycellar.domain.wine.Country;
 import fr.peralta.mycellar.interfaces.facades.shared.mappers.AbstractMapper;
@@ -25,6 +27,7 @@ import fr.peralta.mycellar.interfaces.facades.shared.mappers.AbstractMapper;
 /**
  * @author speralta
  */
+@Service
 public class CountryMapper extends
         AbstractMapper<fr.peralta.mycellar.interfaces.facades.wine.Country, Country> {
 

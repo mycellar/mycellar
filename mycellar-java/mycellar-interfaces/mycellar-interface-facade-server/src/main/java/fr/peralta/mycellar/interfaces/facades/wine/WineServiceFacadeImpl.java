@@ -22,12 +22,17 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
 import fr.peralta.mycellar.application.wine.CountryService;
 import fr.peralta.mycellar.interfaces.facades.shared.MapperServiceFacade;
 
 /**
  * @author speralta
  */
+@Service
 public class WineServiceFacadeImpl implements WineServiceFacade {
 
     private CountryService countryService;
@@ -38,6 +43,7 @@ public class WineServiceFacadeImpl implements WineServiceFacade {
      * {@inheritDoc}
      */
     @Override
+    @Transactional(readOnly = true)
     public List<Country> getAllCountries() {
         return mapperServiceFacade.mapList(countryService.getAll(), Country.class);
     }
@@ -46,6 +52,7 @@ public class WineServiceFacadeImpl implements WineServiceFacade {
      * {@inheritDoc}
      */
     @Override
+    @Transactional
     public Map<Country, Integer> getCountriesWithCounts() {
         Map<Country, Integer> result = new HashMap<Country, Integer>();
         Map<fr.peralta.mycellar.domain.wine.Country, Integer> map = countryService
@@ -60,6 +67,7 @@ public class WineServiceFacadeImpl implements WineServiceFacade {
      * @param mapperServiceFacade
      *            the mapperServiceFacade to set
      */
+    @Autowired
     public void setMapperServiceFacade(MapperServiceFacade mapperServiceFacade) {
         this.mapperServiceFacade = mapperServiceFacade;
     }
@@ -68,6 +76,7 @@ public class WineServiceFacadeImpl implements WineServiceFacade {
      * @param countryService
      *            the countryService to set
      */
+    @Autowired
     public void setCountryService(CountryService countryService) {
         this.countryService = countryService;
     }

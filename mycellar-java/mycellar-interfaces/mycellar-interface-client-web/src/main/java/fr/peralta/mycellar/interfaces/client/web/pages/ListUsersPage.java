@@ -25,7 +25,7 @@ import org.apache.wicket.model.CompoundPropertyModel;
 import org.apache.wicket.request.mapper.parameter.PageParameters;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 
-import fr.peralta.mycellar.interfaces.client.web.pages.shared.BasePage;
+import fr.peralta.mycellar.interfaces.client.web.pages.shared.HomeSuperPage;
 import fr.peralta.mycellar.interfaces.facades.user.User;
 import fr.peralta.mycellar.interfaces.facades.user.UserServiceFacade;
 
@@ -33,7 +33,7 @@ import fr.peralta.mycellar.interfaces.facades.user.UserServiceFacade;
  * @author speralta
  * 
  */
-public class ListUsersPage extends BasePage {
+public class ListUsersPage extends HomeSuperPage {
 
     @SpringBean
     private UserServiceFacade userServiceFacade;

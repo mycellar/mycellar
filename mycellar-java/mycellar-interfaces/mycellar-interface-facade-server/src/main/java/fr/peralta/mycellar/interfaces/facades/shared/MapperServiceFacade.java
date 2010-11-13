@@ -25,12 +25,14 @@ import java.util.Map;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.stereotype.Service;
 
 import fr.peralta.mycellar.interfaces.facades.shared.mappers.IMapper;
 
 /**
  * @author speralta
  */
+@Service
 public class MapperServiceFacade {
 
     private static final Logger logger = LoggerFactory.getLogger(MapperServiceFacade.class);

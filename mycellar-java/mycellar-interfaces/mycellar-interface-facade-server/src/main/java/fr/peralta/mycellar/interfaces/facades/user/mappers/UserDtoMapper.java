@@ -18,12 +18,15 @@
  */
 package fr.peralta.mycellar.interfaces.facades.user.mappers;
 
+import org.springframework.stereotype.Service;
+
 import fr.peralta.mycellar.interfaces.facades.shared.mappers.AbstractMapper;
 import fr.peralta.mycellar.interfaces.facades.user.User;
 
 /**
  * @author speralta
  */
+@Service
 public class UserDtoMapper extends AbstractMapper<fr.peralta.mycellar.domain.user.User, User> {
 
     /**

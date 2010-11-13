@@ -20,6 +20,9 @@ package fr.peralta.mycellar.application.wine.impl;
 
 import java.util.Map;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
 import fr.peralta.mycellar.application.shared.impl.AbstractEntityService;
 import fr.peralta.mycellar.application.wine.CountryService;
 import fr.peralta.mycellar.domain.wine.Country;
@@ -28,8 +31,8 @@ import fr.peralta.mycellar.domain.wine.CountryRepository;
 /**
  * @author speralta
  */
-public class CountryServiceImpl extends
-        AbstractEntityService<Country, CountryRepository> implements
+@Service
+public class CountryServiceImpl extends AbstractEntityService<Country, CountryRepository> implements
         CountryService {
 
     private CountryRepository countryRepository;
@@ -54,6 +57,7 @@ public class CountryServiceImpl extends
      * @param countryRepository
      *            the countryRepository to set
      */
+    @Autowired
     public void setCountryRepository(CountryRepository countryRepository) {
         this.countryRepository = countryRepository;
     }

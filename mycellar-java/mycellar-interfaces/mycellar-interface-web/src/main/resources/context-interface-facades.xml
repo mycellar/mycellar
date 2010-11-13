@@ -9,7 +9,6 @@
     http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-3.0.xsd 
     http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-3.0.xsd">
 
-  <import resource="classpath:context-infrastructure-mock.xml"/>
-  <import resource="classpath:context-infrastructure-persistence.xml"/>
+  <import resource="classpath:context-interface-facade-server.xml" />
 
 </beans>

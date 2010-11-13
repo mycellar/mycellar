@@ -16,25 +16,28 @@
  * You should have received a copy of the GNU General Public License
  * along with MyCellar. If not, see <http://www.gnu.org/licenses/>.
  */
-package fr.peralta.mycellar.interfaces.client.web.pages;
+package fr.peralta.mycellar.interfaces.client.web.pages.shared;
 
-import org.apache.wicket.markup.html.link.BookmarkablePageLink;
 import org.apache.wicket.request.mapper.parameter.PageParameters;
-
-import fr.peralta.mycellar.interfaces.client.web.pages.shared.HomeSuperPage;
 
 /**
  * @author speralta
  */
-public class HomePage extends HomeSuperPage {
+public abstract class HomeSuperPage extends BasePage {
 
     /**
      * @param parameters
      */
-    public HomePage(PageParameters parameters) {
+    public HomeSuperPage(PageParameters parameters) {
         super(parameters);
-        add(new BookmarkablePageLink<Void>("newUser", NewUserPage.class));
-        add(new BookmarkablePageLink<Void>("listUsers", ListUsersPage.class));
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    protected final Class<? extends BasePage> getMenuClass() {
+        return HomeSuperPage.class;
     }
 
 }

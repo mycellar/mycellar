@@ -21,6 +21,8 @@ package fr.peralta.mycellar.infrastructure.stock.persistence;
 import org.hibernate.property.DirectPropertyAccessor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.stereotype.Repository;
 
 import fr.peralta.mycellar.domain.stock.Bottle;
 import fr.peralta.mycellar.domain.stock.Input;
@@ -33,6 +35,8 @@ import fr.peralta.mycellar.domain.wine.WineTypeEnum;
 /**
  * @author speralta
  */
+@Repository
+@Qualifier("mock")
 public class MockStockRepository implements StockRepository {
 
     private static final Logger logger = LoggerFactory.getLogger(MockStockRepository.class);

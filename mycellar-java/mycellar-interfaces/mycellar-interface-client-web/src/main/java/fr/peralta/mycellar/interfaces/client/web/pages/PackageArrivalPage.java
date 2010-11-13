@@ -26,14 +26,14 @@ import org.apache.wicket.spring.injection.annot.SpringBean;
 import org.joda.time.LocalDate;
 
 import fr.peralta.mycellar.interfaces.client.web.components.wine.BottlesEditPanel;
-import fr.peralta.mycellar.interfaces.client.web.pages.shared.BasePage;
+import fr.peralta.mycellar.interfaces.client.web.pages.shared.CellarSuperPage;
 import fr.peralta.mycellar.interfaces.facades.stock.Arrival;
 import fr.peralta.mycellar.interfaces.facades.stock.StockServiceFacade;
 
 /**
  * @author speralta
  */
-public class PackageArrivalPage extends BasePage {
+public class PackageArrivalPage extends CellarSuperPage {
 
     private final Arrival arrival = new Arrival();
 
@@ -54,6 +54,7 @@ public class PackageArrivalPage extends BasePage {
             @Override
             protected void onSubmit() {
                 stockServiceFacade.arrival(getModelObject());
+                setResponsePage(HomePage.class);
             }
         };
         form.add(new TextField<LocalDate>("date"));

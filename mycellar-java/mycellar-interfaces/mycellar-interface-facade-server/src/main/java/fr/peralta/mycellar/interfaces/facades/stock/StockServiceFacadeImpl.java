@@ -21,6 +21,10 @@ package fr.peralta.mycellar.interfaces.facades.stock;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
 import fr.peralta.mycellar.application.stock.StockService;
 import fr.peralta.mycellar.domain.stock.Cellar;
 import fr.peralta.mycellar.domain.stock.Input;
@@ -29,6 +33,7 @@ import fr.peralta.mycellar.interfaces.facades.shared.MapperServiceFacade;
 /**
  * @author speralta
  */
+@Service
 public class StockServiceFacadeImpl implements StockServiceFacade {
 
     private StockService stockService;
@@ -39,6 +44,7 @@ public class StockServiceFacadeImpl implements StockServiceFacade {
      * {@inheritDoc}
      */
     @Override
+    @Transactional
     public void arrival(Arrival arrival) {
         List<Input> inputs = new ArrayList<Input>();
         float unitCharges = arrival.getOtherCharges() / arrival.getArrivalBottles().size();
@@ -54,6 +60,7 @@ public class StockServiceFacadeImpl implements StockServiceFacade {
      * @param stockService
      *            the stockService to set
      */
+    @Autowired
     public void setStockService(StockService stockService) {
         this.stockService = stockService;
     }
@@ -62,6 +69,7 @@ public class StockServiceFacadeImpl implements StockServiceFacade {
      * @param mapperServiceFacade
      *            the mapperServiceFacade to set
      */
+    @Autowired
     public void setMapperServiceFacade(MapperServiceFacade mapperServiceFacade) {
         this.mapperServiceFacade = mapperServiceFacade;
     }
