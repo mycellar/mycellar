@@ -32,6 +32,7 @@ import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
 
 import fr.peralta.mycellar.interfaces.client.web.pages.PackageArrivalPage;
+import fr.peralta.mycellar.interfaces.client.web.renderers.shared.RendererServiceFacade;
 import fr.peralta.mycellar.interfaces.facades.stock.Arrival;
 import fr.peralta.mycellar.interfaces.facades.stock.StockServiceFacade;
 import fr.peralta.mycellar.interfaces.facades.wine.Country;
@@ -49,6 +50,9 @@ public class PackageArrivalPageTest extends AbstractPageTest {
     @Mock
     private StockServiceFacade stockServiceFacade;
 
+    @Mock
+    private RendererServiceFacade rendererServiceFacade;
+
     @Test
     public void selectCountry() {
         Map<Country, Integer> map = new HashMap<Country, Integer>();
@@ -59,6 +63,7 @@ public class PackageArrivalPageTest extends AbstractPageTest {
 
         getApplicationContext().putBean("wineServiceFacade", wineServiceFacade);
         getApplicationContext().putBean("stockServiceFacade", stockServiceFacade);
+        getApplicationContext().putBean("rendererServiceFacade", rendererServiceFacade);
 
         getWicketTester().startPage(PackageArrivalPage.class);
         getWicketTester().assertRenderedPage(PackageArrivalPage.class);
@@ -85,6 +90,7 @@ public class PackageArrivalPageTest extends AbstractPageTest {
 
         getApplicationContext().putBean("wineServiceFacade", wineServiceFacade);
         getApplicationContext().putBean("stockServiceFacade", stockServiceFacade);
+        getApplicationContext().putBean("rendererServiceFacade", rendererServiceFacade);
 
         getWicketTester().startPage(PackageArrivalPage.class);
         getWicketTester().assertRenderedPage(PackageArrivalPage.class);
@@ -126,6 +132,7 @@ public class PackageArrivalPageTest extends AbstractPageTest {
 
         getApplicationContext().putBean("wineServiceFacade", wineServiceFacade);
         getApplicationContext().putBean("stockServiceFacade", stockServiceFacade);
+        getApplicationContext().putBean("rendererServiceFacade", rendererServiceFacade);
 
         getWicketTester().startPage(PackageArrivalPage.class);
         getWicketTester().assertRenderedPage(PackageArrivalPage.class);

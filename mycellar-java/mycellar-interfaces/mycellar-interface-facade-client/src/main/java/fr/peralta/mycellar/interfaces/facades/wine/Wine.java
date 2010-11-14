@@ -33,7 +33,7 @@ public class Wine implements Serializable {
     private WineColorEnum color;
     private WineTypeEnum type;
     private String ranking;
-    private int vintage;
+    private Integer vintage;
     private Appellation appellation;
     private Producer producer;
     private String photoUrl;
@@ -112,7 +112,7 @@ public class Wine implements Serializable {
     /**
      * @return the vintage
      */
-    public int getVintage() {
+    public Integer getVintage() {
         return vintage;
     }
 
@@ -120,7 +120,7 @@ public class Wine implements Serializable {
      * @param vintage
      *            the vintage to set
      */
-    public void setVintage(int vintage) {
+    public void setVintage(Integer vintage) {
         this.vintage = vintage;
     }
 

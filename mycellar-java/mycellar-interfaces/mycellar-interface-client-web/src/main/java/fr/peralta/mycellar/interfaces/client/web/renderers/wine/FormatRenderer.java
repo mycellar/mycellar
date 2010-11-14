@@ -18,16 +18,16 @@
  */
 package fr.peralta.mycellar.interfaces.client.web.renderers.wine;
 
-import fr.peralta.mycellar.interfaces.client.web.renderers.shared.Renderer;
+import org.springframework.stereotype.Service;
+
+import fr.peralta.mycellar.interfaces.client.web.renderers.shared.AbstractRenderer;
 import fr.peralta.mycellar.interfaces.facades.wine.Format;
 
 /**
  * @author bperalta
- * 
  */
-public class FormatRenderer implements Renderer<Format> {
-
-    final static String SEP = DEFAULT_SEP;
+@Service
+public class FormatRenderer extends AbstractRenderer<Format> {
 
     /**
      * {@inheritDoc}
@@ -37,10 +37,18 @@ public class FormatRenderer implements Renderer<Format> {
         StringBuilder result = new StringBuilder();
         if (format != null) {
             result.append(format.getName());
-        } else
+        } else {
             result.append(NULL_OBJECT);
-
+        }
         return result.toString();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    protected Class<Format> getRenderedClass() {
+        return Format.class;
     }
 
 }

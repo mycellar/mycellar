@@ -50,8 +50,9 @@ public class StockServiceFacadeImpl implements StockServiceFacade {
         float unitCharges = arrival.getOtherCharges() / arrival.getArrivalBottles().size();
         for (ArrivalBottle arrivalBottle : arrival.getArrivalBottles()) {
             inputs.add(new Input(arrival.getDate(), (Cellar) null, mapperServiceFacade.map(
-                    arrivalBottle, fr.peralta.mycellar.domain.stock.Bottle.class), arrivalBottle
-                    .getQuantity(), arrivalBottle.getPrice(), arrival.getSource(), unitCharges));
+                    arrivalBottle.getBottle(), fr.peralta.mycellar.domain.stock.Bottle.class),
+                    arrivalBottle.getQuantity(), arrivalBottle.getPrice(), arrival.getSource(),
+                    unitCharges));
         }
         stockService.stock(inputs);
     }

@@ -18,20 +18,18 @@
  */
 package fr.peralta.mycellar.interfaces.client.web.renderers.stock;
 
-import fr.peralta.mycellar.interfaces.client.web.renderers.shared.Renderer;
-import fr.peralta.mycellar.interfaces.client.web.renderers.wine.FormatRenderer;
-import fr.peralta.mycellar.interfaces.client.web.renderers.wine.WineRenderer;
+import org.springframework.stereotype.Service;
+
+import fr.peralta.mycellar.interfaces.client.web.renderers.shared.AbstractRenderer;
 import fr.peralta.mycellar.interfaces.facades.stock.Bottle;
 import fr.peralta.mycellar.interfaces.facades.wine.Format;
 import fr.peralta.mycellar.interfaces.facades.wine.Wine;
 
 /**
  * @author bperalta
- * 
  */
-public class BottleRenderer implements Renderer<Bottle> {
-
-    final static String SEP = DEFAULT_SEP;
+@Service
+public class BottleRenderer extends AbstractRenderer<Bottle> {
 
     /**
      * {@inheritDoc}
@@ -42,18 +40,32 @@ public class BottleRenderer implements Renderer<Bottle> {
         if (bottle != null) {
             Wine wine = bottle.getWine();
             if (wine != null) {
-                result.append(new WineRenderer().getLabel(wine));
-            } else
+                result.append(getServiceRendererFacade().render(wine));
+            } else {
                 result.append(NULL_OBJECT);
-
+            }
+            if (result.length() > 0) {
+                result.append(DEFAULT_SEP);
+            }
             Format format = bottle.getFormat();
             if (format != null) {
-                result.append(new FormatRenderer().getLabel(format));
-            } else
+                result.append(getServiceRendererFacade().render(format));
+            } else {
                 result.append(NULL_OBJECT);
-        } else
+            }
+        } else {
             result.append(NULL_OBJECT);
+        }
 
         return result.toString();
     }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    protected Class<Bottle> getRenderedClass() {
+        return Bottle.class;
+    }
+
 }

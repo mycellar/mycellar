@@ -18,16 +18,16 @@
  */
 package fr.peralta.mycellar.interfaces.client.web.renderers.wine;
 
-import fr.peralta.mycellar.interfaces.client.web.renderers.shared.Renderer;
+import org.springframework.stereotype.Service;
+
+import fr.peralta.mycellar.interfaces.client.web.renderers.shared.AbstractRenderer;
 import fr.peralta.mycellar.interfaces.facades.wine.Wine;
 
 /**
  * @author bperalta
- * 
  */
-public class WineRenderer implements Renderer<Wine> {
-
-    final static String SEP = DEFAULT_SEP;
+@Service
+public class WineRenderer extends AbstractRenderer<Wine> {
 
     /**
      * {@inheritDoc}
@@ -37,10 +37,22 @@ public class WineRenderer implements Renderer<Wine> {
         StringBuilder result = new StringBuilder();
         if (wine != null) {
             result.append(wine.getName());
-            result.append(SEP).append(wine.getColor());
-            result.append(SEP).append(wine.getVintage());
-        } else
-            result.append(Renderer.NULL_OBJECT);
+            result.append(DEFAULT_SEP).append(wine.getColor());
+            if (wine.getVintage() != null) {
+                result.append(DEFAULT_SEP).append(wine.getVintage());
+            }
+        } else {
+            result.append(NULL_OBJECT);
+        }
         return result.toString();
     }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    protected Class<Wine> getRenderedClass() {
+        return Wine.class;
+    }
+
 }

@@ -25,9 +25,10 @@ import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.list.ListItem;
 import org.apache.wicket.markup.html.list.PropertyListView;
 import org.apache.wicket.model.IModel;
+import org.apache.wicket.spring.injection.annot.SpringBean;
 
-import fr.peralta.mycellar.interfaces.client.web.renderers.shared.Renderer;
-import fr.peralta.mycellar.interfaces.client.web.renderers.stock.BottleRenderer;
+import fr.peralta.mycellar.interfaces.client.web.renderers.shared.IRenderer;
+import fr.peralta.mycellar.interfaces.client.web.renderers.shared.RendererServiceFacade;
 import fr.peralta.mycellar.interfaces.facades.stock.ArrivalBottle;
 
 /**
@@ -36,6 +37,9 @@ import fr.peralta.mycellar.interfaces.facades.stock.ArrivalBottle;
 public class ArrivalBottlesView extends PropertyListView<ArrivalBottle> {
 
     private static final long serialVersionUID = 201011071626L;
+
+    @SpringBean
+    private RendererServiceFacade rendererServiceFacade;
 
     /**
      * @param id
@@ -67,12 +71,14 @@ public class ArrivalBottlesView extends PropertyListView<ArrivalBottle> {
     protected void populateItem(ListItem<ArrivalBottle> item) {
         ArrivalBottle arrivalBottle = item.getModelObject();
         String bottleLabel;
-        if (arrivalBottle != null)
-            bottleLabel = new BottleRenderer().getLabel(arrivalBottle.getBottle());
-        else
-            bottleLabel = Renderer.NULL_OBJECT;
+        if (arrivalBottle != null) {
+            bottleLabel = rendererServiceFacade.render(arrivalBottle.getBottle());
+        } else {
+            bottleLabel = IRenderer.NULL_OBJECT;
+        }
         item.add(new Label("label", bottleLabel));
         item.add(new Label("quantity"));
         item.add(new WebMarkupContainer("remove").add(removeLink("removeBottle", item)));
     }
+
 }

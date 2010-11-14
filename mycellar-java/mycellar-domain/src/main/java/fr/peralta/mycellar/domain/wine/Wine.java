@@ -69,7 +69,7 @@ public class Wine extends NamedEntity<Wine> {
     private String ranking;
 
     @Column(name = "VINTAGE")
-    private int vintage;
+    private Integer vintage;
 
     @Valid
     @ManyToOne
@@ -106,7 +106,8 @@ public class Wine extends NamedEntity<Wine> {
      * @param photoUrl
      */
     public Wine(String name, String description, WineColorEnum color, WineTypeEnum type,
-            String ranking, int vintage, Appellation appellation, Producer producer, String photoUrl) {
+            String ranking, Integer vintage, Appellation appellation, Producer producer,
+            String photoUrl) {
         super(name);
         this.description = description;
         this.color = color;
@@ -163,7 +164,7 @@ public class Wine extends NamedEntity<Wine> {
     /**
      * @return the vintage
      */
-    public int getVintage() {
+    public Integer getVintage() {
         return vintage;
     }
 

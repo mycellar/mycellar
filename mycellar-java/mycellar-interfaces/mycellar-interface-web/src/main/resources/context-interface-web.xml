@@ -10,6 +10,9 @@
     http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-3.0.xsd">
 
   <import resource="context-infrastructure.xml" />
+  
   <import resource="context-interface-facades.xml" />
+  
+  <import resource="classpath:context-interface-client-web.xml" />
 
 </beans>

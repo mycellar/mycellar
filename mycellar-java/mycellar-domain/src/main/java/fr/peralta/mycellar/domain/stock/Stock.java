@@ -34,7 +34,6 @@ import fr.peralta.mycellar.domain.shared.IdentifiedEntity;
 
 /**
  * @author bperalta
- * 
  */
 @Entity
 @Table(name = "STOCK", uniqueConstraints = @UniqueConstraint(columnNames = { "BOTTLE" }))
