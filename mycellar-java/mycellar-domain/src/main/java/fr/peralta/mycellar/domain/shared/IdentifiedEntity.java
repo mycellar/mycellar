@@ -20,6 +20,7 @@ package fr.peralta.mycellar.domain.shared;
 
 import java.io.Serializable;
 
+import javax.persistence.Column;
 import javax.persistence.MappedSuperclass;
 import javax.persistence.Version;
 
@@ -36,6 +37,7 @@ public abstract class IdentifiedEntity<E extends IdentifiedEntity<E>> implements
     private static final long serialVersionUID = 201010311742L;
 
     @Version
+    @Column(name = "VERSION")
     private int version;
 
     /**

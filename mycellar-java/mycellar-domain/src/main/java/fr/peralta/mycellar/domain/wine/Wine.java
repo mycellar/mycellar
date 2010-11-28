@@ -31,6 +31,7 @@ import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
 import javax.persistence.ManyToOne;
 import javax.persistence.MapKeyJoinColumn;
 import javax.persistence.SequenceGenerator;
@@ -86,7 +87,9 @@ public class Wine extends NamedEntity<Wine> {
     private String photoUrl;
 
     @ElementCollection
-    @MapKeyJoinColumn(name = "VARIETAL_ID", table = "WINE_VARIETAL")
+    @JoinTable(name = "WINE_VARIETAL", joinColumns = @JoinColumn(name = "WINE"))
+    @Column(name = "PERCENT")
+    @MapKeyJoinColumn(name = "VARIETAL")
     private final Map<Varietal, Integer> composition = new HashMap<Varietal, Integer>();
 
     @Id
