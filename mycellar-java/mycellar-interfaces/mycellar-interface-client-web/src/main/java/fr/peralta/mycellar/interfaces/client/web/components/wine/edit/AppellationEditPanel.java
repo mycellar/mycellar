@@ -16,17 +16,26 @@
  * You should have received a copy of the GNU General Public License
  * along with MyCellar. If not, see <http://www.gnu.org/licenses/>.
  */
-package fr.peralta.mycellar.application.shared;
+package fr.peralta.mycellar.interfaces.client.web.components.wine.edit;
 
-import java.util.List;
-
-import fr.peralta.mycellar.domain.shared.IdentifiedEntity;
+import org.apache.wicket.markup.html.form.TextArea;
+import org.apache.wicket.markup.html.form.TextField;
+import org.apache.wicket.markup.html.panel.Panel;
 
 /**
  * @author speralta
  */
-public interface EntityService<E extends IdentifiedEntity<E>> {
+public class AppellationEditPanel extends Panel {
 
-    List<E> getAll();
+    private static final long serialVersionUID = 201011071626L;
 
+    /**
+     * @param id
+     */
+    public AppellationEditPanel(String id) {
+        super(id);
+        add(new TextField<String>("region.name").setEnabled(false));
+        add(new TextField<String>("name").setRequired(true));
+        add(new TextArea<String>("description"));
+    }
 }

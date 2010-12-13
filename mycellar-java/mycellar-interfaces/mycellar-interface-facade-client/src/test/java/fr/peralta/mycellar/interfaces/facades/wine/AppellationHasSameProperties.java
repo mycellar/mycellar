@@ -18,28 +18,22 @@
  */
 package fr.peralta.mycellar.interfaces.facades.wine;
 
-import java.util.Map;
+import static fr.peralta.mycellar.interfaces.facades.FacadeMatchers.hasSameProperties;
+import static org.hamcrest.CoreMatchers.equalTo;
+import static org.hamcrest.CoreMatchers.is;
+import fr.peralta.mycellar.test.matchers.PropertiesMatcher;
 
 /**
  * @author speralta
  */
-public interface WineServiceFacade {
+public class AppellationHasSameProperties extends PropertiesMatcher<Appellation> {
 
-    /**
-     * @return
-     */
-    Map<Country, Integer> getCountriesWithCounts();
-
-    /**
-     * @param country
-     * @return
-     */
-    Map<Region, Integer> getRegionsWithCounts(Country country);
-
-    /**
-     * @param region
-     * @return
-     */
-    Map<Appellation, Integer> getAppellationsWithCounts(Region region);
+    public AppellationHasSameProperties(Appellation appellation) {
+        addProperty("description", is(equalTo(appellation.getDescription())));
+        addProperty("id", is(equalTo(appellation.getId())));
+        addProperty("region", hasSameProperties(appellation.getRegion()));
+        addProperty("map", hasSameProperties(appellation.getMap()));
+        addProperty("name", is(equalTo(appellation.getName())));
+    }
 
 }

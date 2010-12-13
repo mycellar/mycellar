@@ -28,19 +28,20 @@ import org.hamcrest.Matcher;
 import fr.peralta.mycellar.interfaces.facades.position.Map;
 import fr.peralta.mycellar.interfaces.facades.shared.mappers.AbstractMapperTest;
 import fr.peralta.mycellar.interfaces.facades.wine.Country;
+import fr.peralta.mycellar.interfaces.facades.wine.Region;
 import fr.peralta.mycellar.test.TestValue;
 
 /**
  * @author speralta
  */
-public class CountryDtoMapperTest extends
-        AbstractMapperTest<fr.peralta.mycellar.domain.wine.Country, Country, CountryDtoMapper> {
+public class RegionDtoMapperTest extends
+        AbstractMapperTest<fr.peralta.mycellar.domain.wine.Region, Region, RegionDtoMapper> {
 
     /**
      * {@inheritDoc}
      */
     @Override
-    protected Matcher<? super Country> matches(Country expected) {
+    protected Matcher<? super Region> matches(Region expected) {
         return hasSameProperties(expected);
     }
 
@@ -48,24 +49,24 @@ public class CountryDtoMapperTest extends
      * {@inheritDoc}
      */
     @Override
-    protected Class<fr.peralta.mycellar.domain.wine.Country> getFromClass() {
-        return fr.peralta.mycellar.domain.wine.Country.class;
+    protected Class<fr.peralta.mycellar.domain.wine.Region> getFromClass() {
+        return fr.peralta.mycellar.domain.wine.Region.class;
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    protected Class<Country> getToClass() {
-        return Country.class;
+    protected Class<Region> getToClass() {
+        return Region.class;
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    protected CountryDtoMapper createObjectToTest() {
-        return new CountryDtoMapper();
+    protected RegionDtoMapper createObjectToTest() {
+        return new RegionDtoMapper();
     }
 
     /**
@@ -73,16 +74,18 @@ public class CountryDtoMapperTest extends
      */
     @Override
     protected void fillTestValues(
-            List<TestValue<fr.peralta.mycellar.domain.wine.Country, Country>> testValues) {
-        fr.peralta.mycellar.domain.wine.Country input = new fr.peralta.mycellar.domain.wine.Country(
-                "name", new fr.peralta.mycellar.domain.position.Map(null, null), "description");
+            List<TestValue<fr.peralta.mycellar.domain.wine.Region, Region>> testValues) {
+        fr.peralta.mycellar.domain.wine.Region input = new fr.peralta.mycellar.domain.wine.Region(
+                "name", new fr.peralta.mycellar.domain.wine.Country(null, null, null),
+                new fr.peralta.mycellar.domain.position.Map(null, null), "description");
 
-        Country expected = new Country();
+        Region expected = new Region();
         expected.setName("name");
         expected.setDescription("description");
+        expected.setCountry(new Country());
         expected.setMap(new Map());
 
-        testValues.add(new TestValue<fr.peralta.mycellar.domain.wine.Country, Country>(input,
+        testValues.add(new TestValue<fr.peralta.mycellar.domain.wine.Region, Region>(input,
                 expected));
     }
 
@@ -90,9 +93,11 @@ public class CountryDtoMapperTest extends
      * {@inheritDoc}
      */
     @Override
-    protected void mock(fr.peralta.mycellar.domain.wine.Country input, Country expected) {
+    protected void mock(fr.peralta.mycellar.domain.wine.Region input, Region expected) {
         given(getMapperServiceFacade().map(input.getMap(), Map.class))
                 .willReturn(expected.getMap());
+        given(getMapperServiceFacade().map(input.getCountry(), Country.class)).willReturn(
+                expected.getCountry());
     }
 
 }

@@ -16,20 +16,31 @@
  * You should have received a copy of the GNU General Public License
  * along with MyCellar. If not, see <http://www.gnu.org/licenses/>.
  */
-package fr.peralta.mycellar.application.wine;
+package fr.peralta.mycellar.domain.wine;
 
 import java.util.Map;
 
-import fr.peralta.mycellar.domain.wine.Country;
-
 /**
  * @author speralta
+ * 
  */
-public interface CountryService {
+public interface WineRepository {
 
     /**
      * @return
      */
-    Map<Country, Integer> getAllWithCounts();
+    Map<Country, Integer> getAllCountriesWithCounts();
+
+    /**
+     * @param country
+     * @return
+     */
+    Map<Region, Integer> getAllRegionsFromCountryWithCounts(Country country);
+
+    /**
+     * @param region
+     * @return
+     */
+    Map<Appellation, Integer> getAllAppellationsFromRegionWithCounts(Region region);
 
 }

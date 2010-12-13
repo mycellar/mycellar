@@ -31,6 +31,7 @@ import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.link.Link;
 import org.apache.wicket.markup.html.list.ListItem;
 import org.apache.wicket.markup.html.list.PropertyListView;
+import org.apache.wicket.markup.html.panel.EmptyPanel;
 import org.apache.wicket.markup.html.panel.Panel;
 import org.apache.wicket.model.ComponentPropertyModel;
 import org.apache.wicket.model.IModel;
@@ -203,11 +204,15 @@ public abstract class ComplexTagCloud<O> extends Panel {
             get(VALUE_COMPONENT_ID).setVisibilityAllowed(true).setDefaultModel(
                     new Model<String>(getLabelFor((O) getDefaultModelObject())));
             get(CLOUD_COMPONENT_ID).setVisibilityAllowed(false);
+            send(getParent(), Broadcast.EXACT, Action.SELECT);
             break;
         case ADD:
             get("add").setVisibilityAllowed(false);
             get(CLOUD_COMPONENT_ID).setVisibilityAllowed(false);
-            get(CREATE_FORM_COMPONENT_ID).setVisibilityAllowed(true);
+            replace(
+                    new ObjectForm<O>(CREATE_FORM_COMPONENT_ID, createObject())
+                            .replace(createComponentForCreation(ObjectForm.EDIT_PANEL_COMPONENT_ID)))
+                    .setVisibilityAllowed(true);
             break;
         case SAVE:
             setDefaultModelObject(get(CREATE_FORM_COMPONENT_ID).getDefaultModelObject());
@@ -221,8 +226,6 @@ public abstract class ComplexTagCloud<O> extends Panel {
     }
 
     private Component createHiddenCreateForm() {
-        return new ObjectForm<O>(CREATE_FORM_COMPONENT_ID, createObject()).replace(
-                createComponentForCreation(ObjectForm.EDIT_PANEL_COMPONENT_ID))
-                .setVisibilityAllowed(false);
+        return new EmptyPanel(CREATE_FORM_COMPONENT_ID).setVisibilityAllowed(false);
     }
 }

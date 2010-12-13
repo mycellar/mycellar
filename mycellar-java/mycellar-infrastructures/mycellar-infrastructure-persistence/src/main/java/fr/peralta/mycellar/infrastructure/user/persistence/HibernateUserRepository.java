@@ -38,10 +38,10 @@ import fr.peralta.mycellar.domain.user.UserRepository;
 @Repository
 public class HibernateUserRepository implements UserRepository {
 
+    private static Logger logger = LoggerFactory.getLogger(HibernateUserRepository.class);
+
     @PersistenceContext
     private EntityManager entityManager;
-
-    private static Logger logger = LoggerFactory.getLogger(HibernateUserRepository.class);
 
     /**
      * {@inheritDoc}

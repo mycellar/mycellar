@@ -18,12 +18,19 @@
  */
 package fr.peralta.mycellar.interfaces.client.web.components.stock.edit;
 
+import org.apache.wicket.event.IEvent;
 import org.apache.wicket.markup.html.form.TextField;
+import org.apache.wicket.markup.html.panel.EmptyPanel;
 import org.apache.wicket.markup.html.panel.Panel;
 import org.apache.wicket.model.StringResourceModel;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 
+import fr.peralta.mycellar.interfaces.client.web.components.shared.Action;
+import fr.peralta.mycellar.interfaces.client.web.components.wine.cloud.AppellationComplexTagCloud;
 import fr.peralta.mycellar.interfaces.client.web.components.wine.cloud.CountryComplexTagCloud;
+import fr.peralta.mycellar.interfaces.client.web.components.wine.cloud.RegionComplexTagCloud;
+import fr.peralta.mycellar.interfaces.facades.wine.Country;
+import fr.peralta.mycellar.interfaces.facades.wine.Region;
 import fr.peralta.mycellar.interfaces.facades.wine.WineServiceFacade;
 
 /**
@@ -33,6 +40,10 @@ public class ArrivalBottleEditPanel extends Panel {
 
     private static final long serialVersionUID = 201011071626L;
 
+    private static final String COUNTRY_COMPONENT_ID = "bottle.wine.appellation.region.country";
+    private static final String REGION_COMPONENT_ID = "bottle.wine.appellation.region";
+    private static final String APPELLATION_COMPONENT_ID = "bottle.wine.appellation";
+
     @SpringBean
     private WineServiceFacade wineServiceFacade;
 
@@ -41,9 +52,47 @@ public class ArrivalBottleEditPanel extends Panel {
      */
     public ArrivalBottleEditPanel(String id) {
         super(id);
-        add(new CountryComplexTagCloud("bottle.wine.appellation.region.country",
-                new StringResourceModel("country", this, null), wineServiceFacade
-                        .getCountriesWithCounts()));
+        add(new CountryComplexTagCloud(COUNTRY_COMPONENT_ID, new StringResourceModel("country",
+                this, null), wineServiceFacade.getCountriesWithCounts()));
+        add(new EmptyPanel(REGION_COMPONENT_ID).setVisibilityAllowed(false));
+        add(new EmptyPanel(APPELLATION_COMPONENT_ID).setVisibilityAllowed(false));
         add(new TextField<Integer>("quantity").setRequired(true));
     }
+
+    /**
+     * @return
+     */
+    private void replaceRegionCloud() {
+        Country country = (Country) get(COUNTRY_COMPONENT_ID).getDefaultModelObject();
+        replace(new RegionComplexTagCloud(REGION_COMPONENT_ID, new StringResourceModel("region",
+                this, null), wineServiceFacade.getRegionsWithCounts(country), country));
+    }
+
+    /**
+     * @return
+     */
+    private void replaceAppellationCloud() {
+        Region region = (Region) get(REGION_COMPONENT_ID).getDefaultModelObject();
+        replace(new AppellationComplexTagCloud(APPELLATION_COMPONENT_ID, new StringResourceModel(
+                "region", this, null), wineServiceFacade.getAppellationsWithCounts(region), region));
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void onEvent(IEvent<?> event) {
+        if (event.getSource() instanceof CountryComplexTagCloud) {
+            Action action = (Action) event.getPayload();
+            if (action == Action.SELECT) {
+                replaceRegionCloud();
+            }
+        } else if (event.getSource() instanceof RegionComplexTagCloud) {
+            Action action = (Action) event.getPayload();
+            if (action == Action.SELECT) {
+                replaceAppellationCloud();
+            }
+        }
+    }
+
 }

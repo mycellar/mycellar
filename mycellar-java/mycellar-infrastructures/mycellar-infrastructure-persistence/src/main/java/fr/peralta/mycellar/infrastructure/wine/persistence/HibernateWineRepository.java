@@ -16,40 +16,45 @@
  * You should have received a copy of the GNU General Public License
  * along with MyCellar. If not, see <http://www.gnu.org/licenses/>.
  */
-package fr.peralta.mycellar.application.wine.impl;
+package fr.peralta.mycellar.infrastructure.wine.persistence;
 
 import java.util.Map;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-
-import fr.peralta.mycellar.application.wine.CountryService;
+import fr.peralta.mycellar.domain.wine.Appellation;
 import fr.peralta.mycellar.domain.wine.Country;
+import fr.peralta.mycellar.domain.wine.Region;
 import fr.peralta.mycellar.domain.wine.WineRepository;
 
 /**
  * @author speralta
  */
-@Service
-public class CountryServiceImpl implements CountryService {
-
-    private WineRepository wineRepository;
+public class HibernateWineRepository implements WineRepository {
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public Map<Country, Integer> getAllWithCounts() {
-        return wineRepository.getAllCountriesWithCounts();
+    public Map<Country, Integer> getAllCountriesWithCounts() {
+        // TODO Auto-generated method stub
+        return null;
     }
 
     /**
-     * @param wineRepository
-     *            the wineRepository to set
+     * {@inheritDoc}
      */
-    @Autowired
-    public void setWineRepository(WineRepository wineRepository) {
-        this.wineRepository = wineRepository;
+    @Override
+    public Map<Region, Integer> getAllRegionsFromCountryWithCounts(Country country) {
+        // TODO Auto-generated method stub
+        return null;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public Map<Appellation, Integer> getAllAppellationsFromRegionWithCounts(Region region) {
+        // TODO Auto-generated method stub
+        return null;
     }
 
 }

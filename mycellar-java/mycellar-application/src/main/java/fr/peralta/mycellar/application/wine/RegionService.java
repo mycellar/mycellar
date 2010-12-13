@@ -21,15 +21,16 @@ package fr.peralta.mycellar.application.wine;
 import java.util.Map;
 
 import fr.peralta.mycellar.domain.wine.Country;
+import fr.peralta.mycellar.domain.wine.Region;
 
 /**
  * @author speralta
  */
-public interface CountryService {
+public interface RegionService {
 
     /**
      * @return
      */
-    Map<Country, Integer> getAllWithCounts();
+    Map<Region, Integer> getAllFromCountryWithCounts(Country country);
 
 }

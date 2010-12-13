@@ -27,20 +27,22 @@ import org.hamcrest.Matcher;
 
 import fr.peralta.mycellar.interfaces.facades.position.Map;
 import fr.peralta.mycellar.interfaces.facades.shared.mappers.AbstractMapperTest;
-import fr.peralta.mycellar.interfaces.facades.wine.Country;
+import fr.peralta.mycellar.interfaces.facades.wine.Appellation;
+import fr.peralta.mycellar.interfaces.facades.wine.Region;
 import fr.peralta.mycellar.test.TestValue;
 
 /**
  * @author speralta
  */
-public class CountryDtoMapperTest extends
-        AbstractMapperTest<fr.peralta.mycellar.domain.wine.Country, Country, CountryDtoMapper> {
+public class AppellationDtoMapperTest
+        extends
+        AbstractMapperTest<fr.peralta.mycellar.domain.wine.Appellation, Appellation, AppellationDtoMapper> {
 
     /**
      * {@inheritDoc}
      */
     @Override
-    protected Matcher<? super Country> matches(Country expected) {
+    protected Matcher<? super Appellation> matches(Appellation expected) {
         return hasSameProperties(expected);
     }
 
@@ -48,24 +50,24 @@ public class CountryDtoMapperTest extends
      * {@inheritDoc}
      */
     @Override
-    protected Class<fr.peralta.mycellar.domain.wine.Country> getFromClass() {
-        return fr.peralta.mycellar.domain.wine.Country.class;
+    protected Class<fr.peralta.mycellar.domain.wine.Appellation> getFromClass() {
+        return fr.peralta.mycellar.domain.wine.Appellation.class;
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    protected Class<Country> getToClass() {
-        return Country.class;
+    protected Class<Appellation> getToClass() {
+        return Appellation.class;
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    protected CountryDtoMapper createObjectToTest() {
-        return new CountryDtoMapper();
+    protected AppellationDtoMapper createObjectToTest() {
+        return new AppellationDtoMapper();
     }
 
     /**
@@ -73,26 +75,30 @@ public class CountryDtoMapperTest extends
      */
     @Override
     protected void fillTestValues(
-            List<TestValue<fr.peralta.mycellar.domain.wine.Country, Country>> testValues) {
-        fr.peralta.mycellar.domain.wine.Country input = new fr.peralta.mycellar.domain.wine.Country(
-                "name", new fr.peralta.mycellar.domain.position.Map(null, null), "description");
+            List<TestValue<fr.peralta.mycellar.domain.wine.Appellation, Appellation>> testValues) {
+        fr.peralta.mycellar.domain.wine.Appellation input = new fr.peralta.mycellar.domain.wine.Appellation(
+                "name", new fr.peralta.mycellar.domain.wine.Region(null, null, null, null),
+                new fr.peralta.mycellar.domain.position.Map(null, null), "description");
 
-        Country expected = new Country();
+        Appellation expected = new Appellation();
         expected.setName("name");
         expected.setDescription("description");
+        expected.setRegion(new Region());
         expected.setMap(new Map());
 
-        testValues.add(new TestValue<fr.peralta.mycellar.domain.wine.Country, Country>(input,
-                expected));
+        testValues.add(new TestValue<fr.peralta.mycellar.domain.wine.Appellation, Appellation>(
+                input, expected));
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    protected void mock(fr.peralta.mycellar.domain.wine.Country input, Country expected) {
+    protected void mock(fr.peralta.mycellar.domain.wine.Appellation input, Appellation expected) {
         given(getMapperServiceFacade().map(input.getMap(), Map.class))
                 .willReturn(expected.getMap());
+        given(getMapperServiceFacade().map(input.getRegion(), Region.class)).willReturn(
+                expected.getRegion());
     }
 
 }

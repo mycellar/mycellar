@@ -19,14 +19,15 @@
 package fr.peralta.mycellar.interfaces.facades.wine;
 
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import fr.peralta.mycellar.application.wine.AppellationService;
 import fr.peralta.mycellar.application.wine.CountryService;
+import fr.peralta.mycellar.application.wine.RegionService;
 import fr.peralta.mycellar.interfaces.facades.shared.MapperServiceFacade;
 
 /**
@@ -37,16 +38,11 @@ public class WineServiceFacadeImpl implements WineServiceFacade {
 
     private CountryService countryService;
 
-    private MapperServiceFacade mapperServiceFacade;
+    private RegionService regionService;
 
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    @Transactional(readOnly = true)
-    public List<Country> getAllCountries() {
-        return mapperServiceFacade.mapList(countryService.getAll(), Country.class);
-    }
+    private AppellationService appellationService;
+
+    private MapperServiceFacade mapperServiceFacade;
 
     /**
      * {@inheritDoc}
@@ -59,6 +55,38 @@ public class WineServiceFacadeImpl implements WineServiceFacade {
                 .getAllWithCounts();
         for (fr.peralta.mycellar.domain.wine.Country country : map.keySet()) {
             result.put(mapperServiceFacade.map(country, Country.class), map.get(country));
+        }
+        return result;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    @Transactional
+    public Map<Region, Integer> getRegionsWithCounts(Country country) {
+        Map<Region, Integer> result = new HashMap<Region, Integer>();
+        Map<fr.peralta.mycellar.domain.wine.Region, Integer> map = regionService
+                .getAllFromCountryWithCounts(mapperServiceFacade.map(country,
+                        fr.peralta.mycellar.domain.wine.Country.class));
+        for (fr.peralta.mycellar.domain.wine.Region region : map.keySet()) {
+            result.put(mapperServiceFacade.map(region, Region.class), map.get(region));
+        }
+        return result;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public Map<Appellation, Integer> getAppellationsWithCounts(Region region) {
+        Map<Appellation, Integer> result = new HashMap<Appellation, Integer>();
+        Map<fr.peralta.mycellar.domain.wine.Appellation, Integer> map = appellationService
+                .getAllFromRegionWithCounts(mapperServiceFacade.map(region,
+                        fr.peralta.mycellar.domain.wine.Region.class));
+        for (fr.peralta.mycellar.domain.wine.Appellation appellation : map.keySet()) {
+            result.put(mapperServiceFacade.map(appellation, Appellation.class),
+                    map.get(appellation));
         }
         return result;
     }
@@ -79,6 +107,24 @@ public class WineServiceFacadeImpl implements WineServiceFacade {
     @Autowired
     public void setCountryService(CountryService countryService) {
         this.countryService = countryService;
+    }
+
+    /**
+     * @param regionService
+     *            the regionService to set
+     */
+    @Autowired
+    public void setRegionService(RegionService regionService) {
+        this.regionService = regionService;
+    }
+
+    /**
+     * @param appellationService
+     *            the appellationService to set
+     */
+    @Autowired
+    public void setAppellationService(AppellationService appellationService) {
+        this.appellationService = appellationService;
     }
 
 }

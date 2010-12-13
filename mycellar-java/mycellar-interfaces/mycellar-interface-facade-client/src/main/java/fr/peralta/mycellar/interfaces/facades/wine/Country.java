@@ -97,4 +97,13 @@ public class Country implements Serializable {
         return map;
     }
 
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public String toString() {
+        return "Country [id=" + id + ", name=" + name + ", map=" + map + ", description="
+                + description + "]";
+    }
+
 }

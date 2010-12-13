@@ -16,45 +16,41 @@
  * You should have received a copy of the GNU General Public License
  * along with MyCellar. If not, see <http://www.gnu.org/licenses/>.
  */
-package fr.peralta.mycellar.infrastructure.wine.persistence;
+package fr.peralta.mycellar.application.wine.impl;
 
-import java.util.List;
 import java.util.Map;
 
-import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
-import javax.persistence.criteria.CriteriaQuery;
-import javax.persistence.criteria.Root;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
+import fr.peralta.mycellar.application.wine.RegionService;
 import fr.peralta.mycellar.domain.wine.Country;
-import fr.peralta.mycellar.domain.wine.CountryRepository;
+import fr.peralta.mycellar.domain.wine.Region;
+import fr.peralta.mycellar.domain.wine.WineRepository;
 
 /**
  * @author speralta
  */
-public class HibernateCountryRepository implements CountryRepository {
+@Service
+public class RegionServiceImpl implements RegionService {
 
-    @PersistenceContext
-    private EntityManager entityManager;
+    private WineRepository wineRepository;
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public List<Country> getAll() {
-        CriteriaQuery<Country> query = entityManager.getCriteriaBuilder()
-                .createQuery(Country.class);
-        Root<Country> root = query.from(Country.class);
-        return entityManager.createQuery(query.select(root)).getResultList();
+    public Map<Region, Integer> getAllFromCountryWithCounts(Country country) {
+        return wineRepository.getAllRegionsFromCountryWithCounts(country);
     }
 
     /**
-     * {@inheritDoc}
+     * @param wineRepository
+     *            the wineRepository to set
      */
-    @Override
-    public Map<Country, Integer> getAllWithCounts() {
-        // TODO Auto-generated method stub
-        return null;
+    @Autowired
+    public void setWineRepository(WineRepository wineRepository) {
+        this.wineRepository = wineRepository;
     }
 
 }

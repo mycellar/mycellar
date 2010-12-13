@@ -16,20 +16,24 @@
  * You should have received a copy of the GNU General Public License
  * along with MyCellar. If not, see <http://www.gnu.org/licenses/>.
  */
-package fr.peralta.mycellar.application.wine;
+package fr.peralta.mycellar.domain.wine;
 
-import java.util.Map;
-
-import fr.peralta.mycellar.domain.wine.Country;
+import static fr.peralta.mycellar.domain.DomainMatchers.hasSameProperties;
+import static org.hamcrest.CoreMatchers.equalTo;
+import static org.hamcrest.CoreMatchers.is;
+import fr.peralta.mycellar.test.matchers.PropertiesMatcher;
 
 /**
  * @author speralta
  */
-public interface CountryService {
+public class RegionHasSameProperties extends PropertiesMatcher<Region> {
 
-    /**
-     * @return
-     */
-    Map<Country, Integer> getAllWithCounts();
+    public RegionHasSameProperties(Region region) {
+        addProperty("description", is(equalTo(region.getDescription())));
+        addProperty("id", is(equalTo(region.getId())));
+        addProperty("country", hasSameProperties(region.getCountry()));
+        addProperty("map", hasSameProperties(region.getMap()));
+        addProperty("name", is(equalTo(region.getName())));
+    }
 
 }

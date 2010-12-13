@@ -19,6 +19,7 @@
 package fr.peralta.mycellar.interfaces.client.web.renderers.wine;
 
 import org.springframework.stereotype.Service;
+import org.springframework.util.StringUtils;
 
 import fr.peralta.mycellar.interfaces.client.web.renderers.shared.AbstractRenderer;
 import fr.peralta.mycellar.interfaces.facades.wine.Wine;
@@ -36,8 +37,14 @@ public class WineRenderer extends AbstractRenderer<Wine> {
     public String getLabel(Wine wine) {
         StringBuilder result = new StringBuilder();
         if (wine != null) {
-            result.append(wine.getName());
-            result.append(DEFAULT_SEP).append(wine.getColor());
+            result.append(wine.getAppellation().getRegion().getCountry().getName())
+                    .append(DEFAULT_SEP).append(wine.getAppellation().getRegion().getName())
+                    .append(DEFAULT_SEP).append(wine.getAppellation().getName())
+                    .append(DEFAULT_SEP);
+            if (StringUtils.hasText(wine.getName())) {
+                result.append(wine.getName()).append(DEFAULT_SEP);
+            }
+            result.append(wine.getColor());
             if (wine.getVintage() != null) {
                 result.append(DEFAULT_SEP).append(wine.getVintage());
             }

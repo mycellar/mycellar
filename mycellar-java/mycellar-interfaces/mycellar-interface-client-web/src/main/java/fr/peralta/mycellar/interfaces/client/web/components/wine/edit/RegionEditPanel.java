@@ -16,20 +16,26 @@
  * You should have received a copy of the GNU General Public License
  * along with MyCellar. If not, see <http://www.gnu.org/licenses/>.
  */
-package fr.peralta.mycellar.domain.wine;
+package fr.peralta.mycellar.interfaces.client.web.components.wine.edit;
 
-import java.util.Map;
-
-import fr.peralta.mycellar.domain.shared.Repository;
+import org.apache.wicket.markup.html.form.TextArea;
+import org.apache.wicket.markup.html.form.TextField;
+import org.apache.wicket.markup.html.panel.Panel;
 
 /**
  * @author speralta
  */
-public interface CountryRepository extends Repository<Country> {
+public class RegionEditPanel extends Panel {
+
+    private static final long serialVersionUID = 201011071626L;
 
     /**
-     * @return
+     * @param id
      */
-    Map<Country, Integer> getAllWithCounts();
-
+    public RegionEditPanel(String id) {
+        super(id);
+        add(new TextField<String>("country.name").setEnabled(false));
+        add(new TextField<String>("name").setRequired(true));
+        add(new TextArea<String>("description"));
+    }
 }

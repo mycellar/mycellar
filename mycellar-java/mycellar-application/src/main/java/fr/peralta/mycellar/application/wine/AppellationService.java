@@ -16,31 +16,21 @@
  * You should have received a copy of the GNU General Public License
  * along with MyCellar. If not, see <http://www.gnu.org/licenses/>.
  */
-package fr.peralta.mycellar.application.shared.impl;
+package fr.peralta.mycellar.application.wine;
 
-import java.util.List;
+import java.util.Map;
 
-import fr.peralta.mycellar.application.shared.EntityService;
-import fr.peralta.mycellar.domain.shared.IdentifiedEntity;
-import fr.peralta.mycellar.domain.shared.Repository;
+import fr.peralta.mycellar.domain.wine.Appellation;
+import fr.peralta.mycellar.domain.wine.Region;
 
 /**
  * @author speralta
  */
-public abstract class AbstractEntityService<E extends IdentifiedEntity<E>, R extends Repository<E>>
-        implements EntityService<E> {
+public interface AppellationService {
 
     /**
-     * {@inheritDoc}
+     * @return
      */
-    @Override
-    public List<E> getAll() {
-        return getRepository().getAll();
-    }
-
-    /**
-     * @return the repository
-     */
-    protected abstract R getRepository();
+    Map<Appellation, Integer> getAllFromRegionWithCounts(Region region);
 
 }

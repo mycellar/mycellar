@@ -23,15 +23,16 @@ import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import fr.peralta.mycellar.application.wine.CountryService;
-import fr.peralta.mycellar.domain.wine.Country;
+import fr.peralta.mycellar.application.wine.AppellationService;
+import fr.peralta.mycellar.domain.wine.Appellation;
+import fr.peralta.mycellar.domain.wine.Region;
 import fr.peralta.mycellar.domain.wine.WineRepository;
 
 /**
  * @author speralta
  */
 @Service
-public class CountryServiceImpl implements CountryService {
+public class AppellationServiceImpl implements AppellationService {
 
     private WineRepository wineRepository;
 
@@ -39,8 +40,8 @@ public class CountryServiceImpl implements CountryService {
      * {@inheritDoc}
      */
     @Override
-    public Map<Country, Integer> getAllWithCounts() {
-        return wineRepository.getAllCountriesWithCounts();
+    public Map<Appellation, Integer> getAllFromRegionWithCounts(Region region) {
+        return wineRepository.getAllAppellationsFromRegionWithCounts(region);
     }
 
     /**

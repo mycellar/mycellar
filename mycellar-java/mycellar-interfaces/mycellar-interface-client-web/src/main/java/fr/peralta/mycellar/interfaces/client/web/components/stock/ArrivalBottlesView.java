@@ -27,7 +27,6 @@ import org.apache.wicket.markup.html.list.PropertyListView;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 
-import fr.peralta.mycellar.interfaces.client.web.renderers.shared.IRenderer;
 import fr.peralta.mycellar.interfaces.client.web.renderers.shared.RendererServiceFacade;
 import fr.peralta.mycellar.interfaces.facades.stock.ArrivalBottle;
 
@@ -70,13 +69,7 @@ public class ArrivalBottlesView extends PropertyListView<ArrivalBottle> {
     @Override
     protected void populateItem(ListItem<ArrivalBottle> item) {
         ArrivalBottle arrivalBottle = item.getModelObject();
-        String bottleLabel;
-        if (arrivalBottle != null) {
-            bottleLabel = rendererServiceFacade.render(arrivalBottle.getBottle());
-        } else {
-            bottleLabel = IRenderer.NULL_OBJECT;
-        }
-        item.add(new Label("label", bottleLabel));
+        item.add(new Label("label", rendererServiceFacade.render(arrivalBottle.getBottle())));
         item.add(new Label("quantity"));
         item.add(new WebMarkupContainer("remove").add(removeLink("removeBottle", item)));
     }
