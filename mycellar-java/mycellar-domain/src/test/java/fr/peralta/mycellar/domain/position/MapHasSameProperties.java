@@ -18,8 +18,7 @@
  */
 package fr.peralta.mycellar.domain.position;
 
-import static fr.peralta.mycellar.domain.DomainMatchers.*;
-import fr.peralta.mycellar.domain.position.Map;
+import static fr.peralta.mycellar.domain.DomainMatchers.hasSameProperties;
 import fr.peralta.mycellar.test.matchers.PropertiesMatcher;
 
 /**
@@ -27,9 +26,9 @@ import fr.peralta.mycellar.test.matchers.PropertiesMatcher;
  */
 public class MapHasSameProperties extends PropertiesMatcher<Map> {
 
-    public MapHasSameProperties(Map map) {
-        addProperty("image", hasSameProperties(map.getImage()));
-        addProperty("position", hasSameProperties(map.getPosition()));
+    public MapHasSameProperties(Map object) {
+        addProperty("image", hasSameProperties(object.getImage()));
+        addProperty("position", hasSameProperties(object.getPosition()));
     }
 
 }

@@ -25,7 +25,7 @@ import java.io.Serializable;
  */
 public class Image implements Serializable {
 
-    private static final long serialVersionUID = 201011110900L;
+    private static final long serialVersionUID = 201012132020L;
 
     private String name;
     private String contentType;
@@ -33,12 +33,12 @@ public class Image implements Serializable {
     private int width;
     private byte[] content;
     private Integer id;
-    private int version;
+    private Integer version;
 
     /**
      * @return the version
      */
-    public int getVersion() {
+    public Integer getVersion() {
         return version;
     }
 
@@ -46,7 +46,7 @@ public class Image implements Serializable {
      * @param version
      *            the version to set
      */
-    public void setVersion(int version) {
+    public void setVersion(Integer version) {
         this.version = version;
     }
 

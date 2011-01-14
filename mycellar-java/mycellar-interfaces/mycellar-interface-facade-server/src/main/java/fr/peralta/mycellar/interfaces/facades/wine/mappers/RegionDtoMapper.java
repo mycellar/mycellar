@@ -32,13 +32,13 @@ import fr.peralta.mycellar.interfaces.facades.wine.Region;
 public class RegionDtoMapper extends AbstractMapper<fr.peralta.mycellar.domain.wine.Region, Region> {
 
     @Override
-    public Region map(fr.peralta.mycellar.domain.wine.Region country) {
+    public Region map(fr.peralta.mycellar.domain.wine.Region region) {
         Region dto = new fr.peralta.mycellar.interfaces.facades.wine.Region();
-        dto.setDescription(country.getDescription());
-        dto.setCountry(getMapperServiceFacade().map(country.getCountry(), Country.class));
-        dto.setMap(getMapperServiceFacade().map(country.getMap(), Map.class));
-        dto.setName(country.getName());
-        dto.setId(country.getId());
+        dto.setDescription(region.getDescription());
+        dto.setCountry(getMapperServiceFacade().map(region.getCountry(), Country.class));
+        dto.setMap(getMapperServiceFacade().map(region.getMap(), Map.class));
+        dto.setName(region.getName());
+        dto.setId(region.getId());
         return dto;
     }
 

@@ -16,22 +16,25 @@
  * You should have received a copy of the GNU General Public License
  * along with MyCellar. If not, see <http://www.gnu.org/licenses/>.
  */
-package fr.peralta.mycellar.domain.wine;
+package fr.peralta.mycellar.interfaces.client.web.components.wine.edit;
 
-import static fr.peralta.mycellar.domain.DomainMatchers.hasSameProperties;
-import static org.hamcrest.CoreMatchers.equalTo;
-import static org.hamcrest.CoreMatchers.is;
-import fr.peralta.mycellar.domain.shared.NamedEntityHasSameProperties;
+import org.apache.wicket.markup.html.form.TextArea;
+import org.apache.wicket.markup.html.form.TextField;
+import org.apache.wicket.markup.html.panel.Panel;
 
 /**
  * @author speralta
  */
-public class CountryHasSameProperties extends NamedEntityHasSameProperties<Country> {
+public class ProducerEditPanel extends Panel {
 
-    public CountryHasSameProperties(Country object) {
-        super(object);
-        addProperty("description", is(equalTo(object.getDescription())));
-        addProperty("map", hasSameProperties(object.getMap()));
+    private static final long serialVersionUID = 201011071626L;
+
+    /**
+     * @param id
+     */
+    public ProducerEditPanel(String id) {
+        super(id);
+        add(new TextField<String>("name").setRequired(true));
+        add(new TextArea<String>("description"));
     }
-
 }

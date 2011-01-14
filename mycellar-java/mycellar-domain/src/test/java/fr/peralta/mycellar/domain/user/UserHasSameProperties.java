@@ -20,23 +20,22 @@ package fr.peralta.mycellar.domain.user;
 
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.CoreMatchers.is;
-import fr.peralta.mycellar.test.matchers.PropertiesMatcher;
+import fr.peralta.mycellar.domain.shared.IdentifiedEntityHasSameProperties;
 
 /**
  * @author speralta
  */
-public class UserHasSameProperties extends PropertiesMatcher<User> {
+public class UserHasSameProperties extends IdentifiedEntityHasSameProperties<User> {
 
     /**
-     * @param user
+     * @param object
      */
-    public UserHasSameProperties(User user) {
-        addProperty("email", is(equalTo(user.getEmail())));
-        addProperty("firstname", is(equalTo(user.getFirstname())));
-        addProperty("id", is(equalTo(user.getId())));
-        addProperty("lastname", is(equalTo(user.getLastname())));
-        addProperty("password", is(equalTo(user.getPassword())));
-        addProperty("version", is(equalTo(user.getVersion())));
+    public UserHasSameProperties(User object) {
+        super(object);
+        addProperty("email", is(equalTo(object.getEmail())));
+        addProperty("firstname", is(equalTo(object.getFirstname())));
+        addProperty("lastname", is(equalTo(object.getLastname())));
+        addProperty("password", is(equalTo(object.getPassword())));
     }
 
 }

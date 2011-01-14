@@ -16,22 +16,24 @@
  * You should have received a copy of the GNU General Public License
  * along with MyCellar. If not, see <http://www.gnu.org/licenses/>.
  */
-package fr.peralta.mycellar.domain.wine;
+package fr.peralta.mycellar.domain.shared;
 
-import static fr.peralta.mycellar.domain.DomainMatchers.hasSameProperties;
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.CoreMatchers.is;
-import fr.peralta.mycellar.domain.shared.NamedEntityHasSameProperties;
+import fr.peralta.mycellar.test.matchers.PropertiesMatcher;
 
 /**
  * @author speralta
  */
-public class CountryHasSameProperties extends NamedEntityHasSameProperties<Country> {
+public abstract class IdentifiedEntityHasSameProperties<E extends IdentifiedEntity<E>> extends
+        PropertiesMatcher<E> {
 
-    public CountryHasSameProperties(Country object) {
-        super(object);
-        addProperty("description", is(equalTo(object.getDescription())));
-        addProperty("map", hasSameProperties(object.getMap()));
+    /**
+     * @param object
+     */
+    public IdentifiedEntityHasSameProperties(E object) {
+        addProperty("id", is(equalTo(object.getId())));
+        addProperty("version", is(equalTo(object.getVersion())));
     }
 
 }

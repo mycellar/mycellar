@@ -20,26 +20,25 @@ package fr.peralta.mycellar.interfaces.facades.wine.mappers;
 
 import org.springframework.stereotype.Service;
 
-import fr.peralta.mycellar.interfaces.facades.position.Map;
+import fr.peralta.mycellar.interfaces.facades.position.Address;
 import fr.peralta.mycellar.interfaces.facades.shared.mappers.AbstractMapper;
-import fr.peralta.mycellar.interfaces.facades.wine.Appellation;
-import fr.peralta.mycellar.interfaces.facades.wine.Region;
+import fr.peralta.mycellar.interfaces.facades.wine.Producer;
 
 /**
  * @author speralta
  */
 @Service
-public class AppellationDtoMapper extends
-        AbstractMapper<fr.peralta.mycellar.domain.wine.Appellation, Appellation> {
+public class ProducerDtoMapper extends
+        AbstractMapper<fr.peralta.mycellar.domain.wine.Producer, Producer> {
 
     @Override
-    public Appellation map(fr.peralta.mycellar.domain.wine.Appellation appellation) {
-        Appellation dto = new fr.peralta.mycellar.interfaces.facades.wine.Appellation();
-        dto.setDescription(appellation.getDescription());
-        dto.setRegion(getMapperServiceFacade().map(appellation.getRegion(), Region.class));
-        dto.setMap(getMapperServiceFacade().map(appellation.getMap(), Map.class));
-        dto.setName(appellation.getName());
-        dto.setId(appellation.getId());
+    public Producer map(fr.peralta.mycellar.domain.wine.Producer producer) {
+        Producer dto = new fr.peralta.mycellar.interfaces.facades.wine.Producer();
+        dto.setAddress(getMapperServiceFacade().map(producer.getAddress(), Address.class));
+        dto.setDescription(producer.getDescription());
+        dto.setName(producer.getName());
+        dto.setWebsiteUrl(producer.getWebsiteUrl());
+        dto.setId(producer.getId());
         return dto;
     }
 
@@ -47,16 +46,16 @@ public class AppellationDtoMapper extends
      * {@inheritDoc}
      */
     @Override
-    protected Class<fr.peralta.mycellar.domain.wine.Appellation> getFromClass() {
-        return fr.peralta.mycellar.domain.wine.Appellation.class;
+    protected Class<fr.peralta.mycellar.domain.wine.Producer> getFromClass() {
+        return fr.peralta.mycellar.domain.wine.Producer.class;
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    protected Class<Appellation> getToClass() {
-        return Appellation.class;
+    protected Class<Producer> getToClass() {
+        return Producer.class;
     }
 
 }

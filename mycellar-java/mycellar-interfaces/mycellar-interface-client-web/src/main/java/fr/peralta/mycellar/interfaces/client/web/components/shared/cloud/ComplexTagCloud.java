@@ -44,6 +44,8 @@ import fr.peralta.mycellar.interfaces.client.web.components.shared.form.ObjectFo
 
 /**
  * @author speralta
+ * 
+ * @param <O>
  */
 public abstract class ComplexTagCloud<O> extends Panel {
 
@@ -52,6 +54,7 @@ public abstract class ComplexTagCloud<O> extends Panel {
     private static final String CLOUD_COMPONENT_ID = "cloud";
     private static final String CREATE_FORM_COMPONENT_ID = "createForm";
     private static final String VALUE_COMPONENT_ID = "value";
+    private static final String ADD_COMPONENT_ID = "add";
 
     static final class CloudView<O> extends PropertyListView<TagData<O>> {
         private static final long serialVersionUID = 201011071626L;
@@ -147,7 +150,7 @@ public abstract class ComplexTagCloud<O> extends Panel {
         add(new CloudView<O>(CLOUD_COMPONENT_ID, getListFrom(objects)));
         add(new Label(VALUE_COMPONENT_ID).setVisibilityAllowed(false));
         add(createHiddenCreateForm());
-        add(new ActionLink("add", Action.ADD));
+        add(new ActionLink(ADD_COMPONENT_ID, Action.ADD));
     }
 
     /**
@@ -200,14 +203,14 @@ public abstract class ComplexTagCloud<O> extends Panel {
         switch (action) {
         case SELECT:
             setDefaultModelObject(((Tag<?>) event.getSource()).getModelObject());
-            get("add").setVisibilityAllowed(false);
+            get(ADD_COMPONENT_ID).setVisibilityAllowed(false);
             get(VALUE_COMPONENT_ID).setVisibilityAllowed(true).setDefaultModel(
                     new Model<String>(getLabelFor((O) getDefaultModelObject())));
             get(CLOUD_COMPONENT_ID).setVisibilityAllowed(false);
             send(getParent(), Broadcast.EXACT, Action.SELECT);
             break;
         case ADD:
-            get("add").setVisibilityAllowed(false);
+            get(ADD_COMPONENT_ID).setVisibilityAllowed(false);
             get(CLOUD_COMPONENT_ID).setVisibilityAllowed(false);
             replace(
                     new ObjectForm<O>(CREATE_FORM_COMPONENT_ID, createObject())

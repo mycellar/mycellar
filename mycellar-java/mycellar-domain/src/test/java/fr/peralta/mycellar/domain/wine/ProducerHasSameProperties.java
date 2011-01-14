@@ -18,7 +18,6 @@
  */
 package fr.peralta.mycellar.domain.wine;
 
-import static fr.peralta.mycellar.domain.DomainMatchers.hasSameProperties;
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.CoreMatchers.is;
 import fr.peralta.mycellar.domain.shared.NamedEntityHasSameProperties;
@@ -26,12 +25,12 @@ import fr.peralta.mycellar.domain.shared.NamedEntityHasSameProperties;
 /**
  * @author speralta
  */
-public class CountryHasSameProperties extends NamedEntityHasSameProperties<Country> {
+public class ProducerHasSameProperties extends NamedEntityHasSameProperties<Producer> {
 
-    public CountryHasSameProperties(Country object) {
+    public ProducerHasSameProperties(Producer object) {
         super(object);
         addProperty("description", is(equalTo(object.getDescription())));
-        addProperty("map", hasSameProperties(object.getMap()));
+        addProperty("websiteUrl", is(equalTo(object.getWebsiteUrl())));
     }
 
 }

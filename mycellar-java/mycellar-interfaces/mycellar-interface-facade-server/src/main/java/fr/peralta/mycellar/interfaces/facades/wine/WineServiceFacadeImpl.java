@@ -18,7 +18,9 @@
  */
 package fr.peralta.mycellar.interfaces.facades.wine;
 
+import java.util.Arrays;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -89,6 +91,14 @@ public class WineServiceFacadeImpl implements WineServiceFacade {
                     map.get(appellation));
         }
         return result;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public List<Producer> getProducersStartingWith(String term) {
+        return Arrays.asList(new Producer[] {});
     }
 
     /**

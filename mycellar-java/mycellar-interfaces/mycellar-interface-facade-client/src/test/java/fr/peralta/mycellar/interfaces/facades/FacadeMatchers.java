@@ -33,6 +33,8 @@ import fr.peralta.mycellar.interfaces.facades.wine.Appellation;
 import fr.peralta.mycellar.interfaces.facades.wine.AppellationHasSameProperties;
 import fr.peralta.mycellar.interfaces.facades.wine.Country;
 import fr.peralta.mycellar.interfaces.facades.wine.CountryHasSameProperties;
+import fr.peralta.mycellar.interfaces.facades.wine.Producer;
+import fr.peralta.mycellar.interfaces.facades.wine.ProducerHasSameProperties;
 import fr.peralta.mycellar.interfaces.facades.wine.Region;
 import fr.peralta.mycellar.interfaces.facades.wine.RegionHasSameProperties;
 import fr.peralta.mycellar.test.matchers.MatcherHelper;
@@ -75,6 +77,11 @@ public class FacadeMatchers {
     @Factory
     public static Matcher<? super Appellation> hasSameProperties(Appellation appellation) {
         return MatcherHelper.hasSameProperties(appellation, AppellationHasSameProperties.class);
+    }
+
+    @Factory
+    public static Matcher<? super Producer> hasSameProperties(Producer producer) {
+        return MatcherHelper.hasSameProperties(producer, ProducerHasSameProperties.class);
     }
 
     /**

@@ -28,12 +28,13 @@ import fr.peralta.mycellar.test.matchers.PropertiesMatcher;
  */
 public class AppellationHasSameProperties extends PropertiesMatcher<Appellation> {
 
-    public AppellationHasSameProperties(Appellation appellation) {
-        addProperty("description", is(equalTo(appellation.getDescription())));
-        addProperty("id", is(equalTo(appellation.getId())));
-        addProperty("region", hasSameProperties(appellation.getRegion()));
-        addProperty("map", hasSameProperties(appellation.getMap()));
-        addProperty("name", is(equalTo(appellation.getName())));
+    public AppellationHasSameProperties(Appellation object) {
+        addProperty("description", is(equalTo(object.getDescription())));
+        addProperty("id", is(equalTo(object.getId())));
+        addProperty("region", hasSameProperties(object.getRegion()));
+        addProperty("map", hasSameProperties(object.getMap()));
+        addProperty("name", is(equalTo(object.getName())));
+        addProperty("version", is(equalTo(object.getVersion())));
     }
 
 }

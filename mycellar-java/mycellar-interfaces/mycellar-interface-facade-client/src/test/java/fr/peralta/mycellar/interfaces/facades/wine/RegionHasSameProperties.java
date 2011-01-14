@@ -28,12 +28,13 @@ import fr.peralta.mycellar.test.matchers.PropertiesMatcher;
  */
 public class RegionHasSameProperties extends PropertiesMatcher<Region> {
 
-    public RegionHasSameProperties(Region region) {
-        addProperty("description", is(equalTo(region.getDescription())));
-        addProperty("id", is(equalTo(region.getId())));
-        addProperty("country", hasSameProperties(region.getCountry()));
-        addProperty("map", hasSameProperties(region.getMap()));
-        addProperty("name", is(equalTo(region.getName())));
+    public RegionHasSameProperties(Region object) {
+        addProperty("description", is(equalTo(object.getDescription())));
+        addProperty("id", is(equalTo(object.getId())));
+        addProperty("country", hasSameProperties(object.getCountry()));
+        addProperty("map", hasSameProperties(object.getMap()));
+        addProperty("name", is(equalTo(object.getName())));
+        addProperty("version", is(equalTo(object.getVersion())));
     }
 
 }

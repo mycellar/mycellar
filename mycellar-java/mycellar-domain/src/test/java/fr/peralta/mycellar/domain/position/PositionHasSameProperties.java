@@ -18,8 +18,8 @@
  */
 package fr.peralta.mycellar.domain.position;
 
-import static org.hamcrest.CoreMatchers.*;
-import fr.peralta.mycellar.domain.position.Position;
+import static org.hamcrest.CoreMatchers.equalTo;
+import static org.hamcrest.CoreMatchers.is;
 import fr.peralta.mycellar.test.matchers.PropertiesMatcher;
 
 /**
@@ -27,8 +27,8 @@ import fr.peralta.mycellar.test.matchers.PropertiesMatcher;
  */
 public class PositionHasSameProperties extends PropertiesMatcher<Position> {
 
-    public PositionHasSameProperties(Position position) {
-        addProperty("latitude", is(equalTo(position.getLatitude())));
-        addProperty("longitude", is(equalTo(position.getLongitude())));
+    public PositionHasSameProperties(Position object) {
+        addProperty("latitude", is(equalTo(object.getLatitude())));
+        addProperty("longitude", is(equalTo(object.getLongitude())));
     }
 }

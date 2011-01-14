@@ -27,15 +27,32 @@ import fr.peralta.mycellar.interfaces.facades.position.Map;
  */
 public class Country implements Serializable {
 
-    private static final long serialVersionUID = 201011071626L;
+    private static final long serialVersionUID = 201012132020L;
 
     private Integer id;
+
+    private Integer version;
 
     private String name;
 
     private Map map;
 
     private String description;
+
+    /**
+     * @return the version
+     */
+    public Integer getVersion() {
+        return version;
+    }
+
+    /**
+     * @param version
+     *            the version to set
+     */
+    public void setVersion(Integer version) {
+        this.version = version;
+    }
 
     /**
      * @return the description

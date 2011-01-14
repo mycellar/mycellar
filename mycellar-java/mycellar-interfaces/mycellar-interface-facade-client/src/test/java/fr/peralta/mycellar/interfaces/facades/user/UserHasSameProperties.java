@@ -27,13 +27,13 @@ import fr.peralta.mycellar.test.matchers.PropertiesMatcher;
  */
 public class UserHasSameProperties extends PropertiesMatcher<User> {
 
-    public UserHasSameProperties(User user) {
-        addProperty("email", is(equalTo(user.getEmail())));
-        addProperty("firstname", is(equalTo(user.getFirstname())));
-        addProperty("id", is(equalTo(user.getId())));
-        addProperty("lastname", is(equalTo(user.getLastname())));
-        addProperty("password", is(equalTo(user.getPassword())));
-        addProperty("version", is(equalTo(user.getVersion())));
+    public UserHasSameProperties(User object) {
+        addProperty("email", is(equalTo(object.getEmail())));
+        addProperty("firstname", is(equalTo(object.getFirstname())));
+        addProperty("id", is(equalTo(object.getId())));
+        addProperty("lastname", is(equalTo(object.getLastname())));
+        addProperty("password", is(equalTo(object.getPassword())));
+        addProperty("version", is(equalTo(object.getVersion())));
     }
 
 }

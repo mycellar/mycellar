@@ -27,19 +27,35 @@ import fr.peralta.mycellar.interfaces.facades.position.Map;
  * 
  */
 public class Appellation implements Serializable {
-    private static final long serialVersionUID = 201011071628L;
+    private static final long serialVersionUID = 201012132020L;
 
     private Map map;
     private String description;
     private Region region;
     private Integer id;
     private String name;
+    private Integer version;
 
     /**
      * Initialise par defaut les objets Region.
      */
     public Appellation() {
         region = new Region();
+    }
+
+    /**
+     * @return the version
+     */
+    public Integer getVersion() {
+        return version;
+    }
+
+    /**
+     * @param version
+     *            the version to set
+     */
+    public void setVersion(Integer version) {
+        this.version = version;
     }
 
     /**

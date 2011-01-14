@@ -43,6 +43,7 @@ public class ArrivalBottleEditPanel extends Panel {
     private static final String COUNTRY_COMPONENT_ID = "bottle.wine.appellation.region.country";
     private static final String REGION_COMPONENT_ID = "bottle.wine.appellation.region";
     private static final String APPELLATION_COMPONENT_ID = "bottle.wine.appellation";
+    private static final String PRODUCER_COMPONENT_ID = "bottle.wine.producer";
 
     @SpringBean
     private WineServiceFacade wineServiceFacade;
@@ -56,13 +57,14 @@ public class ArrivalBottleEditPanel extends Panel {
                 this, null), wineServiceFacade.getCountriesWithCounts()));
         add(new EmptyPanel(REGION_COMPONENT_ID).setVisibilityAllowed(false));
         add(new EmptyPanel(APPELLATION_COMPONENT_ID).setVisibilityAllowed(false));
+        add(new EmptyPanel(PRODUCER_COMPONENT_ID).setVisibilityAllowed(false));
         add(new TextField<Integer>("quantity").setRequired(true));
     }
 
     /**
      * @return
      */
-    private void replaceRegionCloud() {
+    private void replaceRegionPanel() {
         Country country = (Country) get(COUNTRY_COMPONENT_ID).getDefaultModelObject();
         replace(new RegionComplexTagCloud(REGION_COMPONENT_ID, new StringResourceModel("region",
                 this, null), wineServiceFacade.getRegionsWithCounts(country), country));
@@ -71,10 +73,18 @@ public class ArrivalBottleEditPanel extends Panel {
     /**
      * @return
      */
-    private void replaceAppellationCloud() {
+    private void replaceAppellationPanel() {
         Region region = (Region) get(REGION_COMPONENT_ID).getDefaultModelObject();
         replace(new AppellationComplexTagCloud(APPELLATION_COMPONENT_ID, new StringResourceModel(
                 "region", this, null), wineServiceFacade.getAppellationsWithCounts(region), region));
+    }
+
+    /**
+     * @return
+     */
+    private void replaceProducerPanel() {
+        // replace(new ProducerAutocompletePanel(PRODUCER_COMPONENT_ID, new
+        // StringResourceModel("producer", this, null)));
     }
 
     /**
@@ -85,12 +95,17 @@ public class ArrivalBottleEditPanel extends Panel {
         if (event.getSource() instanceof CountryComplexTagCloud) {
             Action action = (Action) event.getPayload();
             if (action == Action.SELECT) {
-                replaceRegionCloud();
+                replaceRegionPanel();
             }
         } else if (event.getSource() instanceof RegionComplexTagCloud) {
             Action action = (Action) event.getPayload();
             if (action == Action.SELECT) {
-                replaceAppellationCloud();
+                replaceAppellationPanel();
+            }
+        } else if (event.getSource() instanceof AppellationComplexTagCloud) {
+            Action action = (Action) event.getPayload();
+            if (action == Action.SELECT) {
+                replaceProducerPanel();
             }
         }
     }

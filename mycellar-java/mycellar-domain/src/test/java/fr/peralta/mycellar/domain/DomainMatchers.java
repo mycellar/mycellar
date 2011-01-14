@@ -33,6 +33,8 @@ import fr.peralta.mycellar.domain.wine.Appellation;
 import fr.peralta.mycellar.domain.wine.AppellationHasSameProperties;
 import fr.peralta.mycellar.domain.wine.Country;
 import fr.peralta.mycellar.domain.wine.CountryHasSameProperties;
+import fr.peralta.mycellar.domain.wine.Producer;
+import fr.peralta.mycellar.domain.wine.ProducerHasSameProperties;
 import fr.peralta.mycellar.domain.wine.Region;
 import fr.peralta.mycellar.domain.wine.RegionHasSameProperties;
 import fr.peralta.mycellar.test.matchers.MatcherHelper;
@@ -75,6 +77,11 @@ public class DomainMatchers {
     @Factory
     public static Matcher<? super Appellation> hasSameProperties(Appellation appellation) {
         return MatcherHelper.hasSameProperties(appellation, AppellationHasSameProperties.class);
+    }
+
+    @Factory
+    public static Matcher<? super Producer> hasSameProperties(Producer producer) {
+        return MatcherHelper.hasSameProperties(producer, ProducerHasSameProperties.class);
     }
 
     /**

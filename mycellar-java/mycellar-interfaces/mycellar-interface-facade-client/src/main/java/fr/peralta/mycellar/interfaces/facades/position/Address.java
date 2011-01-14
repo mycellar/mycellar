@@ -20,6 +20,8 @@ package fr.peralta.mycellar.interfaces.facades.position;
 
 import java.io.Serializable;
 
+import fr.peralta.mycellar.interfaces.facades.wine.Country;
+
 /**
  * @author bperalta
  * 
@@ -31,6 +33,7 @@ public class Address implements Serializable {
     private String line2;
     private String zipCode;
     private String city;
+    private Country country;
     private Position position;
 
     /**
@@ -38,6 +41,7 @@ public class Address implements Serializable {
      */
     public Address() {
         position = new Position();
+        country = new Country();
     }
 
     /**
@@ -113,6 +117,21 @@ public class Address implements Serializable {
      */
     public void setPosition(Position position) {
         this.position = position;
+    }
+
+    /**
+     * @return the country
+     */
+    public Country getCountry() {
+        return country;
+    }
+
+    /**
+     * @param country
+     *            the country to set
+     */
+    public void setCountry(Country country) {
+        this.country = country;
     }
 
 }

@@ -27,12 +27,13 @@ import fr.peralta.mycellar.interfaces.facades.position.Address;
  * 
  */
 public class Producer implements Serializable {
-    private static final long serialVersionUID = 201011071626L;
+    private static final long serialVersionUID = 201012132022L;
 
     private String websiteUrl;
     private String description;
     private Address address;
     private Integer id;
+    private Integer version;
     private String name;
 
     /**
@@ -40,6 +41,21 @@ public class Producer implements Serializable {
      */
     public Producer() {
         address = new Address();
+    }
+
+    /**
+     * @return the version
+     */
+    public Integer getVersion() {
+        return version;
+    }
+
+    /**
+     * @param version
+     *            the version to set
+     */
+    public void setVersion(Integer version) {
+        this.version = version;
     }
 
     /**

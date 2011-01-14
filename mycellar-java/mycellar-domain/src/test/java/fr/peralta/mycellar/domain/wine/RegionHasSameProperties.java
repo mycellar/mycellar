@@ -21,19 +21,18 @@ package fr.peralta.mycellar.domain.wine;
 import static fr.peralta.mycellar.domain.DomainMatchers.hasSameProperties;
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.CoreMatchers.is;
-import fr.peralta.mycellar.test.matchers.PropertiesMatcher;
+import fr.peralta.mycellar.domain.shared.NamedEntityHasSameProperties;
 
 /**
  * @author speralta
  */
-public class RegionHasSameProperties extends PropertiesMatcher<Region> {
+public class RegionHasSameProperties extends NamedEntityHasSameProperties<Region> {
 
-    public RegionHasSameProperties(Region region) {
-        addProperty("description", is(equalTo(region.getDescription())));
-        addProperty("id", is(equalTo(region.getId())));
-        addProperty("country", hasSameProperties(region.getCountry()));
-        addProperty("map", hasSameProperties(region.getMap()));
-        addProperty("name", is(equalTo(region.getName())));
+    public RegionHasSameProperties(Region object) {
+        super(object);
+        addProperty("description", is(equalTo(object.getDescription())));
+        addProperty("country", hasSameProperties(object.getCountry()));
+        addProperty("map", hasSameProperties(object.getMap()));
     }
 
 }

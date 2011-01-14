@@ -18,6 +18,7 @@
  */
 package fr.peralta.mycellar.interfaces.facades.wine;
 
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -41,5 +42,11 @@ public interface WineServiceFacade {
      * @return
      */
     Map<Appellation, Integer> getAppellationsWithCounts(Region region);
+
+    /**
+     * @param term
+     * @return
+     */
+    List<Producer> getProducersStartingWith(String term);
 
 }

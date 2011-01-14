@@ -18,20 +18,20 @@
  */
 package fr.peralta.mycellar.domain.image;
 
-import static org.hamcrest.CoreMatchers.*;
-import fr.peralta.mycellar.test.matchers.PropertiesMatcher;
+import static org.hamcrest.CoreMatchers.equalTo;
+import static org.hamcrest.CoreMatchers.is;
+import fr.peralta.mycellar.domain.shared.NamedEntityHasSameProperties;
 
 /**
  * @author speralta
  */
-public class ImageHasSameProperties extends PropertiesMatcher<Image> {
+public class ImageHasSameProperties extends NamedEntityHasSameProperties<Image> {
 
-    public ImageHasSameProperties(Image image) {
-        addProperty("content", is(equalTo(image.getContent())));
-        addProperty("contentType", is(equalTo(image.getContentType())));
-        addProperty("height", is(equalTo(image.getHeight())));
-        addProperty("id", is(equalTo(image.getId())));
-        addProperty("name", is(equalTo(image.getName())));
-        addProperty("width", is(equalTo(image.getWidth())));
+    public ImageHasSameProperties(Image object) {
+        super(object);
+        addProperty("content", is(equalTo(object.getContent())));
+        addProperty("contentType", is(equalTo(object.getContentType())));
+        addProperty("height", is(equalTo(object.getHeight())));
+        addProperty("width", is(equalTo(object.getWidth())));
     }
 }

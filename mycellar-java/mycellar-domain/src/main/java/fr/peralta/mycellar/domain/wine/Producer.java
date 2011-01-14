@@ -63,7 +63,6 @@ public class Producer extends NamedEntity<Producer> {
      * @param websiteUrl
      * @param description
      * @param address
-     * @param position
      */
     public Producer(String name, String websiteUrl, String description, Address address) {
         super(name);
