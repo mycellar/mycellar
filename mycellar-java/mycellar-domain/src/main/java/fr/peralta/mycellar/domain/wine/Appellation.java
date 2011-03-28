@@ -46,38 +46,26 @@ public class Appellation extends NamedEntity<Appellation> {
 
     private static final long serialVersionUID = 201011071628L;
 
-    @Embedded
-    private Map map;
-
     @Column(name = "DESCRIPTION")
     private String description;
-
-    @ManyToOne
-    @JoinColumn(name = "REGION", nullable = false)
-    private Region region;
 
     @Id
     @GeneratedValue(generator = "APPELLATION_ID_GENERATOR")
     @Column(name = "ID", nullable = false, unique = true)
     private Integer id;
 
-    /**
-     * @param name
-     * @param region
-     * @param map
-     * @param description
-     */
-    public Appellation(String name, Region region, Map map, String description) {
-        super(name);
-        this.region = region;
-        this.map = map;
-        this.description = description;
-    }
+    @Embedded
+    private Map map;
+
+    @ManyToOne
+    @JoinColumn(name = "REGION", nullable = false)
+    private Region region;
 
     /**
-     * Needed by hibernate.
+     * @return the description
      */
-    Appellation() {
+    public String getDescription() {
+        return description;
     }
 
     /**
@@ -96,13 +84,6 @@ public class Appellation extends NamedEntity<Appellation> {
     }
 
     /**
-     * @return the description
-     */
-    public String getDescription() {
-        return description;
-    }
-
-    /**
      * @return the region
      */
     public Region getRegion() {
@@ -110,11 +91,27 @@ public class Appellation extends NamedEntity<Appellation> {
     }
 
     /**
-     * {@inheritDoc}
+     * @param description
+     *            the description to set
      */
-    @Override
-    protected Object[] getHashCodeData() {
-        return new Object[] { getName() };
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    /**
+     * @param map
+     *            the map to set
+     */
+    public void setMap(Map map) {
+        this.map = map;
+    }
+
+    /**
+     * @param region
+     *            the region to set
+     */
+    public void setRegion(Region region) {
+        this.region = region;
     }
 
     /**
@@ -124,6 +121,14 @@ public class Appellation extends NamedEntity<Appellation> {
     protected boolean dataEquals(Appellation other) {
         return ObjectUtils.equals(getName(), other.getName())
                 && ObjectUtils.equals(getRegion(), other.getRegion());
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    protected Object[] getHashCodeData() {
+        return new Object[] { getName() };
     }
 
 }

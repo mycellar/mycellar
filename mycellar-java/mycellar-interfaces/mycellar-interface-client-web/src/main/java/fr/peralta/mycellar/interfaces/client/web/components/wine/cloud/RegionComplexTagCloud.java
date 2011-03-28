@@ -23,10 +23,10 @@ import java.util.Map;
 import org.apache.wicket.Component;
 import org.apache.wicket.model.IModel;
 
+import fr.peralta.mycellar.domain.wine.Country;
+import fr.peralta.mycellar.domain.wine.Region;
 import fr.peralta.mycellar.interfaces.client.web.components.shared.cloud.ComplexTagCloud;
 import fr.peralta.mycellar.interfaces.client.web.components.wine.edit.RegionEditPanel;
-import fr.peralta.mycellar.interfaces.facades.wine.Country;
-import fr.peralta.mycellar.interfaces.facades.wine.Region;
 
 /**
  * @author speralta

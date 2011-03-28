@@ -23,6 +23,6 @@ package fr.peralta.mycellar.domain.wine;
  */
 public enum WineTypeEnum {
 
-    STILL, SPARKLING, SPIRIT, OTHER;
+    OTHER, SPARKLING, SPIRIT, STILL;
 
 }

@@ -18,10 +18,8 @@
  */
 package fr.peralta.mycellar.application.stock;
 
-import java.util.List;
-
+import fr.peralta.mycellar.domain.stock.Arrival;
 import fr.peralta.mycellar.domain.stock.Bottle;
-import fr.peralta.mycellar.domain.stock.Input;
 
 /**
  * @author speralta
@@ -29,9 +27,9 @@ import fr.peralta.mycellar.domain.stock.Input;
 public interface StockService {
 
     /**
-     * @param inputs
+     * @param arrival
      */
-    void stock(List<Input> inputs);
+    void stock(Arrival arrival);
 
     /**
      * @param id

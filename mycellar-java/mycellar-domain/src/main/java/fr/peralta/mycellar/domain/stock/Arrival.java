@@ -16,7 +16,7 @@
  * You should have received a copy of the GNU General Public License
  * along with MyCellar. If not, see <http://www.gnu.org/licenses/>.
  */
-package fr.peralta.mycellar.interfaces.facades.stock;
+package fr.peralta.mycellar.domain.stock;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -32,19 +32,48 @@ public class Arrival implements Serializable {
 
     private static final long serialVersionUID = 201011071626L;
 
+    private List<ArrivalBottle> arrivalBottles = new ArrayList<ArrivalBottle>();
+
     private LocalDate date;
 
     private float otherCharges;
 
     private String source;
 
-    private List<ArrivalBottle> arrivalBottles = new ArrayList<ArrivalBottle>();
+    public void addArrivalBottle(Bottle bottle, Integer quantity, float price) {
+        ArrivalBottle arrivalBottle = new ArrivalBottle();
+        arrivalBottle.setBottle(bottle);
+        arrivalBottle.setPrice(price);
+        arrivalBottle.setQuantity(quantity);
+        arrivalBottles.add(arrivalBottle);
+    }
+
+    /**
+     * @return the arrivalBottles
+     */
+    public List<ArrivalBottle> getArrivalBottles() {
+        return arrivalBottles;
+    }
 
     /**
      * @return the date
      */
     public LocalDate getDate() {
         return date;
+    }
+
+    /**
+     * @return the otherCharges
+     */
+    public float getOtherCharges() {
+        return otherCharges;
+    }
+
+    /**
+     * @return the source
+     */
+    public String getSource() {
+        return source;
     }
 
     /**
@@ -56,13 +85,6 @@ public class Arrival implements Serializable {
     }
 
     /**
-     * @return the otherCharges
-     */
-    public float getOtherCharges() {
-        return otherCharges;
-    }
-
-    /**
      * @param otherCharges
      *            the otherCharges to set
      */
@@ -71,32 +93,10 @@ public class Arrival implements Serializable {
     }
 
     /**
-     * @return the source
-     */
-    public String getSource() {
-        return source;
-    }
-
-    /**
      * @param source
      *            the source to set
      */
     public void setSource(String source) {
         this.source = source;
-    }
-
-    /**
-     * @return the arrivalBottles
-     */
-    public List<ArrivalBottle> getArrivalBottles() {
-        return arrivalBottles;
-    }
-
-    public void addArrivalBottle(Bottle bottle, Integer quantity, float price) {
-        ArrivalBottle arrivalBottle = new ArrivalBottle();
-        arrivalBottle.setBottle(bottle);
-        arrivalBottle.setPrice(price);
-        arrivalBottle.setQuantity(quantity);
-        arrivalBottles.add(arrivalBottle);
     }
 }

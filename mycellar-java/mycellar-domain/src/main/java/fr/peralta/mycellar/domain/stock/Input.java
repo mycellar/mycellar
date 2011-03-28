@@ -45,58 +45,45 @@ public class Input extends IdentifiedEntity<Input> {
 
     @Column(name = "ARRIVAL")
     @Type(type = "org.joda.time.contrib.hibernate.PersistentLocalDate")
-    private final LocalDate arrival;
-
-    @ManyToOne
-    @JoinColumn(name = "CELLAR", nullable = false)
-    private final Cellar cellar;
+    private LocalDate arrival;
 
     @ManyToOne
     @JoinColumn(name = "WINE", nullable = false)
-    private final Bottle bottle;
+    private Bottle bottle;
 
-    @Column(name = "NUMBER")
-    private final int number;
-
-    @Column(name = "PRICE")
-    private final float price;
-
-    @Column(name = "SOURCE")
-    private final String source;
+    @ManyToOne
+    @JoinColumn(name = "CELLAR", nullable = false)
+    private Cellar cellar;
 
     @Column(name = "CHARGES")
-    private final float charges;
+    private float charges;
 
     @Id
     @GeneratedValue(generator = "INPUT_ID_GENERATOR")
     @Column(name = "ID", nullable = false, unique = true)
     private Integer id;
 
-    /**
-     * @param arrival
-     * @param cellar
-     * @param bottle
-     * @param number
-     * @param price
-     * @param source
-     * @param charges
-     */
-    public Input(LocalDate arrival, Cellar cellar, Bottle bottle, int number, float price,
-            String source, float charges) {
-        this.arrival = arrival;
-        this.cellar = cellar;
-        this.bottle = bottle;
-        this.number = number;
-        this.price = price;
-        this.source = source;
-        this.charges = charges;
-    }
+    @Column(name = "NUMBER")
+    private int number;
+
+    @Column(name = "PRICE")
+    private float price;
+
+    @Column(name = "SOURCE")
+    private String source;
 
     /**
      * @return the arrival
      */
     public LocalDate getArrival() {
         return arrival;
+    }
+
+    /**
+     * @return the bottle
+     */
+    public Bottle getBottle() {
+        return bottle;
     }
 
     /**
@@ -107,10 +94,18 @@ public class Input extends IdentifiedEntity<Input> {
     }
 
     /**
-     * @return the bottle
+     * @return the charges
      */
-    public Bottle getBottle() {
-        return bottle;
+    public float getCharges() {
+        return charges;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public Integer getId() {
+        return id;
     }
 
     /**
@@ -135,26 +130,59 @@ public class Input extends IdentifiedEntity<Input> {
     }
 
     /**
-     * @return the charges
+     * @param arrival
+     *            the arrival to set
      */
-    public float getCharges() {
-        return charges;
+    public void setArrival(LocalDate arrival) {
+        this.arrival = arrival;
     }
 
     /**
-     * {@inheritDoc}
+     * @param bottle
+     *            the bottle to set
      */
-    @Override
-    public Integer getId() {
-        return id;
+    public void setBottle(Bottle bottle) {
+        this.bottle = bottle;
     }
 
     /**
-     * {@inheritDoc}
+     * @param cellar
+     *            the cellar to set
      */
-    @Override
-    protected Object[] getHashCodeData() {
-        return new Object[] { getArrival(), getCellar(), getSource() };
+    public void setCellar(Cellar cellar) {
+        this.cellar = cellar;
+    }
+
+    /**
+     * @param charges
+     *            the charges to set
+     */
+    public void setCharges(float charges) {
+        this.charges = charges;
+    }
+
+    /**
+     * @param number
+     *            the number to set
+     */
+    public void setNumber(int number) {
+        this.number = number;
+    }
+
+    /**
+     * @param price
+     *            the price to set
+     */
+    public void setPrice(float price) {
+        this.price = price;
+    }
+
+    /**
+     * @param source
+     *            the source to set
+     */
+    public void setSource(String source) {
+        this.source = source;
     }
 
     /**
@@ -169,6 +197,14 @@ public class Input extends IdentifiedEntity<Input> {
                 && ObjectUtils.equals(getPrice(), other.getPrice())
                 && ObjectUtils.equals(getSource(), other.getSource())
                 && ObjectUtils.equals(getBottle(), other.getBottle());
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    protected Object[] getHashCodeData() {
+        return new Object[] { getArrival(), getCellar(), getSource() };
     }
 
 }

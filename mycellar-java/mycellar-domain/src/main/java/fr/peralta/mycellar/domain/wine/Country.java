@@ -48,35 +48,25 @@ public class Country extends NamedEntity<Country> {
 
     private static final long serialVersionUID = 201011071641L;
 
-    @Embedded
-    private Map map;
-
     @Column(name = "DESCRIPTION")
     private String description;
-
-    @OneToMany(mappedBy = "country")
-    private final Set<Region> regions = new HashSet<Region>();
 
     @Id
     @GeneratedValue(generator = "COUNTRY_ID_GENERATOR")
     @Column(name = "ID", nullable = false, unique = true)
     private Integer id;
 
-    /**
-     * @param name
-     * @param map
-     * @param description
-     */
-    public Country(String name, Map map, String description) {
-        super(name);
-        this.map = map;
-        this.description = description;
-    }
+    @Embedded
+    private Map map;
+
+    @OneToMany(mappedBy = "country")
+    private final Set<Region> regions = new HashSet<Region>();
 
     /**
-     * Needed by hibernate.
+     * @return the description
      */
-    Country() {
+    public String getDescription() {
+        return description;
     }
 
     /**
@@ -95,13 +85,6 @@ public class Country extends NamedEntity<Country> {
     }
 
     /**
-     * @return the description
-     */
-    public String getDescription() {
-        return description;
-    }
-
-    /**
      * @return the regions
      */
     public Set<Region> getRegions() {
@@ -109,11 +92,19 @@ public class Country extends NamedEntity<Country> {
     }
 
     /**
-     * {@inheritDoc}
+     * @param description
+     *            the description to set
      */
-    @Override
-    protected Object[] getHashCodeData() {
-        return new Object[] { getName() };
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    /**
+     * @param map
+     *            the map to set
+     */
+    public void setMap(Map map) {
+        this.map = map;
     }
 
     /**
@@ -122,6 +113,14 @@ public class Country extends NamedEntity<Country> {
     @Override
     protected boolean dataEquals(Country other) {
         return ObjectUtils.equals(getName(), other.getName());
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    protected Object[] getHashCodeData() {
+        return new Object[] { getName() };
     }
 
 }

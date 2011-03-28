@@ -20,10 +20,10 @@ package fr.peralta.mycellar.interfaces.client.web.renderers.stock;
 
 import org.springframework.stereotype.Service;
 
+import fr.peralta.mycellar.domain.stock.Bottle;
+import fr.peralta.mycellar.domain.wine.Format;
+import fr.peralta.mycellar.domain.wine.Wine;
 import fr.peralta.mycellar.interfaces.client.web.renderers.shared.AbstractRenderer;
-import fr.peralta.mycellar.interfaces.facades.stock.Bottle;
-import fr.peralta.mycellar.interfaces.facades.wine.Format;
-import fr.peralta.mycellar.interfaces.facades.wine.Wine;
 
 /**
  * @author bperalta

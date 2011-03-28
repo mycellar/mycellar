@@ -25,11 +25,11 @@ import org.apache.wicket.event.IEvent;
 import org.apache.wicket.markup.html.panel.Panel;
 
 import sun.reflect.generics.reflectiveObjects.NotImplementedException;
+import fr.peralta.mycellar.domain.stock.ArrivalBottle;
 import fr.peralta.mycellar.interfaces.client.web.components.shared.Action;
 import fr.peralta.mycellar.interfaces.client.web.components.shared.ActionLink;
 import fr.peralta.mycellar.interfaces.client.web.components.shared.form.ObjectForm;
 import fr.peralta.mycellar.interfaces.client.web.components.stock.edit.ArrivalBottleEditPanel;
-import fr.peralta.mycellar.interfaces.facades.stock.ArrivalBottle;
 
 /**
  * @author speralta

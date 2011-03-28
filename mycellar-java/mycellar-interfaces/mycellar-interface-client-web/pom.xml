@@ -39,6 +39,10 @@
       <artifactId>mycellar-interface-facade-client</artifactId>
     </dependency>
     <dependency>
+      <groupId>${project.groupId}</groupId>
+      <artifactId>mycellar-domain</artifactId>
+    </dependency>
+    <dependency>
       <groupId>org.apache.wicket</groupId>
       <artifactId>wicket</artifactId>
     </dependency>

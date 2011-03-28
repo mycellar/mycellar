@@ -43,38 +43,33 @@ public class Producer extends NamedEntity<Producer> {
 
     private static final long serialVersionUID = 201011071626L;
 
-    @Pattern(regexp = ValidationPattern.URL_PATTERN)
-    @Column(name = "WEBSITE_URL")
-    private String websiteUrl;
+    @Embedded
+    private Address address;
 
     @Column(name = "DESCRIPTION")
     private String description;
-
-    @Embedded
-    private Address address;
 
     @Id
     @GeneratedValue(generator = "PRODUCER_ID_GENERATOR")
     @Column(name = "ID", nullable = false, unique = true)
     private Integer id;
 
+    @Pattern(regexp = ValidationPattern.URL_PATTERN)
+    @Column(name = "WEBSITE_URL")
+    private String websiteUrl;
+
     /**
-     * @param name
-     * @param websiteUrl
-     * @param description
-     * @param address
+     * @return the address
      */
-    public Producer(String name, String websiteUrl, String description, Address address) {
-        super(name);
-        this.websiteUrl = websiteUrl;
-        this.description = description;
-        this.address = address;
+    public Address getAddress() {
+        return address;
     }
 
     /**
-     * Needed by hibernate.
+     * @return the description
      */
-    Producer() {
+    public String getDescription() {
+        return description;
     }
 
     /**
@@ -93,25 +88,27 @@ public class Producer extends NamedEntity<Producer> {
     }
 
     /**
-     * @return the description
+     * @param address
+     *            the address to set
      */
-    public String getDescription() {
-        return description;
+    public void setAddress(Address address) {
+        this.address = address;
     }
 
     /**
-     * @return the address
+     * @param description
+     *            the description to set
      */
-    public Address getAddress() {
-        return address;
+    public void setDescription(String description) {
+        this.description = description;
     }
 
     /**
-     * {@inheritDoc}
+     * @param websiteUrl
+     *            the websiteUrl to set
      */
-    @Override
-    protected Object[] getHashCodeData() {
-        return new Object[] { getName() };
+    public void setWebsiteUrl(String websiteUrl) {
+        this.websiteUrl = websiteUrl;
     }
 
     /**
@@ -120,6 +117,14 @@ public class Producer extends NamedEntity<Producer> {
     @Override
     protected boolean dataEquals(Producer other) {
         return false;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    protected Object[] getHashCodeData() {
+        return new Object[] { getName() };
     }
 
 }

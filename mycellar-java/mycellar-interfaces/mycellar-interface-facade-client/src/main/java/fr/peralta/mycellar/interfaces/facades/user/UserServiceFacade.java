@@ -20,6 +20,8 @@ package fr.peralta.mycellar.interfaces.facades.user;
 
 import java.util.List;
 
+import fr.peralta.mycellar.domain.user.User;
+
 /**
  * @author speralta
  */

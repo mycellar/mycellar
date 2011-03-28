@@ -21,8 +21,8 @@ package fr.peralta.mycellar.interfaces.client.web.renderers.wine;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
+import fr.peralta.mycellar.domain.wine.Wine;
 import fr.peralta.mycellar.interfaces.client.web.renderers.shared.AbstractRenderer;
-import fr.peralta.mycellar.interfaces.facades.wine.Wine;
 
 /**
  * @author bperalta

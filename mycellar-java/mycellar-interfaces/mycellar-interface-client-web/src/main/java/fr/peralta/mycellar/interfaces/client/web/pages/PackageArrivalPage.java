@@ -25,9 +25,9 @@ import org.apache.wicket.request.mapper.parameter.PageParameters;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 import org.joda.time.LocalDate;
 
+import fr.peralta.mycellar.domain.stock.Arrival;
 import fr.peralta.mycellar.interfaces.client.web.components.stock.ArrivalBottlesEditPanel;
 import fr.peralta.mycellar.interfaces.client.web.pages.shared.CellarSuperPage;
-import fr.peralta.mycellar.interfaces.facades.stock.Arrival;
 import fr.peralta.mycellar.interfaces.facades.stock.StockServiceFacade;
 
 /**

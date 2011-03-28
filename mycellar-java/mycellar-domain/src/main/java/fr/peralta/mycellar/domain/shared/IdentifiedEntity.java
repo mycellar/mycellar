@@ -41,46 +41,6 @@ public abstract class IdentifiedEntity<E extends IdentifiedEntity<E>> implements
     private int version;
 
     /**
-     * @return the version
-     */
-    public int getVersion() {
-        return version;
-    }
-
-    public abstract Integer getId();
-
-    /**
-     * Utility method for <code>hashCode()</code> methods.
-     * 
-     * @param values
-     *            the values to use in calculation
-     * @return the hash code value
-     */
-    protected int calculateHashCode(final Object... values) {
-        HashCodeBuilder builder = new HashCodeBuilder();
-        for (Object value : values) {
-            builder.append(value);
-        }
-        return builder.toHashCode();
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public int hashCode() {
-        return calculateHashCode(getHashCodeData());
-    }
-
-    /**
-     * Get the data used to calculate hash code; use getters not fields in case
-     * the instance is a proxy.
-     * 
-     * @return the data
-     */
-    protected abstract Object[] getHashCodeData();
-
-    /**
      * {@inheritDoc}
      */
     @SuppressWarnings("unchecked")
@@ -106,6 +66,46 @@ public abstract class IdentifiedEntity<E extends IdentifiedEntity<E>> implements
         return dataEquals((E) other);
     }
 
+    public abstract Integer getId();
+
+    /**
+     * @return the version
+     */
+    public int getVersion() {
+        return version;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public int hashCode() {
+        return calculateHashCode(getHashCodeData());
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public String toString() {
+        return ToStringBuilder.reflectionToString(this);
+    }
+
+    /**
+     * Utility method for <code>hashCode()</code> methods.
+     * 
+     * @param values
+     *            the values to use in calculation
+     * @return the hash code value
+     */
+    protected int calculateHashCode(final Object... values) {
+        HashCodeBuilder builder = new HashCodeBuilder();
+        for (Object value : values) {
+            builder.append(value);
+        }
+        return builder.toHashCode();
+    }
+
     /**
      * Compare data only; null, class, and pk have been checked.
      * 
@@ -116,11 +116,11 @@ public abstract class IdentifiedEntity<E extends IdentifiedEntity<E>> implements
     protected abstract boolean dataEquals(E other);
 
     /**
-     * {@inheritDoc}
+     * Get the data used to calculate hash code; use getters not fields in case
+     * the instance is a proxy.
+     * 
+     * @return the data
      */
-    @Override
-    public String toString() {
-        return ToStringBuilder.reflectionToString(this);
-    }
+    protected abstract Object[] getHashCodeData();
 
 }

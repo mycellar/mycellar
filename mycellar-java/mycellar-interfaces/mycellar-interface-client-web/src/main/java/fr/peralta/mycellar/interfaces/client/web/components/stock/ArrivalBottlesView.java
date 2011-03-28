@@ -27,8 +27,8 @@ import org.apache.wicket.markup.html.list.PropertyListView;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 
+import fr.peralta.mycellar.domain.stock.ArrivalBottle;
 import fr.peralta.mycellar.interfaces.client.web.renderers.shared.RendererServiceFacade;
-import fr.peralta.mycellar.interfaces.facades.stock.ArrivalBottle;
 
 /**
  * @author speralta

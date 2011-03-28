@@ -38,42 +38,28 @@ import fr.peralta.mycellar.domain.shared.NamedEntity;
 public class Image extends NamedEntity<Image> {
     private static final long serialVersionUID = 201011082031L;
 
+    @Column(name = "CONTENT")
+    private byte[] content;
+
     @Column(name = "CONTENT_TYPE", nullable = false)
     private String contentType;
 
     @Column(name = "HEIGHT")
     private int height;
 
-    @Column(name = "WIDTH")
-    private int width;
-
-    @Column(name = "CONTENT")
-    private byte[] content;
-
     @Id
     @GeneratedValue(generator = "IMAGE_ID_GENERATOR")
     @Column(name = "ID", nullable = false, unique = true)
     private Integer id;
 
-    /**
-     * Needed by hibernate.
-     */
-    Image() {
-    }
+    @Column(name = "WIDTH")
+    private int width;
 
     /**
-     * @param name
-     * @param contentType
-     * @param height
-     * @param width
-     * @param content
+     * @return the content
      */
-    public Image(String name, String contentType, int height, int width, byte[] content) {
-        super(name);
-        this.contentType = contentType;
-        this.height = height;
-        this.width = width;
-        this.content = content;
+    public byte[] getContent() {
+        return content;
     }
 
     /**
@@ -91,6 +77,14 @@ public class Image extends NamedEntity<Image> {
     }
 
     /**
+     * @return the id
+     */
+    @Override
+    public Integer getId() {
+        return id;
+    }
+
+    /**
      * @return the width
      */
     public int getWidth() {
@@ -98,18 +92,35 @@ public class Image extends NamedEntity<Image> {
     }
 
     /**
-     * @return the content
+     * @param content
+     *            the content to set
      */
-    public byte[] getContent() {
-        return content;
+    public void setContent(byte[] content) {
+        this.content = content;
     }
 
     /**
-     * @return the id
+     * @param contentType
+     *            the contentType to set
      */
-    @Override
-    public Integer getId() {
-        return id;
+    public void setContentType(String contentType) {
+        this.contentType = contentType;
+    }
+
+    /**
+     * @param height
+     *            the height to set
+     */
+    public void setHeight(int height) {
+        this.height = height;
+    }
+
+    /**
+     * @param width
+     *            the width to set
+     */
+    public void setWidth(int width) {
+        this.width = width;
     }
 
     /**

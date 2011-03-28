@@ -35,20 +35,18 @@ public class Map implements Serializable {
 
     private static final long serialVersionUID = 201011071647L;
 
-    @Embedded
-    private final Position position;
-
     @OneToOne
     @JoinColumn(name = "IMAGE", nullable = false)
-    private final Image image;
+    private Image image;
+
+    @Embedded
+    private Position position;
 
     /**
-     * @param position
-     * @param image
+     * @return the image
      */
-    public Map(Position position, Image image) {
-        this.position = position;
-        this.image = image;
+    public Image getImage() {
+        return image;
     }
 
     /**
@@ -59,10 +57,19 @@ public class Map implements Serializable {
     }
 
     /**
-     * @return the image
+     * @param image
+     *            the image to set
      */
-    public Image getImage() {
-        return image;
+    public void setImage(Image image) {
+        this.image = image;
+    }
+
+    /**
+     * @param position
+     *            the position to set
+     */
+    public void setPosition(Position position) {
+        this.position = position;
     }
 
 }

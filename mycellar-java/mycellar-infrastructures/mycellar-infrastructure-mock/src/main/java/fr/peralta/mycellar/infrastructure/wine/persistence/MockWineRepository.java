@@ -59,7 +59,8 @@ public class MockWineRepository implements WineRepository {
     public Map<Country, Integer> getAllCountriesWithCounts() {
         Map<Country, Integer> result = new HashMap<Country, Integer>();
         for (int i = 0; i < countries.length; i++) {
-            Country country = new Country(countries[i], null, "");
+            Country country = new Country();
+            country.setName(countries[i]);
             new DirectPropertyAccessor().getSetter(Country.class, "id").set(country, i, null);
             int a = (i + 5) % 10;
             if (a == 0) {
@@ -84,7 +85,9 @@ public class MockWineRepository implements WineRepository {
             }
         }
         for (int i = 0; i < regions[position].length; i++) {
-            Region region = new Region(regions[position][i], country, null, "");
+            Region region = new Region();
+            region.setName(regions[position][i]);
+            region.setCountry(country);
             new DirectPropertyAccessor().getSetter(Region.class, "id").set(region, i, null);
             int a = (i + 5) % 10;
             if (a == 0) {
@@ -111,7 +114,9 @@ public class MockWineRepository implements WineRepository {
             }
         }
         for (int i = 0; i < appellations[position].length; i++) {
-            Appellation appellation = new Appellation(appellations[position][i], region, null, "");
+            Appellation appellation = new Appellation();
+            appellation.setName(appellations[position][i]);
+            appellation.setRegion(region);
             new DirectPropertyAccessor().getSetter(Appellation.class, "id").set(appellation, i,
                     null);
             int a = (i + 5) % 10;

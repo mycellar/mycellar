@@ -50,10 +50,6 @@ public class Varietal extends NamedEntity<Varietal> {
     @Column(name = "DESCRIPTION")
     private String description;
 
-    @Column(name = "SKIN")
-    @Enumerated(EnumType.STRING)
-    private VarietalColorEnum skin;
-
     @Column(name = "FLESH")
     @Enumerated(EnumType.STRING)
     private VarietalColorEnum flesh;
@@ -63,23 +59,22 @@ public class Varietal extends NamedEntity<Varietal> {
     @Column(name = "ID", nullable = false, unique = true)
     private Integer id;
 
+    @Column(name = "SKIN")
+    @Enumerated(EnumType.STRING)
+    private VarietalColorEnum skin;
+
     /**
-     * @param name
-     * @param skin
-     * @param flesh
-     * @param description
+     * @return the description
      */
-    public Varietal(String name, VarietalColorEnum skin, VarietalColorEnum flesh, String description) {
-        super(name);
-        this.skin = skin;
-        this.flesh = flesh;
-        this.description = description;
+    public String getDescription() {
+        return description;
     }
 
     /**
-     * Needed by hibernate.
+     * @return the flesh
      */
-    Varietal() {
+    public VarietalColorEnum getFlesh() {
+        return flesh;
     }
 
     /**
@@ -91,13 +86,6 @@ public class Varietal extends NamedEntity<Varietal> {
     }
 
     /**
-     * @return the description
-     */
-    public String getDescription() {
-        return description;
-    }
-
-    /**
      * @return the skin
      */
     public VarietalColorEnum getSkin() {
@@ -105,18 +93,27 @@ public class Varietal extends NamedEntity<Varietal> {
     }
 
     /**
-     * @return the flesh
+     * @param description
+     *            the description to set
      */
-    public VarietalColorEnum getFlesh() {
-        return flesh;
+    public void setDescription(String description) {
+        this.description = description;
     }
 
     /**
-     * {@inheritDoc}
+     * @param flesh
+     *            the flesh to set
      */
-    @Override
-    protected Object[] getHashCodeData() {
-        return new Object[] { getName() };
+    public void setFlesh(VarietalColorEnum flesh) {
+        this.flesh = flesh;
+    }
+
+    /**
+     * @param skin
+     *            the skin to set
+     */
+    public void setSkin(VarietalColorEnum skin) {
+        this.skin = skin;
     }
 
     /**
@@ -125,6 +122,14 @@ public class Varietal extends NamedEntity<Varietal> {
     @Override
     protected boolean dataEquals(Varietal other) {
         return ObjectUtils.equals(getName(), other.getName());
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    protected Object[] getHashCodeData() {
+        return new Object[] { getName() };
     }
 
 }

@@ -24,14 +24,14 @@ package fr.peralta.mycellar.domain.stock;
 public interface StockRepository {
 
     /**
-     * @param input
-     */
-    void stockInput(Input input);
-
-    /**
      * @param id
      * @return
      */
     Bottle findBottle(int id);
+
+    /**
+     * @param input
+     */
+    void stockInput(Input input);
 
 }

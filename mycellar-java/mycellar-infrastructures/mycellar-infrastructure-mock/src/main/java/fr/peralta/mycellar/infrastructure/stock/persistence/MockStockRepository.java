@@ -54,8 +54,16 @@ public class MockStockRepository implements StockRepository {
      */
     @Override
     public Bottle findBottle(int id) {
-        Bottle bottle = new Bottle(new Wine("Vin", "", WineColorEnum.RED, WineTypeEnum.STILL, "",
-                2000, null, null, null), new Format("Bouteille", 1.5f));
+        Bottle bottle = new Bottle();
+        Wine wine = new Wine();
+        wine.setColor(WineColorEnum.RED);
+        wine.setName("Vin");
+        wine.setType(WineTypeEnum.STILL);
+        wine.setVintage(2000);
+        Format format = new Format();
+        format.setCapacity(1.5f);
+        format.setName("Bouteille");
+        bottle.setFormat(format);
         new DirectPropertyAccessor().getSetter(Bottle.class, "id").set(bottle, id, null);
         return bottle;
     }

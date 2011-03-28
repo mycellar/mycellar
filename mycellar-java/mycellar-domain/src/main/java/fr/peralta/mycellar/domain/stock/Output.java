@@ -43,23 +43,13 @@ public class Output extends IdentifiedEntity<Output> {
 
     private static final long serialVersionUID = 201011111800L;
 
-    @Column(name = "OUTPUT")
-    @Type(type = "org.joda.time.contrib.hibernate.PersistentLocalDate")
-    private LocalDate output;
-
-    @ManyToOne
-    @JoinColumn(name = "CELLAR", nullable = false)
-    private Cellar cellar;
-
     @ManyToOne
     @JoinColumn(name = "WINE", nullable = false)
     private Bottle bottle;
 
-    @Column(name = "NUMBER")
-    private int number;
-
-    @Column(name = "PRICE")
-    private float price;
+    @ManyToOne
+    @JoinColumn(name = "CELLAR", nullable = false)
+    private Cellar cellar;
 
     @Column(name = "DESTINATION")
     private String destination;
@@ -69,43 +59,15 @@ public class Output extends IdentifiedEntity<Output> {
     @Column(name = "ID", nullable = false, unique = true)
     private Integer id;
 
-    /**
-     * @param output
-     * @param cellar
-     * @param bottle
-     * @param number
-     * @param price
-     * @param destination
-     */
-    public Output(LocalDate output, Cellar cellar, Bottle bottle, int number, float price,
-            String destination) {
-        this.output = output;
-        this.cellar = cellar;
-        this.bottle = bottle;
-        this.number = number;
-        this.price = price;
-        this.destination = destination;
-    }
+    @Column(name = "NUMBER")
+    private int number;
 
-    /**
-     * 
-     */
-    Output() {
-    }
+    @Column(name = "OUTPUT")
+    @Type(type = "org.joda.time.contrib.hibernate.PersistentLocalDate")
+    private LocalDate output;
 
-    /**
-     * @return the output
-     */
-    public LocalDate getOutput() {
-        return output;
-    }
-
-    /**
-     * @return the cellar
-     */
-    public Cellar getCellar() {
-        return cellar;
-    }
+    @Column(name = "PRICE")
+    private float price;
 
     /**
      * @return the bottle
@@ -115,17 +77,10 @@ public class Output extends IdentifiedEntity<Output> {
     }
 
     /**
-     * @return the number
+     * @return the cellar
      */
-    public int getNumber() {
-        return number;
-    }
-
-    /**
-     * @return the price
-     */
-    public float getPrice() {
-        return price;
+    public Cellar getCellar() {
+        return cellar;
     }
 
     /**
@@ -138,8 +93,78 @@ public class Output extends IdentifiedEntity<Output> {
     /**
      * @return the id
      */
+    @Override
     public Integer getId() {
         return id;
+    }
+
+    /**
+     * @return the number
+     */
+    public int getNumber() {
+        return number;
+    }
+
+    /**
+     * @return the output
+     */
+    public LocalDate getOutput() {
+        return output;
+    }
+
+    /**
+     * @return the price
+     */
+    public float getPrice() {
+        return price;
+    }
+
+    /**
+     * @param bottle
+     *            the bottle to set
+     */
+    public void setBottle(Bottle bottle) {
+        this.bottle = bottle;
+    }
+
+    /**
+     * @param cellar
+     *            the cellar to set
+     */
+    public void setCellar(Cellar cellar) {
+        this.cellar = cellar;
+    }
+
+    /**
+     * @param destination
+     *            the destination to set
+     */
+    public void setDestination(String destination) {
+        this.destination = destination;
+    }
+
+    /**
+     * @param number
+     *            the number to set
+     */
+    public void setNumber(int number) {
+        this.number = number;
+    }
+
+    /**
+     * @param output
+     *            the output to set
+     */
+    public void setOutput(LocalDate output) {
+        this.output = output;
+    }
+
+    /**
+     * @param price
+     *            the price to set
+     */
+    public void setPrice(float price) {
+        this.price = price;
     }
 
     /**

@@ -27,6 +27,12 @@ import java.util.Map;
 public interface WineRepository {
 
     /**
+     * @param region
+     * @return
+     */
+    Map<Appellation, Integer> getAllAppellationsFromRegionWithCounts(Region region);
+
+    /**
      * @return
      */
     Map<Country, Integer> getAllCountriesWithCounts();
@@ -36,11 +42,5 @@ public interface WineRepository {
      * @return
      */
     Map<Region, Integer> getAllRegionsFromCountryWithCounts(Country country);
-
-    /**
-     * @param region
-     * @return
-     */
-    Map<Appellation, Integer> getAllAppellationsFromRegionWithCounts(Region region);
 
 }

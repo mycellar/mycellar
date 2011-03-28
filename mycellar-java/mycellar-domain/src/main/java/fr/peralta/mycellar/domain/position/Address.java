@@ -36,40 +36,36 @@ public class Address implements Serializable {
 
     private static final long serialVersionUID = 201012140830L;
 
-    @Column(name = "ADDRESS_LINE_1")
-    private final String line1;
-
-    @Column(name = "ADDRESS_LINE_2")
-    private final String line2;
-
-    @Column(name = "ADDRESS_ZIP_CODE")
-    private final String zipCode;
-
     @Column(name = "ADDRESS_CITY")
-    private final String city;
+    private String city;
 
     @JoinColumn(name = "COUNTRY")
-    private final Country country;
+    private Country country;
+
+    @Column(name = "ADDRESS_LINE_1")
+    private String line1;
+
+    @Column(name = "ADDRESS_LINE_2")
+    private String line2;
 
     @Embedded
-    private final Position position;
+    private Position position;
+
+    @Column(name = "ADDRESS_ZIP_CODE")
+    private String zipCode;
 
     /**
-     * @param line1
-     * @param line2
-     * @param zipCode
-     * @param city
-     * @param country
-     * @param position
+     * @return the city
      */
-    public Address(String line1, String line2, String zipCode, String city, Country country,
-            Position position) {
-        this.line1 = line1;
-        this.line2 = line2;
-        this.zipCode = zipCode;
-        this.city = city;
-        this.country = country;
-        this.position = position;
+    public String getCity() {
+        return city;
+    }
+
+    /**
+     * @return the country
+     */
+    public Country getCountry() {
+        return country;
     }
 
     /**
@@ -87,6 +83,13 @@ public class Address implements Serializable {
     }
 
     /**
+     * @return the position
+     */
+    public Position getPosition() {
+        return position;
+    }
+
+    /**
      * @return the zipCode
      */
     public String getZipCode() {
@@ -94,24 +97,51 @@ public class Address implements Serializable {
     }
 
     /**
-     * @return the city
+     * @param city
+     *            the city to set
      */
-    public String getCity() {
-        return city;
+    public void setCity(String city) {
+        this.city = city;
     }
 
     /**
-     * @return the country
+     * @param country
+     *            the country to set
      */
-    public Country getCountry() {
-        return country;
+    public void setCountry(Country country) {
+        this.country = country;
     }
 
     /**
-     * @return the position
+     * @param line1
+     *            the line1 to set
      */
-    public Position getPosition() {
-        return position;
+    public void setLine1(String line1) {
+        this.line1 = line1;
+    }
+
+    /**
+     * @param line2
+     *            the line2 to set
+     */
+    public void setLine2(String line2) {
+        this.line2 = line2;
+    }
+
+    /**
+     * @param position
+     *            the position to set
+     */
+    public void setPosition(Position position) {
+        this.position = position;
+    }
+
+    /**
+     * @param zipCode
+     *            the zipCode to set
+     */
+    public void setZipCode(String zipCode) {
+        this.zipCode = zipCode;
     }
 
 }

@@ -18,17 +18,12 @@
  */
 package fr.peralta.mycellar.interfaces.facades.stock;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import fr.peralta.mycellar.application.stock.StockService;
-import fr.peralta.mycellar.domain.stock.Cellar;
-import fr.peralta.mycellar.domain.stock.Input;
-import fr.peralta.mycellar.interfaces.facades.shared.MapperServiceFacade;
+import fr.peralta.mycellar.domain.stock.Arrival;
 
 /**
  * @author speralta
@@ -38,23 +33,13 @@ public class StockServiceFacadeImpl implements StockServiceFacade {
 
     private StockService stockService;
 
-    private MapperServiceFacade mapperServiceFacade;
-
     /**
      * {@inheritDoc}
      */
     @Override
     @Transactional
     public void arrival(Arrival arrival) {
-        List<Input> inputs = new ArrayList<Input>();
-        float unitCharges = arrival.getOtherCharges() / arrival.getArrivalBottles().size();
-        for (ArrivalBottle arrivalBottle : arrival.getArrivalBottles()) {
-            inputs.add(new Input(arrival.getDate(), (Cellar) null, mapperServiceFacade.map(
-                    arrivalBottle.getBottle(), fr.peralta.mycellar.domain.stock.Bottle.class),
-                    arrivalBottle.getQuantity(), arrivalBottle.getPrice(), arrival.getSource(),
-                    unitCharges));
-        }
-        stockService.stock(inputs);
+        stockService.stock(arrival);
     }
 
     /**
@@ -64,15 +49,6 @@ public class StockServiceFacadeImpl implements StockServiceFacade {
     @Autowired
     public void setStockService(StockService stockService) {
         this.stockService = stockService;
-    }
-
-    /**
-     * @param mapperServiceFacade
-     *            the mapperServiceFacade to set
-     */
-    @Autowired
-    public void setMapperServiceFacade(MapperServiceFacade mapperServiceFacade) {
-        this.mapperServiceFacade = mapperServiceFacade;
     }
 
 }

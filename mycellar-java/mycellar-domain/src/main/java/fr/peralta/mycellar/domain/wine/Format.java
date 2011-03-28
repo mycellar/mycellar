@@ -50,18 +50,10 @@ public class Format extends NamedEntity<Format> {
     private Integer id;
 
     /**
-     * @param name
-     * @param capacity
+     * @return the capacity
      */
-    public Format(String name, float capacity) {
-        super(name);
-        this.capacity = capacity;
-    }
-
-    /**
-     * Needed by hibernate.
-     */
-    Format() {
+    public float getCapacity() {
+        return capacity;
     }
 
     /**
@@ -73,18 +65,11 @@ public class Format extends NamedEntity<Format> {
     }
 
     /**
-     * @return the capacity
+     * @param capacity
+     *            the capacity to set
      */
-    public float getCapacity() {
-        return capacity;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    protected Object[] getHashCodeData() {
-        return new Object[] { getName() };
+    public void setCapacity(float capacity) {
+        this.capacity = capacity;
     }
 
     /**
@@ -93,6 +78,14 @@ public class Format extends NamedEntity<Format> {
     @Override
     protected boolean dataEquals(Format other) {
         return ObjectUtils.equals(getName(), other.getName());
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    protected Object[] getHashCodeData() {
+        return new Object[] { getName() };
     }
 
 }

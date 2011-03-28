@@ -21,6 +21,11 @@ package fr.peralta.mycellar.interfaces.facades.wine;
 import java.util.List;
 import java.util.Map;
 
+import fr.peralta.mycellar.domain.wine.Appellation;
+import fr.peralta.mycellar.domain.wine.Country;
+import fr.peralta.mycellar.domain.wine.Producer;
+import fr.peralta.mycellar.domain.wine.Region;
+
 /**
  * @author speralta
  */

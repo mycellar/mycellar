@@ -25,12 +25,12 @@ import org.apache.wicket.markup.html.panel.Panel;
 import org.apache.wicket.model.StringResourceModel;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 
+import fr.peralta.mycellar.domain.wine.Country;
+import fr.peralta.mycellar.domain.wine.Region;
 import fr.peralta.mycellar.interfaces.client.web.components.shared.Action;
 import fr.peralta.mycellar.interfaces.client.web.components.wine.cloud.AppellationComplexTagCloud;
 import fr.peralta.mycellar.interfaces.client.web.components.wine.cloud.CountryComplexTagCloud;
 import fr.peralta.mycellar.interfaces.client.web.components.wine.cloud.RegionComplexTagCloud;
-import fr.peralta.mycellar.interfaces.facades.wine.Country;
-import fr.peralta.mycellar.interfaces.facades.wine.Region;
 import fr.peralta.mycellar.interfaces.facades.wine.WineServiceFacade;
 
 /**
@@ -76,7 +76,8 @@ public class ArrivalBottleEditPanel extends Panel {
     private void replaceAppellationPanel() {
         Region region = (Region) get(REGION_COMPONENT_ID).getDefaultModelObject();
         replace(new AppellationComplexTagCloud(APPELLATION_COMPONENT_ID, new StringResourceModel(
-                "region", this, null), wineServiceFacade.getAppellationsWithCounts(region), region));
+                "appellation", this, null), wineServiceFacade.getAppellationsWithCounts(region),
+                region));
     }
 
     /**

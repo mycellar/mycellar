@@ -43,28 +43,36 @@ public class Cellar extends NamedEntity<Cellar> {
 
     private static final long serialVersionUID = 201011111734L;
 
-    @ManyToOne
-    @JoinColumn(name = "USER", nullable = false)
-    private User user;
-
     @Id
     @GeneratedValue(generator = "CELLAR_ID_GENERATOR")
     @Column(name = "ID", nullable = false, unique = true)
     private Integer id;
 
+    @ManyToOne
+    @JoinColumn(name = "USER", nullable = false)
+    private User user;
+
     /**
-     * @param name
-     * @param capacity
+     * {@inheritDoc}
      */
-    public Cellar(String name, User user) {
-        super(name);
-        this.user = user;
+    @Override
+    public Integer getId() {
+        return id;
     }
 
     /**
-     * Needed by Hibernate
+     * @return the user
      */
-    Cellar() {
+    public User getUser() {
+        return user;
+    }
+
+    /**
+     * @param user
+     *            the user to set
+     */
+    public void setUser(User user) {
+        this.user = user;
     }
 
     /**
@@ -82,21 +90,6 @@ public class Cellar extends NamedEntity<Cellar> {
     @Override
     protected Object[] getHashCodeData() {
         return new Object[] { getName(), getUser() };
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public Integer getId() {
-        return id;
-    }
-
-    /**
-     * @return the user
-     */
-    public User getUser() {
-        return user;
     }
 
 }

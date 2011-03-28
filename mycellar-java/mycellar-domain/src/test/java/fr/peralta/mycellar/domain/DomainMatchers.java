@@ -45,8 +45,18 @@ import fr.peralta.mycellar.test.matchers.MatcherHelper;
 public class DomainMatchers {
 
     @Factory
-    public static Matcher<? super User> hasSameProperties(User user) {
-        return MatcherHelper.hasSameProperties(user, UserHasSameProperties.class);
+    public static Matcher<? super Appellation> hasSameProperties(Appellation appellation) {
+        return MatcherHelper.hasSameProperties(appellation, AppellationHasSameProperties.class);
+    }
+
+    @Factory
+    public static Matcher<? super Country> hasSameProperties(Country country) {
+        return MatcherHelper.hasSameProperties(country, CountryHasSameProperties.class);
+    }
+
+    @Factory
+    public static Matcher<? super Image> hasSameProperties(Image image) {
+        return MatcherHelper.hasSameProperties(image, ImageHasSameProperties.class);
     }
 
     @Factory
@@ -60,13 +70,8 @@ public class DomainMatchers {
     }
 
     @Factory
-    public static Matcher<? super Image> hasSameProperties(Image image) {
-        return MatcherHelper.hasSameProperties(image, ImageHasSameProperties.class);
-    }
-
-    @Factory
-    public static Matcher<? super Country> hasSameProperties(Country country) {
-        return MatcherHelper.hasSameProperties(country, CountryHasSameProperties.class);
+    public static Matcher<? super Producer> hasSameProperties(Producer producer) {
+        return MatcherHelper.hasSameProperties(producer, ProducerHasSameProperties.class);
     }
 
     @Factory
@@ -75,13 +80,8 @@ public class DomainMatchers {
     }
 
     @Factory
-    public static Matcher<? super Appellation> hasSameProperties(Appellation appellation) {
-        return MatcherHelper.hasSameProperties(appellation, AppellationHasSameProperties.class);
-    }
-
-    @Factory
-    public static Matcher<? super Producer> hasSameProperties(Producer producer) {
-        return MatcherHelper.hasSameProperties(producer, ProducerHasSameProperties.class);
+    public static Matcher<? super User> hasSameProperties(User user) {
+        return MatcherHelper.hasSameProperties(user, UserHasSameProperties.class);
     }
 
     /**

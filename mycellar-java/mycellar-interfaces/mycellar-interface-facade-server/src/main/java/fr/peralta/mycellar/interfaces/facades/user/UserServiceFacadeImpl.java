@@ -25,15 +25,13 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import fr.peralta.mycellar.application.user.UserService;
-import fr.peralta.mycellar.interfaces.facades.shared.MapperServiceFacade;
+import fr.peralta.mycellar.domain.user.User;
 
 /**
  * @author speralta
  */
 @Service
 public class UserServiceFacadeImpl implements UserServiceFacade {
-
-    private MapperServiceFacade mapperServiceFacade;
 
     private UserService userService;
 
@@ -43,8 +41,7 @@ public class UserServiceFacadeImpl implements UserServiceFacade {
     @Override
     @Transactional
     public void newUser(User user) {
-        userService.newUser(mapperServiceFacade.map(user,
-                fr.peralta.mycellar.domain.user.User.class));
+        userService.newUser(user);
     }
 
     /**
@@ -53,16 +50,7 @@ public class UserServiceFacadeImpl implements UserServiceFacade {
     @Override
     @Transactional(readOnly = true)
     public List<User> getAllUsers() {
-        return mapperServiceFacade.mapList(userService.getAllUsers(), User.class);
-    }
-
-    /**
-     * @param mapperServiceFacade
-     *            the mapperServiceFacade to set
-     */
-    @Autowired
-    public void setMapperServiceFacade(MapperServiceFacade mapperServiceFacade) {
-        this.mapperServiceFacade = mapperServiceFacade;
+        return userService.getAllUsers();
     }
 
     /**

@@ -50,30 +50,13 @@ public class Stock extends IdentifiedEntity<Stock> {
     @JoinColumn(name = "CELLAR", nullable = false)
     private Cellar cellar;
 
-    @Column(name = "QUANTITY")
-    private Integer quantity;
-
     @Id
     @GeneratedValue(generator = "STOCK_ID_GENERATOR")
     @Column(name = "ID", nullable = false, unique = true)
     private Integer id;
 
-    /**
-     * @param bottle
-     * @param quantity
-     */
-    public Stock(Bottle bottle, Cellar cellar, Integer quantity) {
-        this.bottle = bottle;
-        this.cellar = cellar;
-        this.quantity = quantity;
-    }
-
-    /**
-     * Needed by Hibernate
-     */
-    Stock() {
-
-    }
+    @Column(name = "QUANTITY")
+    private Integer quantity;
 
     /**
      * @return the bottle
@@ -90,10 +73,42 @@ public class Stock extends IdentifiedEntity<Stock> {
     }
 
     /**
+     * {@inheritDoc}
+     */
+    @Override
+    public Integer getId() {
+        return id;
+    }
+
+    /**
      * @return the quantity
      */
     public Integer getQuantity() {
         return quantity;
+    }
+
+    /**
+     * @param bottle
+     *            the bottle to set
+     */
+    public void setBottle(Bottle bottle) {
+        this.bottle = bottle;
+    }
+
+    /**
+     * @param cellar
+     *            the cellar to set
+     */
+    public void setCellar(Cellar cellar) {
+        this.cellar = cellar;
+    }
+
+    /**
+     * @param quantity
+     *            the quantity to set
+     */
+    public void setQuantity(Integer quantity) {
+        this.quantity = quantity;
     }
 
     /**
@@ -110,14 +125,6 @@ public class Stock extends IdentifiedEntity<Stock> {
     @Override
     protected Object[] getHashCodeData() {
         return new Object[] { getBottle() };
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public Integer getId() {
-        return id;
     }
 
 }

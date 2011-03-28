@@ -55,36 +55,14 @@ public class Wine extends NamedEntity<Wine> {
 
     private static final long serialVersionUID = 201011121600L;
 
-    @Column(name = "DESCRIPTION")
-    private String description;
-
-    @Column(name = "COLOR")
-    @Enumerated(EnumType.STRING)
-    private WineColorEnum color;
-
-    @Column(name = "TYPE")
-    @Enumerated(EnumType.STRING)
-    private WineTypeEnum type;
-
-    @Column(name = "RANKING")
-    private String ranking;
-
-    @Column(name = "VINTAGE")
-    private Integer vintage;
-
     @Valid
     @ManyToOne
     @JoinColumn(name = "APPELLATION", nullable = false)
     private Appellation appellation;
 
-    @Valid
-    @ManyToOne
-    @JoinColumn(name = "PRODUCER", nullable = false)
-    private Producer producer;
-
-    @Pattern(regexp = ValidationPattern.URL_PATTERN)
-    @Column(name = "PHOTO_URL")
-    private String photoUrl;
+    @Column(name = "COLOR")
+    @Enumerated(EnumType.STRING)
+    private WineColorEnum color;
 
     @ElementCollection
     @JoinTable(name = "WINE_VARIETAL", joinColumns = @JoinColumn(name = "WINE"))
@@ -92,40 +70,59 @@ public class Wine extends NamedEntity<Wine> {
     @MapKeyJoinColumn(name = "VARIETAL")
     private final Map<Varietal, Integer> composition = new HashMap<Varietal, Integer>();
 
+    @Column(name = "DESCRIPTION")
+    private String description;
+
     @Id
     @GeneratedValue(generator = "WINE_ID_GENERATOR")
     @Column(name = "ID", nullable = false, unique = true)
     private Integer id;
 
+    @Pattern(regexp = ValidationPattern.URL_PATTERN)
+    @Column(name = "PHOTO_URL")
+    private String photoUrl;
+
+    @Valid
+    @ManyToOne
+    @JoinColumn(name = "PRODUCER", nullable = false)
+    private Producer producer;
+
+    @Column(name = "RANKING")
+    private String ranking;
+
+    @Column(name = "TYPE")
+    @Enumerated(EnumType.STRING)
+    private WineTypeEnum type;
+
+    @Column(name = "VINTAGE")
+    private Integer vintage;
+
     /**
-     * @param name
-     * @param description
-     * @param color
-     * @param type
-     * @param ranking
-     * @param vintage
-     * @param appellation
-     * @param producer
-     * @param photoUrl
+     * @return the appellation
      */
-    public Wine(String name, String description, WineColorEnum color, WineTypeEnum type,
-            String ranking, Integer vintage, Appellation appellation, Producer producer,
-            String photoUrl) {
-        super(name);
-        this.description = description;
-        this.color = color;
-        this.type = type;
-        this.ranking = ranking;
-        this.vintage = vintage;
-        this.appellation = appellation;
-        this.producer = producer;
-        this.photoUrl = photoUrl;
+    public Appellation getAppellation() {
+        return appellation;
     }
 
     /**
-     * Needed by hibernate.
+     * @return the color
      */
-    Wine() {
+    public WineColorEnum getColor() {
+        return color;
+    }
+
+    /**
+     * @return the composition
+     */
+    public Map<Varietal, Integer> getComposition() {
+        return Collections.unmodifiableMap(composition);
+    }
+
+    /**
+     * @return the description
+     */
+    public String getDescription() {
+        return description;
     }
 
     /**
@@ -137,45 +134,10 @@ public class Wine extends NamedEntity<Wine> {
     }
 
     /**
-     * @return the description
+     * @return the photoUrl
      */
-    public String getDescription() {
-        return description;
-    }
-
-    /**
-     * @return the color
-     */
-    public WineColorEnum getColor() {
-        return color;
-    }
-
-    /**
-     * @return the type
-     */
-    public WineTypeEnum getType() {
-        return type;
-    }
-
-    /**
-     * @return the ranking
-     */
-    public String getRanking() {
-        return ranking;
-    }
-
-    /**
-     * @return the vintage
-     */
-    public Integer getVintage() {
-        return vintage;
-    }
-
-    /**
-     * @return the appellation
-     */
-    public Appellation getAppellation() {
-        return appellation;
+    public String getPhotoUrl() {
+        return photoUrl;
     }
 
     /**
@@ -186,25 +148,88 @@ public class Wine extends NamedEntity<Wine> {
     }
 
     /**
-     * @return the photoUrl
+     * @return the ranking
      */
-    public String getPhotoUrl() {
-        return photoUrl;
+    public String getRanking() {
+        return ranking;
     }
 
     /**
-     * @return the composition
+     * @return the type
      */
-    public Map<Varietal, Integer> getComposition() {
-        return Collections.unmodifiableMap(composition);
+    public WineTypeEnum getType() {
+        return type;
     }
 
     /**
-     * {@inheritDoc}
+     * @return the vintage
      */
-    @Override
-    protected Object[] getHashCodeData() {
-        return new Object[] { getName(), getVintage(), getColor(), getType() };
+    public Integer getVintage() {
+        return vintage;
+    }
+
+    /**
+     * @param appellation
+     *            the appellation to set
+     */
+    public void setAppellation(Appellation appellation) {
+        this.appellation = appellation;
+    }
+
+    /**
+     * @param color
+     *            the color to set
+     */
+    public void setColor(WineColorEnum color) {
+        this.color = color;
+    }
+
+    /**
+     * @param description
+     *            the description to set
+     */
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    /**
+     * @param photoUrl
+     *            the photoUrl to set
+     */
+    public void setPhotoUrl(String photoUrl) {
+        this.photoUrl = photoUrl;
+    }
+
+    /**
+     * @param producer
+     *            the producer to set
+     */
+    public void setProducer(Producer producer) {
+        this.producer = producer;
+    }
+
+    /**
+     * @param ranking
+     *            the ranking to set
+     */
+    public void setRanking(String ranking) {
+        this.ranking = ranking;
+    }
+
+    /**
+     * @param type
+     *            the type to set
+     */
+    public void setType(WineTypeEnum type) {
+        this.type = type;
+    }
+
+    /**
+     * @param vintage
+     *            the vintage to set
+     */
+    public void setVintage(Integer vintage) {
+        this.vintage = vintage;
     }
 
     /**
@@ -218,5 +243,13 @@ public class Wine extends NamedEntity<Wine> {
                 && ObjectUtils.equals(getColor(), other.getColor())
                 && ObjectUtils.equals(getAppellation(), other.getAppellation())
                 && ObjectUtils.equals(getProducer(), other.getProducer());
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    protected Object[] getHashCodeData() {
+        return new Object[] { getName(), getVintage(), getColor(), getType() };
     }
 }

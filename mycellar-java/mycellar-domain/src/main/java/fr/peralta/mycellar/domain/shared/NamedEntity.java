@@ -33,19 +33,6 @@ public abstract class NamedEntity<E extends NamedEntity<E>> extends IdentifiedEn
     private String name;
 
     /**
-     * Default Constructor.
-     */
-    protected NamedEntity() {
-    }
-
-    /**
-     * @param name
-     */
-    protected NamedEntity(String name) {
-        this.name = name;
-    }
-
-    /**
      * @return the name
      */
     public String getName() {
@@ -56,7 +43,7 @@ public abstract class NamedEntity<E extends NamedEntity<E>> extends IdentifiedEn
      * @param name
      *            the name to set
      */
-    protected void setName(String name) {
+    public void setName(String name) {
         this.name = name;
     }
 

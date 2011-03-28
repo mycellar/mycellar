@@ -39,15 +39,6 @@ public class Position implements Serializable {
     private float longitude;
 
     /**
-     * @param latitude
-     * @param longitude
-     */
-    public Position(float latitude, float longitude) {
-        this.latitude = latitude;
-        this.longitude = longitude;
-    }
-
-    /**
      * @return latitude
      */
     public float getLatitude() {
@@ -59,6 +50,22 @@ public class Position implements Serializable {
      */
     public float getLongitude() {
         return longitude;
+    }
+
+    /**
+     * @param latitude
+     *            the latitude to set
+     */
+    public void setLatitude(float latitude) {
+        this.latitude = latitude;
+    }
+
+    /**
+     * @param longitude
+     *            the longitude to set
+     */
+    public void setLongitude(float longitude) {
+        this.longitude = longitude;
     }
 
 }

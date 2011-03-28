@@ -46,43 +46,45 @@ public class User extends IdentifiedEntity<User> {
 
     private static final long serialVersionUID = 201011121629L;
 
+    @OneToMany(mappedBy = "user")
+    private final Set<Cellar> cellars = new HashSet<Cellar>();
+
     @Column(name = "EMAIL", nullable = false)
     private String email;
 
-    @Column(name = "PASSWORD", nullable = false)
-    private String password;
-
     @Column(name = "FIRSTNAME", nullable = false)
     private String firstname;
-
-    @Column(name = "LASTNAME", nullable = false)
-    private String lastname;
 
     @Id
     @GeneratedValue(generator = "USER_ID_GENERATOR")
     @Column(name = "ID", nullable = false, unique = true)
     private Integer id;
 
-    @OneToMany(mappedBy = "user")
-    private final Set<Cellar> cellars = new HashSet<Cellar>();
+    @Column(name = "LASTNAME", nullable = false)
+    private String lastname;
+
+    @Column(name = "PASSWORD", nullable = false)
+    private String password;
 
     /**
-     * @param email
-     * @param password
-     * @param firstname
-     * @param lastname
+     * @return the cellars
      */
-    public User(String email, String password, String firstname, String lastname) {
-        this.email = email;
-        this.password = password;
-        this.firstname = firstname;
-        this.lastname = lastname;
+    public Set<Cellar> getCellars() {
+        return Collections.unmodifiableSet(cellars);
     }
 
     /**
-     * Needed by hibernate.
+     * @return the email
      */
-    User() {
+    public String getEmail() {
+        return email;
+    }
+
+    /**
+     * @return the firstname
+     */
+    public String getFirstname() {
+        return firstname;
     }
 
     /**
@@ -94,10 +96,10 @@ public class User extends IdentifiedEntity<User> {
     }
 
     /**
-     * @return the email
+     * @return the lastname
      */
-    public String getEmail() {
-        return email;
+    public String getLastname() {
+        return lastname;
     }
 
     /**
@@ -108,24 +110,35 @@ public class User extends IdentifiedEntity<User> {
     }
 
     /**
-     * @return the firstname
+     * @param email
+     *            the email to set
      */
-    public String getFirstname() {
-        return firstname;
+    public void setEmail(String email) {
+        this.email = email;
     }
 
     /**
-     * @return the lastname
+     * @param firstname
+     *            the firstname to set
      */
-    public String getLastname() {
-        return lastname;
+    public void setFirstname(String firstname) {
+        this.firstname = firstname;
     }
 
     /**
-     * @return the cellars
+     * @param lastname
+     *            the lastname to set
      */
-    public Set<Cellar> getCellars() {
-        return Collections.unmodifiableSet(cellars);
+    public void setLastname(String lastname) {
+        this.lastname = lastname;
+    }
+
+    /**
+     * @param password
+     *            the password to set
+     */
+    public void setPassword(String password) {
+        this.password = password;
     }
 
     /**

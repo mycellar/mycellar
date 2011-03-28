@@ -38,16 +38,11 @@ import fr.peralta.mycellar.domain.wine.Wine;
  * @author speralta
  */
 @Entity
-@Table(name = "BOTTLE", uniqueConstraints = @UniqueConstraint(columnNames = {
-        "WINE", "FORMAT" }))
+@Table(name = "BOTTLE", uniqueConstraints = @UniqueConstraint(columnNames = { "WINE", "FORMAT" }))
 @SequenceGenerator(name = "BOTTLE_ID_GENERATOR", allocationSize = 1)
 public class Bottle extends IdentifiedEntity<Bottle> {
 
     private static final long serialVersionUID = 201010311742L;
-
-    @ManyToOne
-    @JoinColumn(name = "WINE", nullable = false)
-    private Wine wine;
 
     @ManyToOne
     @JoinColumn(name = "FORMAT", nullable = false)
@@ -58,19 +53,15 @@ public class Bottle extends IdentifiedEntity<Bottle> {
     @Column(name = "ID", nullable = false, unique = true)
     private Integer id;
 
-    /**
-     * @param wine
-     * @param format
-     */
-    public Bottle(Wine wine, Format format) {
-        this.wine = wine;
-        this.format = format;
-    }
+    @ManyToOne
+    @JoinColumn(name = "WINE", nullable = false)
+    private Wine wine;
 
     /**
-     * Needed by hibernate.
+     * @return the format
      */
-    Bottle() {
+    public Format getFormat() {
+        return format;
     }
 
     /**
@@ -89,18 +80,19 @@ public class Bottle extends IdentifiedEntity<Bottle> {
     }
 
     /**
-     * @return the format
+     * @param format
+     *            the format to set
      */
-    public Format getFormat() {
-        return format;
+    public void setFormat(Format format) {
+        this.format = format;
     }
 
     /**
-     * {@inheritDoc}
+     * @param wine
+     *            the wine to set
      */
-    @Override
-    protected Object[] getHashCodeData() {
-        return new Object[] { getFormat(), getWine() };
+    public void setWine(Wine wine) {
+        this.wine = wine;
     }
 
     /**
@@ -110,6 +102,14 @@ public class Bottle extends IdentifiedEntity<Bottle> {
     protected boolean dataEquals(Bottle other) {
         return ObjectUtils.equals(getFormat(), other.getFormat())
                 && ObjectUtils.equals(getWine(), other.getWine());
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    protected Object[] getHashCodeData() {
+        return new Object[] { getFormat(), getWine() };
     }
 
 }

@@ -16,66 +16,63 @@
  * You should have received a copy of the GNU General Public License
  * along with MyCellar. If not, see <http://www.gnu.org/licenses/>.
  */
-package fr.peralta.mycellar.interfaces.facades.stock;
+package fr.peralta.mycellar.domain.stock;
 
 import java.io.Serializable;
 
-import fr.peralta.mycellar.interfaces.facades.user.User;
-
 /**
  * @author bperalta
- * 
  */
-public class Cellar implements Serializable {
-    private static final long serialVersionUID = 201011130029L;
+public class ArrivalBottle implements Serializable {
+    private static final long serialVersionUID = 201011071626L;
 
-    private String name;
-    private User user;
-    private Integer id;
+    private Bottle bottle;
+    private float price;
+    private Integer quantity;
 
     /**
-     * @return the name
+     * @return the bottle
      */
-    public String getName() {
-        return name;
+    public Bottle getBottle() {
+        return bottle;
     }
 
     /**
-     * @param name
-     *            the name to set
+     * @return the price
      */
-    public void setName(String name) {
-        this.name = name;
+    public float getPrice() {
+        return price;
     }
 
     /**
-     * @return the user
+     * @return the quantity
      */
-    public User getUser() {
-        return user;
+    public Integer getQuantity() {
+        return quantity;
     }
 
     /**
-     * @param user
-     *            the user to set
+     * @param bottle
+     *            the bottle to set
      */
-    public void setUser(User user) {
-        this.user = user;
+    public void setBottle(Bottle bottle) {
+        this.bottle = bottle;
     }
 
     /**
-     * @return the id
+     * @param price
+     *            the price to set
      */
-    public Integer getId() {
-        return id;
+    public void setPrice(float price) {
+        this.price = price;
     }
 
     /**
-     * @param id
-     *            the id to set
+     * @param quantity
+     *            the quantity to set
      */
-    public void setId(Integer id) {
-        this.id = id;
+    public void setQuantity(Integer quantity) {
+        this.quantity = quantity;
     }
 
 }

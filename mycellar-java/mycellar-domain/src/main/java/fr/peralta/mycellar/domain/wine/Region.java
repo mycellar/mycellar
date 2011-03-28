@@ -52,42 +52,44 @@ public class Region extends NamedEntity<Region> {
 
     private static final long serialVersionUID = 201010311741L;
 
-    @Embedded
-    private Map map;
-
-    @Column(name = "DESCRIPTION")
-    private String description;
+    @OneToMany(mappedBy = "region")
+    private final Set<Appellation> appellations = new HashSet<Appellation>();
 
     @Valid
     @ManyToOne
     @JoinColumn(name = "COUNTRY", nullable = false)
     private Country country;
 
-    @OneToMany(mappedBy = "region")
-    private final Set<Appellation> appellations = new HashSet<Appellation>();
+    @Column(name = "DESCRIPTION")
+    private String description;
 
     @Id
     @GeneratedValue(generator = "REGION_ID_GENERATOR")
     @Column(name = "ID", nullable = false, unique = true)
     private Integer id;
 
+    @Embedded
+    private Map map;
+
     /**
-     * @param name
-     * @param country
-     * @param map
-     * @param description
+     * @return the appellations
      */
-    public Region(String name, Country country, Map map, String description) {
-        super(name);
-        this.country = country;
-        this.map = map;
-        this.description = description;
+    public Set<Appellation> getAppellations() {
+        return Collections.unmodifiableSet(appellations);
     }
 
     /**
-     * Needed by Hibernate.
+     * @return the country
      */
-    Region() {
+    public Country getCountry() {
+        return country;
+    }
+
+    /**
+     * @return the description
+     */
+    public String getDescription() {
+        return description;
     }
 
     /**
@@ -106,32 +108,27 @@ public class Region extends NamedEntity<Region> {
     }
 
     /**
-     * @return the description
+     * @param country
+     *            the country to set
      */
-    public String getDescription() {
-        return description;
+    public void setCountry(Country country) {
+        this.country = country;
     }
 
     /**
-     * @return the country
+     * @param description
+     *            the description to set
      */
-    public Country getCountry() {
-        return country;
+    public void setDescription(String description) {
+        this.description = description;
     }
 
     /**
-     * @return the appellations
+     * @param map
+     *            the map to set
      */
-    public Set<Appellation> getAppellations() {
-        return Collections.unmodifiableSet(appellations);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    protected Object[] getHashCodeData() {
-        return new Object[] { getName() };
+    public void setMap(Map map) {
+        this.map = map;
     }
 
     /**
@@ -141,6 +138,14 @@ public class Region extends NamedEntity<Region> {
     protected boolean dataEquals(Region other) {
         return ObjectUtils.equals(getName(), other.getName())
                 && ObjectUtils.equals(getCountry(), other.getCountry());
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    protected Object[] getHashCodeData() {
+        return new Object[] { getName() };
     }
 
 }
