@@ -37,9 +37,9 @@ public abstract class AbstractPageTest {
     public void setUp() {
         applicationContext = new ApplicationContextMock();
         MockApplication mockApplication = new MockApplication();
-        mockApplication
-                .addComponentInstantiationListener(new SpringComponentInjector(
-                        mockApplication, applicationContext));
+        mockApplication.getComponentInstantiationListeners()
+                .add(new SpringComponentInjector(mockApplication,
+                        applicationContext));
         wicketTester = new WicketTester(mockApplication);
     }
 

@@ -40,7 +40,8 @@ public abstract class MyCellarWebApplication extends WebApplication {
     @Override
     protected void init() {
         super.init();
-        addComponentInstantiationListener(new SpringComponentInjector(this, getApplicationContext()));
+        getComponentInstantiationListeners().add(
+                new SpringComponentInjector(this, getApplicationContext()));
         getRootRequestMapperAsCompound().add(new MountedMapper("/home", getHomePage()));
         getRootRequestMapperAsCompound().add(
                 new MountedMapper("/packageArrival", PackageArrivalPage.class));
