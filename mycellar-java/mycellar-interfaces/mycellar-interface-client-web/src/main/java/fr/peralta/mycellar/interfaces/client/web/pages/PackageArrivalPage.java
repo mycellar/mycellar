@@ -35,6 +35,8 @@ import fr.peralta.mycellar.interfaces.facades.stock.StockServiceFacade;
  */
 public class PackageArrivalPage extends CellarSuperPage {
 
+    private static final long serialVersionUID = 201117181723L;
+
     private final Arrival arrival = new Arrival();
 
     @SpringBean

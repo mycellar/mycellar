@@ -30,6 +30,8 @@ import fr.peralta.mycellar.interfaces.client.web.components.shared.menu.MenuPane
  */
 public abstract class BasePage extends WebPage {
 
+    private static final long serialVersionUID = 201117181723L;
+
     /**
      * @param parameters
      */

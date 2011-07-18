@@ -31,9 +31,10 @@ import fr.peralta.mycellar.interfaces.facades.user.UserServiceFacade;
 
 /**
  * @author speralta
- * 
  */
 public class NewUserPage extends HomeSuperPage {
+
+    private static final long serialVersionUID = 201117181723L;
 
     @SpringBean
     private UserServiceFacade userServiceFacade;

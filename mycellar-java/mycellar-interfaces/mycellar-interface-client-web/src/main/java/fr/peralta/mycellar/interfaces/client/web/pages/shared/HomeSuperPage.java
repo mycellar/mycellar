@@ -25,6 +25,8 @@ import org.apache.wicket.request.mapper.parameter.PageParameters;
  */
 public abstract class HomeSuperPage extends BasePage {
 
+    private static final long serialVersionUID = 201117181723L;
+
     /**
      * @param parameters
      */

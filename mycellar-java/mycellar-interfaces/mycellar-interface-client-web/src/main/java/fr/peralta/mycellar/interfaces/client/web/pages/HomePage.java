@@ -28,6 +28,8 @@ import fr.peralta.mycellar.interfaces.client.web.pages.shared.HomeSuperPage;
  */
 public class HomePage extends HomeSuperPage {
 
+    private static final long serialVersionUID = 201117181723L;
+
     /**
      * @param parameters
      */

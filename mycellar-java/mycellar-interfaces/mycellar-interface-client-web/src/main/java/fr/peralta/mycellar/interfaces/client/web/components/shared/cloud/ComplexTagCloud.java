@@ -24,6 +24,7 @@ import java.util.List;
 import java.util.Map;
 
 import org.apache.wicket.Component;
+import org.apache.wicket.WicketRuntimeException;
 import org.apache.wicket.behavior.AttributeAppender;
 import org.apache.wicket.event.Broadcast;
 import org.apache.wicket.event.IEvent;
@@ -37,7 +38,6 @@ import org.apache.wicket.model.ComponentPropertyModel;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.Model;
 
-import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 import fr.peralta.mycellar.interfaces.client.web.components.shared.Action;
 import fr.peralta.mycellar.interfaces.client.web.components.shared.ActionLink;
 import fr.peralta.mycellar.interfaces.client.web.components.shared.form.ObjectForm;
@@ -170,8 +170,8 @@ public abstract class ComplexTagCloud<O> extends Panel {
             max = Math.max(max, value);
         }
         for (O object : objects.keySet()) {
-            list.add(new TagData<O>(object, (float) (objects.get(object) - min)
-                    / (float) Math.max(1, max - min) + 1, getLabelFor(object)));
+            list.add(new TagData<O>(object, ((float) (objects.get(object) - min) / (float) Math
+                    .max(1, max - min)) + 1, getLabelFor(object)));
         }
         return list;
     }
@@ -224,7 +224,7 @@ public abstract class ComplexTagCloud<O> extends Panel {
             replace(createHiddenCreateForm());
             break;
         default:
-            throw new NotImplementedException();
+            throw new WicketRuntimeException("Action " + action + " not managed.");
         }
     }
 
