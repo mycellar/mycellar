@@ -51,6 +51,10 @@
       <artifactId>wicket-spring</artifactId>
     </dependency>
     <dependency>
+      <groupId>org.odlabs.wiquery</groupId>
+      <artifactId>wiquery-jquery-ui</artifactId>
+    </dependency>
+    <dependency>
       <groupId>joda-time</groupId>
       <artifactId>joda-time</artifactId>
     </dependency>
