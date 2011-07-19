@@ -18,7 +18,9 @@
  */
 package fr.peralta.mycellar.infrastructure.wine.persistence;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import org.hibernate.property.DirectPropertyAccessor;
@@ -27,6 +29,7 @@ import org.springframework.stereotype.Repository;
 
 import fr.peralta.mycellar.domain.wine.Appellation;
 import fr.peralta.mycellar.domain.wine.Country;
+import fr.peralta.mycellar.domain.wine.Producer;
 import fr.peralta.mycellar.domain.wine.Region;
 import fr.peralta.mycellar.domain.wine.WineRepository;
 
@@ -51,6 +54,9 @@ public class MockWineRepository implements WineRepository {
             new String[] { "Allemagne" }, new String[] { "Etats-unis" },
             new String[] { "Afrique du Sud" }, new String[] { "Argentine" },
             new String[] { "Belgique" } };
+    private final String[] producers = new String[] { "Domaine Rousseau", "Domaine Macle",
+            "Château Margaux", "Château Cheval Blanc", "Clos des papes", "Clos des lambrays",
+            "Clos de tart" };
 
     /**
      * {@inheritDoc}
@@ -124,6 +130,26 @@ public class MockWineRepository implements WineRepository {
                 a = 2;
             }
             result.put(appellation, 23 % a);
+        }
+        return result;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public List<Producer> getAllProducerStartingWith(String term) {
+        List<Producer> result = new ArrayList<Producer>();
+        int i = 1;
+        for (String producerName : producers) {
+            if (producerName.startsWith(term)) {
+                Producer producer = new Producer();
+                producer.setName(producerName);
+                producer.setDescription("desc");
+                new DirectPropertyAccessor().getSetter(Producer.class, "id").set(producer, i++,
+                        null);
+                result.add(producer);
+            }
         }
         return result;
     }

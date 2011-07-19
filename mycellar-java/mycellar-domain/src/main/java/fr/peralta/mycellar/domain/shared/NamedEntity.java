@@ -47,12 +47,4 @@ public abstract class NamedEntity<E extends NamedEntity<E>> extends IdentifiedEn
         this.name = name;
     }
 
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public String toString() {
-        return super.toString() + "[name=" + name + "]";
-    }
-
 }

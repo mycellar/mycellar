@@ -18,10 +18,12 @@
  */
 package fr.peralta.mycellar.infrastructure.wine.persistence;
 
+import java.util.List;
 import java.util.Map;
 
 import fr.peralta.mycellar.domain.wine.Appellation;
 import fr.peralta.mycellar.domain.wine.Country;
+import fr.peralta.mycellar.domain.wine.Producer;
 import fr.peralta.mycellar.domain.wine.Region;
 import fr.peralta.mycellar.domain.wine.WineRepository;
 
@@ -53,6 +55,15 @@ public class HibernateWineRepository implements WineRepository {
      */
     @Override
     public Map<Appellation, Integer> getAllAppellationsFromRegionWithCounts(Region region) {
+        // TODO Auto-generated method stub
+        return null;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public List<Producer> getAllProducerStartingWith(String term) {
         // TODO Auto-generated method stub
         return null;
     }

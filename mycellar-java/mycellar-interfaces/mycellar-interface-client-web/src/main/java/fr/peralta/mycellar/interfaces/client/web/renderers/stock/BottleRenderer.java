@@ -40,7 +40,7 @@ public class BottleRenderer extends AbstractRenderer<Bottle> {
         if (bottle != null) {
             Wine wine = bottle.getWine();
             if (wine != null) {
-                result.append(getServiceRendererFacade().render(wine));
+                result.append(getRendererServiceFacade().render(wine));
             } else {
                 result.append(NULL_OBJECT);
             }
@@ -49,7 +49,7 @@ public class BottleRenderer extends AbstractRenderer<Bottle> {
             }
             Format format = bottle.getFormat();
             if (format != null) {
-                result.append(getServiceRendererFacade().render(format));
+                result.append(getRendererServiceFacade().render(format));
             } else {
                 result.append(NULL_OBJECT);
             }

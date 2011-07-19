@@ -16,38 +16,39 @@
  * You should have received a copy of the GNU General Public License
  * along with MyCellar. If not, see <http://www.gnu.org/licenses/>.
  */
-package fr.peralta.mycellar.domain.wine;
+package fr.peralta.mycellar.interfaces.client.web.renderers.wine;
 
-import java.util.List;
-import java.util.Map;
+import org.springframework.stereotype.Service;
+
+import fr.peralta.mycellar.domain.wine.Producer;
+import fr.peralta.mycellar.interfaces.client.web.renderers.shared.AbstractRenderer;
 
 /**
  * @author speralta
- * 
  */
-public interface WineRepository {
+@Service
+public class ProducerRenderer extends AbstractRenderer<Producer> {
 
     /**
-     * @param region
-     * @return
+     * {@inheritDoc}
      */
-    Map<Appellation, Integer> getAllAppellationsFromRegionWithCounts(Region region);
+    @Override
+    public String getLabel(Producer object) {
+        StringBuilder result = new StringBuilder();
+        if (object != null) {
+            result.append(object.getName());
+        } else {
+            result.append(NULL_OBJECT);
+        }
+        return result.toString();
+    }
 
     /**
-     * @return
+     * {@inheritDoc}
      */
-    Map<Country, Integer> getAllCountriesWithCounts();
-
-    /**
-     * @param country
-     * @return
-     */
-    Map<Region, Integer> getAllRegionsFromCountryWithCounts(Country country);
-
-    /**
-     * @param term
-     * @return
-     */
-    List<Producer> getAllProducerStartingWith(String term);
+    @Override
+    protected Class<Producer> getRenderedClass() {
+        return Producer.class;
+    }
 
 }

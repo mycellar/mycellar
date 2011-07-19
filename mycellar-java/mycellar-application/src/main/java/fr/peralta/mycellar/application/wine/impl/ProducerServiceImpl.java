@@ -16,39 +16,40 @@
  * You should have received a copy of the GNU General Public License
  * along with MyCellar. If not, see <http://www.gnu.org/licenses/>.
  */
-package fr.peralta.mycellar.interfaces.client.web.renderers.wine;
+package fr.peralta.mycellar.application.wine.impl;
 
+import java.util.List;
+
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import fr.peralta.mycellar.domain.wine.Format;
-import fr.peralta.mycellar.interfaces.client.web.renderers.shared.AbstractRenderer;
+import fr.peralta.mycellar.application.wine.ProducerService;
+import fr.peralta.mycellar.domain.wine.Producer;
+import fr.peralta.mycellar.domain.wine.WineRepository;
 
 /**
- * @author bperalta
+ * @author speralta
  */
 @Service
-public class FormatRenderer extends AbstractRenderer<Format> {
+public class ProducerServiceImpl implements ProducerService {
+
+    private WineRepository wineRepository;
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public String getLabel(Format object) {
-        StringBuilder result = new StringBuilder();
-        if (object != null) {
-            result.append(object.getName());
-        } else {
-            result.append(NULL_OBJECT);
-        }
-        return result.toString();
+    public List<Producer> getAllStartingWith(String term) {
+        return wineRepository.getAllProducerStartingWith(term);
     }
 
     /**
-     * {@inheritDoc}
+     * @param wineRepository
+     *            the wineRepository to set
      */
-    @Override
-    protected Class<Format> getRenderedClass() {
-        return Format.class;
+    @Autowired
+    public void setWineRepository(WineRepository wineRepository) {
+        this.wineRepository = wineRepository;
     }
 
 }

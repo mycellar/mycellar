@@ -18,6 +18,7 @@
  */
 package fr.peralta.mycellar.interfaces.client.web.components.stock.edit;
 
+import org.apache.wicket.WicketRuntimeException;
 import org.apache.wicket.event.IEvent;
 import org.apache.wicket.markup.html.form.TextField;
 import org.apache.wicket.markup.html.panel.EmptyPanel;
@@ -28,6 +29,7 @@ import org.apache.wicket.spring.injection.annot.SpringBean;
 import fr.peralta.mycellar.domain.wine.Country;
 import fr.peralta.mycellar.domain.wine.Region;
 import fr.peralta.mycellar.interfaces.client.web.components.shared.Action;
+import fr.peralta.mycellar.interfaces.client.web.components.wine.autocomplete.ProducerComplexAutocomplete;
 import fr.peralta.mycellar.interfaces.client.web.components.wine.cloud.AppellationComplexTagCloud;
 import fr.peralta.mycellar.interfaces.client.web.components.wine.cloud.CountryComplexTagCloud;
 import fr.peralta.mycellar.interfaces.client.web.components.wine.cloud.RegionComplexTagCloud;
@@ -84,8 +86,8 @@ public class ArrivalBottleEditPanel extends Panel {
      * @return
      */
     private void replaceProducerPanel() {
-        // replace(new ProducerAutocompletePanel(PRODUCER_COMPONENT_ID, new
-        // StringResourceModel("producer", this, null)));
+        replace(new ProducerComplexAutocomplete(PRODUCER_COMPONENT_ID, new StringResourceModel(
+                "producer", this, null)));
     }
 
     /**
@@ -93,20 +95,20 @@ public class ArrivalBottleEditPanel extends Panel {
      */
     @Override
     public void onEvent(IEvent<?> event) {
-        if (event.getSource() instanceof CountryComplexTagCloud) {
+        if (event.getPayload() instanceof Action) {
             Action action = (Action) event.getPayload();
-            if (action == Action.SELECT) {
-                replaceRegionPanel();
-            }
-        } else if (event.getSource() instanceof RegionComplexTagCloud) {
-            Action action = (Action) event.getPayload();
-            if (action == Action.SELECT) {
-                replaceAppellationPanel();
-            }
-        } else if (event.getSource() instanceof AppellationComplexTagCloud) {
-            Action action = (Action) event.getPayload();
-            if (action == Action.SELECT) {
-                replaceProducerPanel();
+            switch (action) {
+            case SELECT:
+                if (event.getSource() instanceof CountryComplexTagCloud) {
+                    replaceRegionPanel();
+                } else if (event.getSource() instanceof RegionComplexTagCloud) {
+                    replaceAppellationPanel();
+                } else if (event.getSource() instanceof AppellationComplexTagCloud) {
+                    replaceProducerPanel();
+                }
+                break;
+            default:
+                throw new WicketRuntimeException("Action " + action + " not managed.");
             }
         }
     }

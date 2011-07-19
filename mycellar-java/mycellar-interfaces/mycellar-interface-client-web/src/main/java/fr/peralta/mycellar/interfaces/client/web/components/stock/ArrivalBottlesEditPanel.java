@@ -57,18 +57,20 @@ public class ArrivalBottlesEditPanel extends Panel {
     @SuppressWarnings("unchecked")
     @Override
     public void onEvent(IEvent<?> event) {
-        Action action = (Action) event.getPayload();
-        switch (action) {
-        case ADD:
-            displayBottleForm();
-            break;
-        case SAVE:
-            ((List<ArrivalBottle>) getDefaultModelObject()).add((ArrivalBottle) get(
-                    ARRIVAL_BOTTLE_COMPONENT_ID).getDefaultModelObject());
-            replace(createHiddenBottleForm());
-            break;
-        default:
-            throw new WicketRuntimeException("Action " + action + " not managed.");
+        if (event.getPayload() instanceof Action) {
+            Action action = (Action) event.getPayload();
+            switch (action) {
+            case ADD:
+                displayBottleForm();
+                break;
+            case SAVE:
+                ((List<ArrivalBottle>) getDefaultModelObject()).add((ArrivalBottle) get(
+                        ARRIVAL_BOTTLE_COMPONENT_ID).getDefaultModelObject());
+                replace(createHiddenBottleForm());
+                break;
+            default:
+                throw new WicketRuntimeException("Action " + action + " not managed.");
+            }
         }
     }
 

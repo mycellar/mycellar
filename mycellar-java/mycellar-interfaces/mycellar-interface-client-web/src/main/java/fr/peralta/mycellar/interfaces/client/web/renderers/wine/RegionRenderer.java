@@ -18,35 +18,26 @@
  */
 package fr.peralta.mycellar.interfaces.client.web.renderers.wine;
 
-import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
 
-import fr.peralta.mycellar.domain.wine.Wine;
+import fr.peralta.mycellar.domain.wine.Region;
 import fr.peralta.mycellar.interfaces.client.web.renderers.shared.AbstractRenderer;
 
 /**
- * @author bperalta
+ * @author speralta
  */
 @Service
-public class WineRenderer extends AbstractRenderer<Wine> {
+public class RegionRenderer extends AbstractRenderer<Region> {
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public String getLabel(Wine object) {
+    public String getLabel(Region object) {
         StringBuilder result = new StringBuilder();
         if (object != null) {
-            result.append(getRendererServiceFacade().render(object.getAppellation()))
-                    .append(DEFAULT_SEP)
-                    .append(getRendererServiceFacade().render(object.getProducer()));
-            if (StringUtils.isNotEmpty(object.getName())) {
-                result.append(object.getName()).append(DEFAULT_SEP);
-            }
-            result.append(object.getColor());
-            if (object.getVintage() != null) {
-                result.append(DEFAULT_SEP).append(object.getVintage());
-            }
+            result.append(getRendererServiceFacade().render(object.getCountry()))
+                    .append(DEFAULT_SEP).append(object.getName());
         } else {
             result.append(NULL_OBJECT);
         }
@@ -57,8 +48,8 @@ public class WineRenderer extends AbstractRenderer<Wine> {
      * {@inheritDoc}
      */
     @Override
-    protected Class<Wine> getRenderedClass() {
-        return Wine.class;
+    protected Class<Region> getRenderedClass() {
+        return Region.class;
     }
 
 }

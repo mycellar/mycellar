@@ -25,10 +25,8 @@ import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.list.ListItem;
 import org.apache.wicket.markup.html.list.PropertyListView;
 import org.apache.wicket.model.IModel;
-import org.apache.wicket.spring.injection.annot.SpringBean;
 
 import fr.peralta.mycellar.domain.stock.ArrivalBottle;
-import fr.peralta.mycellar.interfaces.client.web.renderers.shared.RendererServiceFacade;
 
 /**
  * @author speralta
@@ -36,9 +34,6 @@ import fr.peralta.mycellar.interfaces.client.web.renderers.shared.RendererServic
 public class ArrivalBottlesView extends PropertyListView<ArrivalBottle> {
 
     private static final long serialVersionUID = 201011071626L;
-
-    @SpringBean
-    private RendererServiceFacade rendererServiceFacade;
 
     /**
      * @param id
@@ -68,8 +63,11 @@ public class ArrivalBottlesView extends PropertyListView<ArrivalBottle> {
      */
     @Override
     protected void populateItem(ListItem<ArrivalBottle> item) {
-        ArrivalBottle arrivalBottle = item.getModelObject();
-        item.add(new Label("label", rendererServiceFacade.render(arrivalBottle.getBottle())));
+        item.add(new Label("bottle.wine.appellation.region.country.name"));
+        item.add(new Label("bottle.wine.appellation.region.name"));
+        item.add(new Label("bottle.wine.appellation.name"));
+        item.add(new Label("bottle.wine.producer.name"));
+        item.add(new Label("bottle.format.name"));
         item.add(new Label("quantity"));
         item.add(new WebMarkupContainer("remove").add(removeLink("removeBottle", item)));
     }

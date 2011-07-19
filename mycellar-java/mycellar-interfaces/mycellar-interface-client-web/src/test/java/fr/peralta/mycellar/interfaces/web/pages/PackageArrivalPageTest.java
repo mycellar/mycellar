@@ -87,6 +87,7 @@ public class PackageArrivalPageTest extends AbstractPageTest {
         country.setName("Toto");
         map.put(country, 10);
         given(wineServiceFacade.getCountriesWithCounts()).willReturn(map);
+        given(rendererServiceFacade.render(anyObject())).willReturn("Nom");
 
         getApplicationContext().putBean("wineServiceFacade", wineServiceFacade);
         getApplicationContext().putBean("stockServiceFacade", stockServiceFacade);

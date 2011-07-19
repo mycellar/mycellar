@@ -37,7 +37,12 @@ public class RendererServiceFacade {
 
     @SuppressWarnings("unchecked")
     public <T> String render(T toRender) {
-        return ((IRenderer<T>) map.get(toRender.getClass())).getLabel(toRender);
+        IRenderer<T> renderer = ((IRenderer<T>) map.get(toRender.getClass()));
+        if (renderer != null) {
+            return renderer.getLabel(toRender);
+        } else {
+            throw new RuntimeException("Renderer for " + toRender.getClass() + " not registered.");
+        }
     }
 
     public <T> void registerMapper(IRenderer<T> mapper, Class<T> renderedClass) {

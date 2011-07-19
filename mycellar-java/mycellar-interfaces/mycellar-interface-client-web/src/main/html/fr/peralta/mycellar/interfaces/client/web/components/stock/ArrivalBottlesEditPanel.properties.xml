@@ -1,7 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE properties SYSTEM "http://java.sun.com/dtd/properties.dtd">
 <properties>
-  <entry key="label">Libellé</entry>
+  <entry key="country">Pays</entry>
+  <entry key="region">Region</entry>
+  <entry key="appellation">Appellation</entry>
+  <entry key="producer">Producteur</entry>
+  <entry key="format">Format</entry>
   <entry key="quantity">Quantité</entry>
   <entry key="addBottle">Ajouter une bouteille</entry>
   <entry key="removeBottle">Supprimer</entry>

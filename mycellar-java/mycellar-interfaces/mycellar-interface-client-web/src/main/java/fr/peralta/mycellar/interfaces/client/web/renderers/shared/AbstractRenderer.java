@@ -41,7 +41,7 @@ public abstract class AbstractRenderer<T> implements IRenderer<T> {
     /**
      * @return the rendererServiceFacade
      */
-    protected RendererServiceFacade getServiceRendererFacade() {
+    protected RendererServiceFacade getRendererServiceFacade() {
         return rendererServiceFacade;
     }
 
@@ -50,7 +50,7 @@ public abstract class AbstractRenderer<T> implements IRenderer<T> {
      *            the rendererServiceFacade to set
      */
     @Resource
-    public void setServiceRendererFacade(RendererServiceFacade rendererServiceFacade) {
+    public void setRendererServiceFacade(RendererServiceFacade rendererServiceFacade) {
         this.rendererServiceFacade = rendererServiceFacade;
     }
 

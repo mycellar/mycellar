@@ -18,7 +18,6 @@
  */
 package fr.peralta.mycellar.interfaces.facades.wine;
 
-import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 
@@ -28,6 +27,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import fr.peralta.mycellar.application.wine.AppellationService;
 import fr.peralta.mycellar.application.wine.CountryService;
+import fr.peralta.mycellar.application.wine.ProducerService;
 import fr.peralta.mycellar.application.wine.RegionService;
 import fr.peralta.mycellar.domain.wine.Appellation;
 import fr.peralta.mycellar.domain.wine.Country;
@@ -45,6 +45,8 @@ public class WineServiceFacadeImpl implements WineServiceFacade {
     private RegionService regionService;
 
     private AppellationService appellationService;
+
+    private ProducerService producerService;
 
     /**
      * {@inheritDoc}
@@ -77,7 +79,7 @@ public class WineServiceFacadeImpl implements WineServiceFacade {
      */
     @Override
     public List<Producer> getProducersStartingWith(String term) {
-        return Arrays.asList(new Producer[] {});
+        return producerService.getAllStartingWith(term);
     }
 
     /**
@@ -105,6 +107,15 @@ public class WineServiceFacadeImpl implements WineServiceFacade {
     @Autowired
     public void setAppellationService(AppellationService appellationService) {
         this.appellationService = appellationService;
+    }
+
+    /**
+     * @param producerService
+     *            the producerService to set
+     */
+    @Autowired
+    public void setProducerService(ProducerService producerService) {
+        this.producerService = producerService;
     }
 
 }

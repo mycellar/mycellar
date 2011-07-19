@@ -16,39 +16,38 @@
  * You should have received a copy of the GNU General Public License
  * along with MyCellar. If not, see <http://www.gnu.org/licenses/>.
  */
-package fr.peralta.mycellar.interfaces.client.web.renderers.wine;
+package fr.peralta.mycellar.interfaces.client.web.components.shared;
 
-import org.springframework.stereotype.Service;
+import org.apache.wicket.markup.html.form.IChoiceRenderer;
+import org.apache.wicket.spring.injection.annot.SpringBean;
 
-import fr.peralta.mycellar.domain.wine.Format;
-import fr.peralta.mycellar.interfaces.client.web.renderers.shared.AbstractRenderer;
+import fr.peralta.mycellar.domain.shared.IdentifiedEntity;
+import fr.peralta.mycellar.interfaces.client.web.renderers.shared.RendererServiceFacade;
 
 /**
- * @author bperalta
+ * @author speralta
  */
-@Service
-public class FormatRenderer extends AbstractRenderer<Format> {
+public class EntityChoiceRenderer<E extends IdentifiedEntity<E>> implements IChoiceRenderer<E> {
+
+    private static final long serialVersionUID = 201107182142L;
+
+    @SpringBean
+    private RendererServiceFacade rendererServiceFacade;
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public String getLabel(Format object) {
-        StringBuilder result = new StringBuilder();
-        if (object != null) {
-            result.append(object.getName());
-        } else {
-            result.append(NULL_OBJECT);
-        }
-        return result.toString();
+    public Object getDisplayValue(E object) {
+        return rendererServiceFacade.render(object);
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    protected Class<Format> getRenderedClass() {
-        return Format.class;
+    public String getIdValue(E object, int index) {
+        return Integer.toString(object.getId());
     }
 
 }

@@ -47,14 +47,6 @@ public class CountryComplexTagCloud extends ComplexTagCloud<Country> {
      * {@inheritDoc}
      */
     @Override
-    protected String getLabelFor(Country object) {
-        return object.getName();
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
     protected Component createComponentForCreation(String id) {
         return new CountryEditPanel(id);
     }
