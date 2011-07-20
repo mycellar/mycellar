@@ -22,6 +22,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.wicket.Component;
 import org.apache.wicket.WicketRuntimeException;
 import org.apache.wicket.event.Broadcast;
 import org.apache.wicket.event.IEvent;
@@ -53,11 +54,13 @@ public abstract class SimpleTagCloud<O> extends Panel {
      * @param id
      * @param label
      * @param objects
+     * @param parentToReRender
      */
-    public SimpleTagCloud(String id, IModel<?> label, Map<O, Integer> objects) {
+    public SimpleTagCloud(String id, IModel<?> label, Map<O, Integer> objects,
+            Class<? extends Component> parentToReRender) {
         super(id);
         add(new Label("label", label));
-        add(new TagCloud<O>(CLOUD_COMPONENT_ID, getListFrom(objects)));
+        add(new TagCloud<O>(CLOUD_COMPONENT_ID, getListFrom(objects), parentToReRender));
         add(new Label(VALUE_COMPONENT_ID).setVisibilityAllowed(false));
     }
 
@@ -103,7 +106,7 @@ public abstract class SimpleTagCloud<O> extends Panel {
             switch (action) {
             case SELECT:
                 event.stop();
-                setDefaultModelObject(((Tag<?>) event.getSource()).getModelObject());
+                setDefaultModelObject(((Tag<?>) event.getSource()).getDefaultModelObject());
                 get(VALUE_COMPONENT_ID).setVisibilityAllowed(true).setDefaultModel(
                         new Model<String>(getLabelFor((O) getDefaultModelObject())));
                 get(CLOUD_COMPONENT_ID).setVisibilityAllowed(false);

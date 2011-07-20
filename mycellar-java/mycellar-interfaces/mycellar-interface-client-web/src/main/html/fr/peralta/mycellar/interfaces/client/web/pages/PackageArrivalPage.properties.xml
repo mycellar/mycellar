@@ -3,7 +3,7 @@
 <properties>
   <entry key="header">Cas d'utilisation : Entrée d'un colis dans la cave</entry>
   <entry key="package">Identification du colis</entry>
-  <entry key="arrival">Date d'arrivée</entry>
+  <entry key="date">Date d'arrivée</entry>
   <entry key="source">Source</entry>
   <entry key="otherCharges">Frais annexes</entry>
   <entry key="arrivalBottles">Bouteilles</entry>

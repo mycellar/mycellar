@@ -58,12 +58,15 @@ public class ArrivalBottleEditPanel extends Panel {
      */
     public ArrivalBottleEditPanel(String id) {
         super(id);
+        setOutputMarkupId(true);
         add(new CountryComplexTagCloud(COUNTRY_COMPONENT_ID, new StringResourceModel("country",
-                this, null), wineServiceFacade.getCountriesWithCounts()));
-        add(new EmptyPanel(REGION_COMPONENT_ID).setVisibilityAllowed(false));
-        add(new EmptyPanel(APPELLATION_COMPONENT_ID).setVisibilityAllowed(false));
-        add(new EmptyPanel(PRODUCER_COMPONENT_ID).setVisibilityAllowed(false));
-        add(new EmptyPanel(COLOR_COMPONENT_ID).setVisibilityAllowed(false));
+                this, null), wineServiceFacade.getCountriesWithCounts(), this.getClass()));
+        add(new EmptyPanel(REGION_COMPONENT_ID).setOutputMarkupId(true).setVisibilityAllowed(false));
+        add(new EmptyPanel(APPELLATION_COMPONENT_ID).setOutputMarkupId(true).setVisibilityAllowed(
+                false));
+        add(new EmptyPanel(PRODUCER_COMPONENT_ID).setOutputMarkupId(true).setVisibilityAllowed(
+                false));
+        add(new EmptyPanel(COLOR_COMPONENT_ID).setOutputMarkupId(true).setVisibilityAllowed(false));
         add(new TextField<Integer>("quantity").setRequired(true));
     }
 
@@ -73,7 +76,8 @@ public class ArrivalBottleEditPanel extends Panel {
     private void replaceRegionPanel() {
         Country country = (Country) get(COUNTRY_COMPONENT_ID).getDefaultModelObject();
         replace(new RegionComplexTagCloud(REGION_COMPONENT_ID, new StringResourceModel("region",
-                this, null), wineServiceFacade.getRegionsWithCounts(country), country));
+                this, null), wineServiceFacade.getRegionsWithCounts(country), this.getClass(),
+                country));
     }
 
     /**
@@ -83,7 +87,7 @@ public class ArrivalBottleEditPanel extends Panel {
         Region region = (Region) get(REGION_COMPONENT_ID).getDefaultModelObject();
         replace(new AppellationComplexTagCloud(APPELLATION_COMPONENT_ID, new StringResourceModel(
                 "appellation", this, null), wineServiceFacade.getAppellationsWithCounts(region),
-                region));
+                this.getClass(), region));
     }
 
     /**
@@ -100,7 +104,7 @@ public class ArrivalBottleEditPanel extends Panel {
     private void replaceColorPanel() {
         Producer producer = (Producer) get(PRODUCER_COMPONENT_ID).getDefaultModelObject();
         replace(new WineColorEnumTagCloud(COLOR_COMPONENT_ID, new StringResourceModel("color",
-                this, null), wineServiceFacade.getColorWithCounts(producer)));
+                this, null), wineServiceFacade.getColorWithCounts(producer), this.getClass()));
     }
 
     /**

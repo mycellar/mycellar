@@ -18,12 +18,16 @@
  */
 package fr.peralta.mycellar.interfaces.client.web;
 
+import org.apache.wicket.ConverterLocator;
+import org.apache.wicket.IConverterLocator;
 import org.apache.wicket.Page;
 import org.apache.wicket.protocol.http.WebApplication;
 import org.apache.wicket.request.mapper.MountedMapper;
 import org.apache.wicket.spring.injection.annot.SpringComponentInjector;
+import org.joda.time.LocalDate;
 import org.springframework.context.ApplicationContext;
 
+import fr.peralta.mycellar.interfaces.client.web.converters.LocalDateConverter;
 import fr.peralta.mycellar.interfaces.client.web.pages.HomePage;
 import fr.peralta.mycellar.interfaces.client.web.pages.ListUsersPage;
 import fr.peralta.mycellar.interfaces.client.web.pages.NewUserPage;
@@ -47,6 +51,16 @@ public abstract class MyCellarWebApplication extends WebApplication {
                 new MountedMapper("/packageArrival", PackageArrivalPage.class));
         getRootRequestMapperAsCompound().add(new MountedMapper("/newUser", NewUserPage.class));
         getRootRequestMapperAsCompound().add(new MountedMapper("/listUsers", ListUsersPage.class));
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    protected IConverterLocator newConverterLocator() {
+        ConverterLocator converterLocator = new ConverterLocator();
+        converterLocator.set(LocalDate.class, new LocalDateConverter());
+        return converterLocator;
     }
 
     protected abstract ApplicationContext getApplicationContext();

@@ -24,6 +24,7 @@ import org.apache.wicket.model.CompoundPropertyModel;
 import org.apache.wicket.request.mapper.parameter.PageParameters;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 import org.joda.time.LocalDate;
+import org.odlabs.wiquery.ui.datepicker.DatePicker;
 
 import fr.peralta.mycellar.domain.stock.Arrival;
 import fr.peralta.mycellar.interfaces.client.web.components.stock.ArrivalBottlesEditPanel;
@@ -59,7 +60,7 @@ public class PackageArrivalPage extends CellarSuperPage {
                 setResponsePage(HomePage.class);
             }
         };
-        form.add(new TextField<LocalDate>("date"));
+        form.add(new DatePicker<LocalDate>("date"));
         form.add(new TextField<String>("source"));
         form.add(new TextField<Float>("otherCharges"));
         form.add(new ArrivalBottlesEditPanel("arrivalBottles"));

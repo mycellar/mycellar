@@ -45,6 +45,7 @@ public class ArrivalBottlesEditPanel extends Panel {
      */
     public ArrivalBottlesEditPanel(String id) {
         super(id);
+        setOutputMarkupId(true);
         ArrivalBottlesView bottlesView = new ArrivalBottlesView("arrivalBottles");
         add(bottlesView);
         add(new ActionLink("addBottle", Action.ADD));
@@ -79,9 +80,8 @@ public class ArrivalBottlesEditPanel extends Panel {
      */
     private Component createHiddenBottleForm() {
         return new ObjectForm<ArrivalBottle>(ARRIVAL_BOTTLE_COMPONENT_ID, new ArrivalBottle())
-                .replace(
-                        new ArrivalBottleEditPanel(ObjectForm.EDIT_PANEL_COMPONENT_ID)
-                                .setOutputMarkupId(true)).setVisibilityAllowed(false);
+                .replace(new ArrivalBottleEditPanel(ObjectForm.EDIT_PANEL_COMPONENT_ID))
+                .setVisibilityAllowed(false);
     }
 
     /**

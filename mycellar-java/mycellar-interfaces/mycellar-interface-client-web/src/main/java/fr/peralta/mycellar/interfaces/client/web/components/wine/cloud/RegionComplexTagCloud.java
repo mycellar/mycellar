@@ -41,11 +41,12 @@ public class RegionComplexTagCloud extends ComplexTagCloud<Region> {
      * @param id
      * @param label
      * @param objects
+     * @param parentToReRender
      * @param country
      */
     public RegionComplexTagCloud(String id, IModel<?> label, Map<Region, Integer> objects,
-            Country country) {
-        super(id, label, objects);
+            Class<? extends Component> parentToReRender, Country country) {
+        super(id, label, objects, parentToReRender);
         this.country = country;
     }
 

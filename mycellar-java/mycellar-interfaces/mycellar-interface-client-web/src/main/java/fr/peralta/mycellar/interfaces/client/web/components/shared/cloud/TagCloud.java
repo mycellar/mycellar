@@ -20,6 +20,7 @@ package fr.peralta.mycellar.interfaces.client.web.components.shared.cloud;
 
 import java.util.List;
 
+import org.apache.wicket.Component;
 import org.apache.wicket.markup.html.list.ListItem;
 import org.apache.wicket.markup.html.list.PropertyListView;
 
@@ -30,12 +31,17 @@ public class TagCloud<O> extends PropertyListView<TagData<O>> {
 
     private static final long serialVersionUID = 201011071626L;
 
+    private final Class<? extends Component> parentToReRender;
+
     /**
      * @param id
      * @param list
+     * @param parentToReRender
      */
-    public TagCloud(String id, List<? extends TagData<O>> list) {
+    public TagCloud(String id, List<? extends TagData<O>> list,
+            Class<? extends Component> parentToReRender) {
         super(id, list);
+        this.parentToReRender = parentToReRender;
     }
 
     /**
@@ -43,7 +49,7 @@ public class TagCloud<O> extends PropertyListView<TagData<O>> {
      */
     @Override
     protected void populateItem(ListItem<TagData<O>> item) {
-        item.add(new Tag<O>("object"));
+        item.add(new Tag<O>("object", parentToReRender));
     }
 
 }

@@ -38,9 +38,11 @@ public class CountryComplexTagCloud extends ComplexTagCloud<Country> {
      * @param id
      * @param label
      * @param objects
+     * @param parentToReRender
      */
-    public CountryComplexTagCloud(String id, IModel<?> label, Map<Country, Integer> objects) {
-        super(id, label, objects);
+    public CountryComplexTagCloud(String id, IModel<?> label, Map<Country, Integer> objects,
+            Class<? extends Component> parentToReRender) {
+        super(id, label, objects, parentToReRender);
     }
 
     /**

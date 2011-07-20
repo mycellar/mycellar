@@ -18,14 +18,15 @@
  */
 package fr.peralta.mycellar.interfaces.client.web.components.shared;
 
+import org.apache.wicket.ajax.AjaxRequestTarget;
+import org.apache.wicket.ajax.markup.html.AjaxLink;
 import org.apache.wicket.event.Broadcast;
-import org.apache.wicket.markup.html.link.Link;
 import org.apache.wicket.model.Model;
 
 /**
  * @author speralta
  */
-public class ActionLink extends Link<Action> {
+public class ActionLink extends AjaxLink<Action> {
     private static final long serialVersionUID = 201011071626L;
 
     /**
@@ -40,8 +41,9 @@ public class ActionLink extends Link<Action> {
      * {@inheritDoc}
      */
     @Override
-    public void onClick() {
+    public void onClick(AjaxRequestTarget ajaxRequestTarget) {
         send(getParent(), Broadcast.EXACT, getModelObject());
+        ajaxRequestTarget.add(getParent());
     }
 
 }

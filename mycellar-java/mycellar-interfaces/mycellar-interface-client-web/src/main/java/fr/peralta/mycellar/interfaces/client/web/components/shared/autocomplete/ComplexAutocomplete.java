@@ -62,6 +62,7 @@ public abstract class ComplexAutocomplete<O extends IdentifiedEntity<O>> extends
     public ComplexAutocomplete(String id, IModel<?> label,
             Class<? extends Component> parentComponentToRender) {
         super(id);
+        setOutputMarkupId(true);
         add(new Label("label", label));
         add(createAutocomplete(AUTOCOMPLETE_COMPONENT_ID, new Model<O>(),
                 parentComponentToRender != null ? parentComponentToRender : this.getClass()));

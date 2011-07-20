@@ -53,9 +53,12 @@ public abstract class ComplexTagCloud<O> extends SimpleTagCloud<O> {
      * @param id
      * @param label
      * @param objects
+     * @param parentToReRender
      */
-    public ComplexTagCloud(String id, IModel<?> label, Map<O, Integer> objects) {
-        super(id, label, objects);
+    public ComplexTagCloud(String id, IModel<?> label, Map<O, Integer> objects,
+            Class<? extends Component> parentToReRender) {
+        super(id, label, objects, parentToReRender);
+        setOutputMarkupId(true);
         add(createHiddenCreateForm());
         add(new ActionLink(ADD_COMPONENT_ID, Action.ADD));
     }
@@ -91,7 +94,7 @@ public abstract class ComplexTagCloud<O> extends SimpleTagCloud<O> {
             switch (action) {
             case SELECT:
                 event.stop();
-                setDefaultModelObject(((Tag<?>) event.getSource()).getModelObject());
+                setDefaultModelObject(((Tag<?>) event.getSource()).getDefaultModelObject());
                 get(ADD_COMPONENT_ID).setVisibilityAllowed(false);
                 get(VALUE_COMPONENT_ID).setVisibilityAllowed(true).setDefaultModel(
                         new Model<String>(getLabelFor((O) getDefaultModelObject())));

@@ -41,11 +41,13 @@ public class AppellationComplexTagCloud extends ComplexTagCloud<Appellation> {
      * @param id
      * @param label
      * @param objects
+     * @param parentToReRender
      * @param region
      */
     public AppellationComplexTagCloud(String id, IModel<?> label,
-            Map<Appellation, Integer> objects, Region region) {
-        super(id, label, objects);
+            Map<Appellation, Integer> objects, Class<? extends Component> parentToReRender,
+            Region region) {
+        super(id, label, objects, parentToReRender);
         this.region = region;
     }
 
