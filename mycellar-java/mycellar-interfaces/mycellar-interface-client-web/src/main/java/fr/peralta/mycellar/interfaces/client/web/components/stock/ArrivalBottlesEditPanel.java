@@ -79,8 +79,9 @@ public class ArrivalBottlesEditPanel extends Panel {
      */
     private Component createHiddenBottleForm() {
         return new ObjectForm<ArrivalBottle>(ARRIVAL_BOTTLE_COMPONENT_ID, new ArrivalBottle())
-                .replace(new ArrivalBottleEditPanel(ObjectForm.EDIT_PANEL_COMPONENT_ID))
-                .setVisibilityAllowed(false);
+                .replace(
+                        new ArrivalBottleEditPanel(ObjectForm.EDIT_PANEL_COMPONENT_ID)
+                                .setOutputMarkupId(true)).setVisibilityAllowed(false);
     }
 
     /**

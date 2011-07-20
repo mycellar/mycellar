@@ -16,44 +16,34 @@
  * You should have received a copy of the GNU General Public License
  * along with MyCellar. If not, see <http://www.gnu.org/licenses/>.
  */
-package fr.peralta.mycellar.domain.wine;
+package fr.peralta.mycellar.interfaces.client.web.components.shared.cloud;
 
 import java.util.List;
-import java.util.Map;
+
+import org.apache.wicket.markup.html.list.ListItem;
+import org.apache.wicket.markup.html.list.PropertyListView;
 
 /**
  * @author speralta
- * 
  */
-public interface WineRepository {
+public class TagCloud<O> extends PropertyListView<TagData<O>> {
+
+    private static final long serialVersionUID = 201011071626L;
 
     /**
-     * @param region
-     * @return
+     * @param id
+     * @param list
      */
-    Map<Appellation, Integer> getAllAppellationsFromRegionWithCounts(Region region);
+    public TagCloud(String id, List<? extends TagData<O>> list) {
+        super(id, list);
+    }
 
     /**
-     * @return
+     * {@inheritDoc}
      */
-    Map<Country, Integer> getAllCountriesWithCounts();
-
-    /**
-     * @param country
-     * @return
-     */
-    Map<Region, Integer> getAllRegionsFromCountryWithCounts(Country country);
-
-    /**
-     * @param term
-     * @return
-     */
-    List<Producer> getAllProducerStartingWith(String term);
-
-    /**
-     * @param producer
-     * @return
-     */
-    Map<WineColorEnum, Integer> getAllColorFromProducerWithCounts(Producer producer);
+    @Override
+    protected void populateItem(ListItem<TagData<O>> item) {
+        item.add(new Tag<O>("object"));
+    }
 
 }

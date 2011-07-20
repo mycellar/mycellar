@@ -16,49 +16,22 @@
  * You should have received a copy of the GNU General Public License
  * along with MyCellar. If not, see <http://www.gnu.org/licenses/>.
  */
-package fr.peralta.mycellar.interfaces.facades.wine;
+package fr.peralta.mycellar.application.wine;
 
-import java.util.List;
 import java.util.Map;
 
-import fr.peralta.mycellar.domain.wine.Appellation;
-import fr.peralta.mycellar.domain.wine.Country;
 import fr.peralta.mycellar.domain.wine.Producer;
-import fr.peralta.mycellar.domain.wine.Region;
 import fr.peralta.mycellar.domain.wine.WineColorEnum;
 
 /**
  * @author speralta
  */
-public interface WineServiceFacade {
-
-    /**
-     * @return
-     */
-    Map<Country, Integer> getCountriesWithCounts();
-
-    /**
-     * @param country
-     * @return
-     */
-    Map<Region, Integer> getRegionsWithCounts(Country country);
-
-    /**
-     * @param region
-     * @return
-     */
-    Map<Appellation, Integer> getAppellationsWithCounts(Region region);
-
-    /**
-     * @param term
-     * @return
-     */
-    List<Producer> getProducersStartingWith(String term);
+public interface WineService {
 
     /**
      * @param producer
      * @return
      */
-    Map<WineColorEnum, Integer> getColorWithCounts(Producer producer);
+    Map<WineColorEnum, Integer> getAllColorFromProducerWithCounts(Producer producer);
 
 }

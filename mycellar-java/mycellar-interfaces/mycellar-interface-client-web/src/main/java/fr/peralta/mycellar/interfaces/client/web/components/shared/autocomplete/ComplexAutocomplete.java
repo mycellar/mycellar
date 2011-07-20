@@ -56,12 +56,15 @@ public abstract class ComplexAutocomplete<O extends IdentifiedEntity<O>> extends
     /**
      * @param id
      * @param label
-     * @param objects
+     * @param parentComponentToRender
+     *            can be null
      */
-    public ComplexAutocomplete(String id, IModel<?> label) {
+    public ComplexAutocomplete(String id, IModel<?> label,
+            Class<? extends Component> parentComponentToRender) {
         super(id);
         add(new Label("label", label));
-        add(createAutocomplete(AUTOCOMPLETE_COMPONENT_ID, new Model<O>()));
+        add(createAutocomplete(AUTOCOMPLETE_COMPONENT_ID, new Model<O>(),
+                parentComponentToRender != null ? parentComponentToRender : this.getClass()));
         add(new Label(VALUE_COMPONENT_ID).setVisibilityAllowed(false));
         add(createHiddenCreateForm());
         add(new ActionLink(ADD_COMPONENT_ID, Action.ADD));
@@ -70,9 +73,11 @@ public abstract class ComplexAutocomplete<O extends IdentifiedEntity<O>> extends
     /**
      * @param id
      * @param model
+     * @param parentComponentToReRender
      * @return
      */
-    protected abstract AutocompleteAjaxComponent<O> createAutocomplete(String id, IModel<O> model);
+    protected abstract AutocompleteAjaxComponent<O> createAutocomplete(String id, IModel<O> model,
+            Class<? extends Component> parentComponentToReRender);
 
     /**
      * @param object
@@ -103,6 +108,7 @@ public abstract class ComplexAutocomplete<O extends IdentifiedEntity<O>> extends
             Action action = (Action) event.getPayload();
             switch (action) {
             case SELECT:
+                event.stop();
                 setDefaultModelObject(((AbstractAutocompleteAjaxComponent<?>) event.getSource())
                         .getModelObject());
                 get(ADD_COMPONENT_ID).setVisibilityAllowed(false);

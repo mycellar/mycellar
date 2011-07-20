@@ -16,44 +16,49 @@
  * You should have received a copy of the GNU General Public License
  * along with MyCellar. If not, see <http://www.gnu.org/licenses/>.
  */
-package fr.peralta.mycellar.domain.wine;
+package fr.peralta.mycellar.interfaces.client.web.components.shared.cloud;
 
-import java.util.List;
-import java.util.Map;
+import java.io.Serializable;
 
 /**
  * @author speralta
- * 
  */
-public interface WineRepository {
+public class TagData<O> implements Serializable {
+
+    private static final long serialVersionUID = 201011071626L;
+
+    private final float size;
+
+    private final O object;
+
+    private final String label;
 
     /**
-     * @param region
-     * @return
+     * @param object
+     * @param size
+     * @param label
      */
-    Map<Appellation, Integer> getAllAppellationsFromRegionWithCounts(Region region);
+    public TagData(O object, float size, String label) {
+        this.object = object;
+        this.size = size;
+        this.label = label;
+    }
+
+    public String getStyle() {
+        return "font-size: " + Float.toString(size) + "em;";
+    }
 
     /**
-     * @return
+     * @return the object
      */
-    Map<Country, Integer> getAllCountriesWithCounts();
+    public O getObject() {
+        return object;
+    }
 
     /**
-     * @param country
-     * @return
+     * @return the label
      */
-    Map<Region, Integer> getAllRegionsFromCountryWithCounts(Country country);
-
-    /**
-     * @param term
-     * @return
-     */
-    List<Producer> getAllProducerStartingWith(String term);
-
-    /**
-     * @param producer
-     * @return
-     */
-    Map<WineColorEnum, Integer> getAllColorFromProducerWithCounts(Producer producer);
-
+    public String getLabel() {
+        return label;
+    }
 }

@@ -36,9 +36,11 @@ public class ProducerComplexAutocomplete extends ComplexAutocomplete<Producer> {
     /**
      * @param id
      * @param label
+     * @param parentComponentToRender
      */
-    public ProducerComplexAutocomplete(String id, IModel<?> label) {
-        super(id, label);
+    public ProducerComplexAutocomplete(String id, IModel<?> label,
+            Class<? extends Component> parentComponentToRender) {
+        super(id, label, parentComponentToRender);
     }
 
     /**
@@ -46,8 +48,8 @@ public class ProducerComplexAutocomplete extends ComplexAutocomplete<Producer> {
      */
     @Override
     protected AutocompleteAjaxComponent<Producer> createAutocomplete(String id,
-            IModel<Producer> model) {
-        return new ProducerAutocompleteAjaxComponent(id, model);
+            IModel<Producer> model, Class<? extends Component> parentComponentToReRender) {
+        return new ProducerAutocompleteAjaxComponent(id, model, parentComponentToReRender);
     }
 
     /**

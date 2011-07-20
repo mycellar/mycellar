@@ -18,20 +18,20 @@
  */
 package fr.peralta.mycellar.interfaces.client.web.components.shared.cloud;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 
-import org.apache.wicket.Component;
 import org.apache.wicket.WicketRuntimeException;
 import org.apache.wicket.event.Broadcast;
 import org.apache.wicket.event.IEvent;
-import org.apache.wicket.markup.html.panel.EmptyPanel;
+import org.apache.wicket.markup.html.basic.Label;
+import org.apache.wicket.markup.html.panel.Panel;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.Model;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 
 import fr.peralta.mycellar.interfaces.client.web.components.shared.Action;
-import fr.peralta.mycellar.interfaces.client.web.components.shared.ActionLink;
-import fr.peralta.mycellar.interfaces.client.web.components.shared.form.ObjectForm;
 import fr.peralta.mycellar.interfaces.client.web.renderers.shared.RendererServiceFacade;
 
 /**
@@ -39,12 +39,12 @@ import fr.peralta.mycellar.interfaces.client.web.renderers.shared.RendererServic
  * 
  * @param <O>
  */
-public abstract class ComplexTagCloud<O> extends SimpleTagCloud<O> {
+public abstract class SimpleTagCloud<O> extends Panel {
 
     private static final long serialVersionUID = 201107191845L;
 
-    private static final String CREATE_FORM_COMPONENT_ID = "createForm";
-    private static final String ADD_COMPONENT_ID = "add";
+    protected static final String CLOUD_COMPONENT_ID = "cloud";
+    protected static final String VALUE_COMPONENT_ID = "value";
 
     @SpringBean
     private RendererServiceFacade rendererServiceFacade;
@@ -54,31 +54,43 @@ public abstract class ComplexTagCloud<O> extends SimpleTagCloud<O> {
      * @param label
      * @param objects
      */
-    public ComplexTagCloud(String id, IModel<?> label, Map<O, Integer> objects) {
-        super(id, label, objects);
-        add(createHiddenCreateForm());
-        add(new ActionLink(ADD_COMPONENT_ID, Action.ADD));
+    public SimpleTagCloud(String id, IModel<?> label, Map<O, Integer> objects) {
+        super(id);
+        add(new Label("label", label));
+        add(new TagCloud<O>(CLOUD_COMPONENT_ID, getListFrom(objects)));
+        add(new Label(VALUE_COMPONENT_ID).setVisibilityAllowed(false));
+    }
+
+    /**
+     * @param objects
+     * @return
+     */
+    private List<TagData<O>> getListFrom(Map<O, Integer> objects) {
+        List<TagData<O>> list = new ArrayList<TagData<O>>();
+        int min = 0;
+        int max = 0;
+        for (int value : objects.values()) {
+            if (min == 0) {
+                min = value;
+            } else {
+                min = Math.min(min, value);
+            }
+            max = Math.max(max, value);
+        }
+        for (O object : objects.keySet()) {
+            list.add(new TagData<O>(object, ((float) (objects.get(object) - min) / (float) Math
+                    .max(1, max - min)) + 1, getLabelFor(object)));
+        }
+        return list;
     }
 
     /**
      * @param object
      * @return
      */
-    @Override
     protected String getLabelFor(O object) {
         return rendererServiceFacade.render(object);
     }
-
-    /**
-     * @param id
-     * @return
-     */
-    protected abstract Component createComponentForCreation(String id);
-
-    /**
-     * @return
-     */
-    protected abstract O createObject();
 
     /**
      * {@inheritDoc}
@@ -92,25 +104,10 @@ public abstract class ComplexTagCloud<O> extends SimpleTagCloud<O> {
             case SELECT:
                 event.stop();
                 setDefaultModelObject(((Tag<?>) event.getSource()).getModelObject());
-                get(ADD_COMPONENT_ID).setVisibilityAllowed(false);
                 get(VALUE_COMPONENT_ID).setVisibilityAllowed(true).setDefaultModel(
                         new Model<String>(getLabelFor((O) getDefaultModelObject())));
                 get(CLOUD_COMPONENT_ID).setVisibilityAllowed(false);
                 send(getParent(), Broadcast.EXACT, Action.SELECT);
-                break;
-            case ADD:
-                get(ADD_COMPONENT_ID).setVisibilityAllowed(false);
-                get(CLOUD_COMPONENT_ID).setVisibilityAllowed(false);
-                replace(
-                        new ObjectForm<O>(CREATE_FORM_COMPONENT_ID, createObject())
-                                .replace(createComponentForCreation(ObjectForm.EDIT_PANEL_COMPONENT_ID)))
-                        .setVisibilityAllowed(true);
-                break;
-            case SAVE:
-                setDefaultModelObject(get(CREATE_FORM_COMPONENT_ID).getDefaultModelObject());
-                get(VALUE_COMPONENT_ID).setVisibilityAllowed(true).setDefaultModel(
-                        new Model<String>(getLabelFor((O) getDefaultModelObject())));
-                replace(createHiddenCreateForm());
                 break;
             default:
                 throw new WicketRuntimeException("Action " + action + " not managed.");
@@ -118,7 +115,4 @@ public abstract class ComplexTagCloud<O> extends SimpleTagCloud<O> {
         }
     }
 
-    private Component createHiddenCreateForm() {
-        return new EmptyPanel(CREATE_FORM_COMPONENT_ID).setVisibilityAllowed(false);
-    }
 }

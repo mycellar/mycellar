@@ -18,6 +18,7 @@
  */
 package fr.peralta.mycellar.interfaces.client.web.components.shared.autocomplete;
 
+import org.apache.wicket.Component;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.event.Broadcast;
 import org.apache.wicket.injection.Injector;
@@ -34,21 +35,28 @@ import fr.peralta.mycellar.interfaces.client.web.components.shared.EntityChoiceR
 public abstract class AbstractAutocompleteAjaxComponent<E extends IdentifiedEntity<E>> extends
         AutocompleteAjaxComponent<E> {
 
-    private static final long serialVersionUID = 201107181753L;
+    private static final long serialVersionUID = 201107191921L;
+
+    private Class<? extends Component> parentComponentToReRender;
 
     /**
      * @param id
+     * @param parentComponentToReRender
      */
-    public AbstractAutocompleteAjaxComponent(String id) {
-        this(id, null);
+    public AbstractAutocompleteAjaxComponent(String id,
+            Class<? extends Component> parentComponentToReRender) {
+        this(id, null, parentComponentToReRender);
     }
 
     /**
      * @param id
      * @param model
+     * @param parentComponentToReRender
      */
-    public AbstractAutocompleteAjaxComponent(String id, IModel<E> model) {
+    public AbstractAutocompleteAjaxComponent(String id, IModel<E> model,
+            Class<? extends Component> parentComponentToReRender) {
         super(id, model);
+        this.parentComponentToReRender = parentComponentToReRender;
         EntityChoiceRenderer<E> entityChoiceRenderer = new EntityChoiceRenderer<E>();
         Injector.get().inject(entityChoiceRenderer);
         setChoiceRenderer(entityChoiceRenderer);
@@ -68,7 +76,7 @@ public abstract class AbstractAutocompleteAjaxComponent<E extends IdentifiedEnti
      */
     @Override
     protected void onUpdate(AjaxRequestTarget target) {
-        send(findParent(ComplexAutocomplete.class), Broadcast.EXACT, Action.SELECT);
+        target.add(findParent(parentComponentToReRender));
+        send(getParent(), Broadcast.BUBBLE, Action.SELECT);
     }
-
 }

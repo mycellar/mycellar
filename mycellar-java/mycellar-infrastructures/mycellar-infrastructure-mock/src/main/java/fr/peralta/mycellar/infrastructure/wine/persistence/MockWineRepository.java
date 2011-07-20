@@ -31,6 +31,7 @@ import fr.peralta.mycellar.domain.wine.Appellation;
 import fr.peralta.mycellar.domain.wine.Country;
 import fr.peralta.mycellar.domain.wine.Producer;
 import fr.peralta.mycellar.domain.wine.Region;
+import fr.peralta.mycellar.domain.wine.WineColorEnum;
 import fr.peralta.mycellar.domain.wine.WineRepository;
 
 /**
@@ -57,6 +58,13 @@ public class MockWineRepository implements WineRepository {
     private final String[] producers = new String[] { "Domaine Rousseau", "Domaine Macle",
             "Château Margaux", "Château Cheval Blanc", "Clos des papes", "Clos des lambrays",
             "Clos de tart" };
+    private final WineColorEnum[][] colors = new WineColorEnum[][] {
+            new WineColorEnum[] { WineColorEnum.WHITE, WineColorEnum.RED },
+            new WineColorEnum[] { WineColorEnum.RED },
+            new WineColorEnum[] { WineColorEnum.ROSE, WineColorEnum.RED },
+            new WineColorEnum[] { WineColorEnum.OTHER, WineColorEnum.RED },
+            new WineColorEnum[] { WineColorEnum.RED }, new WineColorEnum[] { WineColorEnum.OTHER },
+            new WineColorEnum[] { WineColorEnum.WHITE, WineColorEnum.OTHER } };
 
     /**
      * {@inheritDoc}
@@ -150,6 +158,29 @@ public class MockWineRepository implements WineRepository {
                         null);
                 result.add(producer);
             }
+        }
+        return result;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public Map<WineColorEnum, Integer> getAllColorFromProducerWithCounts(Producer producer) {
+        Map<WineColorEnum, Integer> result = new HashMap<WineColorEnum, Integer>();
+        int position = 0;
+        for (int i = 0; i < producers.length; i++) {
+            if (producers[i].equals(producer.getName())) {
+                position = i;
+                break;
+            }
+        }
+        for (int i = 0; i < colors[position].length; i++) {
+            int a = (i + 5) % 10;
+            if (a == 0) {
+                a = 2;
+            }
+            result.put(colors[position][i], 23 % a);
         }
         return result;
     }

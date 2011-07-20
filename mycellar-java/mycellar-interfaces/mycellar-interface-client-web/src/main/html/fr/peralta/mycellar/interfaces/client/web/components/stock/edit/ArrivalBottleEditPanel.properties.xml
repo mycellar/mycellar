@@ -5,4 +5,5 @@
   <entry key="region">Région</entry>
   <entry key="appellation">Appellation</entry>
   <entry key="producer">Producteur</entry>
+  <entry key="color">Couleur</entry>
 </properties> 

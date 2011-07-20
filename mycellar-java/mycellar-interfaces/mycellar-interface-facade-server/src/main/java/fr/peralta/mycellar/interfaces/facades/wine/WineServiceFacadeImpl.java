@@ -29,10 +29,12 @@ import fr.peralta.mycellar.application.wine.AppellationService;
 import fr.peralta.mycellar.application.wine.CountryService;
 import fr.peralta.mycellar.application.wine.ProducerService;
 import fr.peralta.mycellar.application.wine.RegionService;
+import fr.peralta.mycellar.application.wine.WineService;
 import fr.peralta.mycellar.domain.wine.Appellation;
 import fr.peralta.mycellar.domain.wine.Country;
 import fr.peralta.mycellar.domain.wine.Producer;
 import fr.peralta.mycellar.domain.wine.Region;
+import fr.peralta.mycellar.domain.wine.WineColorEnum;
 
 /**
  * @author speralta
@@ -47,6 +49,8 @@ public class WineServiceFacadeImpl implements WineServiceFacade {
     private AppellationService appellationService;
 
     private ProducerService producerService;
+
+    private WineService wineService;
 
     /**
      * {@inheritDoc}
@@ -70,6 +74,7 @@ public class WineServiceFacadeImpl implements WineServiceFacade {
      * {@inheritDoc}
      */
     @Override
+    @Transactional
     public Map<Appellation, Integer> getAppellationsWithCounts(Region region) {
         return appellationService.getAllFromRegionWithCounts(region);
     }
@@ -78,8 +83,18 @@ public class WineServiceFacadeImpl implements WineServiceFacade {
      * {@inheritDoc}
      */
     @Override
+    @Transactional
     public List<Producer> getProducersStartingWith(String term) {
         return producerService.getAllStartingWith(term);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    @Transactional
+    public Map<WineColorEnum, Integer> getColorWithCounts(Producer producer) {
+        return wineService.getAllColorFromProducerWithCounts(producer);
     }
 
     /**
@@ -116,6 +131,15 @@ public class WineServiceFacadeImpl implements WineServiceFacade {
     @Autowired
     public void setProducerService(ProducerService producerService) {
         this.producerService = producerService;
+    }
+
+    /**
+     * @param wineService
+     *            the wineService to set
+     */
+    @Autowired
+    public void setWineService(WineService wineService) {
+        this.wineService = wineService;
     }
 
 }

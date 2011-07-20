@@ -16,42 +16,37 @@
  * You should have received a copy of the GNU General Public License
  * along with MyCellar. If not, see <http://www.gnu.org/licenses/>.
  */
-package fr.peralta.mycellar.interfaces.client.web.components.shared.form;
+package fr.peralta.mycellar.interfaces.client.web.components.shared.cloud;
 
+import org.apache.wicket.behavior.AttributeAppender;
 import org.apache.wicket.event.Broadcast;
-import org.apache.wicket.markup.html.WebMarkupContainer;
-import org.apache.wicket.markup.html.form.Button;
-import org.apache.wicket.markup.html.form.Form;
-import org.apache.wicket.markup.html.panel.Panel;
-import org.apache.wicket.model.CompoundPropertyModel;
+import org.apache.wicket.markup.html.basic.Label;
+import org.apache.wicket.markup.html.link.Link;
+import org.apache.wicket.model.ComponentPropertyModel;
 
 import fr.peralta.mycellar.interfaces.client.web.components.shared.Action;
 
 /**
  * @author speralta
  */
-public class ObjectForm<O> extends Form<O> {
+public class Tag<O> extends Link<TagData<O>> {
 
     private static final long serialVersionUID = 201011071626L;
 
-    public static final String EDIT_PANEL_COMPONENT_ID = "newObject";
-
     /**
      * @param id
-     * @param newObject
      */
-    public ObjectForm(String id, O newObject) {
-        super(id, new CompoundPropertyModel<O>(newObject));
-        add(new WebMarkupContainer(EDIT_PANEL_COMPONENT_ID).setOutputMarkupId(true));
-        add(new Button("saveObject"));
+    public Tag(String id) {
+        super(id);
+        add(new Label("label").add(new AttributeAppender("style",
+                new ComponentPropertyModel<String>("style"), ";")));
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    protected void onSubmit() {
-        send(findParent(Panel.class), Broadcast.EXACT, Action.SAVE);
+    public void onClick() {
+        send(getParent(), Broadcast.BUBBLE, Action.SELECT);
     }
-
 }

@@ -27,12 +27,14 @@ import org.apache.wicket.model.StringResourceModel;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 
 import fr.peralta.mycellar.domain.wine.Country;
+import fr.peralta.mycellar.domain.wine.Producer;
 import fr.peralta.mycellar.domain.wine.Region;
 import fr.peralta.mycellar.interfaces.client.web.components.shared.Action;
 import fr.peralta.mycellar.interfaces.client.web.components.wine.autocomplete.ProducerComplexAutocomplete;
 import fr.peralta.mycellar.interfaces.client.web.components.wine.cloud.AppellationComplexTagCloud;
 import fr.peralta.mycellar.interfaces.client.web.components.wine.cloud.CountryComplexTagCloud;
 import fr.peralta.mycellar.interfaces.client.web.components.wine.cloud.RegionComplexTagCloud;
+import fr.peralta.mycellar.interfaces.client.web.components.wine.cloud.WineColorEnumTagCloud;
 import fr.peralta.mycellar.interfaces.facades.wine.WineServiceFacade;
 
 /**
@@ -46,6 +48,7 @@ public class ArrivalBottleEditPanel extends Panel {
     private static final String REGION_COMPONENT_ID = "bottle.wine.appellation.region";
     private static final String APPELLATION_COMPONENT_ID = "bottle.wine.appellation";
     private static final String PRODUCER_COMPONENT_ID = "bottle.wine.producer";
+    private static final String COLOR_COMPONENT_ID = "bottle.wine.color";
 
     @SpringBean
     private WineServiceFacade wineServiceFacade;
@@ -60,6 +63,7 @@ public class ArrivalBottleEditPanel extends Panel {
         add(new EmptyPanel(REGION_COMPONENT_ID).setVisibilityAllowed(false));
         add(new EmptyPanel(APPELLATION_COMPONENT_ID).setVisibilityAllowed(false));
         add(new EmptyPanel(PRODUCER_COMPONENT_ID).setVisibilityAllowed(false));
+        add(new EmptyPanel(COLOR_COMPONENT_ID).setVisibilityAllowed(false));
         add(new TextField<Integer>("quantity").setRequired(true));
     }
 
@@ -87,7 +91,16 @@ public class ArrivalBottleEditPanel extends Panel {
      */
     private void replaceProducerPanel() {
         replace(new ProducerComplexAutocomplete(PRODUCER_COMPONENT_ID, new StringResourceModel(
-                "producer", this, null)));
+                "producer", this, null), this.getClass()));
+    }
+
+    /**
+     * @return
+     */
+    private void replaceColorPanel() {
+        Producer producer = (Producer) get(PRODUCER_COMPONENT_ID).getDefaultModelObject();
+        replace(new WineColorEnumTagCloud(COLOR_COMPONENT_ID, new StringResourceModel("color",
+                this, null), wineServiceFacade.getColorWithCounts(producer)));
     }
 
     /**
@@ -105,6 +118,8 @@ public class ArrivalBottleEditPanel extends Panel {
                     replaceAppellationPanel();
                 } else if (event.getSource() instanceof AppellationComplexTagCloud) {
                     replaceProducerPanel();
+                } else if (event.getSource() instanceof ProducerComplexAutocomplete) {
+                    replaceColorPanel();
                 }
                 break;
             default:
