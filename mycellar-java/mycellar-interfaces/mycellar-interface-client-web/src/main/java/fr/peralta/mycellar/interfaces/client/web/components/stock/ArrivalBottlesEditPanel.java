@@ -23,6 +23,7 @@ import java.util.List;
 import org.apache.wicket.Component;
 import org.apache.wicket.WicketRuntimeException;
 import org.apache.wicket.event.IEvent;
+import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.panel.Panel;
 
 import fr.peralta.mycellar.domain.stock.ArrivalBottle;
@@ -39,6 +40,7 @@ public class ArrivalBottlesEditPanel extends Panel {
     private static final long serialVersionUID = 201011071626L;
 
     private static final String ARRIVAL_BOTTLE_COMPONENT_ID = "arrivalBottle";
+    private static final String ARRIVAL_BOTTLE_CONTAINER_COMPONENT_ID = "arrivalBottleContainer";
 
     /**
      * @param id
@@ -66,7 +68,8 @@ public class ArrivalBottlesEditPanel extends Panel {
                 break;
             case SAVE:
                 ((List<ArrivalBottle>) getDefaultModelObject()).add((ArrivalBottle) get(
-                        ARRIVAL_BOTTLE_COMPONENT_ID).getDefaultModelObject());
+                        ARRIVAL_BOTTLE_CONTAINER_COMPONENT_ID + Component.PATH_SEPARATOR
+                                + ARRIVAL_BOTTLE_COMPONENT_ID).getDefaultModelObject());
                 replace(createHiddenBottleForm());
                 break;
             default:
@@ -79,8 +82,9 @@ public class ArrivalBottlesEditPanel extends Panel {
      * @return
      */
     private Component createHiddenBottleForm() {
-        return new ObjectForm<ArrivalBottle>(ARRIVAL_BOTTLE_COMPONENT_ID, new ArrivalBottle())
-                .replace(new ArrivalBottleEditPanel(ObjectForm.EDIT_PANEL_COMPONENT_ID))
+        return new WebMarkupContainer(ARRIVAL_BOTTLE_CONTAINER_COMPONENT_ID).add(
+                new ObjectForm<ArrivalBottle>(ARRIVAL_BOTTLE_COMPONENT_ID, new ArrivalBottle())
+                        .replace(new ArrivalBottleEditPanel(ObjectForm.EDIT_PANEL_COMPONENT_ID)))
                 .setVisibilityAllowed(false);
     }
 
@@ -88,6 +92,6 @@ public class ArrivalBottlesEditPanel extends Panel {
      * @return
      */
     private Component displayBottleForm() {
-        return get(ARRIVAL_BOTTLE_COMPONENT_ID).setVisibilityAllowed(true);
+        return get(ARRIVAL_BOTTLE_CONTAINER_COMPONENT_ID).setVisibilityAllowed(true);
     }
 }

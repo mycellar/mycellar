@@ -23,6 +23,7 @@ import org.apache.wicket.WicketRuntimeException;
 import org.apache.wicket.event.Broadcast;
 import org.apache.wicket.event.IEvent;
 import org.apache.wicket.markup.html.basic.Label;
+import org.apache.wicket.markup.html.form.TextField;
 import org.apache.wicket.markup.html.panel.EmptyPanel;
 import org.apache.wicket.markup.html.panel.Panel;
 import org.apache.wicket.model.IModel;
@@ -66,7 +67,7 @@ public abstract class ComplexAutocomplete<O extends IdentifiedEntity<O>> extends
         add(new Label("label", label));
         add(createAutocomplete(AUTOCOMPLETE_COMPONENT_ID, new Model<O>(),
                 parentComponentToRender != null ? parentComponentToRender : this.getClass()));
-        add(new Label(VALUE_COMPONENT_ID).setVisibilityAllowed(false));
+        add(new TextField<String>(VALUE_COMPONENT_ID).setEnabled(false).setVisibilityAllowed(false));
         add(createHiddenCreateForm());
         add(new ActionLink(ADD_COMPONENT_ID, Action.ADD));
     }

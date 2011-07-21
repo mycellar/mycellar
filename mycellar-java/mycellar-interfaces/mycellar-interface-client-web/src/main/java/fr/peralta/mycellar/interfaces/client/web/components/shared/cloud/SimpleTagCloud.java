@@ -27,6 +27,7 @@ import org.apache.wicket.WicketRuntimeException;
 import org.apache.wicket.event.Broadcast;
 import org.apache.wicket.event.IEvent;
 import org.apache.wicket.markup.html.basic.Label;
+import org.apache.wicket.markup.html.form.TextField;
 import org.apache.wicket.markup.html.panel.Panel;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.Model;
@@ -61,7 +62,7 @@ public abstract class SimpleTagCloud<O> extends Panel {
         super(id);
         add(new Label("label", label));
         add(new TagCloud<O>(CLOUD_COMPONENT_ID, getListFrom(objects), parentToReRender));
-        add(new Label(VALUE_COMPONENT_ID).setVisibilityAllowed(false));
+        add(new TextField<String>(VALUE_COMPONENT_ID).setVisibilityAllowed(false).setEnabled(false));
     }
 
     /**

@@ -1,6 +1,9 @@
 <wicket:panel>
-  <table>
+  <table class="border large">
     <thead>
+      <tr>
+        <th colSpan="7"><wicket:message key="arrivalBottles">Arrival bottles</wicket:message></th>
+      </tr>
       <tr>
         <th><wicket:message key="country">Country</wicket:message></th>
         <th><wicket:message key="region">Region</wicket:message></th>
@@ -23,8 +26,11 @@
       </tr>
     </tbody>
   </table>
-  <form wicket:id="arrivalBottle">
-    <div wicket:id="newObject" />
-    <input wicket:id="saveObject" type="submit" wicket:message="value:saveBottle" />
-  </form>
+  <fieldset wicket:id="arrivalBottleContainer">
+    <legend><wicket:message key="arrivalBottle">Arrival bottle</wicket:message></legend>
+    <form wicket:id="arrivalBottle">
+      <div wicket:id="newObject" />
+      <input wicket:id="saveObject" type="submit" wicket:message="value:saveBottle" />
+    </form>
+  </fieldset>
 </wicket:panel>

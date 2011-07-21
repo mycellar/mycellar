@@ -1,16 +1,12 @@
 <wicket:panel>
-  <div style="float: left;">
-    <span wicket:id="label">Label</span>
-  </div>
-  <div>
-    <div wicket:id="autocomplete" />
-  </div>
   <p>
-    <a wicket:id="add"><wicket:message key="addLink">Add</wicket:message></a>
-    <form wicket:id="createForm">
-      <div wicket:id="newObject" />
-      <input wicket:id="saveObject" type="submit" wicket:message="value:createButton" />
-    </form>
+    <label wicket:id="label">Label</label>
+    <input type="text" wicket:id="value" />
   </p>
-  <div wicket:id="value" />
+  <div wicket:id="autocomplete" />
+  <a wicket:id="add"><wicket:message key="addLink">Add</wicket:message></a>
+  <form wicket:id="createForm">
+    <div wicket:id="newObject" />
+    <input wicket:id="saveObject" type="submit" wicket:message="value:createButton" />
+  </form>
 </wicket:panel>

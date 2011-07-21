@@ -98,3 +98,24 @@ body>footer>div {
 body>footer>div>p {
   text-align: center;
 }
+
+/** TABLE BORDER **/
+table.border {
+  border: 1px solid black;
+  border-collapse: collapse;
+}
+
+table.border td, table.border th {
+  border: 1px solid black;
+  padding: 2px;
+}
+
+/** TABLE LARGE **/
+table.large {
+  width: 100%;
+}
+
+/** FIELDSET **/
+fieldset {
+  padding: 5px;
+}
