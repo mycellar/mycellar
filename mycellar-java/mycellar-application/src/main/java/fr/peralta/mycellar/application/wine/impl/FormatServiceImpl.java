@@ -23,17 +23,15 @@ import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import fr.peralta.mycellar.application.wine.WineService;
-import fr.peralta.mycellar.domain.wine.Producer;
-import fr.peralta.mycellar.domain.wine.WineColorEnum;
+import fr.peralta.mycellar.application.wine.FormatService;
+import fr.peralta.mycellar.domain.wine.Format;
 import fr.peralta.mycellar.domain.wine.WineRepository;
-import fr.peralta.mycellar.domain.wine.WineTypeEnum;
 
 /**
  * @author speralta
  */
 @Service
-public class WineServiceImpl implements WineService {
+public class FormatServiceImpl implements FormatService {
 
     private WineRepository wineRepository;
 
@@ -41,33 +39,8 @@ public class WineServiceImpl implements WineService {
      * {@inheritDoc}
      */
     @Override
-    public Map<WineTypeEnum, Integer> getAllTypeFromProducerWithCounts(Producer producer) {
-        Map<WineTypeEnum, Integer> result = wineRepository
-                .getAllTypeFromProducerWithCounts(producer);
-        // add missing types
-        for (WineTypeEnum color : WineTypeEnum.values()) {
-            if (!result.containsKey(color)) {
-                result.put(color, 0);
-            }
-        }
-        return result;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public Map<WineColorEnum, Integer> getAllColorFromProducerAndTypeWithCounts(Producer producer,
-            WineTypeEnum type) {
-        Map<WineColorEnum, Integer> result = wineRepository
-                .getAllColorFromProducerAndTypeWithCounts(producer, type);
-        // add missing colors
-        for (WineColorEnum color : WineColorEnum.values()) {
-            if (!result.containsKey(color)) {
-                result.put(color, 0);
-            }
-        }
-        return result;
+    public Map<Format, Integer> getAllWithCounts() {
+        return wineRepository.getAllFormatWithCounts();
     }
 
     /**

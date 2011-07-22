@@ -16,32 +16,24 @@
  * You should have received a copy of the GNU General Public License
  * along with MyCellar. If not, see <http://www.gnu.org/licenses/>.
  */
-package fr.peralta.mycellar.application.wine;
+package fr.peralta.mycellar.interfaces.client.web.components.wine.edit;
 
-import java.util.Map;
-
-import fr.peralta.mycellar.domain.wine.Producer;
-import fr.peralta.mycellar.domain.wine.WineColorEnum;
-import fr.peralta.mycellar.domain.wine.WineTypeEnum;
+import org.apache.wicket.markup.html.form.TextField;
+import org.apache.wicket.markup.html.panel.Panel;
 
 /**
  * @author speralta
  */
-public interface WineService {
+public class FormatEditPanel extends Panel {
+
+    private static final long serialVersionUID = 201011071626L;
 
     /**
-     * @param producer
-     * @param type
-     * @return
+     * @param id
      */
-    Map<WineTypeEnum, Integer> getAllTypeFromProducerWithCounts(Producer producer);
-
-    /**
-     * @param producer
-     * @param type
-     * @return
-     */
-    Map<WineColorEnum, Integer> getAllColorFromProducerAndTypeWithCounts(Producer producer,
-            WineTypeEnum type);
-
+    public FormatEditPanel(String id) {
+        super(id);
+        add(new TextField<String>("name").setRequired(true));
+        add(new TextField<Float>("capacity").setRequired(true));
+    }
 }

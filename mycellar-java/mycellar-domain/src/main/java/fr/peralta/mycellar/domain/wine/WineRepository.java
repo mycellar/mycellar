@@ -54,6 +54,19 @@ public interface WineRepository {
      * @param producer
      * @return
      */
-    Map<WineColorEnum, Integer> getAllColorFromProducerWithCounts(Producer producer);
+    Map<WineTypeEnum, Integer> getAllTypeFromProducerWithCounts(Producer producer);
+
+    /**
+     * @param producer
+     * @param type
+     * @return
+     */
+    Map<WineColorEnum, Integer> getAllColorFromProducerAndTypeWithCounts(Producer producer,
+            WineTypeEnum type);
+
+    /**
+     * @return
+     */
+    Map<Format, Integer> getAllFormatWithCounts();
 
 }

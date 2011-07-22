@@ -23,9 +23,11 @@ import java.util.Map;
 
 import fr.peralta.mycellar.domain.wine.Appellation;
 import fr.peralta.mycellar.domain.wine.Country;
+import fr.peralta.mycellar.domain.wine.Format;
 import fr.peralta.mycellar.domain.wine.Producer;
 import fr.peralta.mycellar.domain.wine.Region;
 import fr.peralta.mycellar.domain.wine.WineColorEnum;
+import fr.peralta.mycellar.domain.wine.WineTypeEnum;
 
 /**
  * @author speralta
@@ -59,6 +61,18 @@ public interface WineServiceFacade {
      * @param producer
      * @return
      */
-    Map<WineColorEnum, Integer> getColorWithCounts(Producer producer);
+    Map<WineTypeEnum, Integer> getTypeWithCounts(Producer producer);
+
+    /**
+     * @param producer
+     * @param type
+     * @return
+     */
+    Map<WineColorEnum, Integer> getColorWithCounts(Producer producer, WineTypeEnum type);
+
+    /**
+     * @return
+     */
+    Map<Format, Integer> getFormatWithCounts();
 
 }

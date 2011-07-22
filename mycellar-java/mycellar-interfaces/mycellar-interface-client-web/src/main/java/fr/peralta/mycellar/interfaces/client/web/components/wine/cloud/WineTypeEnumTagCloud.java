@@ -16,32 +16,32 @@
  * You should have received a copy of the GNU General Public License
  * along with MyCellar. If not, see <http://www.gnu.org/licenses/>.
  */
-package fr.peralta.mycellar.application.wine;
+package fr.peralta.mycellar.interfaces.client.web.components.wine.cloud;
 
 import java.util.Map;
 
-import fr.peralta.mycellar.domain.wine.Producer;
-import fr.peralta.mycellar.domain.wine.WineColorEnum;
+import org.apache.wicket.Component;
+import org.apache.wicket.model.IModel;
+
 import fr.peralta.mycellar.domain.wine.WineTypeEnum;
+import fr.peralta.mycellar.interfaces.client.web.components.shared.cloud.SimpleTagCloud;
 
 /**
  * @author speralta
  */
-public interface WineService {
+public class WineTypeEnumTagCloud extends SimpleTagCloud<WineTypeEnum> {
+
+    private static final long serialVersionUID = 201107211816L;
 
     /**
-     * @param producer
-     * @param type
-     * @return
+     * @param id
+     * @param label
+     * @param objects
+     * @param parentToReRender
      */
-    Map<WineTypeEnum, Integer> getAllTypeFromProducerWithCounts(Producer producer);
-
-    /**
-     * @param producer
-     * @param type
-     * @return
-     */
-    Map<WineColorEnum, Integer> getAllColorFromProducerAndTypeWithCounts(Producer producer,
-            WineTypeEnum type);
+    public WineTypeEnumTagCloud(String id, IModel<?> label, Map<WineTypeEnum, Integer> objects,
+            Class<? extends Component> parentToReRender) {
+        super(id, label, objects, parentToReRender);
+    }
 
 }

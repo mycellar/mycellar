@@ -20,28 +20,16 @@ package fr.peralta.mycellar.application.wine;
 
 import java.util.Map;
 
-import fr.peralta.mycellar.domain.wine.Producer;
-import fr.peralta.mycellar.domain.wine.WineColorEnum;
-import fr.peralta.mycellar.domain.wine.WineTypeEnum;
+import fr.peralta.mycellar.domain.wine.Format;
 
 /**
  * @author speralta
  */
-public interface WineService {
+public interface FormatService {
 
     /**
-     * @param producer
-     * @param type
      * @return
      */
-    Map<WineTypeEnum, Integer> getAllTypeFromProducerWithCounts(Producer producer);
-
-    /**
-     * @param producer
-     * @param type
-     * @return
-     */
-    Map<WineColorEnum, Integer> getAllColorFromProducerAndTypeWithCounts(Producer producer,
-            WineTypeEnum type);
+    Map<Format, Integer> getAllWithCounts();
 
 }

@@ -23,10 +23,12 @@ import java.util.Map;
 
 import fr.peralta.mycellar.domain.wine.Appellation;
 import fr.peralta.mycellar.domain.wine.Country;
+import fr.peralta.mycellar.domain.wine.Format;
 import fr.peralta.mycellar.domain.wine.Producer;
 import fr.peralta.mycellar.domain.wine.Region;
 import fr.peralta.mycellar.domain.wine.WineColorEnum;
 import fr.peralta.mycellar.domain.wine.WineRepository;
+import fr.peralta.mycellar.domain.wine.WineTypeEnum;
 
 /**
  * @author speralta
@@ -73,7 +75,26 @@ public class HibernateWineRepository implements WineRepository {
      * {@inheritDoc}
      */
     @Override
-    public Map<WineColorEnum, Integer> getAllColorFromProducerWithCounts(Producer producer) {
+    public Map<WineTypeEnum, Integer> getAllTypeFromProducerWithCounts(Producer producer) {
+        // TODO Auto-generated method stub
+        return null;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public Map<WineColorEnum, Integer> getAllColorFromProducerAndTypeWithCounts(Producer producer,
+            WineTypeEnum type) {
+        // TODO Auto-generated method stub
+        return null;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public Map<Format, Integer> getAllFormatWithCounts() {
         // TODO Auto-generated method stub
         return null;
     }

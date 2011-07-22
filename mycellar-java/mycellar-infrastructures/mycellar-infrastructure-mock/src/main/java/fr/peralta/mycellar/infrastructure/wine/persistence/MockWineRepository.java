@@ -29,10 +29,12 @@ import org.springframework.stereotype.Repository;
 
 import fr.peralta.mycellar.domain.wine.Appellation;
 import fr.peralta.mycellar.domain.wine.Country;
+import fr.peralta.mycellar.domain.wine.Format;
 import fr.peralta.mycellar.domain.wine.Producer;
 import fr.peralta.mycellar.domain.wine.Region;
 import fr.peralta.mycellar.domain.wine.WineColorEnum;
 import fr.peralta.mycellar.domain.wine.WineRepository;
+import fr.peralta.mycellar.domain.wine.WineTypeEnum;
 
 /**
  * @author speralta
@@ -42,29 +44,47 @@ import fr.peralta.mycellar.domain.wine.WineRepository;
 @Qualifier("mock")
 public class MockWineRepository implements WineRepository {
 
-    private final String[] countries = new String[] { "France", "Espagne", "Italie", "Hongrie",
-            "Portugal", "Allemagne", "Etats-unis", "Afrique du Sud", "Argentine", "Belgique" };
-    private final String[][] regions = new String[][] { new String[] { "Bourgogne", "Bordeaux" },
-            new String[] { "Espagne" }, new String[] { "Italie" }, new String[] { "Hongrie" },
-            new String[] { "Portugal" }, new String[] { "Allemagne" },
-            new String[] { "Etats-unis" }, new String[] { "Afrique du Sud" },
-            new String[] { "Argentine" }, new String[] { "Belgique" } };
-    private final String[][] appellations = new String[][] {
+    private static final Map<String, Float> formats = new HashMap<String, Float>();
+    private static final String[] countries = new String[] { "France", "Espagne", "Italie",
+            "Hongrie", "Portugal", "Allemagne", "Etats-unis", "Afrique du Sud", "Argentine",
+            "Belgique" };
+    private static final String[][] regions = new String[][] {
+            new String[] { "Bourgogne", "Bordeaux" }, new String[] { "Espagne" },
+            new String[] { "Italie" }, new String[] { "Hongrie" }, new String[] { "Portugal" },
+            new String[] { "Allemagne" }, new String[] { "Etats-unis" },
+            new String[] { "Afrique du Sud" }, new String[] { "Argentine" },
+            new String[] { "Belgique" } };
+    private static final String[][] appellations = new String[][] {
             new String[] { "Chambertin", "Meursault" }, new String[] { "Pomerol" },
             new String[] { "Italie" }, new String[] { "Hongrie" }, new String[] { "Portugal" },
             new String[] { "Allemagne" }, new String[] { "Etats-unis" },
             new String[] { "Afrique du Sud" }, new String[] { "Argentine" },
             new String[] { "Belgique" } };
-    private final String[] producers = new String[] { "Domaine Rousseau", "Domaine Macle",
+    private static final String[] producers = new String[] { "Domaine Rousseau", "Domaine Macle",
             "Château Margaux", "Château Cheval Blanc", "Clos des papes", "Clos des lambrays",
             "Clos de tart" };
-    private final WineColorEnum[][] colors = new WineColorEnum[][] {
-            new WineColorEnum[] { WineColorEnum.WHITE, WineColorEnum.RED },
-            new WineColorEnum[] { WineColorEnum.RED },
-            new WineColorEnum[] { WineColorEnum.ROSE, WineColorEnum.RED },
-            new WineColorEnum[] { WineColorEnum.OTHER, WineColorEnum.RED },
-            new WineColorEnum[] { WineColorEnum.RED }, new WineColorEnum[] { WineColorEnum.OTHER },
-            new WineColorEnum[] { WineColorEnum.WHITE, WineColorEnum.OTHER } };
+    private static final WineTypeEnum[][] types = new WineTypeEnum[][] {
+            new WineTypeEnum[] { WineTypeEnum.STILL },
+            new WineTypeEnum[] { WineTypeEnum.STILL, WineTypeEnum.SPARKLING },
+            new WineTypeEnum[] { WineTypeEnum.STILL }, new WineTypeEnum[] { WineTypeEnum.STILL },
+            new WineTypeEnum[] { WineTypeEnum.STILL }, new WineTypeEnum[] { WineTypeEnum.STILL },
+            new WineTypeEnum[] { WineTypeEnum.STILL } };
+    private static final WineColorEnum[][][] colors = new WineColorEnum[][][] {
+            new WineColorEnum[][] { new WineColorEnum[] { WineColorEnum.WHITE, WineColorEnum.RED } },
+            new WineColorEnum[][] { new WineColorEnum[] { WineColorEnum.RED, WineColorEnum.WHITE },
+                    new WineColorEnum[] { WineColorEnum.WHITE } },
+            new WineColorEnum[][] { new WineColorEnum[] { WineColorEnum.ROSE, WineColorEnum.RED } },
+            new WineColorEnum[][] { new WineColorEnum[] { WineColorEnum.OTHER, WineColorEnum.RED } },
+            new WineColorEnum[][] { new WineColorEnum[] { WineColorEnum.RED },
+                    new WineColorEnum[] { WineColorEnum.OTHER } },
+            new WineColorEnum[][] { new WineColorEnum[] { WineColorEnum.WHITE, WineColorEnum.OTHER } } };
+    static {
+        formats.put("Demi-bouteille", 0.375f);
+        formats.put("Bouteille", 0.75f);
+        formats.put("Magnum", 1.5f);
+        formats.put("Double-magnum", 3f);
+        formats.put("Clavelin", 0.62f);
+    }
 
     /**
      * {@inheritDoc}
@@ -166,7 +186,31 @@ public class MockWineRepository implements WineRepository {
      * {@inheritDoc}
      */
     @Override
-    public Map<WineColorEnum, Integer> getAllColorFromProducerWithCounts(Producer producer) {
+    public Map<WineTypeEnum, Integer> getAllTypeFromProducerWithCounts(Producer producer) {
+        Map<WineTypeEnum, Integer> result = new HashMap<WineTypeEnum, Integer>();
+        int position = 0;
+        for (int i = 0; i < producers.length; i++) {
+            if (producers[i].equals(producer.getName())) {
+                position = i;
+                break;
+            }
+        }
+        for (int i = 0; i < types[position].length; i++) {
+            int a = (i + 5) % 10;
+            if (a == 0) {
+                a = 2;
+            }
+            result.put(types[position][i], 23 % a);
+        }
+        return result;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public Map<WineColorEnum, Integer> getAllColorFromProducerAndTypeWithCounts(Producer producer,
+            WineTypeEnum type) {
         Map<WineColorEnum, Integer> result = new HashMap<WineColorEnum, Integer>();
         int position = 0;
         for (int i = 0; i < producers.length; i++) {
@@ -175,12 +219,40 @@ public class MockWineRepository implements WineRepository {
                 break;
             }
         }
-        for (int i = 0; i < colors[position].length; i++) {
+        int position2 = 0;
+        for (int i = 0; i < types[position].length; i++) {
+            if (types[position][i] == type) {
+                position2 = i;
+                break;
+            }
+        }
+        for (int i = 0; i < colors[position][position2].length; i++) {
             int a = (i + 5) % 10;
             if (a == 0) {
                 a = 2;
             }
-            result.put(colors[position][i], 23 % a);
+            result.put(colors[position][position2][i], 23 % a);
+        }
+        return result;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public Map<Format, Integer> getAllFormatWithCounts() {
+        Map<Format, Integer> result = new HashMap<Format, Integer>();
+        String[] keys = formats.keySet().toArray(new String[formats.size()]);
+        for (int i = 0; i < formats.size(); i++) {
+            Format format = new Format();
+            format.setName(keys[i]);
+            format.setCapacity(formats.get(keys[i]));
+            new DirectPropertyAccessor().getSetter(Format.class, "id").set(format, i, null);
+            int a = (i + 5) % 10;
+            if (a == 0) {
+                a = 2;
+            }
+            result.put(format, 23 % a);
         }
         return result;
     }

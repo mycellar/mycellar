@@ -29,12 +29,15 @@ import org.apache.wicket.spring.injection.annot.SpringBean;
 import fr.peralta.mycellar.domain.wine.Country;
 import fr.peralta.mycellar.domain.wine.Producer;
 import fr.peralta.mycellar.domain.wine.Region;
+import fr.peralta.mycellar.domain.wine.WineTypeEnum;
 import fr.peralta.mycellar.interfaces.client.web.components.shared.Action;
 import fr.peralta.mycellar.interfaces.client.web.components.wine.autocomplete.ProducerComplexAutocomplete;
 import fr.peralta.mycellar.interfaces.client.web.components.wine.cloud.AppellationComplexTagCloud;
 import fr.peralta.mycellar.interfaces.client.web.components.wine.cloud.CountryComplexTagCloud;
+import fr.peralta.mycellar.interfaces.client.web.components.wine.cloud.FormatComplexTagCloud;
 import fr.peralta.mycellar.interfaces.client.web.components.wine.cloud.RegionComplexTagCloud;
 import fr.peralta.mycellar.interfaces.client.web.components.wine.cloud.WineColorEnumTagCloud;
+import fr.peralta.mycellar.interfaces.client.web.components.wine.cloud.WineTypeEnumTagCloud;
 import fr.peralta.mycellar.interfaces.facades.wine.WineServiceFacade;
 
 /**
@@ -42,13 +45,15 @@ import fr.peralta.mycellar.interfaces.facades.wine.WineServiceFacade;
  */
 public class ArrivalBottleEditPanel extends Panel {
 
-    private static final long serialVersionUID = 201011071626L;
+    private static final long serialVersionUID = 201107211818L;
 
     private static final String COUNTRY_COMPONENT_ID = "bottle.wine.appellation.region.country";
     private static final String REGION_COMPONENT_ID = "bottle.wine.appellation.region";
     private static final String APPELLATION_COMPONENT_ID = "bottle.wine.appellation";
     private static final String PRODUCER_COMPONENT_ID = "bottle.wine.producer";
+    private static final String TYPE_COMPONENT_ID = "bottle.wine.type";
     private static final String COLOR_COMPONENT_ID = "bottle.wine.color";
+    private static final String FORMAT_COMPONENT_ID = "bottle.format";
 
     @SpringBean
     private WineServiceFacade wineServiceFacade;
@@ -66,7 +71,10 @@ public class ArrivalBottleEditPanel extends Panel {
                 false));
         add(new EmptyPanel(PRODUCER_COMPONENT_ID).setOutputMarkupId(true).setVisibilityAllowed(
                 false));
+        add(new EmptyPanel(TYPE_COMPONENT_ID).setOutputMarkupId(true).setVisibilityAllowed(false));
         add(new EmptyPanel(COLOR_COMPONENT_ID).setOutputMarkupId(true).setVisibilityAllowed(false));
+        add(new FormatComplexTagCloud(FORMAT_COMPONENT_ID, new StringResourceModel("format", this,
+                null), wineServiceFacade.getFormatWithCounts(), this.getClass()));
         add(new TextField<Integer>("quantity").setRequired(true));
     }
 
@@ -101,10 +109,20 @@ public class ArrivalBottleEditPanel extends Panel {
     /**
      * @return
      */
+    private void replaceTypePanel() {
+        Producer producer = (Producer) get(PRODUCER_COMPONENT_ID).getDefaultModelObject();
+        replace(new WineTypeEnumTagCloud(TYPE_COMPONENT_ID, new StringResourceModel("type", this,
+                null), wineServiceFacade.getTypeWithCounts(producer), this.getClass()));
+    }
+
+    /**
+     * @return
+     */
     private void replaceColorPanel() {
         Producer producer = (Producer) get(PRODUCER_COMPONENT_ID).getDefaultModelObject();
+        WineTypeEnum type = (WineTypeEnum) get(TYPE_COMPONENT_ID).getDefaultModelObject();
         replace(new WineColorEnumTagCloud(COLOR_COMPONENT_ID, new StringResourceModel("color",
-                this, null), wineServiceFacade.getColorWithCounts(producer), this.getClass()));
+                this, null), wineServiceFacade.getColorWithCounts(producer, type), this.getClass()));
     }
 
     /**
@@ -123,6 +141,8 @@ public class ArrivalBottleEditPanel extends Panel {
                 } else if (event.getSource() instanceof AppellationComplexTagCloud) {
                     replaceProducerPanel();
                 } else if (event.getSource() instanceof ProducerComplexAutocomplete) {
+                    replaceTypePanel();
+                } else if (event.getSource() instanceof WineTypeEnumTagCloud) {
                     replaceColorPanel();
                 }
                 break;

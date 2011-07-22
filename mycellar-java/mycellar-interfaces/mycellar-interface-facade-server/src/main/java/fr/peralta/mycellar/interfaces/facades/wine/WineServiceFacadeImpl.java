@@ -27,14 +27,17 @@ import org.springframework.transaction.annotation.Transactional;
 
 import fr.peralta.mycellar.application.wine.AppellationService;
 import fr.peralta.mycellar.application.wine.CountryService;
+import fr.peralta.mycellar.application.wine.FormatService;
 import fr.peralta.mycellar.application.wine.ProducerService;
 import fr.peralta.mycellar.application.wine.RegionService;
 import fr.peralta.mycellar.application.wine.WineService;
 import fr.peralta.mycellar.domain.wine.Appellation;
 import fr.peralta.mycellar.domain.wine.Country;
+import fr.peralta.mycellar.domain.wine.Format;
 import fr.peralta.mycellar.domain.wine.Producer;
 import fr.peralta.mycellar.domain.wine.Region;
 import fr.peralta.mycellar.domain.wine.WineColorEnum;
+import fr.peralta.mycellar.domain.wine.WineTypeEnum;
 
 /**
  * @author speralta
@@ -51,6 +54,8 @@ public class WineServiceFacadeImpl implements WineServiceFacade {
     private ProducerService producerService;
 
     private WineService wineService;
+
+    private FormatService formatService;
 
     /**
      * {@inheritDoc}
@@ -93,8 +98,26 @@ public class WineServiceFacadeImpl implements WineServiceFacade {
      */
     @Override
     @Transactional
-    public Map<WineColorEnum, Integer> getColorWithCounts(Producer producer) {
-        return wineService.getAllColorFromProducerWithCounts(producer);
+    public Map<WineTypeEnum, Integer> getTypeWithCounts(Producer producer) {
+        return wineService.getAllTypeFromProducerWithCounts(producer);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    @Transactional
+    public Map<WineColorEnum, Integer> getColorWithCounts(Producer producer, WineTypeEnum type) {
+        return wineService.getAllColorFromProducerAndTypeWithCounts(producer, type);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    @Transactional
+    public Map<Format, Integer> getFormatWithCounts() {
+        return formatService.getAllWithCounts();
     }
 
     /**
@@ -140,6 +163,15 @@ public class WineServiceFacadeImpl implements WineServiceFacade {
     @Autowired
     public void setWineService(WineService wineService) {
         this.wineService = wineService;
+    }
+
+    /**
+     * @param formatService
+     *            the formatService to set
+     */
+    @Autowired
+    public void setFormatService(FormatService formatService) {
+        this.formatService = formatService;
     }
 
 }
