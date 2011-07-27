@@ -33,7 +33,7 @@ import fr.peralta.mycellar.interfaces.client.web.components.wine.edit.Appellatio
  */
 public class AppellationComplexTagCloud extends ComplexTagCloud<Appellation> {
 
-    private static final long serialVersionUID = 201011071626L;
+    private static final long serialVersionUID = 201107252130L;
 
     private final Region region;
 
@@ -41,13 +41,11 @@ public class AppellationComplexTagCloud extends ComplexTagCloud<Appellation> {
      * @param id
      * @param label
      * @param objects
-     * @param parentToReRender
      * @param region
      */
     public AppellationComplexTagCloud(String id, IModel<?> label,
-            Map<Appellation, Integer> objects, Class<? extends Component> parentToReRender,
-            Region region) {
-        super(id, label, objects, parentToReRender);
+            Map<Appellation, Integer> objects, Region region) {
+        super(id, label, objects);
         this.region = region;
     }
 

@@ -22,7 +22,6 @@ import org.apache.wicket.event.Broadcast;
 import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.form.Button;
 import org.apache.wicket.markup.html.form.Form;
-import org.apache.wicket.markup.html.panel.Panel;
 import org.apache.wicket.model.CompoundPropertyModel;
 
 import fr.peralta.mycellar.interfaces.client.web.components.shared.Action;
@@ -32,7 +31,7 @@ import fr.peralta.mycellar.interfaces.client.web.components.shared.Action;
  */
 public class ObjectForm<O> extends Form<O> {
 
-    private static final long serialVersionUID = 201011071626L;
+    private static final long serialVersionUID = 201107252130L;
 
     public static final String EDIT_PANEL_COMPONENT_ID = "newObject";
 
@@ -44,6 +43,7 @@ public class ObjectForm<O> extends Form<O> {
         super(id, new CompoundPropertyModel<O>(newObject));
         add(new WebMarkupContainer(EDIT_PANEL_COMPONENT_ID).setOutputMarkupId(true));
         add(new Button("saveObject"));
+        add(new CancelButton("cancelObject"));
     }
 
     /**
@@ -51,7 +51,7 @@ public class ObjectForm<O> extends Form<O> {
      */
     @Override
     protected void onSubmit() {
-        send(findParent(Panel.class), Broadcast.EXACT, Action.SAVE);
+        send(getParent(), Broadcast.BUBBLE, Action.SAVE);
     }
 
 }

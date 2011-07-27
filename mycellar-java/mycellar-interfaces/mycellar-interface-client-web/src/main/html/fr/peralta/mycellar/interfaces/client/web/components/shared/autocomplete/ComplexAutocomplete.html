@@ -2,11 +2,13 @@
   <p>
     <label wicket:id="label">Label</label>
     <input type="text" wicket:id="value" />
+    <a wicket:id="cancelValue"><span>Cancel (img)</span></a>
   </p>
   <div wicket:id="autocomplete" />
   <a wicket:id="add"><wicket:message key="addLink">Add</wicket:message></a>
   <form wicket:id="createForm">
     <div wicket:id="newObject" />
     <input wicket:id="saveObject" type="submit" wicket:message="value:createButton" />
+    <input wicket:id="cancelObject" type="submit" wicket:message="value:cancelButton" />
   </form>
 </wicket:panel>

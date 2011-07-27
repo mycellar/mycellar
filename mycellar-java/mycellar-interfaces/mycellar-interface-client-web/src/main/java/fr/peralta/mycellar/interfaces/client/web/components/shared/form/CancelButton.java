@@ -16,34 +16,34 @@
  * You should have received a copy of the GNU General Public License
  * along with MyCellar. If not, see <http://www.gnu.org/licenses/>.
  */
-package fr.peralta.mycellar.interfaces.client.web.components.shared;
+package fr.peralta.mycellar.interfaces.client.web.components.shared.form;
 
-import org.apache.wicket.ajax.AjaxRequestTarget;
-import org.apache.wicket.ajax.markup.html.AjaxLink;
 import org.apache.wicket.event.Broadcast;
-import org.apache.wicket.model.Model;
+import org.apache.wicket.markup.html.form.Button;
+
+import fr.peralta.mycellar.interfaces.client.web.components.shared.Action;
 
 /**
  * @author speralta
  */
-public class ActionLink extends AjaxLink<Action> {
-    private static final long serialVersionUID = 201107252130L;
+public class CancelButton extends Button {
+
+    private static final long serialVersionUID = 201107221737L;
 
     /**
      * @param id
-     * @param action
      */
-    public ActionLink(String id, Action action) {
-        super(id, new Model<Action>(action));
+    public CancelButton(String id) {
+        super(id);
+        setDefaultFormProcessing(false);
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public void onClick(AjaxRequestTarget ajaxRequestTarget) {
-        send(getParent(), Broadcast.BUBBLE, getModelObject()
-                .setAjaxRequestTarget(ajaxRequestTarget));
+    public void onSubmit() {
+        send(getParent(), Broadcast.BUBBLE, Action.CANCEL);
     }
 
 }

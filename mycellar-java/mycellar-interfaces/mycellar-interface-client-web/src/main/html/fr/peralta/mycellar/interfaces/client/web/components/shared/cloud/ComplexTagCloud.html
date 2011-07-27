@@ -2,6 +2,7 @@
   <p>
     <label wicket:id="label">Label</label>
     <input type="text" wicket:id="value" />
+    <a wicket:id="cancelValue"><span>Cancel (img)</span></a>
   </p>
   <span wicket:id="cloud">
     <a wicket:id="object"><span wicket:id="label">Tag</span></a>
@@ -10,5 +11,6 @@
   <form wicket:id="createForm">
     <div wicket:id="newObject" />
     <input wicket:id="saveObject" type="submit" wicket:message="value:createButton" />
+    <input wicket:id="cancelObject" type="submit" wicket:message="value:cancelButton" />
   </form>
 </wicket:panel>

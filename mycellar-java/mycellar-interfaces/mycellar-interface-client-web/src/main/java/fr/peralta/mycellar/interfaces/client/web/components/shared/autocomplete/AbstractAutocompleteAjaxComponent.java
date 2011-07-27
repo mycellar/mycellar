@@ -18,10 +18,8 @@
  */
 package fr.peralta.mycellar.interfaces.client.web.components.shared.autocomplete;
 
-import org.apache.wicket.Component;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.event.Broadcast;
-import org.apache.wicket.injection.Injector;
 import org.apache.wicket.model.IModel;
 import org.odlabs.wiquery.ui.autocomplete.AutocompleteAjaxComponent;
 
@@ -35,31 +33,22 @@ import fr.peralta.mycellar.interfaces.client.web.components.shared.EntityChoiceR
 public abstract class AbstractAutocompleteAjaxComponent<E extends IdentifiedEntity<E>> extends
         AutocompleteAjaxComponent<E> {
 
-    private static final long serialVersionUID = 201107191921L;
-
-    private Class<? extends Component> parentComponentToReRender;
+    private static final long serialVersionUID = 201107252130L;
 
     /**
      * @param id
-     * @param parentComponentToReRender
      */
-    public AbstractAutocompleteAjaxComponent(String id,
-            Class<? extends Component> parentComponentToReRender) {
-        this(id, null, parentComponentToReRender);
+    public AbstractAutocompleteAjaxComponent(String id) {
+        super(id, null);
     }
 
     /**
      * @param id
      * @param model
-     * @param parentComponentToReRender
      */
-    public AbstractAutocompleteAjaxComponent(String id, IModel<E> model,
-            Class<? extends Component> parentComponentToReRender) {
+    public AbstractAutocompleteAjaxComponent(String id, IModel<E> model) {
         super(id, model);
-        this.parentComponentToReRender = parentComponentToReRender;
-        EntityChoiceRenderer<E> entityChoiceRenderer = new EntityChoiceRenderer<E>();
-        Injector.get().inject(entityChoiceRenderer);
-        setChoiceRenderer(entityChoiceRenderer);
+        setChoiceRenderer(new EntityChoiceRenderer<E>());
         setAutoUpdate(true);
     }
 
@@ -76,7 +65,6 @@ public abstract class AbstractAutocompleteAjaxComponent<E extends IdentifiedEnti
      */
     @Override
     protected void onUpdate(AjaxRequestTarget target) {
-        target.add(findParent(parentComponentToReRender));
-        send(getParent(), Broadcast.BUBBLE, Action.SELECT);
+        send(getParent(), Broadcast.BUBBLE, Action.SELECT.setAjaxRequestTarget(target));
     }
 }

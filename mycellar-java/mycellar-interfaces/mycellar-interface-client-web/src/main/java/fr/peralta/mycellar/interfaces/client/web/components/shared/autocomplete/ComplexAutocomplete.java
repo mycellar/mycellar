@@ -20,7 +20,6 @@ package fr.peralta.mycellar.interfaces.client.web.components.shared.autocomplete
 
 import org.apache.wicket.Component;
 import org.apache.wicket.WicketRuntimeException;
-import org.apache.wicket.event.Broadcast;
 import org.apache.wicket.event.IEvent;
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.form.TextField;
@@ -30,12 +29,15 @@ import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.Model;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 import org.odlabs.wiquery.ui.autocomplete.AutocompleteAjaxComponent;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import fr.peralta.mycellar.domain.shared.IdentifiedEntity;
 import fr.peralta.mycellar.interfaces.client.web.components.shared.Action;
 import fr.peralta.mycellar.interfaces.client.web.components.shared.ActionLink;
 import fr.peralta.mycellar.interfaces.client.web.components.shared.form.ObjectForm;
 import fr.peralta.mycellar.interfaces.client.web.renderers.shared.RendererServiceFacade;
+import fr.peralta.mycellar.interfaces.client.web.shared.LoggingUtils;
 
 /**
  * @author speralta
@@ -44,12 +46,15 @@ import fr.peralta.mycellar.interfaces.client.web.renderers.shared.RendererServic
  */
 public abstract class ComplexAutocomplete<O extends IdentifiedEntity<O>> extends Panel {
 
-    private static final long serialVersionUID = 201107181753L;
+    private static final long serialVersionUID = 201107252130L;
 
     private static final String AUTOCOMPLETE_COMPONENT_ID = "autocomplete";
     private static final String CREATE_FORM_COMPONENT_ID = "createForm";
     private static final String VALUE_COMPONENT_ID = "value";
     private static final String ADD_COMPONENT_ID = "add";
+    private static final String CANCEL_COMPONENT_ID = "cancelValue";
+
+    private final Logger logger = LoggerFactory.getLogger(ComplexAutocomplete.class);
 
     @SpringBean
     private RendererServiceFacade rendererServiceFacade;
@@ -57,29 +62,24 @@ public abstract class ComplexAutocomplete<O extends IdentifiedEntity<O>> extends
     /**
      * @param id
      * @param label
-     * @param parentComponentToRender
-     *            can be null
      */
-    public ComplexAutocomplete(String id, IModel<?> label,
-            Class<? extends Component> parentComponentToRender) {
+    public ComplexAutocomplete(String id, IModel<?> label) {
         super(id);
         setOutputMarkupId(true);
         add(new Label("label", label));
-        add(createAutocomplete(AUTOCOMPLETE_COMPONENT_ID, new Model<O>(),
-                parentComponentToRender != null ? parentComponentToRender : this.getClass()));
+        add(createAutocomplete(AUTOCOMPLETE_COMPONENT_ID, new Model<O>()));
         add(new TextField<String>(VALUE_COMPONENT_ID).setEnabled(false).setVisibilityAllowed(false));
         add(createHiddenCreateForm());
         add(new ActionLink(ADD_COMPONENT_ID, Action.ADD));
+        add(new ActionLink(CANCEL_COMPONENT_ID, Action.CANCEL).setVisibilityAllowed(false));
     }
 
     /**
      * @param id
      * @param model
-     * @param parentComponentToReRender
      * @return
      */
-    protected abstract AutocompleteAjaxComponent<O> createAutocomplete(String id, IModel<O> model,
-            Class<? extends Component> parentComponentToReRender);
+    protected abstract AutocompleteAjaxComponent<O> createAutocomplete(String id, IModel<O> model);
 
     /**
      * @param object
@@ -105,19 +105,36 @@ public abstract class ComplexAutocomplete<O extends IdentifiedEntity<O>> extends
      */
     @SuppressWarnings("unchecked")
     @Override
+    protected void onModelChanged() {
+        IModel<O> model = (IModel<O>) getDefaultModel();
+        if ((model != null) && (model.getObject() != null)) {
+            get(VALUE_COMPONENT_ID).setVisibilityAllowed(true).setDefaultModel(
+                    new Model<String>(getLabelFor(model.getObject())));
+            get(CANCEL_COMPONENT_ID).setVisibilityAllowed(true);
+            replace(createHiddenCreateForm());
+            get(ADD_COMPONENT_ID).setVisibilityAllowed(false);
+            get(AUTOCOMPLETE_COMPONENT_ID).setVisibilityAllowed(false);
+        } else {
+            get(AUTOCOMPLETE_COMPONENT_ID).setVisibilityAllowed(true);
+            get(ADD_COMPONENT_ID).setVisibilityAllowed(true);
+            get(VALUE_COMPONENT_ID).setVisibilityAllowed(false).setDefaultModel(
+                    new Model<String>(null));
+            get(CANCEL_COMPONENT_ID).setVisibilityAllowed(false);
+        }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
     public void onEvent(IEvent<?> event) {
+        LoggingUtils.logEventReceived(logger, event);
         if (event.getPayload() instanceof Action) {
             Action action = (Action) event.getPayload();
             switch (action) {
             case SELECT:
-                event.stop();
                 setDefaultModelObject(((AbstractAutocompleteAjaxComponent<?>) event.getSource())
                         .getModelObject());
-                get(ADD_COMPONENT_ID).setVisibilityAllowed(false);
-                get(VALUE_COMPONENT_ID).setVisibilityAllowed(true).setDefaultModel(
-                        new Model<String>(getLabelFor((O) getDefaultModelObject())));
-                get(AUTOCOMPLETE_COMPONENT_ID).setVisibilityAllowed(false);
-                send(getParent(), Broadcast.EXACT, Action.SELECT);
                 break;
             case ADD:
                 get(ADD_COMPONENT_ID).setVisibilityAllowed(false);
@@ -129,14 +146,16 @@ public abstract class ComplexAutocomplete<O extends IdentifiedEntity<O>> extends
                 break;
             case SAVE:
                 setDefaultModelObject(get(CREATE_FORM_COMPONENT_ID).getDefaultModelObject());
-                get(VALUE_COMPONENT_ID).setVisibilityAllowed(true).setDefaultModel(
-                        new Model<String>(getLabelFor((O) getDefaultModelObject())));
-                replace(createHiddenCreateForm());
                 break;
             default:
                 throw new WicketRuntimeException("Action " + action + " not managed.");
             }
+            event.stop();
+            if (action.isAjax()) {
+                action.getAjaxRequestTarget().add(this);
+            }
         }
+        LoggingUtils.logEventProcessed(logger, event);
     }
 
     private Component createHiddenCreateForm() {

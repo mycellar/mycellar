@@ -25,22 +25,27 @@ import org.apache.wicket.WicketRuntimeException;
 import org.apache.wicket.event.IEvent;
 import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.panel.Panel;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import fr.peralta.mycellar.domain.stock.ArrivalBottle;
 import fr.peralta.mycellar.interfaces.client.web.components.shared.Action;
 import fr.peralta.mycellar.interfaces.client.web.components.shared.ActionLink;
 import fr.peralta.mycellar.interfaces.client.web.components.shared.form.ObjectForm;
 import fr.peralta.mycellar.interfaces.client.web.components.stock.edit.ArrivalBottleEditPanel;
+import fr.peralta.mycellar.interfaces.client.web.shared.LoggingUtils;
 
 /**
  * @author speralta
  */
 public class ArrivalBottlesEditPanel extends Panel {
 
-    private static final long serialVersionUID = 201011071626L;
+    private static final long serialVersionUID = 201107252130L;
 
     private static final String ARRIVAL_BOTTLE_COMPONENT_ID = "arrivalBottle";
     private static final String ARRIVAL_BOTTLE_CONTAINER_COMPONENT_ID = "arrivalBottleContainer";
+
+    private final Logger logger = LoggerFactory.getLogger(ArrivalBottlesEditPanel.class);
 
     /**
      * @param id
@@ -60,6 +65,7 @@ public class ArrivalBottlesEditPanel extends Panel {
     @SuppressWarnings("unchecked")
     @Override
     public void onEvent(IEvent<?> event) {
+        LoggingUtils.logEventReceived(logger, event);
         if (event.getPayload() instanceof Action) {
             Action action = (Action) event.getPayload();
             switch (action) {
@@ -72,10 +78,18 @@ public class ArrivalBottlesEditPanel extends Panel {
                                 + ARRIVAL_BOTTLE_COMPONENT_ID).getDefaultModelObject());
                 replace(createHiddenBottleForm());
                 break;
+            case CANCEL:
+                replace(createHiddenBottleForm());
+                break;
             default:
                 throw new WicketRuntimeException("Action " + action + " not managed.");
             }
+            event.stop();
+            if (action.isAjax()) {
+                action.getAjaxRequestTarget().add(this);
+            }
         }
+        LoggingUtils.logEventProcessed(logger, event);
     }
 
     /**

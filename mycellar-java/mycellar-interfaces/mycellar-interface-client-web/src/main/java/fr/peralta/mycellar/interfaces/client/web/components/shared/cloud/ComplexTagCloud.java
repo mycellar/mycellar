@@ -22,17 +22,18 @@ import java.util.Map;
 
 import org.apache.wicket.Component;
 import org.apache.wicket.WicketRuntimeException;
-import org.apache.wicket.event.Broadcast;
 import org.apache.wicket.event.IEvent;
 import org.apache.wicket.markup.html.panel.EmptyPanel;
 import org.apache.wicket.model.IModel;
-import org.apache.wicket.model.Model;
 import org.apache.wicket.spring.injection.annot.SpringBean;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import fr.peralta.mycellar.interfaces.client.web.components.shared.Action;
 import fr.peralta.mycellar.interfaces.client.web.components.shared.ActionLink;
 import fr.peralta.mycellar.interfaces.client.web.components.shared.form.ObjectForm;
 import fr.peralta.mycellar.interfaces.client.web.renderers.shared.RendererServiceFacade;
+import fr.peralta.mycellar.interfaces.client.web.shared.LoggingUtils;
 
 /**
  * @author speralta
@@ -41,10 +42,12 @@ import fr.peralta.mycellar.interfaces.client.web.renderers.shared.RendererServic
  */
 public abstract class ComplexTagCloud<O> extends SimpleTagCloud<O> {
 
-    private static final long serialVersionUID = 201107191845L;
+    private static final long serialVersionUID = 201107252130L;
 
     private static final String CREATE_FORM_COMPONENT_ID = "createForm";
     private static final String ADD_COMPONENT_ID = "add";
+
+    private final Logger logger = LoggerFactory.getLogger(ComplexTagCloud.class);
 
     @SpringBean
     private RendererServiceFacade rendererServiceFacade;
@@ -53,12 +56,9 @@ public abstract class ComplexTagCloud<O> extends SimpleTagCloud<O> {
      * @param id
      * @param label
      * @param objects
-     * @param parentToReRender
      */
-    public ComplexTagCloud(String id, IModel<?> label, Map<O, Integer> objects,
-            Class<? extends Component> parentToReRender) {
-        super(id, label, objects, parentToReRender);
-        setOutputMarkupId(true);
+    public ComplexTagCloud(String id, IModel<?> label, Map<O, Integer> objects) {
+        super(id, label, objects);
         add(createHiddenCreateForm());
         add(new ActionLink(ADD_COMPONENT_ID, Action.ADD));
     }
@@ -86,39 +86,47 @@ public abstract class ComplexTagCloud<O> extends SimpleTagCloud<O> {
     /**
      * {@inheritDoc}
      */
-    @SuppressWarnings("unchecked")
+    @Override
+    protected void onModelChanged() {
+        super.onModelChanged();
+        replace(createHiddenCreateForm());
+        get(ADD_COMPONENT_ID).setVisibilityAllowed(getDefaultModelObject() == null);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void onEvent(IEvent<?> event) {
+        LoggingUtils.logEventReceived(logger, event);
         if (event.getPayload() instanceof Action) {
             Action action = (Action) event.getPayload();
             switch (action) {
             case SELECT:
-                event.stop();
                 setDefaultModelObject(((Tag<?>) event.getSource()).getDefaultModelObject());
-                get(ADD_COMPONENT_ID).setVisibilityAllowed(false);
-                get(VALUE_COMPONENT_ID).setVisibilityAllowed(true).setDefaultModel(
-                        new Model<String>(getLabelFor((O) getDefaultModelObject())));
-                get(CLOUD_COMPONENT_ID).setVisibilityAllowed(false);
-                send(getParent(), Broadcast.EXACT, Action.SELECT);
                 break;
             case ADD:
                 get(ADD_COMPONENT_ID).setVisibilityAllowed(false);
                 get(CLOUD_COMPONENT_ID).setVisibilityAllowed(false);
-                replace(
-                        new ObjectForm<O>(CREATE_FORM_COMPONENT_ID, createObject())
-                                .replace(createComponentForCreation(ObjectForm.EDIT_PANEL_COMPONENT_ID)))
-                        .setVisibilityAllowed(true);
+                replace(new ObjectForm<O>(CREATE_FORM_COMPONENT_ID, createObject()).replace(
+                        createComponentForCreation(ObjectForm.EDIT_PANEL_COMPONENT_ID))
+                        .setVisibilityAllowed(true));
                 break;
             case SAVE:
                 setDefaultModelObject(get(CREATE_FORM_COMPONENT_ID).getDefaultModelObject());
-                get(VALUE_COMPONENT_ID).setVisibilityAllowed(true).setDefaultModel(
-                        new Model<String>(getLabelFor((O) getDefaultModelObject())));
-                replace(createHiddenCreateForm());
+                break;
+            case CANCEL:
+                setDefaultModelObject(null);
                 break;
             default:
                 throw new WicketRuntimeException("Action " + action + " not managed.");
             }
+            event.stop();
+            if (action.isAjax()) {
+                action.getAjaxRequestTarget().add(this);
+            }
         }
+        LoggingUtils.logEventProcessed(logger, event);
     }
 
     private Component createHiddenCreateForm() {

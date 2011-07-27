@@ -32,17 +32,15 @@ import fr.peralta.mycellar.interfaces.client.web.components.wine.edit.FormatEdit
  */
 public class FormatComplexTagCloud extends ComplexTagCloud<Format> {
 
-    private static final long serialVersionUID = 201011071626L;
+    private static final long serialVersionUID = 201107252130L;
 
     /**
      * @param id
      * @param label
      * @param objects
-     * @param parentToReRender
      */
-    public FormatComplexTagCloud(String id, IModel<?> label, Map<Format, Integer> objects,
-            Class<? extends Component> parentToReRender) {
-        super(id, label, objects, parentToReRender);
+    public FormatComplexTagCloud(String id, IModel<?> label, Map<Format, Integer> objects) {
+        super(id, label, objects);
     }
 
     /**

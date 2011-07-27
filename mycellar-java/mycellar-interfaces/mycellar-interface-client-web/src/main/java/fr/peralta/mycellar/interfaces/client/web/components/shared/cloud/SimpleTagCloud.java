@@ -22,8 +22,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-import org.apache.wicket.Component;
 import org.apache.wicket.WicketRuntimeException;
+import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.event.Broadcast;
 import org.apache.wicket.event.IEvent;
 import org.apache.wicket.markup.html.basic.Label;
@@ -32,9 +32,13 @@ import org.apache.wicket.markup.html.panel.Panel;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.Model;
 import org.apache.wicket.spring.injection.annot.SpringBean;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import fr.peralta.mycellar.interfaces.client.web.components.shared.Action;
+import fr.peralta.mycellar.interfaces.client.web.components.shared.ActionLink;
 import fr.peralta.mycellar.interfaces.client.web.renderers.shared.RendererServiceFacade;
+import fr.peralta.mycellar.interfaces.client.web.shared.LoggingUtils;
 
 /**
  * @author speralta
@@ -43,10 +47,13 @@ import fr.peralta.mycellar.interfaces.client.web.renderers.shared.RendererServic
  */
 public abstract class SimpleTagCloud<O> extends Panel {
 
-    private static final long serialVersionUID = 201107191845L;
+    private static final long serialVersionUID = 201107252130L;
 
     protected static final String CLOUD_COMPONENT_ID = "cloud";
     protected static final String VALUE_COMPONENT_ID = "value";
+    protected static final String CANCEL_COMPONENT_ID = "cancelValue";
+
+    private final Logger logger = LoggerFactory.getLogger(SimpleTagCloud.class);
 
     @SpringBean
     private RendererServiceFacade rendererServiceFacade;
@@ -55,14 +62,14 @@ public abstract class SimpleTagCloud<O> extends Panel {
      * @param id
      * @param label
      * @param objects
-     * @param parentToReRender
      */
-    public SimpleTagCloud(String id, IModel<?> label, Map<O, Integer> objects,
-            Class<? extends Component> parentToReRender) {
+    public SimpleTagCloud(String id, IModel<?> label, Map<O, Integer> objects) {
         super(id);
+        setOutputMarkupId(true);
         add(new Label("label", label));
-        add(new TagCloud<O>(CLOUD_COMPONENT_ID, getListFrom(objects), parentToReRender));
+        add(new TagCloud<O>(CLOUD_COMPONENT_ID, getListFrom(objects)));
         add(new TextField<String>(VALUE_COMPONENT_ID).setVisibilityAllowed(false).setEnabled(false));
+        add(new ActionLink(CANCEL_COMPONENT_ID, Action.CANCEL).setVisibilityAllowed(false));
     }
 
     /**
@@ -101,22 +108,46 @@ public abstract class SimpleTagCloud<O> extends Panel {
      */
     @SuppressWarnings("unchecked")
     @Override
+    protected void onModelChanged() {
+        IModel<O> model = (IModel<O>) getDefaultModel();
+        if ((model != null) && (model.getObject() != null)) {
+            get(CLOUD_COMPONENT_ID).setVisibilityAllowed(false);
+            get(VALUE_COMPONENT_ID).setVisibilityAllowed(true).setDefaultModel(
+                    new Model<String>(getLabelFor(model.getObject())));
+            get(CANCEL_COMPONENT_ID).setVisibilityAllowed(true);
+        } else {
+            get(VALUE_COMPONENT_ID).setVisibilityAllowed(false)
+                    .setDefaultModel(new Model<String>());
+            get(CANCEL_COMPONENT_ID).setVisibilityAllowed(false);
+            get(CLOUD_COMPONENT_ID).setVisibilityAllowed(true);
+        }
+        send(getParent(), Broadcast.BUBBLE,
+                Action.SELECT.setAjaxRequestTarget(AjaxRequestTarget.get()));
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
     public void onEvent(IEvent<?> event) {
-        if (event.getPayload() instanceof Action) {
+        LoggingUtils.logEventReceived(logger, event);
+        if ((event.getPayload() instanceof Action) && (event.getSource() instanceof Tag)) {
             Action action = (Action) event.getPayload();
             switch (action) {
             case SELECT:
-                event.stop();
                 setDefaultModelObject(((Tag<?>) event.getSource()).getDefaultModelObject());
-                get(VALUE_COMPONENT_ID).setVisibilityAllowed(true).setDefaultModel(
-                        new Model<String>(getLabelFor((O) getDefaultModelObject())));
-                get(CLOUD_COMPONENT_ID).setVisibilityAllowed(false);
-                send(getParent(), Broadcast.EXACT, Action.SELECT);
+                break;
+            case CANCEL:
+                setDefaultModelObject(null);
                 break;
             default:
                 throw new WicketRuntimeException("Action " + action + " not managed.");
             }
+            event.stop();
+            if (action.isAjax()) {
+                action.getAjaxRequestTarget().add(this);
+            }
         }
+        LoggingUtils.logEventProcessed(logger, event);
     }
-
 }

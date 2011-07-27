@@ -18,7 +18,6 @@
  */
 package fr.peralta.mycellar.interfaces.client.web.components.shared.cloud;
 
-import org.apache.wicket.Component;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.markup.html.AjaxLink;
 import org.apache.wicket.behavior.AttributeAppender;
@@ -33,17 +32,13 @@ import fr.peralta.mycellar.interfaces.client.web.components.shared.Action;
  */
 public class Tag<O> extends AjaxLink<TagData<O>> {
 
-    private static final long serialVersionUID = 201011071626L;
-
-    private final Class<? extends Component> parentToReRender;
+    private static final long serialVersionUID = 201107252130L;
 
     /**
      * @param id
-     * @param parentToReRender
      */
-    public Tag(String id, Class<? extends Component> parentToReRender) {
+    public Tag(String id) {
         super(id);
-        this.parentToReRender = parentToReRender;
         add(new Label("label").add(new AttributeAppender("style",
                 new ComponentPropertyModel<String>("style"), ";")));
     }
@@ -53,7 +48,6 @@ public class Tag<O> extends AjaxLink<TagData<O>> {
      */
     @Override
     public void onClick(AjaxRequestTarget ajaxRequestTarget) {
-        send(getParent(), Broadcast.BUBBLE, Action.SELECT);
-        ajaxRequestTarget.add(findParent(parentToReRender));
+        send(getParent(), Broadcast.BUBBLE, Action.SELECT.setAjaxRequestTarget(ajaxRequestTarget));
     }
 }

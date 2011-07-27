@@ -12,4 +12,5 @@
   <entry key="addBottle">Ajouter une bouteille</entry>
   <entry key="removeBottle">Supprimer</entry>
   <entry key="saveBottle">Enregistrer cette bouteille</entry>
+  <entry key="cancelBottle">Annuler la saisie de cette bouteille</entry>
 </properties> 

@@ -18,9 +18,33 @@
  */
 package fr.peralta.mycellar.interfaces.client.web.components.shared;
 
+import org.apache.wicket.ajax.AjaxRequestTarget;
+
 /**
  * @author speralta
  */
 public enum Action {
-    SAVE, ADD, SELECT
+    SAVE, ADD, SELECT, CANCEL;
+    private AjaxRequestTarget ajaxRequestTarget;
+
+    public boolean isAjax() {
+        return ajaxRequestTarget != null;
+    }
+
+    /**
+     * @return the ajaxRequestTarget
+     */
+    public AjaxRequestTarget getAjaxRequestTarget() {
+        return ajaxRequestTarget;
+    }
+
+    /**
+     * @param ajaxRequestTarget
+     *            the ajaxRequestTarget to set
+     */
+    public Action setAjaxRequestTarget(AjaxRequestTarget ajaxRequestTarget) {
+        this.ajaxRequestTarget = ajaxRequestTarget;
+        return this;
+    }
+
 }

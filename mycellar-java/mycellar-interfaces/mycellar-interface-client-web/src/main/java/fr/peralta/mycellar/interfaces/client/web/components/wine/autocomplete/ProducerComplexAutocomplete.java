@@ -31,16 +31,14 @@ import fr.peralta.mycellar.interfaces.client.web.components.wine.edit.ProducerEd
  */
 public class ProducerComplexAutocomplete extends ComplexAutocomplete<Producer> {
 
-    private static final long serialVersionUID = 201107182246L;
+    private static final long serialVersionUID = 201107252130L;
 
     /**
      * @param id
      * @param label
-     * @param parentComponentToRender
      */
-    public ProducerComplexAutocomplete(String id, IModel<?> label,
-            Class<? extends Component> parentComponentToRender) {
-        super(id, label, parentComponentToRender);
+    public ProducerComplexAutocomplete(String id, IModel<?> label) {
+        super(id, label);
     }
 
     /**
@@ -48,8 +46,8 @@ public class ProducerComplexAutocomplete extends ComplexAutocomplete<Producer> {
      */
     @Override
     protected AutocompleteAjaxComponent<Producer> createAutocomplete(String id,
-            IModel<Producer> model, Class<? extends Component> parentComponentToReRender) {
-        return new ProducerAutocompleteAjaxComponent(id, model, parentComponentToReRender);
+            IModel<Producer> model) {
+        return new ProducerAutocompleteAjaxComponent(id, model);
     }
 
     /**

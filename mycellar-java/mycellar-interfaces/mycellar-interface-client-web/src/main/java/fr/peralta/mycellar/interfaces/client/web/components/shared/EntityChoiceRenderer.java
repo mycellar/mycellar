@@ -18,6 +18,7 @@
  */
 package fr.peralta.mycellar.interfaces.client.web.components.shared;
 
+import org.apache.wicket.injection.Injector;
 import org.apache.wicket.markup.html.form.IChoiceRenderer;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 
@@ -33,6 +34,13 @@ public class EntityChoiceRenderer<E extends IdentifiedEntity<E>> implements ICho
 
     @SpringBean
     private RendererServiceFacade rendererServiceFacade;
+
+    /**
+     * Default Constructor.
+     */
+    public EntityChoiceRenderer() {
+        Injector.get().inject(this);
+    }
 
     /**
      * {@inheritDoc}

@@ -18,6 +18,7 @@
  */
 package fr.peralta.mycellar.interfaces.client.web.pages.shared;
 
+import org.apache.wicket.devutils.debugbar.DebugBar;
 import org.apache.wicket.markup.html.IHeaderResponse;
 import org.apache.wicket.markup.html.WebPage;
 import org.apache.wicket.request.mapper.parameter.PageParameters;
@@ -38,6 +39,7 @@ public abstract class BasePage extends WebPage {
     public BasePage(PageParameters parameters) {
         super(parameters);
         add(new MenuPanel("menu", getMenuClass()));
+        add(new DebugBar("debug"));
     }
 
     /**

@@ -20,7 +20,6 @@ package fr.peralta.mycellar.interfaces.client.web.components.wine.cloud;
 
 import java.util.Map;
 
-import org.apache.wicket.Component;
 import org.apache.wicket.model.IModel;
 
 import fr.peralta.mycellar.domain.wine.WineColorEnum;
@@ -31,17 +30,15 @@ import fr.peralta.mycellar.interfaces.client.web.components.shared.cloud.SimpleT
  */
 public class WineColorEnumTagCloud extends SimpleTagCloud<WineColorEnum> {
 
-    private static final long serialVersionUID = 201107191840L;
+    private static final long serialVersionUID = 201107252130L;
 
     /**
      * @param id
      * @param label
      * @param objects
-     * @param parentToReRender
      */
-    public WineColorEnumTagCloud(String id, IModel<?> label, Map<WineColorEnum, Integer> objects,
-            Class<? extends Component> parentToReRender) {
-        super(id, label, objects, parentToReRender);
+    public WineColorEnumTagCloud(String id, IModel<?> label, Map<WineColorEnum, Integer> objects) {
+        super(id, label, objects);
     }
 
 }
