@@ -77,7 +77,9 @@ public class MockWineRepository implements WineRepository {
             new WineColorEnum[][] { new WineColorEnum[] { WineColorEnum.OTHER, WineColorEnum.RED } },
             new WineColorEnum[][] { new WineColorEnum[] { WineColorEnum.RED },
                     new WineColorEnum[] { WineColorEnum.OTHER } },
-            new WineColorEnum[][] { new WineColorEnum[] { WineColorEnum.WHITE, WineColorEnum.OTHER } } };
+            new WineColorEnum[][] { new WineColorEnum[] { WineColorEnum.WHITE, WineColorEnum.OTHER } },
+            new WineColorEnum[][] { new WineColorEnum[] { WineColorEnum.RED, WineColorEnum.WHITE,
+                    WineColorEnum.OTHER } } };
     static {
         formats.put("Demi-bouteille", 0.375f);
         formats.put("Bouteille", 0.75f);

@@ -18,118 +18,90 @@
  */
 package fr.peralta.mycellar.interfaces.client.web.components.shared.cloud;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 
 import org.apache.wicket.Component;
 import org.apache.wicket.WicketRuntimeException;
-import org.apache.wicket.event.IEvent;
-import org.apache.wicket.markup.html.panel.EmptyPanel;
+import org.apache.wicket.event.IEventSource;
 import org.apache.wicket.model.IModel;
-import org.apache.wicket.spring.injection.annot.SpringBean;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
-import fr.peralta.mycellar.interfaces.client.web.components.shared.Action;
-import fr.peralta.mycellar.interfaces.client.web.components.shared.ActionLink;
-import fr.peralta.mycellar.interfaces.client.web.components.shared.form.ObjectForm;
-import fr.peralta.mycellar.interfaces.client.web.renderers.shared.RendererServiceFacade;
-import fr.peralta.mycellar.interfaces.client.web.shared.LoggingUtils;
+import fr.peralta.mycellar.interfaces.client.web.components.shared.ComplexComponent;
 
 /**
  * @author speralta
  * 
  * @param <O>
  */
-public abstract class ComplexTagCloud<O> extends SimpleTagCloud<O> {
+public abstract class ComplexTagCloud<O> extends ComplexComponent<O> {
 
     private static final long serialVersionUID = 201107252130L;
-
-    private static final String CREATE_FORM_COMPONENT_ID = "createForm";
-    private static final String ADD_COMPONENT_ID = "add";
-
-    private final Logger logger = LoggerFactory.getLogger(ComplexTagCloud.class);
-
-    @SpringBean
-    private RendererServiceFacade rendererServiceFacade;
 
     /**
      * @param id
      * @param label
-     * @param objects
      */
-    public ComplexTagCloud(String id, IModel<?> label, Map<O, Integer> objects) {
-        super(id, label, objects);
-        add(createHiddenCreateForm());
-        add(new ActionLink(ADD_COMPONENT_ID, Action.ADD));
+    public ComplexTagCloud(String id, IModel<String> label) {
+        super(id, label);
+    }
+
+    /**
+     * @param objects
+     * @return
+     */
+    protected List<TagData<O>> getListFrom(Map<O, Integer> objects) {
+        List<TagData<O>> list = new ArrayList<TagData<O>>();
+        int min = 0;
+        int max = 0;
+        for (int value : objects.values()) {
+            if (min == 0) {
+                min = value;
+            } else {
+                min = Math.min(min, value);
+            }
+            max = Math.max(max, value);
+        }
+        for (O object : objects.keySet()) {
+            list.add(new TagData<O>(object, ((float) (objects.get(object) - min) / (float) Math
+                    .max(1, max - min)) + 1, getSelectorLabelFor(object)));
+        }
+        return list;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @SuppressWarnings("unchecked")
+    @Override
+    protected O getModelObjectFromEvent(IEventSource source) {
+        if (source instanceof Tag) {
+            return (O) ((Tag<?>) source).getDefaultModelObject();
+        } else {
+            throw new WicketRuntimeException("Event did not come from Tag.");
+        }
     }
 
     /**
      * @param object
      * @return
      */
+    protected String getSelectorLabelFor(O object) {
+        return getRendererServiceFacade().render(object);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
     @Override
-    protected String getLabelFor(O object) {
-        return rendererServiceFacade.render(object);
+    protected final Component createSelectorComponent(String id) {
+        return createTagCloudPanel(id);
     }
 
     /**
      * @param id
      * @return
      */
-    protected abstract Component createComponentForCreation(String id);
+    protected abstract TagCloudPanel<O> createTagCloudPanel(String id);
 
-    /**
-     * @return
-     */
-    protected abstract O createObject();
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    protected void onModelChanged() {
-        super.onModelChanged();
-        replace(createHiddenCreateForm());
-        get(ADD_COMPONENT_ID).setVisibilityAllowed(getDefaultModelObject() == null);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public void onEvent(IEvent<?> event) {
-        LoggingUtils.logEventReceived(logger, event);
-        if (event.getPayload() instanceof Action) {
-            Action action = (Action) event.getPayload();
-            switch (action) {
-            case SELECT:
-                setDefaultModelObject(((Tag<?>) event.getSource()).getDefaultModelObject());
-                break;
-            case ADD:
-                get(ADD_COMPONENT_ID).setVisibilityAllowed(false);
-                get(CLOUD_COMPONENT_ID).setVisibilityAllowed(false);
-                replace(new ObjectForm<O>(CREATE_FORM_COMPONENT_ID, createObject()).replace(
-                        createComponentForCreation(ObjectForm.EDIT_PANEL_COMPONENT_ID))
-                        .setVisibilityAllowed(true));
-                break;
-            case SAVE:
-                setDefaultModelObject(get(CREATE_FORM_COMPONENT_ID).getDefaultModelObject());
-                break;
-            case CANCEL:
-                setDefaultModelObject(null);
-                break;
-            default:
-                throw new WicketRuntimeException("Action " + action + " not managed.");
-            }
-            event.stop();
-            if (action.isAjax()) {
-                action.getAjaxRequestTarget().add(this);
-            }
-        }
-        LoggingUtils.logEventProcessed(logger, event);
-    }
-
-    private Component createHiddenCreateForm() {
-        return new EmptyPanel(CREATE_FORM_COMPONENT_ID).setVisibilityAllowed(false);
-    }
 }

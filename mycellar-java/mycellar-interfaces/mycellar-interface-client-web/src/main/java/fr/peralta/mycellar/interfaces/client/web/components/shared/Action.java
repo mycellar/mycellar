@@ -24,7 +24,7 @@ import org.apache.wicket.ajax.AjaxRequestTarget;
  * @author speralta
  */
 public enum Action {
-    SAVE, ADD, SELECT, CANCEL;
+    SAVE, ADD, SELECT, CANCEL, MODEL_CHANGED;
     private AjaxRequestTarget ajaxRequestTarget;
 
     public boolean isAjax() {

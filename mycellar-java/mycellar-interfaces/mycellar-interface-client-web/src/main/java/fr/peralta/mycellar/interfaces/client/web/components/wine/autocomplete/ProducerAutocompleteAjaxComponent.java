@@ -20,7 +20,6 @@ package fr.peralta.mycellar.interfaces.client.web.components.wine.autocomplete;
 
 import java.util.List;
 
-import org.apache.wicket.model.IModel;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 
 import fr.peralta.mycellar.domain.wine.Producer;
@@ -36,14 +35,6 @@ public class ProducerAutocompleteAjaxComponent extends AbstractAutocompleteAjaxC
 
     @SpringBean
     private WineServiceFacade wineServiceFacade;
-
-    /**
-     * @param id
-     * @param model
-     */
-    public ProducerAutocompleteAjaxComponent(String id, IModel<Producer> model) {
-        super(id, model);
-    }
 
     /**
      * @param id

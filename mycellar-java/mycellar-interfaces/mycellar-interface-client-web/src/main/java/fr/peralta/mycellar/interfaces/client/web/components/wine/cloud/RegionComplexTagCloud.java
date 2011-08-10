@@ -18,15 +18,20 @@
  */
 package fr.peralta.mycellar.interfaces.client.web.components.wine.cloud;
 
-import java.util.Map;
-
+import org.apache.commons.lang3.StringUtils;
 import org.apache.wicket.Component;
+import org.apache.wicket.event.IEventSource;
 import org.apache.wicket.model.IModel;
+import org.apache.wicket.model.StringResourceModel;
+import org.apache.wicket.spring.injection.annot.SpringBean;
 
 import fr.peralta.mycellar.domain.wine.Country;
 import fr.peralta.mycellar.domain.wine.Region;
+import fr.peralta.mycellar.interfaces.client.web.components.shared.Action;
 import fr.peralta.mycellar.interfaces.client.web.components.shared.cloud.ComplexTagCloud;
+import fr.peralta.mycellar.interfaces.client.web.components.shared.cloud.TagCloudPanel;
 import fr.peralta.mycellar.interfaces.client.web.components.wine.edit.RegionEditPanel;
+import fr.peralta.mycellar.interfaces.facades.wine.WineServiceFacade;
 
 /**
  * @author speralta
@@ -35,25 +40,75 @@ public class RegionComplexTagCloud extends ComplexTagCloud<Region> {
 
     private static final long serialVersionUID = 201107252130L;
 
-    private final Country country;
+    private static final String COUNTRY_COMPONENT_ID = "country";
+
+    private IModel<Country> countryModel;
+
+    @SpringBean
+    private WineServiceFacade wineServiceFacade;
 
     /**
      * @param id
      * @param label
-     * @param objects
-     * @param country
      */
-    public RegionComplexTagCloud(String id, IModel<?> label, Map<Region, Integer> objects,
-            Country country) {
-        super(id, label, objects);
-        this.country = country;
+    public RegionComplexTagCloud(String id, IModel<String> label) {
+        super(id, label);
+        add(new CountryComplexTagCloud(COUNTRY_COMPONENT_ID, new StringResourceModel("country",
+                this, null)));
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    protected String getLabelFor(Region object) {
+    protected void internalConfigureComponent(Region modelObject, boolean isValidModelObject) {
+        super.internalConfigureComponent(modelObject, isValidModelObject);
+        if (modelObject == null) {
+            setModelObject(createObject());
+        }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    protected TagCloudPanel<Region> createTagCloudPanel(String id) {
+        return new TagCloudPanel<Region>(id,
+                getListFrom(wineServiceFacade.getRegionsWithCounts(countryModel.getObject())));
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    protected boolean isReadyToSelect() {
+        return (countryModel != null)
+                && (countryModel.getObject() != null)
+                && ((CountryComplexTagCloud) get(COUNTRY_COMPONENT_ID)).isValid(countryModel
+                        .getObject());
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public boolean isValid(Region object) {
+        return StringUtils.isNotBlank(object.getName());
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    protected String getSelectorLabelFor(Region object) {
+        return object.getName();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    protected String getValueLabelFor(Region object) {
         return object.getName();
     }
 
@@ -71,7 +126,35 @@ public class RegionComplexTagCloud extends ComplexTagCloud<Region> {
     @Override
     protected Region createObject() {
         Region region = new Region();
-        region.setCountry(country);
+        if (countryModel != null) {
+            region.setCountry(countryModel.getObject());
+        }
         return region;
     }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    protected void detachModel() {
+        if (countryModel != null) {
+            countryModel.detach();
+        }
+        super.detachModel();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @SuppressWarnings("unchecked")
+    @Override
+    protected void onModelChanged(IEventSource source, Action action) {
+        if (source instanceof CountryComplexTagCloud) {
+            countryModel = (IModel<Country>) get(COUNTRY_COMPONENT_ID).getDefaultModel();
+            setDefaultModelObject(createObject());
+        } else {
+            super.onModelChanged(source, action);
+        }
+    }
+
 }

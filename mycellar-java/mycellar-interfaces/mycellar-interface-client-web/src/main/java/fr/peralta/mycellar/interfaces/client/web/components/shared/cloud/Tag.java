@@ -30,7 +30,7 @@ import fr.peralta.mycellar.interfaces.client.web.components.shared.Action;
 /**
  * @author speralta
  */
-public class Tag<O> extends AjaxLink<TagData<O>> {
+class Tag<O> extends AjaxLink<TagData<O>> {
 
     private static final long serialVersionUID = 201107252130L;
 

@@ -18,43 +18,54 @@
  */
 package fr.peralta.mycellar.interfaces.client.web.components.wine.cloud;
 
-import java.util.Map;
-
+import org.apache.commons.lang3.StringUtils;
 import org.apache.wicket.Component;
+import org.apache.wicket.event.IEventSource;
 import org.apache.wicket.model.IModel;
+import org.apache.wicket.model.StringResourceModel;
+import org.apache.wicket.spring.injection.annot.SpringBean;
 
 import fr.peralta.mycellar.domain.wine.Appellation;
 import fr.peralta.mycellar.domain.wine.Region;
+import fr.peralta.mycellar.interfaces.client.web.components.shared.Action;
 import fr.peralta.mycellar.interfaces.client.web.components.shared.cloud.ComplexTagCloud;
+import fr.peralta.mycellar.interfaces.client.web.components.shared.cloud.TagCloudPanel;
 import fr.peralta.mycellar.interfaces.client.web.components.wine.edit.AppellationEditPanel;
+import fr.peralta.mycellar.interfaces.facades.wine.WineServiceFacade;
 
 /**
  * @author speralta
  */
 public class AppellationComplexTagCloud extends ComplexTagCloud<Appellation> {
 
-    private static final long serialVersionUID = 201107252130L;
+    private static final long serialVersionUID = 201108062231L;
 
-    private final Region region;
+    private static final String REGION_COMPONENT_ID = "region";
+
+    private IModel<Region> regionModel;
+
+    @SpringBean
+    private WineServiceFacade wineServiceFacade;
 
     /**
      * @param id
      * @param label
-     * @param objects
-     * @param region
      */
-    public AppellationComplexTagCloud(String id, IModel<?> label,
-            Map<Appellation, Integer> objects, Region region) {
-        super(id, label, objects);
-        this.region = region;
+    public AppellationComplexTagCloud(String id, IModel<String> label) {
+        super(id, label);
+        add(new RegionComplexTagCloud(REGION_COMPONENT_ID, new StringResourceModel("region", this,
+                null)));
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    protected String getLabelFor(Appellation object) {
-        return object.getName();
+    protected void internalConfigureComponent(Appellation modelObject, boolean isValidModelObject) {
+        super.internalConfigureComponent(modelObject, isValidModelObject);
+        if (modelObject == null) {
+            setModelObject(createObject());
+        }
     }
 
     /**
@@ -71,7 +82,79 @@ public class AppellationComplexTagCloud extends ComplexTagCloud<Appellation> {
     @Override
     protected Appellation createObject() {
         Appellation appellation = new Appellation();
-        appellation.setRegion(region);
+        if (regionModel != null) {
+            appellation.setRegion(regionModel.getObject());
+        }
         return appellation;
     }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    protected TagCloudPanel<Appellation> createTagCloudPanel(String id) {
+        return new TagCloudPanel<Appellation>(id,
+                getListFrom(wineServiceFacade.getAppellationsWithCounts(regionModel.getObject())));
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    protected boolean isReadyToSelect() {
+        return (regionModel != null)
+                && (regionModel.getObject() != null)
+                && ((RegionComplexTagCloud) get(REGION_COMPONENT_ID)).isValid(regionModel
+                        .getObject());
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public boolean isValid(Appellation object) {
+        return StringUtils.isNotBlank(object.getName());
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    protected String getSelectorLabelFor(Appellation object) {
+        return object.getName();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    protected String getValueLabelFor(Appellation object) {
+        return object.getName();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    protected void detachModel() {
+        if (regionModel != null) {
+            regionModel.detach();
+        }
+        super.detachModel();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @SuppressWarnings("unchecked")
+    @Override
+    protected void onModelChanged(IEventSource source, Action action) {
+        if (source instanceof RegionComplexTagCloud) {
+            regionModel = (IModel<Region>) get(REGION_COMPONENT_ID).getDefaultModel();
+            setDefaultModelObject(createObject());
+        } else {
+            super.onModelChanged(source, action);
+        }
+    }
+
 }

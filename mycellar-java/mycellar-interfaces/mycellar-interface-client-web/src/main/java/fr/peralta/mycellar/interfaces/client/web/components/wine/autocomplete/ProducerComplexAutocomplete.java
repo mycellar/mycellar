@@ -18,6 +18,7 @@
  */
 package fr.peralta.mycellar.interfaces.client.web.components.wine.autocomplete;
 
+import org.apache.commons.lang3.StringUtils;
 import org.apache.wicket.Component;
 import org.apache.wicket.model.IModel;
 import org.odlabs.wiquery.ui.autocomplete.AutocompleteAjaxComponent;
@@ -37,7 +38,7 @@ public class ProducerComplexAutocomplete extends ComplexAutocomplete<Producer> {
      * @param id
      * @param label
      */
-    public ProducerComplexAutocomplete(String id, IModel<?> label) {
+    public ProducerComplexAutocomplete(String id, IModel<String> label) {
         super(id, label);
     }
 
@@ -45,17 +46,8 @@ public class ProducerComplexAutocomplete extends ComplexAutocomplete<Producer> {
      * {@inheritDoc}
      */
     @Override
-    protected AutocompleteAjaxComponent<Producer> createAutocomplete(String id,
-            IModel<Producer> model) {
-        return new ProducerAutocompleteAjaxComponent(id, model);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    protected String getLabelFor(Producer object) {
-        return object.getName();
+    protected AutocompleteAjaxComponent<Producer> createAutocomplete(String id) {
+        return new ProducerAutocompleteAjaxComponent(id);
     }
 
     /**
@@ -72,6 +64,22 @@ public class ProducerComplexAutocomplete extends ComplexAutocomplete<Producer> {
     @Override
     protected Producer createObject() {
         return new Producer();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    protected boolean isReadyToSelect() {
+        return true;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public boolean isValid(Producer object) {
+        return StringUtils.isNotBlank(object.getName());
     }
 
 }

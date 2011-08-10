@@ -72,7 +72,6 @@ body>section>div {
   border-width: 2px;
   border-color: #ffb36f;
   border-radius: 5px;
-  -moz-border-radius: 5px;
 }
 
 /** FOOTER **/
@@ -101,13 +100,26 @@ body>footer>div>p {
 
 /** TABLE BORDER **/
 table.border {
-  border: 1px solid black;
-  border-collapse: collapse;
+    border: 1px solid black;
+    border-collapse: collapse;
 }
 
 table.border td, table.border th {
-  border: 1px solid black;
-  padding: 2px;
+    border: 1px solid black;
+    padding: 2px;
+}
+
+table.border th {
+    background: #3C0017;
+    color: #FFB36F;
+}
+
+table.border tr:nth-child(even) {
+    background: #ED5F4A;
+}
+
+table.border tr:nth-child(odd) {
+    background: #FFB36F;
 }
 
 /** TABLE LARGE **/
@@ -116,6 +128,72 @@ table.large {
 }
 
 /** FIELDSET **/
+form {
+  counter-reset: fieldsets;
+}
+
 fieldset {
+  border: none;
   padding: 5px;
+  margin-top: 10px;
+}
+
+fieldset:first-of-type {
+  margin-bottom: 0;
+}
+
+fieldset > legend:before {
+  content: "Etape " counter(fieldsets) " : ";
+  counter-increment: fieldsets;
+}
+
+fieldset div.formDiv {
+  border: 2px solid;
+  border-radius: 5px;
+  padding: 5px 10px;
+  margin-bottom: 2px;
+}
+
+legend {
+  font-size: 16px;
+  font-weight: bold;
+  text-shadow: 1px 1px 1px;
+  margin-bottom: 5px;
+}
+
+label:after {
+  content: " : "
+}
+
+/** CLOUD **/
+* > .cloud:nth-child(3n) a {
+  color: blue;
+  text-decoration: none;
+}
+
+* > .cloud:nth-child(3n+1) a {
+  color: red;
+  text-decoration: none;
+}
+
+* > .cloud:nth-child(3n+2) a {
+  color: green;
+  text-decoration: none;
+}
+
+* > .cloud:nth-child(3n) a:hover {
+  color: darkBlue;
+}
+
+* > .cloud:nth-child(3n+1) a:hover {
+  color: darkRed;
+}
+
+* > .cloud:nth-child(3n+2) a:hover {
+  color: darkGreen;
+}
+
+/** CENTER **/
+.center {
+  text-align: center;   
 }

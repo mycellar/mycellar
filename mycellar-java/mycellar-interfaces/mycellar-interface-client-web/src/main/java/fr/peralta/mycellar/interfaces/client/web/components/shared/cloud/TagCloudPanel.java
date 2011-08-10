@@ -18,47 +18,25 @@
  */
 package fr.peralta.mycellar.interfaces.client.web.components.shared.cloud;
 
-import java.io.Serializable;
+import java.util.List;
+
+import org.apache.wicket.markup.html.panel.Panel;
 
 /**
  * @author speralta
  */
-class TagData<O> implements Serializable {
+public class TagCloudPanel<O> extends Panel {
 
-    private static final long serialVersionUID = 201011071626L;
+    private static final long serialVersionUID = 201108041152L;
 
-    private final float size;
-
-    private final O object;
-
-    private final String label;
+    private static final String CLOUD_COMPONENT_ID = "cloud";
 
     /**
-     * @param object
-     * @param size
-     * @param label
+     * @param id
+     * @param list
      */
-    public TagData(O object, float size, String label) {
-        this.object = object;
-        this.size = size;
-        this.label = label;
-    }
-
-    public String getStyle() {
-        return "font-size: " + Float.toString(size) + "em;";
-    }
-
-    /**
-     * @return the object
-     */
-    public O getObject() {
-        return object;
-    }
-
-    /**
-     * @return the label
-     */
-    public String getLabel() {
-        return label;
+    public TagCloudPanel(String id, List<TagData<O>> list) {
+        super(id);
+        add(new TagCloud<O>(CLOUD_COMPONENT_ID, list));
     }
 }

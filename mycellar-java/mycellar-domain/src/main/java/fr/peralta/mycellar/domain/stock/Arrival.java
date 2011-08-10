@@ -32,11 +32,11 @@ public class Arrival implements Serializable {
 
     private static final long serialVersionUID = 201011071626L;
 
-    private List<ArrivalBottle> arrivalBottles = new ArrayList<ArrivalBottle>();
+    private final List<ArrivalBottle> arrivalBottles = new ArrayList<ArrivalBottle>();
 
     private LocalDate date;
 
-    private float otherCharges;
+    private Float otherCharges;
 
     private String source;
 
@@ -65,7 +65,7 @@ public class Arrival implements Serializable {
     /**
      * @return the otherCharges
      */
-    public float getOtherCharges() {
+    public Float getOtherCharges() {
         return otherCharges;
     }
 
@@ -88,7 +88,7 @@ public class Arrival implements Serializable {
      * @param otherCharges
      *            the otherCharges to set
      */
-    public void setOtherCharges(float otherCharges) {
+    public void setOtherCharges(Float otherCharges) {
         this.otherCharges = otherCharges;
     }
 

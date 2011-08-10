@@ -5,8 +5,22 @@
   <entry key="package">Identification du colis</entry>
   <entry key="date">Date d'arrivée</entry>
   <entry key="source">Source</entry>
+  <entry key="sourceEx">Domaine, ...</entry>
   <entry key="otherCharges">Frais annexes</entry>
-  <entry key="arrivalBottles">Bouteilles</entry>
+  <entry key="otherChargesEx">Port, ...</entry>
+  <entry key="arrivalBottles">Bouteilles du colis</entry>
   <entry key="name">Nom</entry>
   <entry key="saveArrival">Enregistrer l'entrée</entry>
+  <entry key="arrivalBottle">Nouvelle bouteille à ajouter au colis</entry>
+  <entry key="country">Pays</entry>
+  <entry key="region">Region</entry>
+  <entry key="appellation">Appellation</entry>
+  <entry key="producer">Producteur</entry>
+  <entry key="format">Format</entry>
+  <entry key="quantity">Quantité</entry>
+  <entry key="addBottle">Ajouter une bouteille</entry>
+  <entry key="removeBottle">Supprimer</entry>
+  <entry key="saveBottle">Enregistrer cette bouteille</entry>
+  <entry key="cancelBottle">Annuler la saisie de cette bouteille</entry>
+  <entry key="noBottles">Pas de bouteilles</entry>
 </properties> 

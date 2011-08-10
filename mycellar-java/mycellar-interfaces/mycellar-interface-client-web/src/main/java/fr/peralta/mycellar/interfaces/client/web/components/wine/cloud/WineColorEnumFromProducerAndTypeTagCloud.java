@@ -18,58 +18,57 @@
  */
 package fr.peralta.mycellar.interfaces.client.web.components.wine.cloud;
 
-import org.apache.commons.lang3.StringUtils;
-import org.apache.wicket.Component;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 
-import fr.peralta.mycellar.domain.wine.Country;
-import fr.peralta.mycellar.interfaces.client.web.components.shared.cloud.ComplexTagCloud;
+import fr.peralta.mycellar.domain.wine.Producer;
+import fr.peralta.mycellar.domain.wine.WineColorEnum;
+import fr.peralta.mycellar.domain.wine.WineTypeEnum;
+import fr.peralta.mycellar.interfaces.client.web.components.shared.cloud.SimpleTagCloud;
 import fr.peralta.mycellar.interfaces.client.web.components.shared.cloud.TagCloudPanel;
-import fr.peralta.mycellar.interfaces.client.web.components.wine.edit.CountryEditPanel;
 import fr.peralta.mycellar.interfaces.facades.wine.WineServiceFacade;
 
 /**
  * @author speralta
  */
-public class CountryComplexTagCloud extends ComplexTagCloud<Country> {
+public class WineColorEnumFromProducerAndTypeTagCloud extends SimpleTagCloud<WineColorEnum> {
 
     private static final long serialVersionUID = 201107252130L;
 
     @SpringBean
     private WineServiceFacade wineServiceFacade;
 
+    private final IModel<WineTypeEnum> wineTypeEnumModel;
+
+    private final IModel<Producer> producerModel;
+
     /**
      * @param id
      * @param label
+     * @param producerModel
+     * @param wineTypeEnumModel
      */
-    public CountryComplexTagCloud(String id, IModel<String> label) {
+    public WineColorEnumFromProducerAndTypeTagCloud(String id, IModel<String> label,
+            IModel<Producer> producerModel, IModel<WineTypeEnum> wineTypeEnumModel) {
         super(id, label);
+        if (producerModel == null) {
+            throw new NullPointerException("Producer model cannot be null.");
+        }
+        if (wineTypeEnumModel == null) {
+            throw new NullPointerException("WineTypeEnum model cannot be null.");
+        }
+        this.producerModel = producerModel;
+        this.wineTypeEnumModel = wineTypeEnumModel;
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    protected Component createComponentForCreation(String id) {
-        return new CountryEditPanel(id);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    protected Country createObject() {
-        return new Country();
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    protected TagCloudPanel<Country> createTagCloudPanel(String id) {
-        return new TagCloudPanel<Country>(id,
-                getListFrom(wineServiceFacade.getCountriesWithCounts()));
+    protected TagCloudPanel<WineColorEnum> createTagCloudPanel(String id) {
+        return new TagCloudPanel<WineColorEnum>(id,
+                getListFrom(wineServiceFacade.getColorWithCounts(producerModel.getObject(),
+                        wineTypeEnumModel.getObject())));
     }
 
     /**
@@ -77,15 +76,15 @@ public class CountryComplexTagCloud extends ComplexTagCloud<Country> {
      */
     @Override
     protected boolean isReadyToSelect() {
-        return true;
+        return (producerModel.getObject() != null) && (wineTypeEnumModel.getObject() != null);
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public boolean isValid(Country object) {
-        return StringUtils.isNotBlank(object.getName());
+    public boolean isValid(WineColorEnum object) {
+        return true;
     }
 
 }

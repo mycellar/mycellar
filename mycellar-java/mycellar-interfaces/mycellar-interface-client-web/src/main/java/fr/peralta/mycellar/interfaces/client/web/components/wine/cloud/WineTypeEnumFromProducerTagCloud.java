@@ -18,33 +18,45 @@
  */
 package fr.peralta.mycellar.interfaces.client.web.components.wine.cloud;
 
-import org.apache.commons.lang3.StringUtils;
-import org.apache.wicket.Component;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 
-import fr.peralta.mycellar.domain.wine.Format;
-import fr.peralta.mycellar.interfaces.client.web.components.shared.cloud.ComplexTagCloud;
+import fr.peralta.mycellar.domain.wine.Producer;
+import fr.peralta.mycellar.domain.wine.WineTypeEnum;
+import fr.peralta.mycellar.interfaces.client.web.components.shared.cloud.SimpleTagCloud;
 import fr.peralta.mycellar.interfaces.client.web.components.shared.cloud.TagCloudPanel;
-import fr.peralta.mycellar.interfaces.client.web.components.wine.edit.FormatEditPanel;
 import fr.peralta.mycellar.interfaces.facades.wine.WineServiceFacade;
 
 /**
  * @author speralta
  */
-public class FormatComplexTagCloud extends ComplexTagCloud<Format> {
+public class WineTypeEnumFromProducerTagCloud extends SimpleTagCloud<WineTypeEnum> {
 
     private static final long serialVersionUID = 201107252130L;
 
     @SpringBean
     private WineServiceFacade wineServiceFacade;
 
+    private final IModel<Producer> producerModel;
+
     /**
      * @param id
      * @param label
+     * @param producerModel
      */
-    public FormatComplexTagCloud(String id, IModel<String> label) {
+    public WineTypeEnumFromProducerTagCloud(String id, IModel<String> label,
+            IModel<Producer> producerModel) {
         super(id, label);
+        this.producerModel = producerModel;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    protected TagCloudPanel<WineTypeEnum> createTagCloudPanel(String id) {
+        return new TagCloudPanel<WineTypeEnum>(id,
+                getListFrom(wineServiceFacade.getTypeWithCounts(producerModel.getObject())));
     }
 
     /**
@@ -52,39 +64,15 @@ public class FormatComplexTagCloud extends ComplexTagCloud<Format> {
      */
     @Override
     protected boolean isReadyToSelect() {
+        return (producerModel != null) && (producerModel.getObject() != null);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public boolean isValid(WineTypeEnum object) {
         return true;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    protected TagCloudPanel<Format> createTagCloudPanel(String id) {
-        return new TagCloudPanel<Format>(id, getListFrom(wineServiceFacade.getFormatWithCounts()));
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public boolean isValid(Format object) {
-        return StringUtils.isNotBlank(object.getName()) && (object.getCapacity() > 0);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    protected Component createComponentForCreation(String id) {
-        return new FormatEditPanel(id);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    protected Format createObject() {
-        return new Format();
     }
 
 }

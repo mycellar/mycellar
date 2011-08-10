@@ -25,7 +25,6 @@ import org.odlabs.wiquery.ui.autocomplete.AutocompleteAjaxComponent;
 
 import fr.peralta.mycellar.domain.shared.IdentifiedEntity;
 import fr.peralta.mycellar.interfaces.client.web.components.shared.Action;
-import fr.peralta.mycellar.interfaces.client.web.components.shared.EntityChoiceRenderer;
 
 /**
  * @author speralta
@@ -39,7 +38,7 @@ public abstract class AbstractAutocompleteAjaxComponent<E extends IdentifiedEnti
      * @param id
      */
     public AbstractAutocompleteAjaxComponent(String id) {
-        super(id, null);
+        this(id, null);
     }
 
     /**

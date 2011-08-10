@@ -26,7 +26,7 @@ import org.apache.wicket.markup.html.list.PropertyListView;
 /**
  * @author speralta
  */
-public class TagCloud<O> extends PropertyListView<TagData<O>> {
+class TagCloud<O> extends PropertyListView<TagData<O>> {
 
     private static final long serialVersionUID = 201107252130L;
 

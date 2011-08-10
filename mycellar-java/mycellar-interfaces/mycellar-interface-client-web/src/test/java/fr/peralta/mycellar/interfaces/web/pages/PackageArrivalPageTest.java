@@ -60,6 +60,7 @@ public class PackageArrivalPageTest extends AbstractPageTest {
         country.setName("Toto");
         map.put(country, 10);
         given(wineServiceFacade.getCountriesWithCounts()).willReturn(map);
+        given(rendererServiceFacade.render(country)).willReturn("Toto");
 
         getApplicationContext().putBean("wineServiceFacade", wineServiceFacade);
         getApplicationContext().putBean("stockServiceFacade", stockServiceFacade);
@@ -72,9 +73,8 @@ public class PackageArrivalPageTest extends AbstractPageTest {
         formTester.setValue("otherCharges", "0");
         getWicketTester()
                 .clickLink(
-                        "form:arrivalBottles:arrivalBottle:newObject:bottle.wine.appellation.region.country:cloud:0:object");
-        FormTester bottleFormTester = getWicketTester().newFormTester(
-                "form:arrivalBottles:arrivalBottle");
+                        "form:arrivalBottle:newObject:bottle.wine.appellation:region:country:container:selector:cloud:0:object");
+        FormTester bottleFormTester = getWicketTester().newFormTester("form:arrivalBottle");
         bottleFormTester.setValue("newObject:quantity", "2");
         bottleFormTester.submit();
         getWicketTester().assertRenderedPage(PackageArrivalPage.class);
@@ -102,22 +102,21 @@ public class PackageArrivalPageTest extends AbstractPageTest {
 
         getWicketTester()
                 .clickLink(
-                        "form:arrivalBottles:arrivalBottle:newObject:bottle.wine.appellation.region.country:add");
+                        "form:arrivalBottle:newObject:bottle.wine.appellation:region:country:container:add");
 
         FormTester countryFormTester = getWicketTester()
                 .newFormTester(
-                        "form:arrivalBottles:arrivalBottle:newObject:bottle.wine.appellation.region.country:createForm");
+                        "form:arrivalBottle:newObject:bottle.wine.appellation:region:country:container:createForm");
         countryFormTester.setValue("newObject:name", "Nom");
         countryFormTester.submit();
 
         getWicketTester().assertRenderedPage(PackageArrivalPage.class);
         getWicketTester()
-                .assertLabel(
-                        "form:arrivalBottles:arrivalBottle:newObject:bottle.wine.appellation.region.country:value",
+                .assertModelValue(
+                        "form:arrivalBottle:newObject:bottle.wine.appellation:region:country:container:value",
                         "Nom");
 
-        FormTester bottleFormTester = getWicketTester().newFormTester(
-                "form:arrivalBottles:arrivalBottle");
+        FormTester bottleFormTester = getWicketTester().newFormTester("form:arrivalBottle");
         bottleFormTester.setValue("newObject:quantity", "2");
         bottleFormTester.submit();
         getWicketTester().assertRenderedPage(PackageArrivalPage.class);
@@ -130,6 +129,7 @@ public class PackageArrivalPageTest extends AbstractPageTest {
         country.setName("Toto");
         map.put(country, 10);
         given(wineServiceFacade.getCountriesWithCounts()).willReturn(map);
+        given(rendererServiceFacade.render(country)).willReturn("Toto");
 
         getApplicationContext().putBean("wineServiceFacade", wineServiceFacade);
         getApplicationContext().putBean("stockServiceFacade", stockServiceFacade);
@@ -142,9 +142,8 @@ public class PackageArrivalPageTest extends AbstractPageTest {
         formTester.setValue("otherCharges", "0");
         getWicketTester()
                 .clickLink(
-                        "form:arrivalBottles:arrivalBottle:newObject:bottle.wine.appellation.region.country:cloud:0:object");
-        FormTester bottleFormTester = getWicketTester().newFormTester(
-                "form:arrivalBottles:arrivalBottle");
+                        "form:arrivalBottle:newObject:bottle.wine.appellation:region:country:container:selector:cloud:0:object");
+        FormTester bottleFormTester = getWicketTester().newFormTester("form:arrivalBottle");
         bottleFormTester.setValue("newObject:quantity", "2");
         bottleFormTester.submit();
         getWicketTester().assertRenderedPage(PackageArrivalPage.class);

@@ -16,7 +16,7 @@
  * You should have received a copy of the GNU General Public License
  * along with MyCellar. If not, see <http://www.gnu.org/licenses/>.
  */
-package fr.peralta.mycellar.interfaces.client.web.components.shared;
+package fr.peralta.mycellar.interfaces.client.web.components.shared.autocomplete;
 
 import org.apache.wicket.injection.Injector;
 import org.apache.wicket.markup.html.form.IChoiceRenderer;
@@ -55,7 +55,12 @@ public class EntityChoiceRenderer<E extends IdentifiedEntity<E>> implements ICho
      */
     @Override
     public String getIdValue(E object, int index) {
-        return Integer.toString(object.getId());
+        Integer id = object.getId();
+        if (id != null) {
+            return Integer.toString(id);
+        } else {
+            return "IDX" + Integer.toString(index);
+        }
     }
 
 }
