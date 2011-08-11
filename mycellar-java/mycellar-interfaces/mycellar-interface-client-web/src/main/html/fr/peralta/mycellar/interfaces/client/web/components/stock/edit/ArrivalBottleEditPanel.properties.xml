@@ -7,4 +7,5 @@
   <entry key="producer">Producteur</entry>
   <entry key="type">Type</entry>
   <entry key="color">Couleur</entry>
+  <entry key="vintage">Millésime</entry>
 </properties> 

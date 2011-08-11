@@ -49,6 +49,7 @@ public class ArrivalBottleEditPanel extends Panel {
     private static final String PRODUCER_COMPONENT_ID = "bottle.wine.producer";
     private static final String TYPE_COMPONENT_ID = "bottle.wine.type";
     private static final String COLOR_COMPONENT_ID = "bottle.wine.color";
+    private static final String VINTAGE_COMPONENT_ID = "bottle.wine.vintage";
     private static final String FORMAT_COMPONENT_ID = "bottle.format";
 
     private final Logger logger = LoggerFactory.getLogger(ArrivalBottleEditPanel.class);
@@ -67,6 +68,7 @@ public class ArrivalBottleEditPanel extends Panel {
         add(new EmptyPanel(COLOR_COMPONENT_ID).setOutputMarkupId(true));
         add(new FormatComplexTagCloud(FORMAT_COMPONENT_ID, new StringResourceModel("format", this,
                 null)));
+        add(new TextField<Integer>(VINTAGE_COMPONENT_ID));
         add(new TextField<Integer>("quantity").setRequired(true));
     }
 
