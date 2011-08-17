@@ -16,21 +16,43 @@
  * You should have received a copy of the GNU General Public License
  * along with MyCellar. If not, see <http://www.gnu.org/licenses/>.
  */
-package fr.peralta.mycellar.application.wine;
+package fr.peralta.mycellar.interfaces.client.web.components.shared.multiple;
 
-import java.util.Map;
-
-import fr.peralta.mycellar.domain.wine.Country;
-import fr.peralta.mycellar.domain.wine.Region;
+import java.io.Serializable;
 
 /**
  * @author speralta
  */
-public interface RegionService {
+class MultipleData<O> implements Serializable {
+
+    private static final long serialVersionUID = 201108162925L;
+
+    private final O object;
+
+    private final String label;
 
     /**
-     * @return
+     * @param object
+     * @param count
+     * @param label
      */
-    Map<Region, Integer> getAllFromCountriesWithCounts(Country... countries);
+    public MultipleData(O object, int count, String label) {
+        this.object = object;
+        this.label = label + " (" + count + ")";
+    }
+
+    /**
+     * @return the object
+     */
+    public O getObject() {
+        return object;
+    }
+
+    /**
+     * @return the label
+     */
+    public String getLabel() {
+        return label;
+    }
 
 }

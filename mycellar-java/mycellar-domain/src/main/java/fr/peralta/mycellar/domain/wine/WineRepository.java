@@ -39,10 +39,10 @@ public interface WineRepository {
     Map<Country, Integer> getAllCountriesWithCounts();
 
     /**
-     * @param country
+     * @param countries
      * @return
      */
-    Map<Region, Integer> getAllRegionsFromCountryWithCounts(Country country);
+    Map<Region, Integer> getAllRegionsFromCountriesWithCounts(Country... countries);
 
     /**
      * @param term

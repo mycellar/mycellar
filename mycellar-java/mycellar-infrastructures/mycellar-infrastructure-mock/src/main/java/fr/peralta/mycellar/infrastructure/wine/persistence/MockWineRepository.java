@@ -111,25 +111,51 @@ public class MockWineRepository implements WineRepository {
      * {@inheritDoc}
      */
     @Override
-    public Map<Region, Integer> getAllRegionsFromCountryWithCounts(Country country) {
+    public Map<Region, Integer> getAllRegionsFromCountriesWithCounts(Country... countries) {
         Map<Region, Integer> result = new HashMap<Region, Integer>();
-        int position = 0;
-        for (int i = 0; i < countries.length; i++) {
-            if (countries[i].equals(country.getName())) {
-                position = i;
-                break;
+        if ((countries != null) && (countries.length > 0)) {
+            for (Country country : countries) {
+                int position = 0;
+                for (int i = 0; i < MockWineRepository.countries.length; i++) {
+                    if (MockWineRepository.countries[i].equals(country.getName())) {
+                        position = i;
+                        break;
+                    }
+                }
+                for (int i = 0; i < regions[position].length; i++) {
+                    Region region = new Region();
+                    region.setName(regions[position][i]);
+                    region.setCountry(country);
+                    new DirectPropertyAccessor().getSetter(Region.class, "id").set(region, i, null);
+                    int a = (i + 5) % 10;
+                    if (a == 0) {
+                        a = 2;
+                    }
+                    result.put(region, 23 % a);
+                }
             }
-        }
-        for (int i = 0; i < regions[position].length; i++) {
-            Region region = new Region();
-            region.setName(regions[position][i]);
-            region.setCountry(country);
-            new DirectPropertyAccessor().getSetter(Region.class, "id").set(region, i, null);
-            int a = (i + 5) % 10;
-            if (a == 0) {
-                a = 2;
+        } else {
+            for (int position = 0; position < regions.length; position++) {
+                Country country = new Country();
+                country.setName(MockWineRepository.countries[position]);
+                new DirectPropertyAccessor().getSetter(Country.class, "id").set(country, position,
+                        null);
+                int a = (position + 5) % 10;
+                if (a == 0) {
+                    a = 2;
+                }
+                for (int i = 0; i < regions[position].length; i++) {
+                    Region region = new Region();
+                    region.setName(regions[position][i]);
+                    region.setCountry(country);
+                    new DirectPropertyAccessor().getSetter(Region.class, "id").set(region, i, null);
+                    int b = (i + 5) % 10;
+                    if (b == 0) {
+                        b = 2;
+                    }
+                    result.put(region, 23 % b);
+                }
             }
-            result.put(region, 23 % a);
         }
         return result;
     }

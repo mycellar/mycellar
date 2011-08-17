@@ -193,7 +193,27 @@ label:after {
   color: darkGreen;
 }
 
+/** MULTIPLE **/
+ul.multiple {
+  list-style: none;
+  padding: 2px;
+}
+
 /** CENTER **/
 .center {
   text-align: center;   
+}
+
+/** SELECTOR **/
+div.selector {
+  float: left;
+  border: 1px solid black;
+  height: 100px;
+  margin-right: 10px;
+  overflow: auto;
+}
+
+div.selector:last-of-type {
+  float: none;
+  margin-right: 0;
 }

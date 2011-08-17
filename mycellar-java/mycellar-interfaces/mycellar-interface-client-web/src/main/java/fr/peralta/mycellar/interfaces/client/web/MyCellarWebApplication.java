@@ -32,6 +32,7 @@ import fr.peralta.mycellar.interfaces.client.web.pages.HomePage;
 import fr.peralta.mycellar.interfaces.client.web.pages.ListUsersPage;
 import fr.peralta.mycellar.interfaces.client.web.pages.NewUserPage;
 import fr.peralta.mycellar.interfaces.client.web.pages.PackageArrivalPage;
+import fr.peralta.mycellar.interfaces.client.web.pages.PediaHomePage;
 
 /**
  * @author speralta
@@ -49,6 +50,7 @@ public abstract class MyCellarWebApplication extends WebApplication {
         getRootRequestMapperAsCompound().add(new MountedMapper("/home", getHomePage()));
         getRootRequestMapperAsCompound().add(
                 new MountedMapper("/packageArrival", PackageArrivalPage.class));
+        getRootRequestMapperAsCompound().add(new MountedMapper("/pedia", PediaHomePage.class));
         getRootRequestMapperAsCompound().add(new MountedMapper("/newUser", NewUserPage.class));
         getRootRequestMapperAsCompound().add(new MountedMapper("/listUsers", ListUsersPage.class));
     }

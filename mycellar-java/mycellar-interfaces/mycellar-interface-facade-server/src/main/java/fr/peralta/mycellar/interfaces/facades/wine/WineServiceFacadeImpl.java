@@ -71,8 +71,8 @@ public class WineServiceFacadeImpl implements WineServiceFacade {
      */
     @Override
     @Transactional
-    public Map<Region, Integer> getRegionsWithCounts(Country country) {
-        return regionService.getAllFromCountryWithCounts(country);
+    public Map<Region, Integer> getRegionsWithCounts(Country... countries) {
+        return regionService.getAllFromCountriesWithCounts(countries);
     }
 
     /**

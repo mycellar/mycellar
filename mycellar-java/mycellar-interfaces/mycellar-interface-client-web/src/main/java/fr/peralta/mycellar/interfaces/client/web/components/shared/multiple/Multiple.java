@@ -16,21 +16,34 @@
  * You should have received a copy of the GNU General Public License
  * along with MyCellar. If not, see <http://www.gnu.org/licenses/>.
  */
-package fr.peralta.mycellar.application.wine;
+package fr.peralta.mycellar.interfaces.client.web.components.shared.multiple;
 
-import java.util.Map;
+import java.util.List;
 
-import fr.peralta.mycellar.domain.wine.Country;
-import fr.peralta.mycellar.domain.wine.Region;
+import org.apache.wicket.markup.html.list.ListItem;
+import org.apache.wicket.markup.html.list.PropertyListView;
 
 /**
  * @author speralta
  */
-public interface RegionService {
+class Multiple<O> extends PropertyListView<MultipleData<O>> {
+
+    private static final long serialVersionUID = 201108161922L;
 
     /**
-     * @return
+     * @param id
+     * @param list
      */
-    Map<Region, Integer> getAllFromCountriesWithCounts(Country... countries);
+    public Multiple(String id, List<? extends MultipleData<O>> list) {
+        super(id, list);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    protected void populateItem(ListItem<MultipleData<O>> item) {
+        item.add(new MultipleSelection<O>("object"));
+    }
 
 }

@@ -48,7 +48,7 @@ public class HibernateWineRepository implements WineRepository {
      * {@inheritDoc}
      */
     @Override
-    public Map<Region, Integer> getAllRegionsFromCountryWithCounts(Country country) {
+    public Map<Region, Integer> getAllRegionsFromCountriesWithCounts(Country... countries) {
         // TODO Auto-generated method stub
         return null;
     }

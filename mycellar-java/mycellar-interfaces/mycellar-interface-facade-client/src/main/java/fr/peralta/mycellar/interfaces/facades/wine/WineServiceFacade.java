@@ -40,10 +40,10 @@ public interface WineServiceFacade {
     Map<Country, Integer> getCountriesWithCounts();
 
     /**
-     * @param country
+     * @param countries
      * @return
      */
-    Map<Region, Integer> getRegionsWithCounts(Country country);
+    Map<Region, Integer> getRegionsWithCounts(Country... countries);
 
     /**
      * @param region

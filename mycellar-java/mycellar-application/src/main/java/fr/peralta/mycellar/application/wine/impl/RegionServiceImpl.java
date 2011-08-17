@@ -40,8 +40,8 @@ public class RegionServiceImpl implements RegionService {
      * {@inheritDoc}
      */
     @Override
-    public Map<Region, Integer> getAllFromCountryWithCounts(Country country) {
-        return wineRepository.getAllRegionsFromCountryWithCounts(country);
+    public Map<Region, Integer> getAllFromCountriesWithCounts(Country... countries) {
+        return wineRepository.getAllRegionsFromCountriesWithCounts(countries);
     }
 
     /**

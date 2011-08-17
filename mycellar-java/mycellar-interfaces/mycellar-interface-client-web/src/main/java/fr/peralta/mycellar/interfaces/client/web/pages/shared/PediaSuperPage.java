@@ -16,21 +16,30 @@
  * You should have received a copy of the GNU General Public License
  * along with MyCellar. If not, see <http://www.gnu.org/licenses/>.
  */
-package fr.peralta.mycellar.application.wine;
+package fr.peralta.mycellar.interfaces.client.web.pages.shared;
 
-import java.util.Map;
-
-import fr.peralta.mycellar.domain.wine.Country;
-import fr.peralta.mycellar.domain.wine.Region;
+import org.apache.wicket.request.mapper.parameter.PageParameters;
 
 /**
  * @author speralta
  */
-public interface RegionService {
+public abstract class PediaSuperPage extends BasePage {
+
+    private static final long serialVersionUID = 201108102313L;
 
     /**
-     * @return
+     * @param parameters
      */
-    Map<Region, Integer> getAllFromCountriesWithCounts(Country... countries);
+    public PediaSuperPage(PageParameters parameters) {
+        super(parameters);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    protected Class<? extends BasePage> getMenuClass() {
+        return PediaSuperPage.class;
+    }
 
 }

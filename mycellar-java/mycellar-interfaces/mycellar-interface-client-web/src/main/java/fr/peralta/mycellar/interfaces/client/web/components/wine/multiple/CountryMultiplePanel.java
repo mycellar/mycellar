@@ -16,21 +16,26 @@
  * You should have received a copy of the GNU General Public License
  * along with MyCellar. If not, see <http://www.gnu.org/licenses/>.
  */
-package fr.peralta.mycellar.application.wine;
+package fr.peralta.mycellar.interfaces.client.web.components.wine.multiple;
 
 import java.util.Map;
 
 import fr.peralta.mycellar.domain.wine.Country;
-import fr.peralta.mycellar.domain.wine.Region;
+import fr.peralta.mycellar.interfaces.client.web.components.shared.multiple.MultiplePanel;
 
 /**
  * @author speralta
  */
-public interface RegionService {
+public class CountryMultiplePanel extends MultiplePanel<Country> {
+
+    private static final long serialVersionUID = 201108161950L;
 
     /**
-     * @return
+     * @param id
+     * @param list
      */
-    Map<Region, Integer> getAllFromCountriesWithCounts(Country... countries);
+    public CountryMultiplePanel(String id, Map<Country, Integer> countries) {
+        super(id, countries);
+    }
 
 }
