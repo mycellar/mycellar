@@ -18,7 +18,7 @@ body {
 }
 
 /** NAV **/
-nav {
+nav[role="main"] {
   position: absolute;
   left: 0;
   top: 0;
@@ -27,17 +27,17 @@ nav {
   color: #ed5f4a;
 }
 
-nav ul {
+nav[role="main"] ul {
   margin: 0 auto;
   padding: 0 5px;
   list-style: none;
 }
 
-nav ul li {
+nav[role="main"] ul li {
   float: left;
 }
 
-nav ul li a {
+nav[role="main"] ul li a {
   display: block;
   margin-left: 20px;
   width: 140px;
@@ -47,16 +47,53 @@ nav ul li a {
   color: #ed5f4a;
 }
 
-nav ul li a:hover {
+nav[role="main"] ul li a:hover {
   color: #ffdc95;
   background: #c42d30;
 }
 
-nav ul li.selected a {
+nav[role="main"] ul li.selected a {
   color: #ffdc95;
   background: #c42d30;
 }
 
+nav[role="secondary"] {
+  position: absolute;
+  top: 30px;
+  left: 170px;
+  background: #3c0017;
+  color: #ed5f4a;
+}
+
+nav[role="secondary"] ul {
+  margin: 0 auto;
+  padding: 0 5px;
+  list-style: none;
+}
+
+nav[role="secondary"] ul li {
+  float: left;
+}
+
+nav[role="secondary"] ul li a {
+  display: block;
+  margin: 0 10px;
+  width: 140px;
+  line-height: 30px;
+  text-align: center;
+  text-decoration: none;
+  color: #ed5f4a;
+}
+
+nav[role="secondary"] ul li a:hover {
+  color: #ffdc95;
+  background: #c42d30;
+}
+
+nav[role="secondary"] ul li.selected a {
+  color: #ffdc95;
+  background: #c42d30;
+}
 
 /** HEADER **/
 body>header {
@@ -64,7 +101,7 @@ body>header {
 }
 
 /** MAIN **/
-body>section>div {
+section {
   background: #ffffff;
   margin: 0 auto;
   padding: 10px;
@@ -75,7 +112,7 @@ body>section>div {
 }
 
 /** FOOTER **/
-body>footer {
+footer {
   margin-top: 20px;
   padding: 10px 0;
   position: absolute;
@@ -85,16 +122,16 @@ body>footer {
   color: #ed5f4a; 
 }
 
-body>footer a {
+footer a {
   color: #ed5f4a;
 }
 
-body>footer>div {
+footer>div {
   margin: 0 auto;
   width: 90%;
 }
 
-body>footer>div>p {
+footer>div>p {
   text-align: center;
 }
 

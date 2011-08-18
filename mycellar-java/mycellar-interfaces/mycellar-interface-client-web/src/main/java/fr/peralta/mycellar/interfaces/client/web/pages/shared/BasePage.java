@@ -24,6 +24,7 @@ import org.apache.wicket.markup.html.WebPage;
 import org.apache.wicket.request.mapper.parameter.PageParameters;
 import org.apache.wicket.request.resource.PackageResourceReference;
 
+import fr.peralta.mycellar.interfaces.client.web.MyCellarWebApplicationDescriptor;
 import fr.peralta.mycellar.interfaces.client.web.components.shared.menu.MenuPanel;
 
 /**
@@ -38,7 +39,8 @@ public abstract class BasePage extends WebPage {
      */
     public BasePage(PageParameters parameters) {
         super(parameters);
-        add(new MenuPanel("menu", getMenuClass()));
+        add(new MenuPanel("menu", getMenuClass(), MyCellarWebApplicationDescriptor.get()
+                .getMenuablePageDescriptors()));
         add(new DebugBar("debug"));
     }
 

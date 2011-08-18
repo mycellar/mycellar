@@ -18,7 +18,16 @@
  */
 package fr.peralta.mycellar.interfaces.client.web.pages.shared;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.apache.wicket.request.mapper.parameter.PageParameters;
+
+import fr.peralta.mycellar.interfaces.client.web.components.shared.menu.MenuPanel;
+import fr.peralta.mycellar.interfaces.client.web.components.shared.menu.MenuablePageDescriptor;
+import fr.peralta.mycellar.interfaces.client.web.pages.cellar.CellarsPage;
+import fr.peralta.mycellar.interfaces.client.web.pages.cellar.InputOutputPage;
+import fr.peralta.mycellar.interfaces.client.web.pages.cellar.PackageArrivalPage;
 
 /**
  * @author speralta
@@ -32,7 +41,27 @@ public abstract class CellarSuperPage extends BasePage {
      */
     public CellarSuperPage(PageParameters parameters) {
         super(parameters);
+        add(new MenuPanel("submenu", getSubMenuClass(), getCellarPageDescriptors()));
     }
+
+    /**
+     * @return
+     */
+    private List<MenuablePageDescriptor> getCellarPageDescriptors() {
+        List<MenuablePageDescriptor> descriptors = new ArrayList<MenuablePageDescriptor>();
+        descriptors.add(new MenuablePageDescriptor(CellarsPage.class, CellarsPage.class,
+                "Your cellars"));
+        descriptors.add(new MenuablePageDescriptor(InputOutputPage.class, InputOutputPage.class,
+                "I/O"));
+        descriptors.add(new MenuablePageDescriptor(PackageArrivalPage.class,
+                PackageArrivalPage.class, "Package arrival"));
+        return descriptors;
+    }
+
+    /**
+     * @return
+     */
+    protected abstract Class<? extends CellarSuperPage> getSubMenuClass();
 
     /**
      * {@inheritDoc}

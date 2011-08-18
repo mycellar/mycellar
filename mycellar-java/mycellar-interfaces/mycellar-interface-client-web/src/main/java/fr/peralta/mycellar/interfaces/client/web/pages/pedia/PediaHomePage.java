@@ -16,7 +16,7 @@
  * You should have received a copy of the GNU General Public License
  * along with MyCellar. If not, see <http://www.gnu.org/licenses/>.
  */
-package fr.peralta.mycellar.interfaces.client.web.pages;
+package fr.peralta.mycellar.interfaces.client.web.pages.pedia;
 
 import java.util.ArrayList;
 import java.util.List;

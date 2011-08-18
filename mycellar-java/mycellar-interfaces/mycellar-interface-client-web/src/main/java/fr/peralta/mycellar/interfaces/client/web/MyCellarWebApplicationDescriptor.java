@@ -24,8 +24,8 @@ import java.util.List;
 
 import fr.peralta.mycellar.interfaces.client.web.components.shared.menu.MenuablePageDescriptor;
 import fr.peralta.mycellar.interfaces.client.web.pages.HomePage;
-import fr.peralta.mycellar.interfaces.client.web.pages.PackageArrivalPage;
-import fr.peralta.mycellar.interfaces.client.web.pages.PediaHomePage;
+import fr.peralta.mycellar.interfaces.client.web.pages.cellar.CellarsPage;
+import fr.peralta.mycellar.interfaces.client.web.pages.pedia.PediaHomePage;
 import fr.peralta.mycellar.interfaces.client.web.pages.shared.CellarSuperPage;
 import fr.peralta.mycellar.interfaces.client.web.pages.shared.HomeSuperPage;
 import fr.peralta.mycellar.interfaces.client.web.pages.shared.PediaSuperPage;
@@ -51,7 +51,7 @@ public class MyCellarWebApplicationDescriptor implements Serializable {
     private MyCellarWebApplicationDescriptor() {
         menuablePageDescriptors.add(new MenuablePageDescriptor(HomePage.class, HomeSuperPage.class,
                 "Home"));
-        menuablePageDescriptors.add(new MenuablePageDescriptor(PackageArrivalPage.class,
+        menuablePageDescriptors.add(new MenuablePageDescriptor(CellarsPage.class,
                 CellarSuperPage.class, "Your cellar"));
         menuablePageDescriptors.add(new MenuablePageDescriptor(PediaHomePage.class,
                 PediaSuperPage.class, "Vinopedia"));

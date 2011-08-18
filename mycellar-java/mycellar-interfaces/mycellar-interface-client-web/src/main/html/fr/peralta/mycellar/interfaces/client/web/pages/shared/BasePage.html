@@ -7,18 +7,14 @@
     </wicket:head>
   </head>
   <body>
-    <header>
-      <h1><wicket:message key="header">Header</wicket:message></h1>
+    <header role="main">
+      <h1><wicket:message key="myCellarHeader">MyCellar</wicket:message></h1>
     </header>
-    <nav>
+    <nav role="main">
       <ul wicket:id="menu" />
     </nav>
-    <section>
-      <div wicket:id="debug" />
-      <div>
-        <wicket:child />
-      </div>
-    </section>
+    <div wicket:id="debug" />
+    <wicket:child />
     <footer>
       <div>
         <p>

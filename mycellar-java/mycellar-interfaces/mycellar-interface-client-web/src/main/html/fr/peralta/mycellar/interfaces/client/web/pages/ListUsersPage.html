@@ -9,27 +9,25 @@
     <header>
       <h1>Page d'accueil</h1>
     </header>
-    <nav>
+    <nav role="main">
       <ul>
         <li><a>Nav 1</a></li>
         <li><a>Nav 2</a></li>
         <li><a>Nav 3</a></li>
       </ul>
     </nav>
-    <section>
-      <div>
-        <wicket:extend>
-          <ul>
-            <li wicket:id="users">
-              <span wicket:id="email">email</span><br/>
-              <span wicket:id="firstname">firstname</span><br/>
-              <span wicket:id="lastname">lastname</span><br/>
-              <span wicket:id="password">password</span>
-            </li>
-          </ul>
-        </wicket:extend>
-      </div>
-    </section>
+    <wicket:extend>
+      <section>
+        <ul>
+          <li wicket:id="users">
+            <span wicket:id="email">email</span><br/>
+            <span wicket:id="firstname">firstname</span><br/>
+            <span wicket:id="lastname">lastname</span><br/>
+            <span wicket:id="password">password</span>
+          </li>
+        </ul>
+      </section>
+    </wicket:extend>
     <footer>
       <div>
         <p>

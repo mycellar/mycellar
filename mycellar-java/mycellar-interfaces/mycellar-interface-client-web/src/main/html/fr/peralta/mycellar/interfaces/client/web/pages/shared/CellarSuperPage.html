@@ -3,33 +3,26 @@
   <head>
     <title>MyCellar</title>
     <meta charset="utf-8">
-    <link rel="stylesheet" href="shared/master.css" type="text/css" media="screen" />
+    <link rel="stylesheet" href="master.css" type="text/css" media="screen" />
   </head>
   <body>
     <header>
       <h1>Page d'accueil</h1>
     </header>
-    <nav>
+    <nav role="main">
       <ul>
         <li><a>Nav 1</a></li>
         <li><a>Nav 2</a></li>
         <li><a>Nav 3</a></li>
       </ul>
     </nav>
-    <section>
-      <div>
-        <wicket:extend>
-          <form wicket:id="form">
-            <div wicket:id="countries" class="selector" />
-            <div wicket:id="regions" class="selector" />
-            <p>
-              <input type="submit" wicket:message="value:search" />
-            </p>
-          </form>
-          <div style="min-height: 300px;" />
-        </wicket:extend>
-      </div>
-    </section>
+    <wicket:extend>
+      <header role="secondary"><h3><wicket:message key="header">Header</wicket:message></h3></header>
+      <nav role="secondary">
+        <ul wicket:id="submenu" />
+      </nav>
+      <wicket:child />
+    </wicket:extend>
     <footer>
       <div>
         <p>

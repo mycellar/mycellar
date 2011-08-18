@@ -31,8 +31,10 @@ import fr.peralta.mycellar.interfaces.client.web.converters.LocalDateConverter;
 import fr.peralta.mycellar.interfaces.client.web.pages.HomePage;
 import fr.peralta.mycellar.interfaces.client.web.pages.ListUsersPage;
 import fr.peralta.mycellar.interfaces.client.web.pages.NewUserPage;
-import fr.peralta.mycellar.interfaces.client.web.pages.PackageArrivalPage;
-import fr.peralta.mycellar.interfaces.client.web.pages.PediaHomePage;
+import fr.peralta.mycellar.interfaces.client.web.pages.cellar.CellarsPage;
+import fr.peralta.mycellar.interfaces.client.web.pages.cellar.InputOutputPage;
+import fr.peralta.mycellar.interfaces.client.web.pages.cellar.PackageArrivalPage;
+import fr.peralta.mycellar.interfaces.client.web.pages.pedia.PediaHomePage;
 
 /**
  * @author speralta
@@ -48,6 +50,8 @@ public abstract class MyCellarWebApplication extends WebApplication {
         getComponentInstantiationListeners().add(
                 new SpringComponentInjector(this, getApplicationContext()));
         getRootRequestMapperAsCompound().add(new MountedMapper("/home", getHomePage()));
+        getRootRequestMapperAsCompound().add(new MountedMapper("/cellars", CellarsPage.class));
+        getRootRequestMapperAsCompound().add(new MountedMapper("/io", InputOutputPage.class));
         getRootRequestMapperAsCompound().add(
                 new MountedMapper("/packageArrival", PackageArrivalPage.class));
         getRootRequestMapperAsCompound().add(new MountedMapper("/pedia", PediaHomePage.class));

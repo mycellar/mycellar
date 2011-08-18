@@ -33,7 +33,7 @@ import org.mockito.runners.MockitoJUnitRunner;
 
 import fr.peralta.mycellar.domain.stock.Arrival;
 import fr.peralta.mycellar.domain.wine.Country;
-import fr.peralta.mycellar.interfaces.client.web.pages.PackageArrivalPage;
+import fr.peralta.mycellar.interfaces.client.web.pages.cellar.PackageArrivalPage;
 import fr.peralta.mycellar.interfaces.client.web.renderers.shared.RendererServiceFacade;
 import fr.peralta.mycellar.interfaces.facades.stock.StockServiceFacade;
 import fr.peralta.mycellar.interfaces.facades.wine.WineServiceFacade;

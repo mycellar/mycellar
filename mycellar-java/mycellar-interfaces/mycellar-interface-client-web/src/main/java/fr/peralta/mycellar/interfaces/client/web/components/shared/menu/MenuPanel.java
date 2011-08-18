@@ -28,7 +28,6 @@ import org.apache.wicket.markup.html.list.ListView;
 import org.apache.wicket.markup.html.panel.Panel;
 import org.apache.wicket.model.Model;
 
-import fr.peralta.mycellar.interfaces.client.web.MyCellarWebApplicationDescriptor;
 import fr.peralta.mycellar.interfaces.client.web.pages.shared.BasePage;
 
 /**
@@ -42,11 +41,10 @@ public class MenuPanel extends Panel {
      * @param id
      * @param current
      */
-    public MenuPanel(String id, final Class<? extends BasePage> current) {
+    public MenuPanel(String id, final Class<? extends BasePage> current,
+            List<MenuablePageDescriptor> descriptors) {
         super(id);
-        final List<MenuablePageDescriptor> pages = MyCellarWebApplicationDescriptor.get()
-                .getMenuablePageDescriptors();
-        add(new ListView<MenuablePageDescriptor>("menuEntry", pages) {
+        add(new ListView<MenuablePageDescriptor>("menuEntry", descriptors) {
             private static final long serialVersionUID = 201011122248L;
 
             @Override

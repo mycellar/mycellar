@@ -16,7 +16,7 @@
  * You should have received a copy of the GNU General Public License
  * along with MyCellar. If not, see <http://www.gnu.org/licenses/>.
  */
-package fr.peralta.mycellar.interfaces.client.web.pages;
+package fr.peralta.mycellar.interfaces.client.web.pages.cellar;
 
 import java.util.List;
 
@@ -44,6 +44,7 @@ import fr.peralta.mycellar.interfaces.client.web.components.shared.Action;
 import fr.peralta.mycellar.interfaces.client.web.components.shared.ActionLink;
 import fr.peralta.mycellar.interfaces.client.web.components.shared.form.ObjectForm;
 import fr.peralta.mycellar.interfaces.client.web.components.stock.edit.ArrivalBottleEditPanel;
+import fr.peralta.mycellar.interfaces.client.web.pages.HomePage;
 import fr.peralta.mycellar.interfaces.client.web.pages.shared.CellarSuperPage;
 import fr.peralta.mycellar.interfaces.client.web.shared.LoggingUtils;
 import fr.peralta.mycellar.interfaces.facades.stock.StockServiceFacade;
@@ -228,4 +229,13 @@ public class PackageArrivalPage extends CellarSuperPage {
         return get(FORM_COMPONENT_ID + PATH_SEPARATOR + ARRIVAL_BOTTLE_COMPONENT_ID)
                 .setVisibilityAllowed(true);
     }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    protected Class<? extends CellarSuperPage> getSubMenuClass() {
+        return PackageArrivalPage.class;
+    }
+
 }

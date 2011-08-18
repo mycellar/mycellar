@@ -9,41 +9,39 @@
     <header>
       <h1>Page d'accueil</h1>
     </header>
-    <nav>
+    <nav role="main">
       <ul>
         <li><a>Nav 1</a></li>
         <li><a>Nav 2</a></li>
         <li><a>Nav 3</a></li>
       </ul>
     </nav>
-    <section>
-      <div>
-        <wicket:extend>
-          <form wicket:id="form">
-            <fieldset>
-              <legend><wicket:message key="details">User details</wicket:message></legend>
-              <p>
-                <label for="email"><wicket:message key="email">Email</wicket:message></label>
-                <input if="email" wicket:id="email" type="text" value="" />
-              </p>
-              <p>
-                <label for="lastname"><wicket:message key="lastname">Lastname</wicket:message></label>
-                <input id="lastname" wicket:id="lastname" type="text" value="" />
-              </p>
-              <p>
-                <label for="firstname"><wicket:message key="firstname">Firstname</wicket:message></label>
-                <input id="firstname" wicket:id="firstname" type="text" value="" />
-              </p>
-              <p>
-                <label for="password"><wicket:message key="password">Password</wicket:message></label>
-                <input id="password" wicket:id="password" type="password" value="" />
-              </p>
-            </fieldset>
-            <input type="submit" wicket:message="value:newUser" />
-          </form>
-        </wicket:extend>
-      </div>
-    </section>
+    <wicket:extend>
+      <section>
+        <form wicket:id="form">
+          <fieldset>
+            <legend><wicket:message key="details">User details</wicket:message></legend>
+            <p>
+              <label for="email"><wicket:message key="email">Email</wicket:message></label>
+              <input if="email" wicket:id="email" type="text" value="" />
+            </p>
+            <p>
+              <label for="lastname"><wicket:message key="lastname">Lastname</wicket:message></label>
+              <input id="lastname" wicket:id="lastname" type="text" value="" />
+            </p>
+            <p>
+              <label for="firstname"><wicket:message key="firstname">Firstname</wicket:message></label>
+              <input id="firstname" wicket:id="firstname" type="text" value="" />
+            </p>
+            <p>
+              <label for="password"><wicket:message key="password">Password</wicket:message></label>
+              <input id="password" wicket:id="password" type="password" value="" />
+            </p>
+          </fieldset>
+          <input type="submit" wicket:message="value:newUser" />
+        </form>
+      </section>
+    </wicket:extend>
     <footer>
       <div>
         <p>
