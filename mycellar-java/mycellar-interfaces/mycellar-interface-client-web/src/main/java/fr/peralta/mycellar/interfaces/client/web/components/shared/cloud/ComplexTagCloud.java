@@ -50,11 +50,11 @@ public abstract class ComplexTagCloud<O> extends ComplexComponent<O> {
      * @param objects
      * @return
      */
-    protected List<TagData<O>> getListFrom(Map<O, Integer> objects) {
+    protected List<TagData<O>> getListFrom(Map<O, Long> objects) {
         List<TagData<O>> list = new ArrayList<TagData<O>>();
-        int min = 0;
-        int max = 0;
-        for (int value : objects.values()) {
+        long min = 0;
+        long max = 0;
+        for (long value : objects.values()) {
             if (min == 0) {
                 min = value;
             } else {

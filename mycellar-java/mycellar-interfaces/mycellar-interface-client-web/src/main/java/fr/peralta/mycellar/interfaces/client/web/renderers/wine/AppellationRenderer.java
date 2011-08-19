@@ -36,8 +36,8 @@ public class AppellationRenderer extends AbstractRenderer<Appellation> {
     public String getLabel(Appellation object) {
         StringBuilder result = new StringBuilder();
         if (object != null) {
-            result.append(getRendererServiceFacade().render(object.getRegion()))
-                    .append(DEFAULT_SEP).append(object.getName());
+            result.append(object.getName()).append(DEFAULT_SEP)
+                    .append(getRendererServiceFacade().render(object.getRegion()));
         } else {
             result.append(NULL_OBJECT);
         }

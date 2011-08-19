@@ -20,6 +20,7 @@ package fr.peralta.mycellar.interfaces.client.web.components.wine.cloud;
 
 import org.apache.commons.lang3.StringUtils;
 import org.apache.wicket.Component;
+import org.apache.wicket.event.Broadcast;
 import org.apache.wicket.event.IEventSource;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.StringResourceModel;
@@ -152,9 +153,13 @@ public class AppellationComplexTagCloud extends ComplexTagCloud<Appellation> {
         if (source instanceof RegionComplexTagCloud) {
             regionModel = (IModel<Region>) get(REGION_COMPONENT_ID).getDefaultModel();
             setDefaultModelObject(createObject());
+            if ((regionModel != null) && (regionModel.getObject() != null)
+                    && (regionModel.getObject().getId() == null)) {
+                send(this, Broadcast.EXACT,
+                        Action.ADD.setAjaxRequestTarget(action.getAjaxRequestTarget()));
+            }
         } else {
             super.onModelChanged(source, action);
         }
     }
-
 }

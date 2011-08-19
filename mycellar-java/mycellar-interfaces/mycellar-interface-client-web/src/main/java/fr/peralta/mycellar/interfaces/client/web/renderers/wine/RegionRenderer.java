@@ -36,8 +36,8 @@ public class RegionRenderer extends AbstractRenderer<Region> {
     public String getLabel(Region object) {
         StringBuilder result = new StringBuilder();
         if (object != null) {
-            result.append(getRendererServiceFacade().render(object.getCountry()))
-                    .append(DEFAULT_SEP).append(object.getName());
+            result.append(object.getName()).append(DEFAULT_SEP)
+                    .append(getRendererServiceFacade().render(object.getCountry()));
         } else {
             result.append(NULL_OBJECT);
         }

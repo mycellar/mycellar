@@ -18,17 +18,22 @@
  */
 package fr.peralta.mycellar.domain.wine;
 
+import java.util.HashSet;
+import java.util.Set;
+
 import javax.persistence.AttributeOverride;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.OneToMany;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
 import org.apache.commons.lang3.ObjectUtils;
 
 import fr.peralta.mycellar.domain.shared.NamedEntity;
+import fr.peralta.mycellar.domain.stock.Bottle;
 
 /**
  * @author speralta
@@ -48,6 +53,10 @@ public class Format extends NamedEntity<Format> {
     @GeneratedValue(generator = "FORMAT_ID_GENERATOR")
     @Column(name = "ID", nullable = false, unique = true)
     private Integer id;
+
+    @SuppressWarnings("unused")
+    @OneToMany(mappedBy = "format")
+    private final Set<Bottle> bottles = new HashSet<Bottle>();
 
     /**
      * @return the capacity

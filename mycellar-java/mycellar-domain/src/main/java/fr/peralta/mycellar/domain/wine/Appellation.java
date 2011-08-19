@@ -18,6 +18,9 @@
  */
 package fr.peralta.mycellar.domain.wine;
 
+import java.util.HashSet;
+import java.util.Set;
+
 import javax.persistence.AttributeOverride;
 import javax.persistence.Column;
 import javax.persistence.Embedded;
@@ -26,6 +29,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 import javax.persistence.UniqueConstraint;
@@ -60,6 +64,10 @@ public class Appellation extends NamedEntity<Appellation> {
     @ManyToOne
     @JoinColumn(name = "REGION", nullable = false)
     private Region region;
+
+    @SuppressWarnings("unused")
+    @OneToMany(mappedBy = "appellation")
+    private final Set<Wine> wines = new HashSet<Wine>();
 
     /**
      * @return the description

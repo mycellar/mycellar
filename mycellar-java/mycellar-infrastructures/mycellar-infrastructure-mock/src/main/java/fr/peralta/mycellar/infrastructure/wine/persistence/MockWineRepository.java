@@ -44,32 +44,32 @@ import fr.peralta.mycellar.domain.wine.WineTypeEnum;
 @Qualifier("mock")
 public class MockWineRepository implements WineRepository {
 
-    private static final Map<String, Float> formats = new HashMap<String, Float>();
-    private static final String[] countries = new String[] { "France", "Espagne", "Italie",
+    private static final Map<String, Float> sampleFormats = new HashMap<String, Float>();
+    private static final String[] sampleCountries = new String[] { "France", "Espagne", "Italie",
             "Hongrie", "Portugal", "Allemagne", "Etats-unis", "Afrique du Sud", "Argentine",
             "Belgique" };
-    private static final String[][] regions = new String[][] {
+    private static final String[][] sampleRegions = new String[][] {
             new String[] { "Bourgogne", "Bordeaux" }, new String[] { "Espagne" },
             new String[] { "Italie" }, new String[] { "Hongrie" }, new String[] { "Portugal" },
             new String[] { "Allemagne" }, new String[] { "Etats-unis" },
             new String[] { "Afrique du Sud" }, new String[] { "Argentine" },
             new String[] { "Belgique" } };
-    private static final String[][] appellations = new String[][] {
+    private static final String[][] sampleAppellations = new String[][] {
             new String[] { "Chambertin", "Meursault" }, new String[] { "Pomerol" },
             new String[] { "Italie" }, new String[] { "Hongrie" }, new String[] { "Portugal" },
             new String[] { "Allemagne" }, new String[] { "Etats-unis" },
             new String[] { "Afrique du Sud" }, new String[] { "Argentine" },
             new String[] { "Belgique" } };
-    private static final String[] producers = new String[] { "Domaine Rousseau", "Domaine Macle",
-            "Château Margaux", "Château Cheval Blanc", "Clos des papes", "Clos des lambrays",
-            "Clos de tart" };
-    private static final WineTypeEnum[][] types = new WineTypeEnum[][] {
+    private static final String[] sampleProducers = new String[] { "Domaine Rousseau",
+            "Domaine Macle", "Château Margaux", "Château Cheval Blanc", "Clos des papes",
+            "Clos des lambrays", "Clos de tart" };
+    private static final WineTypeEnum[][] sampleTypes = new WineTypeEnum[][] {
             new WineTypeEnum[] { WineTypeEnum.STILL },
             new WineTypeEnum[] { WineTypeEnum.STILL, WineTypeEnum.SPARKLING },
             new WineTypeEnum[] { WineTypeEnum.STILL }, new WineTypeEnum[] { WineTypeEnum.STILL },
             new WineTypeEnum[] { WineTypeEnum.STILL }, new WineTypeEnum[] { WineTypeEnum.STILL },
             new WineTypeEnum[] { WineTypeEnum.STILL } };
-    private static final WineColorEnum[][][] colors = new WineColorEnum[][][] {
+    private static final WineColorEnum[][][] sampleColors = new WineColorEnum[][][] {
             new WineColorEnum[][] { new WineColorEnum[] { WineColorEnum.WHITE, WineColorEnum.RED } },
             new WineColorEnum[][] { new WineColorEnum[] { WineColorEnum.RED, WineColorEnum.WHITE },
                     new WineColorEnum[] { WineColorEnum.WHITE } },
@@ -81,24 +81,24 @@ public class MockWineRepository implements WineRepository {
             new WineColorEnum[][] { new WineColorEnum[] { WineColorEnum.RED, WineColorEnum.WHITE,
                     WineColorEnum.OTHER } } };
     static {
-        formats.put("Demi-bouteille", 0.375f);
-        formats.put("Bouteille", 0.75f);
-        formats.put("Magnum", 1.5f);
-        formats.put("Double-magnum", 3f);
-        formats.put("Clavelin", 0.62f);
+        sampleFormats.put("Demi-bouteille", 0.375f);
+        sampleFormats.put("Bouteille", 0.75f);
+        sampleFormats.put("Magnum", 1.5f);
+        sampleFormats.put("Double-magnum", 3f);
+        sampleFormats.put("Clavelin", 0.62f);
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public Map<Country, Integer> getAllCountriesWithCounts() {
-        Map<Country, Integer> result = new HashMap<Country, Integer>();
-        for (int i = 0; i < countries.length; i++) {
+    public Map<Country, Long> getAllCountriesWithCounts() {
+        Map<Country, Long> result = new HashMap<Country, Long>();
+        for (int i = 0; i < sampleCountries.length; i++) {
             Country country = new Country();
-            country.setName(countries[i]);
+            country.setName(sampleCountries[i]);
             new DirectPropertyAccessor().getSetter(Country.class, "id").set(country, i, null);
-            int a = (i + 5) % 10;
+            long a = (i + 5) % 10;
             if (a == 0) {
                 a = 2;
             }
@@ -111,23 +111,23 @@ public class MockWineRepository implements WineRepository {
      * {@inheritDoc}
      */
     @Override
-    public Map<Region, Integer> getAllRegionsFromCountriesWithCounts(Country... countries) {
-        Map<Region, Integer> result = new HashMap<Region, Integer>();
+    public Map<Region, Long> getAllRegionsFromCountriesWithCounts(Country... countries) {
+        Map<Region, Long> result = new HashMap<Region, Long>();
         if ((countries != null) && (countries.length > 0)) {
             for (Country country : countries) {
                 int position = 0;
-                for (int i = 0; i < MockWineRepository.countries.length; i++) {
-                    if (MockWineRepository.countries[i].equals(country.getName())) {
+                for (int i = 0; i < sampleCountries.length; i++) {
+                    if (sampleCountries[i].equals(country.getName())) {
                         position = i;
                         break;
                     }
                 }
-                for (int i = 0; i < regions[position].length; i++) {
+                for (int i = 0; i < sampleRegions[position].length; i++) {
                     Region region = new Region();
-                    region.setName(regions[position][i]);
+                    region.setName(sampleRegions[position][i]);
                     region.setCountry(country);
                     new DirectPropertyAccessor().getSetter(Region.class, "id").set(region, i, null);
-                    int a = (i + 5) % 10;
+                    long a = (i + 5) % 10;
                     if (a == 0) {
                         a = 2;
                     }
@@ -135,21 +135,21 @@ public class MockWineRepository implements WineRepository {
                 }
             }
         } else {
-            for (int position = 0; position < regions.length; position++) {
+            for (int position = 0; position < sampleRegions.length; position++) {
                 Country country = new Country();
-                country.setName(MockWineRepository.countries[position]);
+                country.setName(sampleCountries[position]);
                 new DirectPropertyAccessor().getSetter(Country.class, "id").set(country, position,
                         null);
-                int a = (position + 5) % 10;
+                long a = (position + 5) % 10;
                 if (a == 0) {
                     a = 2;
                 }
-                for (int i = 0; i < regions[position].length; i++) {
+                for (int i = 0; i < sampleRegions[position].length; i++) {
                     Region region = new Region();
-                    region.setName(regions[position][i]);
+                    region.setName(sampleRegions[position][i]);
                     region.setCountry(country);
                     new DirectPropertyAccessor().getSetter(Region.class, "id").set(region, i, null);
-                    int b = (i + 5) % 10;
+                    long b = (i + 5) % 10;
                     if (b == 0) {
                         b = 2;
                     }
@@ -164,28 +164,57 @@ public class MockWineRepository implements WineRepository {
      * {@inheritDoc}
      */
     @Override
-    public Map<Appellation, Integer> getAllAppellationsFromRegionWithCounts(Region region) {
-        Map<Appellation, Integer> result = new HashMap<Appellation, Integer>();
-        int position = 0;
-        for (int i = 0; i < regions.length; i++) {
-            for (int j = 0; j < regions[i].length; j++) {
-                if (regions[i][j].equals(region.getName())) {
-                    position = i + j;
-                    break;
+    public Map<Appellation, Long> getAllAppellationsFromRegionsWithCounts(Region... regions) {
+        Map<Appellation, Long> result = new HashMap<Appellation, Long>();
+        if ((regions != null) && (regions.length > 0)) {
+            for (Region region : regions) {
+                int position = 0;
+                for (int i = 0; i < sampleRegions.length; i++) {
+                    for (int j = 0; j < sampleRegions[i].length; j++) {
+                        if (sampleRegions[i][j].equals(region.getName())) {
+                            position = i + j;
+                            break;
+                        }
+                    }
+                }
+                for (int i = 0; i < sampleAppellations[position].length; i++) {
+                    Appellation appellation = new Appellation();
+                    appellation.setName(sampleAppellations[position][i]);
+                    appellation.setRegion(region);
+                    new DirectPropertyAccessor().getSetter(Appellation.class, "id").set(
+                            appellation, i, null);
+                    long a = (i + 5) % 10;
+                    if (a == 0) {
+                        a = 2;
+                    }
+                    result.put(appellation, 23 % a);
                 }
             }
-        }
-        for (int i = 0; i < appellations[position].length; i++) {
-            Appellation appellation = new Appellation();
-            appellation.setName(appellations[position][i]);
-            appellation.setRegion(region);
-            new DirectPropertyAccessor().getSetter(Appellation.class, "id").set(appellation, i,
-                    null);
-            int a = (i + 5) % 10;
-            if (a == 0) {
-                a = 2;
+        } else {
+            for (int position = 0; position < sampleRegions.length; position++) {
+                Country country = new Country();
+                country.setName(sampleCountries[position]);
+                new DirectPropertyAccessor().getSetter(Country.class, "id").set(country, position,
+                        null);
+                for (int i = 0; i < sampleRegions[position].length; i++) {
+                    Region region = new Region();
+                    region.setName(sampleRegions[position][i]);
+                    region.setCountry(country);
+                    new DirectPropertyAccessor().getSetter(Region.class, "id").set(region, i, null);
+                    for (int j = 0; j < sampleAppellations[position].length; j++) {
+                        Appellation appellation = new Appellation();
+                        appellation.setName(sampleAppellations[position][j]);
+                        appellation.setRegion(region);
+                        new DirectPropertyAccessor().getSetter(Appellation.class, "id").set(
+                                appellation, j, null);
+                        long a = (j + 5) % 10;
+                        if (a == 0) {
+                            a = 2;
+                        }
+                        result.put(appellation, 23 % a);
+                    }
+                }
             }
-            result.put(appellation, 23 % a);
         }
         return result;
     }
@@ -194,10 +223,10 @@ public class MockWineRepository implements WineRepository {
      * {@inheritDoc}
      */
     @Override
-    public List<Producer> getAllProducerStartingWith(String term) {
+    public List<Producer> getAllProducersLike(String term) {
         List<Producer> result = new ArrayList<Producer>();
         int i = 1;
-        for (String producerName : producers) {
+        for (String producerName : sampleProducers) {
             if (producerName.startsWith(term)) {
                 Producer producer = new Producer();
                 producer.setName(producerName);
@@ -214,21 +243,21 @@ public class MockWineRepository implements WineRepository {
      * {@inheritDoc}
      */
     @Override
-    public Map<WineTypeEnum, Integer> getAllTypeFromProducerWithCounts(Producer producer) {
-        Map<WineTypeEnum, Integer> result = new HashMap<WineTypeEnum, Integer>();
+    public Map<WineTypeEnum, Long> getAllTypeFromProducerWithCounts(Producer producer) {
+        Map<WineTypeEnum, Long> result = new HashMap<WineTypeEnum, Long>();
         int position = 0;
-        for (int i = 0; i < producers.length; i++) {
-            if (producers[i].equals(producer.getName())) {
+        for (int i = 0; i < sampleProducers.length; i++) {
+            if (sampleProducers[i].equals(producer.getName())) {
                 position = i;
                 break;
             }
         }
-        for (int i = 0; i < types[position].length; i++) {
-            int a = (i + 5) % 10;
+        for (int i = 0; i < sampleTypes[position].length; i++) {
+            long a = (i + 5) % 10;
             if (a == 0) {
                 a = 2;
             }
-            result.put(types[position][i], 23 % a);
+            result.put(sampleTypes[position][i], 23 % a);
         }
         return result;
     }
@@ -237,29 +266,29 @@ public class MockWineRepository implements WineRepository {
      * {@inheritDoc}
      */
     @Override
-    public Map<WineColorEnum, Integer> getAllColorFromProducerAndTypeWithCounts(Producer producer,
+    public Map<WineColorEnum, Long> getAllColorFromProducerAndTypeWithCounts(Producer producer,
             WineTypeEnum type) {
-        Map<WineColorEnum, Integer> result = new HashMap<WineColorEnum, Integer>();
+        Map<WineColorEnum, Long> result = new HashMap<WineColorEnum, Long>();
         int position = 0;
-        for (int i = 0; i < producers.length; i++) {
-            if (producers[i].equals(producer.getName())) {
+        for (int i = 0; i < sampleProducers.length; i++) {
+            if (sampleProducers[i].equals(producer.getName())) {
                 position = i;
                 break;
             }
         }
         int position2 = 0;
-        for (int i = 0; i < types[position].length; i++) {
-            if (types[position][i] == type) {
+        for (int i = 0; i < sampleTypes[position].length; i++) {
+            if (sampleTypes[position][i] == type) {
                 position2 = i;
                 break;
             }
         }
-        for (int i = 0; i < colors[position][position2].length; i++) {
-            int a = (i + 5) % 10;
+        for (int i = 0; i < sampleColors[position][position2].length; i++) {
+            long a = (i + 5) % 10;
             if (a == 0) {
                 a = 2;
             }
-            result.put(colors[position][position2][i], 23 % a);
+            result.put(sampleColors[position][position2][i], 23 % a);
         }
         return result;
     }
@@ -268,15 +297,15 @@ public class MockWineRepository implements WineRepository {
      * {@inheritDoc}
      */
     @Override
-    public Map<Format, Integer> getAllFormatWithCounts() {
-        Map<Format, Integer> result = new HashMap<Format, Integer>();
-        String[] keys = formats.keySet().toArray(new String[formats.size()]);
-        for (int i = 0; i < formats.size(); i++) {
+    public Map<Format, Long> getAllFormatWithCounts() {
+        Map<Format, Long> result = new HashMap<Format, Long>();
+        String[] keys = sampleFormats.keySet().toArray(new String[sampleFormats.size()]);
+        for (int i = 0; i < sampleFormats.size(); i++) {
             Format format = new Format();
             format.setName(keys[i]);
-            format.setCapacity(formats.get(keys[i]));
+            format.setCapacity(sampleFormats.get(keys[i]));
             new DirectPropertyAccessor().getSetter(Format.class, "id").set(format, i, null);
-            int a = (i + 5) % 10;
+            long a = (i + 5) % 10;
             if (a == 0) {
                 a = 2;
             }

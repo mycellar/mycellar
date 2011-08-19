@@ -37,42 +37,42 @@ public interface WineServiceFacade {
     /**
      * @return
      */
-    Map<Country, Integer> getCountriesWithCounts();
+    Map<Country, Long> getCountriesWithCounts();
 
     /**
      * @param countries
      * @return
      */
-    Map<Region, Integer> getRegionsWithCounts(Country... countries);
+    Map<Region, Long> getRegionsWithCounts(Country... countries);
 
     /**
-     * @param region
+     * @param regions
      * @return
      */
-    Map<Appellation, Integer> getAppellationsWithCounts(Region region);
+    Map<Appellation, Long> getAppellationsWithCounts(Region... regions);
 
     /**
      * @param term
      * @return
      */
-    List<Producer> getProducersStartingWith(String term);
+    List<Producer> getProducersLike(String term);
 
     /**
      * @param producer
      * @return
      */
-    Map<WineTypeEnum, Integer> getTypeWithCounts(Producer producer);
+    Map<WineTypeEnum, Long> getTypeWithCounts(Producer producer);
 
     /**
      * @param producer
      * @param type
      * @return
      */
-    Map<WineColorEnum, Integer> getColorWithCounts(Producer producer, WineTypeEnum type);
+    Map<WineColorEnum, Long> getColorWithCounts(Producer producer, WineTypeEnum type);
 
     /**
      * @return
      */
-    Map<Format, Integer> getFormatWithCounts();
+    Map<Format, Long> getFormatWithCounts();
 
 }

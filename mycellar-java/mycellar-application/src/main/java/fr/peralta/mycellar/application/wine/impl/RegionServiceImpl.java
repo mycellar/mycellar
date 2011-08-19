@@ -18,9 +18,12 @@
  */
 package fr.peralta.mycellar.application.wine.impl;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
 import fr.peralta.mycellar.application.wine.RegionService;
@@ -40,8 +43,15 @@ public class RegionServiceImpl implements RegionService {
      * {@inheritDoc}
      */
     @Override
-    public Map<Region, Integer> getAllFromCountriesWithCounts(Country... countries) {
-        return wineRepository.getAllRegionsFromCountriesWithCounts(countries);
+    public Map<Region, Long> getAllFromCountriesWithCounts(Country... countries) {
+        List<Country> countriesInRepository = new ArrayList<Country>();
+        for (Country country : countries) {
+            if (country.getId() != null) {
+                countriesInRepository.add(country);
+            }
+        }
+        return wineRepository.getAllRegionsFromCountriesWithCounts(countriesInRepository
+                .toArray(new Country[countriesInRepository.size()]));
     }
 
     /**
@@ -49,6 +59,7 @@ public class RegionServiceImpl implements RegionService {
      *            the wineRepository to set
      */
     @Autowired
+    @Qualifier("hibernate")
     public void setWineRepository(WineRepository wineRepository) {
         this.wineRepository = wineRepository;
     }

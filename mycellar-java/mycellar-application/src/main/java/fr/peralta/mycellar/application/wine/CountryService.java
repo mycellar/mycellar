@@ -30,6 +30,6 @@ public interface CountryService {
     /**
      * @return
      */
-    Map<Country, Integer> getAllWithCounts();
+    Map<Country, Long> getAllWithCounts();
 
 }

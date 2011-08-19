@@ -29,8 +29,9 @@ import fr.peralta.mycellar.domain.wine.Region;
 public interface AppellationService {
 
     /**
+     * @param regions
      * @return
      */
-    Map<Appellation, Integer> getAllFromRegionWithCounts(Region region);
+    Map<Appellation, Long> getAllFromRegionsWithCounts(Region... regions);
 
 }

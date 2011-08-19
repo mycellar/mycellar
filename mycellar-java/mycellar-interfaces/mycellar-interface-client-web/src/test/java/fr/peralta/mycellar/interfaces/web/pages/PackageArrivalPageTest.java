@@ -55,10 +55,10 @@ public class PackageArrivalPageTest extends AbstractPageTest {
 
     @Test
     public void selectCountry() {
-        Map<Country, Integer> map = new HashMap<Country, Integer>();
+        Map<Country, Long> map = new HashMap<Country, Long>();
         Country country = new Country();
         country.setName("Toto");
-        map.put(country, 10);
+        map.put(country, 10l);
         given(wineServiceFacade.getCountriesWithCounts()).willReturn(map);
         given(rendererServiceFacade.render(country)).willReturn("Toto");
 
@@ -82,10 +82,10 @@ public class PackageArrivalPageTest extends AbstractPageTest {
 
     @Test
     public void createCountry() {
-        Map<Country, Integer> map = new HashMap<Country, Integer>();
+        Map<Country, Long> map = new HashMap<Country, Long>();
         Country country = new Country();
         country.setName("Toto");
-        map.put(country, 10);
+        map.put(country, 10l);
         given(wineServiceFacade.getCountriesWithCounts()).willReturn(map);
         given(rendererServiceFacade.render(anyObject())).willReturn("Nom");
 
@@ -124,10 +124,10 @@ public class PackageArrivalPageTest extends AbstractPageTest {
 
     @Test
     public void arrival() {
-        Map<Country, Integer> map = new HashMap<Country, Integer>();
+        Map<Country, Long> map = new HashMap<Country, Long>();
         Country country = new Country();
         country.setName("Toto");
-        map.put(country, 10);
+        map.put(country, 10l);
         given(wineServiceFacade.getCountriesWithCounts()).willReturn(map);
         given(rendererServiceFacade.render(country)).willReturn("Toto");
 

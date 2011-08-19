@@ -28,45 +28,45 @@ import java.util.Map;
 public interface WineRepository {
 
     /**
-     * @param region
+     * @param regions
      * @return
      */
-    Map<Appellation, Integer> getAllAppellationsFromRegionWithCounts(Region region);
+    Map<Appellation, Long> getAllAppellationsFromRegionsWithCounts(Region... regions);
 
     /**
      * @return
      */
-    Map<Country, Integer> getAllCountriesWithCounts();
+    Map<Country, Long> getAllCountriesWithCounts();
 
     /**
      * @param countries
      * @return
      */
-    Map<Region, Integer> getAllRegionsFromCountriesWithCounts(Country... countries);
+    Map<Region, Long> getAllRegionsFromCountriesWithCounts(Country... countries);
 
     /**
      * @param term
      * @return
      */
-    List<Producer> getAllProducerStartingWith(String term);
+    List<Producer> getAllProducersLike(String term);
 
     /**
      * @param producer
      * @return
      */
-    Map<WineTypeEnum, Integer> getAllTypeFromProducerWithCounts(Producer producer);
+    Map<WineTypeEnum, Long> getAllTypeFromProducerWithCounts(Producer producer);
 
     /**
      * @param producer
      * @param type
      * @return
      */
-    Map<WineColorEnum, Integer> getAllColorFromProducerAndTypeWithCounts(Producer producer,
+    Map<WineColorEnum, Long> getAllColorFromProducerAndTypeWithCounts(Producer producer,
             WineTypeEnum type);
 
     /**
      * @return
      */
-    Map<Format, Integer> getAllFormatWithCounts();
+    Map<Format, Long> getAllFormatWithCounts();
 
 }

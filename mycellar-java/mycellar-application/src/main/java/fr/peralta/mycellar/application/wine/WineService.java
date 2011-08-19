@@ -34,14 +34,14 @@ public interface WineService {
      * @param type
      * @return
      */
-    Map<WineTypeEnum, Integer> getAllTypeFromProducerWithCounts(Producer producer);
+    Map<WineTypeEnum, Long> getAllTypeFromProducerWithCounts(Producer producer);
 
     /**
      * @param producer
      * @param type
      * @return
      */
-    Map<WineColorEnum, Integer> getAllColorFromProducerAndTypeWithCounts(Producer producer,
+    Map<WineColorEnum, Long> getAllColorFromProducerAndTypeWithCounts(Producer producer,
             WineTypeEnum type);
 
 }

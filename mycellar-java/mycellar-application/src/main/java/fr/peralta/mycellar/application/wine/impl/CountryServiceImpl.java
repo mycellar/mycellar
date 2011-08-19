@@ -21,6 +21,7 @@ package fr.peralta.mycellar.application.wine.impl;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
 import fr.peralta.mycellar.application.wine.CountryService;
@@ -39,7 +40,7 @@ public class CountryServiceImpl implements CountryService {
      * {@inheritDoc}
      */
     @Override
-    public Map<Country, Integer> getAllWithCounts() {
+    public Map<Country, Long> getAllWithCounts() {
         return wineRepository.getAllCountriesWithCounts();
     }
 
@@ -48,6 +49,7 @@ public class CountryServiceImpl implements CountryService {
      *            the wineRepository to set
      */
     @Autowired
+    @Qualifier("hibernate")
     public void setWineRepository(WineRepository wineRepository) {
         this.wineRepository = wineRepository;
     }

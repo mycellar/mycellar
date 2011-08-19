@@ -36,7 +36,7 @@ class MultipleData<O> implements Serializable {
      * @param count
      * @param label
      */
-    public MultipleData(O object, int count, String label) {
+    public MultipleData(O object, long count, String label) {
         this.object = object;
         this.label = label + " (" + count + ")";
     }

@@ -48,6 +48,6 @@ public class ProducerAutocompleteAjaxComponent extends AbstractAutocompleteAjaxC
      */
     @Override
     public List<Producer> getValues(String term) {
-        return wineServiceFacade.getProducersStartingWith(term);
+        return wineServiceFacade.getProducersLike(term);
     }
 }

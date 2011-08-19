@@ -62,7 +62,7 @@ public class WineServiceFacadeImpl implements WineServiceFacade {
      */
     @Override
     @Transactional
-    public Map<Country, Integer> getCountriesWithCounts() {
+    public Map<Country, Long> getCountriesWithCounts() {
         return countryService.getAllWithCounts();
     }
 
@@ -71,7 +71,7 @@ public class WineServiceFacadeImpl implements WineServiceFacade {
      */
     @Override
     @Transactional
-    public Map<Region, Integer> getRegionsWithCounts(Country... countries) {
+    public Map<Region, Long> getRegionsWithCounts(Country... countries) {
         return regionService.getAllFromCountriesWithCounts(countries);
     }
 
@@ -80,8 +80,8 @@ public class WineServiceFacadeImpl implements WineServiceFacade {
      */
     @Override
     @Transactional
-    public Map<Appellation, Integer> getAppellationsWithCounts(Region region) {
-        return appellationService.getAllFromRegionWithCounts(region);
+    public Map<Appellation, Long> getAppellationsWithCounts(Region... regions) {
+        return appellationService.getAllFromRegionsWithCounts(regions);
     }
 
     /**
@@ -89,8 +89,8 @@ public class WineServiceFacadeImpl implements WineServiceFacade {
      */
     @Override
     @Transactional
-    public List<Producer> getProducersStartingWith(String term) {
-        return producerService.getAllStartingWith(term);
+    public List<Producer> getProducersLike(String term) {
+        return producerService.getAllLike(term);
     }
 
     /**
@@ -98,7 +98,7 @@ public class WineServiceFacadeImpl implements WineServiceFacade {
      */
     @Override
     @Transactional
-    public Map<WineTypeEnum, Integer> getTypeWithCounts(Producer producer) {
+    public Map<WineTypeEnum, Long> getTypeWithCounts(Producer producer) {
         return wineService.getAllTypeFromProducerWithCounts(producer);
     }
 
@@ -107,7 +107,7 @@ public class WineServiceFacadeImpl implements WineServiceFacade {
      */
     @Override
     @Transactional
-    public Map<WineColorEnum, Integer> getColorWithCounts(Producer producer, WineTypeEnum type) {
+    public Map<WineColorEnum, Long> getColorWithCounts(Producer producer, WineTypeEnum type) {
         return wineService.getAllColorFromProducerAndTypeWithCounts(producer, type);
     }
 
@@ -116,7 +116,7 @@ public class WineServiceFacadeImpl implements WineServiceFacade {
      */
     @Override
     @Transactional
-    public Map<Format, Integer> getFormatWithCounts() {
+    public Map<Format, Long> getFormatWithCounts() {
         return formatService.getAllWithCounts();
     }
 

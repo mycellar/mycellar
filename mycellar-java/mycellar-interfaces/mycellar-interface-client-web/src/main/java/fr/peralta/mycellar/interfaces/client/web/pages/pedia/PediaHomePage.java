@@ -30,6 +30,7 @@ import org.apache.wicket.spring.injection.annot.SpringBean;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import fr.peralta.mycellar.domain.wine.Appellation;
 import fr.peralta.mycellar.domain.wine.Country;
 import fr.peralta.mycellar.domain.wine.Region;
 import fr.peralta.mycellar.interfaces.client.web.components.shared.Action;
@@ -49,9 +50,11 @@ public class PediaHomePage extends PediaSuperPage {
     private static final String FORM_COMPONENT_ID = "form";
     private static final String COUNTRIES_COMPONENT_ID = "countries";
     private static final String REGIONS_COMPONENT_ID = "regions";
+    private static final String APPELLATIONS_COMPONENT_ID = "appellations";
 
     private final IModel<ArrayList<Country>> countries = new Model<ArrayList<Country>>();
     private final IModel<ArrayList<Region>> regions = new Model<ArrayList<Region>>();
+    private final IModel<ArrayList<Appellation>> appellations = new Model<ArrayList<Appellation>>();
 
     @SpringBean
     private WineServiceFacade wineServiceFacade;
@@ -67,11 +70,15 @@ public class PediaHomePage extends PediaSuperPage {
                 .getCountriesWithCounts()));
         form.add(new MultiplePanel<Region>(REGIONS_COMPONENT_ID, wineServiceFacade
                 .getRegionsWithCounts()));
+        form.add(new MultiplePanel<Appellation>(APPELLATIONS_COMPONENT_ID, wineServiceFacade
+                .getAppellationsWithCounts()));
         add(form);
         countries.setObject(new ArrayList<Country>());
         regions.setObject(new ArrayList<Region>());
         get(FORM_COMPONENT_ID + PATH_SEPARATOR + COUNTRIES_COMPONENT_ID).setDefaultModel(countries);
         get(FORM_COMPONENT_ID + PATH_SEPARATOR + REGIONS_COMPONENT_ID).setDefaultModel(regions);
+        get(FORM_COMPONENT_ID + PATH_SEPARATOR + APPELLATIONS_COMPONENT_ID).setDefaultModel(
+                appellations);
     }
 
     /**
@@ -87,14 +94,26 @@ public class PediaHomePage extends PediaSuperPage {
             case MODEL_CHANGED:
                 if (event.getSource() instanceof MultiplePanel) {
                     MultiplePanel<?> component = (MultiplePanel<?>) event.getSource();
-                    List<Country> countries = (List<Country>) component.getDefaultModelObject();
                     if (COUNTRIES_COMPONENT_ID.equals(component.getId())) {
+                        List<Country> countries = (List<Country>) component.getDefaultModelObject();
                         ((MultiplePanel<Region>) get(FORM_COMPONENT_ID + PATH_SEPARATOR
                                 + REGIONS_COMPONENT_ID)).setChoices(wineServiceFacade
                                 .getRegionsWithCounts(countries.toArray(new Country[countries
                                         .size()])));
+                        List<Region> regions = new ArrayList<Region>();
+                        for (Country country : countries) {
+                            regions.addAll(country.getRegions());
+                        }
+                        ((MultiplePanel<Appellation>) get(FORM_COMPONENT_ID + PATH_SEPARATOR
+                                + APPELLATIONS_COMPONENT_ID)).setChoices(wineServiceFacade
+                                .getAppellationsWithCounts(regions.toArray(new Region[regions
+                                        .size()])));
                     } else if (REGIONS_COMPONENT_ID.equals(component.getId())) {
-
+                        List<Region> regions = (List<Region>) component.getDefaultModelObject();
+                        ((MultiplePanel<Appellation>) get(FORM_COMPONENT_ID + PATH_SEPARATOR
+                                + APPELLATIONS_COMPONENT_ID)).setChoices(wineServiceFacade
+                                .getAppellationsWithCounts(regions.toArray(new Region[regions
+                                        .size()])));
                     }
                 }
                 break;

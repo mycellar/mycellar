@@ -18,9 +18,12 @@
  */
 package fr.peralta.mycellar.application.wine.impl;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
 import fr.peralta.mycellar.application.wine.AppellationService;
@@ -40,8 +43,15 @@ public class AppellationServiceImpl implements AppellationService {
      * {@inheritDoc}
      */
     @Override
-    public Map<Appellation, Integer> getAllFromRegionWithCounts(Region region) {
-        return wineRepository.getAllAppellationsFromRegionWithCounts(region);
+    public Map<Appellation, Long> getAllFromRegionsWithCounts(Region... regions) {
+        List<Region> regionsInRepository = new ArrayList<Region>();
+        for (Region region : regions) {
+            if (region.getId() != null) {
+                regionsInRepository.add(region);
+            }
+        }
+        return wineRepository.getAllAppellationsFromRegionsWithCounts(regionsInRepository
+                .toArray(new Region[regionsInRepository.size()]));
     }
 
     /**
@@ -49,6 +59,7 @@ public class AppellationServiceImpl implements AppellationService {
      *            the wineRepository to set
      */
     @Autowired
+    @Qualifier("hibernate")
     public void setWineRepository(WineRepository wineRepository) {
         this.wineRepository = wineRepository;
     }

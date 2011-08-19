@@ -21,6 +21,7 @@ package fr.peralta.mycellar.application.wine.impl;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
 import fr.peralta.mycellar.application.wine.FormatService;
@@ -39,7 +40,7 @@ public class FormatServiceImpl implements FormatService {
      * {@inheritDoc}
      */
     @Override
-    public Map<Format, Integer> getAllWithCounts() {
+    public Map<Format, Long> getAllWithCounts() {
         return wineRepository.getAllFormatWithCounts();
     }
 
@@ -48,6 +49,7 @@ public class FormatServiceImpl implements FormatService {
      *            the wineRepository to set
      */
     @Autowired
+    @Qualifier("hibernate")
     public void setWineRepository(WineRepository wineRepository) {
         this.wineRepository = wineRepository;
     }

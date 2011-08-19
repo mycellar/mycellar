@@ -18,9 +18,11 @@
  */
 package fr.peralta.mycellar.application.wine.impl;
 
+import java.util.HashMap;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
 import fr.peralta.mycellar.application.wine.WineService;
@@ -41,13 +43,17 @@ public class WineServiceImpl implements WineService {
      * {@inheritDoc}
      */
     @Override
-    public Map<WineTypeEnum, Integer> getAllTypeFromProducerWithCounts(Producer producer) {
-        Map<WineTypeEnum, Integer> result = wineRepository
-                .getAllTypeFromProducerWithCounts(producer);
+    public Map<WineTypeEnum, Long> getAllTypeFromProducerWithCounts(Producer producer) {
+        Map<WineTypeEnum, Long> result;
+        if (producer.getId() != null) {
+            result = wineRepository.getAllTypeFromProducerWithCounts(producer);
+        } else {
+            result = new HashMap<WineTypeEnum, Long>();
+        }
         // add missing types
         for (WineTypeEnum color : WineTypeEnum.values()) {
             if (!result.containsKey(color)) {
-                result.put(color, 0);
+                result.put(color, 0l);
             }
         }
         return result;
@@ -57,14 +63,18 @@ public class WineServiceImpl implements WineService {
      * {@inheritDoc}
      */
     @Override
-    public Map<WineColorEnum, Integer> getAllColorFromProducerAndTypeWithCounts(Producer producer,
+    public Map<WineColorEnum, Long> getAllColorFromProducerAndTypeWithCounts(Producer producer,
             WineTypeEnum type) {
-        Map<WineColorEnum, Integer> result = wineRepository
-                .getAllColorFromProducerAndTypeWithCounts(producer, type);
+        Map<WineColorEnum, Long> result;
+        if (producer.getId() != null) {
+            result = wineRepository.getAllColorFromProducerAndTypeWithCounts(producer, type);
+        } else {
+            result = new HashMap<WineColorEnum, Long>();
+        }
         // add missing colors
         for (WineColorEnum color : WineColorEnum.values()) {
             if (!result.containsKey(color)) {
-                result.put(color, 0);
+                result.put(color, 0l);
             }
         }
         return result;
@@ -75,6 +85,7 @@ public class WineServiceImpl implements WineService {
      *            the wineRepository to set
      */
     @Autowired
+    @Qualifier("hibernate")
     public void setWineRepository(WineRepository wineRepository) {
         this.wineRepository = wineRepository;
     }

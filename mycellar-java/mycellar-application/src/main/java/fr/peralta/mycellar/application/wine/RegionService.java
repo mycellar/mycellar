@@ -31,6 +31,6 @@ public interface RegionService {
     /**
      * @return
      */
-    Map<Region, Integer> getAllFromCountriesWithCounts(Country... countries);
+    Map<Region, Long> getAllFromCountriesWithCounts(Country... countries);
 
 }

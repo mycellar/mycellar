@@ -30,6 +30,6 @@ public interface FormatService {
     /**
      * @return
      */
-    Map<Format, Integer> getAllWithCounts();
+    Map<Format, Long> getAllWithCounts();
 
 }

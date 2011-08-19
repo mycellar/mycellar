@@ -53,7 +53,7 @@ public class MultiplePanel<O> extends Panel {
      * @param id
      * @param list
      */
-    public MultiplePanel(String id, Map<O, Integer> objects) {
+    public MultiplePanel(String id, Map<O, Long> objects) {
         super(id);
         setOutputMarkupId(true);
         add(new Multiple<O>(MULTIPLE_COMPONENT_ID, getListFrom(objects)));
@@ -144,7 +144,7 @@ public class MultiplePanel<O> extends Panel {
      * @param objects
      * @return
      */
-    private List<MultipleData<O>> getListFrom(Map<O, Integer> objects) {
+    private List<MultipleData<O>> getListFrom(Map<O, Long> objects) {
         List<MultipleData<O>> list = new ArrayList<MultipleData<O>>();
         for (O object : objects.keySet()) {
             list.add(new MultipleData<O>(object, objects.get(object), getValueLabelFor(object)));
@@ -164,7 +164,7 @@ public class MultiplePanel<O> extends Panel {
      * @param objects
      */
     @SuppressWarnings("unchecked")
-    public void setChoices(Map<O, Integer> objects) {
+    public void setChoices(Map<O, Long> objects) {
         ((Multiple<O>) get(MULTIPLE_COMPONENT_ID)).setList(getListFrom(objects));
     }
 }

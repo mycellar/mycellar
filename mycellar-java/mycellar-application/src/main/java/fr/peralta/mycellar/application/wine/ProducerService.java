@@ -32,6 +32,6 @@ public interface ProducerService {
      * @param term
      * @return
      */
-    List<Producer> getAllStartingWith(String term);
+    List<Producer> getAllLike(String term);
 
 }

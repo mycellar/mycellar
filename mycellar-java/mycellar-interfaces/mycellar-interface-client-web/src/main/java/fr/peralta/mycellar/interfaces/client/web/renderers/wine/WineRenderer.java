@@ -37,13 +37,14 @@ public class WineRenderer extends AbstractRenderer<Wine> {
     public String getLabel(Wine object) {
         StringBuilder result = new StringBuilder();
         if (object != null) {
-            result.append(getRendererServiceFacade().render(object.getAppellation()))
+            result.append(getRendererServiceFacade().render(object.getProducer()))
                     .append(DEFAULT_SEP)
-                    .append(getRendererServiceFacade().render(object.getProducer()));
+                    .append(getRendererServiceFacade().render(object.getAppellation()))
+                    .append(DEFAULT_SEP);
             if (StringUtils.isNotEmpty(object.getName())) {
                 result.append(object.getName()).append(DEFAULT_SEP);
             }
-            result.append(object.getColor());
+            result.append(getRendererServiceFacade().render(object.getColor()));
             if (object.getVintage() != null) {
                 result.append(DEFAULT_SEP).append(object.getVintage());
             }

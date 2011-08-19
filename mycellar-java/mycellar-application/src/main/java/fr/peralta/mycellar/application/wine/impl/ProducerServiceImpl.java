@@ -21,6 +21,7 @@ package fr.peralta.mycellar.application.wine.impl;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
 import fr.peralta.mycellar.application.wine.ProducerService;
@@ -39,8 +40,8 @@ public class ProducerServiceImpl implements ProducerService {
      * {@inheritDoc}
      */
     @Override
-    public List<Producer> getAllStartingWith(String term) {
-        return wineRepository.getAllProducerStartingWith(term);
+    public List<Producer> getAllLike(String term) {
+        return wineRepository.getAllProducersLike(term);
     }
 
     /**
@@ -48,6 +49,7 @@ public class ProducerServiceImpl implements ProducerService {
      *            the wineRepository to set
      */
     @Autowired
+    @Qualifier("hibernate")
     public void setWineRepository(WineRepository wineRepository) {
         this.wineRepository = wineRepository;
     }
