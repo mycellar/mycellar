@@ -24,6 +24,7 @@ import javax.persistence.Column;
 import javax.persistence.Embeddable;
 import javax.persistence.Embedded;
 import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 
 import fr.peralta.mycellar.domain.wine.Country;
 
@@ -39,6 +40,7 @@ public class Address implements Serializable {
     @Column(name = "ADDRESS_CITY")
     private String city;
 
+    @ManyToOne
     @JoinColumn(name = "COUNTRY")
     private Country country;
 
