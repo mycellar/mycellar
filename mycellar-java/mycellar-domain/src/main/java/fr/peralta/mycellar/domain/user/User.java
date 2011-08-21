@@ -63,7 +63,7 @@ public class User extends IdentifiedEntity<User> {
     @Column(name = "LASTNAME", nullable = false)
     private String lastname;
 
-    @Column(name = "PASSWORD", nullable = false)
+    @Column(name = "PASSWORD", nullable = false, length=40)
     private String password;
 
     /**
