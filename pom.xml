@@ -41,6 +41,7 @@
     <!-- Versions -->
     <slf4j.version>1.6.1</slf4j.version>
     <wicket.version>1.5-RC4.2</wicket.version>
+    <wicketstuff.version>${wicket.version}</wicketstuff.version>
     <spring.version>3.0.5.RELEASE</spring.version>
     <hibernate.version>3.6.0.Final</hibernate.version>
     <hibernate-validator.version>4.1.0.Final</hibernate-validator.version>
@@ -257,6 +258,17 @@
         <version>${wicket.version}</version>
       </dependency>
       <dependency>
+        <groupId>org.wicketstuff</groupId>
+        <artifactId>wicket-security-swarm</artifactId>
+        <version>${wicketstuff.version}</version>
+        <exclusions>
+          <exclusion>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-log4j12</artifactId>
+          </exclusion>
+        </exclusions>
+      </dependency>
+      <dependency>
         <groupId>org.odlabs.wiquery</groupId>
         <artifactId>wiquery-jquery-ui</artifactId>
         <version>1.5-M2</version>
@@ -372,6 +384,20 @@
       <id>wiquery</id>
       <name>wiquery wicket components</name>
       <url>http://wiquery.googlecode.com/svn/repo/</url>
+    </repository>
+    <repository>
+      <id>wicketstuff-core-releases</id>
+      <url>https://oss.sonatype.org/content/repositories/releases</url>
+      <releases>
+        <enabled>true</enabled>
+      </releases>
+    </repository>
+    <repository>
+      <id>wicketstuff-core-snapshots</id>
+      <url>https://oss.sonatype.org/content/repositories/snapshots</url>
+      <snapshots>
+        <enabled>true</enabled>
+      </snapshots>
     </repository>
   </repositories>
 
