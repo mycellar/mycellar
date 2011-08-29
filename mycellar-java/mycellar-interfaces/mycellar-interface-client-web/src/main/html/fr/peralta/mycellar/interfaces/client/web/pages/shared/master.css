@@ -100,6 +100,29 @@ body>header {
   margin-top: 30px;
 }
 
+/** LOGIN **/
+div#login {
+  position: absolute;
+  top: 0;
+  right: 0;
+  background: #C42D30;
+  border: 3px solid #FFB36F;
+  border-radius: 10px;
+  color: #FFDC95;
+  padding: 2px 5px;
+  margin: 2px;
+}
+
+div#login ul.feedbackPanel {
+  list-style: none;
+}
+
+/** DEBUG **/
+div#wicketDebugBar {
+  bottom: 0;
+  top: auto;
+}
+
 /** MAIN **/
 section {
   background: #ffffff;

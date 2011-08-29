@@ -21,11 +21,10 @@ package fr.peralta.mycellar.interfaces.client.web;
 import org.apache.wicket.ConverterLocator;
 import org.apache.wicket.IConverterLocator;
 import org.apache.wicket.Page;
-import org.apache.wicket.protocol.http.WebApplication;
-import org.apache.wicket.request.mapper.MountedMapper;
 import org.apache.wicket.spring.injection.annot.SpringComponentInjector;
 import org.joda.time.LocalDate;
 import org.springframework.context.ApplicationContext;
+import org.wicketstuff.security.swarm.SwarmWebApplication;
 
 import fr.peralta.mycellar.interfaces.client.web.converters.LocalDateConverter;
 import fr.peralta.mycellar.interfaces.client.web.pages.HomePage;
@@ -39,7 +38,7 @@ import fr.peralta.mycellar.interfaces.client.web.pages.pedia.PediaHomePage;
 /**
  * @author speralta
  */
-public abstract class MyCellarWebApplication extends WebApplication {
+public abstract class MyCellarWebApplication extends SwarmWebApplication {
 
     /**
      * {@inheritDoc}
@@ -49,14 +48,29 @@ public abstract class MyCellarWebApplication extends WebApplication {
         super.init();
         getComponentInstantiationListeners().add(
                 new SpringComponentInjector(this, getApplicationContext()));
-        getRootRequestMapperAsCompound().add(new MountedMapper("/home", getHomePage()));
-        getRootRequestMapperAsCompound().add(new MountedMapper("/cellars", CellarsPage.class));
-        getRootRequestMapperAsCompound().add(new MountedMapper("/io", InputOutputPage.class));
-        getRootRequestMapperAsCompound().add(
-                new MountedMapper("/packageArrival", PackageArrivalPage.class));
-        getRootRequestMapperAsCompound().add(new MountedMapper("/pedia", PediaHomePage.class));
-        getRootRequestMapperAsCompound().add(new MountedMapper("/newUser", NewUserPage.class));
-        getRootRequestMapperAsCompound().add(new MountedMapper("/listUsers", ListUsersPage.class));
+        mountPage("/home", getHomePage());
+        mountPage("/cellars", CellarsPage.class);
+        mountPage("/io", InputOutputPage.class);
+        mountPage("/packageArrival", PackageArrivalPage.class);
+        mountPage("/pedia", PediaHomePage.class);
+        mountPage("/newUser", NewUserPage.class);
+        mountPage("/listUsers", ListUsersPage.class);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public Class<? extends Page> getLoginPage() {
+        return HomePage.class;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    protected Object getHiveKey() {
+        return getServletContext().getContextPath();
     }
 
     /**

@@ -20,17 +20,18 @@ package fr.peralta.mycellar.interfaces.client.web.pages.shared;
 
 import org.apache.wicket.devutils.debugbar.DebugBar;
 import org.apache.wicket.markup.html.IHeaderResponse;
-import org.apache.wicket.markup.html.WebPage;
 import org.apache.wicket.request.mapper.parameter.PageParameters;
 import org.apache.wicket.request.resource.PackageResourceReference;
+import org.wicketstuff.security.components.SecureWebPage;
 
 import fr.peralta.mycellar.interfaces.client.web.MyCellarWebApplicationDescriptor;
+import fr.peralta.mycellar.interfaces.client.web.components.shared.login.LoginPanel;
 import fr.peralta.mycellar.interfaces.client.web.components.shared.menu.MenuPanel;
 
 /**
  * @author speralta
  */
-public abstract class BasePage extends WebPage {
+public abstract class BasePage extends SecureWebPage {
 
     private static final long serialVersionUID = 201117181723L;
 
@@ -41,6 +42,7 @@ public abstract class BasePage extends WebPage {
         super(parameters);
         add(new MenuPanel("menu", getMenuClass(), MyCellarWebApplicationDescriptor.get()
                 .getMenuablePageDescriptors()));
+        add(new LoginPanel("login"));
         add(new DebugBar("debug"));
     }
 

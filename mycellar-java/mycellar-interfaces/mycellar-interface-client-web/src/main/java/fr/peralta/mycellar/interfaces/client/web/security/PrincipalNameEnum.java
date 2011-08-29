@@ -16,25 +16,42 @@
  * You should have received a copy of the GNU General Public License
  * along with MyCellar. If not, see <http://www.gnu.org/licenses/>.
  */
-package fr.peralta.mycellar.domain.user;
-
-import fr.peralta.mycellar.domain.shared.Repository;
+package fr.peralta.mycellar.interfaces.client.web.security;
 
 /**
  * @author speralta
  */
-public interface UserRepository extends Repository<User> {
+public enum PrincipalNameEnum {
+
+    BASIC("basic"), ADMIN("admin");
 
     /**
-     * @param user
-     */
-    void newUser(User user);
-
-    /**
-     * @param login
-     * @param password
+     * @param name
      * @return
      */
-    User find(String login, String password);
+    public static PrincipalNameEnum get(String name) {
+        for (PrincipalNameEnum value : values()) {
+            if (value.getName().equals(name)) {
+                return value;
+            }
+        }
+        return null;
+    }
+
+    private final String name;
+
+    /**
+     * @param name
+     */
+    private PrincipalNameEnum(String name) {
+        this.name = name;
+    }
+
+    /**
+     * @return the name
+     */
+    public String getName() {
+        return name;
+    }
 
 }

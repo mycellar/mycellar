@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE properties SYSTEM "http://java.sun.com/dtd/properties.dtd">
+<properties>
+  <entry key="exception.login">Mauvais identifiant/mot de passe.</entry>
+  <entry key="username">Identifiant</entry>
+  <entry key="password">Mot de passe</entry>
+  <entry key="logout">Déconnexion</entry>
+  <entry key="submit">Identification</entry>
+</properties> 

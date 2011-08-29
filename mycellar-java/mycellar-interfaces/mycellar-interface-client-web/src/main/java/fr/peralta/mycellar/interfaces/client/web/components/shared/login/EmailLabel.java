@@ -16,25 +16,38 @@
  * You should have received a copy of the GNU General Public License
  * along with MyCellar. If not, see <http://www.gnu.org/licenses/>.
  */
-package fr.peralta.mycellar.domain.user;
+package fr.peralta.mycellar.interfaces.client.web.components.shared.login;
 
-import fr.peralta.mycellar.domain.shared.Repository;
+import org.apache.wicket.markup.html.basic.Label;
+import org.apache.wicket.model.Model;
+
+import fr.peralta.mycellar.domain.user.User;
+import fr.peralta.mycellar.interfaces.client.web.security.UserKey;
 
 /**
  * @author speralta
  */
-public interface UserRepository extends Repository<User> {
+class EmailLabel extends Label {
+
+    private static final long serialVersionUID = 201108261716L;
 
     /**
-     * @param user
+     * @param id
      */
-    void newUser(User user);
+    public EmailLabel(String id) {
+        super(id);
+
+    }
 
     /**
-     * @param login
-     * @param password
-     * @return
+     * {@inheritDoc}
      */
-    User find(String login, String password);
+    @Override
+    protected void onConfigure() {
+        super.onConfigure();
+        User user = UserKey.getUserLoggedIn();
+        setVisibilityAllowed(user != null);
+        setDefaultModel(new Model<String>(user != null ? user.getEmail() : ""));
+    }
 
 }

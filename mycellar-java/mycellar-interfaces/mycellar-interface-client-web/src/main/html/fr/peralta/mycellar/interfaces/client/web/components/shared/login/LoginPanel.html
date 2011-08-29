@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html lang="fr" xmlns:wicket="">
+<body>
+<wicket:panel>
+  <form wicket:id="loginForm">
+    <label for="username"><wicket:message key="username">Username</wicket:message></label>
+    <input type="text" wicket:id="username" id="username" size="20" />
+    <label for="password"><wicket:message key="password">Password</wicket:message></label>
+    <input type="password" wicket:id="password" id="password" size="8" />
+    <input type="submit" wicket:message="value:submit" />
+  </form>
+  <div wicket:id="feedback" />
+  <span wicket:id="email">email</span>
+  <a wicket:id="logout"><wicket:message key="logout">Logout</wicket:message></a>
+</wicket:panel>
+</body>
+</html>

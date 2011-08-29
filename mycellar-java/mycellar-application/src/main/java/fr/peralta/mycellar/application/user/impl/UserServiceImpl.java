@@ -52,6 +52,14 @@ public class UserServiceImpl implements UserService {
     }
 
     /**
+     * {@inheritDoc}
+     */
+    @Override
+    public User authenticateUser(String login, String password) {
+        return userRepository.find(login, password);
+    }
+
+    /**
      * @param userRepository
      *            the userRepository to set
      */

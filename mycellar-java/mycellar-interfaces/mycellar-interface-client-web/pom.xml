@@ -55,6 +55,10 @@
       <artifactId>wicket-spring</artifactId>
     </dependency>
     <dependency>
+      <groupId>org.wicketstuff</groupId>
+      <artifactId>wicket-security-swarm</artifactId>
+    </dependency>
+    <dependency>
       <groupId>org.odlabs.wiquery</groupId>
       <artifactId>wiquery-jquery-ui</artifactId>
     </dependency>

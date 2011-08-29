@@ -16,25 +16,25 @@
  * You should have received a copy of the GNU General Public License
  * along with MyCellar. If not, see <http://www.gnu.org/licenses/>.
  */
-package fr.peralta.mycellar.domain.user;
+package fr.peralta.mycellar.interfaces.client.web.components.shared.login;
 
-import fr.peralta.mycellar.domain.shared.Repository;
+import org.apache.wicket.markup.html.panel.Panel;
 
 /**
  * @author speralta
  */
-public interface UserRepository extends Repository<User> {
+public class LoginPanel extends Panel {
+
+    private static final long serialVersionUID = 201108221835L;
 
     /**
-     * @param user
+     * @param id
      */
-    void newUser(User user);
-
-    /**
-     * @param login
-     * @param password
-     * @return
-     */
-    User find(String login, String password);
-
+    public LoginPanel(String id) {
+        super(id);
+        add(new LoginFeedbackPanel("feedback"));
+        add(new LoginForm("loginForm"));
+        add(new EmailLabel("email"));
+        add(new LogoutLink("logout"));
+    }
 }

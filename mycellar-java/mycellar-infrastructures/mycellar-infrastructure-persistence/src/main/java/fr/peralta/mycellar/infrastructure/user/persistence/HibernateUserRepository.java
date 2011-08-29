@@ -21,7 +21,9 @@ package fr.peralta.mycellar.infrastructure.user.persistence;
 import java.util.List;
 
 import javax.persistence.EntityManager;
+import javax.persistence.NoResultException;
 import javax.persistence.PersistenceContext;
+import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Root;
 
@@ -42,6 +44,26 @@ public class HibernateUserRepository implements UserRepository {
 
     @PersistenceContext
     private EntityManager entityManager;
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public User find(String login, String password) {
+        CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();
+        CriteriaQuery<User> query = criteriaBuilder.createQuery(User.class);
+        Root<User> root = query.from(User.class);
+
+        try {
+            return entityManager.createQuery(
+                    query.select(root).where(
+                            criteriaBuilder.and(criteriaBuilder.equal(root.get("email"), login),
+                                    criteriaBuilder.equal(root.get("password"), password))))
+                    .getSingleResult();
+        } catch (NoResultException e) {
+            return null;
+        }
+    }
 
     /**
      * {@inheritDoc}

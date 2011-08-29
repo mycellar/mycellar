@@ -27,8 +27,21 @@ import fr.peralta.mycellar.domain.user.User;
  */
 public interface UserServiceFacade {
 
+    /**
+     * @param user
+     */
     void newUser(User user);
 
+    /**
+     * @return
+     */
     List<User> getAllUsers();
+
+    /**
+     * @param login
+     * @param password
+     * @return
+     */
+    User authenticateUser(String login, String password);
 
 }

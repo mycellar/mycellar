@@ -16,32 +16,49 @@
  * You should have received a copy of the GNU General Public License
  * along with MyCellar. If not, see <http://www.gnu.org/licenses/>.
  */
-package fr.peralta.mycellar.application.user;
+package fr.peralta.mycellar.interfaces.client.web.security;
 
-import java.util.List;
+import org.apache.wicket.MetaDataKey;
+import org.apache.wicket.Session;
 
 import fr.peralta.mycellar.domain.user.User;
 
 /**
  * @author speralta
  */
-public interface UserService {
+public class UserKey extends MetaDataKey<User> {
+
+    private static final long serialVersionUID = 201108261637L;
+
+    private static UserKey USER_KEY = new UserKey();
 
     /**
      * @param user
+     *            the user logged in
      */
-    void newUser(User user);
+    public static void userLogsIn(User user) {
+        Session.get().setMetaData(USER_KEY, user);
+    }
 
     /**
-     * @return
+     * Remove the user from the session.
      */
-    List<User> getAllUsers();
+    public static void userLogsOut() {
+        Session.get().setMetaData(USER_KEY, null);
+    }
 
     /**
-     * @param login
-     * @param password
-     * @return
+     * @return the logged in user (can be null)
      */
-    User authenticateUser(String login, String password);
+    public static User getUserLoggedIn() {
+        return Session.get().getMetaData(USER_KEY);
+    }
+
+    /**
+     * Refuse instantiation.
+     */
+    private UserKey() {
+        super();
+    }
 
 }

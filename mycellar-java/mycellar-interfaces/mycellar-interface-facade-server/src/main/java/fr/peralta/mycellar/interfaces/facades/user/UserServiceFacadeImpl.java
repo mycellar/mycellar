@@ -48,6 +48,15 @@ public class UserServiceFacadeImpl implements UserServiceFacade {
      * {@inheritDoc}
      */
     @Override
+    @Transactional
+    public User authenticateUser(String login, String password) {
+        return userService.authenticateUser(login, password);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
     @Transactional(readOnly = true)
     public List<User> getAllUsers() {
         return userService.getAllUsers();
