@@ -44,7 +44,7 @@ public class Output extends IdentifiedEntity<Output> {
     private static final long serialVersionUID = 201011111800L;
 
     @ManyToOne
-    @JoinColumn(name = "WINE", nullable = false)
+    @JoinColumn(name = "BOTTLE", nullable = false)
     private Bottle bottle;
 
     @ManyToOne

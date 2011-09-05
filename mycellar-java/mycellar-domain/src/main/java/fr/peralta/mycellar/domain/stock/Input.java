@@ -48,7 +48,7 @@ public class Input extends IdentifiedEntity<Input> {
     private LocalDate arrival;
 
     @ManyToOne
-    @JoinColumn(name = "WINE", nullable = false)
+    @JoinColumn(name = "BOTTLE", nullable = false)
     private Bottle bottle;
 
     @ManyToOne
