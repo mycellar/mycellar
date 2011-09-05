@@ -16,20 +16,17 @@
  * You should have received a copy of the GNU General Public License
  * along with MyCellar. If not, see <http://www.gnu.org/licenses/>.
  */
-package fr.peralta.mycellar.interfaces.facades.stock;
+package fr.peralta.mycellar.application.stock;
 
 import java.util.Map;
 
-import fr.peralta.mycellar.domain.stock.Arrival;
 import fr.peralta.mycellar.domain.stock.Cellar;
 import fr.peralta.mycellar.domain.user.User;
 
 /**
  * @author speralta
  */
-public interface StockServiceFacade {
-
-    void arrival(Arrival arrival);
+public interface CellarService {
 
     /**
      * @param cellar
@@ -40,6 +37,6 @@ public interface StockServiceFacade {
      * @param user
      * @return
      */
-    Map<Cellar, Long> getAllCellarsWithCountsFromUser(User user);
+    Map<Cellar, Long> getAllWithCountsFromUser(User user);
 
 }

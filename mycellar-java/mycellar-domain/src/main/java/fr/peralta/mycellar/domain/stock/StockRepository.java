@@ -18,6 +18,10 @@
  */
 package fr.peralta.mycellar.domain.stock;
 
+import java.util.Map;
+
+import fr.peralta.mycellar.domain.user.User;
+
 /**
  * @author speralta
  */
@@ -32,6 +36,17 @@ public interface StockRepository {
     /**
      * @param input
      */
-    void stockInput(Input input);
+    void newInput(Input input);
+
+    /**
+     * @param user
+     * @return
+     */
+    Map<Cellar, Long> getAllCellarsWithCountsFromUser(User user);
+
+    /**
+     * @param cellar
+     */
+    void newCellar(Cellar cellar);
 
 }

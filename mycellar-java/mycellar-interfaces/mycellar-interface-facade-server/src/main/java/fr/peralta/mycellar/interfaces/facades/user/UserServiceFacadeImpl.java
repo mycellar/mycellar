@@ -50,7 +50,7 @@ public class UserServiceFacadeImpl implements UserServiceFacade {
     @Override
     @Transactional
     public User authenticateUser(String login, String password) {
-        return userService.authenticateUser(login, password);
+        return userService.authenticate(login, password);
     }
 
     /**
@@ -59,7 +59,7 @@ public class UserServiceFacadeImpl implements UserServiceFacade {
     @Override
     @Transactional(readOnly = true)
     public List<User> getAllUsers() {
-        return userService.getAllUsers();
+        return userService.getAll();
     }
 
     /**

@@ -35,13 +35,13 @@ public interface UserService {
     /**
      * @return
      */
-    List<User> getAllUsers();
+    List<User> getAll();
 
     /**
      * @param login
      * @param password
      * @return
      */
-    User authenticateUser(String login, String password);
+    User authenticate(String login, String password);
 
 }

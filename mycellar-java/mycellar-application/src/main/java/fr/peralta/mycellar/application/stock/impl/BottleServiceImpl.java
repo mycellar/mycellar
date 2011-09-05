@@ -22,17 +22,15 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
-import fr.peralta.mycellar.application.stock.StockService;
-import fr.peralta.mycellar.domain.stock.Arrival;
-import fr.peralta.mycellar.domain.stock.ArrivalBottle;
-import fr.peralta.mycellar.domain.stock.Input;
+import fr.peralta.mycellar.application.stock.BottleService;
+import fr.peralta.mycellar.domain.stock.Bottle;
 import fr.peralta.mycellar.domain.stock.StockRepository;
 
 /**
  * @author speralta
  */
 @Service
-public class StockServiceImpl implements StockService {
+public class BottleServiceImpl implements BottleService {
 
     private StockRepository stockRepository;
 
@@ -40,19 +38,8 @@ public class StockServiceImpl implements StockService {
      * {@inheritDoc}
      */
     @Override
-    public void stock(Arrival arrival) {
-        float unitCharges = arrival.getOtherCharges() / arrival.getArrivalBottles().size();
-        for (ArrivalBottle arrivalBottle : arrival.getArrivalBottles()) {
-            Input input = new Input();
-            input.setArrival(arrival.getDate());
-            input.setBottle(arrivalBottle.getBottle());
-            input.setCellar(null);
-            input.setCharges(unitCharges);
-            input.setNumber(arrivalBottle.getQuantity());
-            input.setPrice(arrivalBottle.getPrice());
-            input.setSource(arrival.getSource());
-            stockRepository.newInput(input);
-        }
+    public Bottle find(int id) {
+        return stockRepository.findBottle(id);
     }
 
     /**

@@ -230,12 +230,4 @@ public class PackageArrivalPage extends CellarSuperPage {
                 .setVisibilityAllowed(true);
     }
 
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    protected Class<? extends CellarSuperPage> getSubMenuClass() {
-        return PackageArrivalPage.class;
-    }
-
 }

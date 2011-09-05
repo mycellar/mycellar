@@ -18,16 +18,13 @@
  */
 package fr.peralta.mycellar.interfaces.client.web.pages.cellar;
 
-import java.util.ArrayList;
-
-import org.apache.wicket.markup.html.link.BookmarkablePageLink;
-import org.apache.wicket.model.IModel;
-import org.apache.wicket.model.Model;
+import org.apache.wicket.markup.html.form.Form;
+import org.apache.wicket.markup.html.form.TextField;
+import org.apache.wicket.model.CompoundPropertyModel;
 import org.apache.wicket.request.mapper.parameter.PageParameters;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 
 import fr.peralta.mycellar.domain.stock.Cellar;
-import fr.peralta.mycellar.interfaces.client.web.components.shared.multiple.MultiplePanel;
 import fr.peralta.mycellar.interfaces.client.web.pages.shared.CellarSuperPage;
 import fr.peralta.mycellar.interfaces.client.web.security.UserKey;
 import fr.peralta.mycellar.interfaces.facades.stock.StockServiceFacade;
@@ -35,25 +32,40 @@ import fr.peralta.mycellar.interfaces.facades.stock.StockServiceFacade;
 /**
  * @author speralta
  */
-public class CellarsPage extends CellarSuperPage {
+public class NewCellarPage extends CellarSuperPage {
 
-    private static final long serialVersionUID = 201108170919L;
+    private static final long serialVersionUID = 201108310956L;
 
     @SpringBean
     private StockServiceFacade stockServiceFacade;
 
-    private final IModel<ArrayList<Cellar>> cellars = new Model<ArrayList<Cellar>>();
-
     /**
      * @param parameters
      */
-    public CellarsPage(PageParameters parameters) {
+    public NewCellarPage(PageParameters parameters) {
         super(parameters);
-        add(new BookmarkablePageLink<NewCellarPage>("newCellar", NewCellarPage.class));
-        add(new MultiplePanel<Cellar>("cellars",
-                stockServiceFacade.getAllCellarsWithCountsFromUser(UserKey.getUserLoggedIn())));
-        cellars.setObject(new ArrayList<Cellar>());
-        get("cellars").setDefaultModel(cellars);
+        Form<Cellar> form = new Form<Cellar>("form",
+                new CompoundPropertyModel<Cellar>(new Cellar())) {
+            private static final long serialVersionUID = 201108310958L;
+
+            @Override
+            protected void onSubmit() {
+                Cellar cellar = getModelObject();
+                cellar.setOwner(UserKey.getUserLoggedIn());
+                stockServiceFacade.newCellar(cellar);
+                setResponsePage(CellarsPage.class);
+            }
+        };
+        form.add(new TextField<String>("name"));
+        add(form);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    protected Class<? extends CellarSuperPage> getSubMenuClass() {
+        return CellarsPage.class;
     }
 
 }

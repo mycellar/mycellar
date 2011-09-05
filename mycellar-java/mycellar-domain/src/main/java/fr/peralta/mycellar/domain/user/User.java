@@ -46,7 +46,7 @@ public class User extends IdentifiedEntity<User> {
 
     private static final long serialVersionUID = 201011121629L;
 
-    @OneToMany(mappedBy = "user")
+    @OneToMany(mappedBy = "owner")
     private final Set<Cellar> cellars = new HashSet<Cellar>();
 
     @Column(name = "EMAIL", nullable = false)
@@ -63,7 +63,7 @@ public class User extends IdentifiedEntity<User> {
     @Column(name = "LASTNAME", nullable = false)
     private String lastname;
 
-    @Column(name = "PASSWORD", nullable = false, length=40)
+    @Column(name = "PASSWORD", nullable = false, length = 40)
     private String password;
 
     /**

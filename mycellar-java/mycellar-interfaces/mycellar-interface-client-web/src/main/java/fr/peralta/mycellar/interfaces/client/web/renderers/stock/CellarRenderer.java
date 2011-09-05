@@ -16,30 +16,40 @@
  * You should have received a copy of the GNU General Public License
  * along with MyCellar. If not, see <http://www.gnu.org/licenses/>.
  */
-package fr.peralta.mycellar.interfaces.facades.stock;
+package fr.peralta.mycellar.interfaces.client.web.renderers.stock;
 
-import java.util.Map;
+import org.springframework.stereotype.Service;
 
-import fr.peralta.mycellar.domain.stock.Arrival;
 import fr.peralta.mycellar.domain.stock.Cellar;
-import fr.peralta.mycellar.domain.user.User;
+import fr.peralta.mycellar.interfaces.client.web.renderers.shared.AbstractRenderer;
 
 /**
  * @author speralta
  */
-public interface StockServiceFacade {
-
-    void arrival(Arrival arrival);
-
-    /**
-     * @param cellar
-     */
-    void newCellar(Cellar cellar);
+@Service
+public class CellarRenderer extends AbstractRenderer<Cellar> {
 
     /**
-     * @param user
-     * @return
+     * {@inheritDoc}
      */
-    Map<Cellar, Long> getAllCellarsWithCountsFromUser(User user);
+    @Override
+    protected Class<Cellar> getRenderedClass() {
+        return Cellar.class;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public String getLabel(Cellar cellar) {
+        StringBuilder result = new StringBuilder();
+        if (cellar != null) {
+            result.append(cellar.getName());
+        } else {
+            result.append(NULL_OBJECT);
+        }
+
+        return result.toString();
+    }
 
 }

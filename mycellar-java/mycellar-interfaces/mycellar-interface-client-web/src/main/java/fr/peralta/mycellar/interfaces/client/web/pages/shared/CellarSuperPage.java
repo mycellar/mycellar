@@ -61,7 +61,9 @@ public abstract class CellarSuperPage extends BasePage {
     /**
      * @return
      */
-    protected abstract Class<? extends CellarSuperPage> getSubMenuClass();
+    protected Class<? extends CellarSuperPage> getSubMenuClass() {
+        return this.getClass();
+    }
 
     /**
      * {@inheritDoc}

@@ -19,7 +19,6 @@
 package fr.peralta.mycellar.application.stock;
 
 import fr.peralta.mycellar.domain.stock.Arrival;
-import fr.peralta.mycellar.domain.stock.Bottle;
 
 /**
  * @author speralta
@@ -30,11 +29,5 @@ public interface StockService {
      * @param arrival
      */
     void stock(Arrival arrival);
-
-    /**
-     * @param id
-     * @return
-     */
-    Bottle findBottle(int id);
 
 }

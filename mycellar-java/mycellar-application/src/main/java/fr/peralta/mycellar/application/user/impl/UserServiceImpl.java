@@ -47,7 +47,7 @@ public class UserServiceImpl implements UserService {
      * {@inheritDoc}
      */
     @Override
-    public List<User> getAllUsers() {
+    public List<User> getAll() {
         return userRepository.getAll();
     }
 
@@ -55,7 +55,7 @@ public class UserServiceImpl implements UserService {
      * {@inheritDoc}
      */
     @Override
-    public User authenticateUser(String login, String password) {
+    public User authenticate(String login, String password) {
         return userRepository.find(login, password);
     }
 

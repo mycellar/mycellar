@@ -18,6 +18,9 @@
  */
 package fr.peralta.mycellar.infrastructure.stock.persistence;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import org.hibernate.property.DirectPropertyAccessor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -25,8 +28,10 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Repository;
 
 import fr.peralta.mycellar.domain.stock.Bottle;
+import fr.peralta.mycellar.domain.stock.Cellar;
 import fr.peralta.mycellar.domain.stock.Input;
 import fr.peralta.mycellar.domain.stock.StockRepository;
+import fr.peralta.mycellar.domain.user.User;
 import fr.peralta.mycellar.domain.wine.Format;
 import fr.peralta.mycellar.domain.wine.Wine;
 import fr.peralta.mycellar.domain.wine.WineColorEnum;
@@ -45,8 +50,24 @@ public class MockStockRepository implements StockRepository {
      * {@inheritDoc}
      */
     @Override
-    public void stockInput(Input input) {
+    public void newInput(Input input) {
         logger.info("Stocks " + input.getNumber() + " " + input.getBottle());
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public Map<Cellar, Long> getAllCellarsWithCountsFromUser(User user) {
+        return new HashMap<Cellar, Long>();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void newCellar(Cellar cellar) {
+        logger.info("New cellar " + cellar.getName() + " for " + cellar.getOwner().getEmail() + ".");
     }
 
     /**

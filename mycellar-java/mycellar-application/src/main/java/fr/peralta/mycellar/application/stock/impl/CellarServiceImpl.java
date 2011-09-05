@@ -18,21 +18,22 @@
  */
 package fr.peralta.mycellar.application.stock.impl;
 
+import java.util.Map;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
-import fr.peralta.mycellar.application.stock.StockService;
-import fr.peralta.mycellar.domain.stock.Arrival;
-import fr.peralta.mycellar.domain.stock.ArrivalBottle;
-import fr.peralta.mycellar.domain.stock.Input;
+import fr.peralta.mycellar.application.stock.CellarService;
+import fr.peralta.mycellar.domain.stock.Cellar;
 import fr.peralta.mycellar.domain.stock.StockRepository;
+import fr.peralta.mycellar.domain.user.User;
 
 /**
  * @author speralta
  */
 @Service
-public class StockServiceImpl implements StockService {
+public class CellarServiceImpl implements CellarService {
 
     private StockRepository stockRepository;
 
@@ -40,19 +41,16 @@ public class StockServiceImpl implements StockService {
      * {@inheritDoc}
      */
     @Override
-    public void stock(Arrival arrival) {
-        float unitCharges = arrival.getOtherCharges() / arrival.getArrivalBottles().size();
-        for (ArrivalBottle arrivalBottle : arrival.getArrivalBottles()) {
-            Input input = new Input();
-            input.setArrival(arrival.getDate());
-            input.setBottle(arrivalBottle.getBottle());
-            input.setCellar(null);
-            input.setCharges(unitCharges);
-            input.setNumber(arrivalBottle.getQuantity());
-            input.setPrice(arrivalBottle.getPrice());
-            input.setSource(arrival.getSource());
-            stockRepository.newInput(input);
-        }
+    public void newCellar(Cellar cellar) {
+        stockRepository.newCellar(cellar);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public Map<Cellar, Long> getAllWithCountsFromUser(User user) {
+        return stockRepository.getAllCellarsWithCountsFromUser(user);
     }
 
     /**

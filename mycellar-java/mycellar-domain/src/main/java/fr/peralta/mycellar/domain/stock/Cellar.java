@@ -18,12 +18,17 @@
  */
 package fr.peralta.mycellar.domain.stock;
 
+import java.util.Collections;
+import java.util.HashSet;
+import java.util.Set;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
@@ -43,14 +48,24 @@ public class Cellar extends NamedEntity<Cellar> {
 
     private static final long serialVersionUID = 201011111734L;
 
+    @OneToMany(mappedBy = "cellar")
+    private final Set<Stock> stocks = new HashSet<Stock>();
+
     @Id
     @GeneratedValue(generator = "CELLAR_ID_GENERATOR")
     @Column(name = "ID", nullable = false, unique = true)
     private Integer id;
 
     @ManyToOne
-    @JoinColumn(name = "USER", nullable = false)
-    private User user;
+    @JoinColumn(name = "OWNER", nullable = false)
+    private User owner;
+
+    /**
+     * @return the stocks
+     */
+    public Set<Stock> getStocks() {
+        return Collections.unmodifiableSet(stocks);
+    }
 
     /**
      * {@inheritDoc}
@@ -61,18 +76,18 @@ public class Cellar extends NamedEntity<Cellar> {
     }
 
     /**
-     * @return the user
+     * @return the owner
      */
-    public User getUser() {
-        return user;
+    public User getOwner() {
+        return owner;
     }
 
     /**
-     * @param user
-     *            the user to set
+     * @param owner
+     *            the owner to set
      */
-    public void setUser(User user) {
-        this.user = user;
+    public void setOwner(User owner) {
+        this.owner = owner;
     }
 
     /**
@@ -81,7 +96,7 @@ public class Cellar extends NamedEntity<Cellar> {
     @Override
     protected boolean dataEquals(Cellar other) {
         return ObjectUtils.equals(getName(), other.getName())
-                && ObjectUtils.equals(getUser(), other.getUser());
+                && ObjectUtils.equals(getOwner(), other.getOwner());
     }
 
     /**
@@ -89,7 +104,7 @@ public class Cellar extends NamedEntity<Cellar> {
      */
     @Override
     protected Object[] getHashCodeData() {
-        return new Object[] { getName(), getUser() };
+        return new Object[] { getName(), getOwner() };
     }
 
 }

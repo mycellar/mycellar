@@ -36,12 +36,4 @@ public class InputOutputPage extends CellarSuperPage {
         super(parameters);
     }
 
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    protected Class<? extends CellarSuperPage> getSubMenuClass() {
-        return InputOutputPage.class;
-    }
-
 }

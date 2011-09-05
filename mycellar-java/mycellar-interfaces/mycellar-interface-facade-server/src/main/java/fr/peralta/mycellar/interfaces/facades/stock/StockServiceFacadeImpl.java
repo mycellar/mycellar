@@ -18,12 +18,17 @@
  */
 package fr.peralta.mycellar.interfaces.facades.stock;
 
+import java.util.Map;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import fr.peralta.mycellar.application.stock.CellarService;
 import fr.peralta.mycellar.application.stock.StockService;
 import fr.peralta.mycellar.domain.stock.Arrival;
+import fr.peralta.mycellar.domain.stock.Cellar;
+import fr.peralta.mycellar.domain.user.User;
 
 /**
  * @author speralta
@@ -32,6 +37,8 @@ import fr.peralta.mycellar.domain.stock.Arrival;
 public class StockServiceFacadeImpl implements StockServiceFacade {
 
     private StockService stockService;
+
+    private CellarService cellarService;
 
     /**
      * {@inheritDoc}
@@ -43,12 +50,39 @@ public class StockServiceFacadeImpl implements StockServiceFacade {
     }
 
     /**
+     * {@inheritDoc}
+     */
+    @Override
+    @Transactional
+    public void newCellar(Cellar cellar) {
+        cellarService.newCellar(cellar);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    @Transactional
+    public Map<Cellar, Long> getAllCellarsWithCountsFromUser(User user) {
+        return cellarService.getAllWithCountsFromUser(user);
+    }
+
+    /**
      * @param stockService
      *            the stockService to set
      */
     @Autowired
     public void setStockService(StockService stockService) {
         this.stockService = stockService;
+    }
+
+    /**
+     * @param cellarService
+     *            the cellarService to set
+     */
+    @Autowired
+    public void setCellarService(CellarService cellarService) {
+        this.cellarService = cellarService;
     }
 
 }
