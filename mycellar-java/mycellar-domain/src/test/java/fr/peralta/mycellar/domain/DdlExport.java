@@ -1,4 +1,5 @@
 package fr.peralta.mycellar.domain;
+
 /*
  * Copyright 2011, MyCellar
  *
@@ -68,6 +69,7 @@ public class DdlExport {
         cfg.addAnnotatedClass(Varietal.class);
         cfg.addAnnotatedClass(Wine.class);
         SchemaExport schemaExport = new SchemaExport(cfg);
-        schemaExport.create(true, false);
+        schemaExport.setDelimiter(";");
+        schemaExport.execute(true, false, false, true);
     }
 }
