@@ -49,7 +49,7 @@ import fr.peralta.mycellar.domain.shared.ValidationPattern;
  */
 @Entity
 @Table(name = "WINE")
-@AttributeOverride(name = "name", column = @Column(name = "NAME", nullable = false))
+@AttributeOverride(name = "name", column = @Column(name = "NAME", nullable = true))
 @SequenceGenerator(name = "WINE_ID_GENERATOR", allocationSize = 1)
 public class Wine extends NamedEntity<Wine> {
 
@@ -61,7 +61,7 @@ public class Wine extends NamedEntity<Wine> {
     private Appellation appellation;
 
     @Column(name = "COLOR")
-    @Enumerated(EnumType.STRING)
+    @Enumerated(EnumType.ORDINAL)
     private WineColorEnum color;
 
     @ElementCollection
@@ -91,7 +91,7 @@ public class Wine extends NamedEntity<Wine> {
     private String ranking;
 
     @Column(name = "TYPE")
-    @Enumerated(EnumType.STRING)
+    @Enumerated(EnumType.ORDINAL)
     private WineTypeEnum type;
 
     @Column(name = "VINTAGE")
