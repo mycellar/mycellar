@@ -36,7 +36,7 @@ import fr.peralta.mycellar.domain.shared.IdentifiedEntity;
  * @author bperalta
  */
 @Entity
-@Table(name = "STOCK", uniqueConstraints = @UniqueConstraint(columnNames = { "BOTTLE" }))
+@Table(name = "STOCK", uniqueConstraints = @UniqueConstraint(columnNames = { "BOTTLE", "CELLAR" }))
 @SequenceGenerator(name = "STOCK_ID_GENERATOR", allocationSize = 1)
 public class Stock extends IdentifiedEntity<Stock> {
 
