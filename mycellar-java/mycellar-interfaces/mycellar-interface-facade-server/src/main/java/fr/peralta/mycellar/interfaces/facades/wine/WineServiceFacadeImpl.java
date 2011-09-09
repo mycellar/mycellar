@@ -18,6 +18,7 @@
  */
 package fr.peralta.mycellar.interfaces.facades.wine;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -36,6 +37,7 @@ import fr.peralta.mycellar.domain.wine.Country;
 import fr.peralta.mycellar.domain.wine.Format;
 import fr.peralta.mycellar.domain.wine.Producer;
 import fr.peralta.mycellar.domain.wine.Region;
+import fr.peralta.mycellar.domain.wine.Wine;
 import fr.peralta.mycellar.domain.wine.WineColorEnum;
 import fr.peralta.mycellar.domain.wine.WineTypeEnum;
 
@@ -61,7 +63,7 @@ public class WineServiceFacadeImpl implements WineServiceFacade {
      * {@inheritDoc}
      */
     @Override
-    @Transactional
+    @Transactional(readOnly = true)
     public Map<Country, Long> getCountriesWithCounts() {
         return countryService.getAllWithCounts();
     }
@@ -70,7 +72,7 @@ public class WineServiceFacadeImpl implements WineServiceFacade {
      * {@inheritDoc}
      */
     @Override
-    @Transactional
+    @Transactional(readOnly = true)
     public Map<Region, Long> getRegionsWithCounts(Country... countries) {
         return regionService.getAllFromCountriesWithCounts(countries);
     }
@@ -79,7 +81,7 @@ public class WineServiceFacadeImpl implements WineServiceFacade {
      * {@inheritDoc}
      */
     @Override
-    @Transactional
+    @Transactional(readOnly = true)
     public Map<Appellation, Long> getAppellationsWithCounts(Region... regions) {
         return appellationService.getAllFromRegionsWithCounts(regions);
     }
@@ -88,7 +90,7 @@ public class WineServiceFacadeImpl implements WineServiceFacade {
      * {@inheritDoc}
      */
     @Override
-    @Transactional
+    @Transactional(readOnly = true)
     public List<Producer> getProducersLike(String term) {
         return producerService.getAllLike(term);
     }
@@ -97,7 +99,17 @@ public class WineServiceFacadeImpl implements WineServiceFacade {
      * {@inheritDoc}
      */
     @Override
-    @Transactional
+    @Transactional(readOnly = true)
+    public List<Wine> getWinesLike(String term) {
+        // TODO implements this
+        return new ArrayList<Wine>();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    @Transactional(readOnly = true)
     public Map<WineTypeEnum, Long> getTypeWithCounts(Producer producer) {
         return wineService.getAllTypeFromProducerWithCounts(producer);
     }
@@ -106,7 +118,7 @@ public class WineServiceFacadeImpl implements WineServiceFacade {
      * {@inheritDoc}
      */
     @Override
-    @Transactional
+    @Transactional(readOnly = true)
     public Map<WineColorEnum, Long> getColorWithCounts(Producer producer, WineTypeEnum type) {
         return wineService.getAllColorFromProducerAndTypeWithCounts(producer, type);
     }
@@ -115,7 +127,7 @@ public class WineServiceFacadeImpl implements WineServiceFacade {
      * {@inheritDoc}
      */
     @Override
-    @Transactional
+    @Transactional(readOnly = true)
     public Map<Format, Long> getFormatWithCounts() {
         return formatService.getAllWithCounts();
     }

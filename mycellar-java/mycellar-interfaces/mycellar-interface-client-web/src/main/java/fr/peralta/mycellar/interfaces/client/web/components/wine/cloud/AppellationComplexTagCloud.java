@@ -18,7 +18,6 @@
  */
 package fr.peralta.mycellar.interfaces.client.web.components.wine.cloud;
 
-import org.apache.commons.lang3.StringUtils;
 import org.apache.wicket.Component;
 import org.apache.wicket.event.Broadcast;
 import org.apache.wicket.event.IEventSource;
@@ -103,18 +102,7 @@ public class AppellationComplexTagCloud extends ComplexTagCloud<Appellation> {
      */
     @Override
     protected boolean isReadyToSelect() {
-        return (regionModel != null)
-                && (regionModel.getObject() != null)
-                && ((RegionComplexTagCloud) get(REGION_COMPONENT_ID)).isValid(regionModel
-                        .getObject());
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public boolean isValid(Appellation object) {
-        return StringUtils.isNotBlank(object.getName());
+        return ((RegionComplexTagCloud) get(REGION_COMPONENT_ID)).isValued();
     }
 
     /**

@@ -26,6 +26,7 @@ import fr.peralta.mycellar.domain.wine.Country;
 import fr.peralta.mycellar.domain.wine.Format;
 import fr.peralta.mycellar.domain.wine.Producer;
 import fr.peralta.mycellar.domain.wine.Region;
+import fr.peralta.mycellar.domain.wine.Wine;
 import fr.peralta.mycellar.domain.wine.WineColorEnum;
 import fr.peralta.mycellar.domain.wine.WineTypeEnum;
 
@@ -74,5 +75,11 @@ public interface WineServiceFacade {
      * @return
      */
     Map<Format, Long> getFormatWithCounts();
+
+    /**
+     * @param term
+     * @return
+     */
+    List<Wine> getWinesLike(String term);
 
 }

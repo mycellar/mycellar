@@ -79,12 +79,4 @@ public class WineColorEnumFromProducerAndTypeTagCloud extends SimpleTagCloud<Win
         return (producerModel.getObject() != null) && (wineTypeEnumModel.getObject() != null);
     }
 
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public boolean isValid(WineColorEnum object) {
-        return true;
-    }
-
 }

@@ -119,8 +119,7 @@ div#login ul.feedbackPanel {
 
 /** DEBUG **/
 div#wicketDebugBar {
-  bottom: 0;
-  top: auto;
+  top: 60px; 
 }
 
 /** MAIN **/

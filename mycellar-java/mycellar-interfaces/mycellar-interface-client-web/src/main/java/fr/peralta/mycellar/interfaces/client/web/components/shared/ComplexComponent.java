@@ -79,6 +79,7 @@ public abstract class ComplexComponent<O> extends SimpleComponent<O> {
      */
     @Override
     protected void onSave(IEventSource source, Action action) {
+        setValued(true);
         setDefaultModelObject(get(
                 CONTAINER_COMPONENT_ID + PATH_SEPARATOR + CREATE_FORM_COMPONENT_ID)
                 .setVisibilityAllowed(false).getDefaultModelObject());
@@ -89,6 +90,7 @@ public abstract class ComplexComponent<O> extends SimpleComponent<O> {
      */
     @Override
     protected void onCancel(IEventSource source, Action action) {
+        setValued(false);
         get(CONTAINER_COMPONENT_ID + PATH_SEPARATOR + CREATE_FORM_COMPONENT_ID)
                 .setVisibilityAllowed(false);
         setDefaultModelObject(createObject());

@@ -22,9 +22,9 @@ import org.apache.wicket.event.Broadcast;
 import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.form.Button;
 import org.apache.wicket.markup.html.form.Form;
+import org.apache.wicket.model.CompoundPropertyModel;
 
 import fr.peralta.mycellar.interfaces.client.web.components.shared.Action;
-import fr.peralta.mycellar.interfaces.client.web.components.shared.ChildAwareCompoundPropertyModel;
 
 /**
  * @author speralta
@@ -39,7 +39,7 @@ public class ObjectForm<O> extends Form<O> {
      * @param id
      */
     public ObjectForm(String id) {
-        super(id);
+        super(id, new CompoundPropertyModel<O>((O) null));
         add(new WebMarkupContainer(EDIT_PANEL_COMPONENT_ID).setOutputMarkupId(true));
         add(new Button("saveObject"));
         add(new CancelButton("cancelObject"));
@@ -50,14 +50,14 @@ public class ObjectForm<O> extends Form<O> {
      * @param newObject
      */
     public ObjectForm(String id, O newObject) {
-        super(id, new ChildAwareCompoundPropertyModel<O>(newObject));
+        super(id, new CompoundPropertyModel<O>(newObject));
         add(new WebMarkupContainer(EDIT_PANEL_COMPONENT_ID).setOutputMarkupId(true));
         add(new Button("saveObject"));
         add(new CancelButton("cancelObject"));
     }
 
     public ObjectForm<O> setNewObject(O newObject) {
-        setModel(new ChildAwareCompoundPropertyModel<O>(newObject));
+        setModel(new CompoundPropertyModel<O>(newObject));
         return this;
     }
 

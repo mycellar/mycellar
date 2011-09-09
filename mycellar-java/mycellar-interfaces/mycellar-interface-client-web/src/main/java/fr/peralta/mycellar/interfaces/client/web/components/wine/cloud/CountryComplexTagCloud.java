@@ -18,7 +18,6 @@
  */
 package fr.peralta.mycellar.interfaces.client.web.components.wine.cloud;
 
-import org.apache.commons.lang3.StringUtils;
 import org.apache.wicket.Component;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.spring.injection.annot.SpringBean;
@@ -78,14 +77,6 @@ public class CountryComplexTagCloud extends ComplexTagCloud<Country> {
     @Override
     protected boolean isReadyToSelect() {
         return true;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public boolean isValid(Country object) {
-        return StringUtils.isNotBlank(object.getName());
     }
 
 }

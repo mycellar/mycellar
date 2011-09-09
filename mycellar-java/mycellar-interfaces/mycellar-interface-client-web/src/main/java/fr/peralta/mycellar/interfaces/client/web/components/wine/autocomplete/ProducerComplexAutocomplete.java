@@ -18,7 +18,6 @@
  */
 package fr.peralta.mycellar.interfaces.client.web.components.wine.autocomplete;
 
-import org.apache.commons.lang3.StringUtils;
 import org.apache.wicket.Component;
 import org.apache.wicket.model.IModel;
 import org.odlabs.wiquery.ui.autocomplete.AutocompleteAjaxComponent;
@@ -72,14 +71,6 @@ public class ProducerComplexAutocomplete extends ComplexAutocomplete<Producer> {
     @Override
     protected boolean isReadyToSelect() {
         return true;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public boolean isValid(Producer object) {
-        return StringUtils.isNotBlank(object.getName());
     }
 
 }

@@ -18,7 +18,6 @@
  */
 package fr.peralta.mycellar.interfaces.client.web.components.wine.cloud;
 
-import org.apache.commons.lang3.StringUtils;
 import org.apache.wicket.Component;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.spring.injection.annot.SpringBean;
@@ -61,14 +60,6 @@ public class FormatComplexTagCloud extends ComplexTagCloud<Format> {
     @Override
     protected TagCloudPanel<Format> createTagCloudPanel(String id) {
         return new TagCloudPanel<Format>(id, getListFrom(wineServiceFacade.getFormatWithCounts()));
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public boolean isValid(Format object) {
-        return StringUtils.isNotBlank(object.getName()) && (object.getCapacity() > 0);
     }
 
     /**

@@ -30,6 +30,7 @@ import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.form.TextField;
 import org.apache.wicket.markup.html.panel.EmptyPanel;
 import org.apache.wicket.markup.html.panel.Panel;
+import org.apache.wicket.model.CompoundPropertyModel;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.Model;
 import org.apache.wicket.spring.injection.annot.SpringBean;
@@ -55,6 +56,8 @@ public abstract class SimpleComponent<O> extends Panel {
 
     @SpringBean
     private RendererServiceFacade rendererServiceFacade;
+
+    private boolean valued = false;
 
     /**
      * @param id
@@ -125,14 +128,13 @@ public abstract class SimpleComponent<O> extends Panel {
             get(CONTAINER_COMPONENT_ID + PATH_SEPARATOR + SELECTOR_COMPONENT_ID).replaceWith(
                     new EmptyPanel(SELECTOR_COMPONENT_ID));
         }
-        boolean isValidModelObject = (modelObject != null) && isValid(modelObject);
-        internalConfigureComponent(modelObject, isValidModelObject);
+        internalConfigureComponent(modelObject, isValued());
         get(CONTAINER_COMPONENT_ID).setVisibilityAllowed(isReadyToSelect());
         get(CONTAINER_COMPONENT_ID + PATH_SEPARATOR + CANCEL_COMPONENT_ID).setVisibilityAllowed(
-                isValidModelObject);
+                isValued());
         Component valueComponent = get(CONTAINER_COMPONENT_ID + PATH_SEPARATOR + VALUE_COMPONENT_ID)
-                .setVisibilityAllowed(isValidModelObject);
-        if (isValidModelObject) {
+                .setVisibilityAllowed(isValued());
+        if (isValued()) {
             String value = getValueLabelFor(modelObject);
             valueComponent.setDefaultModel(new Model<String>(value)).add(
                     new AttributeModifier("size", true, new Model<Integer>(value.length())));
@@ -173,29 +175,36 @@ public abstract class SimpleComponent<O> extends Panel {
      * {@inheritDoc}
      */
     @Override
-    protected void onConfigure() {
-        configureComponent(getModelObject());
+    protected final void onConfigure() {
         super.onConfigure();
+        configureComponent(getModelObject());
     }
 
     /**
      * {@inheritDoc}
      */
+    @SuppressWarnings("unchecked")
     @Override
     protected IModel<?> initModel() {
-        Component parent = getParent();
-        if (parent instanceof SimpleComponent) {
-            parent.getDefaultModel();
-        }
-        return super.initModel();
+        return new CompoundPropertyModel<O>((IModel<O>) super.initModel());
     }
 
     /**
      * @param object
      *            not null
-     * @return true if the object is a valid object
+     * @return true if the object is created or selected
      */
-    public abstract boolean isValid(O object);
+    public boolean isValued() {
+        return valued;
+    }
+
+    /**
+     * @param valued
+     *            the valued to set
+     */
+    protected void setValued(boolean valued) {
+        this.valued = valued;
+    }
 
     /**
      * {@inheritDoc}
@@ -210,7 +219,7 @@ public abstract class SimpleComponent<O> extends Panel {
      * {@inheritDoc}
      */
     @Override
-    public void onEvent(IEvent<?> event) {
+    public final void onEvent(IEvent<?> event) {
         LoggingUtils.logEventReceived(logger, event);
         if (event.getPayload() instanceof Action) {
             Action action = (Action) event.getPayload();
@@ -242,10 +251,12 @@ public abstract class SimpleComponent<O> extends Panel {
     }
 
     protected void onSelect(IEventSource source, Action action) {
+        setValued(true);
         setModelObject(getModelObjectFromEvent(source));
     }
 
     protected void onCancel(IEventSource source, Action action) {
+        setValued(false);
         setModelObject(null);
     }
 
