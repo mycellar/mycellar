@@ -44,7 +44,7 @@ public class Input extends IdentifiedEntity<Input> {
     private static final long serialVersionUID = 201010311742L;
 
     @Column(name = "ARRIVAL")
-    @Type(type = "org.joda.time.contrib.hibernate.PersistentLocalDate")
+    @Type(type = "org.jadira.usertype.dateandtime.joda.PersistentLocalDate")
     private LocalDate arrival;
 
     @ManyToOne

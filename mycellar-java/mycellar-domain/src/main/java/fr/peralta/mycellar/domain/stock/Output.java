@@ -63,7 +63,7 @@ public class Output extends IdentifiedEntity<Output> {
     private int number;
 
     @Column(name = "OUTPUT")
-    @Type(type = "org.joda.time.contrib.hibernate.PersistentLocalDate")
+    @Type(type = "org.jadira.usertype.dateandtime.joda.PersistentLocalDate")
     private LocalDate output;
 
     @Column(name = "PRICE")

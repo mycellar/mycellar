@@ -52,7 +52,7 @@ public class MenuPanel extends Panel {
                 final BookmarkablePageLink<Void> link = new BookmarkablePageLink<Void>("link",
                         listItem.getModelObject().getPageClass());
                 if (current.equals(listItem.getModelObject().getSuperPageClass())) {
-                    listItem.add(new AttributeModifier("class", true, new Model<String>("selected")));
+                    listItem.add(new AttributeModifier("class", new Model<String>("selected")));
                 }
                 link.add(new Label("label", listItem.getModelObject().getPageTitle()));
                 listItem.add(link);

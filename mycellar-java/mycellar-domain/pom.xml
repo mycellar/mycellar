@@ -59,8 +59,8 @@
       <artifactId>joda-time</artifactId>
     </dependency>
     <dependency>
-      <groupId>joda-time</groupId>
-      <artifactId>joda-time-hibernate</artifactId>
+      <groupId>org.jadira.usertype</groupId>
+      <artifactId>usertype.jodatime</artifactId>
     </dependency>
     <dependency>
       <groupId>${project.groupId}</groupId>

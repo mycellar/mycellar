@@ -137,7 +137,7 @@ public abstract class SimpleComponent<O> extends Panel {
         if (isValued()) {
             String value = getValueLabelFor(modelObject);
             valueComponent.setDefaultModel(new Model<String>(value)).add(
-                    new AttributeModifier("size", true, new Model<Integer>(value.length())));
+                    new AttributeModifier("size", new Model<Integer>(value.length())));
         } else {
             valueComponent.setDefaultModel(new Model<String>());
         }
