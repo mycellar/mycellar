@@ -36,7 +36,7 @@ public class Map implements Serializable {
     private static final long serialVersionUID = 201011071647L;
 
     @OneToOne
-    @JoinColumn(name = "IMAGE", nullable = false)
+    @JoinColumn(name = "IMAGE")
     private Image image;
 
     @Embedded

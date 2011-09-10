@@ -57,7 +57,7 @@ public class Wine extends NamedEntity<Wine> {
 
     @Valid
     @ManyToOne
-    @JoinColumn(name = "APPELLATION", nullable = false)
+    @JoinColumn(name = "APPELLATION")
     private Appellation appellation;
 
     @Column(name = "COLOR")
@@ -84,7 +84,7 @@ public class Wine extends NamedEntity<Wine> {
 
     @Valid
     @ManyToOne
-    @JoinColumn(name = "PRODUCER", nullable = false)
+    @JoinColumn(name = "PRODUCER")
     private Producer producer;
 
     @Column(name = "RANKING")
