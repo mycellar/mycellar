@@ -205,6 +205,11 @@
         <artifactId>hsqldb</artifactId>
         <version>2.0.0</version>
       </dependency>
+      <dependency>
+        <groupId>mysql</groupId>
+        <artifactId>mysql-connector-java</artifactId>
+        <version>5.1.17</version>
+      </dependency>
       
       <!-- SPRING -->
       <dependency>
@@ -266,12 +271,24 @@
             <groupId>org.slf4j</groupId>
             <artifactId>slf4j-log4j12</artifactId>
           </exclusion>
+          <exclusion>
+            <groupId>log4j</groupId>
+            <artifactId>log4j</artifactId>
+          </exclusion>
+          <exclusion>
+            <groupId>org.apache.wicket</groupId>
+            <artifactId>wicket</artifactId>
+          </exclusion>
+          <exclusion>
+            <groupId>org.apache.wicket</groupId>
+            <artifactId>wicket-util</artifactId>
+          </exclusion>
         </exclusions>
       </dependency>
       <dependency>
         <groupId>org.odlabs.wiquery</groupId>
         <artifactId>wiquery-jquery-ui</artifactId>
-        <version>1.5-RC2</version>
+        <version>1.5-RC4</version>
       </dependency>
       
       <!-- SLF4J -->
