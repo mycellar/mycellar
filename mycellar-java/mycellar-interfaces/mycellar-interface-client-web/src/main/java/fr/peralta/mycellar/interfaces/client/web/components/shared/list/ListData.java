@@ -16,35 +16,41 @@
  * You should have received a copy of the GNU General Public License
  * along with MyCellar. If not, see <http://www.gnu.org/licenses/>.
  */
-package fr.peralta.mycellar.interfaces.client.web.components.shared.multiple;
+package fr.peralta.mycellar.interfaces.client.web.components.shared.list;
 
-import org.apache.wicket.ajax.AjaxRequestTarget;
-import org.apache.wicket.ajax.markup.html.AjaxLink;
-import org.apache.wicket.event.Broadcast;
-import org.apache.wicket.markup.html.basic.Label;
-
-import fr.peralta.mycellar.interfaces.client.web.components.shared.Action;
+import java.io.Serializable;
 
 /**
  * @author speralta
  */
-class MultipleSelection<O> extends AjaxLink<MultipleData<O>> {
+class ListData<O> implements Serializable {
 
-    private static final long serialVersionUID = 201108161929L;
+    private static final long serialVersionUID = 201011071626L;
+
+    private final O object;
+
+    private final String label;
 
     /**
-     * @param id
+     * @param object
+     * @param label
      */
-    public MultipleSelection(String id) {
-        super(id);
-        add(new Label("label"));
+    public ListData(O object, String label) {
+        this.object = object;
+        this.label = label;
     }
 
     /**
-     * {@inheritDoc}
+     * @return the object
      */
-    @Override
-    public void onClick(AjaxRequestTarget target) {
-        send(getParent(), Broadcast.BUBBLE, Action.SELECT);
+    public O getObject() {
+        return object;
+    }
+
+    /**
+     * @return the label
+     */
+    public String getLabel() {
+        return label;
     }
 }

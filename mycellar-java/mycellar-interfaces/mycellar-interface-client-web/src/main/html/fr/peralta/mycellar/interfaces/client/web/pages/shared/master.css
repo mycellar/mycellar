@@ -225,30 +225,30 @@ label:after {
 }
 
 /** CLOUD **/
-* > .cloud:nth-child(3n) a {
+.cloud:nth-child(3n) a {
   color: blue;
   text-decoration: none;
 }
 
-* > .cloud:nth-child(3n+1) a {
+.cloud:nth-child(3n+1) a {
   color: red;
   text-decoration: none;
 }
 
-* > .cloud:nth-child(3n+2) a {
+.cloud:nth-child(3n+2) a {
   color: green;
   text-decoration: none;
 }
 
-* > .cloud:nth-child(3n) a:hover {
+.cloud:nth-child(3n) a:hover {
   color: darkBlue;
 }
 
-* > .cloud:nth-child(3n+1) a:hover {
+.cloud:nth-child(3n+1) a:hover {
   color: darkRed;
 }
 
-* > .cloud:nth-child(3n+2) a:hover {
+.cloud:nth-child(3n+2) a:hover {
   color: darkGreen;
 }
 
@@ -256,6 +256,27 @@ label:after {
 ul.multiple {
   list-style: none;
   padding: 2px;
+}
+
+/** LIST COMPONENT **/
+ul.listComponent {
+  list-style: none;
+  padding: 2px;
+}
+
+ul.listComponent li {
+  border: 1px solid black;
+  border-bottom: 0;
+  margin: 0;
+  padding: 2px;
+}
+
+ul.listComponent li:last-of-type {
+  border-bottom: 1px solid black;
+}
+
+ul.listComponent li:hover {
+  background: #FFB36F;
 }
 
 /** CENTER **/

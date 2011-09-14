@@ -16,35 +16,34 @@
  * You should have received a copy of the GNU General Public License
  * along with MyCellar. If not, see <http://www.gnu.org/licenses/>.
  */
-package fr.peralta.mycellar.interfaces.client.web.components.shared.multiple;
+package fr.peralta.mycellar.interfaces.client.web.components.shared.list;
 
-import org.apache.wicket.ajax.AjaxRequestTarget;
-import org.apache.wicket.ajax.markup.html.AjaxLink;
-import org.apache.wicket.event.Broadcast;
-import org.apache.wicket.markup.html.basic.Label;
+import java.util.List;
 
-import fr.peralta.mycellar.interfaces.client.web.components.shared.Action;
+import org.apache.wicket.markup.html.list.ListItem;
+import org.apache.wicket.markup.html.list.PropertyListView;
 
 /**
  * @author speralta
  */
-class MultipleSelection<O> extends AjaxLink<MultipleData<O>> {
+class ListComponent<O> extends PropertyListView<ListData<O>> {
 
-    private static final long serialVersionUID = 201108161929L;
+    private static final long serialVersionUID = 201107252130L;
 
     /**
      * @param id
+     * @param list
      */
-    public MultipleSelection(String id) {
-        super(id);
-        add(new Label("label"));
+    public ListComponent(String id, List<? extends ListData<O>> list) {
+        super(id, list);
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public void onClick(AjaxRequestTarget target) {
-        send(getParent(), Broadcast.BUBBLE, Action.SELECT);
+    protected void populateItem(ListItem<ListData<O>> item) {
+        item.add(new ListSelection<O>("object"));
     }
+
 }

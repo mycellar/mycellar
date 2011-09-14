@@ -16,38 +16,35 @@
  * You should have received a copy of the GNU General Public License
  * along with MyCellar. If not, see <http://www.gnu.org/licenses/>.
  */
-package fr.peralta.mycellar.interfaces.client.web.components.wine.autocomplete;
+package fr.peralta.mycellar.interfaces.client.web.components.shared.list;
 
-import java.util.List;
+import org.apache.wicket.ajax.AjaxRequestTarget;
+import org.apache.wicket.ajax.markup.html.AjaxLink;
+import org.apache.wicket.event.Broadcast;
+import org.apache.wicket.markup.html.basic.Label;
 
-import org.apache.wicket.spring.injection.annot.SpringBean;
-
-import fr.peralta.mycellar.domain.wine.Wine;
-import fr.peralta.mycellar.interfaces.client.web.components.shared.autocomplete.AbstractAutocompleteAjaxComponent;
-import fr.peralta.mycellar.interfaces.facades.wine.WineServiceFacade;
+import fr.peralta.mycellar.interfaces.client.web.components.shared.Action;
 
 /**
  * @author speralta
  */
-public class WineAutocompleteAjaxComponent extends AbstractAutocompleteAjaxComponent<Wine> {
+class ListSelection<O> extends AjaxLink<ListData<O>> {
 
     private static final long serialVersionUID = 201107252130L;
-
-    @SpringBean
-    private WineServiceFacade wineServiceFacade;
 
     /**
      * @param id
      */
-    public WineAutocompleteAjaxComponent(String id) {
+    public ListSelection(String id) {
         super(id);
+        add(new Label("label"));
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public List<Wine> getValues(String term) {
-        return wineServiceFacade.getWinesLike(term);
+    public void onClick(AjaxRequestTarget ajaxRequestTarget) {
+        send(getParent(), Broadcast.BUBBLE, Action.SELECT);
     }
 }

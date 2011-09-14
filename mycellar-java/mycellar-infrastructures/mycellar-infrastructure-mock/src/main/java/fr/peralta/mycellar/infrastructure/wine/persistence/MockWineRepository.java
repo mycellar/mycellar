@@ -32,6 +32,7 @@ import fr.peralta.mycellar.domain.wine.Country;
 import fr.peralta.mycellar.domain.wine.Format;
 import fr.peralta.mycellar.domain.wine.Producer;
 import fr.peralta.mycellar.domain.wine.Region;
+import fr.peralta.mycellar.domain.wine.Wine;
 import fr.peralta.mycellar.domain.wine.WineColorEnum;
 import fr.peralta.mycellar.domain.wine.WineRepository;
 import fr.peralta.mycellar.domain.wine.WineTypeEnum;
@@ -312,6 +313,15 @@ public class MockWineRepository implements WineRepository {
             result.put(format, 23 % a);
         }
         return result;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public List<Wine> getAllWinesFrom(Producer producer, Appellation appellation, Region region,
+            Country country, WineTypeEnum type, WineColorEnum color, Integer vintage) {
+        return new ArrayList<Wine>();
     }
 
 }

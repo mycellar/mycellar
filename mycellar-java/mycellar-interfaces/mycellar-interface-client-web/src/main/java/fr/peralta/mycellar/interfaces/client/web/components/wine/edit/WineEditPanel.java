@@ -21,6 +21,9 @@ package fr.peralta.mycellar.interfaces.client.web.components.wine.edit;
 import org.apache.wicket.markup.html.form.TextField;
 import org.apache.wicket.markup.html.panel.Panel;
 
+import fr.peralta.mycellar.domain.wine.WineColorEnum;
+import fr.peralta.mycellar.domain.wine.WineTypeEnum;
+
 /**
  * @author speralta
  */
@@ -33,9 +36,8 @@ public class WineEditPanel extends Panel {
      */
     public WineEditPanel(String id) {
         super(id);
-        // TODO manage type and color labels
-        add(new TextField<String>("type").setEnabled(false));
-        add(new TextField<String>("color").setEnabled(false));
+        add(new TextField<WineTypeEnum>("type").setEnabled(false));
+        add(new TextField<WineColorEnum>("color").setEnabled(false));
         add(new TextField<String>("producer.name").setEnabled(false));
         add(new TextField<String>("appellation.name").setEnabled(false));
         add(new TextField<Integer>("vintage"));

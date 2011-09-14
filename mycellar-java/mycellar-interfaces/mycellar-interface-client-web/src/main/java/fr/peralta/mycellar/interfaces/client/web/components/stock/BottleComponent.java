@@ -29,8 +29,9 @@ import org.slf4j.LoggerFactory;
 
 import fr.peralta.mycellar.domain.stock.Bottle;
 import fr.peralta.mycellar.interfaces.client.web.components.shared.Action;
-import fr.peralta.mycellar.interfaces.client.web.components.wine.autocomplete.WineComplexAutocomplete;
+import fr.peralta.mycellar.interfaces.client.web.components.shared.AjaxTool;
 import fr.peralta.mycellar.interfaces.client.web.components.wine.cloud.FormatComplexTagCloud;
+import fr.peralta.mycellar.interfaces.client.web.components.wine.list.WineComplexList;
 import fr.peralta.mycellar.interfaces.client.web.shared.LoggingUtils;
 
 /**
@@ -50,8 +51,8 @@ public class BottleComponent extends Panel {
      */
     public BottleComponent(String id) {
         super(id);
-        add(new WineComplexAutocomplete(WINE_COMPONENT_ID, new StringResourceModel("wine", this,
-                null)));
+        setOutputMarkupId(true);
+        add(new WineComplexList(WINE_COMPONENT_ID, new StringResourceModel("wine", this, null)));
         add(new FormatComplexTagCloud(FORMAT_COMPONENT_ID, new StringResourceModel("format", this,
                 null)));
     }
@@ -104,9 +105,7 @@ public class BottleComponent extends Panel {
                 throw new WicketRuntimeException("Action " + action + " not managed.");
             }
             event.stop();
-            if (action.isAjax()) {
-                action.getAjaxRequestTarget().add(this);
-            }
+            AjaxTool.ajaxReRender(this);
         }
         LoggingUtils.logEventProcessed(logger, event);
     }

@@ -18,7 +18,6 @@
  */
 package fr.peralta.mycellar.interfaces.facades.wine;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -100,9 +99,8 @@ public class WineServiceFacadeImpl implements WineServiceFacade {
      */
     @Override
     @Transactional(readOnly = true)
-    public List<Wine> getWinesLike(String term) {
-        // TODO implements this
-        return new ArrayList<Wine>();
+    public List<Wine> getWinesLike(Wine wine) {
+        return wineService.getWinesLike(wine);
     }
 
     /**

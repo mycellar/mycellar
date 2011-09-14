@@ -77,9 +77,9 @@ public interface WineServiceFacade {
     Map<Format, Long> getFormatWithCounts();
 
     /**
-     * @param term
+     * @param wine
      * @return
      */
-    List<Wine> getWinesLike(String term);
+    List<Wine> getWinesLike(Wine wine);
 
 }

@@ -16,35 +16,32 @@
  * You should have received a copy of the GNU General Public License
  * along with MyCellar. If not, see <http://www.gnu.org/licenses/>.
  */
-package fr.peralta.mycellar.interfaces.client.web.components.shared.multiple;
+package fr.peralta.mycellar.interfaces.client.web.components.shared.list;
 
-import org.apache.wicket.ajax.AjaxRequestTarget;
-import org.apache.wicket.ajax.markup.html.AjaxLink;
-import org.apache.wicket.event.Broadcast;
-import org.apache.wicket.markup.html.basic.Label;
+import java.util.List;
 
-import fr.peralta.mycellar.interfaces.client.web.components.shared.Action;
+import org.apache.wicket.markup.html.panel.Panel;
 
 /**
  * @author speralta
  */
-class MultipleSelection<O> extends AjaxLink<MultipleData<O>> {
+public class ListComponentPanel<O> extends Panel {
 
-    private static final long serialVersionUID = 201108161929L;
+    private static final long serialVersionUID = 201108041152L;
+
+    private static final String LIST_COMPONENT_ID = "list";
 
     /**
      * @param id
+     * @param list
      */
-    public MultipleSelection(String id) {
+    public ListComponentPanel(String id, List<ListData<O>> list) {
         super(id);
-        add(new Label("label"));
+        add(new ListComponent<O>(LIST_COMPONENT_ID, list));
     }
 
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public void onClick(AjaxRequestTarget target) {
-        send(getParent(), Broadcast.BUBBLE, Action.SELECT);
+    @SuppressWarnings("unchecked")
+    public void changeList(List<ListData<O>> list) {
+        ((ListComponent<O>) get(LIST_COMPONENT_ID)).setList(list);
     }
 }

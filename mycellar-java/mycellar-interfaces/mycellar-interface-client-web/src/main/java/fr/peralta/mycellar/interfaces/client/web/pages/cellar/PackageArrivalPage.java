@@ -42,6 +42,7 @@ import fr.peralta.mycellar.domain.stock.Arrival;
 import fr.peralta.mycellar.domain.stock.ArrivalBottle;
 import fr.peralta.mycellar.interfaces.client.web.components.shared.Action;
 import fr.peralta.mycellar.interfaces.client.web.components.shared.ActionLink;
+import fr.peralta.mycellar.interfaces.client.web.components.shared.AjaxTool;
 import fr.peralta.mycellar.interfaces.client.web.components.shared.form.ObjectForm;
 import fr.peralta.mycellar.interfaces.client.web.components.stock.edit.ArrivalBottleEditPanel;
 import fr.peralta.mycellar.interfaces.client.web.pages.HomePage;
@@ -206,9 +207,7 @@ public class PackageArrivalPage extends CellarSuperPage {
                 throw new WicketRuntimeException("Action " + action + " not managed.");
             }
             event.stop();
-            if (action.isAjax()) {
-                action.getAjaxRequestTarget().add(this);
-            }
+            AjaxTool.ajaxReRender(this);
         }
         LoggingUtils.logEventProcessed(logger, event);
     }

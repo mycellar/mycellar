@@ -16,35 +16,30 @@
  * You should have received a copy of the GNU General Public License
  * along with MyCellar. If not, see <http://www.gnu.org/licenses/>.
  */
-package fr.peralta.mycellar.interfaces.client.web.components.shared.multiple;
+package fr.peralta.mycellar.interfaces.client.web.components.shared;
 
+import org.apache.wicket.Component;
 import org.apache.wicket.ajax.AjaxRequestTarget;
-import org.apache.wicket.ajax.markup.html.AjaxLink;
-import org.apache.wicket.event.Broadcast;
-import org.apache.wicket.markup.html.basic.Label;
-
-import fr.peralta.mycellar.interfaces.client.web.components.shared.Action;
 
 /**
  * @author speralta
  */
-class MultipleSelection<O> extends AjaxLink<MultipleData<O>> {
-
-    private static final long serialVersionUID = 201108161929L;
+public final class AjaxTool {
 
     /**
-     * @param id
+     * @param component
      */
-    public MultipleSelection(String id) {
-        super(id);
-        add(new Label("label"));
+    public static void ajaxReRender(Component component) {
+        AjaxRequestTarget target = AjaxRequestTarget.get();
+        if (target != null) {
+            target.add(component);
+        }
     }
 
     /**
-     * {@inheritDoc}
+     * Refuse instanciation.
      */
-    @Override
-    public void onClick(AjaxRequestTarget target) {
-        send(getParent(), Broadcast.BUBBLE, Action.SELECT);
+    private AjaxTool() {
+        throw new UnsupportedOperationException();
     }
 }

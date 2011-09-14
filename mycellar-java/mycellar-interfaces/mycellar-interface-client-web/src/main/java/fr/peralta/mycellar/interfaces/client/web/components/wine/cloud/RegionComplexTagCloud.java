@@ -61,8 +61,8 @@ public class RegionComplexTagCloud extends ComplexTagCloud<Region> {
      * {@inheritDoc}
      */
     @Override
-    protected void internalConfigureComponent(Region modelObject, boolean isValidModelObject) {
-        super.internalConfigureComponent(modelObject, isValidModelObject);
+    protected void internalConfigureComponent(Region modelObject) {
+        super.internalConfigureComponent(modelObject);
         if (modelObject == null) {
             setModelObject(createObject());
         }
@@ -139,12 +139,13 @@ public class RegionComplexTagCloud extends ComplexTagCloud<Region> {
     @Override
     protected void onModelChanged(IEventSource source, Action action) {
         if (source instanceof CountryComplexTagCloud) {
-            countryModel = (IModel<Country>) get(COUNTRY_COMPONENT_ID).getDefaultModel();
+            CountryComplexTagCloud countryComplexTagCloud = (CountryComplexTagCloud) source;
+            countryModel = (IModel<Country>) countryComplexTagCloud.getDefaultModel();
             setDefaultModelObject(createObject());
-            if ((countryModel != null) && (countryModel.getObject() != null)
+            if (countryComplexTagCloud.isValued() && (countryModel != null)
+                    && (countryModel.getObject() != null)
                     && (countryModel.getObject().getId() == null)) {
-                send(this, Broadcast.EXACT,
-                        Action.ADD.setAjaxRequestTarget(action.getAjaxRequestTarget()));
+                send(this, Broadcast.EXACT, Action.ADD);
             }
         } else {
             super.onModelChanged(source, action);

@@ -16,35 +16,33 @@
  * You should have received a copy of the GNU General Public License
  * along with MyCellar. If not, see <http://www.gnu.org/licenses/>.
  */
-package fr.peralta.mycellar.interfaces.client.web.components.shared.multiple;
+package fr.peralta.mycellar.interfaces.client.web.components.shared;
 
 import org.apache.wicket.ajax.AjaxRequestTarget;
-import org.apache.wicket.ajax.markup.html.AjaxLink;
+import org.apache.wicket.ajax.form.AjaxFormComponentUpdatingBehavior;
 import org.apache.wicket.event.Broadcast;
-import org.apache.wicket.markup.html.basic.Label;
-
-import fr.peralta.mycellar.interfaces.client.web.components.shared.Action;
 
 /**
  * @author speralta
+ * 
  */
-class MultipleSelection<O> extends AjaxLink<MultipleData<O>> {
+public class OnBlurDefaultAjaxBehavior extends AjaxFormComponentUpdatingBehavior {
 
-    private static final long serialVersionUID = 201108161929L;
+    private static final long serialVersionUID = 201109131625L;
 
     /**
-     * @param id
+     * Default constructor.
      */
-    public MultipleSelection(String id) {
-        super(id);
-        add(new Label("label"));
+    public OnBlurDefaultAjaxBehavior() {
+        super("onblur");
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public void onClick(AjaxRequestTarget target) {
-        send(getParent(), Broadcast.BUBBLE, Action.SELECT);
+    protected void onUpdate(AjaxRequestTarget target) {
+        getComponent().send(getComponent().getParent(), Broadcast.BUBBLE, Action.MODEL_CHANGED);
     }
+
 }

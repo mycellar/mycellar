@@ -21,7 +21,6 @@ package fr.peralta.mycellar.interfaces.client.web.components.shared;
 import org.apache.wicket.AttributeModifier;
 import org.apache.wicket.Component;
 import org.apache.wicket.WicketRuntimeException;
-import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.event.Broadcast;
 import org.apache.wicket.event.IEvent;
 import org.apache.wicket.event.IEventSource;
@@ -128,7 +127,7 @@ public abstract class SimpleComponent<O> extends Panel {
             get(CONTAINER_COMPONENT_ID + PATH_SEPARATOR + SELECTOR_COMPONENT_ID).replaceWith(
                     new EmptyPanel(SELECTOR_COMPONENT_ID));
         }
-        internalConfigureComponent(modelObject, isValued());
+        internalConfigureComponent(modelObject);
         get(CONTAINER_COMPONENT_ID).setVisibilityAllowed(isReadyToSelect());
         get(CONTAINER_COMPONENT_ID + PATH_SEPARATOR + CANCEL_COMPONENT_ID).setVisibilityAllowed(
                 isValued());
@@ -145,11 +144,10 @@ public abstract class SimpleComponent<O> extends Panel {
 
     /**
      * @param modelObject
-     * @param isValidModelObject
      */
-    protected void internalConfigureComponent(O modelObject, boolean isValidModelObject) {
+    protected void internalConfigureComponent(O modelObject) {
         get(CONTAINER_COMPONENT_ID + PATH_SEPARATOR + SELECTOR_COMPONENT_ID).setVisibilityAllowed(
-                !isValidModelObject);
+                !isValued());
     }
 
     /**
@@ -211,8 +209,7 @@ public abstract class SimpleComponent<O> extends Panel {
      */
     @Override
     protected void onModelChanged() {
-        send(getParent(), Broadcast.BUBBLE,
-                Action.MODEL_CHANGED.setAjaxRequestTarget(AjaxRequestTarget.get()));
+        send(getParent(), Broadcast.BUBBLE, Action.MODEL_CHANGED);
     }
 
     /**
@@ -243,11 +240,15 @@ public abstract class SimpleComponent<O> extends Panel {
                 throw new WicketRuntimeException("Action " + action + " not managed.");
             }
             event.stop();
-            if (action.isAjax()) {
-                action.getAjaxRequestTarget().add(this);
-            }
+            AjaxTool.ajaxReRender(this);
+        } else {
+            onOtherEvent(event);
         }
         LoggingUtils.logEventProcessed(logger, event);
+    }
+
+    protected void onOtherEvent(IEvent<?> event) {
+
     }
 
     protected void onSelect(IEventSource source, Action action) {
@@ -261,15 +262,18 @@ public abstract class SimpleComponent<O> extends Panel {
     }
 
     protected void onModelChanged(IEventSource source, Action action) {
-        throw new WicketRuntimeException("Action " + action + " not managed.");
+        throw new WicketRuntimeException("Action " + action + " not managed from source " + source
+                + ".");
     }
 
     protected void onSave(IEventSource source, Action action) {
-        throw new WicketRuntimeException("Action " + action + " not managed.");
+        throw new WicketRuntimeException("Action " + action + " not managed from source " + source
+                + ".");
     }
 
     protected void onAdd(IEventSource source, Action action) {
-        throw new WicketRuntimeException("Action " + action + " not managed.");
+        throw new WicketRuntimeException("Action " + action + " not managed from source " + source
+                + ".");
     }
 
     /**

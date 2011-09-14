@@ -60,7 +60,7 @@ public class Wine extends NamedEntity<Wine> {
     @JoinColumn(name = "APPELLATION")
     private Appellation appellation;
 
-    @Column(name = "COLOR")
+    @Column(name = "COLOR", nullable = false)
     @Enumerated(EnumType.ORDINAL)
     private WineColorEnum color;
 
@@ -90,7 +90,7 @@ public class Wine extends NamedEntity<Wine> {
     @Column(name = "RANKING")
     private String ranking;
 
-    @Column(name = "TYPE")
+    @Column(name = "TYPE", nullable = false)
     @Enumerated(EnumType.ORDINAL)
     private WineTypeEnum type;
 

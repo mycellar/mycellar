@@ -16,16 +16,18 @@
  * You should have received a copy of the GNU General Public License
  * along with MyCellar. If not, see <http://www.gnu.org/licenses/>.
  */
-package fr.peralta.mycellar.interfaces.client.web.components.wine.autocomplete;
+package fr.peralta.mycellar.interfaces.client.web.components.wine.list;
 
-import org.apache.commons.lang3.StringUtils;
+import java.util.List;
+
 import org.apache.wicket.Component;
 import org.apache.wicket.event.IEventSource;
-import org.apache.wicket.markup.html.form.TextField;
+import org.apache.wicket.markup.html.form.NumberTextField;
 import org.apache.wicket.markup.html.panel.EmptyPanel;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.StringResourceModel;
-import org.odlabs.wiquery.ui.autocomplete.AutocompleteAjaxComponent;
+import org.apache.wicket.spring.injection.annot.SpringBean;
+import org.joda.time.LocalDate;
 
 import fr.peralta.mycellar.domain.wine.Appellation;
 import fr.peralta.mycellar.domain.wine.Producer;
@@ -33,18 +35,21 @@ import fr.peralta.mycellar.domain.wine.Wine;
 import fr.peralta.mycellar.domain.wine.WineColorEnum;
 import fr.peralta.mycellar.domain.wine.WineTypeEnum;
 import fr.peralta.mycellar.interfaces.client.web.components.shared.Action;
-import fr.peralta.mycellar.interfaces.client.web.components.shared.autocomplete.ComplexAutocomplete;
+import fr.peralta.mycellar.interfaces.client.web.components.shared.OnBlurDefaultAjaxBehavior;
+import fr.peralta.mycellar.interfaces.client.web.components.shared.list.ComplexList;
+import fr.peralta.mycellar.interfaces.client.web.components.wine.autocomplete.ProducerComplexAutocomplete;
 import fr.peralta.mycellar.interfaces.client.web.components.wine.cloud.AppellationComplexTagCloud;
 import fr.peralta.mycellar.interfaces.client.web.components.wine.cloud.WineColorEnumFromProducerAndTypeTagCloud;
 import fr.peralta.mycellar.interfaces.client.web.components.wine.cloud.WineTypeEnumFromProducerTagCloud;
 import fr.peralta.mycellar.interfaces.client.web.components.wine.edit.WineEditPanel;
+import fr.peralta.mycellar.interfaces.facades.wine.WineServiceFacade;
 
 /**
  * @author speralta
  */
-public class WineComplexAutocomplete extends ComplexAutocomplete<Wine> {
+public class WineComplexList extends ComplexList<Wine> {
 
-    private static final long serialVersionUID = 201109081829L;
+    private static final long serialVersionUID = 201109101937L;
 
     private static final String APPELLATION_COMPONENT_ID = "appellation";
     private static final String PRODUCER_COMPONENT_ID = "producer";
@@ -52,11 +57,14 @@ public class WineComplexAutocomplete extends ComplexAutocomplete<Wine> {
     private static final String COLOR_COMPONENT_ID = "color";
     private static final String VINTAGE_COMPONENT_ID = "vintage";
 
+    @SpringBean
+    private WineServiceFacade wineServiceFacade;
+
     /**
      * @param id
      * @param label
      */
-    public WineComplexAutocomplete(String id, IModel<String> label) {
+    public WineComplexList(String id, IModel<String> label) {
         super(id, label);
         setOutputMarkupId(true);
         add(new AppellationComplexTagCloud(APPELLATION_COMPONENT_ID, new StringResourceModel(
@@ -65,18 +73,24 @@ public class WineComplexAutocomplete extends ComplexAutocomplete<Wine> {
                 "producer", this, null)));
         add(new EmptyPanel(TYPE_COMPONENT_ID).setOutputMarkupId(true));
         add(new EmptyPanel(COLOR_COMPONENT_ID).setOutputMarkupId(true));
-        add(new TextField<Integer>(VINTAGE_COMPONENT_ID));
+        add(new NumberTextField<Integer>(VINTAGE_COMPONENT_ID).setMinimum(1800)
+                .setMaximum(new LocalDate().getYear()).add(new OnBlurDefaultAjaxBehavior()));
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    protected void internalConfigureComponent(Wine modelObject, boolean isValidModelObject) {
-        super.internalConfigureComponent(modelObject, isValidModelObject);
+    protected void internalConfigureComponent(Wine modelObject) {
+        super.internalConfigureComponent(modelObject);
         if (modelObject == null) {
             setModelObject(createObject());
         }
+        get(APPELLATION_COMPONENT_ID).setVisibilityAllowed(!isValued());
+        get(PRODUCER_COMPONENT_ID).setVisibilityAllowed(!isValued());
+        get(TYPE_COMPONENT_ID).setVisibilityAllowed(!isValued());
+        get(COLOR_COMPONENT_ID).setVisibilityAllowed(!isValued());
+        get(VINTAGE_COMPONENT_ID).setVisibilityAllowed(!isValued());
     }
 
     /**
@@ -126,38 +140,17 @@ public class WineComplexAutocomplete extends ComplexAutocomplete<Wine> {
      * {@inheritDoc}
      */
     @Override
-    protected AutocompleteAjaxComponent<Wine> createAutocomplete(String id) {
-        return new WineAutocompleteAjaxComponent(id);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
     protected boolean isReadyToSelect() {
         return ((ProducerComplexAutocomplete) get(PRODUCER_COMPONENT_ID)).isValued()
-                && ((WineTypeEnumFromProducerTagCloud) get(TYPE_COMPONENT_ID)).isValued()
-                && ((WineColorEnumFromProducerAndTypeTagCloud) get(COLOR_COMPONENT_ID)).isValued()
-                && ((AppellationComplexTagCloud) get(APPELLATION_COMPONENT_ID)).isValued();
-
+                || ((AppellationComplexTagCloud) get(APPELLATION_COMPONENT_ID)).isValued();
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    protected String getValueLabelFor(Wine object) {
-        StringBuilder builder = new StringBuilder();
-        if (StringUtils.isNotEmpty(object.getName())) {
-            builder.append(object.getName());
-        }
-        if (object.getVintage() != null) {
-            if (builder.length() > 0) {
-                builder.append(" ");
-            }
-            builder.append(object.getVintage());
-        }
-        return builder.toString();
+    protected List<Wine> getList() {
+        return wineServiceFacade.getWinesLike(getModelObject());
     }
 
     /**
@@ -168,7 +161,6 @@ public class WineComplexAutocomplete extends ComplexAutocomplete<Wine> {
     protected void onModelChanged(IEventSource source, Action action) {
         if (source instanceof ProducerComplexAutocomplete) {
             ProducerComplexAutocomplete producerComplexAutocomplete = (ProducerComplexAutocomplete) source;
-            setDefaultModelObject(createObject());
             Producer sourceObject = producerComplexAutocomplete.getModelObject();
             if ((sourceObject != null) && producerComplexAutocomplete.isValued()) {
                 replace(new WineTypeEnumFromProducerTagCloud(TYPE_COMPONENT_ID,
@@ -180,9 +172,9 @@ public class WineComplexAutocomplete extends ComplexAutocomplete<Wine> {
                 get(COLOR_COMPONENT_ID).setDefaultModelObject(null).replaceWith(
                         new EmptyPanel(COLOR_COMPONENT_ID));
             }
+            refreshList();
         } else if (source instanceof WineTypeEnumFromProducerTagCloud) {
             WineTypeEnumFromProducerTagCloud wineTypeEnumFromProducerTagCloud = (WineTypeEnumFromProducerTagCloud) source;
-            setDefaultModelObject(createObject());
             WineTypeEnum sourceObject = wineTypeEnumFromProducerTagCloud.getModelObject();
             if ((sourceObject != null) && wineTypeEnumFromProducerTagCloud.isValued()) {
                 replace(new WineColorEnumFromProducerAndTypeTagCloud(COLOR_COMPONENT_ID,
@@ -193,12 +185,16 @@ public class WineComplexAutocomplete extends ComplexAutocomplete<Wine> {
                 get(COLOR_COMPONENT_ID).setDefaultModelObject(null).replaceWith(
                         new EmptyPanel(COLOR_COMPONENT_ID));
             }
+            refreshList();
         } else if (source instanceof WineColorEnumFromProducerAndTypeTagCloud) {
-            setDefaultModelObject(createObject());
+            refreshList();
         } else if (source instanceof AppellationComplexTagCloud) {
-            setDefaultModelObject(createObject());
+            refreshList();
+        } else if (source instanceof NumberTextField) {
+            refreshList();
         } else {
             super.onModelChanged(source, action);
         }
     }
+
 }

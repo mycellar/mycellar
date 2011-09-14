@@ -42,8 +42,7 @@ public class ActionLink extends AjaxLink<Action> {
      */
     @Override
     public void onClick(AjaxRequestTarget ajaxRequestTarget) {
-        send(getParent(), Broadcast.BUBBLE, getModelObject()
-                .setAjaxRequestTarget(ajaxRequestTarget));
+        send(getParent(), Broadcast.BUBBLE, getModelObject());
     }
 
 }

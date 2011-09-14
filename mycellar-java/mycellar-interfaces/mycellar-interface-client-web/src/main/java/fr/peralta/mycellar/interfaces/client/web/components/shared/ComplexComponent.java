@@ -63,13 +63,13 @@ public abstract class ComplexComponent<O> extends SimpleComponent<O> {
      * {@inheritDoc}
      */
     @Override
-    protected void internalConfigureComponent(O modelObject, boolean isValidModelObject) {
+    protected void internalConfigureComponent(O modelObject) {
         get(CONTAINER_COMPONENT_ID + PATH_SEPARATOR + SELECTOR_COMPONENT_ID).setVisibilityAllowed(
-                !isValidModelObject
+                !isValued()
                         && !get(CONTAINER_COMPONENT_ID + PATH_SEPARATOR + CREATE_FORM_COMPONENT_ID)
                                 .isVisibilityAllowed());
         get(CONTAINER_COMPONENT_ID + PATH_SEPARATOR + ADD_COMPONENT_ID).setVisibilityAllowed(
-                !isValidModelObject
+                !isValued()
                         && !get(CONTAINER_COMPONENT_ID + PATH_SEPARATOR + CREATE_FORM_COMPONENT_ID)
                                 .isVisibilityAllowed());
     }

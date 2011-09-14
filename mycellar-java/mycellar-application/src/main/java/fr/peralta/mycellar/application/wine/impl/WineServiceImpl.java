@@ -19,6 +19,7 @@
 package fr.peralta.mycellar.application.wine.impl;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,7 +27,11 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
 import fr.peralta.mycellar.application.wine.WineService;
+import fr.peralta.mycellar.domain.wine.Appellation;
+import fr.peralta.mycellar.domain.wine.Country;
 import fr.peralta.mycellar.domain.wine.Producer;
+import fr.peralta.mycellar.domain.wine.Region;
+import fr.peralta.mycellar.domain.wine.Wine;
 import fr.peralta.mycellar.domain.wine.WineColorEnum;
 import fr.peralta.mycellar.domain.wine.WineRepository;
 import fr.peralta.mycellar.domain.wine.WineTypeEnum;
@@ -78,6 +83,37 @@ public class WineServiceImpl implements WineService {
             }
         }
         return result;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public List<Wine> getWinesLike(Wine wine) {
+        Appellation appellation = null;
+        Region region = null;
+        Country country = null;
+        if (wine.getAppellation() != null) {
+            if (wine.getAppellation().getId() != null) {
+                appellation = wine.getAppellation();
+            } else if (wine.getAppellation().getRegion() != null) {
+                if (wine.getAppellation().getRegion().getId() != null) {
+                    region = wine.getAppellation().getRegion();
+                } else if ((wine.getAppellation().getRegion().getCountry() != null)
+                        && (wine.getAppellation().getRegion().getCountry().getId() != null)) {
+                    country = wine.getAppellation().getRegion().getCountry();
+                }
+            }
+        }
+        Producer producer = null;
+        if ((wine.getProducer() != null) && (wine.getProducer().getId() != null)) {
+            producer = wine.getProducer();
+        }
+        WineTypeEnum type = wine.getType();
+        WineColorEnum color = wine.getColor();
+        Integer vintage = wine.getVintage();
+        return wineRepository.getAllWinesFrom(producer, appellation, region, country, type, color,
+                vintage);
     }
 
     /**

@@ -64,6 +64,6 @@ public abstract class AbstractAutocompleteAjaxComponent<E extends IdentifiedEnti
      */
     @Override
     protected void onUpdate(AjaxRequestTarget target) {
-        send(getParent(), Broadcast.BUBBLE, Action.SELECT.setAjaxRequestTarget(target));
+        send(getParent(), Broadcast.BUBBLE, Action.SELECT);
     }
 }

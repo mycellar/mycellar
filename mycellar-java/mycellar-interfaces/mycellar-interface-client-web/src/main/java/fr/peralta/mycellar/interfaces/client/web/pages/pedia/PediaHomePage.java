@@ -34,6 +34,7 @@ import fr.peralta.mycellar.domain.wine.Appellation;
 import fr.peralta.mycellar.domain.wine.Country;
 import fr.peralta.mycellar.domain.wine.Region;
 import fr.peralta.mycellar.interfaces.client.web.components.shared.Action;
+import fr.peralta.mycellar.interfaces.client.web.components.shared.AjaxTool;
 import fr.peralta.mycellar.interfaces.client.web.components.shared.multiple.MultiplePanel;
 import fr.peralta.mycellar.interfaces.client.web.pages.shared.PediaSuperPage;
 import fr.peralta.mycellar.interfaces.client.web.shared.LoggingUtils;
@@ -118,9 +119,7 @@ public class PediaHomePage extends PediaSuperPage {
                 }
                 break;
             }
-            if (action.isAjax()) {
-                action.getAjaxRequestTarget().add(this);
-            }
+            AjaxTool.ajaxReRender(this);
         }
         LoggingUtils.logEventProcessed(logger, event);
     }

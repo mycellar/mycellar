@@ -48,6 +48,6 @@ class Tag<O> extends AjaxLink<TagData<O>> {
      */
     @Override
     public void onClick(AjaxRequestTarget ajaxRequestTarget) {
-        send(getParent(), Broadcast.BUBBLE, Action.SELECT.setAjaxRequestTarget(ajaxRequestTarget));
+        send(getParent(), Broadcast.BUBBLE, Action.SELECT);
     }
 }

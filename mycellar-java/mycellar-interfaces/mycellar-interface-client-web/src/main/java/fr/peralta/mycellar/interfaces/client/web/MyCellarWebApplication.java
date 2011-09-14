@@ -26,7 +26,11 @@ import org.joda.time.LocalDate;
 import org.springframework.context.ApplicationContext;
 import org.wicketstuff.security.swarm.SwarmWebApplication;
 
+import fr.peralta.mycellar.domain.wine.WineColorEnum;
+import fr.peralta.mycellar.domain.wine.WineTypeEnum;
 import fr.peralta.mycellar.interfaces.client.web.converters.LocalDateConverter;
+import fr.peralta.mycellar.interfaces.client.web.converters.WineColorEnumConverter;
+import fr.peralta.mycellar.interfaces.client.web.converters.WineTypeEnumConverter;
 import fr.peralta.mycellar.interfaces.client.web.pages.HomePage;
 import fr.peralta.mycellar.interfaces.client.web.pages.ListUsersPage;
 import fr.peralta.mycellar.interfaces.client.web.pages.NewUserPage;
@@ -80,6 +84,8 @@ public abstract class MyCellarWebApplication extends SwarmWebApplication {
     protected IConverterLocator newConverterLocator() {
         ConverterLocator converterLocator = new ConverterLocator();
         converterLocator.set(LocalDate.class, new LocalDateConverter());
+        converterLocator.set(WineTypeEnum.class, new WineTypeEnumConverter());
+        converterLocator.set(WineColorEnum.class, new WineColorEnumConverter());
         return converterLocator;
     }
 

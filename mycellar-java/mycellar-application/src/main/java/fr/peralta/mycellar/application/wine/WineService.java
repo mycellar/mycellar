@@ -18,9 +18,11 @@
  */
 package fr.peralta.mycellar.application.wine;
 
+import java.util.List;
 import java.util.Map;
 
 import fr.peralta.mycellar.domain.wine.Producer;
+import fr.peralta.mycellar.domain.wine.Wine;
 import fr.peralta.mycellar.domain.wine.WineColorEnum;
 import fr.peralta.mycellar.domain.wine.WineTypeEnum;
 
@@ -43,5 +45,11 @@ public interface WineService {
      */
     Map<WineColorEnum, Long> getAllColorFromProducerAndTypeWithCounts(Producer producer,
             WineTypeEnum type);
+
+    /**
+     * @param wine
+     * @return
+     */
+    List<Wine> getWinesLike(Wine wine);
 
 }

@@ -69,4 +69,17 @@ public interface WineRepository {
      */
     Map<Format, Long> getAllFormatWithCounts();
 
+    /**
+     * @param producer
+     * @param appellation
+     * @param region
+     * @param country
+     * @param type
+     * @param color
+     * @param vintage
+     * @return
+     */
+    List<Wine> getAllWinesFrom(Producer producer, Appellation appellation, Region region,
+            Country country, WineTypeEnum type, WineColorEnum color, Integer vintage);
+
 }

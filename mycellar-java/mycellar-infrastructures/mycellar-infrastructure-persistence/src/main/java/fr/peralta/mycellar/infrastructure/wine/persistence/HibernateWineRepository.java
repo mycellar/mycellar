@@ -18,6 +18,7 @@
  */
 package fr.peralta.mycellar.infrastructure.wine.persistence;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -31,6 +32,7 @@ import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Expression;
 import javax.persistence.criteria.JoinType;
 import javax.persistence.criteria.Path;
+import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
 
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -214,4 +216,59 @@ public class HibernateWineRepository implements WineRepository {
         return result;
     }
 
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public List<Wine> getAllWinesFrom(Producer producer, Appellation appellation, Region region,
+            Country country, WineTypeEnum type, WineColorEnum color, Integer vintage) {
+        CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();
+        CriteriaQuery<Wine> query = criteriaBuilder.createQuery(Wine.class);
+
+        Root<Wine> root = query.from(Wine.class);
+        List<Predicate> predicates = new ArrayList<Predicate>();
+        if (producer != null) {
+            predicates.add(criteriaBuilder.equal(root.get("producer"), producer));
+        }
+        if (appellation != null) {
+            predicates.add(criteriaBuilder.equal(root.get("appellation"), appellation));
+        }
+        if (type != null) {
+            predicates.add(criteriaBuilder.equal(root.get("type"), type));
+        }
+        if (color != null) {
+            predicates.add(criteriaBuilder.equal(root.get("color"), color));
+        }
+        if (vintage != null) {
+            predicates.add(criteriaBuilder.equal(root.get("vintage"), vintage));
+        }
+        // TODO manage region and country cases
+
+        Predicate wherePredicate;
+        switch (predicates.size()) {
+        case 0:
+            wherePredicate = null;
+            break;
+        case 1:
+            wherePredicate = predicates.get(0);
+        default:
+            wherePredicate = criteriaBuilder.and(criteriaBuilder.and(predicates
+                    .toArray(new Predicate[predicates.size()])));
+            break;
+        }
+        if (wherePredicate != null) {
+            return entityManager
+                    .createQuery(
+                            query.where(wherePredicate).orderBy(
+                                    criteriaBuilder.asc(root.get("name")),
+                                    criteriaBuilder.desc(root.get("vintage")))).setMaxResults(10)
+                    .getResultList();
+        } else {
+            return entityManager
+                    .createQuery(
+                            query.orderBy(criteriaBuilder.asc(root.get("name")),
+                                    criteriaBuilder.desc(root.get("vintage")))).setMaxResults(10)
+                    .getResultList();
+        }
+    }
 }

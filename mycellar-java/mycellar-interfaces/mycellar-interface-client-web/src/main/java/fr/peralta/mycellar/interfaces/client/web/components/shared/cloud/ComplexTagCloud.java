@@ -78,7 +78,8 @@ public abstract class ComplexTagCloud<O> extends ComplexComponent<O> {
         if (source instanceof Tag) {
             return (O) ((Tag<?>) source).getDefaultModelObject();
         } else {
-            throw new WicketRuntimeException("Event did not come from Tag.");
+            throw new WicketRuntimeException("Event did not come from " + Tag.class.getSimpleName()
+                    + ".");
         }
     }
 
