@@ -20,6 +20,8 @@ package fr.peralta.mycellar.interfaces.client.web.pages.pedia;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 import org.apache.wicket.event.IEvent;
 import org.apache.wicket.markup.html.form.Form;
@@ -76,6 +78,7 @@ public class PediaHomePage extends PediaSuperPage {
         add(form);
         countries.setObject(new ArrayList<Country>());
         regions.setObject(new ArrayList<Region>());
+        appellations.setObject(new ArrayList<Appellation>());
         get(FORM_COMPONENT_ID + PATH_SEPARATOR + COUNTRIES_COMPONENT_ID).setDefaultModel(countries);
         get(FORM_COMPONENT_ID + PATH_SEPARATOR + REGIONS_COMPONENT_ID).setDefaultModel(regions);
         get(FORM_COMPONENT_ID + PATH_SEPARATOR + APPELLATIONS_COMPONENT_ID).setDefaultModel(
@@ -97,14 +100,12 @@ public class PediaHomePage extends PediaSuperPage {
                     MultiplePanel<?> component = (MultiplePanel<?>) event.getSource();
                     if (COUNTRIES_COMPONENT_ID.equals(component.getId())) {
                         List<Country> countries = (List<Country>) component.getDefaultModelObject();
-                        ((MultiplePanel<Region>) get(FORM_COMPONENT_ID + PATH_SEPARATOR
-                                + REGIONS_COMPONENT_ID)).setChoices(wineServiceFacade
+                        Map<Region, Long> regionsMap = wineServiceFacade
                                 .getRegionsWithCounts(countries.toArray(new Country[countries
-                                        .size()])));
-                        List<Region> regions = new ArrayList<Region>();
-                        for (Country country : countries) {
-                            regions.addAll(country.getRegions());
-                        }
+                                        .size()]));
+                        ((MultiplePanel<Region>) get(FORM_COMPONENT_ID + PATH_SEPARATOR
+                                + REGIONS_COMPONENT_ID)).setChoices(regionsMap);
+                        Set<Region> regions = regionsMap.keySet();
                         ((MultiplePanel<Appellation>) get(FORM_COMPONENT_ID + PATH_SEPARATOR
                                 + APPELLATIONS_COMPONENT_ID)).setChoices(wineServiceFacade
                                 .getAppellationsWithCounts(regions.toArray(new Region[regions

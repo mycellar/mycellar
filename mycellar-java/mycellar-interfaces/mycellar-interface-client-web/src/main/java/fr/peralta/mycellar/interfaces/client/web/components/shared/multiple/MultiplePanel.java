@@ -19,6 +19,7 @@
 package fr.peralta.mycellar.interfaces.client.web.components.shared.multiple;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
@@ -163,6 +164,14 @@ public class MultiplePanel<O> extends Panel {
      */
     @SuppressWarnings("unchecked")
     public void setChoices(Map<O, Long> objects) {
+        if (getModelObject() != null) {
+            for (Iterator<O> iterator = getModelObject().iterator(); iterator.hasNext();) {
+                O object = iterator.next();
+                if (!objects.containsKey(object)) {
+                    iterator.remove();
+                }
+            }
+        }
         ((Multiple<O>) get(MULTIPLE_COMPONENT_ID)).setList(getListFrom(objects));
     }
 }
