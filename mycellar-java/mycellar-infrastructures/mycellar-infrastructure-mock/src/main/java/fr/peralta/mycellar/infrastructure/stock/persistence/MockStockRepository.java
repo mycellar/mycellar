@@ -21,7 +21,6 @@ package fr.peralta.mycellar.infrastructure.stock.persistence;
 import java.util.HashMap;
 import java.util.Map;
 
-import org.hibernate.property.DirectPropertyAccessor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -30,12 +29,9 @@ import org.springframework.stereotype.Repository;
 import fr.peralta.mycellar.domain.stock.Bottle;
 import fr.peralta.mycellar.domain.stock.Cellar;
 import fr.peralta.mycellar.domain.stock.Input;
+import fr.peralta.mycellar.domain.stock.Stock;
 import fr.peralta.mycellar.domain.stock.StockRepository;
 import fr.peralta.mycellar.domain.user.User;
-import fr.peralta.mycellar.domain.wine.Format;
-import fr.peralta.mycellar.domain.wine.Wine;
-import fr.peralta.mycellar.domain.wine.WineColorEnum;
-import fr.peralta.mycellar.domain.wine.WineTypeEnum;
 
 /**
  * @author speralta
@@ -50,8 +46,19 @@ public class MockStockRepository implements StockRepository {
      * {@inheritDoc}
      */
     @Override
-    public void newInput(Input input) {
+    public Input save(Input input) {
         logger.info("Stocks " + input.getNumber() + " " + input.getBottle());
+        return input;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public Stock save(Stock stock) {
+        logger.info("Stocks " + stock.getQuantity() + " " + stock.getBottle() + " in "
+                + stock.getCellar());
+        return stock;
     }
 
     /**
@@ -66,27 +73,17 @@ public class MockStockRepository implements StockRepository {
      * {@inheritDoc}
      */
     @Override
-    public void newCellar(Cellar cellar) {
+    public Cellar save(Cellar cellar) {
         logger.info("New cellar " + cellar.getName() + " for " + cellar.getOwner().getEmail() + ".");
+        return cellar;
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public Bottle findBottle(int id) {
-        Bottle bottle = new Bottle();
-        Wine wine = new Wine();
-        wine.setColor(WineColorEnum.RED);
-        wine.setName("Vin");
-        wine.setType(WineTypeEnum.STILL);
-        wine.setVintage(2000);
-        Format format = new Format();
-        format.setCapacity(1.5f);
-        format.setName("Bouteille");
-        bottle.setFormat(format);
-        new DirectPropertyAccessor().getSetter(Bottle.class, "id").set(bottle, id, null);
-        return bottle;
+    public Stock findStock(Bottle bottle, Cellar cellar) {
+        return null;
     }
 
 }

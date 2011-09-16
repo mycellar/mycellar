@@ -43,7 +43,7 @@
     <wicket.version>1.5.0</wicket.version>
     <wicketstuff.version>1.5-RC7</wicketstuff.version>
     <spring.version>3.0.6.RELEASE</spring.version>
-    <hibernate.version>3.6.7.Final</hibernate.version>
+    <hibernate.version>4.0.0.CR2</hibernate.version>
     <hibernate-validator.version>4.2.0.Final</hibernate-validator.version>
   </properties>
 

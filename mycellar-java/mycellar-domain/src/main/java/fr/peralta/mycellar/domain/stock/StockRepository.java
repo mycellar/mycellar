@@ -28,15 +28,11 @@ import fr.peralta.mycellar.domain.user.User;
 public interface StockRepository {
 
     /**
-     * @param id
+     * @param bottle
+     * @param cellar
      * @return
      */
-    Bottle findBottle(int id);
-
-    /**
-     * @param input
-     */
-    void newInput(Input input);
+    Stock findStock(Bottle bottle, Cellar cellar);
 
     /**
      * @param user
@@ -47,6 +43,16 @@ public interface StockRepository {
     /**
      * @param cellar
      */
-    void newCellar(Cellar cellar);
+    Cellar save(Cellar cellar);
+
+    /**
+     * @param input
+     */
+    Input save(Input input);
+
+    /**
+     * @param stock
+     */
+    Stock save(Stock stock);
 
 }

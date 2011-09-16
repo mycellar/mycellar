@@ -42,7 +42,7 @@ public class CellarServiceImpl implements CellarService {
      */
     @Override
     public void newCellar(Cellar cellar) {
-        stockRepository.newCellar(cellar);
+        stockRepository.save(cellar);
     }
 
     /**

@@ -23,6 +23,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 import javax.persistence.AttributeOverride;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Embedded;
 import javax.persistence.Entity;
@@ -56,7 +57,7 @@ public class Region extends NamedEntity<Region> {
     private final Set<Appellation> appellations = new HashSet<Appellation>();
 
     @Valid
-    @ManyToOne
+    @ManyToOne(cascade = { CascadeType.PERSIST, CascadeType.MERGE })
     @JoinColumn(name = "COUNTRY", nullable = false)
     private Country country;
 

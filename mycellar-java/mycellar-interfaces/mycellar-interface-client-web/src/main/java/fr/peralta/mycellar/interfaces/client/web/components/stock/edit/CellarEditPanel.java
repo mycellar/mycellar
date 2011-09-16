@@ -16,19 +16,24 @@
  * You should have received a copy of the GNU General Public License
  * along with MyCellar. If not, see <http://www.gnu.org/licenses/>.
  */
-package fr.peralta.mycellar.application.stock;
+package fr.peralta.mycellar.interfaces.client.web.components.stock.edit;
 
-import fr.peralta.mycellar.domain.stock.Bottle;
+import org.apache.wicket.markup.html.form.TextField;
+import org.apache.wicket.markup.html.panel.Panel;
 
 /**
  * @author speralta
  */
-public interface BottleService {
+public class CellarEditPanel extends Panel {
+
+    private static final long serialVersionUID = 201107252130L;
 
     /**
      * @param id
-     * @return
      */
-    Bottle find(int id);
+    public CellarEditPanel(String id) {
+        super(id);
+        add(new TextField<String>("name"));
+    }
 
 }

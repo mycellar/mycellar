@@ -18,12 +18,36 @@
  */
 package fr.peralta.mycellar.application.stock;
 
+import org.joda.time.LocalDate;
+
 import fr.peralta.mycellar.domain.stock.Arrival;
+import fr.peralta.mycellar.domain.stock.Bottle;
+import fr.peralta.mycellar.domain.stock.Cellar;
+import fr.peralta.mycellar.domain.stock.Stock;
 
 /**
  * @author speralta
  */
 public interface StockService {
+
+    /**
+     * @param cellar
+     * @param bottle
+     * @param quantity
+     * @param date
+     * @param charges
+     * @param price
+     * @param source
+     */
+    void addToStock(Cellar cellar, Bottle bottle, Integer quantity, LocalDate date, float charges,
+            float price, String source);
+
+    /**
+     * @param bottle
+     * @param cellar
+     * @return
+     */
+    Stock findStock(Bottle bottle, Cellar cellar);
 
     /**
      * @param arrival

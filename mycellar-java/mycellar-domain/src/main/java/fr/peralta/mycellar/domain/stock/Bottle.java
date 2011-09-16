@@ -18,6 +18,7 @@
  */
 package fr.peralta.mycellar.domain.stock;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -44,7 +45,7 @@ public class Bottle extends IdentifiedEntity<Bottle> {
 
     private static final long serialVersionUID = 201010311742L;
 
-    @ManyToOne
+    @ManyToOne(cascade = { CascadeType.PERSIST, CascadeType.MERGE })
     @JoinColumn(name = "FORMAT", nullable = false)
     private Format format;
 
@@ -53,7 +54,7 @@ public class Bottle extends IdentifiedEntity<Bottle> {
     @Column(name = "ID", nullable = false, unique = true)
     private Integer id;
 
-    @ManyToOne
+    @ManyToOne(cascade = { CascadeType.PERSIST, CascadeType.MERGE })
     @JoinColumn(name = "WINE", nullable = false)
     private Wine wine;
 

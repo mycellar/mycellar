@@ -80,7 +80,7 @@ public class HibernateUserRepository implements UserRepository {
      */
     @Override
     public void newUser(User user) {
-        entityManager.persist(user);
+        entityManager.merge(user);
         logger.debug("User persisted {}", user);
     }
 

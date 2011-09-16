@@ -23,6 +23,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import javax.persistence.AttributeOverride;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
@@ -56,7 +57,7 @@ public class Wine extends NamedEntity<Wine> {
     private static final long serialVersionUID = 201011121600L;
 
     @Valid
-    @ManyToOne
+    @ManyToOne(cascade = { CascadeType.PERSIST, CascadeType.MERGE })
     @JoinColumn(name = "APPELLATION")
     private Appellation appellation;
 
@@ -83,7 +84,7 @@ public class Wine extends NamedEntity<Wine> {
     private String photoUrl;
 
     @Valid
-    @ManyToOne
+    @ManyToOne(cascade = { CascadeType.PERSIST, CascadeType.MERGE })
     @JoinColumn(name = "PRODUCER")
     private Producer producer;
 

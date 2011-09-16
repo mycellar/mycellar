@@ -18,6 +18,7 @@
  */
 package fr.peralta.mycellar.domain.stock;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -47,11 +48,11 @@ public class Input extends IdentifiedEntity<Input> {
     @Type(type = "org.jadira.usertype.dateandtime.joda.PersistentLocalDate")
     private LocalDate arrival;
 
-    @ManyToOne
+    @ManyToOne(cascade = { CascadeType.PERSIST, CascadeType.MERGE })
     @JoinColumn(name = "BOTTLE", nullable = false)
     private Bottle bottle;
 
-    @ManyToOne
+    @ManyToOne(cascade = { CascadeType.PERSIST, CascadeType.MERGE })
     @JoinColumn(name = "CELLAR", nullable = false)
     private Cellar cellar;
 

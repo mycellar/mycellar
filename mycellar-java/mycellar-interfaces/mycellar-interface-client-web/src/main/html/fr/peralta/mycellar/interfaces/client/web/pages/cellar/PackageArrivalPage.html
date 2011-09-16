@@ -19,7 +19,7 @@
     <wicket:extend>
       <section>
         <form wicket:id="form">
-          <fieldset>
+          <fieldset class="step">
             <legend><wicket:message key="package">Fieldset legend</wicket:message></legend>
             <div class="formDiv">
               <label for="date"><wicket:message key="date">Arrival</wicket:message></label>
@@ -34,7 +34,7 @@
               <input id="otherCharges" wicket:id="otherCharges" type="text" wicket:message="placeholder:otherChargesEx" size="8" maxlength="8" />
             </div>
           </fieldset>
-          <fieldset>
+          <fieldset class="step">
             <legend><wicket:message key="arrivalBottles">Bottles</wicket:message></legend>
             <div class="formDiv" wicket:id="arrivalBottles">
               <table class="border large">
@@ -44,6 +44,8 @@
                     <th><wicket:message key="region">Region</wicket:message></th>
                     <th><wicket:message key="appellation">Appellation</wicket:message></th>
                     <th><wicket:message key="producer">Producer</wicket:message></th>
+                    <th><wicket:message key="name">Name</wicket:message></th>
+                    <th><wicket:message key="vintage">Vintage</wicket:message></th>
                     <th><wicket:message key="format">Format</wicket:message></th>
                     <th><wicket:message key="quantity">Quantity</wicket:message></th>
                     <th><a wicket:id="addBottle"><wicket:message key="addBottle">Add bottle</wicket:message></a></th>
@@ -55,12 +57,14 @@
                     <td wicket:id="bottle.wine.appellation.region.name">Region</td>
                     <td wicket:id="bottle.wine.appellation.name">Appellation</td>
                     <td wicket:id="bottle.wine.producer.name">Producer</td>
+                    <td wicket:id="bottle.wine.name">Name</td>
+                    <td wicket:id="bottle.wine.vintage">Vintage</td>
                     <td wicket:id="bottle.format.name">Format</td>
                     <td wicket:id="quantity">Quantity</td>
                     <td wicket:id="remove"><a wicket:id="removeBottle"><wicket:message key="removeBottle">Remove bottle</wicket:message></a></td>
                   </tr>
                   <tr wicket:id="noBottles">
-                    <td colSpan="7" class="center"><wicket:message key="noBottles">No bottles</wicket:message></td>
+                    <td colSpan="9" class="center"><wicket:message key="noBottles">No bottles</wicket:message></td>
                   </tr>
                 </tbody>
               </table>
@@ -74,6 +78,10 @@
                 <input wicket:id="cancelObject" type="submit" wicket:message="value:cancelBottle" />
             </fieldset>
           </form>
+          <fieldset class="step">
+            <legend><wicket:message key="cellarFieldset">Fieldset legend</wicket:message></legend>
+            <div wicket:id="cellar" />
+          </fieldset>
           <input type="submit" wicket:message="value:saveArrival" />
         </form>
       </section>

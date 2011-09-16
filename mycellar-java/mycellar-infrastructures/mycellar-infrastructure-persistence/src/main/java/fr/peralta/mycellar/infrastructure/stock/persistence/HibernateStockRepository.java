@@ -37,6 +37,7 @@ import org.springframework.stereotype.Repository;
 import fr.peralta.mycellar.domain.stock.Bottle;
 import fr.peralta.mycellar.domain.stock.Cellar;
 import fr.peralta.mycellar.domain.stock.Input;
+import fr.peralta.mycellar.domain.stock.Stock;
 import fr.peralta.mycellar.domain.stock.StockRepository;
 import fr.peralta.mycellar.domain.user.User;
 
@@ -54,16 +55,20 @@ public class HibernateStockRepository implements StockRepository {
      * {@inheritDoc}
      */
     @Override
-    public void newInput(Input input) {
-        entityManager.persist(input);
-    }
+    public Stock findStock(Bottle bottle, Cellar cellar) {
+        if (!entityManager.contains(bottle) || !entityManager.contains(cellar)) {
+            return null;
+        }
 
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public Bottle findBottle(int id) {
-        return entityManager.find(Bottle.class, id);
+        CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();
+        CriteriaQuery<Stock> query = criteriaBuilder.createQuery(Stock.class);
+        Root<Stock> root = query.from(Stock.class);
+
+        return entityManager.createQuery(
+                query.select(root).where(
+                        criteriaBuilder.and(criteriaBuilder.equal(root.get("bottle"), bottle),
+                                criteriaBuilder.equal(root.get("cellar"), cellar))))
+                .getSingleResult();
     }
 
     /**
@@ -99,8 +104,24 @@ public class HibernateStockRepository implements StockRepository {
      * {@inheritDoc}
      */
     @Override
-    public void newCellar(Cellar cellar) {
-        entityManager.persist(cellar);
+    public Cellar save(Cellar cellar) {
+        return entityManager.merge(cellar);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public Input save(Input input) {
+        return entityManager.merge(input);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public Stock save(Stock stock) {
+        return entityManager.merge(stock);
     }
 
 }

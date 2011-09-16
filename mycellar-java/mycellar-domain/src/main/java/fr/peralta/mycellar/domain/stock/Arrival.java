@@ -27,10 +27,9 @@ import org.joda.time.LocalDate;
 /**
  * @author speralta
  */
-
 public class Arrival implements Serializable {
 
-    private static final long serialVersionUID = 201011071626L;
+    private static final long serialVersionUID = 201109160843L;
 
     private final List<ArrivalBottle> arrivalBottles = new ArrayList<ArrivalBottle>();
 
@@ -40,12 +39,29 @@ public class Arrival implements Serializable {
 
     private String source;
 
+    private Cellar cellar;
+
     public void addArrivalBottle(Bottle bottle, Integer quantity, float price) {
         ArrivalBottle arrivalBottle = new ArrivalBottle();
         arrivalBottle.setBottle(bottle);
         arrivalBottle.setPrice(price);
         arrivalBottle.setQuantity(quantity);
         arrivalBottles.add(arrivalBottle);
+    }
+
+    /**
+     * @return the cellar
+     */
+    public Cellar getCellar() {
+        return cellar;
+    }
+
+    /**
+     * @param cellar
+     *            the cellar to set
+     */
+    public void setCellar(Cellar cellar) {
+        this.cellar = cellar;
     }
 
     /**

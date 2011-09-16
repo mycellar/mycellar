@@ -31,6 +31,7 @@ import org.apache.wicket.markup.html.list.ListItem;
 import org.apache.wicket.markup.html.list.PropertyListView;
 import org.apache.wicket.model.CompoundPropertyModel;
 import org.apache.wicket.model.IModel;
+import org.apache.wicket.model.StringResourceModel;
 import org.apache.wicket.request.mapper.parameter.PageParameters;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 import org.joda.time.LocalDate;
@@ -44,6 +45,7 @@ import fr.peralta.mycellar.interfaces.client.web.components.shared.Action;
 import fr.peralta.mycellar.interfaces.client.web.components.shared.ActionLink;
 import fr.peralta.mycellar.interfaces.client.web.components.shared.AjaxTool;
 import fr.peralta.mycellar.interfaces.client.web.components.shared.form.ObjectForm;
+import fr.peralta.mycellar.interfaces.client.web.components.stock.cloud.CellarComplexTagCloud;
 import fr.peralta.mycellar.interfaces.client.web.components.stock.edit.ArrivalBottleEditPanel;
 import fr.peralta.mycellar.interfaces.client.web.pages.HomePage;
 import fr.peralta.mycellar.interfaces.client.web.pages.shared.CellarSuperPage;
@@ -124,6 +126,8 @@ public class PackageArrivalPage extends CellarSuperPage {
             item.add(new Label("bottle.wine.appellation.region.name"));
             item.add(new Label("bottle.wine.appellation.name"));
             item.add(new Label("bottle.wine.producer.name"));
+            item.add(new Label("bottle.wine.name"));
+            item.add(new Label("bottle.wine.vintage"));
             item.add(new Label("bottle.format.name"));
             item.add(new Label("quantity"));
             item.add(new WebMarkupContainer("remove").add(removeLink("removeBottle", item)));
@@ -174,6 +178,7 @@ public class PackageArrivalPage extends CellarSuperPage {
         form.add(new TextField<String>("source"));
         form.add(new TextField<Float>("otherCharges"));
         form.add(new ArrivalBottlesEditPanel(ARRIVAL_BOTTLES_COMPONENT_ID));
+        form.add(new CellarComplexTagCloud("cellar", new StringResourceModel("cellar", this, null)));
         form.add(createHiddenBottleForm());
         add(form);
     }
@@ -199,6 +204,9 @@ public class PackageArrivalPage extends CellarSuperPage {
                         .getDefaultModelObject());
                 get(FORM_COMPONENT_ID + PATH_SEPARATOR + ARRIVAL_BOTTLE_COMPONENT_ID).replaceWith(
                         createHiddenBottleForm());
+                break;
+            case MODEL_CHANGED:
+
                 break;
             case CANCEL:
                 replace(createHiddenBottleForm());

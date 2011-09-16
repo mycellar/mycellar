@@ -201,7 +201,7 @@ fieldset:first-of-type {
   margin-bottom: 0;
 }
 
-fieldset > legend:before {
+fieldset.step > legend:before {
   content: "Etape " counter(fieldsets) " : ";
   counter-increment: fieldsets;
 }
