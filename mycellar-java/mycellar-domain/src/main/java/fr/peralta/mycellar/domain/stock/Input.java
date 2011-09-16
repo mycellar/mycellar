@@ -18,29 +18,18 @@
  */
 package fr.peralta.mycellar.domain.stock;
 
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.SequenceGenerator;
-import javax.persistence.Table;
 
 import org.apache.commons.lang3.ObjectUtils;
 import org.hibernate.annotations.Type;
 import org.joda.time.LocalDate;
 
-import fr.peralta.mycellar.domain.shared.IdentifiedEntity;
-
 /**
  * @author speralta
  */
 @Entity
-@Table(name = "INPUT")
-@SequenceGenerator(name = "INPUT_ID_GENERATOR", allocationSize = 1)
-public class Input extends IdentifiedEntity<Input> {
+public class Input extends Movement<Input> {
 
     private static final long serialVersionUID = 201010311742L;
 
@@ -48,24 +37,8 @@ public class Input extends IdentifiedEntity<Input> {
     @Type(type = "org.jadira.usertype.dateandtime.joda.PersistentLocalDate")
     private LocalDate arrival;
 
-    @ManyToOne(cascade = { CascadeType.PERSIST, CascadeType.MERGE })
-    @JoinColumn(name = "BOTTLE", nullable = false)
-    private Bottle bottle;
-
-    @ManyToOne(cascade = { CascadeType.PERSIST, CascadeType.MERGE })
-    @JoinColumn(name = "CELLAR", nullable = false)
-    private Cellar cellar;
-
     @Column(name = "CHARGES")
     private float charges;
-
-    @Id
-    @GeneratedValue(generator = "INPUT_ID_GENERATOR")
-    @Column(name = "ID", nullable = false, unique = true)
-    private Integer id;
-
-    @Column(name = "NUMBER")
-    private int number;
 
     @Column(name = "PRICE")
     private float price;
@@ -81,39 +54,10 @@ public class Input extends IdentifiedEntity<Input> {
     }
 
     /**
-     * @return the bottle
-     */
-    public Bottle getBottle() {
-        return bottle;
-    }
-
-    /**
-     * @return the cellar
-     */
-    public Cellar getCellar() {
-        return cellar;
-    }
-
-    /**
      * @return the charges
      */
     public float getCharges() {
         return charges;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public Integer getId() {
-        return id;
-    }
-
-    /**
-     * @return the number
-     */
-    public int getNumber() {
-        return number;
     }
 
     /**
@@ -139,35 +83,11 @@ public class Input extends IdentifiedEntity<Input> {
     }
 
     /**
-     * @param bottle
-     *            the bottle to set
-     */
-    public void setBottle(Bottle bottle) {
-        this.bottle = bottle;
-    }
-
-    /**
-     * @param cellar
-     *            the cellar to set
-     */
-    public void setCellar(Cellar cellar) {
-        this.cellar = cellar;
-    }
-
-    /**
      * @param charges
      *            the charges to set
      */
     public void setCharges(float charges) {
         this.charges = charges;
-    }
-
-    /**
-     * @param number
-     *            the number to set
-     */
-    public void setNumber(int number) {
-        this.number = number;
     }
 
     /**
@@ -205,7 +125,7 @@ public class Input extends IdentifiedEntity<Input> {
      */
     @Override
     protected Object[] getHashCodeData() {
-        return new Object[] { getArrival(), getCellar(), getSource() };
+        return new Object[] { getArrival(), getCellar(), getBottle() };
     }
 
 }

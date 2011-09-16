@@ -20,47 +20,21 @@ package fr.peralta.mycellar.domain.stock;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.SequenceGenerator;
-import javax.persistence.Table;
 
 import org.apache.commons.lang3.ObjectUtils;
 import org.hibernate.annotations.Type;
 import org.joda.time.LocalDate;
 
-import fr.peralta.mycellar.domain.shared.IdentifiedEntity;
-
 /**
  * @author bperalta
  */
 @Entity
-@Table(name = "OUTPUT")
-@SequenceGenerator(name = "OUTPUT_ID_GENERATOR", allocationSize = 1)
-public class Output extends IdentifiedEntity<Output> {
+public class Output extends Movement<Output> {
 
-    private static final long serialVersionUID = 201011111800L;
-
-    @ManyToOne
-    @JoinColumn(name = "BOTTLE", nullable = false)
-    private Bottle bottle;
-
-    @ManyToOne
-    @JoinColumn(name = "CELLAR", nullable = false)
-    private Cellar cellar;
+    private static final long serialVersionUID = 201109161849L;
 
     @Column(name = "DESTINATION")
     private String destination;
-
-    @Id
-    @GeneratedValue(generator = "OUTPUT_ID_GENERATOR")
-    @Column(name = "ID", nullable = false, unique = true)
-    private Integer id;
-
-    @Column(name = "NUMBER")
-    private int number;
 
     @Column(name = "OUTPUT")
     @Type(type = "org.jadira.usertype.dateandtime.joda.PersistentLocalDate")
@@ -70,39 +44,10 @@ public class Output extends IdentifiedEntity<Output> {
     private float price;
 
     /**
-     * @return the bottle
-     */
-    public Bottle getBottle() {
-        return bottle;
-    }
-
-    /**
-     * @return the cellar
-     */
-    public Cellar getCellar() {
-        return cellar;
-    }
-
-    /**
      * @return the destination
      */
     public String getDestination() {
         return destination;
-    }
-
-    /**
-     * @return the id
-     */
-    @Override
-    public Integer getId() {
-        return id;
-    }
-
-    /**
-     * @return the number
-     */
-    public int getNumber() {
-        return number;
     }
 
     /**
@@ -120,35 +65,11 @@ public class Output extends IdentifiedEntity<Output> {
     }
 
     /**
-     * @param bottle
-     *            the bottle to set
-     */
-    public void setBottle(Bottle bottle) {
-        this.bottle = bottle;
-    }
-
-    /**
-     * @param cellar
-     *            the cellar to set
-     */
-    public void setCellar(Cellar cellar) {
-        this.cellar = cellar;
-    }
-
-    /**
      * @param destination
      *            the destination to set
      */
     public void setDestination(String destination) {
         this.destination = destination;
-    }
-
-    /**
-     * @param number
-     *            the number to set
-     */
-    public void setNumber(int number) {
-        this.number = number;
     }
 
     /**
@@ -174,8 +95,10 @@ public class Output extends IdentifiedEntity<Output> {
     protected boolean dataEquals(Output other) {
         return ObjectUtils.equals(getOutput(), other.getOutput())
                 && ObjectUtils.equals(getCellar(), other.getCellar())
-                && ObjectUtils.equals(getBottle(), other.getBottle())
-                && ObjectUtils.equals(getNumber(), other.getNumber());
+                && ObjectUtils.equals(getNumber(), other.getNumber())
+                && ObjectUtils.equals(getPrice(), other.getPrice())
+                && ObjectUtils.equals(getDestination(), other.getDestination())
+                && ObjectUtils.equals(getBottle(), other.getBottle());
     }
 
     /**
@@ -183,6 +106,6 @@ public class Output extends IdentifiedEntity<Output> {
      */
     @Override
     protected Object[] getHashCodeData() {
-        return new Object[] { getOutput() };
+        return new Object[] { getOutput(), getCellar(), getBottle() };
     }
 }
