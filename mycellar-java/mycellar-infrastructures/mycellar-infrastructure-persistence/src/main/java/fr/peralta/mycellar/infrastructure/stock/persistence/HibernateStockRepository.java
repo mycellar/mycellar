@@ -40,6 +40,8 @@ import fr.peralta.mycellar.domain.stock.Input;
 import fr.peralta.mycellar.domain.stock.Stock;
 import fr.peralta.mycellar.domain.stock.StockRepository;
 import fr.peralta.mycellar.domain.user.User;
+import fr.peralta.mycellar.domain.wine.Format;
+import fr.peralta.mycellar.domain.wine.Wine;
 
 /**
  * @author speralta
@@ -55,8 +57,28 @@ public class HibernateStockRepository implements StockRepository {
      * {@inheritDoc}
      */
     @Override
+    public Bottle findBottle(Wine wine, Format format) {
+        if ((wine.getId() == null) || (format.getId() == null)) {
+            return null;
+        }
+
+        CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();
+        CriteriaQuery<Bottle> query = criteriaBuilder.createQuery(Bottle.class);
+        Root<Bottle> root = query.from(Bottle.class);
+
+        return entityManager.createQuery(
+                query.select(root).where(
+                        criteriaBuilder.and(criteriaBuilder.equal(root.get("wine"), wine),
+                                criteriaBuilder.equal(root.get("format"), format))))
+                .getSingleResult();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
     public Stock findStock(Bottle bottle, Cellar cellar) {
-        if (!entityManager.contains(bottle) || !entityManager.contains(cellar)) {
+        if ((bottle.getId() == null) || (cellar.getId() == null)) {
             return null;
         }
 

@@ -16,40 +16,42 @@
  * You should have received a copy of the GNU General Public License
  * along with MyCellar. If not, see <http://www.gnu.org/licenses/>.
  */
-package fr.peralta.mycellar.interfaces.facades.stock;
+package fr.peralta.mycellar.application.stock.impl;
 
-import java.util.Map;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.stereotype.Service;
 
-import fr.peralta.mycellar.domain.stock.Arrival;
+import fr.peralta.mycellar.application.stock.BottleService;
 import fr.peralta.mycellar.domain.stock.Bottle;
-import fr.peralta.mycellar.domain.stock.Cellar;
-import fr.peralta.mycellar.domain.user.User;
+import fr.peralta.mycellar.domain.stock.StockRepository;
 import fr.peralta.mycellar.domain.wine.Format;
 import fr.peralta.mycellar.domain.wine.Wine;
 
 /**
  * @author speralta
  */
-public interface StockServiceFacade {
+@Service
+public class BottleServiceImpl implements BottleService {
 
-    void arrival(Arrival arrival);
-
-    /**
-     * @param cellar
-     */
-    void newCellar(Cellar cellar);
+    private StockRepository stockRepository;
 
     /**
-     * @param user
-     * @return
+     * {@inheritDoc}
      */
-    Map<Cellar, Long> getAllCellarsWithCountsFromUser(User user);
+    @Override
+    public Bottle findBottle(Wine wine, Format format) {
+        return stockRepository.findBottle(wine, format);
+    }
 
     /**
-     * @param wine
-     * @param format
-     * @return
+     * @param stockRepository
+     *            the stockRepository to set
      */
-    Bottle findBottle(Wine wine, Format format);
+    @Autowired
+    @Qualifier("hibernate")
+    public void setStockRepository(StockRepository stockRepository) {
+        this.stockRepository = stockRepository;
+    }
 
 }

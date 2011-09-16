@@ -32,6 +32,8 @@ import fr.peralta.mycellar.domain.stock.Input;
 import fr.peralta.mycellar.domain.stock.Stock;
 import fr.peralta.mycellar.domain.stock.StockRepository;
 import fr.peralta.mycellar.domain.user.User;
+import fr.peralta.mycellar.domain.wine.Format;
+import fr.peralta.mycellar.domain.wine.Wine;
 
 /**
  * @author speralta
@@ -83,6 +85,14 @@ public class MockStockRepository implements StockRepository {
      */
     @Override
     public Stock findStock(Bottle bottle, Cellar cellar) {
+        return null;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public Bottle findBottle(Wine wine, Format format) {
         return null;
     }
 

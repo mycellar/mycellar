@@ -21,11 +21,20 @@ package fr.peralta.mycellar.domain.stock;
 import java.util.Map;
 
 import fr.peralta.mycellar.domain.user.User;
+import fr.peralta.mycellar.domain.wine.Format;
+import fr.peralta.mycellar.domain.wine.Wine;
 
 /**
  * @author speralta
  */
 public interface StockRepository {
+
+    /**
+     * @param wine
+     * @param format
+     * @return
+     */
+    Bottle findBottle(Wine wine, Format format);
 
     /**
      * @param bottle

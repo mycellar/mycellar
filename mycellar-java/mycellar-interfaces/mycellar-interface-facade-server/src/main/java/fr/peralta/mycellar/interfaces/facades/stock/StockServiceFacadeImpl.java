@@ -24,11 +24,15 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import fr.peralta.mycellar.application.stock.BottleService;
 import fr.peralta.mycellar.application.stock.CellarService;
 import fr.peralta.mycellar.application.stock.StockService;
 import fr.peralta.mycellar.domain.stock.Arrival;
+import fr.peralta.mycellar.domain.stock.Bottle;
 import fr.peralta.mycellar.domain.stock.Cellar;
 import fr.peralta.mycellar.domain.user.User;
+import fr.peralta.mycellar.domain.wine.Format;
+import fr.peralta.mycellar.domain.wine.Wine;
 
 /**
  * @author speralta
@@ -39,6 +43,8 @@ public class StockServiceFacadeImpl implements StockServiceFacade {
     private StockService stockService;
 
     private CellarService cellarService;
+
+    private BottleService bottleService;
 
     /**
      * {@inheritDoc}
@@ -68,6 +74,14 @@ public class StockServiceFacadeImpl implements StockServiceFacade {
     }
 
     /**
+     * {@inheritDoc}
+     */
+    @Override
+    public Bottle findBottle(Wine wine, Format format) {
+        return bottleService.findBottle(wine, format);
+    }
+
+    /**
      * @param stockService
      *            the stockService to set
      */
@@ -83,6 +97,15 @@ public class StockServiceFacadeImpl implements StockServiceFacade {
     @Autowired
     public void setCellarService(CellarService cellarService) {
         this.cellarService = cellarService;
+    }
+
+    /**
+     * @param bottleService
+     *            the bottleService to set
+     */
+    @Autowired
+    public void setBottleService(BottleService bottleService) {
+        this.bottleService = bottleService;
     }
 
 }

@@ -24,15 +24,19 @@ import org.apache.wicket.markup.html.panel.Panel;
 import org.apache.wicket.model.CompoundPropertyModel;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.StringResourceModel;
+import org.apache.wicket.spring.injection.annot.SpringBean;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import fr.peralta.mycellar.domain.stock.Bottle;
+import fr.peralta.mycellar.domain.wine.Format;
+import fr.peralta.mycellar.domain.wine.Wine;
 import fr.peralta.mycellar.interfaces.client.web.components.shared.Action;
 import fr.peralta.mycellar.interfaces.client.web.components.shared.AjaxTool;
 import fr.peralta.mycellar.interfaces.client.web.components.wine.cloud.FormatComplexTagCloud;
 import fr.peralta.mycellar.interfaces.client.web.components.wine.list.WineComplexList;
 import fr.peralta.mycellar.interfaces.client.web.shared.LoggingUtils;
+import fr.peralta.mycellar.interfaces.facades.stock.StockServiceFacade;
 
 /**
  * @author speralta
@@ -40,11 +44,13 @@ import fr.peralta.mycellar.interfaces.client.web.shared.LoggingUtils;
 public class BottleComponent extends Panel {
 
     private static final long serialVersionUID = 201109081922L;
+    private static final Logger logger = LoggerFactory.getLogger(BottleComponent.class);
 
     private static final String WINE_COMPONENT_ID = "wine";
     private static final String FORMAT_COMPONENT_ID = "format";
 
-    private final Logger logger = LoggerFactory.getLogger(BottleComponent.class);
+    @SpringBean
+    private StockServiceFacade stockServiceFacade;
 
     /**
      * @param id
@@ -86,20 +92,20 @@ public class BottleComponent extends Panel {
         if (event.getPayload() instanceof Action) {
             Action action = (Action) event.getPayload();
             switch (action) {
-            case SELECT:
-
-                break;
-            case CANCEL:
-
-                break;
-            case ADD:
-
-                break;
-            case SAVE:
-
-                break;
             case MODEL_CHANGED:
-
+                Wine wine = (Wine) get(WINE_COMPONENT_ID).getDefaultModelObject();
+                Format format = (Format) get(FORMAT_COMPONENT_ID).getDefaultModelObject();
+                if ((wine != null) && (format != null)) {
+                    Bottle bottle = stockServiceFacade.findBottle(wine, format);
+                    if (bottle != null) {
+                        setDefaultModelObject(bottle);
+                    }
+                } else {
+                    Bottle bottle = new Bottle();
+                    bottle.setWine(wine);
+                    bottle.setFormat(format);
+                    setDefaultModelObject(bottle);
+                }
                 break;
             default:
                 throw new WicketRuntimeException("Action " + action + " not managed.");

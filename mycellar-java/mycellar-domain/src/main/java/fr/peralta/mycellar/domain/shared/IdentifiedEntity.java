@@ -51,15 +51,21 @@ public abstract class IdentifiedEntity<E extends IdentifiedEntity<E>> implements
         }
 
         // looks into the target class of a proxy if necessary
-        if (other == null || !Hibernate.getClass(other).equals(Hibernate.getClass(this))) {
+        if ((other == null) || !Hibernate.getClass(other).equals(Hibernate.getClass(this))) {
             return false;
         }
 
-        // if pks are both set, compare
+        // if pks are both set, compare pk
+        // if one pk is set, false
         if (getId() != null) {
             Integer otherId = ((IdentifiedEntity<?>) other).getId();
             if (otherId != null) {
                 return getId().equals(otherId);
+            }
+        } else {
+            Integer otherId = ((IdentifiedEntity<?>) other).getId();
+            if (otherId != null) {
+                return false;
             }
         }
 
