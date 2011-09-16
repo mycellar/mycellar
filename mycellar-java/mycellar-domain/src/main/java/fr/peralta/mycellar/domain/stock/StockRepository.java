@@ -18,6 +18,7 @@
  */
 package fr.peralta.mycellar.domain.stock;
 
+import java.util.List;
 import java.util.Map;
 
 import fr.peralta.mycellar.domain.user.User;
@@ -63,5 +64,11 @@ public interface StockRepository {
      * @param stock
      */
     Stock save(Stock stock);
+
+    /**
+     * @param cellars
+     * @return
+     */
+    List<Movement<?>> getAllMovementsFromCellars(Cellar... cellars);
 
 }

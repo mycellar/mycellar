@@ -18,11 +18,13 @@
  */
 package fr.peralta.mycellar.interfaces.facades.stock;
 
+import java.util.List;
 import java.util.Map;
 
 import fr.peralta.mycellar.domain.stock.Arrival;
 import fr.peralta.mycellar.domain.stock.Bottle;
 import fr.peralta.mycellar.domain.stock.Cellar;
+import fr.peralta.mycellar.domain.stock.Movement;
 import fr.peralta.mycellar.domain.user.User;
 import fr.peralta.mycellar.domain.wine.Format;
 import fr.peralta.mycellar.domain.wine.Wine;
@@ -51,5 +53,11 @@ public interface StockServiceFacade {
      * @return
      */
     Bottle findBottle(Wine wine, Format format);
+
+    /**
+     * @param array
+     * @return
+     */
+    List<Movement<?>> getAllMovementsFromCellars(Cellar... cellars);
 
 }

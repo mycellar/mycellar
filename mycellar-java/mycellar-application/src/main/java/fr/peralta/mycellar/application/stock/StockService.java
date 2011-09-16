@@ -18,11 +18,14 @@
  */
 package fr.peralta.mycellar.application.stock;
 
+import java.util.List;
+
 import org.joda.time.LocalDate;
 
 import fr.peralta.mycellar.domain.stock.Arrival;
 import fr.peralta.mycellar.domain.stock.Bottle;
 import fr.peralta.mycellar.domain.stock.Cellar;
+import fr.peralta.mycellar.domain.stock.Movement;
 import fr.peralta.mycellar.domain.stock.Stock;
 
 /**
@@ -53,5 +56,11 @@ public interface StockService {
      * @param arrival
      */
     void stock(Arrival arrival);
+
+    /**
+     * @param cellars
+     * @return
+     */
+    List<Movement<?>> getAllMovementsFromCellars(Cellar... cellars);
 
 }

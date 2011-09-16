@@ -18,6 +18,8 @@
  */
 package fr.peralta.mycellar.application.stock.impl;
 
+import java.util.List;
+
 import org.joda.time.LocalDate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -29,6 +31,7 @@ import fr.peralta.mycellar.domain.stock.ArrivalBottle;
 import fr.peralta.mycellar.domain.stock.Bottle;
 import fr.peralta.mycellar.domain.stock.Cellar;
 import fr.peralta.mycellar.domain.stock.Input;
+import fr.peralta.mycellar.domain.stock.Movement;
 import fr.peralta.mycellar.domain.stock.Stock;
 import fr.peralta.mycellar.domain.stock.StockRepository;
 
@@ -111,6 +114,14 @@ public class StockServiceImpl implements StockService {
     @Override
     public Stock findStock(Bottle bottle, Cellar cellar) {
         return stockRepository.findStock(bottle, cellar);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public List<Movement<?>> getAllMovementsFromCellars(Cellar... cellars) {
+        return stockRepository.getAllMovementsFromCellars(cellars);
     }
 
     /**

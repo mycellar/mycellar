@@ -18,6 +18,7 @@
  */
 package fr.peralta.mycellar.interfaces.facades.stock;
 
+import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,6 +31,7 @@ import fr.peralta.mycellar.application.stock.StockService;
 import fr.peralta.mycellar.domain.stock.Arrival;
 import fr.peralta.mycellar.domain.stock.Bottle;
 import fr.peralta.mycellar.domain.stock.Cellar;
+import fr.peralta.mycellar.domain.stock.Movement;
 import fr.peralta.mycellar.domain.user.User;
 import fr.peralta.mycellar.domain.wine.Format;
 import fr.peralta.mycellar.domain.wine.Wine;
@@ -68,7 +70,7 @@ public class StockServiceFacadeImpl implements StockServiceFacade {
      * {@inheritDoc}
      */
     @Override
-    @Transactional
+    @Transactional(readOnly = true)
     public Map<Cellar, Long> getAllCellarsWithCountsFromUser(User user) {
         return cellarService.getAllWithCountsFromUser(user);
     }
@@ -77,6 +79,16 @@ public class StockServiceFacadeImpl implements StockServiceFacade {
      * {@inheritDoc}
      */
     @Override
+    @Transactional(readOnly = true)
+    public List<Movement<?>> getAllMovementsFromCellars(Cellar... cellars) {
+        return stockService.getAllMovementsFromCellars(cellars);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    @Transactional(readOnly = true)
     public Bottle findBottle(Wine wine, Format format) {
         return bottleService.findBottle(wine, format);
     }

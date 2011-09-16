@@ -18,9 +18,23 @@
  */
 package fr.peralta.mycellar.interfaces.client.web.pages.cellar;
 
-import org.apache.wicket.request.mapper.parameter.PageParameters;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Set;
 
+import org.apache.wicket.markup.html.basic.Label;
+import org.apache.wicket.markup.html.list.ListItem;
+import org.apache.wicket.markup.html.list.ListView;
+import org.apache.wicket.request.mapper.parameter.PageParameters;
+import org.apache.wicket.spring.injection.annot.SpringBean;
+
+import fr.peralta.mycellar.domain.stock.Cellar;
+import fr.peralta.mycellar.domain.stock.Input;
+import fr.peralta.mycellar.domain.stock.Movement;
 import fr.peralta.mycellar.interfaces.client.web.pages.shared.CellarSuperPage;
+import fr.peralta.mycellar.interfaces.client.web.renderers.shared.RendererServiceFacade;
+import fr.peralta.mycellar.interfaces.client.web.security.UserKey;
+import fr.peralta.mycellar.interfaces.facades.stock.StockServiceFacade;
 
 /**
  * @author speralta
@@ -29,11 +43,40 @@ public class InputOutputPage extends CellarSuperPage {
 
     private static final long serialVersionUID = 201108170920L;
 
+    @SpringBean
+    private StockServiceFacade stockServiceFacade;
+
+    @SpringBean
+    private RendererServiceFacade rendererServiceFacade;
+
     /**
      * @param parameters
      */
     public InputOutputPage(PageParameters parameters) {
         super(parameters);
-    }
+        Set<Cellar> cellars = stockServiceFacade.getAllCellarsWithCountsFromUser(
+                UserKey.getUserLoggedIn()).keySet();
+        List<Movement<?>> movements;
+        if ((cellars == null) || (cellars.size() == 0)) {
+            movements = new ArrayList<Movement<?>>();
+        } else {
+            movements = stockServiceFacade.getAllMovementsFromCellars(cellars
+                    .toArray(new Cellar[cellars.size()]));
+        }
+        add(new ListView<Movement<?>>("list", movements) {
+            private static final long serialVersionUID = 201109161902L;
 
+            /**
+             * {@inheritDoc}
+             */
+            @Override
+            protected void populateItem(ListItem<Movement<?>> item) {
+                item.add(new Label("cellar.name"));
+                item.add(new Label("bottle", rendererServiceFacade.render(item.getModelObject()
+                        .getBottle())));
+                item.add(new Label("number"));
+                item.add(new Label("io", (item.getModelObject() instanceof Input) ? "I" : "O"));
+            }
+        });
+    }
 }

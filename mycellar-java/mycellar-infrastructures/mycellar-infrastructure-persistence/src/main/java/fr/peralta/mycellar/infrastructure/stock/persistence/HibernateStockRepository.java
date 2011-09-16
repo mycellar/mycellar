@@ -18,6 +18,8 @@
  */
 package fr.peralta.mycellar.infrastructure.stock.persistence;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -37,6 +39,7 @@ import org.springframework.stereotype.Repository;
 import fr.peralta.mycellar.domain.stock.Bottle;
 import fr.peralta.mycellar.domain.stock.Cellar;
 import fr.peralta.mycellar.domain.stock.Input;
+import fr.peralta.mycellar.domain.stock.Movement;
 import fr.peralta.mycellar.domain.stock.Stock;
 import fr.peralta.mycellar.domain.stock.StockRepository;
 import fr.peralta.mycellar.domain.user.User;
@@ -119,6 +122,26 @@ public class HibernateStockRepository implements StockRepository {
             result.put(tuple.get(root), sum != null ? sum : 0);
         }
 
+        return result;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @SuppressWarnings("rawtypes")
+    @Override
+    public List<Movement<?>> getAllMovementsFromCellars(Cellar... cellars) {
+        CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();
+        CriteriaQuery<Movement> query = criteriaBuilder.createQuery(Movement.class);
+
+        Root<Movement> root = query.from(Movement.class);
+        List<Movement> queryResult = entityManager.createQuery(
+                query.select(root).where(root.get("cellar").in(Arrays.asList(cellars))))
+                .getResultList();
+        List<Movement<?>> result = new ArrayList<Movement<?>>(queryResult.size());
+        for (Movement movement : queryResult) {
+            result.add(movement);
+        }
         return result;
     }
 
