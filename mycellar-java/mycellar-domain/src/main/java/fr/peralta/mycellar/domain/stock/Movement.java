@@ -30,6 +30,9 @@ import javax.persistence.ManyToOne;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
+import org.hibernate.annotations.Type;
+import org.joda.time.LocalDate;
+
 import fr.peralta.mycellar.domain.shared.IdentifiedEntity;
 
 /**
@@ -58,6 +61,25 @@ public abstract class Movement<E extends Movement<E>> extends IdentifiedEntity<E
 
     @Column(name = "NUMBER")
     private int number;
+
+    @Column(name = "DATE")
+    @Type(type = "org.jadira.usertype.dateandtime.joda.PersistentLocalDate")
+    private LocalDate date;
+
+    /**
+     * @return the date
+     */
+    public LocalDate getDate() {
+        return date;
+    }
+
+    /**
+     * @param date
+     *            the date to set
+     */
+    public void setDate(LocalDate date) {
+        this.date = date;
+    }
 
     /**
      * @return the bottle

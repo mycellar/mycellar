@@ -186,6 +186,19 @@ table.large {
   width: 100%;
 }
 
+/** TEXT-ALIGN **/
+.la {
+  text-align: left;
+}
+
+.ca {
+  text-align: center;
+}
+
+.ra {
+  text-align: right;
+}
+
 /** FIELDSET **/
 form {
   counter-reset: fieldsets;
@@ -277,11 +290,6 @@ ul.listComponent li:last-of-type {
 
 ul.listComponent li:hover {
   background: #FFB36F;
-}
-
-/** CENTER **/
-.center {
-  text-align: center;   
 }
 
 /** SELECTOR **/

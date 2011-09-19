@@ -47,7 +47,6 @@ import fr.peralta.mycellar.interfaces.client.web.components.shared.AjaxTool;
 import fr.peralta.mycellar.interfaces.client.web.components.shared.form.ObjectForm;
 import fr.peralta.mycellar.interfaces.client.web.components.stock.cloud.CellarComplexTagCloud;
 import fr.peralta.mycellar.interfaces.client.web.components.stock.edit.ArrivalBottleEditPanel;
-import fr.peralta.mycellar.interfaces.client.web.pages.HomePage;
 import fr.peralta.mycellar.interfaces.client.web.pages.shared.CellarSuperPage;
 import fr.peralta.mycellar.interfaces.client.web.shared.LoggingUtils;
 import fr.peralta.mycellar.interfaces.facades.stock.StockServiceFacade;
@@ -155,7 +154,7 @@ public class PackageArrivalPage extends CellarSuperPage {
         @Override
         protected void onSubmit() {
             stockServiceFacade.arrival(getModelObject());
-            setResponsePage(HomePage.class);
+            setResponsePage(InputOutputPage.class);
         }
 
     }

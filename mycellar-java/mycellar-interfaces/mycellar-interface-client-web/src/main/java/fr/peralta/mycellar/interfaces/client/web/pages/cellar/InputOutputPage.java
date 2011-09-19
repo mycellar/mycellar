@@ -22,9 +22,11 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
+import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.list.ListItem;
 import org.apache.wicket.markup.html.list.ListView;
+import org.apache.wicket.model.CompoundPropertyModel;
 import org.apache.wicket.request.mapper.parameter.PageParameters;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 
@@ -56,7 +58,7 @@ public class InputOutputPage extends CellarSuperPage {
         super(parameters);
         Set<Cellar> cellars = stockServiceFacade.getAllCellarsWithCountsFromUser(
                 UserKey.getUserLoggedIn()).keySet();
-        List<Movement<?>> movements;
+        final List<Movement<?>> movements;
         if ((cellars == null) || (cellars.size() == 0)) {
             movements = new ArrayList<Movement<?>>();
         } else {
@@ -71,6 +73,8 @@ public class InputOutputPage extends CellarSuperPage {
              */
             @Override
             protected void populateItem(ListItem<Movement<?>> item) {
+                item.setModel(new CompoundPropertyModel<Movement<?>>(item.getModel()));
+                item.add(new Label("date"));
                 item.add(new Label("cellar.name"));
                 item.add(new Label("bottle", rendererServiceFacade.render(item.getModelObject()
                         .getBottle())));
@@ -78,5 +82,6 @@ public class InputOutputPage extends CellarSuperPage {
                 item.add(new Label("io", (item.getModelObject() instanceof Input) ? "I" : "O"));
             }
         });
+        add(new WebMarkupContainer("noIO").setVisibilityAllowed(movements.isEmpty()));
     }
 }

@@ -136,8 +136,8 @@ public class HibernateStockRepository implements StockRepository {
 
         Root<Movement> root = query.from(Movement.class);
         List<Movement> queryResult = entityManager.createQuery(
-                query.select(root).where(root.get("cellar").in(Arrays.asList(cellars))))
-                .getResultList();
+                query.select(root).where(root.get("cellar").in(Arrays.asList(cellars)))
+                        .orderBy(criteriaBuilder.desc(root.get("date")))).getResultList();
         List<Movement<?>> result = new ArrayList<Movement<?>>(queryResult.size());
         for (Movement movement : queryResult) {
             result.add(movement);

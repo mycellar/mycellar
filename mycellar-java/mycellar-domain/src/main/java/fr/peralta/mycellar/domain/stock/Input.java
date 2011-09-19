@@ -22,8 +22,6 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 
 import org.apache.commons.lang3.ObjectUtils;
-import org.hibernate.annotations.Type;
-import org.joda.time.LocalDate;
 
 /**
  * @author speralta
@@ -33,10 +31,6 @@ public class Input extends Movement<Input> {
 
     private static final long serialVersionUID = 201010311742L;
 
-    @Column(name = "ARRIVAL")
-    @Type(type = "org.jadira.usertype.dateandtime.joda.PersistentLocalDate")
-    private LocalDate arrival;
-
     @Column(name = "CHARGES")
     private float charges;
 
@@ -45,13 +39,6 @@ public class Input extends Movement<Input> {
 
     @Column(name = "SOURCE")
     private String source;
-
-    /**
-     * @return the arrival
-     */
-    public LocalDate getArrival() {
-        return arrival;
-    }
 
     /**
      * @return the charges
@@ -72,14 +59,6 @@ public class Input extends Movement<Input> {
      */
     public String getSource() {
         return source;
-    }
-
-    /**
-     * @param arrival
-     *            the arrival to set
-     */
-    public void setArrival(LocalDate arrival) {
-        this.arrival = arrival;
     }
 
     /**
@@ -111,7 +90,7 @@ public class Input extends Movement<Input> {
      */
     @Override
     protected boolean dataEquals(Input other) {
-        return ObjectUtils.equals(getArrival(), other.getArrival())
+        return ObjectUtils.equals(getDate(), other.getDate())
                 && ObjectUtils.equals(getCellar(), other.getCellar())
                 && ObjectUtils.equals(getCharges(), other.getCharges())
                 && ObjectUtils.equals(getNumber(), other.getNumber())
@@ -125,7 +104,7 @@ public class Input extends Movement<Input> {
      */
     @Override
     protected Object[] getHashCodeData() {
-        return new Object[] { getArrival(), getCellar(), getBottle() };
+        return new Object[] { getDate(), getCellar(), getBottle() };
     }
 
 }

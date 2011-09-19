@@ -19,18 +19,27 @@
     <wicket:extend>
       <section>
         <table class="large border">
-          <tr>
-            <th>Cave</th>
-            <th>Bouteille</th>
-            <th>Quantité</th>
-            <th>Sens</th>
-          </tr>
-          <tr wicket:id="list">
-            <td wicket:id="cellar.name">Cellar</td>
-            <td wicket:id="bottle">Bouteille</td>
-            <td wicket:id="number">1</td>
-            <td wicket:id="io">I</td>
-          </tr>
+          <thead>
+            <tr>
+              <th><wicket:message key="date">Date</wicket:message></th>
+              <th><wicket:message key="cellar">Cellar</wicket:message></th>
+              <th><wicket:message key="bottle">Reference</wicket:message></th>
+              <th><wicket:message key="number">Quantity</wicket:message></th>
+              <th><wicket:message key="io">I/O</wicket:message></th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr wicket:id="list">
+              <td class="ca" wicket:id="date">10/01/2011</td>
+              <td class="la" wicket:id="cellar.name">Cellar</td>
+              <td class="la" wicket:id="bottle">Bottle</td>
+              <td class="ra" wicket:id="number">1</td>
+              <td class="ca" wicket:id="io">I</td>
+            </tr>
+            <tr wicket:id="noIO">
+              <td colSpan="5" class="ca"><wicket:message key="noIO">No I/O</wicket:message></td>
+            </tr>
+          </tbody>
         </table>
       </section>
     </wicket:extend>

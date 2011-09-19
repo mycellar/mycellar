@@ -22,8 +22,6 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 
 import org.apache.commons.lang3.ObjectUtils;
-import org.hibernate.annotations.Type;
-import org.joda.time.LocalDate;
 
 /**
  * @author bperalta
@@ -36,10 +34,6 @@ public class Output extends Movement<Output> {
     @Column(name = "DESTINATION")
     private String destination;
 
-    @Column(name = "OUTPUT")
-    @Type(type = "org.jadira.usertype.dateandtime.joda.PersistentLocalDate")
-    private LocalDate output;
-
     @Column(name = "PRICE")
     private float price;
 
@@ -48,13 +42,6 @@ public class Output extends Movement<Output> {
      */
     public String getDestination() {
         return destination;
-    }
-
-    /**
-     * @return the output
-     */
-    public LocalDate getOutput() {
-        return output;
     }
 
     /**
@@ -73,14 +60,6 @@ public class Output extends Movement<Output> {
     }
 
     /**
-     * @param output
-     *            the output to set
-     */
-    public void setOutput(LocalDate output) {
-        this.output = output;
-    }
-
-    /**
      * @param price
      *            the price to set
      */
@@ -93,7 +72,7 @@ public class Output extends Movement<Output> {
      */
     @Override
     protected boolean dataEquals(Output other) {
-        return ObjectUtils.equals(getOutput(), other.getOutput())
+        return ObjectUtils.equals(getDate(), other.getDate())
                 && ObjectUtils.equals(getCellar(), other.getCellar())
                 && ObjectUtils.equals(getNumber(), other.getNumber())
                 && ObjectUtils.equals(getPrice(), other.getPrice())
@@ -106,6 +85,6 @@ public class Output extends Movement<Output> {
      */
     @Override
     protected Object[] getHashCodeData() {
-        return new Object[] { getOutput(), getCellar(), getBottle() };
+        return new Object[] { getDate(), getCellar(), getBottle() };
     }
 }

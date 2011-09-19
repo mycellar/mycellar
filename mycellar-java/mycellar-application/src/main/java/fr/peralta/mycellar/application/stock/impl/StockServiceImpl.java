@@ -80,7 +80,7 @@ public class StockServiceImpl implements StockService {
     private void createInput(Cellar cellar, Bottle bottle, Integer quantity, LocalDate date,
             float charges, float price, String source) {
         Input input = new Input();
-        input.setArrival(date);
+        input.setDate(date);
         input.setBottle(bottle);
         input.setCellar(cellar);
         input.setCharges(charges);
