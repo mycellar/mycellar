@@ -123,7 +123,11 @@ public class MultiplePanel<O> extends Panel {
                     O object = (O) ((MultipleSelection<?>) event.getSource())
                             .getDefaultModelObject();
                     List<O> modelObject = new ArrayList<O>(getModelObject());
-                    modelObject.add(object);
+                    if (modelObject.contains(object)) {
+                        modelObject.remove(object);
+                    } else {
+                        modelObject.add(object);
+                    }
                     setModelObject(modelObject);
                 } else {
                     throw new WicketRuntimeException("Event did not come from "
