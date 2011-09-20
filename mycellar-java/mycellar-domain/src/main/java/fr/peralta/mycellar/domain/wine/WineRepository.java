@@ -51,18 +51,18 @@ public interface WineRepository {
     List<Producer> getAllProducersLike(String term);
 
     /**
-     * @param producer
+     * @param producers
      * @return
      */
-    Map<WineTypeEnum, Long> getAllTypeFromProducerWithCounts(Producer producer);
+    Map<WineTypeEnum, Long> getAllTypesFromProducersWithCounts(Producer... producers);
 
     /**
-     * @param producer
-     * @param type
+     * @param types
+     * @param producers
      * @return
      */
-    Map<WineColorEnum, Long> getAllColorFromProducerAndTypeWithCounts(Producer producer,
-            WineTypeEnum type);
+    Map<WineColorEnum, Long> getAllColorsFromTypesAndProducersWithCounts(WineTypeEnum[] types,
+            Producer... producers);
 
     /**
      * @return
@@ -81,5 +81,28 @@ public interface WineRepository {
      */
     List<Wine> getAllWinesFrom(Producer producer, Appellation appellation, Region region,
             Country country, WineTypeEnum type, WineColorEnum color, Integer vintage);
+
+    /**
+     * @param types
+     * @param colors
+     * @param countries
+     * @param regions
+     * @param appellations
+     * @param first
+     * @param count
+     * @return
+     */
+    List<Wine> getAllWinesFrom(List<WineTypeEnum> types, List<WineColorEnum> colors,
+            List<Country> countries, List<Region> regions, List<Appellation> appellations,
+            int first, int count);
+
+    /**
+     * @param countries
+     * @param regions
+     * @param appellations
+     * @return
+     */
+    long countAllWinesFrom(List<Country> countries, List<Region> regions,
+            List<Appellation> appellations);
 
 }

@@ -21,7 +21,10 @@ package fr.peralta.mycellar.application.wine;
 import java.util.List;
 import java.util.Map;
 
+import fr.peralta.mycellar.domain.wine.Appellation;
+import fr.peralta.mycellar.domain.wine.Country;
 import fr.peralta.mycellar.domain.wine.Producer;
+import fr.peralta.mycellar.domain.wine.Region;
 import fr.peralta.mycellar.domain.wine.Wine;
 import fr.peralta.mycellar.domain.wine.WineColorEnum;
 import fr.peralta.mycellar.domain.wine.WineTypeEnum;
@@ -32,24 +35,46 @@ import fr.peralta.mycellar.domain.wine.WineTypeEnum;
 public interface WineService {
 
     /**
-     * @param producer
-     * @param type
+     * @param producers
      * @return
      */
-    Map<WineTypeEnum, Long> getAllTypeFromProducerWithCounts(Producer producer);
+    Map<WineTypeEnum, Long> getAllTypesFromProducersWithCounts(Producer... producers);
 
     /**
-     * @param producer
-     * @param type
+     * @param types
+     * @param producers
      * @return
      */
-    Map<WineColorEnum, Long> getAllColorFromProducerAndTypeWithCounts(Producer producer,
-            WineTypeEnum type);
+    Map<WineColorEnum, Long> getAllColorsFromTypesAndProducersWithCounts(WineTypeEnum[] types,
+            Producer... producers);
 
     /**
      * @param wine
      * @return
      */
     List<Wine> getWinesLike(Wine wine);
+
+    /**
+     * @param types
+     * @param colors
+     * @param countries
+     * @param regions
+     * @param appellations
+     * @param first
+     * @param count
+     * @return
+     */
+    List<Wine> getWinesFrom(List<WineTypeEnum> types, List<WineColorEnum> colors,
+            List<Country> countries, List<Region> regions, List<Appellation> appellations,
+            int first, int count);
+
+    /**
+     * @param countries
+     * @param regions
+     * @param appellations
+     * @return
+     */
+    long countWinesFrom(List<Country> countries, List<Region> regions,
+            List<Appellation> appellations);
 
 }

@@ -108,8 +108,8 @@ public class WineServiceFacadeImpl implements WineServiceFacade {
      */
     @Override
     @Transactional(readOnly = true)
-    public Map<WineTypeEnum, Long> getTypeWithCounts(Producer producer) {
-        return wineService.getAllTypeFromProducerWithCounts(producer);
+    public Map<WineTypeEnum, Long> getTypesWithCounts(Producer... producers) {
+        return wineService.getAllTypesFromProducersWithCounts(producers);
     }
 
     /**
@@ -117,8 +117,26 @@ public class WineServiceFacadeImpl implements WineServiceFacade {
      */
     @Override
     @Transactional(readOnly = true)
-    public Map<WineColorEnum, Long> getColorWithCounts(Producer producer, WineTypeEnum type) {
-        return wineService.getAllColorFromProducerAndTypeWithCounts(producer, type);
+    public Map<WineColorEnum, Long> getColorsWithCounts(WineTypeEnum[] types, Producer... producers) {
+        return wineService.getAllColorsFromTypesAndProducersWithCounts(types, producers);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    @Transactional(readOnly = true)
+    public Map<WineColorEnum, Long> getColorsWithCounts(WineTypeEnum type, Producer... producers) {
+        return getColorsWithCounts(new WineTypeEnum[] { type }, producers);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    @Transactional(readOnly = true)
+    public Map<WineColorEnum, Long> getColorsWithCounts(Producer... producers) {
+        return getColorsWithCounts(new WineTypeEnum[0], producers);
     }
 
     /**
@@ -128,6 +146,28 @@ public class WineServiceFacadeImpl implements WineServiceFacade {
     @Transactional(readOnly = true)
     public Map<Format, Long> getFormatWithCounts() {
         return formatService.getAllWithCounts();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    @Transactional(readOnly = true)
+    public List<Wine> getWinesFrom(List<WineTypeEnum> types, List<WineColorEnum> colors,
+            List<Country> countries, List<Region> regions, List<Appellation> appellations,
+            int first, int count) {
+        return wineService.getWinesFrom(types, colors, countries, regions, appellations, first,
+                count);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    @Transactional(readOnly = true)
+    public long countWinesFrom(List<Country> countries, List<Region> regions,
+            List<Appellation> appellations) {
+        return wineService.countWinesFrom(countries, regions, appellations);
     }
 
     /**

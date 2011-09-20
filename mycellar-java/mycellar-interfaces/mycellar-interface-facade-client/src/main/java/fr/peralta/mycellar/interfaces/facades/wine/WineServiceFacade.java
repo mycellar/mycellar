@@ -59,17 +59,30 @@ public interface WineServiceFacade {
     List<Producer> getProducersLike(String term);
 
     /**
-     * @param producer
+     * @param producers
      * @return
      */
-    Map<WineTypeEnum, Long> getTypeWithCounts(Producer producer);
+    Map<WineTypeEnum, Long> getTypesWithCounts(Producer... producers);
 
     /**
-     * @param producer
-     * @param type
+     * @param types
+     * @param producers
      * @return
      */
-    Map<WineColorEnum, Long> getColorWithCounts(Producer producer, WineTypeEnum type);
+    Map<WineColorEnum, Long> getColorsWithCounts(WineTypeEnum[] types, Producer... producers);
+
+    /**
+     * @param object
+     * @param object2
+     * @return
+     */
+    Map<WineColorEnum, Long> getColorsWithCounts(WineTypeEnum type, Producer... producers);
+
+    /**
+     * @param producers
+     * @return
+     */
+    Map<WineColorEnum, Long> getColorsWithCounts(Producer... producers);
 
     /**
      * @return
@@ -81,5 +94,28 @@ public interface WineServiceFacade {
      * @return
      */
     List<Wine> getWinesLike(Wine wine);
+
+    /**
+     * @param types
+     * @param colors
+     * @param countries
+     * @param regions
+     * @param appellations
+     * @param first
+     * @param count
+     * @return
+     */
+    List<Wine> getWinesFrom(List<WineTypeEnum> types, List<WineColorEnum> colors,
+            List<Country> countries, List<Region> regions, List<Appellation> appellations,
+            int first, int count);
+
+    /**
+     * @param countries
+     * @param regions
+     * @param appellations
+     * @return
+     */
+    long countWinesFrom(List<Country> countries, List<Region> regions,
+            List<Appellation> appellations);
 
 }

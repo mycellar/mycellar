@@ -24,7 +24,7 @@ import java.util.Map;
 import java.util.Set;
 
 import org.apache.wicket.event.IEvent;
-import org.apache.wicket.markup.html.form.Form;
+import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.Model;
 import org.apache.wicket.request.mapper.parameter.PageParameters;
@@ -35,9 +35,12 @@ import org.slf4j.LoggerFactory;
 import fr.peralta.mycellar.domain.wine.Appellation;
 import fr.peralta.mycellar.domain.wine.Country;
 import fr.peralta.mycellar.domain.wine.Region;
+import fr.peralta.mycellar.domain.wine.WineColorEnum;
+import fr.peralta.mycellar.domain.wine.WineTypeEnum;
 import fr.peralta.mycellar.interfaces.client.web.components.shared.Action;
 import fr.peralta.mycellar.interfaces.client.web.components.shared.AjaxTool;
 import fr.peralta.mycellar.interfaces.client.web.components.shared.multiple.MultiplePanel;
+import fr.peralta.mycellar.interfaces.client.web.components.wine.data.WineDataView;
 import fr.peralta.mycellar.interfaces.client.web.pages.shared.PediaSuperPage;
 import fr.peralta.mycellar.interfaces.client.web.shared.LoggingUtils;
 import fr.peralta.mycellar.interfaces.facades.wine.WineServiceFacade;
@@ -50,14 +53,17 @@ public class PediaHomePage extends PediaSuperPage {
     private static final long serialVersionUID = 201108102315L;
     private static Logger logger = LoggerFactory.getLogger(PediaHomePage.class);
 
-    private static final String FORM_COMPONENT_ID = "form";
     private static final String COUNTRIES_COMPONENT_ID = "countries";
     private static final String REGIONS_COMPONENT_ID = "regions";
     private static final String APPELLATIONS_COMPONENT_ID = "appellations";
+    private static final String TYPES_COMPONENT_ID = "types";
+    private static final String COLORS_COMPONENT_ID = "colors";
 
     private final IModel<ArrayList<Country>> countries = new Model<ArrayList<Country>>();
     private final IModel<ArrayList<Region>> regions = new Model<ArrayList<Region>>();
     private final IModel<ArrayList<Appellation>> appellations = new Model<ArrayList<Appellation>>();
+    private final IModel<ArrayList<WineTypeEnum>> types = new Model<ArrayList<WineTypeEnum>>();
+    private final IModel<ArrayList<WineColorEnum>> colors = new Model<ArrayList<WineColorEnum>>();
 
     @SpringBean
     private WineServiceFacade wineServiceFacade;
@@ -68,21 +74,32 @@ public class PediaHomePage extends PediaSuperPage {
     public PediaHomePage(PageParameters parameters) {
         super(parameters);
         setOutputMarkupId(true);
-        Form<?> form = new Form<Object>(FORM_COMPONENT_ID);
-        form.add(new MultiplePanel<Country>(COUNTRIES_COMPONENT_ID, wineServiceFacade
-                .getCountriesWithCounts()));
-        form.add(new MultiplePanel<Region>(REGIONS_COMPONENT_ID, wineServiceFacade
-                .getRegionsWithCounts()));
-        form.add(new MultiplePanel<Appellation>(APPELLATIONS_COMPONENT_ID, wineServiceFacade
-                .getAppellationsWithCounts()));
-        add(form);
+        add(new MultiplePanel<Country>(COUNTRIES_COMPONENT_ID,
+                wineServiceFacade.getCountriesWithCounts()));
+        add(new MultiplePanel<Region>(REGIONS_COMPONENT_ID,
+                wineServiceFacade.getRegionsWithCounts()));
+        add(new MultiplePanel<Appellation>(APPELLATIONS_COMPONENT_ID,
+                wineServiceFacade.getAppellationsWithCounts()));
+        add(new MultiplePanel<WineTypeEnum>(TYPES_COMPONENT_ID,
+                wineServiceFacade.getTypesWithCounts()));
+        add(new MultiplePanel<WineColorEnum>(COLORS_COMPONENT_ID,
+                wineServiceFacade.getColorsWithCounts()));
         countries.setObject(new ArrayList<Country>());
         regions.setObject(new ArrayList<Region>());
         appellations.setObject(new ArrayList<Appellation>());
-        get(FORM_COMPONENT_ID + PATH_SEPARATOR + COUNTRIES_COMPONENT_ID).setDefaultModel(countries);
-        get(FORM_COMPONENT_ID + PATH_SEPARATOR + REGIONS_COMPONENT_ID).setDefaultModel(regions);
-        get(FORM_COMPONENT_ID + PATH_SEPARATOR + APPELLATIONS_COMPONENT_ID).setDefaultModel(
+        types.setObject(new ArrayList<WineTypeEnum>());
+        colors.setObject(new ArrayList<WineColorEnum>());
+        get(COUNTRIES_COMPONENT_ID).setDefaultModel(countries);
+        get(REGIONS_COMPONENT_ID).setDefaultModel(regions);
+        get(APPELLATIONS_COMPONENT_ID).setDefaultModel(appellations);
+        get(TYPES_COMPONENT_ID).setDefaultModel(types);
+        get(COLORS_COMPONENT_ID).setDefaultModel(colors);
+
+        WineDataView wineDataView = new WineDataView("wines", types, colors, countries, regions,
                 appellations);
+        wineDataView.setItemsPerPage(30);
+        add(new WebMarkupContainer("noWines").setVisible(wineDataView.getViewSize() == 0));
+        add(wineDataView);
     }
 
     /**
@@ -103,19 +120,16 @@ public class PediaHomePage extends PediaSuperPage {
                         Map<Region, Long> regionsMap = wineServiceFacade
                                 .getRegionsWithCounts(countries.toArray(new Country[countries
                                         .size()]));
-                        ((MultiplePanel<Region>) get(FORM_COMPONENT_ID + PATH_SEPARATOR
-                                + REGIONS_COMPONENT_ID)).setChoices(regionsMap);
+                        ((MultiplePanel<Region>) get(REGIONS_COMPONENT_ID)).setChoices(regionsMap);
                         Set<Region> regions = regionsMap.keySet();
-                        ((MultiplePanel<Appellation>) get(FORM_COMPONENT_ID + PATH_SEPARATOR
-                                + APPELLATIONS_COMPONENT_ID)).setChoices(wineServiceFacade
-                                .getAppellationsWithCounts(regions.toArray(new Region[regions
-                                        .size()])));
+                        ((MultiplePanel<Appellation>) get(APPELLATIONS_COMPONENT_ID))
+                                .setChoices(wineServiceFacade.getAppellationsWithCounts(regions
+                                        .toArray(new Region[regions.size()])));
                     } else if (REGIONS_COMPONENT_ID.equals(component.getId())) {
                         List<Region> regions = (List<Region>) component.getDefaultModelObject();
-                        ((MultiplePanel<Appellation>) get(FORM_COMPONENT_ID + PATH_SEPARATOR
-                                + APPELLATIONS_COMPONENT_ID)).setChoices(wineServiceFacade
-                                .getAppellationsWithCounts(regions.toArray(new Region[regions
-                                        .size()])));
+                        ((MultiplePanel<Appellation>) get(APPELLATIONS_COMPONENT_ID))
+                                .setChoices(wineServiceFacade.getAppellationsWithCounts(regions
+                                        .toArray(new Region[regions.size()])));
                     }
                 }
                 break;

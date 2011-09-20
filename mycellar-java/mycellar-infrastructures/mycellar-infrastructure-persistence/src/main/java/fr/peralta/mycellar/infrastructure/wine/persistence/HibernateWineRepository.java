@@ -31,6 +31,7 @@ import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Expression;
 import javax.persistence.criteria.JoinType;
+import javax.persistence.criteria.Order;
 import javax.persistence.criteria.Path;
 import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
@@ -92,14 +93,13 @@ public class HibernateWineRepository implements WineRepository {
         Expression<Long> count = criteriaBuilder.count(root.joinSet("appellations", JoinType.LEFT)
                 .joinSet("wines", JoinType.LEFT));
 
-        CriteriaQuery<Tuple> select = query.multiselect(root, count);
+        query = query.multiselect(root, count);
         if ((countries != null) && (countries.length > 0)) {
-            select = select.where(root.<Country> get("country").in(Arrays.asList(countries)));
+            query = query.where(root.get("country").in(Arrays.asList(countries)));
         }
 
         List<Tuple> tuples = entityManager.createQuery(
-                select.groupBy(root).orderBy(criteriaBuilder.asc(root.get("name"))))
-                .getResultList();
+                query.groupBy(root).orderBy(criteriaBuilder.asc(root.get("name")))).getResultList();
         Map<Region, Long> result = new LinkedHashMap<Region, Long>();
         for (Tuple tuple : tuples) {
             result.put(tuple.get(root), tuple.get(count));
@@ -118,14 +118,13 @@ public class HibernateWineRepository implements WineRepository {
         Root<Appellation> root = query.from(Appellation.class);
         Expression<Long> count = criteriaBuilder.count(root.joinSet("wines", JoinType.LEFT));
 
-        CriteriaQuery<Tuple> select = query.multiselect(root, count);
+        query = query.multiselect(root, count);
         if ((regions != null) && (regions.length > 0)) {
-            select = select.where(root.<Region> get("region").in(Arrays.asList(regions)));
+            query = query.where(root.get("region").in(Arrays.asList(regions)));
         }
 
         List<Tuple> tuples = entityManager.createQuery(
-                select.groupBy(root).orderBy(criteriaBuilder.asc(root.get("name"))))
-                .getResultList();
+                query.groupBy(root).orderBy(criteriaBuilder.asc(root.get("name")))).getResultList();
         Map<Appellation, Long> result = new LinkedHashMap<Appellation, Long>();
         for (Tuple tuple : tuples) {
             result.put(tuple.get(root), tuple.get(count));
@@ -151,18 +150,20 @@ public class HibernateWineRepository implements WineRepository {
      * {@inheritDoc}
      */
     @Override
-    public Map<WineTypeEnum, Long> getAllTypeFromProducerWithCounts(Producer producer) {
+    public Map<WineTypeEnum, Long> getAllTypesFromProducersWithCounts(Producer... producers) {
         CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();
         CriteriaQuery<Tuple> query = criteriaBuilder.createTupleQuery();
         Root<Wine> root = query.from(Wine.class);
         Path<WineTypeEnum> type = root.get("type");
         Expression<Long> count = criteriaBuilder.count(type);
 
-        List<Tuple> tuples = entityManager
-                .createQuery(
-                        query.multiselect(type, count)
-                                .where(criteriaBuilder.equal(root.get("producer"), producer))
-                                .groupBy(type)).getResultList();
+        query = query.multiselect(type, count);
+
+        if ((producers != null) && (producers.length > 0)) {
+            query = query.where(root.get("producer").in(Arrays.asList(producers)));
+        }
+
+        List<Tuple> tuples = entityManager.createQuery(query.groupBy(type)).getResultList();
         Map<WineTypeEnum, Long> result = new LinkedHashMap<WineTypeEnum, Long>();
         for (Tuple tuple : tuples) {
             result.put(tuple.get(type), tuple.get(count));
@@ -174,20 +175,42 @@ public class HibernateWineRepository implements WineRepository {
      * {@inheritDoc}
      */
     @Override
-    public Map<WineColorEnum, Long> getAllColorFromProducerAndTypeWithCounts(Producer producer,
-            WineTypeEnum type) {
+    public Map<WineColorEnum, Long> getAllColorsFromTypesAndProducersWithCounts(
+            WineTypeEnum[] types, Producer... producers) {
         CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();
         CriteriaQuery<Tuple> query = criteriaBuilder.createTupleQuery();
         Root<Wine> root = query.from(Wine.class);
         Path<WineColorEnum> color = root.get("color");
         Expression<Long> count = criteriaBuilder.count(color);
 
-        List<Tuple> tuples = entityManager.createQuery(
-                query.multiselect(color, count)
-                        .where(criteriaBuilder.and(
-                                criteriaBuilder.equal(root.get("producer"), producer),
-                                criteriaBuilder.equal(root.get("type"), type))).groupBy(color))
-                .getResultList();
+        query = query.multiselect(color, count);
+
+        List<Predicate> predicates = new ArrayList<Predicate>();
+        if ((producers != null) && (producers.length > 0)) {
+            predicates.add(root.get("producer").in(Arrays.asList(producers)));
+        }
+        if ((producers != null) && (producers.length > 0)) {
+            predicates.add(root.get("type").in(Arrays.asList(types)));
+        }
+
+        Predicate wherePredicate;
+        switch (predicates.size()) {
+        case 0:
+            wherePredicate = null;
+            break;
+        case 1:
+            wherePredicate = predicates.get(0);
+        default:
+            wherePredicate = criteriaBuilder
+                    .and(predicates.toArray(new Predicate[predicates.size()]));
+            break;
+        }
+
+        if (wherePredicate != null) {
+            query = query.where(wherePredicate);
+        }
+
+        List<Tuple> tuples = entityManager.createQuery(query.groupBy(color)).getResultList();
         Map<WineColorEnum, Long> result = new LinkedHashMap<WineColorEnum, Long>();
         for (Tuple tuple : tuples) {
             result.put(tuple.get(color), tuple.get(count));
@@ -252,23 +275,106 @@ public class HibernateWineRepository implements WineRepository {
         case 1:
             wherePredicate = predicates.get(0);
         default:
-            wherePredicate = criteriaBuilder.and(criteriaBuilder.and(predicates
-                    .toArray(new Predicate[predicates.size()])));
+            wherePredicate = criteriaBuilder
+                    .and(predicates.toArray(new Predicate[predicates.size()]));
             break;
         }
+
+        query = query.select(root);
         if (wherePredicate != null) {
-            return entityManager
-                    .createQuery(
-                            query.where(wherePredicate).orderBy(
-                                    criteriaBuilder.asc(root.get("name")),
-                                    criteriaBuilder.desc(root.get("vintage")))).setMaxResults(10)
-                    .getResultList();
-        } else {
-            return entityManager
-                    .createQuery(
-                            query.orderBy(criteriaBuilder.asc(root.get("name")),
-                                    criteriaBuilder.desc(root.get("vintage")))).setMaxResults(10)
-                    .getResultList();
+            query = query.where(wherePredicate);
         }
+        return entityManager
+                .createQuery(
+                        query.orderBy(criteriaBuilder.asc(root.get("name")),
+                                criteriaBuilder.desc(root.get("vintage")))).setMaxResults(10)
+                .getResultList();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public List<Wine> getAllWinesFrom(List<WineTypeEnum> types, List<WineColorEnum> colors,
+            List<Country> countries, List<Region> regions, List<Appellation> appellations,
+            int first, int count) {
+        CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();
+        CriteriaQuery<Wine> query = criteriaBuilder.createQuery(Wine.class);
+
+        Root<Wine> root = query.from(Wine.class);
+        List<Predicate> predicates = new ArrayList<Predicate>();
+        if (types.size() > 0) {
+            predicates.add(root.get("type").in(types));
+        }
+        if (colors.size() > 0) {
+            predicates.add(root.get("color").in(colors));
+        }
+        if (appellations.size() > 0) {
+            predicates.add(root.get("appellation").in(appellations));
+        }
+        // TODO manage region and country cases
+
+        Predicate wherePredicate;
+        switch (predicates.size()) {
+        case 0:
+            wherePredicate = null;
+            break;
+        case 1:
+            wherePredicate = predicates.get(0);
+        default:
+            wherePredicate = criteriaBuilder
+                    .and(predicates.toArray(new Predicate[predicates.size()]));
+            break;
+        }
+
+        List<Order> orders = new ArrayList<Order>();
+        orders.add(criteriaBuilder.asc(root.get("appellation").get("region").get("country")
+                .get("name")));
+        orders.add(criteriaBuilder.asc(root.get("appellation").get("region").get("name")));
+        orders.add(criteriaBuilder.asc(root.get("appellation").get("name")));
+
+        query = query.select(root);
+        if (wherePredicate != null) {
+            query = query.where(wherePredicate);
+        }
+        return entityManager.createQuery(query.orderBy(orders)).setFirstResult(first)
+                .setMaxResults(count).getResultList();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public long countAllWinesFrom(List<Country> countries, List<Region> regions,
+            List<Appellation> appellations) {
+        CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();
+        CriteriaQuery<Long> query = criteriaBuilder.createQuery(Long.class);
+
+        Root<Wine> root = query.from(Wine.class);
+        List<Predicate> predicates = new ArrayList<Predicate>();
+        if (appellations.size() > 0) {
+            predicates.add(root.get("appellation").in(appellations));
+        }
+        // TODO manage region and country cases
+
+        Predicate wherePredicate;
+        switch (predicates.size()) {
+        case 0:
+            wherePredicate = null;
+            break;
+        case 1:
+            wherePredicate = predicates.get(0);
+        default:
+            wherePredicate = criteriaBuilder
+                    .and(predicates.toArray(new Predicate[predicates.size()]));
+            break;
+        }
+
+        query = query.select(criteriaBuilder.count(root));
+
+        if (wherePredicate != null) {
+            query.where(wherePredicate);
+        }
+        return entityManager.createQuery(query).getSingleResult();
     }
 }

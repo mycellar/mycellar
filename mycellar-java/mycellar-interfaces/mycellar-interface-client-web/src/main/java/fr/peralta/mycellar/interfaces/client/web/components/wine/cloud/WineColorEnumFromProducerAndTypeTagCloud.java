@@ -67,8 +67,8 @@ public class WineColorEnumFromProducerAndTypeTagCloud extends SimpleTagCloud<Win
     @Override
     protected TagCloudPanel<WineColorEnum> createTagCloudPanel(String id) {
         return new TagCloudPanel<WineColorEnum>(id,
-                getListFrom(wineServiceFacade.getColorWithCounts(producerModel.getObject(),
-                        wineTypeEnumModel.getObject())));
+                getListFrom(wineServiceFacade.getColorsWithCounts(wineTypeEnumModel.getObject(),
+                        producerModel.getObject())));
     }
 
     /**

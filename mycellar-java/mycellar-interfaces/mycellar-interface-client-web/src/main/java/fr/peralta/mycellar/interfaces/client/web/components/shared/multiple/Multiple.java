@@ -20,6 +20,7 @@ package fr.peralta.mycellar.interfaces.client.web.components.shared.multiple;
 
 import java.util.List;
 
+import org.apache.wicket.AttributeModifier;
 import org.apache.wicket.markup.html.list.ListItem;
 import org.apache.wicket.markup.html.list.PropertyListView;
 
@@ -41,8 +42,13 @@ class Multiple<O> extends PropertyListView<MultipleData<O>> {
     /**
      * {@inheritDoc}
      */
+    @SuppressWarnings("unchecked")
     @Override
     protected void populateItem(ListItem<MultipleData<O>> item) {
+        if (((MultiplePanel<O>) getParent()).getModelObject().contains(
+                item.getModelObject().getObject())) {
+            item.add(new AttributeModifier("class", "selected"));
+        }
         item.add(new MultipleSelection<O>("object"));
     }
 

@@ -18,7 +18,6 @@
  */
 package fr.peralta.mycellar.application.wine.impl;
 
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -48,13 +47,16 @@ public class WineServiceImpl implements WineService {
      * {@inheritDoc}
      */
     @Override
-    public Map<WineTypeEnum, Long> getAllTypeFromProducerWithCounts(Producer producer) {
+    public Map<WineTypeEnum, Long> getAllTypesFromProducersWithCounts(Producer... producers) {
         Map<WineTypeEnum, Long> result;
-        if (producer.getId() != null) {
-            result = wineRepository.getAllTypeFromProducerWithCounts(producer);
-        } else {
-            result = new HashMap<WineTypeEnum, Long>();
+        Producer[] persistedProducers = new Producer[producers.length];
+        int i = 0;
+        for (Producer producer : producers) {
+            if (producer.getId() != null) {
+                persistedProducers[i++] = producer;
+            }
         }
+        result = wineRepository.getAllTypesFromProducersWithCounts(persistedProducers);
         // add missing types
         for (WineTypeEnum color : WineTypeEnum.values()) {
             if (!result.containsKey(color)) {
@@ -68,14 +70,17 @@ public class WineServiceImpl implements WineService {
      * {@inheritDoc}
      */
     @Override
-    public Map<WineColorEnum, Long> getAllColorFromProducerAndTypeWithCounts(Producer producer,
-            WineTypeEnum type) {
-        Map<WineColorEnum, Long> result;
-        if (producer.getId() != null) {
-            result = wineRepository.getAllColorFromProducerAndTypeWithCounts(producer, type);
-        } else {
-            result = new HashMap<WineColorEnum, Long>();
+    public Map<WineColorEnum, Long> getAllColorsFromTypesAndProducersWithCounts(
+            WineTypeEnum[] types, Producer... producers) {
+        Producer[] persistedProducers = new Producer[producers.length];
+        int i = 0;
+        for (Producer producer : producers) {
+            if (producer.getId() != null) {
+                persistedProducers[i++] = producer;
+            }
         }
+        Map<WineColorEnum, Long> result = wineRepository
+                .getAllColorsFromTypesAndProducersWithCounts(types, persistedProducers);
         // add missing colors
         for (WineColorEnum color : WineColorEnum.values()) {
             if (!result.containsKey(color)) {
@@ -114,6 +119,26 @@ public class WineServiceImpl implements WineService {
         Integer vintage = wine.getVintage();
         return wineRepository.getAllWinesFrom(producer, appellation, region, country, type, color,
                 vintage);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public List<Wine> getWinesFrom(List<WineTypeEnum> types, List<WineColorEnum> colors,
+            List<Country> countries, List<Region> regions, List<Appellation> appellations,
+            int first, int count) {
+        return wineRepository.getAllWinesFrom(types, colors, countries, regions, appellations,
+                first, count);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public long countWinesFrom(List<Country> countries, List<Region> regions,
+            List<Appellation> appellations) {
+        return wineRepository.countAllWinesFrom(countries, regions, appellations);
     }
 
     /**

@@ -2,5 +2,13 @@
 <!DOCTYPE properties SYSTEM "http://java.sun.com/dtd/properties.dtd">
 <properties>
   <entry key="header">Vinopedia</entry>
-  <entry key="search">Recherche</entry>
+  <entry key="country">Pays</entry>
+  <entry key="region">Région</entry>
+  <entry key="appellation">Appellation</entry>
+  <entry key="producer">Producteur</entry>
+  <entry key="name">Nom</entry>
+  <entry key="color">Couleur</entry>
+  <entry key="type">Type</entry>
+  <entry key="vintage">Millésime</entry>
+  <entry key="noMatchingWines">Aucun vin ne correspond</entry>
 </properties> 

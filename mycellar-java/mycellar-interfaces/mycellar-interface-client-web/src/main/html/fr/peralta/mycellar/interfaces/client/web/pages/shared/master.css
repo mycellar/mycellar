@@ -271,6 +271,14 @@ ul.multiple {
   padding: 2px;
 }
 
+ul.multiple li {
+  padding: 1px;
+}
+
+ul.multiple li.selected {
+  border: 1px dotted;
+}
+
 /** LIST COMPONENT **/
 ul.listComponent {
   list-style: none;
@@ -304,4 +312,15 @@ div.selector {
 div.selector:last-of-type {
   float: none;
   margin-right: 0;
+}
+
+/** SEARCH PANEL **/
+div.searchPanel {
+  margin-bottom: 10px;
+  padding: 5px;
+  border-style: solid;
+  border-width: 2px;
+  border-color: #3c0017;
+  border-radius: 5px;
+  background: #ffdc95;
 }
