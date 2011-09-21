@@ -20,6 +20,9 @@ package fr.peralta.mycellar.domain.stock;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
+import javax.persistence.DiscriminatorColumn;
+import javax.persistence.DiscriminatorType;
+import javax.persistence.DiscriminatorValue;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
@@ -41,6 +44,8 @@ import fr.peralta.mycellar.domain.shared.IdentifiedEntity;
 @Entity
 @Table(name = "MOVEMENT")
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE)
+@DiscriminatorColumn(name = "WAY", discriminatorType = DiscriminatorType.CHAR)
+@DiscriminatorValue("N")
 @SequenceGenerator(name = "MOVEMENT_ID_GENERATOR", allocationSize = 1)
 public abstract class Movement<E extends Movement<E>> extends IdentifiedEntity<E> {
 

@@ -19,6 +19,7 @@
 package fr.peralta.mycellar.domain.stock;
 
 import javax.persistence.Column;
+import javax.persistence.DiscriminatorValue;
 import javax.persistence.Entity;
 
 import org.apache.commons.lang3.ObjectUtils;
@@ -27,6 +28,7 @@ import org.apache.commons.lang3.ObjectUtils;
  * @author bperalta
  */
 @Entity
+@DiscriminatorValue("O")
 public class Output extends Movement<Output> {
 
     private static final long serialVersionUID = 201109161849L;
