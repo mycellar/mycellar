@@ -18,7 +18,7 @@
     </nav>
     <wicket:extend>
       <section>
-        <div class="searchPanel">
+        <div class="panel">
           <div wicket:id="types" class="selector" />
           <div wicket:id="colors" class="selector" />
           <div wicket:id="countries" class="selector" />
@@ -27,6 +27,11 @@
         </div>
         <table class="large border">
           <thead>
+            <tr>
+              <td class="tableNav" colSpan="8">
+                <span wicket:id="winesTopNav" />
+              </td>
+            </tr>
             <tr>
               <th><wicket:message key="country">Country</wicket:message></th>
               <th><wicket:message key="region">Region</wicket:message></th>
@@ -53,6 +58,13 @@
               <td colSpan="8" class="ca"><wicket:message key="noMatchingWines">No matching wines</wicket:message></td>
             </tr>
           </tbody>
+          <tfoot>
+            <tr>
+              <td colSpan="8" class="tableNav">
+                <span wicket:id="winesBottomNav" />
+              </td>
+            </tr>
+          </tfoot>
         </table>
       </section>
     </wicket:extend>

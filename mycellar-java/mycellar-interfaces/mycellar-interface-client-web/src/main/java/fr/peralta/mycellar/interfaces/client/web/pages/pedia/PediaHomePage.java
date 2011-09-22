@@ -22,6 +22,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import org.apache.wicket.ajax.markup.html.navigation.paging.AjaxPagingNavigator;
 import org.apache.wicket.event.IEvent;
 import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.model.CompoundPropertyModel;
@@ -88,9 +89,11 @@ public class PediaHomePage extends PediaSuperPage {
 
         WineDataView wineDataView = new WineDataView("wines", new Model<WineSearchForm>(
                 (WineSearchForm) getDefaultModelObject()));
-        wineDataView.setItemsPerPage(30);
+        wineDataView.setItemsPerPage(25);
         add(new WebMarkupContainer("noWines").setVisible(wineDataView.getViewSize() == 0));
         add(wineDataView);
+        add(new AjaxPagingNavigator("winesTopNav", wineDataView));
+        add(new AjaxPagingNavigator("winesBottomNav", wineDataView));
     }
 
     /**
