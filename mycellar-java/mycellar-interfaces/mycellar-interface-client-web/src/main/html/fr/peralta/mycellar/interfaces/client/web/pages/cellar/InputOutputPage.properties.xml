@@ -7,5 +7,5 @@
   <entry key="bottle">Référence</entry>
   <entry key="number">Quantité</entry>
   <entry key="io">E/S</entry>
-  <entry key="noIO">Pas d'entrées/sorties</entry>
+  <entry key="noMatchingMovements">Aucune entrées/sorties ne correspond</entry>
 </properties> 

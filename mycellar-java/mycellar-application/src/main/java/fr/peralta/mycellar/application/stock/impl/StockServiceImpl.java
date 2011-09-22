@@ -33,6 +33,8 @@ import fr.peralta.mycellar.domain.stock.Cellar;
 import fr.peralta.mycellar.domain.stock.Input;
 import fr.peralta.mycellar.domain.stock.Movement;
 import fr.peralta.mycellar.domain.stock.Stock;
+import fr.peralta.mycellar.domain.stock.repository.MovementOrder;
+import fr.peralta.mycellar.domain.stock.repository.MovementSearchForm;
 import fr.peralta.mycellar.domain.stock.repository.StockRepository;
 
 /**
@@ -120,8 +122,17 @@ public class StockServiceImpl implements StockService {
      * {@inheritDoc}
      */
     @Override
-    public List<Movement<?>> getAllMovementsFromCellars(Cellar... cellars) {
-        return stockRepository.getAllMovementsFromCellars(cellars);
+    public long countMovements(MovementSearchForm searchForm) {
+        return stockRepository.countMovements(searchForm);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public List<Movement<?>> getMovements(MovementSearchForm searchForm, MovementOrder orders,
+            int first, int count) {
+        return stockRepository.getMovements(searchForm, orders, first, count);
     }
 
     /**

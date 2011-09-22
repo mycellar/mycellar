@@ -18,24 +18,25 @@
  */
 package fr.peralta.mycellar.interfaces.client.web.pages.cellar;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Set;
-
+import org.apache.wicket.ajax.markup.html.navigation.paging.AjaxPagingNavigator;
+import org.apache.wicket.event.IEvent;
 import org.apache.wicket.markup.html.WebMarkupContainer;
-import org.apache.wicket.markup.html.basic.Label;
-import org.apache.wicket.markup.html.list.ListItem;
-import org.apache.wicket.markup.html.list.ListView;
 import org.apache.wicket.model.CompoundPropertyModel;
+import org.apache.wicket.model.Model;
 import org.apache.wicket.request.mapper.parameter.PageParameters;
 import org.apache.wicket.spring.injection.annot.SpringBean;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import fr.peralta.mycellar.domain.stock.Cellar;
-import fr.peralta.mycellar.domain.stock.Input;
-import fr.peralta.mycellar.domain.stock.Movement;
+import fr.peralta.mycellar.domain.stock.repository.MovementSearchForm;
+import fr.peralta.mycellar.interfaces.client.web.components.shared.Action;
+import fr.peralta.mycellar.interfaces.client.web.components.shared.AjaxTool;
+import fr.peralta.mycellar.interfaces.client.web.components.shared.multiple.MultiplePanel;
+import fr.peralta.mycellar.interfaces.client.web.components.wine.data.MovementDataView;
 import fr.peralta.mycellar.interfaces.client.web.pages.shared.CellarSuperPage;
-import fr.peralta.mycellar.interfaces.client.web.renderers.shared.RendererServiceFacade;
 import fr.peralta.mycellar.interfaces.client.web.security.UserKey;
+import fr.peralta.mycellar.interfaces.client.web.shared.LoggingUtils;
 import fr.peralta.mycellar.interfaces.facades.stock.StockServiceFacade;
 
 /**
@@ -44,44 +45,47 @@ import fr.peralta.mycellar.interfaces.facades.stock.StockServiceFacade;
 public class InputOutputPage extends CellarSuperPage {
 
     private static final long serialVersionUID = 201108170920L;
+    private static Logger logger = LoggerFactory.getLogger(InputOutputPage.class);
+
+    private static final String CELLARS_COMPONENT_ID = "cellars";
 
     @SpringBean
     private StockServiceFacade stockServiceFacade;
-
-    @SpringBean
-    private RendererServiceFacade rendererServiceFacade;
 
     /**
      * @param parameters
      */
     public InputOutputPage(PageParameters parameters) {
         super(parameters);
-        Set<Cellar> cellars = stockServiceFacade.getAllCellarsWithCountsFromUser(
-                UserKey.getUserLoggedIn()).keySet();
-        final List<Movement<?>> movements;
-        if ((cellars == null) || (cellars.size() == 0)) {
-            movements = new ArrayList<Movement<?>>();
-        } else {
-            movements = stockServiceFacade.getAllMovementsFromCellars(cellars
-                    .toArray(new Cellar[cellars.size()]));
-        }
-        add(new ListView<Movement<?>>("list", movements) {
-            private static final long serialVersionUID = 201109161902L;
+        setOutputMarkupId(true);
+        add(new MultiplePanel<Cellar>(CELLARS_COMPONENT_ID,
+                stockServiceFacade.getAllCellarsWithCountsFromUser(UserKey.getUserLoggedIn())));
+        setDefaultModel(new CompoundPropertyModel<MovementSearchForm>(new MovementSearchForm(
+                UserKey.getUserLoggedIn())));
 
-            /**
-             * {@inheritDoc}
-             */
-            @Override
-            protected void populateItem(ListItem<Movement<?>> item) {
-                item.setModel(new CompoundPropertyModel<Movement<?>>(item.getModel()));
-                item.add(new Label("date"));
-                item.add(new Label("cellar.name"));
-                item.add(new Label("bottle", rendererServiceFacade.render(item.getModelObject()
-                        .getBottle())));
-                item.add(new Label("number"));
-                item.add(new Label("io", (item.getModelObject() instanceof Input) ? "I" : "O"));
+        MovementDataView movementDataView = new MovementDataView("movements",
+                new Model<MovementSearchForm>((MovementSearchForm) getDefaultModelObject()));
+        movementDataView.setItemsPerPage(25);
+        add(new WebMarkupContainer("noMovements").setVisible(movementDataView.getViewSize() == 0));
+        add(movementDataView);
+        add(new AjaxPagingNavigator("movementsTopNav", movementDataView));
+        add(new AjaxPagingNavigator("movementsBottomNav", movementDataView));
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void onEvent(IEvent<?> event) {
+        LoggingUtils.logEventReceived(logger, event);
+        if (event.getPayload() instanceof Action) {
+            Action action = (Action) event.getPayload();
+            switch (action) {
+            case MODEL_CHANGED:
+                break;
             }
-        });
-        add(new WebMarkupContainer("noIO").setVisibilityAllowed(movements.isEmpty()));
+            AjaxTool.ajaxReRender(this);
+        }
+        LoggingUtils.logEventProcessed(logger, event);
     }
 }

@@ -46,7 +46,7 @@ import fr.peralta.mycellar.domain.wine.repository.WineSearchForm;
 import fr.peralta.mycellar.interfaces.client.web.components.shared.Action;
 import fr.peralta.mycellar.interfaces.client.web.components.shared.AjaxTool;
 import fr.peralta.mycellar.interfaces.client.web.components.shared.multiple.MultiplePanel;
-import fr.peralta.mycellar.interfaces.client.web.components.wine.data.WineDataView;
+import fr.peralta.mycellar.interfaces.client.web.components.stock.data.WineDataView;
 import fr.peralta.mycellar.interfaces.client.web.pages.shared.PediaSuperPage;
 import fr.peralta.mycellar.interfaces.client.web.shared.LoggingUtils;
 import fr.peralta.mycellar.interfaces.facades.wine.WineServiceFacade;

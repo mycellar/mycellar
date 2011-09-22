@@ -16,13 +16,11 @@
  * You should have received a copy of the GNU General Public License
  * along with MyCellar. If not, see <http://www.gnu.org/licenses/>.
  */
-package fr.peralta.mycellar.domain.wine.repository;
-
-import fr.peralta.mycellar.domain.shared.repository.AbstractEntityOrder;
+package fr.peralta.mycellar.domain.stock.repository;
 
 /**
  * @author speralta
  */
-public class WineOrder extends AbstractEntityOrder<WineOrderEnum, WineOrder> {
-
+public enum MovementOrderEnum {
+    DATE
 }

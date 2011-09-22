@@ -32,6 +32,8 @@ import fr.peralta.mycellar.domain.stock.Arrival;
 import fr.peralta.mycellar.domain.stock.Bottle;
 import fr.peralta.mycellar.domain.stock.Cellar;
 import fr.peralta.mycellar.domain.stock.Movement;
+import fr.peralta.mycellar.domain.stock.repository.MovementOrder;
+import fr.peralta.mycellar.domain.stock.repository.MovementSearchForm;
 import fr.peralta.mycellar.domain.user.User;
 import fr.peralta.mycellar.domain.wine.Format;
 import fr.peralta.mycellar.domain.wine.Wine;
@@ -80,8 +82,18 @@ public class StockServiceFacadeImpl implements StockServiceFacade {
      */
     @Override
     @Transactional(readOnly = true)
-    public List<Movement<?>> getAllMovementsFromCellars(Cellar... cellars) {
-        return stockService.getAllMovementsFromCellars(cellars);
+    public List<Movement<?>> getMovements(MovementSearchForm searchForm, MovementOrder orders,
+            int first, int count) {
+        return stockService.getMovements(searchForm, orders, first, count);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    @Transactional(readOnly = true)
+    public long countMovements(MovementSearchForm searchForm) {
+        return stockService.countMovements(searchForm);
     }
 
     /**

@@ -19,10 +19,10 @@
 package fr.peralta.mycellar.infrastructure.stock.repository;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
@@ -31,30 +31,72 @@ import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Expression;
 import javax.persistence.criteria.JoinType;
+import javax.persistence.criteria.Order;
+import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
 
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Repository;
 
+import fr.peralta.mycellar.domain.shared.repository.OrderWayEnum;
 import fr.peralta.mycellar.domain.stock.Bottle;
 import fr.peralta.mycellar.domain.stock.Cellar;
 import fr.peralta.mycellar.domain.stock.Input;
 import fr.peralta.mycellar.domain.stock.Movement;
 import fr.peralta.mycellar.domain.stock.Stock;
+import fr.peralta.mycellar.domain.stock.repository.MovementOrder;
+import fr.peralta.mycellar.domain.stock.repository.MovementOrderEnum;
+import fr.peralta.mycellar.domain.stock.repository.MovementSearchForm;
 import fr.peralta.mycellar.domain.stock.repository.StockRepository;
 import fr.peralta.mycellar.domain.user.User;
 import fr.peralta.mycellar.domain.wine.Format;
 import fr.peralta.mycellar.domain.wine.Wine;
+import fr.peralta.mycellar.infrastructure.shared.repository.HibernateRepository;
 
 /**
  * @author speralta
  */
 @Repository
 @Qualifier("hibernate")
-public class HibernateStockRepository implements StockRepository {
+@SuppressWarnings("rawtypes")
+public class HibernateStockRepository extends HibernateRepository implements StockRepository {
 
     @PersistenceContext
     private EntityManager entityManager;
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public long countMovements(MovementSearchForm searchForm) {
+        CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();
+        CriteriaQuery<Long> query = criteriaBuilder.createQuery(Long.class);
+        Root<Movement> root = query.from(Movement.class);
+        query = query.select(criteriaBuilder.count(root));
+        query = where(query, root, searchForm, criteriaBuilder);
+        return entityManager.createQuery(query).getSingleResult();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public List<Movement<?>> getMovements(MovementSearchForm searchForm, MovementOrder orders,
+            int first, int count) {
+        CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();
+        CriteriaQuery<Movement> query = criteriaBuilder.createQuery(Movement.class);
+        Root<Movement> root = query.from(Movement.class);
+        query = query.select(root);
+        query = where(query, root, searchForm, criteriaBuilder);
+        List<Movement> queryResult = entityManager
+                .createQuery(orderBy(query, root, orders, criteriaBuilder)).setFirstResult(first)
+                .setMaxResults(count).getResultList();
+        List<Movement<?>> result = new ArrayList<Movement<?>>(queryResult.size());
+        for (Movement movement : queryResult) {
+            result.add(movement);
+        }
+        return result;
+    }
 
     /**
      * {@inheritDoc}
@@ -128,26 +170,6 @@ public class HibernateStockRepository implements StockRepository {
     /**
      * {@inheritDoc}
      */
-    @SuppressWarnings("rawtypes")
-    @Override
-    public List<Movement<?>> getAllMovementsFromCellars(Cellar... cellars) {
-        CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();
-        CriteriaQuery<Movement> query = criteriaBuilder.createQuery(Movement.class);
-
-        Root<Movement> root = query.from(Movement.class);
-        List<Movement> queryResult = entityManager.createQuery(
-                query.select(root).where(root.get("cellar").in(Arrays.asList(cellars)))
-                        .orderBy(criteriaBuilder.desc(root.get("date")))).getResultList();
-        List<Movement<?>> result = new ArrayList<Movement<?>>(queryResult.size());
-        for (Movement movement : queryResult) {
-            result.add(movement);
-        }
-        return result;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public Cellar save(Cellar cellar) {
         return entityManager.merge(cellar);
@@ -169,4 +191,55 @@ public class HibernateStockRepository implements StockRepository {
         return entityManager.merge(stock);
     }
 
+    /**
+     * @param query
+     * @param root
+     * @param searchForm
+     * @param criteriaBuilder
+     * @return
+     */
+    private <O> CriteriaQuery<O> where(CriteriaQuery<O> query, Root<Movement> root,
+            MovementSearchForm searchForm, CriteriaBuilder criteriaBuilder) {
+        List<Predicate> predicates = new ArrayList<Predicate>();
+        in(predicates, searchForm.getCellars(), root.get("cellar"));
+        in(predicates, searchForm.getUser(), root.get("cellar").get("owner"), criteriaBuilder);
+
+        return where(query, criteriaBuilder, predicates);
+    }
+
+    private <O> CriteriaQuery<O> orderBy(CriteriaQuery<O> query, Root<Movement> root,
+            MovementOrder orders, CriteriaBuilder criteriaBuilder) {
+        List<Order> orderList = new ArrayList<Order>();
+        for (Entry<MovementOrderEnum, OrderWayEnum> entry : orders.entrySet()) {
+            switch (entry.getValue()) {
+            case ASC:
+                orderList.add(criteriaBuilder.asc(getPath(root, entry.getKey())));
+                break;
+            case DESC:
+                orderList.add(criteriaBuilder.desc(getPath(root, entry.getKey())));
+                break;
+            default:
+                throw new IllegalStateException("Unknown " + OrderWayEnum.class.getSimpleName()
+                        + " value [" + entry.getValue() + "].");
+            }
+        }
+        if (orderList.size() > 0) {
+            return query.orderBy(orderList);
+        }
+        return query;
+    }
+
+    /**
+     * @param key
+     * @return
+     */
+    private Expression<?> getPath(Root<Movement> root, MovementOrderEnum order) {
+        switch (order) {
+        case DATE:
+            return root.get("date");
+        default:
+            throw new IllegalStateException("Unknwon " + MovementOrderEnum.class.getSimpleName()
+                    + " value [" + order + "].");
+        }
+    }
 }

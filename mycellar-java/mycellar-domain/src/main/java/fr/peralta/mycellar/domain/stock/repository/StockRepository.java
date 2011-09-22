@@ -71,9 +71,19 @@ public interface StockRepository {
     Stock save(Stock stock);
 
     /**
-     * @param cellars
+     * @param searchForm
      * @return
      */
-    List<Movement<?>> getAllMovementsFromCellars(Cellar... cellars);
+    long countMovements(MovementSearchForm searchForm);
+
+    /**
+     * @param searchForm
+     * @param orders
+     * @param first
+     * @param count
+     * @return
+     */
+    List<Movement<?>> getMovements(MovementSearchForm searchForm, MovementOrder orders, int first,
+            int count);
 
 }

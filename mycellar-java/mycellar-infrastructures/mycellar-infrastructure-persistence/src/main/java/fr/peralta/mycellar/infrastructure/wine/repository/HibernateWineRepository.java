@@ -20,7 +20,6 @@ package fr.peralta.mycellar.infrastructure.wine.repository;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collection;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -40,7 +39,6 @@ import javax.persistence.criteria.Root;
 
 import org.springframework.stereotype.Repository;
 
-import fr.peralta.mycellar.domain.shared.IdentifiedEntity;
 import fr.peralta.mycellar.domain.shared.repository.OrderWayEnum;
 import fr.peralta.mycellar.domain.wine.Appellation;
 import fr.peralta.mycellar.domain.wine.Country;
@@ -59,12 +57,13 @@ import fr.peralta.mycellar.domain.wine.repository.WineOrder;
 import fr.peralta.mycellar.domain.wine.repository.WineOrderEnum;
 import fr.peralta.mycellar.domain.wine.repository.WineRepository;
 import fr.peralta.mycellar.domain.wine.repository.WineSearchForm;
+import fr.peralta.mycellar.infrastructure.shared.repository.HibernateRepository;
 
 /**
  * @author speralta
  */
 @Repository
-public class HibernateWineRepository implements WineRepository {
+public class HibernateWineRepository extends HibernateRepository implements WineRepository {
 
     @PersistenceContext
     private EntityManager entityManager;
@@ -299,49 +298,6 @@ public class HibernateWineRepository implements WineRepository {
         // TODO manage region and country cases
 
         return where(query, criteriaBuilder, predicates);
-    }
-
-    /**
-     * @param query
-     * @param criteriaBuilder
-     * @param predicates
-     * @return
-     */
-    private <O> CriteriaQuery<O> where(CriteriaQuery<O> query, CriteriaBuilder criteriaBuilder,
-            List<Predicate> predicates) {
-        Predicate wherePredicate;
-        switch (predicates.size()) {
-        case 0:
-            wherePredicate = null;
-            break;
-        case 1:
-            wherePredicate = predicates.get(0);
-        default:
-            wherePredicate = criteriaBuilder
-                    .and(predicates.toArray(new Predicate[predicates.size()]));
-            break;
-        }
-
-        if (wherePredicate != null) {
-            query.where(wherePredicate);
-        }
-        return query;
-    }
-
-    private void in(List<Predicate> predicates, Collection<?> collection, Path<?> path) {
-        if ((collection == null) || (collection.size() == 0)) {
-            return;
-        }
-        List<Object> list = new ArrayList<Object>();
-        for (Object object : collection) {
-            if (!(object instanceof IdentifiedEntity<?>)
-                    || (((IdentifiedEntity<?>) object).getId() != null)) {
-                list.add(object);
-            }
-        }
-        if (list.size() > 0) {
-            predicates.add(path.in(list));
-        }
     }
 
     private <O> CriteriaQuery<O> orderBy(CriteriaQuery<O> query, Root<Wine> root, WineOrder orders,

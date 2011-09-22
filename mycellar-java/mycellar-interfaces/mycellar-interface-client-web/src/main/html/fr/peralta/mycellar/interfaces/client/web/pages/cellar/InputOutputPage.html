@@ -18,8 +18,16 @@
     </nav>
     <wicket:extend>
       <section>
+        <div class="panel">
+          <div wicket:id="cellars" class="selector" />
+        </div>
         <table class="large border">
           <thead>
+            <tr>
+              <td class="tableNav" colSpan="8">
+                <span wicket:id="movementsTopNav" />
+              </td>
+            </tr>
             <tr>
               <th><wicket:message key="date">Date</wicket:message></th>
               <th><wicket:message key="cellar">Cellar</wicket:message></th>
@@ -29,17 +37,24 @@
             </tr>
           </thead>
           <tbody>
-            <tr wicket:id="list">
+            <tr wicket:id="movements">
               <td class="ca" wicket:id="date">10/01/2011</td>
               <td class="la" wicket:id="cellar.name">Cellar</td>
               <td class="la" wicket:id="bottle">Bottle</td>
               <td class="ra" wicket:id="number">1</td>
               <td class="ca" wicket:id="io">I</td>
             </tr>
-            <tr wicket:id="noIO">
-              <td colSpan="5" class="ca"><wicket:message key="noIO">No I/O</wicket:message></td>
+            <tr wicket:id="noMovements">
+              <td colSpan="8" class="ca"><wicket:message key="noMatchingMovements">No matching movements</wicket:message></td>
             </tr>
           </tbody>
+          <tfoot>
+            <tr>
+              <td colSpan="8" class="tableNav">
+                <span wicket:id="movementsBottomNav" />
+              </td>
+            </tr>
+          </tfoot>
         </table>
       </section>
     </wicket:extend>
