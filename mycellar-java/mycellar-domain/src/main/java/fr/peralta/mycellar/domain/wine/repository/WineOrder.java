@@ -16,24 +16,39 @@
  * You should have received a copy of the GNU General Public License
  * along with MyCellar. If not, see <http://www.gnu.org/licenses/>.
  */
-package fr.peralta.mycellar.application.wine;
+package fr.peralta.mycellar.domain.wine.repository;
 
+import java.util.LinkedHashMap;
 import java.util.Map;
+import java.util.Map.Entry;
+import java.util.Set;
 
-import fr.peralta.mycellar.domain.wine.Region;
-import fr.peralta.mycellar.domain.wine.repository.RegionCountEnum;
-import fr.peralta.mycellar.domain.wine.repository.RegionSearchForm;
+import fr.peralta.mycellar.domain.shared.repository.OrderWayEnum;
 
 /**
  * @author speralta
  */
-public interface RegionService {
+public class WineOrder {
+
+    private final Map<WineOrderEnum, OrderWayEnum> orders = new LinkedHashMap<WineOrderEnum, OrderWayEnum>();
 
     /**
-     * @param searchForm
-     * @param count
-     * @return
+     * @param order
+     * @param way
+     * @return this for chaining
+     * @see java.util.Map#put(java.lang.Object, java.lang.Object)
      */
-    Map<Region, Long> getAll(RegionSearchForm searchForm, RegionCountEnum count);
+    public WineOrder add(WineOrderEnum order, OrderWayEnum way) {
+        orders.put(order, way);
+        return this;
+    }
+
+    /**
+     * @return
+     * @see java.util.Map#entrySet()
+     */
+    public Set<Entry<WineOrderEnum, OrderWayEnum>> entrySet() {
+        return orders.entrySet();
+    }
 
 }

@@ -16,11 +16,16 @@
  * You should have received a copy of the GNU General Public License
  * along with MyCellar. If not, see <http://www.gnu.org/licenses/>.
  */
-package fr.peralta.mycellar.domain.stock;
+package fr.peralta.mycellar.domain.stock.repository;
 
 import java.util.List;
 import java.util.Map;
 
+import fr.peralta.mycellar.domain.stock.Bottle;
+import fr.peralta.mycellar.domain.stock.Cellar;
+import fr.peralta.mycellar.domain.stock.Input;
+import fr.peralta.mycellar.domain.stock.Movement;
+import fr.peralta.mycellar.domain.stock.Stock;
 import fr.peralta.mycellar.domain.user.User;
 import fr.peralta.mycellar.domain.wine.Format;
 import fr.peralta.mycellar.domain.wine.Wine;

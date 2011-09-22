@@ -22,18 +22,16 @@ import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
 import fr.peralta.mycellar.application.wine.WineService;
-import fr.peralta.mycellar.domain.wine.Appellation;
-import fr.peralta.mycellar.domain.wine.Country;
 import fr.peralta.mycellar.domain.wine.Producer;
-import fr.peralta.mycellar.domain.wine.Region;
 import fr.peralta.mycellar.domain.wine.Wine;
 import fr.peralta.mycellar.domain.wine.WineColorEnum;
-import fr.peralta.mycellar.domain.wine.WineRepository;
 import fr.peralta.mycellar.domain.wine.WineTypeEnum;
+import fr.peralta.mycellar.domain.wine.repository.WineOrder;
+import fr.peralta.mycellar.domain.wine.repository.WineRepository;
+import fr.peralta.mycellar.domain.wine.repository.WineSearchForm;
 
 /**
  * @author speralta
@@ -42,6 +40,22 @@ import fr.peralta.mycellar.domain.wine.WineTypeEnum;
 public class WineServiceImpl implements WineService {
 
     private WineRepository wineRepository;
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public long countWines(WineSearchForm searchForm) {
+        return wineRepository.countWines(searchForm);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public List<Wine> getWines(WineSearchForm searchForm, WineOrder orders, int first, int count) {
+        return wineRepository.getWines(searchForm, orders, first, count);
+    }
 
     /**
      * {@inheritDoc}
@@ -95,50 +109,33 @@ public class WineServiceImpl implements WineService {
      */
     @Override
     public List<Wine> getWinesLike(Wine wine) {
-        Appellation appellation = null;
-        Region region = null;
-        Country country = null;
+        WineSearchForm wineSearchForm = new WineSearchForm();
         if (wine.getAppellation() != null) {
             if (wine.getAppellation().getId() != null) {
-                appellation = wine.getAppellation();
+                wineSearchForm.getAppellations().add(wine.getAppellation());
             } else if (wine.getAppellation().getRegion() != null) {
                 if (wine.getAppellation().getRegion().getId() != null) {
-                    region = wine.getAppellation().getRegion();
+                    wineSearchForm.getRegions().add(wine.getAppellation().getRegion());
                 } else if ((wine.getAppellation().getRegion().getCountry() != null)
                         && (wine.getAppellation().getRegion().getCountry().getId() != null)) {
-                    country = wine.getAppellation().getRegion().getCountry();
+                    wineSearchForm.getCountries().add(
+                            wine.getAppellation().getRegion().getCountry());
                 }
             }
         }
-        Producer producer = null;
         if ((wine.getProducer() != null) && (wine.getProducer().getId() != null)) {
-            producer = wine.getProducer();
+            wineSearchForm.getProducers().add(wine.getProducer());
         }
-        WineTypeEnum type = wine.getType();
-        WineColorEnum color = wine.getColor();
-        Integer vintage = wine.getVintage();
-        return wineRepository.getAllWinesFrom(producer, appellation, region, country, type, color,
-                vintage);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public List<Wine> getWinesFrom(List<WineTypeEnum> types, List<WineColorEnum> colors,
-            List<Country> countries, List<Region> regions, List<Appellation> appellations,
-            int first, int count) {
-        return wineRepository.getAllWinesFrom(types, colors, countries, regions, appellations,
-                first, count);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public long countWinesFrom(List<Country> countries, List<Region> regions,
-            List<Appellation> appellations) {
-        return wineRepository.countAllWinesFrom(countries, regions, appellations);
+        if (wine.getType() != null) {
+            wineSearchForm.getTypes().add(wine.getType());
+        }
+        if (wine.getColor() != null) {
+            wineSearchForm.getColors().add(wine.getColor());
+        }
+        if (wine.getVintage() != null) {
+            wineSearchForm.getVintages().add(wine.getVintage());
+        }
+        return wineRepository.getWines(wineSearchForm, new WineOrder(), 1, 10);
     }
 
     /**
@@ -146,7 +143,6 @@ public class WineServiceImpl implements WineService {
      *            the wineRepository to set
      */
     @Autowired
-    @Qualifier("hibernate")
     public void setWineRepository(WineRepository wineRepository) {
         this.wineRepository = wineRepository;
     }

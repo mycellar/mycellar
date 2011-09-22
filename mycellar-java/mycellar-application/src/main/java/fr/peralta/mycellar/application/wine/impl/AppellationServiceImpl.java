@@ -18,18 +18,16 @@
  */
 package fr.peralta.mycellar.application.wine.impl;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
 import fr.peralta.mycellar.application.wine.AppellationService;
 import fr.peralta.mycellar.domain.wine.Appellation;
-import fr.peralta.mycellar.domain.wine.Region;
-import fr.peralta.mycellar.domain.wine.WineRepository;
+import fr.peralta.mycellar.domain.wine.repository.AppellationCountEnum;
+import fr.peralta.mycellar.domain.wine.repository.AppellationSearchForm;
+import fr.peralta.mycellar.domain.wine.repository.WineRepository;
 
 /**
  * @author speralta
@@ -43,15 +41,9 @@ public class AppellationServiceImpl implements AppellationService {
      * {@inheritDoc}
      */
     @Override
-    public Map<Appellation, Long> getAllFromRegionsWithCounts(Region... regions) {
-        List<Region> regionsInRepository = new ArrayList<Region>();
-        for (Region region : regions) {
-            if (region.getId() != null) {
-                regionsInRepository.add(region);
-            }
-        }
-        return wineRepository.getAllAppellationsFromRegionsWithCounts(regionsInRepository
-                .toArray(new Region[regionsInRepository.size()]));
+    public Map<Appellation, Long> getAll(AppellationSearchForm searchForm,
+            AppellationCountEnum count) {
+        return wineRepository.getAppellations(searchForm, count);
     }
 
     /**
@@ -59,7 +51,6 @@ public class AppellationServiceImpl implements AppellationService {
      *            the wineRepository to set
      */
     @Autowired
-    @Qualifier("hibernate")
     public void setWineRepository(WineRepository wineRepository) {
         this.wineRepository = wineRepository;
     }

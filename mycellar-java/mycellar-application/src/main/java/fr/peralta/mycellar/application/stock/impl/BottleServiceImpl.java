@@ -24,7 +24,7 @@ import org.springframework.stereotype.Service;
 
 import fr.peralta.mycellar.application.stock.BottleService;
 import fr.peralta.mycellar.domain.stock.Bottle;
-import fr.peralta.mycellar.domain.stock.StockRepository;
+import fr.peralta.mycellar.domain.stock.repository.StockRepository;
 import fr.peralta.mycellar.domain.wine.Format;
 import fr.peralta.mycellar.domain.wine.Wine;
 

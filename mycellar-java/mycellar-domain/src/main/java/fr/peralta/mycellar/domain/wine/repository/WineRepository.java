@@ -16,7 +16,7 @@
  * You should have received a copy of the GNU General Public License
  * along with MyCellar. If not, see <http://www.gnu.org/licenses/>.
  */
-package fr.peralta.mycellar.interfaces.facades.wine;
+package fr.peralta.mycellar.domain.wine.repository;
 
 import java.util.List;
 import java.util.Map;
@@ -29,18 +29,11 @@ import fr.peralta.mycellar.domain.wine.Region;
 import fr.peralta.mycellar.domain.wine.Wine;
 import fr.peralta.mycellar.domain.wine.WineColorEnum;
 import fr.peralta.mycellar.domain.wine.WineTypeEnum;
-import fr.peralta.mycellar.domain.wine.repository.AppellationCountEnum;
-import fr.peralta.mycellar.domain.wine.repository.AppellationSearchForm;
-import fr.peralta.mycellar.domain.wine.repository.CountryCountEnum;
-import fr.peralta.mycellar.domain.wine.repository.RegionCountEnum;
-import fr.peralta.mycellar.domain.wine.repository.RegionSearchForm;
-import fr.peralta.mycellar.domain.wine.repository.WineOrder;
-import fr.peralta.mycellar.domain.wine.repository.WineSearchForm;
 
 /**
  * @author speralta
  */
-public interface WineServiceFacade {
+public interface WineRepository {
 
     /**
      * @param searchForm
@@ -50,72 +43,57 @@ public interface WineServiceFacade {
 
     /**
      * @param searchForm
+     * @param orders
      * @param first
      * @param count
      * @return
      */
-    List<Wine> getWines(WineSearchForm searchForm, WineOrder order, int first, int count);
+    List<Wine> getWines(WineSearchForm searchForm, WineOrder orders, int first, int count);
 
     /**
-     * @param count
+     * @param countryCountEnum
      * @return
      */
-    Map<Country, Long> getCountries(CountryCountEnum count);
+    Map<Country, Long> getCountries(CountryCountEnum countryCountEnum);
 
     /**
-     * @param countries
+     * @param searchForm
+     * @param regionCountEnum
      * @return
      */
-    Map<Region, Long> getRegions(RegionSearchForm searchForm, RegionCountEnum count);
+    Map<Region, Long> getRegions(RegionSearchForm searchForm, RegionCountEnum regionCountEnum);
 
     /**
-     * @param regions
+     * @param searchForm
+     * @param appellationCountEnum
      * @return
      */
     Map<Appellation, Long> getAppellations(AppellationSearchForm searchForm,
-            AppellationCountEnum count);
+            AppellationCountEnum appellationCountEnum);
 
     /**
      * @param term
      * @return
      */
-    List<Producer> getProducersLike(String term);
+    List<Producer> getAllProducersLike(String term);
 
     /**
      * @param producers
      * @return
      */
-    Map<WineTypeEnum, Long> getTypesWithCounts(Producer... producers);
+    Map<WineTypeEnum, Long> getAllTypesFromProducersWithCounts(Producer... producers);
 
     /**
      * @param types
      * @param producers
      * @return
      */
-    Map<WineColorEnum, Long> getColorsWithCounts(WineTypeEnum[] types, Producer... producers);
-
-    /**
-     * @param object
-     * @param object2
-     * @return
-     */
-    Map<WineColorEnum, Long> getColorsWithCounts(WineTypeEnum type, Producer... producers);
-
-    /**
-     * @param producers
-     * @return
-     */
-    Map<WineColorEnum, Long> getColorsWithCounts(Producer... producers);
+    Map<WineColorEnum, Long> getAllColorsFromTypesAndProducersWithCounts(WineTypeEnum[] types,
+            Producer... producers);
 
     /**
      * @return
      */
-    Map<Format, Long> getFormatWithCounts();
-
-    /**
-     * @param wine
-     * @return
-     */
-    List<Wine> getWinesLike(Wine wine);
+    Map<Format, Long> getAllFormatWithCounts();
 
 }

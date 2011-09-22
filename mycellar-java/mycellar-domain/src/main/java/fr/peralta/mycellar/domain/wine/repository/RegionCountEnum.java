@@ -16,24 +16,23 @@
  * You should have received a copy of the GNU General Public License
  * along with MyCellar. If not, see <http://www.gnu.org/licenses/>.
  */
-package fr.peralta.mycellar.application.wine;
-
-import java.util.Map;
-
-import fr.peralta.mycellar.domain.wine.Region;
-import fr.peralta.mycellar.domain.wine.repository.RegionCountEnum;
-import fr.peralta.mycellar.domain.wine.repository.RegionSearchForm;
+package fr.peralta.mycellar.domain.wine.repository;
 
 /**
  * @author speralta
  */
-public interface RegionService {
+public enum RegionCountEnum {
+    APPELLATION, WINE;
 
-    /**
-     * @param searchForm
-     * @param count
-     * @return
-     */
-    Map<Region, Long> getAll(RegionSearchForm searchForm, RegionCountEnum count);
-
+    public CountryCountEnum getCountryCountEnum() {
+        switch (this) {
+        case APPELLATION:
+            return CountryCountEnum.APPELLATION;
+        case WINE:
+            return CountryCountEnum.WINE;
+        default:
+            throw new IllegalStateException("Unknown " + RegionCountEnum.class.getSimpleName()
+                    + " value [" + this + "].");
+        }
+    }
 }

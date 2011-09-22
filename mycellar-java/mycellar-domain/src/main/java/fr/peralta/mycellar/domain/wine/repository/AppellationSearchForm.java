@@ -16,24 +16,37 @@
  * You should have received a copy of the GNU General Public License
  * along with MyCellar. If not, see <http://www.gnu.org/licenses/>.
  */
-package fr.peralta.mycellar.application.wine;
+package fr.peralta.mycellar.domain.wine.repository;
 
-import java.util.Map;
+import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
 
+import fr.peralta.mycellar.domain.wine.Country;
 import fr.peralta.mycellar.domain.wine.Region;
-import fr.peralta.mycellar.domain.wine.repository.RegionCountEnum;
-import fr.peralta.mycellar.domain.wine.repository.RegionSearchForm;
 
 /**
  * @author speralta
  */
-public interface RegionService {
+public class AppellationSearchForm implements Serializable {
+
+    private static final long serialVersionUID = 201109212136L;
+
+    private final List<Region> regions = new ArrayList<Region>();
+    private final List<Country> countries = new ArrayList<Country>();
 
     /**
-     * @param searchForm
-     * @param count
-     * @return
+     * @return the regions
      */
-    Map<Region, Long> getAll(RegionSearchForm searchForm, RegionCountEnum count);
+    public List<Region> getRegions() {
+        return regions;
+    }
+
+    /**
+     * @return the countries
+     */
+    public List<Country> getCountries() {
+        return countries;
+    }
 
 }

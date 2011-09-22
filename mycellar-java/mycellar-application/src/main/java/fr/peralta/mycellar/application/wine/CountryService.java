@@ -21,6 +21,7 @@ package fr.peralta.mycellar.application.wine;
 import java.util.Map;
 
 import fr.peralta.mycellar.domain.wine.Country;
+import fr.peralta.mycellar.domain.wine.repository.CountryCountEnum;
 
 /**
  * @author speralta
@@ -28,8 +29,9 @@ import fr.peralta.mycellar.domain.wine.Country;
 public interface CountryService {
 
     /**
+     * @param count
      * @return
      */
-    Map<Country, Long> getAllWithCounts();
+    Map<Country, Long> getAll(CountryCountEnum count);
 
 }

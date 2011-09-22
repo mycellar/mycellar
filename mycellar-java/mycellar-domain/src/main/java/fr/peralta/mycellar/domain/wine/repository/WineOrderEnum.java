@@ -16,25 +16,11 @@
  * You should have received a copy of the GNU General Public License
  * along with MyCellar. If not, see <http://www.gnu.org/licenses/>.
  */
-package fr.peralta.mycellar.domain.user;
-
-import fr.peralta.mycellar.domain.shared.Repository;
+package fr.peralta.mycellar.domain.wine.repository;
 
 /**
  * @author speralta
  */
-public interface UserRepository extends Repository<User> {
-
-    /**
-     * @param user
-     */
-    void newUser(User user);
-
-    /**
-     * @param login
-     * @param password
-     * @return
-     */
-    User find(String login, String password);
-
+public enum WineOrderEnum {
+    NAME, COUNTRY_NAME, REGION_NAME, APPELLATION_NAME, VINTAGE
 }

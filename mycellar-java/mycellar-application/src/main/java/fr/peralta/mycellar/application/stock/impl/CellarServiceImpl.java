@@ -26,7 +26,7 @@ import org.springframework.stereotype.Service;
 
 import fr.peralta.mycellar.application.stock.CellarService;
 import fr.peralta.mycellar.domain.stock.Cellar;
-import fr.peralta.mycellar.domain.stock.StockRepository;
+import fr.peralta.mycellar.domain.stock.repository.StockRepository;
 import fr.peralta.mycellar.domain.user.User;
 
 /**

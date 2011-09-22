@@ -18,18 +18,16 @@
  */
 package fr.peralta.mycellar.application.wine.impl;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
 import fr.peralta.mycellar.application.wine.RegionService;
-import fr.peralta.mycellar.domain.wine.Country;
 import fr.peralta.mycellar.domain.wine.Region;
-import fr.peralta.mycellar.domain.wine.WineRepository;
+import fr.peralta.mycellar.domain.wine.repository.RegionCountEnum;
+import fr.peralta.mycellar.domain.wine.repository.RegionSearchForm;
+import fr.peralta.mycellar.domain.wine.repository.WineRepository;
 
 /**
  * @author speralta
@@ -43,15 +41,9 @@ public class RegionServiceImpl implements RegionService {
      * {@inheritDoc}
      */
     @Override
-    public Map<Region, Long> getAllFromCountriesWithCounts(Country... countries) {
-        List<Country> countriesInRepository = new ArrayList<Country>();
-        for (Country country : countries) {
-            if (country.getId() != null) {
-                countriesInRepository.add(country);
-            }
-        }
-        return wineRepository.getAllRegionsFromCountriesWithCounts(countriesInRepository
-                .toArray(new Country[countriesInRepository.size()]));
+    public Map<Region, Long> getAll(RegionSearchForm searchForm,
+            RegionCountEnum count) {
+        return wineRepository.getRegions(searchForm, count);
     }
 
     /**
@@ -59,7 +51,6 @@ public class RegionServiceImpl implements RegionService {
      *            the wineRepository to set
      */
     @Autowired
-    @Qualifier("hibernate")
     public void setWineRepository(WineRepository wineRepository) {
         this.wineRepository = wineRepository;
     }

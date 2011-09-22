@@ -21,12 +21,11 @@ package fr.peralta.mycellar.application.wine.impl;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
 import fr.peralta.mycellar.application.wine.ProducerService;
 import fr.peralta.mycellar.domain.wine.Producer;
-import fr.peralta.mycellar.domain.wine.WineRepository;
+import fr.peralta.mycellar.domain.wine.repository.WineRepository;
 
 /**
  * @author speralta
@@ -49,7 +48,6 @@ public class ProducerServiceImpl implements ProducerService {
      *            the wineRepository to set
      */
     @Autowired
-    @Qualifier("hibernate")
     public void setWineRepository(WineRepository wineRepository) {
         this.wineRepository = wineRepository;
     }

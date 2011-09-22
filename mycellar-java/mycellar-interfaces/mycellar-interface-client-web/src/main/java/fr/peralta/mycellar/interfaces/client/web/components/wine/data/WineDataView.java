@@ -18,20 +18,14 @@
  */
 package fr.peralta.mycellar.interfaces.client.web.components.wine.data;
 
-import java.util.ArrayList;
-
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.repeater.Item;
 import org.apache.wicket.markup.repeater.data.DataViewBase;
 import org.apache.wicket.model.CompoundPropertyModel;
 import org.apache.wicket.model.IModel;
 
-import fr.peralta.mycellar.domain.wine.Appellation;
-import fr.peralta.mycellar.domain.wine.Country;
-import fr.peralta.mycellar.domain.wine.Region;
 import fr.peralta.mycellar.domain.wine.Wine;
-import fr.peralta.mycellar.domain.wine.WineColorEnum;
-import fr.peralta.mycellar.domain.wine.WineTypeEnum;
+import fr.peralta.mycellar.domain.wine.repository.WineSearchForm;
 
 /**
  * @author speralta
@@ -43,16 +37,10 @@ public class WineDataView extends DataViewBase<Wine> {
 
     /**
      * @param id
-     * @param colors
-     * @param types
-     * @param countries
-     * @param regions
-     * @param appellations
+     * @param searchFormModel
      */
-    public WineDataView(String id, IModel<ArrayList<WineTypeEnum>> types,
-            IModel<ArrayList<WineColorEnum>> colors, IModel<ArrayList<Country>> countries,
-            IModel<ArrayList<Region>> regions, IModel<ArrayList<Appellation>> appellations) {
-        super(id, new WineDataProvider(types, colors, countries, regions, appellations));
+    public WineDataView(String id, IModel<WineSearchForm> searchFormModel) {
+        super(id, new WineDataProvider(searchFormModel));
     }
 
     /**

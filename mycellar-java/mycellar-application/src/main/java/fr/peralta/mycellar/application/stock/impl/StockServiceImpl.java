@@ -33,7 +33,7 @@ import fr.peralta.mycellar.domain.stock.Cellar;
 import fr.peralta.mycellar.domain.stock.Input;
 import fr.peralta.mycellar.domain.stock.Movement;
 import fr.peralta.mycellar.domain.stock.Stock;
-import fr.peralta.mycellar.domain.stock.StockRepository;
+import fr.peralta.mycellar.domain.stock.repository.StockRepository;
 
 /**
  * @author speralta

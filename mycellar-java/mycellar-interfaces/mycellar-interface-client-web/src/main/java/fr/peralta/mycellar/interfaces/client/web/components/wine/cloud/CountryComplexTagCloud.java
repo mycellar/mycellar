@@ -23,6 +23,7 @@ import org.apache.wicket.model.IModel;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 
 import fr.peralta.mycellar.domain.wine.Country;
+import fr.peralta.mycellar.domain.wine.repository.CountryCountEnum;
 import fr.peralta.mycellar.interfaces.client.web.components.shared.cloud.ComplexTagCloud;
 import fr.peralta.mycellar.interfaces.client.web.components.shared.cloud.TagCloudPanel;
 import fr.peralta.mycellar.interfaces.client.web.components.wine.edit.CountryEditPanel;
@@ -38,12 +39,16 @@ public class CountryComplexTagCloud extends ComplexTagCloud<Country> {
     @SpringBean
     private WineServiceFacade wineServiceFacade;
 
+    private final CountryCountEnum count;
+
     /**
      * @param id
      * @param label
+     * @param count
      */
-    public CountryComplexTagCloud(String id, IModel<String> label) {
+    public CountryComplexTagCloud(String id, IModel<String> label, CountryCountEnum count) {
         super(id, label);
+        this.count = count;
     }
 
     /**
@@ -68,7 +73,7 @@ public class CountryComplexTagCloud extends ComplexTagCloud<Country> {
     @Override
     protected TagCloudPanel<Country> createTagCloudPanel(String id) {
         return new TagCloudPanel<Country>(id,
-                getListFrom(wineServiceFacade.getCountriesWithCounts()));
+                getListFrom(wineServiceFacade.getCountries(count)));
     }
 
     /**

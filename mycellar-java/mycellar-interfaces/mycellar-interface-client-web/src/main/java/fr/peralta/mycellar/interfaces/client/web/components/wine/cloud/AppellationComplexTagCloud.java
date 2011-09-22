@@ -27,6 +27,8 @@ import org.apache.wicket.spring.injection.annot.SpringBean;
 
 import fr.peralta.mycellar.domain.wine.Appellation;
 import fr.peralta.mycellar.domain.wine.Region;
+import fr.peralta.mycellar.domain.wine.repository.AppellationCountEnum;
+import fr.peralta.mycellar.domain.wine.repository.AppellationSearchForm;
 import fr.peralta.mycellar.interfaces.client.web.components.shared.Action;
 import fr.peralta.mycellar.interfaces.client.web.components.shared.cloud.ComplexTagCloud;
 import fr.peralta.mycellar.interfaces.client.web.components.shared.cloud.TagCloudPanel;
@@ -44,17 +46,21 @@ public class AppellationComplexTagCloud extends ComplexTagCloud<Appellation> {
 
     private IModel<Region> regionModel;
 
+    private final AppellationCountEnum count;
+
     @SpringBean
     private WineServiceFacade wineServiceFacade;
 
     /**
      * @param id
      * @param label
+     * @param count
      */
-    public AppellationComplexTagCloud(String id, IModel<String> label) {
+    public AppellationComplexTagCloud(String id, IModel<String> label, AppellationCountEnum count) {
         super(id, label);
+        this.count = count;
         add(new RegionComplexTagCloud(REGION_COMPONENT_ID, new StringResourceModel("region", this,
-                null)));
+                null), count.getRegionCountEnum()));
     }
 
     /**
@@ -93,8 +99,10 @@ public class AppellationComplexTagCloud extends ComplexTagCloud<Appellation> {
      */
     @Override
     protected TagCloudPanel<Appellation> createTagCloudPanel(String id) {
-        return new TagCloudPanel<Appellation>(id,
-                getListFrom(wineServiceFacade.getAppellationsWithCounts(regionModel.getObject())));
+        AppellationSearchForm searchForm = new AppellationSearchForm();
+        searchForm.getRegions().add(regionModel.getObject());
+        return new TagCloudPanel<Appellation>(id, getListFrom(wineServiceFacade.getAppellations(
+                searchForm, count)));
     }
 
     /**

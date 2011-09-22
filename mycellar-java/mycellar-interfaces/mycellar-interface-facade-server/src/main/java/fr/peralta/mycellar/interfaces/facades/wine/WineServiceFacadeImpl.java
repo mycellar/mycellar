@@ -39,6 +39,13 @@ import fr.peralta.mycellar.domain.wine.Region;
 import fr.peralta.mycellar.domain.wine.Wine;
 import fr.peralta.mycellar.domain.wine.WineColorEnum;
 import fr.peralta.mycellar.domain.wine.WineTypeEnum;
+import fr.peralta.mycellar.domain.wine.repository.AppellationCountEnum;
+import fr.peralta.mycellar.domain.wine.repository.AppellationSearchForm;
+import fr.peralta.mycellar.domain.wine.repository.CountryCountEnum;
+import fr.peralta.mycellar.domain.wine.repository.RegionCountEnum;
+import fr.peralta.mycellar.domain.wine.repository.RegionSearchForm;
+import fr.peralta.mycellar.domain.wine.repository.WineOrder;
+import fr.peralta.mycellar.domain.wine.repository.WineSearchForm;
 
 /**
  * @author speralta
@@ -63,8 +70,8 @@ public class WineServiceFacadeImpl implements WineServiceFacade {
      */
     @Override
     @Transactional(readOnly = true)
-    public Map<Country, Long> getCountriesWithCounts() {
-        return countryService.getAllWithCounts();
+    public Map<Country, Long> getCountries(CountryCountEnum count) {
+        return countryService.getAll(count);
     }
 
     /**
@@ -72,8 +79,8 @@ public class WineServiceFacadeImpl implements WineServiceFacade {
      */
     @Override
     @Transactional(readOnly = true)
-    public Map<Region, Long> getRegionsWithCounts(Country... countries) {
-        return regionService.getAllFromCountriesWithCounts(countries);
+    public Map<Region, Long> getRegions(RegionSearchForm searchForm, RegionCountEnum count) {
+        return regionService.getAll(searchForm, count);
     }
 
     /**
@@ -81,8 +88,9 @@ public class WineServiceFacadeImpl implements WineServiceFacade {
      */
     @Override
     @Transactional(readOnly = true)
-    public Map<Appellation, Long> getAppellationsWithCounts(Region... regions) {
-        return appellationService.getAllFromRegionsWithCounts(regions);
+    public Map<Appellation, Long> getAppellations(AppellationSearchForm searchForm,
+            AppellationCountEnum count) {
+        return appellationService.getAll(searchForm, count);
     }
 
     /**
@@ -153,11 +161,8 @@ public class WineServiceFacadeImpl implements WineServiceFacade {
      */
     @Override
     @Transactional(readOnly = true)
-    public List<Wine> getWinesFrom(List<WineTypeEnum> types, List<WineColorEnum> colors,
-            List<Country> countries, List<Region> regions, List<Appellation> appellations,
-            int first, int count) {
-        return wineService.getWinesFrom(types, colors, countries, regions, appellations, first,
-                count);
+    public List<Wine> getWines(WineSearchForm searchForm, WineOrder orders, int first, int count) {
+        return wineService.getWines(searchForm, orders, first, count);
     }
 
     /**
@@ -165,9 +170,8 @@ public class WineServiceFacadeImpl implements WineServiceFacade {
      */
     @Override
     @Transactional(readOnly = true)
-    public long countWinesFrom(List<Country> countries, List<Region> regions,
-            List<Appellation> appellations) {
-        return wineService.countWinesFrom(countries, regions, appellations);
+    public long countWines(WineSearchForm searchForm) {
+        return wineService.countWines(searchForm);
     }
 
     /**

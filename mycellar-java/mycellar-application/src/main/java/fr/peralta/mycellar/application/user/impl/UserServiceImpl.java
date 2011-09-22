@@ -25,7 +25,7 @@ import org.springframework.stereotype.Service;
 
 import fr.peralta.mycellar.application.user.UserService;
 import fr.peralta.mycellar.domain.user.User;
-import fr.peralta.mycellar.domain.user.UserRepository;
+import fr.peralta.mycellar.domain.user.repository.UserRepository;
 
 /**
  * @author speralta

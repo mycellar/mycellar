@@ -16,24 +16,26 @@
  * You should have received a copy of the GNU General Public License
  * along with MyCellar. If not, see <http://www.gnu.org/licenses/>.
  */
-package fr.peralta.mycellar.application.wine;
+package fr.peralta.mycellar.domain.user.repository;
 
-import java.util.Map;
-
-import fr.peralta.mycellar.domain.wine.Region;
-import fr.peralta.mycellar.domain.wine.repository.RegionCountEnum;
-import fr.peralta.mycellar.domain.wine.repository.RegionSearchForm;
+import fr.peralta.mycellar.domain.shared.Repository;
+import fr.peralta.mycellar.domain.user.User;
 
 /**
  * @author speralta
  */
-public interface RegionService {
+public interface UserRepository extends Repository<User> {
 
     /**
-     * @param searchForm
-     * @param count
+     * @param user
+     */
+    void newUser(User user);
+
+    /**
+     * @param login
+     * @param password
      * @return
      */
-    Map<Region, Long> getAll(RegionSearchForm searchForm, RegionCountEnum count);
+    User find(String login, String password);
 
 }

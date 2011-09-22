@@ -34,6 +34,7 @@ import fr.peralta.mycellar.domain.wine.Producer;
 import fr.peralta.mycellar.domain.wine.Wine;
 import fr.peralta.mycellar.domain.wine.WineColorEnum;
 import fr.peralta.mycellar.domain.wine.WineTypeEnum;
+import fr.peralta.mycellar.domain.wine.repository.AppellationCountEnum;
 import fr.peralta.mycellar.interfaces.client.web.components.shared.Action;
 import fr.peralta.mycellar.interfaces.client.web.components.shared.OnBlurDefaultAjaxBehavior;
 import fr.peralta.mycellar.interfaces.client.web.components.shared.list.ComplexList;
@@ -68,7 +69,7 @@ public class WineComplexList extends ComplexList<Wine> {
         super(id, label);
         setOutputMarkupId(true);
         add(new AppellationComplexTagCloud(APPELLATION_COMPONENT_ID, new StringResourceModel(
-                "appellation", this, null)));
+                "appellation", this, null), AppellationCountEnum.WINE));
         add(new ProducerComplexAutocomplete(PRODUCER_COMPONENT_ID, new StringResourceModel(
                 "producer", this, null)));
         add(new EmptyPanel(TYPE_COMPONENT_ID).setOutputMarkupId(true));

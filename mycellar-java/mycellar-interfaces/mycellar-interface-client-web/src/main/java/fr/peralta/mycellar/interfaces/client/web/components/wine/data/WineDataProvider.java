@@ -18,7 +18,6 @@
  */
 package fr.peralta.mycellar.interfaces.client.web.components.wine.data;
 
-import java.util.ArrayList;
 import java.util.Iterator;
 
 import org.apache.wicket.injection.Injector;
@@ -27,12 +26,11 @@ import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.Model;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 
-import fr.peralta.mycellar.domain.wine.Appellation;
-import fr.peralta.mycellar.domain.wine.Country;
-import fr.peralta.mycellar.domain.wine.Region;
+import fr.peralta.mycellar.domain.shared.repository.OrderWayEnum;
 import fr.peralta.mycellar.domain.wine.Wine;
-import fr.peralta.mycellar.domain.wine.WineColorEnum;
-import fr.peralta.mycellar.domain.wine.WineTypeEnum;
+import fr.peralta.mycellar.domain.wine.repository.WineOrder;
+import fr.peralta.mycellar.domain.wine.repository.WineOrderEnum;
+import fr.peralta.mycellar.domain.wine.repository.WineSearchForm;
 import fr.peralta.mycellar.interfaces.facades.wine.WineServiceFacade;
 
 /**
@@ -45,28 +43,14 @@ public class WineDataProvider implements IDataProvider<Wine> {
     @SpringBean
     private WineServiceFacade wineServiceFacade;
 
-    private final IModel<ArrayList<WineTypeEnum>> types;
-    private final IModel<ArrayList<WineColorEnum>> colors;
-    private final IModel<ArrayList<Country>> countries;
-    private final IModel<ArrayList<Region>> regions;
-    private final IModel<ArrayList<Appellation>> appellations;
+    private final IModel<WineSearchForm> searchFormModel;
 
     /**
-     * @param colors
-     * @param types
-     * @param countries
-     * @param regions
-     * @param appellations
+     * @param searchFormModel
      */
-    public WineDataProvider(IModel<ArrayList<WineTypeEnum>> types,
-            IModel<ArrayList<WineColorEnum>> colors, IModel<ArrayList<Country>> countries,
-            IModel<ArrayList<Region>> regions, IModel<ArrayList<Appellation>> appellations) {
+    public WineDataProvider(IModel<WineSearchForm> searchFormModel) {
         Injector.get().inject(this);
-        this.types = types;
-        this.colors = colors;
-        this.countries = countries;
-        this.regions = regions;
-        this.appellations = appellations;
+        this.searchFormModel = searchFormModel;
     }
 
     /**
@@ -74,9 +58,7 @@ public class WineDataProvider implements IDataProvider<Wine> {
      */
     @Override
     public void detach() {
-        countries.detach();
-        regions.detach();
-        appellations.detach();
+        searchFormModel.detach();
     }
 
     /**
@@ -84,8 +66,11 @@ public class WineDataProvider implements IDataProvider<Wine> {
      */
     @Override
     public Iterator<? extends Wine> iterator(int first, int count) {
-        return wineServiceFacade.getWinesFrom(types.getObject(), colors.getObject(),
-                countries.getObject(), regions.getObject(), appellations.getObject(), first, count)
+        return wineServiceFacade.getWines(
+                searchFormModel.getObject(),
+                new WineOrder().add(WineOrderEnum.COUNTRY_NAME, OrderWayEnum.ASC)
+                        .add(WineOrderEnum.REGION_NAME, OrderWayEnum.ASC)
+                        .add(WineOrderEnum.APPELLATION_NAME, OrderWayEnum.ASC), first, count)
                 .iterator();
     }
 
@@ -94,8 +79,7 @@ public class WineDataProvider implements IDataProvider<Wine> {
      */
     @Override
     public int size() {
-        return (int) wineServiceFacade.countWinesFrom(countries.getObject(), regions.getObject(),
-                appellations.getObject());
+        return (int) wineServiceFacade.countWines(searchFormModel.getObject());
     }
 
     /**

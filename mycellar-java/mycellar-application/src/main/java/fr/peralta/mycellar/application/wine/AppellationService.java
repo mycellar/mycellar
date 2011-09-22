@@ -21,7 +21,8 @@ package fr.peralta.mycellar.application.wine;
 import java.util.Map;
 
 import fr.peralta.mycellar.domain.wine.Appellation;
-import fr.peralta.mycellar.domain.wine.Region;
+import fr.peralta.mycellar.domain.wine.repository.AppellationCountEnum;
+import fr.peralta.mycellar.domain.wine.repository.AppellationSearchForm;
 
 /**
  * @author speralta
@@ -29,9 +30,11 @@ import fr.peralta.mycellar.domain.wine.Region;
 public interface AppellationService {
 
     /**
-     * @param regions
+     * @param searchForm
+     * @param count
      * @return
      */
-    Map<Appellation, Long> getAllFromRegionsWithCounts(Region... regions);
+    Map<Appellation, Long> getAll(AppellationSearchForm searchForm,
+            AppellationCountEnum count);
 
 }

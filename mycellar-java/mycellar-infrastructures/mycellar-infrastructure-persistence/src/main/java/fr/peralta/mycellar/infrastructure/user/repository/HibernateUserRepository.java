@@ -16,7 +16,7 @@
  * You should have received a copy of the GNU General Public License
  * along with MyCellar. If not, see <http://www.gnu.org/licenses/>.
  */
-package fr.peralta.mycellar.infrastructure.user.persistence;
+package fr.peralta.mycellar.infrastructure.user.repository;
 
 import java.util.List;
 
@@ -32,7 +32,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Repository;
 
 import fr.peralta.mycellar.domain.user.User;
-import fr.peralta.mycellar.domain.user.UserRepository;
+import fr.peralta.mycellar.domain.user.repository.UserRepository;
 
 /**
  * @author speralta
