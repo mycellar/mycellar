@@ -20,7 +20,9 @@ package fr.peralta.mycellar.domain.wine;
 
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Map;
+import java.util.Set;
 
 import javax.persistence.AttributeOverride;
 import javax.persistence.CascadeType;
@@ -35,6 +37,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToOne;
 import javax.persistence.MapKeyJoinColumn;
+import javax.persistence.OneToMany;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 import javax.validation.Valid;
@@ -44,6 +47,7 @@ import org.apache.commons.lang3.ObjectUtils;
 
 import fr.peralta.mycellar.domain.shared.NamedEntity;
 import fr.peralta.mycellar.domain.shared.ValidationPattern;
+import fr.peralta.mycellar.domain.stock.Bottle;
 
 /**
  * @author speralta
@@ -55,6 +59,10 @@ import fr.peralta.mycellar.domain.shared.ValidationPattern;
 public class Wine extends NamedEntity<Wine> {
 
     private static final long serialVersionUID = 201011121600L;
+
+    @SuppressWarnings("unused")
+    @OneToMany(mappedBy = "wine")
+    private final Set<Bottle> bottles = new HashSet<Bottle>();
 
     @Valid
     @ManyToOne(cascade = { CascadeType.PERSIST, CascadeType.MERGE })

@@ -51,10 +51,11 @@ public interface WineRepository {
     List<Wine> getWines(WineSearchForm searchForm, WineOrder orders, int first, int count);
 
     /**
+     * @param searchForm
      * @param countryCountEnum
      * @return
      */
-    Map<Country, Long> getCountries(CountryCountEnum countryCountEnum);
+    Map<Country, Long> getCountries(CountrySearchForm searchForm, CountryCountEnum countryCountEnum);
 
     /**
      * @param searchForm

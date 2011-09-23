@@ -16,25 +16,11 @@
  * You should have received a copy of the GNU General Public License
  * along with MyCellar. If not, see <http://www.gnu.org/licenses/>.
  */
-package fr.peralta.mycellar.domain.wine.repository;
+package fr.peralta.mycellar.domain.stock.repository;
 
 /**
  * @author speralta
  */
-public enum RegionCountEnum {
-    APPELLATION, WINE, STOCK_QUANTITY;
-
-    public CountryCountEnum getCountryCountEnum() {
-        switch (this) {
-        case APPELLATION:
-            return CountryCountEnum.APPELLATION;
-        case WINE:
-            return CountryCountEnum.WINE;
-        case STOCK_QUANTITY:
-            return CountryCountEnum.STOCK_QUANTITY;
-        default:
-            throw new IllegalStateException("Unknown " + RegionCountEnum.class.getSimpleName()
-                    + " value [" + this + "].");
-        }
-    }
+public enum StockOrderEnum {
+    NAME, COUNTRY_NAME, REGION_NAME, APPELLATION_NAME, VINTAGE, FORMAT_NAME, QUANTITY
 }

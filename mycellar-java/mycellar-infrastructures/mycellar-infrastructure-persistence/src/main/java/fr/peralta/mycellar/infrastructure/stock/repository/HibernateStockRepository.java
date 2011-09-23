@@ -47,7 +47,10 @@ import fr.peralta.mycellar.domain.stock.Stock;
 import fr.peralta.mycellar.domain.stock.repository.MovementOrder;
 import fr.peralta.mycellar.domain.stock.repository.MovementOrderEnum;
 import fr.peralta.mycellar.domain.stock.repository.MovementSearchForm;
+import fr.peralta.mycellar.domain.stock.repository.StockOrder;
+import fr.peralta.mycellar.domain.stock.repository.StockOrderEnum;
 import fr.peralta.mycellar.domain.stock.repository.StockRepository;
+import fr.peralta.mycellar.domain.stock.repository.StockSearchForm;
 import fr.peralta.mycellar.domain.user.User;
 import fr.peralta.mycellar.domain.wine.Format;
 import fr.peralta.mycellar.domain.wine.Wine;
@@ -96,6 +99,33 @@ public class HibernateStockRepository extends HibernateRepository implements Sto
             result.add(movement);
         }
         return result;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public long countStocks(StockSearchForm searchForm) {
+        CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();
+        CriteriaQuery<Long> query = criteriaBuilder.createQuery(Long.class);
+        Root<Stock> root = query.from(Stock.class);
+        query = query.select(criteriaBuilder.count(root));
+        query = where(query, root, searchForm, criteriaBuilder);
+        return entityManager.createQuery(query).getSingleResult();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public List<Stock> getStocks(StockSearchForm searchForm, StockOrder orders, int first, int count) {
+        CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();
+        CriteriaQuery<Stock> query = criteriaBuilder.createQuery(Stock.class);
+        Root<Stock> root = query.from(Stock.class);
+        query = query.select(root);
+        query = where(query, root, searchForm, criteriaBuilder);
+        return entityManager.createQuery(orderBy(query, root, orders, criteriaBuilder))
+                .setFirstResult(first).setMaxResults(count).getResultList();
     }
 
     /**
@@ -207,6 +237,33 @@ public class HibernateStockRepository extends HibernateRepository implements Sto
         return where(query, criteriaBuilder, predicates);
     }
 
+    /**
+     * @param query
+     * @param root
+     * @param searchForm
+     * @param criteriaBuilder
+     * @return
+     */
+    private <O> CriteriaQuery<O> where(CriteriaQuery<O> query, Root<Stock> root,
+            StockSearchForm searchForm, CriteriaBuilder criteriaBuilder) {
+        List<Predicate> predicates = new ArrayList<Predicate>();
+        in(predicates, searchForm.getCellars(), root.get("cellar"));
+        in(predicates, searchForm.getUser(), root.get("cellar").get("owner"), criteriaBuilder);
+        in(predicates, searchForm.getTypes(), root.get("bottle").get("wine").get("type"));
+        in(predicates, searchForm.getColors(), root.get("bottle").get("wine").get("color"));
+        in(predicates, searchForm.getAppellations(),
+                root.get("bottle").get("wine").get("appellation"));
+        in(predicates, searchForm.getRegions(), root.get("bottle").get("wine").get("appellation")
+                .get("region"));
+        in(predicates, searchForm.getCountries(), root.get("bottle").get("wine").get("appellation")
+                .get("region").get("country"));
+        in(predicates, searchForm.getProducers(), root.get("bottle").get("wine").get("producer"));
+        in(predicates, searchForm.getVintages(), root.get("bottle").get("wine").get("vintage"));
+        in(predicates, searchForm.getFormats(), root.get("bottle").get("format"));
+
+        return where(query, criteriaBuilder, predicates);
+    }
+
     private <O> CriteriaQuery<O> orderBy(CriteriaQuery<O> query, Root<Movement> root,
             MovementOrder orders, CriteriaBuilder criteriaBuilder) {
         List<Order> orderList = new ArrayList<Order>();
@@ -227,6 +284,63 @@ public class HibernateStockRepository extends HibernateRepository implements Sto
             return query.orderBy(orderList);
         }
         return query;
+    }
+
+    /**
+     * @param query
+     * @param root
+     * @param orders
+     * @param criteriaBuilder
+     * @return
+     */
+    private <O> CriteriaQuery<O> orderBy(CriteriaQuery<O> query, Root<Stock> root,
+            StockOrder orders, CriteriaBuilder criteriaBuilder) {
+        List<Order> orderList = new ArrayList<Order>();
+        for (Entry<StockOrderEnum, OrderWayEnum> entry : orders.entrySet()) {
+            switch (entry.getValue()) {
+            case ASC:
+                orderList.add(criteriaBuilder.asc(getPath(root, entry.getKey())));
+                break;
+            case DESC:
+                orderList.add(criteriaBuilder.desc(getPath(root, entry.getKey())));
+                break;
+            default:
+                throw new IllegalStateException("Unknown " + OrderWayEnum.class.getSimpleName()
+                        + " value [" + entry.getValue() + "].");
+            }
+        }
+        if (orderList.size() > 0) {
+            return query.orderBy(orderList);
+        }
+        return query;
+    }
+
+    /**
+     * @param root
+     * @param key
+     * @return
+     */
+    private Expression<?> getPath(Root<Stock> root, StockOrderEnum order) {
+        switch (order) {
+        case APPELLATION_NAME:
+            return root.get("bottle").get("wine").get("appellation").get("name");
+        case COUNTRY_NAME:
+            return root.get("bottle").get("wine").get("appellation").get("region").get("country")
+                    .get("name");
+        case NAME:
+            return root.get("bottle").get("wine").get("name");
+        case REGION_NAME:
+            return root.get("bottle").get("wine").get("appellation").get("name");
+        case VINTAGE:
+            return root.get("bottle").get("wine").get("vintage");
+        case FORMAT_NAME:
+            return root.get("bottle").get("format").get("name");
+        case QUANTITY:
+            return root.get("quantity");
+        default:
+            throw new IllegalStateException("Unknwon " + StockOrderEnum.class.getSimpleName()
+                    + " value [" + order + "].");
+        }
     }
 
     /**

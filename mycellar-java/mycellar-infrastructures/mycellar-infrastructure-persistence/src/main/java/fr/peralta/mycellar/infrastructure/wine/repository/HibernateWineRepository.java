@@ -36,10 +36,13 @@ import javax.persistence.criteria.Order;
 import javax.persistence.criteria.Path;
 import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
+import javax.persistence.criteria.SetJoin;
 
 import org.springframework.stereotype.Repository;
 
 import fr.peralta.mycellar.domain.shared.repository.OrderWayEnum;
+import fr.peralta.mycellar.domain.stock.Bottle;
+import fr.peralta.mycellar.domain.stock.Stock;
 import fr.peralta.mycellar.domain.wine.Appellation;
 import fr.peralta.mycellar.domain.wine.Country;
 import fr.peralta.mycellar.domain.wine.Format;
@@ -51,6 +54,7 @@ import fr.peralta.mycellar.domain.wine.WineTypeEnum;
 import fr.peralta.mycellar.domain.wine.repository.AppellationCountEnum;
 import fr.peralta.mycellar.domain.wine.repository.AppellationSearchForm;
 import fr.peralta.mycellar.domain.wine.repository.CountryCountEnum;
+import fr.peralta.mycellar.domain.wine.repository.CountrySearchForm;
 import fr.peralta.mycellar.domain.wine.repository.RegionCountEnum;
 import fr.peralta.mycellar.domain.wine.repository.RegionSearchForm;
 import fr.peralta.mycellar.domain.wine.repository.WineOrder;
@@ -99,19 +103,49 @@ public class HibernateWineRepository extends HibernateRepository implements Wine
      * {@inheritDoc}
      */
     @Override
-    public Map<Country, Long> getCountries(CountryCountEnum countryCountEnum) {
+    public Map<Country, Long> getCountries(CountrySearchForm searchForm,
+            CountryCountEnum countryCountEnum) {
         CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();
         CriteriaQuery<Tuple> query = criteriaBuilder.createTupleQuery();
 
         Root<Country> root = query.from(Country.class);
-        Expression<Long> count = criteriaBuilder.count(getPath(root, countryCountEnum));
+        SetJoin<Country, Region> region = root.joinSet("regions", JoinType.LEFT);
+        SetJoin<Region, Appellation> appellation = region.joinSet("appellations", JoinType.LEFT);
+        SetJoin<Appellation, Wine> wine = appellation.joinSet("wines", JoinType.LEFT);
+        SetJoin<Wine, Bottle> bottle = wine.joinSet("bottles", JoinType.LEFT);
+        SetJoin<Bottle, Stock> stock = bottle.joinSet("stocks", JoinType.LEFT);
+
+        Expression<Long> count;
+        switch (countryCountEnum) {
+        case APPELLATION:
+            count = criteriaBuilder.count(appellation);
+            break;
+        case REGION:
+            count = criteriaBuilder.count(region);
+            break;
+        case WINE:
+            count = criteriaBuilder.count(wine);
+            break;
+        case STOCK_QUANTITY:
+            count = criteriaBuilder.sumAsLong(stock.<Integer> get("quantity"));
+            break;
+        default:
+            throw new IllegalStateException("Unknown " + CountryCountEnum.class.getSimpleName()
+                    + " value [" + countryCountEnum + "].");
+        }
+        query = query.multiselect(root, count);
+
+        List<Predicate> predicates = new ArrayList<Predicate>();
+        in(predicates, searchForm.getCellars(), stock.get("cellar"));
+        in(predicates, searchForm.getUser(), stock.get("cellar").get("owner"), criteriaBuilder);
+        query = where(query, criteriaBuilder, predicates);
 
         List<Tuple> tuples = entityManager.createQuery(
-                query.multiselect(root, count).groupBy(root)
-                        .orderBy(criteriaBuilder.asc(root.get("name")))).getResultList();
+                query.groupBy(root).orderBy(criteriaBuilder.asc(root.get("name")))).getResultList();
         Map<Country, Long> result = new LinkedHashMap<Country, Long>();
         for (Tuple tuple : tuples) {
-            result.put(tuple.get(root), tuple.get(count));
+            Long countResult = tuple.get(count);
+            result.put(tuple.get(root), countResult != null ? countResult : 0);
         }
         return result;
     }
@@ -125,16 +159,39 @@ public class HibernateWineRepository extends HibernateRepository implements Wine
         CriteriaQuery<Tuple> query = criteriaBuilder.createTupleQuery();
 
         Root<Region> root = query.from(Region.class);
-        Expression<Long> count = criteriaBuilder.count(getPath(root, regionCountEnum));
-
+        SetJoin<Region, Appellation> appellation = root.joinSet("appellations", JoinType.LEFT);
+        SetJoin<Appellation, Wine> wine = appellation.joinSet("wines", JoinType.LEFT);
+        SetJoin<Wine, Bottle> bottle = wine.joinSet("bottles", JoinType.LEFT);
+        SetJoin<Bottle, Stock> stock = bottle.joinSet("stocks", JoinType.LEFT);
+        Expression<Long> count;
+        switch (regionCountEnum) {
+        case APPELLATION:
+            count = criteriaBuilder.count(appellation);
+            break;
+        case WINE:
+            count = criteriaBuilder.count(wine);
+            break;
+        case STOCK_QUANTITY:
+            count = criteriaBuilder.sumAsLong(stock.<Integer> get("quantity"));
+            break;
+        default:
+            throw new IllegalStateException("Unknown " + CountryCountEnum.class.getSimpleName()
+                    + " value [" + regionCountEnum + "].");
+        }
         query = query.multiselect(root, count);
-        query = where(query, root, searchForm, criteriaBuilder);
+
+        List<Predicate> predicates = new ArrayList<Predicate>();
+        in(predicates, searchForm.getCellars(), stock.get("cellar"));
+        in(predicates, searchForm.getUser(), stock.get("cellar").get("owner"), criteriaBuilder);
+        in(predicates, searchForm.getCountries(), root.get("country"));
+        query = where(query, criteriaBuilder, predicates);
 
         List<Tuple> tuples = entityManager.createQuery(
                 query.groupBy(root).orderBy(criteriaBuilder.asc(root.get("name")))).getResultList();
         Map<Region, Long> result = new LinkedHashMap<Region, Long>();
         for (Tuple tuple : tuples) {
-            result.put(tuple.get(root), tuple.get(count));
+            Long countResult = tuple.get(count);
+            result.put(tuple.get(root), countResult != null ? countResult : 0);
         }
         return result;
     }
@@ -149,16 +206,36 @@ public class HibernateWineRepository extends HibernateRepository implements Wine
         CriteriaQuery<Tuple> query = criteriaBuilder.createTupleQuery();
 
         Root<Appellation> root = query.from(Appellation.class);
-        Expression<Long> count = criteriaBuilder.count(getPath(root, appellationCountEnum));
-
+        SetJoin<Appellation, Wine> wine = root.joinSet("wines", JoinType.LEFT);
+        SetJoin<Wine, Bottle> bottle = wine.joinSet("bottles", JoinType.LEFT);
+        SetJoin<Bottle, Stock> stock = bottle.joinSet("stocks", JoinType.LEFT);
+        Expression<Long> count;
+        switch (appellationCountEnum) {
+        case WINE:
+            count = criteriaBuilder.count(wine);
+            break;
+        case STOCK_QUANTITY:
+            count = criteriaBuilder.sumAsLong(stock.<Integer> get("quantity"));
+            break;
+        default:
+            throw new IllegalStateException("Unknown " + AppellationCountEnum.class.getSimpleName()
+                    + " value [" + appellationCountEnum + "].");
+        }
         query = query.multiselect(root, count);
-        query = where(query, root, searchForm, criteriaBuilder);
+
+        List<Predicate> predicates = new ArrayList<Predicate>();
+        in(predicates, searchForm.getCellars(), stock.get("cellar"));
+        in(predicates, searchForm.getUser(), stock.get("cellar").get("owner"), criteriaBuilder);
+        in(predicates, searchForm.getRegions(), root.get("region"));
+        in(predicates, searchForm.getCountries(), root.get("region").get("country"));
+        query = where(query, criteriaBuilder, predicates);
 
         List<Tuple> tuples = entityManager.createQuery(
                 query.groupBy(root).orderBy(criteriaBuilder.asc(root.get("name")))).getResultList();
         Map<Appellation, Long> result = new LinkedHashMap<Appellation, Long>();
         for (Tuple tuple : tuples) {
-            result.put(tuple.get(root), tuple.get(count));
+            Long countResult = tuple.get(count);
+            result.put(tuple.get(root), countResult != null ? countResult : 0);
         }
         return result;
     }
@@ -270,32 +347,17 @@ public class HibernateWineRepository extends HibernateRepository implements Wine
         return result;
     }
 
-    private <O> CriteriaQuery<O> where(CriteriaQuery<O> query, Root<Region> root,
-            RegionSearchForm searchForm, CriteriaBuilder criteriaBuilder) {
-        List<Predicate> predicates = new ArrayList<Predicate>();
-        in(predicates, searchForm.getCountries(), root.get("country"));
-
-        return where(query, criteriaBuilder, predicates);
-    }
-
-    private <O> CriteriaQuery<O> where(CriteriaQuery<O> query, Root<Appellation> root,
-            AppellationSearchForm searchForm, CriteriaBuilder criteriaBuilder) {
-        List<Predicate> predicates = new ArrayList<Predicate>();
-        in(predicates, searchForm.getRegions(), root.get("region"));
-        // TODO manage country cases
-
-        return where(query, criteriaBuilder, predicates);
-    }
-
     private <O> CriteriaQuery<O> where(CriteriaQuery<O> query, Root<Wine> root,
             WineSearchForm searchForm, CriteriaBuilder criteriaBuilder) {
         List<Predicate> predicates = new ArrayList<Predicate>();
         in(predicates, searchForm.getTypes(), root.get("type"));
         in(predicates, searchForm.getColors(), root.get("color"));
         in(predicates, searchForm.getAppellations(), root.get("appellation"));
+        in(predicates, searchForm.getRegions(), root.get("appellation").get("region"));
+        in(predicates, searchForm.getCountries(),
+                root.get("appellation").get("region").get("country"));
         in(predicates, searchForm.getProducers(), root.get("producer"));
         in(predicates, searchForm.getVintages(), root.get("vintage"));
-        // TODO manage region and country cases
 
         return where(query, criteriaBuilder, predicates);
     }
@@ -341,43 +403,6 @@ public class HibernateWineRepository extends HibernateRepository implements Wine
         default:
             throw new IllegalStateException("Unknwon " + WineOrderEnum.class.getSimpleName()
                     + " value [" + order + "].");
-        }
-    }
-
-    private Expression<?> getPath(Root<Country> root, CountryCountEnum count) {
-        switch (count) {
-        case APPELLATION:
-            return root.joinSet("regions", JoinType.LEFT).joinSet("appellations", JoinType.LEFT);
-        case REGION:
-            return root.joinSet("regions", JoinType.LEFT);
-        case WINE:
-            return root.joinSet("regions", JoinType.LEFT).joinSet("appellations", JoinType.LEFT)
-                    .joinSet("wines", JoinType.LEFT);
-        default:
-            throw new IllegalStateException("Unknown " + CountryCountEnum.class.getSimpleName()
-                    + " value [" + count + "].");
-        }
-    }
-
-    private Expression<?> getPath(Root<Region> root, RegionCountEnum count) {
-        switch (count) {
-        case APPELLATION:
-            return root.joinSet("appellations", JoinType.LEFT);
-        case WINE:
-            return root.joinSet("appellations", JoinType.LEFT).joinSet("wines", JoinType.LEFT);
-        default:
-            throw new IllegalStateException("Unknown " + CountryCountEnum.class.getSimpleName()
-                    + " value [" + count + "].");
-        }
-    }
-
-    private Expression<?> getPath(Root<Appellation> root, AppellationCountEnum count) {
-        switch (count) {
-        case WINE:
-            return root.joinSet("wines", JoinType.LEFT);
-        default:
-            throw new IllegalStateException("Unknown " + AppellationCountEnum.class.getSimpleName()
-                    + " value [" + count + "].");
         }
     }
 

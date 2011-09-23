@@ -327,22 +327,17 @@ div.selector {
   float: left;
   border: 1px solid black;
   height: 100px;
-  margin-right: 10px;
+  margin: 5px;
   overflow: auto;
 }
 
-div.selector:last-of-type {
-  float: none;
-  margin-right: 0;
-}
-
-/** SEARCH PANEL **/
+/** PANEL **/
 div.panel {
   margin-bottom: 5px;
-  padding: 5px;
   border-style: solid;
   border-width: 2px;
   border-color: #3c0017;
   border-radius: 5px;
   background: #ffdc95;
+  overflow: auto;
 }

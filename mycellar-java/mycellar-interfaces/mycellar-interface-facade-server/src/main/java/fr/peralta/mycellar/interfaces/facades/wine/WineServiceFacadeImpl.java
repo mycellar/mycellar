@@ -42,6 +42,7 @@ import fr.peralta.mycellar.domain.wine.WineTypeEnum;
 import fr.peralta.mycellar.domain.wine.repository.AppellationCountEnum;
 import fr.peralta.mycellar.domain.wine.repository.AppellationSearchForm;
 import fr.peralta.mycellar.domain.wine.repository.CountryCountEnum;
+import fr.peralta.mycellar.domain.wine.repository.CountrySearchForm;
 import fr.peralta.mycellar.domain.wine.repository.RegionCountEnum;
 import fr.peralta.mycellar.domain.wine.repository.RegionSearchForm;
 import fr.peralta.mycellar.domain.wine.repository.WineOrder;
@@ -70,8 +71,8 @@ public class WineServiceFacadeImpl implements WineServiceFacade {
      */
     @Override
     @Transactional(readOnly = true)
-    public Map<Country, Long> getCountries(CountryCountEnum count) {
-        return countryService.getAll(count);
+    public Map<Country, Long> getCountries(CountrySearchForm searchForm, CountryCountEnum count) {
+        return countryService.getAll(searchForm, count);
     }
 
     /**

@@ -86,4 +86,19 @@ public interface StockRepository {
     List<Movement<?>> getMovements(MovementSearchForm searchForm, MovementOrder orders, int first,
             int count);
 
+    /**
+     * @param searchForm
+     * @return
+     */
+    long countStocks(StockSearchForm searchForm);
+
+    /**
+     * @param searchForm
+     * @param orders
+     * @param first
+     * @param count
+     * @return
+     */
+    List<Stock> getStocks(StockSearchForm searchForm, StockOrder orders, int first, int count);
+
 }

@@ -22,5 +22,5 @@ package fr.peralta.mycellar.domain.wine.repository;
  * @author speralta
  */
 public enum CountryCountEnum {
-    REGION, APPELLATION, WINE
+    REGION, APPELLATION, WINE, STOCK_QUANTITY
 }

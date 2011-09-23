@@ -40,6 +40,7 @@ import fr.peralta.mycellar.domain.wine.WineTypeEnum;
 import fr.peralta.mycellar.domain.wine.repository.AppellationCountEnum;
 import fr.peralta.mycellar.domain.wine.repository.AppellationSearchForm;
 import fr.peralta.mycellar.domain.wine.repository.CountryCountEnum;
+import fr.peralta.mycellar.domain.wine.repository.CountrySearchForm;
 import fr.peralta.mycellar.domain.wine.repository.RegionCountEnum;
 import fr.peralta.mycellar.domain.wine.repository.RegionSearchForm;
 import fr.peralta.mycellar.domain.wine.repository.WineSearchForm;
@@ -74,8 +75,8 @@ public class PediaHomePage extends PediaSuperPage {
     public PediaHomePage(PageParameters parameters) {
         super(parameters);
         setOutputMarkupId(true);
-        add(new MultiplePanel<Country>(COUNTRIES_COMPONENT_ID,
-                wineServiceFacade.getCountries(CountryCountEnum.WINE)));
+        add(new MultiplePanel<Country>(COUNTRIES_COMPONENT_ID, wineServiceFacade.getCountries(
+                new CountrySearchForm(), CountryCountEnum.WINE)));
         add(new MultiplePanel<Region>(REGIONS_COMPONENT_ID, wineServiceFacade.getRegions(
                 new RegionSearchForm(), RegionCountEnum.WINE)));
         add(new MultiplePanel<Appellation>(APPELLATIONS_COMPONENT_ID,

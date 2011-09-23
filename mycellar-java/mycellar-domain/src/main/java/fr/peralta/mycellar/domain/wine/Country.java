@@ -18,7 +18,6 @@
  */
 package fr.peralta.mycellar.domain.wine;
 
-import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -59,6 +58,7 @@ public class Country extends NamedEntity<Country> {
     @Embedded
     private Map map;
 
+    @SuppressWarnings("unused")
     @OneToMany(mappedBy = "country")
     private final Set<Region> regions = new HashSet<Region>();
 
@@ -82,13 +82,6 @@ public class Country extends NamedEntity<Country> {
      */
     public Map getMap() {
         return map;
-    }
-
-    /**
-     * @return the regions
-     */
-    public Set<Region> getRegions() {
-        return Collections.unmodifiableSet(regions);
     }
 
     /**

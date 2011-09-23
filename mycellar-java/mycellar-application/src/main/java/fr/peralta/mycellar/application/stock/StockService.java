@@ -29,6 +29,8 @@ import fr.peralta.mycellar.domain.stock.Movement;
 import fr.peralta.mycellar.domain.stock.Stock;
 import fr.peralta.mycellar.domain.stock.repository.MovementOrder;
 import fr.peralta.mycellar.domain.stock.repository.MovementSearchForm;
+import fr.peralta.mycellar.domain.stock.repository.StockOrder;
+import fr.peralta.mycellar.domain.stock.repository.StockSearchForm;
 
 /**
  * @author speralta
@@ -74,5 +76,20 @@ public interface StockService {
      */
     List<Movement<?>> getMovements(MovementSearchForm searchForm, MovementOrder orders, int first,
             int count);
+
+    /**
+     * @param searchForm
+     * @param orders
+     * @param first
+     * @param count
+     * @return
+     */
+    List<Stock> getStocks(StockSearchForm searchForm, StockOrder orders, int first, int count);
+
+    /**
+     * @param searchForm
+     * @return
+     */
+    long countStocks(StockSearchForm searchForm);
 
 }

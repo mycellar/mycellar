@@ -20,8 +20,12 @@ package fr.peralta.mycellar.domain.wine.repository;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
+import fr.peralta.mycellar.domain.stock.Cellar;
+import fr.peralta.mycellar.domain.user.User;
 import fr.peralta.mycellar.domain.wine.Country;
 import fr.peralta.mycellar.domain.wine.Region;
 
@@ -32,8 +36,38 @@ public class AppellationSearchForm implements Serializable {
 
     private static final long serialVersionUID = 201109212136L;
 
+    private final User user;
+    private final Set<Cellar> cellars = new HashSet<Cellar>();
     private final List<Region> regions = new ArrayList<Region>();
     private final List<Country> countries = new ArrayList<Country>();
+
+    /**
+     * Default constructor.
+     */
+    public AppellationSearchForm() {
+        user = null;
+    }
+
+    /**
+     * @param user
+     */
+    public AppellationSearchForm(User user) {
+        this.user = user;
+    }
+
+    /**
+     * @return the user
+     */
+    public User getUser() {
+        return user;
+    }
+
+    /**
+     * @return the cellars
+     */
+    public Set<Cellar> getCellars() {
+        return cellars;
+    }
 
     /**
      * @return the regions

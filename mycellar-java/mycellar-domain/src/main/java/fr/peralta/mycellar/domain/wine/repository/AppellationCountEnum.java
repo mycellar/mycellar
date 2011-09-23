@@ -23,11 +23,13 @@ package fr.peralta.mycellar.domain.wine.repository;
  * 
  */
 public enum AppellationCountEnum {
-    WINE;
+    WINE, STOCK_QUANTITY;
     public RegionCountEnum getRegionCountEnum() {
         switch (this) {
         case WINE:
             return RegionCountEnum.WINE;
+        case STOCK_QUANTITY:
+            return RegionCountEnum.STOCK_QUANTITY;
         default:
             throw new IllegalStateException("Unknown " + AppellationCountEnum.class.getSimpleName()
                     + " value [" + this + "].");

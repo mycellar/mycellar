@@ -16,25 +16,13 @@
  * You should have received a copy of the GNU General Public License
  * along with MyCellar. If not, see <http://www.gnu.org/licenses/>.
  */
-package fr.peralta.mycellar.domain.wine.repository;
+package fr.peralta.mycellar.domain.stock.repository;
+
+import fr.peralta.mycellar.domain.shared.repository.AbstractEntityOrder;
 
 /**
  * @author speralta
  */
-public enum RegionCountEnum {
-    APPELLATION, WINE, STOCK_QUANTITY;
+public class StockOrder extends AbstractEntityOrder<StockOrderEnum, StockOrder> {
 
-    public CountryCountEnum getCountryCountEnum() {
-        switch (this) {
-        case APPELLATION:
-            return CountryCountEnum.APPELLATION;
-        case WINE:
-            return CountryCountEnum.WINE;
-        case STOCK_QUANTITY:
-            return CountryCountEnum.STOCK_QUANTITY;
-        default:
-            throw new IllegalStateException("Unknown " + RegionCountEnum.class.getSimpleName()
-                    + " value [" + this + "].");
-        }
-    }
 }

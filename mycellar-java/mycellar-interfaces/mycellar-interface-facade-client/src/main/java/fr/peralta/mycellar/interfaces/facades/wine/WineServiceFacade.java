@@ -32,6 +32,7 @@ import fr.peralta.mycellar.domain.wine.WineTypeEnum;
 import fr.peralta.mycellar.domain.wine.repository.AppellationCountEnum;
 import fr.peralta.mycellar.domain.wine.repository.AppellationSearchForm;
 import fr.peralta.mycellar.domain.wine.repository.CountryCountEnum;
+import fr.peralta.mycellar.domain.wine.repository.CountrySearchForm;
 import fr.peralta.mycellar.domain.wine.repository.RegionCountEnum;
 import fr.peralta.mycellar.domain.wine.repository.RegionSearchForm;
 import fr.peralta.mycellar.domain.wine.repository.WineOrder;
@@ -57,10 +58,11 @@ public interface WineServiceFacade {
     List<Wine> getWines(WineSearchForm searchForm, WineOrder order, int first, int count);
 
     /**
+     * @param searchForm
      * @param count
      * @return
      */
-    Map<Country, Long> getCountries(CountryCountEnum count);
+    Map<Country, Long> getCountries(CountrySearchForm searchForm, CountryCountEnum count);
 
     /**
      * @param countries

@@ -19,7 +19,60 @@
     <wicket:extend>
       <section>
         <a href="#" wicket:id="newCellar"><wicket:message key="newCellarLink">New Cellar</wicket:message></a>
-        <div wicket:id="cellars" />
+        <div class="panel">
+          <div wicket:id="cellars" class="selector" />
+          <div wicket:id="types" class="selector" />
+          <div wicket:id="colors" class="selector" />
+          <div wicket:id="countries" class="selector" />
+          <div wicket:id="regions" class="selector" />
+          <div wicket:id="appellations" class="selector" />
+          <div wicket:id="formats" class="selector" />
+        </div>
+        <table class="large border">
+          <thead>
+            <tr>
+              <td class="tableNav" colSpan="10">
+                <span wicket:id="stocksTopNav" />
+              </td>
+            </tr>
+            <tr>
+              <th><wicket:message key="country">Country</wicket:message></th>
+              <th><wicket:message key="region">Region</wicket:message></th>
+              <th><wicket:message key="appellation">Appellation</wicket:message></th>
+              <th><wicket:message key="producer">Producer</wicket:message></th>
+              <th><wicket:message key="name">Name</wicket:message></th>
+              <th><wicket:message key="type">Type</wicket:message></th>
+              <th><wicket:message key="color">Color</wicket:message></th>
+              <th><wicket:message key="vintage">Vintage</wicket:message></th>
+              <th><wicket:message key="format">Format</wicket:message></th>
+              <th><wicket:message key="quantity">Quantity</wicket:message></th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr wicket:id="stocks">
+              <td wicket:id="bottle.wine.appellation.region.country.name">Country</td>
+              <td wicket:id="bottle.wine.appellation.region.name">region</td>
+              <td wicket:id="bottle.wine.appellation.name">Appellation</td>
+              <td wicket:id="bottle.wine.producer.name">Producer</td>
+              <td wicket:id="bottle.wine.name">Name</td>
+              <td wicket:id="bottle.wine.type">Type</td>
+              <td wicket:id="bottle.wine.color">Color</td>
+              <td wicket:id="bottle.wine.vintage">Vintage</td>
+              <td wicket:id="bottle.format.name">Format</td>
+              <td wicket:id="quantity">Quantity</td>
+            </tr>
+            <tr wicket:id="noStocks">
+              <td colSpan="10" class="ca"><wicket:message key="noMatchingStocks">No matching stocks</wicket:message></td>
+            </tr>
+          </tbody>
+          <tfoot>
+            <tr>
+              <td colSpan="10" class="tableNav">
+                <span wicket:id="stocksBottomNav" />
+              </td>
+            </tr>
+          </tfoot>
+        </table>
       </section>
     </wicket:extend>
     <footer>

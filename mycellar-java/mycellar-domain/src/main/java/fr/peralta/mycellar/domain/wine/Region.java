@@ -18,7 +18,6 @@
  */
 package fr.peralta.mycellar.domain.wine;
 
-import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -53,6 +52,7 @@ public class Region extends NamedEntity<Region> {
 
     private static final long serialVersionUID = 201010311741L;
 
+    @SuppressWarnings("unused")
     @OneToMany(mappedBy = "region")
     private final Set<Appellation> appellations = new HashSet<Appellation>();
 
@@ -71,13 +71,6 @@ public class Region extends NamedEntity<Region> {
 
     @Embedded
     private Map map;
-
-    /**
-     * @return the appellations
-     */
-    public Set<Appellation> getAppellations() {
-        return Collections.unmodifiableSet(appellations);
-    }
 
     /**
      * @return the country

@@ -18,7 +18,6 @@
  */
 package fr.peralta.mycellar.domain.stock;
 
-import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -49,6 +48,7 @@ public class Cellar extends NamedEntity<Cellar> {
 
     private static final long serialVersionUID = 201011111734L;
 
+    @SuppressWarnings("unused")
     @OneToMany(mappedBy = "cellar")
     private final Set<Stock> stocks = new HashSet<Stock>();
 
@@ -60,13 +60,6 @@ public class Cellar extends NamedEntity<Cellar> {
     @ManyToOne(cascade = { CascadeType.PERSIST, CascadeType.MERGE })
     @JoinColumn(name = "OWNER", nullable = false)
     private User owner;
-
-    /**
-     * @return the stocks
-     */
-    public Set<Stock> getStocks() {
-        return Collections.unmodifiableSet(stocks);
-    }
 
     /**
      * {@inheritDoc}

@@ -24,31 +24,29 @@ import java.util.Set;
 
 import fr.peralta.mycellar.domain.stock.Cellar;
 import fr.peralta.mycellar.domain.user.User;
-import fr.peralta.mycellar.domain.wine.Country;
 
 /**
  * @author speralta
  */
-public class RegionSearchForm implements Serializable {
+public class CountrySearchForm implements Serializable {
 
-    private static final long serialVersionUID = 201109211730L;
+    private static final long serialVersionUID = 201109220858L;
 
     private final User user;
     private final Set<Cellar> cellars = new HashSet<Cellar>();
-    private final Set<Country> countries = new HashSet<Country>();
-
-    /**
-     * Default constructor.
-     */
-    public RegionSearchForm() {
-        user = null;
-    }
 
     /**
      * @param user
      */
-    public RegionSearchForm(User user) {
+    public CountrySearchForm(User user) {
         this.user = user;
+    }
+
+    /**
+     * Default constructor.
+     */
+    public CountrySearchForm() {
+        user = null;
     }
 
     /**
@@ -63,13 +61,6 @@ public class RegionSearchForm implements Serializable {
      */
     public Set<Cellar> getCellars() {
         return cellars;
-    }
-
-    /**
-     * @return the countries
-     */
-    public Set<Country> getCountries() {
-        return countries;
     }
 
 }
