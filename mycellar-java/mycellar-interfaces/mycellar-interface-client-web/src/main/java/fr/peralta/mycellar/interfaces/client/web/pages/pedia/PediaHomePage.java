@@ -26,15 +26,13 @@ import org.apache.wicket.spring.injection.annot.SpringBean;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import fr.peralta.mycellar.domain.shared.repository.CountEnum;
 import fr.peralta.mycellar.domain.shared.repository.SearchForm;
 import fr.peralta.mycellar.domain.wine.Appellation;
 import fr.peralta.mycellar.domain.wine.Country;
 import fr.peralta.mycellar.domain.wine.Region;
 import fr.peralta.mycellar.domain.wine.WineColorEnum;
 import fr.peralta.mycellar.domain.wine.WineTypeEnum;
-import fr.peralta.mycellar.domain.wine.repository.AppellationCountEnum;
-import fr.peralta.mycellar.domain.wine.repository.CountryCountEnum;
-import fr.peralta.mycellar.domain.wine.repository.RegionCountEnum;
 import fr.peralta.mycellar.interfaces.client.web.components.shared.Action;
 import fr.peralta.mycellar.interfaces.client.web.components.shared.AjaxTool;
 import fr.peralta.mycellar.interfaces.client.web.components.shared.SearchFormModel;
@@ -70,15 +68,15 @@ public class PediaHomePage extends PediaSuperPage {
         SearchFormModel searchFormModel = new SearchFormModel(new SearchForm());
         setDefaultModel(searchFormModel);
         add(new MultiplePanel<Country>(COUNTRIES_COMPONENT_ID, wineServiceFacade.getCountries(
-                new SearchForm(), CountryCountEnum.WINE)));
+                searchFormModel.getObject(), CountEnum.WINE)));
         add(new MultiplePanel<Region>(REGIONS_COMPONENT_ID, wineServiceFacade.getRegions(
-                new SearchForm(), RegionCountEnum.WINE)));
+                searchFormModel.getObject(), CountEnum.WINE)));
         add(new MultiplePanel<Appellation>(APPELLATIONS_COMPONENT_ID,
-                wineServiceFacade.getAppellations(new SearchForm(), AppellationCountEnum.WINE)));
-        add(new MultiplePanel<WineTypeEnum>(TYPES_COMPONENT_ID,
-                wineServiceFacade.getTypesWithCounts()));
-        add(new MultiplePanel<WineColorEnum>(COLORS_COMPONENT_ID,
-                wineServiceFacade.getColorsWithCounts()));
+                wineServiceFacade.getAppellations(searchFormModel.getObject(), CountEnum.WINE)));
+        add(new MultiplePanel<WineTypeEnum>(TYPES_COMPONENT_ID, wineServiceFacade.getTypes(
+                searchFormModel.getObject(), CountEnum.WINE)));
+        add(new MultiplePanel<WineColorEnum>(COLORS_COMPONENT_ID, wineServiceFacade.getColors(
+                searchFormModel.getObject(), CountEnum.WINE)));
 
         WineDataView wineDataView = new WineDataView("wines", searchFormModel);
         wineDataView.setItemsPerPage(25);
@@ -104,15 +102,15 @@ public class PediaHomePage extends PediaSuperPage {
                     SearchForm searchForm = (SearchForm) getDefaultModelObject();
                     if (COUNTRIES_COMPONENT_ID.equals(component.getId())) {
                         ((MultiplePanel<Region>) get(REGIONS_COMPONENT_ID))
-                                .setChoices(wineServiceFacade.getRegions(searchForm,
-                                        RegionCountEnum.WINE));
+                                .setChoices(wineServiceFacade
+                                        .getRegions(searchForm, CountEnum.WINE));
                         ((MultiplePanel<Appellation>) get(APPELLATIONS_COMPONENT_ID))
                                 .setChoices(wineServiceFacade.getAppellations(searchForm,
-                                        AppellationCountEnum.WINE));
+                                        CountEnum.WINE));
                     } else if (REGIONS_COMPONENT_ID.equals(component.getId())) {
                         ((MultiplePanel<Appellation>) get(APPELLATIONS_COMPONENT_ID))
                                 .setChoices(wineServiceFacade.getAppellations(searchForm,
-                                        AppellationCountEnum.WINE));
+                                        CountEnum.WINE));
                     }
                 }
                 break;

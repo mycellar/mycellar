@@ -25,9 +25,10 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
 import fr.peralta.mycellar.application.stock.CellarService;
+import fr.peralta.mycellar.domain.shared.repository.CountEnum;
+import fr.peralta.mycellar.domain.shared.repository.SearchForm;
 import fr.peralta.mycellar.domain.stock.Cellar;
 import fr.peralta.mycellar.domain.stock.repository.StockRepository;
-import fr.peralta.mycellar.domain.user.User;
 
 /**
  * @author speralta
@@ -49,8 +50,8 @@ public class CellarServiceImpl implements CellarService {
      * {@inheritDoc}
      */
     @Override
-    public Map<Cellar, Long> getAllWithCountsFromUser(User user) {
-        return stockRepository.getAllCellarsWithCountsFromUser(user);
+    public Map<Cellar, Long> getAll(SearchForm searchForm, CountEnum count) {
+        return stockRepository.getCellars(searchForm, count);
     }
 
     /**

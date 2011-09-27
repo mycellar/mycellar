@@ -35,33 +35,6 @@ public class SearchForm implements Serializable {
     private final Map<FilterEnum, Set<?>> sets = new HashMap<FilterEnum, Set<?>>();
 
     /**
-     * Default constructor.
-     */
-    public SearchForm() {
-
-    }
-
-    /**
-     * @param searchForm
-     */
-    public SearchForm(SearchForm searchForm) {
-        init(searchForm);
-    }
-
-    private void init(SearchForm searchForm) {
-        for (FilterEnum filter : searchForm.sets.keySet()) {
-            initSet(searchForm, filter);
-        }
-    }
-
-    private final void initSet(SearchForm searchForm, FilterEnum filter) {
-        Set<?> set = searchForm.getSet(filter);
-        if (set != null) {
-            putSet(filter, set);
-        }
-    }
-
-    /**
      * @param filter
      * @param set
      * @return this for chaining

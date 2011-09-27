@@ -34,10 +34,12 @@ import javax.persistence.criteria.JoinType;
 import javax.persistence.criteria.Order;
 import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
+import javax.persistence.criteria.SetJoin;
 
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Repository;
 
+import fr.peralta.mycellar.domain.shared.repository.CountEnum;
 import fr.peralta.mycellar.domain.shared.repository.FilterEnum;
 import fr.peralta.mycellar.domain.shared.repository.OrderWayEnum;
 import fr.peralta.mycellar.domain.shared.repository.SearchForm;
@@ -51,7 +53,6 @@ import fr.peralta.mycellar.domain.stock.repository.MovementOrderEnum;
 import fr.peralta.mycellar.domain.stock.repository.StockOrder;
 import fr.peralta.mycellar.domain.stock.repository.StockOrderEnum;
 import fr.peralta.mycellar.domain.stock.repository.StockRepository;
-import fr.peralta.mycellar.domain.user.User;
 import fr.peralta.mycellar.domain.wine.Format;
 import fr.peralta.mycellar.domain.wine.Wine;
 import fr.peralta.mycellar.infrastructure.shared.repository.HibernateRepository;
@@ -99,10 +100,37 @@ public class HibernateStockRepository extends HibernateRepository implements Sto
         in(predicates, searchForm.getSet(FilterEnum.CELLAR), root.get("cellar"), criteriaBuilder);
         in(predicates, searchForm.getSet(FilterEnum.USER), root.get("cellar").get("owner"),
                 criteriaBuilder);
-
         query = where(query, criteriaBuilder, predicates);
-        List<Movement> queryResult = entityManager
-                .createQuery(orderBy(query, root, orders, criteriaBuilder)).setFirstResult(first)
+
+        List<Order> orderList = new ArrayList<Order>();
+        for (Entry<MovementOrderEnum, OrderWayEnum> entry : orders.entrySet()) {
+            Expression<?> path;
+            switch (entry.getKey()) {
+            case DATE:
+                path = root.get("date");
+                break;
+            default:
+                throw new IllegalStateException("Unknwon "
+                        + MovementOrderEnum.class.getSimpleName() + " value [" + entry.getKey()
+                        + "].");
+            }
+            switch (entry.getValue()) {
+            case ASC:
+                orderList.add(criteriaBuilder.asc(path));
+                break;
+            case DESC:
+                orderList.add(criteriaBuilder.desc(path));
+                break;
+            default:
+                throw new IllegalStateException("Unknown " + OrderWayEnum.class.getSimpleName()
+                        + " value [" + entry.getValue() + "].");
+            }
+        }
+        if (orderList.size() > 0) {
+            query = query.orderBy(orderList);
+        }
+
+        List<Movement> queryResult = entityManager.createQuery(query).setFirstResult(first)
                 .setMaxResults(count).getResultList();
         List<Movement<?>> result = new ArrayList<Movement<?>>(queryResult.size());
         for (Movement movement : queryResult) {
@@ -134,8 +162,55 @@ public class HibernateStockRepository extends HibernateRepository implements Sto
         Root<Stock> root = query.from(Stock.class);
         query = query.select(root);
         query = where(query, root, searchForm, criteriaBuilder);
-        return entityManager.createQuery(orderBy(query, root, orders, criteriaBuilder))
-                .setFirstResult(first).setMaxResults(count).getResultList();
+
+        List<Order> orderList = new ArrayList<Order>();
+        for (Entry<StockOrderEnum, OrderWayEnum> entry : orders.entrySet()) {
+            Expression<?> path;
+            switch (entry.getKey()) {
+            case APPELLATION_NAME:
+                path = root.get("bottle").get("wine").get("appellation").get("name");
+                break;
+            case COUNTRY_NAME:
+                path = root.get("bottle").get("wine").get("appellation").get("region")
+                        .get("country").get("name");
+                break;
+            case NAME:
+                path = root.get("bottle").get("wine").get("name");
+                break;
+            case REGION_NAME:
+                path = root.get("bottle").get("wine").get("appellation").get("name");
+                break;
+            case VINTAGE:
+                path = root.get("bottle").get("wine").get("vintage");
+                break;
+            case FORMAT_NAME:
+                path = root.get("bottle").get("format").get("name");
+                break;
+            case QUANTITY:
+                path = root.get("quantity");
+                break;
+            default:
+                throw new IllegalStateException("Unknwon " + StockOrderEnum.class.getSimpleName()
+                        + " value [" + entry.getKey() + "].");
+            }
+            switch (entry.getValue()) {
+            case ASC:
+                orderList.add(criteriaBuilder.asc(path));
+                break;
+            case DESC:
+                orderList.add(criteriaBuilder.desc(path));
+                break;
+            default:
+                throw new IllegalStateException("Unknown " + OrderWayEnum.class.getSimpleName()
+                        + " value [" + entry.getValue() + "].");
+            }
+        }
+        if (orderList.size() > 0) {
+            query = query.orderBy(orderList);
+        }
+
+        return entityManager.createQuery(query).setFirstResult(first).setMaxResults(count)
+                .getResultList();
     }
 
     /**
@@ -182,22 +257,19 @@ public class HibernateStockRepository extends HibernateRepository implements Sto
      * {@inheritDoc}
      */
     @Override
-    public Map<Cellar, Long> getAllCellarsWithCountsFromUser(User user) {
+    public Map<Cellar, Long> getCellars(SearchForm searchForm, CountEnum countEnum) {
         CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();
         CriteriaQuery<Tuple> query = criteriaBuilder.createTupleQuery();
 
         Root<Cellar> root = query.from(Cellar.class);
-        Expression<Long> count = criteriaBuilder.sumAsLong(root.joinSet("stocks", JoinType.LEFT)
-                .<Integer> get("quantity"));
+        SetJoin<Cellar, Stock> stock = root.joinSet("stocks", JoinType.LEFT);
+        Expression<Long> count = getCount(countEnum, stock, criteriaBuilder);
 
-        CriteriaQuery<Tuple> select = query.multiselect(root, count);
-        if (user != null) {
-            select = select.where(criteriaBuilder.equal(root.<User> get("owner"), user));
-        }
+        query = query.multiselect(root, count);
+        query = where(query, stock, searchForm, criteriaBuilder);
 
         List<Tuple> tuples = entityManager.createQuery(
-                select.groupBy(root).orderBy(criteriaBuilder.asc(root.get("name"))))
-                .getResultList();
+                query.groupBy(root).orderBy(criteriaBuilder.asc(root.get("name")))).getResultList();
         Map<Cellar, Long> result = new LinkedHashMap<Cellar, Long>();
         for (Tuple tuple : tuples) {
             Long sum = tuple.get(count);
@@ -231,130 +303,4 @@ public class HibernateStockRepository extends HibernateRepository implements Sto
         return entityManager.merge(stock);
     }
 
-    /**
-     * @param query
-     * @param root
-     * @param searchForm
-     * @param criteriaBuilder
-     * @return
-     */
-    private <O> CriteriaQuery<O> where(CriteriaQuery<O> query, Root<Stock> root,
-            SearchForm searchForm, CriteriaBuilder criteriaBuilder) {
-        List<Predicate> predicates = new ArrayList<Predicate>();
-        in(predicates, searchForm.getSet(FilterEnum.CELLAR), root.get("cellar"), criteriaBuilder);
-        in(predicates, searchForm.getSet(FilterEnum.USER), root.get("cellar").get("owner"),
-                criteriaBuilder);
-        in(predicates, searchForm.getSet(FilterEnum.TYPE),
-                root.get("bottle").get("wine").get("type"), criteriaBuilder);
-        in(predicates, searchForm.getSet(FilterEnum.COLOR),
-                root.get("bottle").get("wine").get("color"), criteriaBuilder);
-        in(predicates, searchForm.getSet(FilterEnum.APPELLATION), root.get("bottle").get("wine")
-                .get("appellation"), criteriaBuilder);
-        in(predicates, searchForm.getSet(FilterEnum.REGION),
-                root.get("bottle").get("wine").get("appellation").get("region"), criteriaBuilder);
-        in(predicates, searchForm.getSet(FilterEnum.COUNTRY),
-                root.get("bottle").get("wine").get("appellation").get("region").get("country"),
-                criteriaBuilder);
-        in(predicates, searchForm.getSet(FilterEnum.PRODUCER),
-                root.get("bottle").get("wine").get("producer"), criteriaBuilder);
-        in(predicates, searchForm.getSet(FilterEnum.VINTAGE),
-                root.get("bottle").get("wine").get("vintage"), criteriaBuilder);
-        in(predicates, searchForm.getSet(FilterEnum.FORMAT), root.get("bottle").get("format"),
-                criteriaBuilder);
-
-        return where(query, criteriaBuilder, predicates);
-    }
-
-    private <O> CriteriaQuery<O> orderBy(CriteriaQuery<O> query, Root<Movement> root,
-            MovementOrder orders, CriteriaBuilder criteriaBuilder) {
-        List<Order> orderList = new ArrayList<Order>();
-        for (Entry<MovementOrderEnum, OrderWayEnum> entry : orders.entrySet()) {
-            switch (entry.getValue()) {
-            case ASC:
-                orderList.add(criteriaBuilder.asc(getPath(root, entry.getKey())));
-                break;
-            case DESC:
-                orderList.add(criteriaBuilder.desc(getPath(root, entry.getKey())));
-                break;
-            default:
-                throw new IllegalStateException("Unknown " + OrderWayEnum.class.getSimpleName()
-                        + " value [" + entry.getValue() + "].");
-            }
-        }
-        if (orderList.size() > 0) {
-            return query.orderBy(orderList);
-        }
-        return query;
-    }
-
-    /**
-     * @param query
-     * @param root
-     * @param orders
-     * @param criteriaBuilder
-     * @return
-     */
-    private <O> CriteriaQuery<O> orderBy(CriteriaQuery<O> query, Root<Stock> root,
-            StockOrder orders, CriteriaBuilder criteriaBuilder) {
-        List<Order> orderList = new ArrayList<Order>();
-        for (Entry<StockOrderEnum, OrderWayEnum> entry : orders.entrySet()) {
-            switch (entry.getValue()) {
-            case ASC:
-                orderList.add(criteriaBuilder.asc(getPath(root, entry.getKey())));
-                break;
-            case DESC:
-                orderList.add(criteriaBuilder.desc(getPath(root, entry.getKey())));
-                break;
-            default:
-                throw new IllegalStateException("Unknown " + OrderWayEnum.class.getSimpleName()
-                        + " value [" + entry.getValue() + "].");
-            }
-        }
-        if (orderList.size() > 0) {
-            return query.orderBy(orderList);
-        }
-        return query;
-    }
-
-    /**
-     * @param root
-     * @param key
-     * @return
-     */
-    private Expression<?> getPath(Root<Stock> root, StockOrderEnum order) {
-        switch (order) {
-        case APPELLATION_NAME:
-            return root.get("bottle").get("wine").get("appellation").get("name");
-        case COUNTRY_NAME:
-            return root.get("bottle").get("wine").get("appellation").get("region").get("country")
-                    .get("name");
-        case NAME:
-            return root.get("bottle").get("wine").get("name");
-        case REGION_NAME:
-            return root.get("bottle").get("wine").get("appellation").get("name");
-        case VINTAGE:
-            return root.get("bottle").get("wine").get("vintage");
-        case FORMAT_NAME:
-            return root.get("bottle").get("format").get("name");
-        case QUANTITY:
-            return root.get("quantity");
-        default:
-            throw new IllegalStateException("Unknwon " + StockOrderEnum.class.getSimpleName()
-                    + " value [" + order + "].");
-        }
-    }
-
-    /**
-     * @param key
-     * @return
-     */
-    private Expression<?> getPath(Root<Movement> root, MovementOrderEnum order) {
-        switch (order) {
-        case DATE:
-            return root.get("date");
-        default:
-            throw new IllegalStateException("Unknwon " + MovementOrderEnum.class.getSimpleName()
-                    + " value [" + order + "].");
-        }
-    }
 }

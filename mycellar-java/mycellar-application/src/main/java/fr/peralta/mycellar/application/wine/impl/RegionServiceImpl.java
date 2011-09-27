@@ -24,9 +24,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import fr.peralta.mycellar.application.wine.RegionService;
+import fr.peralta.mycellar.domain.shared.repository.CountEnum;
 import fr.peralta.mycellar.domain.shared.repository.SearchForm;
 import fr.peralta.mycellar.domain.wine.Region;
-import fr.peralta.mycellar.domain.wine.repository.RegionCountEnum;
 import fr.peralta.mycellar.domain.wine.repository.WineRepository;
 
 /**
@@ -41,7 +41,7 @@ public class RegionServiceImpl implements RegionService {
      * {@inheritDoc}
      */
     @Override
-    public Map<Region, Long> getAll(SearchForm searchForm, RegionCountEnum count) {
+    public Map<Region, Long> getAll(SearchForm searchForm, CountEnum count) {
         return wineRepository.getRegions(searchForm, count);
     }
 

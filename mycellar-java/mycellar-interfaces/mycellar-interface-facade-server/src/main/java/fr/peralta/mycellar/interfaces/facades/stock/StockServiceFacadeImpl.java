@@ -28,6 +28,7 @@ import org.springframework.transaction.annotation.Transactional;
 import fr.peralta.mycellar.application.stock.BottleService;
 import fr.peralta.mycellar.application.stock.CellarService;
 import fr.peralta.mycellar.application.stock.StockService;
+import fr.peralta.mycellar.domain.shared.repository.CountEnum;
 import fr.peralta.mycellar.domain.shared.repository.SearchForm;
 import fr.peralta.mycellar.domain.stock.Arrival;
 import fr.peralta.mycellar.domain.stock.Bottle;
@@ -36,7 +37,6 @@ import fr.peralta.mycellar.domain.stock.Movement;
 import fr.peralta.mycellar.domain.stock.Stock;
 import fr.peralta.mycellar.domain.stock.repository.MovementOrder;
 import fr.peralta.mycellar.domain.stock.repository.StockOrder;
-import fr.peralta.mycellar.domain.user.User;
 import fr.peralta.mycellar.domain.wine.Format;
 import fr.peralta.mycellar.domain.wine.Wine;
 
@@ -75,8 +75,8 @@ public class StockServiceFacadeImpl implements StockServiceFacade {
      */
     @Override
     @Transactional(readOnly = true)
-    public Map<Cellar, Long> getAllCellarsWithCountsFromUser(User user) {
-        return cellarService.getAllWithCountsFromUser(user);
+    public Map<Cellar, Long> getCellars(SearchForm searchForm, CountEnum count) {
+        return cellarService.getAll(searchForm, count);
     }
 
     /**

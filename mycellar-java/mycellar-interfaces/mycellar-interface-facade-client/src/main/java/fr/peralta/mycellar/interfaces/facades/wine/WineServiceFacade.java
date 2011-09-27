@@ -21,6 +21,7 @@ package fr.peralta.mycellar.interfaces.facades.wine;
 import java.util.List;
 import java.util.Map;
 
+import fr.peralta.mycellar.domain.shared.repository.CountEnum;
 import fr.peralta.mycellar.domain.shared.repository.SearchForm;
 import fr.peralta.mycellar.domain.wine.Appellation;
 import fr.peralta.mycellar.domain.wine.Country;
@@ -30,9 +31,6 @@ import fr.peralta.mycellar.domain.wine.Region;
 import fr.peralta.mycellar.domain.wine.Wine;
 import fr.peralta.mycellar.domain.wine.WineColorEnum;
 import fr.peralta.mycellar.domain.wine.WineTypeEnum;
-import fr.peralta.mycellar.domain.wine.repository.AppellationCountEnum;
-import fr.peralta.mycellar.domain.wine.repository.CountryCountEnum;
-import fr.peralta.mycellar.domain.wine.repository.RegionCountEnum;
 import fr.peralta.mycellar.domain.wine.repository.WineOrder;
 
 /**
@@ -59,19 +57,19 @@ public interface WineServiceFacade {
      * @param count
      * @return
      */
-    Map<Country, Long> getCountries(SearchForm searchForm, CountryCountEnum count);
+    Map<Country, Long> getCountries(SearchForm searchForm, CountEnum count);
 
     /**
      * @param countries
      * @return
      */
-    Map<Region, Long> getRegions(SearchForm searchForm, RegionCountEnum count);
+    Map<Region, Long> getRegions(SearchForm searchForm, CountEnum count);
 
     /**
      * @param regions
      * @return
      */
-    Map<Appellation, Long> getAppellations(SearchForm searchForm, AppellationCountEnum count);
+    Map<Appellation, Long> getAppellations(SearchForm searchForm, CountEnum count);
 
     /**
      * @param term
@@ -80,35 +78,23 @@ public interface WineServiceFacade {
     List<Producer> getProducersLike(String term);
 
     /**
-     * @param producers
+     * @param searchForm
+     * @param count
      * @return
      */
-    Map<WineTypeEnum, Long> getTypesWithCounts(Producer... producers);
+    Map<WineTypeEnum, Long> getTypes(SearchForm searchForm, CountEnum count);
 
     /**
-     * @param types
-     * @param producers
+     * @param searchForm
+     * @param wine
      * @return
      */
-    Map<WineColorEnum, Long> getColorsWithCounts(WineTypeEnum[] types, Producer... producers);
-
-    /**
-     * @param object
-     * @param object2
-     * @return
-     */
-    Map<WineColorEnum, Long> getColorsWithCounts(WineTypeEnum type, Producer... producers);
-
-    /**
-     * @param producers
-     * @return
-     */
-    Map<WineColorEnum, Long> getColorsWithCounts(Producer... producers);
+    Map<WineColorEnum, Long> getColors(SearchForm searchForm, CountEnum wine);
 
     /**
      * @return
      */
-    Map<Format, Long> getFormatWithCounts();
+    Map<Format, Long> getFormats(SearchForm searchForm, CountEnum count);
 
     /**
      * @param wine

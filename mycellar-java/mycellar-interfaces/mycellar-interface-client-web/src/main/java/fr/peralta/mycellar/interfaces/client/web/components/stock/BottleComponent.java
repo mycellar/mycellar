@@ -28,6 +28,7 @@ import org.apache.wicket.spring.injection.annot.SpringBean;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import fr.peralta.mycellar.domain.shared.repository.CountEnum;
 import fr.peralta.mycellar.domain.stock.Bottle;
 import fr.peralta.mycellar.domain.wine.Format;
 import fr.peralta.mycellar.domain.wine.Wine;
@@ -60,7 +61,7 @@ public class BottleComponent extends Panel {
         setOutputMarkupId(true);
         add(new WineComplexList(WINE_COMPONENT_ID, new StringResourceModel("wine", this, null)));
         add(new FormatComplexTagCloud(FORMAT_COMPONENT_ID, new StringResourceModel("format", this,
-                null)));
+                null), CountEnum.STOCK_QUANTITY));
     }
 
     /**

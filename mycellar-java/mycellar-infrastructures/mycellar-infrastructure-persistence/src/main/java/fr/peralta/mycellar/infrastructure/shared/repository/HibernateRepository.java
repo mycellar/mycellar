@@ -24,15 +24,76 @@ import java.util.List;
 
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.Expression;
 import javax.persistence.criteria.Path;
 import javax.persistence.criteria.Predicate;
 
 import fr.peralta.mycellar.domain.shared.IdentifiedEntity;
+import fr.peralta.mycellar.domain.shared.repository.CountEnum;
+import fr.peralta.mycellar.domain.shared.repository.FilterEnum;
+import fr.peralta.mycellar.domain.shared.repository.SearchForm;
+import fr.peralta.mycellar.domain.stock.Stock;
 
 /**
  * @author speralta
  */
 public abstract class HibernateRepository {
+
+    /**
+     * @param query
+     * @param root
+     * @param searchForm
+     * @param criteriaBuilder
+     * @return
+     */
+    protected <O> CriteriaQuery<O> where(CriteriaQuery<O> query, Path<Stock> root,
+            SearchForm searchForm, CriteriaBuilder criteriaBuilder) {
+        List<Predicate> predicates = new ArrayList<Predicate>();
+        in(predicates, searchForm.getSet(FilterEnum.APPELLATION), root.get("bottle").get("wine")
+                .get("appellation"), criteriaBuilder);
+        in(predicates, searchForm.getSet(FilterEnum.CELLAR), root.get("cellar"), criteriaBuilder);
+        in(predicates, searchForm.getSet(FilterEnum.COLOR),
+                root.get("bottle").get("wine").get("color"), criteriaBuilder);
+        in(predicates, searchForm.getSet(FilterEnum.COUNTRY),
+                root.get("bottle").get("wine").get("appellation").get("region").get("country"),
+                criteriaBuilder);
+        in(predicates, searchForm.getSet(FilterEnum.FORMAT), root.get("bottle").get("format"),
+                criteriaBuilder);
+        in(predicates, searchForm.getSet(FilterEnum.PRODUCER),
+                root.get("bottle").get("wine").get("producer"), criteriaBuilder);
+        in(predicates, searchForm.getSet(FilterEnum.REGION),
+                root.get("bottle").get("wine").get("appellation").get("region"), criteriaBuilder);
+        in(predicates, searchForm.getSet(FilterEnum.TYPE),
+                root.get("bottle").get("wine").get("type"), criteriaBuilder);
+        in(predicates, searchForm.getSet(FilterEnum.USER), root.get("cellar").get("owner"),
+                criteriaBuilder);
+        in(predicates, searchForm.getSet(FilterEnum.VINTAGE),
+                root.get("bottle").get("wine").get("vintage"), criteriaBuilder);
+        return where(query, criteriaBuilder, predicates);
+    }
+
+    /**
+     * @param countEnum
+     * @param stock
+     * @param criteriaBuilder
+     * @return
+     */
+    protected Expression<Long> getCount(CountEnum countEnum, Path<Stock> stock,
+            CriteriaBuilder criteriaBuilder) {
+        Expression<Long> count;
+        switch (countEnum) {
+        case WINE:
+            count = criteriaBuilder.count(stock.get("bottle").get("wine"));
+            break;
+        case STOCK_QUANTITY:
+            count = criteriaBuilder.sumAsLong(stock.<Integer> get("quantity"));
+            break;
+        default:
+            throw new IllegalStateException("Unknown " + CountEnum.class.getSimpleName()
+                    + " value [" + countEnum + "].");
+        }
+        return count;
+    }
 
     /**
      * @param query

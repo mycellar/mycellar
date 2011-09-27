@@ -111,6 +111,10 @@ public class SearchFormModel implements IComponentInheritedModel<SearchForm> {
                 return FilterEnum.TYPE;
             } else if ("colors".equals(id) || "color".equals(id)) {
                 return FilterEnum.COLOR;
+            } else if ("formats".equals(id) || "format".equals(id)) {
+                return FilterEnum.FORMAT;
+            } else if ("producers".equals(id) || "producer".equals(id)) {
+                return FilterEnum.PRODUCER;
             } else {
                 return null;
             }

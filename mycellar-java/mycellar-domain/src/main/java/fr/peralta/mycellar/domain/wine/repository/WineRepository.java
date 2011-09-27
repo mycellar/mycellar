@@ -21,6 +21,7 @@ package fr.peralta.mycellar.domain.wine.repository;
 import java.util.List;
 import java.util.Map;
 
+import fr.peralta.mycellar.domain.shared.repository.CountEnum;
 import fr.peralta.mycellar.domain.shared.repository.SearchForm;
 import fr.peralta.mycellar.domain.wine.Appellation;
 import fr.peralta.mycellar.domain.wine.Country;
@@ -53,25 +54,24 @@ public interface WineRepository {
 
     /**
      * @param searchForm
-     * @param countryCountEnum
+     * @param countEnum
      * @return
      */
-    Map<Country, Long> getCountries(SearchForm searchForm, CountryCountEnum countryCountEnum);
+    Map<Country, Long> getCountries(SearchForm searchForm, CountEnum countEnum);
 
     /**
      * @param searchForm
-     * @param regionCountEnum
+     * @param countEnum
      * @return
      */
-    Map<Region, Long> getRegions(SearchForm searchForm, RegionCountEnum regionCountEnum);
+    Map<Region, Long> getRegions(SearchForm searchForm, CountEnum countEnum);
 
     /**
      * @param searchForm
-     * @param appellationCountEnum
+     * @param countEnum
      * @return
      */
-    Map<Appellation, Long> getAppellations(SearchForm searchForm,
-            AppellationCountEnum appellationCountEnum);
+    Map<Appellation, Long> getAppellations(SearchForm searchForm, CountEnum countEnum);
 
     /**
      * @param term
@@ -80,22 +80,22 @@ public interface WineRepository {
     List<Producer> getAllProducersLike(String term);
 
     /**
-     * @param producers
+     * @param searchForm
+     * @param countEnum
      * @return
      */
-    Map<WineTypeEnum, Long> getAllTypesFromProducersWithCounts(Producer... producers);
+    Map<WineTypeEnum, Long> getTypes(SearchForm searchForm, CountEnum countEnum);
 
     /**
-     * @param types
-     * @param producers
+     * @param searchForm
+     * @param countEnum
      * @return
      */
-    Map<WineColorEnum, Long> getAllColorsFromTypesAndProducersWithCounts(WineTypeEnum[] types,
-            Producer... producers);
+    Map<WineColorEnum, Long> getColors(SearchForm searchForm, CountEnum countEnum);
 
     /**
      * @return
      */
-    Map<Format, Long> getAllFormatWithCounts();
+    Map<Format, Long> getFormats(SearchForm searchForm, CountEnum countEnum);
 
 }

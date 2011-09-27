@@ -29,12 +29,12 @@ import org.apache.wicket.model.StringResourceModel;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 import org.joda.time.LocalDate;
 
+import fr.peralta.mycellar.domain.shared.repository.CountEnum;
 import fr.peralta.mycellar.domain.wine.Appellation;
 import fr.peralta.mycellar.domain.wine.Producer;
 import fr.peralta.mycellar.domain.wine.Wine;
 import fr.peralta.mycellar.domain.wine.WineColorEnum;
 import fr.peralta.mycellar.domain.wine.WineTypeEnum;
-import fr.peralta.mycellar.domain.wine.repository.AppellationCountEnum;
 import fr.peralta.mycellar.interfaces.client.web.components.shared.Action;
 import fr.peralta.mycellar.interfaces.client.web.components.shared.OnBlurDefaultAjaxBehavior;
 import fr.peralta.mycellar.interfaces.client.web.components.shared.list.ComplexList;
@@ -69,7 +69,7 @@ public class WineComplexList extends ComplexList<Wine> {
         super(id, label);
         setOutputMarkupId(true);
         add(new AppellationComplexTagCloud(APPELLATION_COMPONENT_ID, new StringResourceModel(
-                "appellation", this, null), AppellationCountEnum.WINE));
+                "appellation", this, null), CountEnum.STOCK_QUANTITY));
         add(new ProducerComplexAutocomplete(PRODUCER_COMPONENT_ID, new StringResourceModel(
                 "producer", this, null)));
         add(new EmptyPanel(TYPE_COMPONENT_ID).setOutputMarkupId(true));
@@ -166,7 +166,8 @@ public class WineComplexList extends ComplexList<Wine> {
             if ((sourceObject != null) && producerComplexAutocomplete.isValued()) {
                 replace(new WineTypeEnumFromProducerTagCloud(TYPE_COMPONENT_ID,
                         new StringResourceModel("type", this, null),
-                        (IModel<Producer>) producerComplexAutocomplete.getDefaultModel()));
+                        (IModel<Producer>) producerComplexAutocomplete.getDefaultModel(),
+                        CountEnum.WINE));
             } else {
                 get(TYPE_COMPONENT_ID).setDefaultModelObject(null).replaceWith(
                         new EmptyPanel(TYPE_COMPONENT_ID));
@@ -181,7 +182,8 @@ public class WineComplexList extends ComplexList<Wine> {
                 replace(new WineColorEnumFromProducerAndTypeTagCloud(COLOR_COMPONENT_ID,
                         new StringResourceModel("color", this, null), (IModel<Producer>) get(
                                 PRODUCER_COMPONENT_ID).getDefaultModel(),
-                        (IModel<WineTypeEnum>) wineTypeEnumFromProducerTagCloud.getDefaultModel()));
+                        (IModel<WineTypeEnum>) wineTypeEnumFromProducerTagCloud.getDefaultModel(),
+                        CountEnum.WINE));
             } else {
                 get(COLOR_COMPONENT_ID).setDefaultModelObject(null).replaceWith(
                         new EmptyPanel(COLOR_COMPONENT_ID));

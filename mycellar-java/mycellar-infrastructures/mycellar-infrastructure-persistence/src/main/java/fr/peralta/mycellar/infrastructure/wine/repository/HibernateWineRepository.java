@@ -19,7 +19,6 @@
 package fr.peralta.mycellar.infrastructure.wine.repository;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -34,13 +33,12 @@ import javax.persistence.criteria.Expression;
 import javax.persistence.criteria.JoinType;
 import javax.persistence.criteria.Order;
 import javax.persistence.criteria.Path;
-import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
 import javax.persistence.criteria.SetJoin;
 
 import org.springframework.stereotype.Repository;
 
-import fr.peralta.mycellar.domain.shared.repository.FilterEnum;
+import fr.peralta.mycellar.domain.shared.repository.CountEnum;
 import fr.peralta.mycellar.domain.shared.repository.OrderWayEnum;
 import fr.peralta.mycellar.domain.shared.repository.SearchForm;
 import fr.peralta.mycellar.domain.stock.Bottle;
@@ -53,9 +51,6 @@ import fr.peralta.mycellar.domain.wine.Region;
 import fr.peralta.mycellar.domain.wine.Wine;
 import fr.peralta.mycellar.domain.wine.WineColorEnum;
 import fr.peralta.mycellar.domain.wine.WineTypeEnum;
-import fr.peralta.mycellar.domain.wine.repository.AppellationCountEnum;
-import fr.peralta.mycellar.domain.wine.repository.CountryCountEnum;
-import fr.peralta.mycellar.domain.wine.repository.RegionCountEnum;
 import fr.peralta.mycellar.domain.wine.repository.WineOrder;
 import fr.peralta.mycellar.domain.wine.repository.WineOrderEnum;
 import fr.peralta.mycellar.domain.wine.repository.WineRepository;
@@ -79,7 +74,8 @@ public class HibernateWineRepository extends HibernateRepository implements Wine
         CriteriaQuery<Long> query = criteriaBuilder.createQuery(Long.class);
         Root<Wine> root = query.from(Wine.class);
         query = query.select(criteriaBuilder.count(root));
-        query = where(query, root, searchForm, criteriaBuilder);
+        query = where(query, root.<Wine, Stock> joinSet("stocks", JoinType.LEFT), searchForm,
+                criteriaBuilder);
         return entityManager.createQuery(query).getSingleResult();
     }
 
@@ -92,7 +88,8 @@ public class HibernateWineRepository extends HibernateRepository implements Wine
         CriteriaQuery<Wine> query = criteriaBuilder.createQuery(Wine.class);
         Root<Wine> root = query.from(Wine.class);
         query = query.select(root);
-        query = where(query, root, searchForm, criteriaBuilder);
+        query = where(query, root.<Wine, Stock> joinSet("stocks", JoinType.LEFT), searchForm,
+                criteriaBuilder);
         return entityManager.createQuery(orderBy(query, root, orders, criteriaBuilder))
                 .setFirstResult(first).setMaxResults(count).getResultList();
     }
@@ -101,7 +98,7 @@ public class HibernateWineRepository extends HibernateRepository implements Wine
      * {@inheritDoc}
      */
     @Override
-    public Map<Country, Long> getCountries(SearchForm searchForm, CountryCountEnum countryCountEnum) {
+    public Map<Country, Long> getCountries(SearchForm searchForm, CountEnum countEnum) {
         CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();
         CriteriaQuery<Tuple> query = criteriaBuilder.createTupleQuery();
 
@@ -112,31 +109,9 @@ public class HibernateWineRepository extends HibernateRepository implements Wine
         SetJoin<Wine, Bottle> bottle = wine.joinSet("bottles", JoinType.LEFT);
         SetJoin<Bottle, Stock> stock = bottle.joinSet("stocks", JoinType.LEFT);
 
-        Expression<Long> count;
-        switch (countryCountEnum) {
-        case APPELLATION:
-            count = criteriaBuilder.count(appellation);
-            break;
-        case REGION:
-            count = criteriaBuilder.count(region);
-            break;
-        case WINE:
-            count = criteriaBuilder.count(wine);
-            break;
-        case STOCK_QUANTITY:
-            count = criteriaBuilder.sumAsLong(stock.<Integer> get("quantity"));
-            break;
-        default:
-            throw new IllegalStateException("Unknown " + CountryCountEnum.class.getSimpleName()
-                    + " value [" + countryCountEnum + "].");
-        }
+        Expression<Long> count = getCount(countEnum, stock, criteriaBuilder);
         query = query.multiselect(root, count);
-
-        List<Predicate> predicates = new ArrayList<Predicate>();
-        in(predicates, searchForm.getSet(FilterEnum.CELLAR), stock.get("cellar"), criteriaBuilder);
-        in(predicates, searchForm.getSet(FilterEnum.USER), stock.get("cellar").get("owner"),
-                criteriaBuilder);
-        query = where(query, criteriaBuilder, predicates);
+        query = where(query, stock, searchForm, criteriaBuilder);
 
         List<Tuple> tuples = entityManager.createQuery(
                 query.groupBy(root).orderBy(criteriaBuilder.asc(root.get("name")))).getResultList();
@@ -152,7 +127,7 @@ public class HibernateWineRepository extends HibernateRepository implements Wine
      * {@inheritDoc}
      */
     @Override
-    public Map<Region, Long> getRegions(SearchForm searchForm, RegionCountEnum regionCountEnum) {
+    public Map<Region, Long> getRegions(SearchForm searchForm, CountEnum countEnum) {
         CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();
         CriteriaQuery<Tuple> query = criteriaBuilder.createTupleQuery();
 
@@ -161,29 +136,9 @@ public class HibernateWineRepository extends HibernateRepository implements Wine
         SetJoin<Appellation, Wine> wine = appellation.joinSet("wines", JoinType.LEFT);
         SetJoin<Wine, Bottle> bottle = wine.joinSet("bottles", JoinType.LEFT);
         SetJoin<Bottle, Stock> stock = bottle.joinSet("stocks", JoinType.LEFT);
-        Expression<Long> count;
-        switch (regionCountEnum) {
-        case APPELLATION:
-            count = criteriaBuilder.count(appellation);
-            break;
-        case WINE:
-            count = criteriaBuilder.count(wine);
-            break;
-        case STOCK_QUANTITY:
-            count = criteriaBuilder.sumAsLong(stock.<Integer> get("quantity"));
-            break;
-        default:
-            throw new IllegalStateException("Unknown " + CountryCountEnum.class.getSimpleName()
-                    + " value [" + regionCountEnum + "].");
-        }
+        Expression<Long> count = getCount(countEnum, stock, criteriaBuilder);
         query = query.multiselect(root, count);
-
-        List<Predicate> predicates = new ArrayList<Predicate>();
-        in(predicates, searchForm.getSet(FilterEnum.CELLAR), stock.get("cellar"), criteriaBuilder);
-        in(predicates, searchForm.getSet(FilterEnum.USER), stock.get("cellar").get("owner"),
-                criteriaBuilder);
-        in(predicates, searchForm.getSet(FilterEnum.COUNTRY), root.get("country"), criteriaBuilder);
-        query = where(query, criteriaBuilder, predicates);
+        query = where(query, stock, searchForm, criteriaBuilder);
 
         List<Tuple> tuples = entityManager.createQuery(
                 query.groupBy(root).orderBy(criteriaBuilder.asc(root.get("name")))).getResultList();
@@ -199,8 +154,7 @@ public class HibernateWineRepository extends HibernateRepository implements Wine
      * {@inheritDoc}
      */
     @Override
-    public Map<Appellation, Long> getAppellations(SearchForm searchForm,
-            AppellationCountEnum appellationCountEnum) {
+    public Map<Appellation, Long> getAppellations(SearchForm searchForm, CountEnum countEnum) {
         CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();
         CriteriaQuery<Tuple> query = criteriaBuilder.createTupleQuery();
 
@@ -208,28 +162,9 @@ public class HibernateWineRepository extends HibernateRepository implements Wine
         SetJoin<Appellation, Wine> wine = root.joinSet("wines", JoinType.LEFT);
         SetJoin<Wine, Bottle> bottle = wine.joinSet("bottles", JoinType.LEFT);
         SetJoin<Bottle, Stock> stock = bottle.joinSet("stocks", JoinType.LEFT);
-        Expression<Long> count;
-        switch (appellationCountEnum) {
-        case WINE:
-            count = criteriaBuilder.count(wine);
-            break;
-        case STOCK_QUANTITY:
-            count = criteriaBuilder.sumAsLong(stock.<Integer> get("quantity"));
-            break;
-        default:
-            throw new IllegalStateException("Unknown " + AppellationCountEnum.class.getSimpleName()
-                    + " value [" + appellationCountEnum + "].");
-        }
+        Expression<Long> count = getCount(countEnum, stock, criteriaBuilder);
         query = query.multiselect(root, count);
-
-        List<Predicate> predicates = new ArrayList<Predicate>();
-        in(predicates, searchForm.getSet(FilterEnum.CELLAR), stock.get("cellar"), criteriaBuilder);
-        in(predicates, searchForm.getSet(FilterEnum.USER), stock.get("cellar").get("owner"),
-                criteriaBuilder);
-        in(predicates, searchForm.getSet(FilterEnum.REGION), root.get("region"), criteriaBuilder);
-        in(predicates, searchForm.getSet(FilterEnum.COUNTRY), root.get("region").get("country"),
-                criteriaBuilder);
-        query = where(query, criteriaBuilder, predicates);
+        query = where(query, stock, searchForm, criteriaBuilder);
 
         List<Tuple> tuples = entityManager.createQuery(
                 query.groupBy(root).orderBy(criteriaBuilder.asc(root.get("name")))).getResultList();
@@ -259,18 +194,16 @@ public class HibernateWineRepository extends HibernateRepository implements Wine
      * {@inheritDoc}
      */
     @Override
-    public Map<WineTypeEnum, Long> getAllTypesFromProducersWithCounts(Producer... producers) {
+    public Map<WineTypeEnum, Long> getTypes(SearchForm searchForm, CountEnum countEnum) {
         CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();
         CriteriaQuery<Tuple> query = criteriaBuilder.createTupleQuery();
         Root<Wine> root = query.from(Wine.class);
         Path<WineTypeEnum> type = root.get("type");
-        Expression<Long> count = criteriaBuilder.count(type);
-
+        SetJoin<Wine, Bottle> bottle = root.joinSet("bottles", JoinType.LEFT);
+        SetJoin<Bottle, Stock> stock = bottle.joinSet("stocks", JoinType.LEFT);
+        Expression<Long> count = getCount(countEnum, stock, criteriaBuilder);
         query = query.multiselect(type, count);
-
-        if ((producers != null) && (producers.length > 0)) {
-            query = query.where(root.get("producer").in(Arrays.asList(producers)));
-        }
+        query = where(query, stock, searchForm, criteriaBuilder);
 
         List<Tuple> tuples = entityManager.createQuery(query.groupBy(type)).getResultList();
         Map<WineTypeEnum, Long> result = new LinkedHashMap<WineTypeEnum, Long>();
@@ -284,40 +217,16 @@ public class HibernateWineRepository extends HibernateRepository implements Wine
      * {@inheritDoc}
      */
     @Override
-    public Map<WineColorEnum, Long> getAllColorsFromTypesAndProducersWithCounts(
-            WineTypeEnum[] types, Producer... producers) {
+    public Map<WineColorEnum, Long> getColors(SearchForm searchForm, CountEnum countEnum) {
         CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();
         CriteriaQuery<Tuple> query = criteriaBuilder.createTupleQuery();
         Root<Wine> root = query.from(Wine.class);
         Path<WineColorEnum> color = root.get("color");
-        Expression<Long> count = criteriaBuilder.count(color);
-
+        SetJoin<Wine, Bottle> bottle = root.joinSet("bottles", JoinType.LEFT);
+        SetJoin<Bottle, Stock> stock = bottle.joinSet("stocks", JoinType.LEFT);
+        Expression<Long> count = getCount(countEnum, stock, criteriaBuilder);
         query = query.multiselect(color, count);
-
-        List<Predicate> predicates = new ArrayList<Predicate>();
-        if ((producers != null) && (producers.length > 0)) {
-            predicates.add(root.get("producer").in(Arrays.asList(producers)));
-        }
-        if ((producers != null) && (producers.length > 0)) {
-            predicates.add(root.get("type").in(Arrays.asList(types)));
-        }
-
-        Predicate wherePredicate;
-        switch (predicates.size()) {
-        case 0:
-            wherePredicate = null;
-            break;
-        case 1:
-            wherePredicate = predicates.get(0);
-        default:
-            wherePredicate = criteriaBuilder
-                    .and(predicates.toArray(new Predicate[predicates.size()]));
-            break;
-        }
-
-        if (wherePredicate != null) {
-            query = query.where(wherePredicate);
-        }
+        query = where(query, stock, searchForm, criteriaBuilder);
 
         List<Tuple> tuples = entityManager.createQuery(query.groupBy(color)).getResultList();
         Map<WineColorEnum, Long> result = new LinkedHashMap<WineColorEnum, Long>();
@@ -331,39 +240,24 @@ public class HibernateWineRepository extends HibernateRepository implements Wine
      * {@inheritDoc}
      */
     @Override
-    public Map<Format, Long> getAllFormatWithCounts() {
+    public Map<Format, Long> getFormats(SearchForm searchForm, CountEnum countEnum) {
         CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();
         CriteriaQuery<Tuple> query = criteriaBuilder.createTupleQuery();
 
         Root<Format> root = query.from(Format.class);
-        Expression<Long> count = criteriaBuilder.count(root.joinSet("bottles", JoinType.LEFT));
+        SetJoin<Format, Bottle> bottle = root.joinSet("bottles", JoinType.LEFT);
+        SetJoin<Bottle, Stock> stock = bottle.joinSet("stocks", JoinType.LEFT);
+        Expression<Long> count = getCount(countEnum, stock, criteriaBuilder);
+        query = query.multiselect(root, count);
+        query = where(query, stock, searchForm, criteriaBuilder);
 
         List<Tuple> tuples = entityManager.createQuery(
-                query.multiselect(root, count).groupBy(root)
-                        .orderBy(criteriaBuilder.asc(root.get("name")))).getResultList();
+                query.groupBy(root).orderBy(criteriaBuilder.asc(root.get("name")))).getResultList();
         Map<Format, Long> result = new LinkedHashMap<Format, Long>();
         for (Tuple tuple : tuples) {
             result.put(tuple.get(root), tuple.get(count));
         }
         return result;
-    }
-
-    private <O> CriteriaQuery<O> where(CriteriaQuery<O> query, Root<Wine> root,
-            SearchForm searchForm, CriteriaBuilder criteriaBuilder) {
-        List<Predicate> predicates = new ArrayList<Predicate>();
-        in(predicates, searchForm.getSet(FilterEnum.TYPE), root.get("type"), criteriaBuilder);
-        in(predicates, searchForm.getSet(FilterEnum.COLOR), root.get("color"), criteriaBuilder);
-        in(predicates, searchForm.getSet(FilterEnum.APPELLATION), root.get("appellation"),
-                criteriaBuilder);
-        in(predicates, searchForm.getSet(FilterEnum.REGION), root.get("appellation").get("region"),
-                criteriaBuilder);
-        in(predicates, searchForm.getSet(FilterEnum.COUNTRY), root.get("appellation").get("region")
-                .get("country"), criteriaBuilder);
-        in(predicates, searchForm.getSet(FilterEnum.PRODUCER), root.get("producer"),
-                criteriaBuilder);
-        in(predicates, searchForm.getSet(FilterEnum.VINTAGE), root.get("vintage"), criteriaBuilder);
-
-        return where(query, criteriaBuilder, predicates);
     }
 
     private <O> CriteriaQuery<O> orderBy(CriteriaQuery<O> query, Root<Wine> root, WineOrder orders,

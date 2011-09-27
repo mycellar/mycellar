@@ -20,6 +20,8 @@ package fr.peralta.mycellar.application.wine;
 
 import java.util.Map;
 
+import fr.peralta.mycellar.domain.shared.repository.CountEnum;
+import fr.peralta.mycellar.domain.shared.repository.SearchForm;
 import fr.peralta.mycellar.domain.wine.Format;
 
 /**
@@ -30,6 +32,6 @@ public interface FormatService {
     /**
      * @return
      */
-    Map<Format, Long> getAllWithCounts();
+    Map<Format, Long> getAll(SearchForm searchForm, CountEnum count);
 
 }

@@ -31,6 +31,7 @@ import fr.peralta.mycellar.application.wine.FormatService;
 import fr.peralta.mycellar.application.wine.ProducerService;
 import fr.peralta.mycellar.application.wine.RegionService;
 import fr.peralta.mycellar.application.wine.WineService;
+import fr.peralta.mycellar.domain.shared.repository.CountEnum;
 import fr.peralta.mycellar.domain.shared.repository.SearchForm;
 import fr.peralta.mycellar.domain.wine.Appellation;
 import fr.peralta.mycellar.domain.wine.Country;
@@ -40,9 +41,6 @@ import fr.peralta.mycellar.domain.wine.Region;
 import fr.peralta.mycellar.domain.wine.Wine;
 import fr.peralta.mycellar.domain.wine.WineColorEnum;
 import fr.peralta.mycellar.domain.wine.WineTypeEnum;
-import fr.peralta.mycellar.domain.wine.repository.AppellationCountEnum;
-import fr.peralta.mycellar.domain.wine.repository.CountryCountEnum;
-import fr.peralta.mycellar.domain.wine.repository.RegionCountEnum;
 import fr.peralta.mycellar.domain.wine.repository.WineOrder;
 
 /**
@@ -68,7 +66,7 @@ public class WineServiceFacadeImpl implements WineServiceFacade {
      */
     @Override
     @Transactional(readOnly = true)
-    public Map<Country, Long> getCountries(SearchForm searchForm, CountryCountEnum count) {
+    public Map<Country, Long> getCountries(SearchForm searchForm, CountEnum count) {
         return countryService.getAll(searchForm, count);
     }
 
@@ -77,7 +75,7 @@ public class WineServiceFacadeImpl implements WineServiceFacade {
      */
     @Override
     @Transactional(readOnly = true)
-    public Map<Region, Long> getRegions(SearchForm searchForm, RegionCountEnum count) {
+    public Map<Region, Long> getRegions(SearchForm searchForm, CountEnum count) {
         return regionService.getAll(searchForm, count);
     }
 
@@ -86,7 +84,7 @@ public class WineServiceFacadeImpl implements WineServiceFacade {
      */
     @Override
     @Transactional(readOnly = true)
-    public Map<Appellation, Long> getAppellations(SearchForm searchForm, AppellationCountEnum count) {
+    public Map<Appellation, Long> getAppellations(SearchForm searchForm, CountEnum count) {
         return appellationService.getAll(searchForm, count);
     }
 
@@ -113,8 +111,8 @@ public class WineServiceFacadeImpl implements WineServiceFacade {
      */
     @Override
     @Transactional(readOnly = true)
-    public Map<WineTypeEnum, Long> getTypesWithCounts(Producer... producers) {
-        return wineService.getAllTypesFromProducersWithCounts(producers);
+    public Map<WineTypeEnum, Long> getTypes(SearchForm searchForm, CountEnum count) {
+        return wineService.getTypes(searchForm, count);
     }
 
     /**
@@ -122,8 +120,8 @@ public class WineServiceFacadeImpl implements WineServiceFacade {
      */
     @Override
     @Transactional(readOnly = true)
-    public Map<WineColorEnum, Long> getColorsWithCounts(WineTypeEnum[] types, Producer... producers) {
-        return wineService.getAllColorsFromTypesAndProducersWithCounts(types, producers);
+    public Map<WineColorEnum, Long> getColors(SearchForm searchForm, CountEnum count) {
+        return wineService.getColors(searchForm, count);
     }
 
     /**
@@ -131,26 +129,8 @@ public class WineServiceFacadeImpl implements WineServiceFacade {
      */
     @Override
     @Transactional(readOnly = true)
-    public Map<WineColorEnum, Long> getColorsWithCounts(WineTypeEnum type, Producer... producers) {
-        return getColorsWithCounts(new WineTypeEnum[] { type }, producers);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    @Transactional(readOnly = true)
-    public Map<WineColorEnum, Long> getColorsWithCounts(Producer... producers) {
-        return getColorsWithCounts(new WineTypeEnum[0], producers);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    @Transactional(readOnly = true)
-    public Map<Format, Long> getFormatWithCounts() {
-        return formatService.getAllWithCounts();
+    public Map<Format, Long> getFormats(SearchForm searchForm, CountEnum count) {
+        return formatService.getAll(searchForm, count);
     }
 
     /**

@@ -25,9 +25,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import fr.peralta.mycellar.application.wine.WineService;
+import fr.peralta.mycellar.domain.shared.repository.CountEnum;
 import fr.peralta.mycellar.domain.shared.repository.FilterEnum;
 import fr.peralta.mycellar.domain.shared.repository.SearchForm;
-import fr.peralta.mycellar.domain.wine.Producer;
 import fr.peralta.mycellar.domain.wine.Wine;
 import fr.peralta.mycellar.domain.wine.WineColorEnum;
 import fr.peralta.mycellar.domain.wine.WineTypeEnum;
@@ -62,16 +62,8 @@ public class WineServiceImpl implements WineService {
      * {@inheritDoc}
      */
     @Override
-    public Map<WineTypeEnum, Long> getAllTypesFromProducersWithCounts(Producer... producers) {
-        Map<WineTypeEnum, Long> result;
-        Producer[] persistedProducers = new Producer[producers.length];
-        int i = 0;
-        for (Producer producer : producers) {
-            if (producer.getId() != null) {
-                persistedProducers[i++] = producer;
-            }
-        }
-        result = wineRepository.getAllTypesFromProducersWithCounts(persistedProducers);
+    public Map<WineTypeEnum, Long> getTypes(SearchForm searchForm, CountEnum count) {
+        Map<WineTypeEnum, Long> result = wineRepository.getTypes(searchForm, count);
         // add missing types
         for (WineTypeEnum color : WineTypeEnum.values()) {
             if (!result.containsKey(color)) {
@@ -85,17 +77,8 @@ public class WineServiceImpl implements WineService {
      * {@inheritDoc}
      */
     @Override
-    public Map<WineColorEnum, Long> getAllColorsFromTypesAndProducersWithCounts(
-            WineTypeEnum[] types, Producer... producers) {
-        Producer[] persistedProducers = new Producer[producers.length];
-        int i = 0;
-        for (Producer producer : producers) {
-            if (producer.getId() != null) {
-                persistedProducers[i++] = producer;
-            }
-        }
-        Map<WineColorEnum, Long> result = wineRepository
-                .getAllColorsFromTypesAndProducersWithCounts(types, persistedProducers);
+    public Map<WineColorEnum, Long> getColors(SearchForm searchForm, CountEnum count) {
+        Map<WineColorEnum, Long> result = wineRepository.getColors(searchForm, count);
         // add missing colors
         for (WineColorEnum color : WineColorEnum.values()) {
             if (!result.containsKey(color)) {

@@ -24,9 +24,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import fr.peralta.mycellar.application.wine.AppellationService;
+import fr.peralta.mycellar.domain.shared.repository.CountEnum;
 import fr.peralta.mycellar.domain.shared.repository.SearchForm;
 import fr.peralta.mycellar.domain.wine.Appellation;
-import fr.peralta.mycellar.domain.wine.repository.AppellationCountEnum;
 import fr.peralta.mycellar.domain.wine.repository.WineRepository;
 
 /**
@@ -41,7 +41,7 @@ public class AppellationServiceImpl implements AppellationService {
      * {@inheritDoc}
      */
     @Override
-    public Map<Appellation, Long> getAll(SearchForm searchForm, AppellationCountEnum count) {
+    public Map<Appellation, Long> getAll(SearchForm searchForm, CountEnum count) {
         return wineRepository.getAppellations(searchForm, count);
     }
 

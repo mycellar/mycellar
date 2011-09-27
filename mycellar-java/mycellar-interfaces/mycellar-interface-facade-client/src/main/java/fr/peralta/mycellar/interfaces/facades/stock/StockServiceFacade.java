@@ -21,6 +21,7 @@ package fr.peralta.mycellar.interfaces.facades.stock;
 import java.util.List;
 import java.util.Map;
 
+import fr.peralta.mycellar.domain.shared.repository.CountEnum;
 import fr.peralta.mycellar.domain.shared.repository.SearchForm;
 import fr.peralta.mycellar.domain.stock.Arrival;
 import fr.peralta.mycellar.domain.stock.Bottle;
@@ -29,7 +30,6 @@ import fr.peralta.mycellar.domain.stock.Movement;
 import fr.peralta.mycellar.domain.stock.Stock;
 import fr.peralta.mycellar.domain.stock.repository.MovementOrder;
 import fr.peralta.mycellar.domain.stock.repository.StockOrder;
-import fr.peralta.mycellar.domain.user.User;
 import fr.peralta.mycellar.domain.wine.Format;
 import fr.peralta.mycellar.domain.wine.Wine;
 
@@ -46,10 +46,11 @@ public interface StockServiceFacade {
     void newCellar(Cellar cellar);
 
     /**
-     * @param user
+     * @param searchForm
+     * @param count
      * @return
      */
-    Map<Cellar, Long> getAllCellarsWithCountsFromUser(User user);
+    Map<Cellar, Long> getCellars(SearchForm searchForm, CountEnum count);
 
     /**
      * @param wine

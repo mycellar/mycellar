@@ -20,8 +20,9 @@ package fr.peralta.mycellar.application.stock;
 
 import java.util.Map;
 
+import fr.peralta.mycellar.domain.shared.repository.CountEnum;
+import fr.peralta.mycellar.domain.shared.repository.SearchForm;
 import fr.peralta.mycellar.domain.stock.Cellar;
-import fr.peralta.mycellar.domain.user.User;
 
 /**
  * @author speralta
@@ -34,9 +35,10 @@ public interface CellarService {
     void newCellar(Cellar cellar);
 
     /**
-     * @param user
+     * @param searchForm
+     * @param count
      * @return
      */
-    Map<Cellar, Long> getAllWithCountsFromUser(User user);
+    Map<Cellar, Long> getAll(SearchForm searchForm, CountEnum count);
 
 }

@@ -18,9 +18,6 @@
  */
 package fr.peralta.mycellar.interfaces.client.web.components.wine.cloud;
 
-import java.util.Arrays;
-import java.util.HashSet;
-
 import org.apache.wicket.Component;
 import org.apache.wicket.event.Broadcast;
 import org.apache.wicket.event.IEventSource;
@@ -28,11 +25,11 @@ import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.StringResourceModel;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 
+import fr.peralta.mycellar.domain.shared.repository.CountEnum;
 import fr.peralta.mycellar.domain.shared.repository.FilterEnum;
 import fr.peralta.mycellar.domain.shared.repository.SearchForm;
 import fr.peralta.mycellar.domain.wine.Appellation;
 import fr.peralta.mycellar.domain.wine.Region;
-import fr.peralta.mycellar.domain.wine.repository.AppellationCountEnum;
 import fr.peralta.mycellar.interfaces.client.web.components.shared.Action;
 import fr.peralta.mycellar.interfaces.client.web.components.shared.cloud.ComplexTagCloud;
 import fr.peralta.mycellar.interfaces.client.web.components.shared.cloud.TagCloudPanel;
@@ -50,7 +47,7 @@ public class AppellationComplexTagCloud extends ComplexTagCloud<Appellation> {
 
     private IModel<Region> regionModel;
 
-    private final AppellationCountEnum count;
+    private final CountEnum count;
 
     @SpringBean
     private WineServiceFacade wineServiceFacade;
@@ -60,11 +57,11 @@ public class AppellationComplexTagCloud extends ComplexTagCloud<Appellation> {
      * @param label
      * @param count
      */
-    public AppellationComplexTagCloud(String id, IModel<String> label, AppellationCountEnum count) {
+    public AppellationComplexTagCloud(String id, IModel<String> label, CountEnum count) {
         super(id, label);
         this.count = count;
         add(new RegionComplexTagCloud(REGION_COMPONENT_ID, new StringResourceModel("region", this,
-                null), count.getRegionCountEnum()));
+                null), count));
     }
 
     /**
@@ -104,9 +101,7 @@ public class AppellationComplexTagCloud extends ComplexTagCloud<Appellation> {
     @Override
     protected TagCloudPanel<Appellation> createTagCloudPanel(String id) {
         SearchForm searchForm = new SearchForm();
-
-        searchForm.putSet(FilterEnum.REGION,
-                new HashSet<Region>(Arrays.asList(regionModel.getObject())));
+        searchForm.addToSet(FilterEnum.REGION, regionModel.getObject());
         return new TagCloudPanel<Appellation>(id, getListFrom(wineServiceFacade.getAppellations(
                 searchForm, count)));
     }

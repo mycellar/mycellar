@@ -24,6 +24,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import fr.peralta.mycellar.application.wine.FormatService;
+import fr.peralta.mycellar.domain.shared.repository.CountEnum;
+import fr.peralta.mycellar.domain.shared.repository.SearchForm;
 import fr.peralta.mycellar.domain.wine.Format;
 import fr.peralta.mycellar.domain.wine.repository.WineRepository;
 
@@ -39,8 +41,8 @@ public class FormatServiceImpl implements FormatService {
      * {@inheritDoc}
      */
     @Override
-    public Map<Format, Long> getAllWithCounts() {
-        return wineRepository.getAllFormatWithCounts();
+    public Map<Format, Long> getAll(SearchForm searchForm, CountEnum count) {
+        return wineRepository.getFormats(searchForm, count);
     }
 
     /**

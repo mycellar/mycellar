@@ -24,9 +24,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import fr.peralta.mycellar.application.wine.CountryService;
+import fr.peralta.mycellar.domain.shared.repository.CountEnum;
 import fr.peralta.mycellar.domain.shared.repository.SearchForm;
 import fr.peralta.mycellar.domain.wine.Country;
-import fr.peralta.mycellar.domain.wine.repository.CountryCountEnum;
 import fr.peralta.mycellar.domain.wine.repository.WineRepository;
 
 /**
@@ -41,7 +41,7 @@ public class CountryServiceImpl implements CountryService {
      * {@inheritDoc}
      */
     @Override
-    public Map<Country, Long> getAll(SearchForm searchForm, CountryCountEnum count) {
+    public Map<Country, Long> getAll(SearchForm searchForm, CountEnum count) {
         return wineRepository.getCountries(searchForm, count);
     }
 

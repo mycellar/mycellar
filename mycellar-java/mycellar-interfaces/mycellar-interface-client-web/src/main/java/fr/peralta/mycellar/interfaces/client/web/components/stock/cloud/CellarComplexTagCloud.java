@@ -22,6 +22,9 @@ import org.apache.wicket.Component;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 
+import fr.peralta.mycellar.domain.shared.repository.CountEnum;
+import fr.peralta.mycellar.domain.shared.repository.FilterEnum;
+import fr.peralta.mycellar.domain.shared.repository.SearchForm;
 import fr.peralta.mycellar.domain.stock.Cellar;
 import fr.peralta.mycellar.interfaces.client.web.components.shared.cloud.ComplexTagCloud;
 import fr.peralta.mycellar.interfaces.client.web.components.shared.cloud.TagCloudPanel;
@@ -70,9 +73,9 @@ public class CellarComplexTagCloud extends ComplexTagCloud<Cellar> {
      */
     @Override
     protected TagCloudPanel<Cellar> createTagCloudPanel(String id) {
-        return new TagCloudPanel<Cellar>(id,
-                getListFrom(stockServiceFacade.getAllCellarsWithCountsFromUser(UserKey
-                        .getUserLoggedIn())));
+        return new TagCloudPanel<Cellar>(id, getListFrom(stockServiceFacade.getCellars(
+                new SearchForm().addToSet(FilterEnum.USER, UserKey.getUserLoggedIn()),
+                CountEnum.STOCK_QUANTITY)));
     }
 
     /**

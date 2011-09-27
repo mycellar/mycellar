@@ -20,9 +20,9 @@ package fr.peralta.mycellar.application.wine;
 
 import java.util.Map;
 
+import fr.peralta.mycellar.domain.shared.repository.CountEnum;
 import fr.peralta.mycellar.domain.shared.repository.SearchForm;
 import fr.peralta.mycellar.domain.wine.Appellation;
-import fr.peralta.mycellar.domain.wine.repository.AppellationCountEnum;
 
 /**
  * @author speralta
@@ -34,6 +34,6 @@ public interface AppellationService {
      * @param count
      * @return
      */
-    Map<Appellation, Long> getAll(SearchForm searchForm, AppellationCountEnum count);
+    Map<Appellation, Long> getAll(SearchForm searchForm, CountEnum count);
 
 }

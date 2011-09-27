@@ -21,6 +21,9 @@ package fr.peralta.mycellar.interfaces.client.web.components.wine.cloud;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 
+import fr.peralta.mycellar.domain.shared.repository.CountEnum;
+import fr.peralta.mycellar.domain.shared.repository.FilterEnum;
+import fr.peralta.mycellar.domain.shared.repository.SearchForm;
 import fr.peralta.mycellar.domain.wine.Producer;
 import fr.peralta.mycellar.domain.wine.WineColorEnum;
 import fr.peralta.mycellar.domain.wine.WineTypeEnum;
@@ -42,14 +45,17 @@ public class WineColorEnumFromProducerAndTypeTagCloud extends SimpleTagCloud<Win
 
     private final IModel<Producer> producerModel;
 
+    private final CountEnum count;
+
     /**
      * @param id
      * @param label
      * @param producerModel
      * @param wineTypeEnumModel
+     * @param count
      */
     public WineColorEnumFromProducerAndTypeTagCloud(String id, IModel<String> label,
-            IModel<Producer> producerModel, IModel<WineTypeEnum> wineTypeEnumModel) {
+            IModel<Producer> producerModel, IModel<WineTypeEnum> wineTypeEnumModel, CountEnum count) {
         super(id, label);
         if (producerModel == null) {
             throw new NullPointerException("Producer model cannot be null.");
@@ -59,6 +65,7 @@ public class WineColorEnumFromProducerAndTypeTagCloud extends SimpleTagCloud<Win
         }
         this.producerModel = producerModel;
         this.wineTypeEnumModel = wineTypeEnumModel;
+        this.count = count;
     }
 
     /**
@@ -66,9 +73,11 @@ public class WineColorEnumFromProducerAndTypeTagCloud extends SimpleTagCloud<Win
      */
     @Override
     protected TagCloudPanel<WineColorEnum> createTagCloudPanel(String id) {
-        return new TagCloudPanel<WineColorEnum>(id,
-                getListFrom(wineServiceFacade.getColorsWithCounts(wineTypeEnumModel.getObject(),
-                        producerModel.getObject())));
+        SearchForm searchForm = new SearchForm();
+        searchForm.addToSet(FilterEnum.TYPE, wineTypeEnumModel.getObject());
+        searchForm.addToSet(FilterEnum.PRODUCER, producerModel.getObject());
+        return new TagCloudPanel<WineColorEnum>(id, getListFrom(wineServiceFacade.getColors(
+                searchForm, count)));
     }
 
     /**

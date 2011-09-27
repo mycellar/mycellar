@@ -22,6 +22,8 @@ import org.apache.wicket.Component;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 
+import fr.peralta.mycellar.domain.shared.repository.CountEnum;
+import fr.peralta.mycellar.domain.shared.repository.SearchForm;
 import fr.peralta.mycellar.domain.wine.Format;
 import fr.peralta.mycellar.interfaces.client.web.components.shared.cloud.ComplexTagCloud;
 import fr.peralta.mycellar.interfaces.client.web.components.shared.cloud.TagCloudPanel;
@@ -38,12 +40,15 @@ public class FormatComplexTagCloud extends ComplexTagCloud<Format> {
     @SpringBean
     private WineServiceFacade wineServiceFacade;
 
+    private final CountEnum count;
+
     /**
      * @param id
      * @param label
      */
-    public FormatComplexTagCloud(String id, IModel<String> label) {
+    public FormatComplexTagCloud(String id, IModel<String> label, CountEnum count) {
         super(id, label);
+        this.count = count;
     }
 
     /**
@@ -59,7 +64,8 @@ public class FormatComplexTagCloud extends ComplexTagCloud<Format> {
      */
     @Override
     protected TagCloudPanel<Format> createTagCloudPanel(String id) {
-        return new TagCloudPanel<Format>(id, getListFrom(wineServiceFacade.getFormatWithCounts()));
+        return new TagCloudPanel<Format>(id, getListFrom(wineServiceFacade.getFormats(
+                new SearchForm(), count)));
     }
 
     /**

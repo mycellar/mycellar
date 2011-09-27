@@ -26,6 +26,7 @@ import org.apache.wicket.spring.injection.annot.SpringBean;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import fr.peralta.mycellar.domain.shared.repository.CountEnum;
 import fr.peralta.mycellar.domain.shared.repository.FilterEnum;
 import fr.peralta.mycellar.domain.shared.repository.SearchForm;
 import fr.peralta.mycellar.domain.stock.Cellar;
@@ -61,8 +62,9 @@ public class InputOutputPage extends CellarSuperPage {
         SearchFormModel searchFormModel = new SearchFormModel(new SearchForm().addToSet(
                 FilterEnum.USER, UserKey.getUserLoggedIn()));
         setDefaultModel(searchFormModel);
-        add(new MultiplePanel<Cellar>(CELLARS_COMPONENT_ID,
-                stockServiceFacade.getAllCellarsWithCountsFromUser(UserKey.getUserLoggedIn())));
+        add(new MultiplePanel<Cellar>(CELLARS_COMPONENT_ID, stockServiceFacade.getCellars(
+                new SearchForm().addToSet(FilterEnum.USER, UserKey.getUserLoggedIn()),
+                CountEnum.STOCK_QUANTITY)));
 
         MovementDataView movementDataView = new MovementDataView("movements", searchFormModel);
         movementDataView.setItemsPerPage(25);
