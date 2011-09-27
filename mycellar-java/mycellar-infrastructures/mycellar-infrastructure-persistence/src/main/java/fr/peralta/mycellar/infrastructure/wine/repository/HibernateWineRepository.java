@@ -40,7 +40,9 @@ import javax.persistence.criteria.SetJoin;
 
 import org.springframework.stereotype.Repository;
 
+import fr.peralta.mycellar.domain.shared.repository.FilterEnum;
 import fr.peralta.mycellar.domain.shared.repository.OrderWayEnum;
+import fr.peralta.mycellar.domain.shared.repository.SearchForm;
 import fr.peralta.mycellar.domain.stock.Bottle;
 import fr.peralta.mycellar.domain.stock.Stock;
 import fr.peralta.mycellar.domain.wine.Appellation;
@@ -52,15 +54,11 @@ import fr.peralta.mycellar.domain.wine.Wine;
 import fr.peralta.mycellar.domain.wine.WineColorEnum;
 import fr.peralta.mycellar.domain.wine.WineTypeEnum;
 import fr.peralta.mycellar.domain.wine.repository.AppellationCountEnum;
-import fr.peralta.mycellar.domain.wine.repository.AppellationSearchForm;
 import fr.peralta.mycellar.domain.wine.repository.CountryCountEnum;
-import fr.peralta.mycellar.domain.wine.repository.CountrySearchForm;
 import fr.peralta.mycellar.domain.wine.repository.RegionCountEnum;
-import fr.peralta.mycellar.domain.wine.repository.RegionSearchForm;
 import fr.peralta.mycellar.domain.wine.repository.WineOrder;
 import fr.peralta.mycellar.domain.wine.repository.WineOrderEnum;
 import fr.peralta.mycellar.domain.wine.repository.WineRepository;
-import fr.peralta.mycellar.domain.wine.repository.WineSearchForm;
 import fr.peralta.mycellar.infrastructure.shared.repository.HibernateRepository;
 
 /**
@@ -76,7 +74,7 @@ public class HibernateWineRepository extends HibernateRepository implements Wine
      * {@inheritDoc}
      */
     @Override
-    public long countWines(WineSearchForm searchForm) {
+    public long countWines(SearchForm searchForm) {
         CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();
         CriteriaQuery<Long> query = criteriaBuilder.createQuery(Long.class);
         Root<Wine> root = query.from(Wine.class);
@@ -89,7 +87,7 @@ public class HibernateWineRepository extends HibernateRepository implements Wine
      * {@inheritDoc}
      */
     @Override
-    public List<Wine> getWines(WineSearchForm searchForm, WineOrder orders, int first, int count) {
+    public List<Wine> getWines(SearchForm searchForm, WineOrder orders, int first, int count) {
         CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();
         CriteriaQuery<Wine> query = criteriaBuilder.createQuery(Wine.class);
         Root<Wine> root = query.from(Wine.class);
@@ -103,8 +101,7 @@ public class HibernateWineRepository extends HibernateRepository implements Wine
      * {@inheritDoc}
      */
     @Override
-    public Map<Country, Long> getCountries(CountrySearchForm searchForm,
-            CountryCountEnum countryCountEnum) {
+    public Map<Country, Long> getCountries(SearchForm searchForm, CountryCountEnum countryCountEnum) {
         CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();
         CriteriaQuery<Tuple> query = criteriaBuilder.createTupleQuery();
 
@@ -136,8 +133,9 @@ public class HibernateWineRepository extends HibernateRepository implements Wine
         query = query.multiselect(root, count);
 
         List<Predicate> predicates = new ArrayList<Predicate>();
-        in(predicates, searchForm.getCellars(), stock.get("cellar"));
-        in(predicates, searchForm.getUser(), stock.get("cellar").get("owner"), criteriaBuilder);
+        in(predicates, searchForm.getSet(FilterEnum.CELLAR), stock.get("cellar"), criteriaBuilder);
+        in(predicates, searchForm.getSet(FilterEnum.USER), stock.get("cellar").get("owner"),
+                criteriaBuilder);
         query = where(query, criteriaBuilder, predicates);
 
         List<Tuple> tuples = entityManager.createQuery(
@@ -154,7 +152,7 @@ public class HibernateWineRepository extends HibernateRepository implements Wine
      * {@inheritDoc}
      */
     @Override
-    public Map<Region, Long> getRegions(RegionSearchForm searchForm, RegionCountEnum regionCountEnum) {
+    public Map<Region, Long> getRegions(SearchForm searchForm, RegionCountEnum regionCountEnum) {
         CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();
         CriteriaQuery<Tuple> query = criteriaBuilder.createTupleQuery();
 
@@ -181,9 +179,10 @@ public class HibernateWineRepository extends HibernateRepository implements Wine
         query = query.multiselect(root, count);
 
         List<Predicate> predicates = new ArrayList<Predicate>();
-        in(predicates, searchForm.getCellars(), stock.get("cellar"));
-        in(predicates, searchForm.getUser(), stock.get("cellar").get("owner"), criteriaBuilder);
-        in(predicates, searchForm.getCountries(), root.get("country"));
+        in(predicates, searchForm.getSet(FilterEnum.CELLAR), stock.get("cellar"), criteriaBuilder);
+        in(predicates, searchForm.getSet(FilterEnum.USER), stock.get("cellar").get("owner"),
+                criteriaBuilder);
+        in(predicates, searchForm.getSet(FilterEnum.COUNTRY), root.get("country"), criteriaBuilder);
         query = where(query, criteriaBuilder, predicates);
 
         List<Tuple> tuples = entityManager.createQuery(
@@ -200,7 +199,7 @@ public class HibernateWineRepository extends HibernateRepository implements Wine
      * {@inheritDoc}
      */
     @Override
-    public Map<Appellation, Long> getAppellations(AppellationSearchForm searchForm,
+    public Map<Appellation, Long> getAppellations(SearchForm searchForm,
             AppellationCountEnum appellationCountEnum) {
         CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();
         CriteriaQuery<Tuple> query = criteriaBuilder.createTupleQuery();
@@ -224,10 +223,12 @@ public class HibernateWineRepository extends HibernateRepository implements Wine
         query = query.multiselect(root, count);
 
         List<Predicate> predicates = new ArrayList<Predicate>();
-        in(predicates, searchForm.getCellars(), stock.get("cellar"));
-        in(predicates, searchForm.getUser(), stock.get("cellar").get("owner"), criteriaBuilder);
-        in(predicates, searchForm.getRegions(), root.get("region"));
-        in(predicates, searchForm.getCountries(), root.get("region").get("country"));
+        in(predicates, searchForm.getSet(FilterEnum.CELLAR), stock.get("cellar"), criteriaBuilder);
+        in(predicates, searchForm.getSet(FilterEnum.USER), stock.get("cellar").get("owner"),
+                criteriaBuilder);
+        in(predicates, searchForm.getSet(FilterEnum.REGION), root.get("region"), criteriaBuilder);
+        in(predicates, searchForm.getSet(FilterEnum.COUNTRY), root.get("region").get("country"),
+                criteriaBuilder);
         query = where(query, criteriaBuilder, predicates);
 
         List<Tuple> tuples = entityManager.createQuery(
@@ -348,16 +349,19 @@ public class HibernateWineRepository extends HibernateRepository implements Wine
     }
 
     private <O> CriteriaQuery<O> where(CriteriaQuery<O> query, Root<Wine> root,
-            WineSearchForm searchForm, CriteriaBuilder criteriaBuilder) {
+            SearchForm searchForm, CriteriaBuilder criteriaBuilder) {
         List<Predicate> predicates = new ArrayList<Predicate>();
-        in(predicates, searchForm.getTypes(), root.get("type"));
-        in(predicates, searchForm.getColors(), root.get("color"));
-        in(predicates, searchForm.getAppellations(), root.get("appellation"));
-        in(predicates, searchForm.getRegions(), root.get("appellation").get("region"));
-        in(predicates, searchForm.getCountries(),
-                root.get("appellation").get("region").get("country"));
-        in(predicates, searchForm.getProducers(), root.get("producer"));
-        in(predicates, searchForm.getVintages(), root.get("vintage"));
+        in(predicates, searchForm.getSet(FilterEnum.TYPE), root.get("type"), criteriaBuilder);
+        in(predicates, searchForm.getSet(FilterEnum.COLOR), root.get("color"), criteriaBuilder);
+        in(predicates, searchForm.getSet(FilterEnum.APPELLATION), root.get("appellation"),
+                criteriaBuilder);
+        in(predicates, searchForm.getSet(FilterEnum.REGION), root.get("appellation").get("region"),
+                criteriaBuilder);
+        in(predicates, searchForm.getSet(FilterEnum.COUNTRY), root.get("appellation").get("region")
+                .get("country"), criteriaBuilder);
+        in(predicates, searchForm.getSet(FilterEnum.PRODUCER), root.get("producer"),
+                criteriaBuilder);
+        in(predicates, searchForm.getSet(FilterEnum.VINTAGE), root.get("vintage"), criteriaBuilder);
 
         return where(query, criteriaBuilder, predicates);
     }

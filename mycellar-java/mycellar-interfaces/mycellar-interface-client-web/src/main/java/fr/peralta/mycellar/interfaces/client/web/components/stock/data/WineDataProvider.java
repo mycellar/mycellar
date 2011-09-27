@@ -27,10 +27,10 @@ import org.apache.wicket.model.Model;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 
 import fr.peralta.mycellar.domain.shared.repository.OrderWayEnum;
+import fr.peralta.mycellar.domain.shared.repository.SearchForm;
 import fr.peralta.mycellar.domain.wine.Wine;
 import fr.peralta.mycellar.domain.wine.repository.WineOrder;
 import fr.peralta.mycellar.domain.wine.repository.WineOrderEnum;
-import fr.peralta.mycellar.domain.wine.repository.WineSearchForm;
 import fr.peralta.mycellar.interfaces.facades.wine.WineServiceFacade;
 
 /**
@@ -43,12 +43,12 @@ public class WineDataProvider implements IDataProvider<Wine> {
     @SpringBean
     private WineServiceFacade wineServiceFacade;
 
-    private final IModel<WineSearchForm> searchFormModel;
+    private final IModel<SearchForm> searchFormModel;
 
     /**
      * @param searchFormModel
      */
-    public WineDataProvider(IModel<WineSearchForm> searchFormModel) {
+    public WineDataProvider(IModel<SearchForm> searchFormModel) {
         Injector.get().inject(this);
         this.searchFormModel = searchFormModel;
     }

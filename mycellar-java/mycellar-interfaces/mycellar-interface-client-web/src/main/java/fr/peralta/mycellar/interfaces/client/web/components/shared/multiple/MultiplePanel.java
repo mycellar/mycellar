@@ -23,6 +23,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.wicket.Component;
 import org.apache.wicket.WicketRuntimeException;
 import org.apache.wicket.event.Broadcast;
 import org.apache.wicket.event.IEvent;
@@ -86,8 +87,8 @@ public class MultiplePanel<O> extends Panel {
      * @param model
      *            the model
      */
-    public final void setModel(IModel<? extends List<O>> model) {
-        setDefaultModel(model);
+    public final Component setModel(IModel<? extends List<O>> model) {
+        return setDefaultModel(model);
     }
 
     /**
@@ -96,8 +97,8 @@ public class MultiplePanel<O> extends Panel {
      * @param object
      *            the model object
      */
-    public final void setModelObject(List<O> object) {
-        setDefaultModelObject(object);
+    public final Component setModelObject(List<O> object) {
+        return setDefaultModelObject(object);
     }
 
     /**

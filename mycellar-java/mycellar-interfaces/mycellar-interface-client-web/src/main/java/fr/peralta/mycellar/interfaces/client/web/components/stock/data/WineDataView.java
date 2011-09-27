@@ -24,8 +24,8 @@ import org.apache.wicket.markup.repeater.data.DataViewBase;
 import org.apache.wicket.model.CompoundPropertyModel;
 import org.apache.wicket.model.IModel;
 
+import fr.peralta.mycellar.domain.shared.repository.SearchForm;
 import fr.peralta.mycellar.domain.wine.Wine;
-import fr.peralta.mycellar.domain.wine.repository.WineSearchForm;
 
 /**
  * @author speralta
@@ -39,7 +39,7 @@ public class WineDataView extends DataViewBase<Wine> {
      * @param id
      * @param searchFormModel
      */
-    public WineDataView(String id, IModel<WineSearchForm> searchFormModel) {
+    public WineDataView(String id, IModel<SearchForm> searchFormModel) {
         super(id, new WineDataProvider(searchFormModel));
     }
 

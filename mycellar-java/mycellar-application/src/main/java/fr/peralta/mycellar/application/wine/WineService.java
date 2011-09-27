@@ -21,19 +21,19 @@ package fr.peralta.mycellar.application.wine;
 import java.util.List;
 import java.util.Map;
 
+import fr.peralta.mycellar.domain.shared.repository.SearchForm;
 import fr.peralta.mycellar.domain.wine.Producer;
 import fr.peralta.mycellar.domain.wine.Wine;
 import fr.peralta.mycellar.domain.wine.WineColorEnum;
 import fr.peralta.mycellar.domain.wine.WineTypeEnum;
 import fr.peralta.mycellar.domain.wine.repository.WineOrder;
-import fr.peralta.mycellar.domain.wine.repository.WineSearchForm;
 
 /**
  * @author speralta
  */
 public interface WineService {
 
-    long countWines(WineSearchForm searchForm);
+    long countWines(SearchForm searchForm);
 
     /**
      * @param searchForm
@@ -42,7 +42,7 @@ public interface WineService {
      * @param count
      * @return
      */
-    List<Wine> getWines(WineSearchForm searchForm, WineOrder orders, int first, int count);
+    List<Wine> getWines(SearchForm searchForm, WineOrder orders, int first, int count);
 
     /**
      * @param producers

@@ -18,34 +18,26 @@
  */
 package fr.peralta.mycellar.interfaces.client.web.pages.pedia;
 
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-
 import org.apache.wicket.ajax.markup.html.navigation.paging.AjaxPagingNavigator;
 import org.apache.wicket.event.IEvent;
 import org.apache.wicket.markup.html.WebMarkupContainer;
-import org.apache.wicket.model.CompoundPropertyModel;
-import org.apache.wicket.model.Model;
 import org.apache.wicket.request.mapper.parameter.PageParameters;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import fr.peralta.mycellar.domain.shared.repository.SearchForm;
 import fr.peralta.mycellar.domain.wine.Appellation;
 import fr.peralta.mycellar.domain.wine.Country;
 import fr.peralta.mycellar.domain.wine.Region;
 import fr.peralta.mycellar.domain.wine.WineColorEnum;
 import fr.peralta.mycellar.domain.wine.WineTypeEnum;
 import fr.peralta.mycellar.domain.wine.repository.AppellationCountEnum;
-import fr.peralta.mycellar.domain.wine.repository.AppellationSearchForm;
 import fr.peralta.mycellar.domain.wine.repository.CountryCountEnum;
-import fr.peralta.mycellar.domain.wine.repository.CountrySearchForm;
 import fr.peralta.mycellar.domain.wine.repository.RegionCountEnum;
-import fr.peralta.mycellar.domain.wine.repository.RegionSearchForm;
-import fr.peralta.mycellar.domain.wine.repository.WineSearchForm;
 import fr.peralta.mycellar.interfaces.client.web.components.shared.Action;
 import fr.peralta.mycellar.interfaces.client.web.components.shared.AjaxTool;
+import fr.peralta.mycellar.interfaces.client.web.components.shared.SearchFormModel;
 import fr.peralta.mycellar.interfaces.client.web.components.shared.multiple.MultiplePanel;
 import fr.peralta.mycellar.interfaces.client.web.components.stock.data.WineDataView;
 import fr.peralta.mycellar.interfaces.client.web.pages.shared.PediaSuperPage;
@@ -75,21 +67,20 @@ public class PediaHomePage extends PediaSuperPage {
     public PediaHomePage(PageParameters parameters) {
         super(parameters);
         setOutputMarkupId(true);
+        SearchFormModel searchFormModel = new SearchFormModel(new SearchForm());
+        setDefaultModel(searchFormModel);
         add(new MultiplePanel<Country>(COUNTRIES_COMPONENT_ID, wineServiceFacade.getCountries(
-                new CountrySearchForm(), CountryCountEnum.WINE)));
+                new SearchForm(), CountryCountEnum.WINE)));
         add(new MultiplePanel<Region>(REGIONS_COMPONENT_ID, wineServiceFacade.getRegions(
-                new RegionSearchForm(), RegionCountEnum.WINE)));
+                new SearchForm(), RegionCountEnum.WINE)));
         add(new MultiplePanel<Appellation>(APPELLATIONS_COMPONENT_ID,
-                wineServiceFacade.getAppellations(new AppellationSearchForm(),
-                        AppellationCountEnum.WINE)));
+                wineServiceFacade.getAppellations(new SearchForm(), AppellationCountEnum.WINE)));
         add(new MultiplePanel<WineTypeEnum>(TYPES_COMPONENT_ID,
                 wineServiceFacade.getTypesWithCounts()));
         add(new MultiplePanel<WineColorEnum>(COLORS_COMPONENT_ID,
                 wineServiceFacade.getColorsWithCounts()));
-        setDefaultModel(new CompoundPropertyModel<WineSearchForm>(new WineSearchForm()));
 
-        WineDataView wineDataView = new WineDataView("wines", new Model<WineSearchForm>(
-                (WineSearchForm) getDefaultModelObject()));
+        WineDataView wineDataView = new WineDataView("wines", searchFormModel);
         wineDataView.setItemsPerPage(25);
         add(new WebMarkupContainer("noWines").setVisible(wineDataView.getViewSize() == 0));
         add(wineDataView);
@@ -110,27 +101,18 @@ public class PediaHomePage extends PediaSuperPage {
             case MODEL_CHANGED:
                 if (event.getSource() instanceof MultiplePanel) {
                     MultiplePanel<?> component = (MultiplePanel<?>) event.getSource();
+                    SearchForm searchForm = (SearchForm) getDefaultModelObject();
                     if (COUNTRIES_COMPONENT_ID.equals(component.getId())) {
-                        List<Country> countries = (List<Country>) component.getDefaultModelObject();
-                        RegionSearchForm regionSearchForm = new RegionSearchForm();
-                        regionSearchForm.getCountries().addAll(countries);
-                        Map<Region, Long> regionsMap = wineServiceFacade.getRegions(
-                                regionSearchForm, RegionCountEnum.WINE);
-                        ((MultiplePanel<Region>) get(REGIONS_COMPONENT_ID)).setChoices(regionsMap);
-                        Set<Region> regions = regionsMap.keySet();
-                        AppellationSearchForm appellationSearchForm = new AppellationSearchForm();
-                        appellationSearchForm.getRegions().addAll(regions);
-                        appellationSearchForm.getCountries().addAll(countries);
+                        ((MultiplePanel<Region>) get(REGIONS_COMPONENT_ID))
+                                .setChoices(wineServiceFacade.getRegions(searchForm,
+                                        RegionCountEnum.WINE));
                         ((MultiplePanel<Appellation>) get(APPELLATIONS_COMPONENT_ID))
-                                .setChoices(wineServiceFacade.getAppellations(
-                                        appellationSearchForm, AppellationCountEnum.WINE));
+                                .setChoices(wineServiceFacade.getAppellations(searchForm,
+                                        AppellationCountEnum.WINE));
                     } else if (REGIONS_COMPONENT_ID.equals(component.getId())) {
-                        List<Region> regions = (List<Region>) component.getDefaultModelObject();
-                        AppellationSearchForm appellationSearchForm = new AppellationSearchForm();
-                        appellationSearchForm.getRegions().addAll(regions);
                         ((MultiplePanel<Appellation>) get(APPELLATIONS_COMPONENT_ID))
-                                .setChoices(wineServiceFacade.getAppellations(
-                                        appellationSearchForm, AppellationCountEnum.WINE));
+                                .setChoices(wineServiceFacade.getAppellations(searchForm,
+                                        AppellationCountEnum.WINE));
                     }
                 }
                 break;

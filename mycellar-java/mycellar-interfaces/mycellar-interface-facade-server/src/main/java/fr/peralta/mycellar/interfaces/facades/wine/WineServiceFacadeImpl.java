@@ -31,6 +31,7 @@ import fr.peralta.mycellar.application.wine.FormatService;
 import fr.peralta.mycellar.application.wine.ProducerService;
 import fr.peralta.mycellar.application.wine.RegionService;
 import fr.peralta.mycellar.application.wine.WineService;
+import fr.peralta.mycellar.domain.shared.repository.SearchForm;
 import fr.peralta.mycellar.domain.wine.Appellation;
 import fr.peralta.mycellar.domain.wine.Country;
 import fr.peralta.mycellar.domain.wine.Format;
@@ -40,13 +41,9 @@ import fr.peralta.mycellar.domain.wine.Wine;
 import fr.peralta.mycellar.domain.wine.WineColorEnum;
 import fr.peralta.mycellar.domain.wine.WineTypeEnum;
 import fr.peralta.mycellar.domain.wine.repository.AppellationCountEnum;
-import fr.peralta.mycellar.domain.wine.repository.AppellationSearchForm;
 import fr.peralta.mycellar.domain.wine.repository.CountryCountEnum;
-import fr.peralta.mycellar.domain.wine.repository.CountrySearchForm;
 import fr.peralta.mycellar.domain.wine.repository.RegionCountEnum;
-import fr.peralta.mycellar.domain.wine.repository.RegionSearchForm;
 import fr.peralta.mycellar.domain.wine.repository.WineOrder;
-import fr.peralta.mycellar.domain.wine.repository.WineSearchForm;
 
 /**
  * @author speralta
@@ -71,7 +68,7 @@ public class WineServiceFacadeImpl implements WineServiceFacade {
      */
     @Override
     @Transactional(readOnly = true)
-    public Map<Country, Long> getCountries(CountrySearchForm searchForm, CountryCountEnum count) {
+    public Map<Country, Long> getCountries(SearchForm searchForm, CountryCountEnum count) {
         return countryService.getAll(searchForm, count);
     }
 
@@ -80,7 +77,7 @@ public class WineServiceFacadeImpl implements WineServiceFacade {
      */
     @Override
     @Transactional(readOnly = true)
-    public Map<Region, Long> getRegions(RegionSearchForm searchForm, RegionCountEnum count) {
+    public Map<Region, Long> getRegions(SearchForm searchForm, RegionCountEnum count) {
         return regionService.getAll(searchForm, count);
     }
 
@@ -89,8 +86,7 @@ public class WineServiceFacadeImpl implements WineServiceFacade {
      */
     @Override
     @Transactional(readOnly = true)
-    public Map<Appellation, Long> getAppellations(AppellationSearchForm searchForm,
-            AppellationCountEnum count) {
+    public Map<Appellation, Long> getAppellations(SearchForm searchForm, AppellationCountEnum count) {
         return appellationService.getAll(searchForm, count);
     }
 
@@ -162,7 +158,7 @@ public class WineServiceFacadeImpl implements WineServiceFacade {
      */
     @Override
     @Transactional(readOnly = true)
-    public List<Wine> getWines(WineSearchForm searchForm, WineOrder orders, int first, int count) {
+    public List<Wine> getWines(SearchForm searchForm, WineOrder orders, int first, int count) {
         return wineService.getWines(searchForm, orders, first, count);
     }
 
@@ -171,7 +167,7 @@ public class WineServiceFacadeImpl implements WineServiceFacade {
      */
     @Override
     @Transactional(readOnly = true)
-    public long countWines(WineSearchForm searchForm) {
+    public long countWines(SearchForm searchForm) {
         return wineService.countWines(searchForm);
     }
 

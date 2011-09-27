@@ -18,6 +18,9 @@
  */
 package fr.peralta.mycellar.interfaces.client.web.components.wine.cloud;
 
+import java.util.Arrays;
+import java.util.HashSet;
+
 import org.apache.wicket.Component;
 import org.apache.wicket.event.Broadcast;
 import org.apache.wicket.event.IEventSource;
@@ -25,10 +28,11 @@ import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.StringResourceModel;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 
+import fr.peralta.mycellar.domain.shared.repository.FilterEnum;
+import fr.peralta.mycellar.domain.shared.repository.SearchForm;
 import fr.peralta.mycellar.domain.wine.Country;
 import fr.peralta.mycellar.domain.wine.Region;
 import fr.peralta.mycellar.domain.wine.repository.RegionCountEnum;
-import fr.peralta.mycellar.domain.wine.repository.RegionSearchForm;
 import fr.peralta.mycellar.interfaces.client.web.components.shared.Action;
 import fr.peralta.mycellar.interfaces.client.web.components.shared.cloud.ComplexTagCloud;
 import fr.peralta.mycellar.interfaces.client.web.components.shared.cloud.TagCloudPanel;
@@ -78,8 +82,9 @@ public class RegionComplexTagCloud extends ComplexTagCloud<Region> {
      */
     @Override
     protected TagCloudPanel<Region> createTagCloudPanel(String id) {
-        RegionSearchForm regionSearchForm = new RegionSearchForm();
-        regionSearchForm.getCountries().add(countryModel.getObject());
+        SearchForm regionSearchForm = new SearchForm();
+        regionSearchForm.putSet(FilterEnum.COUNTRY,
+                new HashSet<Country>(Arrays.asList(countryModel.getObject())));
         return new TagCloudPanel<Region>(id, getListFrom(wineServiceFacade.getRegions(
                 regionSearchForm, count)));
     }

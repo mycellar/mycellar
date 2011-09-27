@@ -21,6 +21,7 @@ package fr.peralta.mycellar.interfaces.facades.wine;
 import java.util.List;
 import java.util.Map;
 
+import fr.peralta.mycellar.domain.shared.repository.SearchForm;
 import fr.peralta.mycellar.domain.wine.Appellation;
 import fr.peralta.mycellar.domain.wine.Country;
 import fr.peralta.mycellar.domain.wine.Format;
@@ -30,13 +31,9 @@ import fr.peralta.mycellar.domain.wine.Wine;
 import fr.peralta.mycellar.domain.wine.WineColorEnum;
 import fr.peralta.mycellar.domain.wine.WineTypeEnum;
 import fr.peralta.mycellar.domain.wine.repository.AppellationCountEnum;
-import fr.peralta.mycellar.domain.wine.repository.AppellationSearchForm;
 import fr.peralta.mycellar.domain.wine.repository.CountryCountEnum;
-import fr.peralta.mycellar.domain.wine.repository.CountrySearchForm;
 import fr.peralta.mycellar.domain.wine.repository.RegionCountEnum;
-import fr.peralta.mycellar.domain.wine.repository.RegionSearchForm;
 import fr.peralta.mycellar.domain.wine.repository.WineOrder;
-import fr.peralta.mycellar.domain.wine.repository.WineSearchForm;
 
 /**
  * @author speralta
@@ -47,7 +44,7 @@ public interface WineServiceFacade {
      * @param searchForm
      * @return
      */
-    long countWines(WineSearchForm searchForm);
+    long countWines(SearchForm searchForm);
 
     /**
      * @param searchForm
@@ -55,27 +52,26 @@ public interface WineServiceFacade {
      * @param count
      * @return
      */
-    List<Wine> getWines(WineSearchForm searchForm, WineOrder order, int first, int count);
+    List<Wine> getWines(SearchForm searchForm, WineOrder order, int first, int count);
 
     /**
      * @param searchForm
      * @param count
      * @return
      */
-    Map<Country, Long> getCountries(CountrySearchForm searchForm, CountryCountEnum count);
+    Map<Country, Long> getCountries(SearchForm searchForm, CountryCountEnum count);
 
     /**
      * @param countries
      * @return
      */
-    Map<Region, Long> getRegions(RegionSearchForm searchForm, RegionCountEnum count);
+    Map<Region, Long> getRegions(SearchForm searchForm, RegionCountEnum count);
 
     /**
      * @param regions
      * @return
      */
-    Map<Appellation, Long> getAppellations(AppellationSearchForm searchForm,
-            AppellationCountEnum count);
+    Map<Appellation, Long> getAppellations(SearchForm searchForm, AppellationCountEnum count);
 
     /**
      * @param term

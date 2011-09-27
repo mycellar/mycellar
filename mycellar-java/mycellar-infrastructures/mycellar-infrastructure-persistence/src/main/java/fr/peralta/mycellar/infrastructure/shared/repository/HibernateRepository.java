@@ -61,28 +61,28 @@ public abstract class HibernateRepository {
         return query;
     }
 
-    protected void in(List<Predicate> predicates, Collection<?> collection, Path<?> path) {
+    protected void in(List<Predicate> predicates, Collection<?> collection, Path<?> path,
+            CriteriaBuilder criteriaBuilder) {
         if ((collection == null) || (collection.size() == 0)) {
             return;
         }
         List<Object> list = new ArrayList<Object>();
         for (Object object : collection) {
-            if (!(object instanceof IdentifiedEntity<?>)
-                    || (((IdentifiedEntity<?>) object).getId() != null)) {
+            if ((object != null)
+                    && (!(object instanceof IdentifiedEntity<?>) || (((IdentifiedEntity<?>) object)
+                            .getId() != null))) {
                 list.add(object);
             }
         }
-        if (list.size() > 0) {
+        switch (list.size()) {
+        case 0:
+            return;
+        case 1:
+            predicates.add(criteriaBuilder.equal(path, list.get(0)));
+            break;
+        default:
             predicates.add(path.in(list));
-        }
-    }
-
-    protected void in(List<Predicate> predicates, Object object, Path<?> path,
-            CriteriaBuilder criteriaBuilder) {
-        if ((object != null)
-                && (!(object instanceof IdentifiedEntity<?>) || (((IdentifiedEntity<?>) object)
-                        .getId() != null))) {
-            predicates.add(criteriaBuilder.equal(path, object));
+            break;
         }
     }
 

@@ -51,5 +51,4 @@ class Multiple<O> extends PropertyListView<MultipleData<O>> {
         }
         item.add(new MultipleSelection<O>("object"));
     }
-
 }

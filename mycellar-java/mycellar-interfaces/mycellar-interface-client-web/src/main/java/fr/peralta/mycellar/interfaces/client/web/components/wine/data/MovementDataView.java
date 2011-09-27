@@ -25,9 +25,9 @@ import org.apache.wicket.model.CompoundPropertyModel;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 
+import fr.peralta.mycellar.domain.shared.repository.SearchForm;
 import fr.peralta.mycellar.domain.stock.Input;
 import fr.peralta.mycellar.domain.stock.Movement;
-import fr.peralta.mycellar.domain.stock.repository.MovementSearchForm;
 import fr.peralta.mycellar.interfaces.client.web.renderers.shared.RendererServiceFacade;
 
 /**
@@ -45,7 +45,7 @@ public class MovementDataView extends DataViewBase<Movement<?>> {
      * @param id
      * @param searchFormModel
      */
-    public MovementDataView(String id, IModel<MovementSearchForm> searchFormModel) {
+    public MovementDataView(String id, IModel<SearchForm> searchFormModel) {
         super(id, new MovementDataProvider(searchFormModel));
     }
 

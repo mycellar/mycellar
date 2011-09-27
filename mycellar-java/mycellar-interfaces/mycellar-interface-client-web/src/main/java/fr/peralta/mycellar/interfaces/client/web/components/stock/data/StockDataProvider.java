@@ -27,10 +27,10 @@ import org.apache.wicket.model.Model;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 
 import fr.peralta.mycellar.domain.shared.repository.OrderWayEnum;
+import fr.peralta.mycellar.domain.shared.repository.SearchForm;
 import fr.peralta.mycellar.domain.stock.Stock;
 import fr.peralta.mycellar.domain.stock.repository.StockOrder;
 import fr.peralta.mycellar.domain.stock.repository.StockOrderEnum;
-import fr.peralta.mycellar.domain.stock.repository.StockSearchForm;
 import fr.peralta.mycellar.interfaces.facades.stock.StockServiceFacade;
 
 /**
@@ -43,12 +43,12 @@ public class StockDataProvider implements IDataProvider<Stock> {
     @SpringBean
     private StockServiceFacade stockServiceFacade;
 
-    private final IModel<StockSearchForm> searchFormModel;
+    private final IModel<SearchForm> searchFormModel;
 
     /**
      * @param searchFormModel
      */
-    public StockDataProvider(IModel<StockSearchForm> searchFormModel) {
+    public StockDataProvider(IModel<SearchForm> searchFormModel) {
         Injector.get().inject(this);
         this.searchFormModel = searchFormModel;
     }

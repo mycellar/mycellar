@@ -28,15 +28,14 @@ import org.springframework.transaction.annotation.Transactional;
 import fr.peralta.mycellar.application.stock.BottleService;
 import fr.peralta.mycellar.application.stock.CellarService;
 import fr.peralta.mycellar.application.stock.StockService;
+import fr.peralta.mycellar.domain.shared.repository.SearchForm;
 import fr.peralta.mycellar.domain.stock.Arrival;
 import fr.peralta.mycellar.domain.stock.Bottle;
 import fr.peralta.mycellar.domain.stock.Cellar;
 import fr.peralta.mycellar.domain.stock.Movement;
 import fr.peralta.mycellar.domain.stock.Stock;
 import fr.peralta.mycellar.domain.stock.repository.MovementOrder;
-import fr.peralta.mycellar.domain.stock.repository.MovementSearchForm;
 import fr.peralta.mycellar.domain.stock.repository.StockOrder;
-import fr.peralta.mycellar.domain.stock.repository.StockSearchForm;
 import fr.peralta.mycellar.domain.user.User;
 import fr.peralta.mycellar.domain.wine.Format;
 import fr.peralta.mycellar.domain.wine.Wine;
@@ -85,8 +84,8 @@ public class StockServiceFacadeImpl implements StockServiceFacade {
      */
     @Override
     @Transactional(readOnly = true)
-    public List<Movement<?>> getMovements(MovementSearchForm searchForm, MovementOrder orders,
-            int first, int count) {
+    public List<Movement<?>> getMovements(SearchForm searchForm, MovementOrder orders, int first,
+            int count) {
         return stockService.getMovements(searchForm, orders, first, count);
     }
 
@@ -95,7 +94,7 @@ public class StockServiceFacadeImpl implements StockServiceFacade {
      */
     @Override
     @Transactional(readOnly = true)
-    public long countMovements(MovementSearchForm searchForm) {
+    public long countMovements(SearchForm searchForm) {
         return stockService.countMovements(searchForm);
     }
 
@@ -104,7 +103,7 @@ public class StockServiceFacadeImpl implements StockServiceFacade {
      */
     @Override
     @Transactional(readOnly = true)
-    public List<Stock> getStocks(StockSearchForm searchForm, StockOrder orders, int first, int count) {
+    public List<Stock> getStocks(SearchForm searchForm, StockOrder orders, int first, int count) {
         return stockService.getStocks(searchForm, orders, first, count);
     }
 
@@ -113,7 +112,7 @@ public class StockServiceFacadeImpl implements StockServiceFacade {
      */
     @Override
     @Transactional(readOnly = true)
-    public long countStocks(StockSearchForm searchForm) {
+    public long countStocks(SearchForm searchForm) {
         return stockService.countStocks(searchForm);
     }
 

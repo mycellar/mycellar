@@ -27,10 +27,10 @@ import org.apache.wicket.model.Model;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 
 import fr.peralta.mycellar.domain.shared.repository.OrderWayEnum;
+import fr.peralta.mycellar.domain.shared.repository.SearchForm;
 import fr.peralta.mycellar.domain.stock.Movement;
 import fr.peralta.mycellar.domain.stock.repository.MovementOrder;
 import fr.peralta.mycellar.domain.stock.repository.MovementOrderEnum;
-import fr.peralta.mycellar.domain.stock.repository.MovementSearchForm;
 import fr.peralta.mycellar.interfaces.facades.stock.StockServiceFacade;
 
 /**
@@ -43,12 +43,12 @@ public class MovementDataProvider implements IDataProvider<Movement<?>> {
     @SpringBean
     private StockServiceFacade stockServiceFacade;
 
-    private final IModel<MovementSearchForm> searchFormModel;
+    private final IModel<SearchForm> searchFormModel;
 
     /**
      * @param searchFormModel
      */
-    public MovementDataProvider(IModel<MovementSearchForm> searchFormModel) {
+    public MovementDataProvider(IModel<SearchForm> searchFormModel) {
         Injector.get().inject(this);
         this.searchFormModel = searchFormModel;
     }

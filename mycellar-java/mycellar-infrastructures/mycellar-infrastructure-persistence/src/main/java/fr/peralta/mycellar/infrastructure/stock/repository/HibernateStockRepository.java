@@ -38,7 +38,9 @@ import javax.persistence.criteria.Root;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Repository;
 
+import fr.peralta.mycellar.domain.shared.repository.FilterEnum;
 import fr.peralta.mycellar.domain.shared.repository.OrderWayEnum;
+import fr.peralta.mycellar.domain.shared.repository.SearchForm;
 import fr.peralta.mycellar.domain.stock.Bottle;
 import fr.peralta.mycellar.domain.stock.Cellar;
 import fr.peralta.mycellar.domain.stock.Input;
@@ -46,11 +48,9 @@ import fr.peralta.mycellar.domain.stock.Movement;
 import fr.peralta.mycellar.domain.stock.Stock;
 import fr.peralta.mycellar.domain.stock.repository.MovementOrder;
 import fr.peralta.mycellar.domain.stock.repository.MovementOrderEnum;
-import fr.peralta.mycellar.domain.stock.repository.MovementSearchForm;
 import fr.peralta.mycellar.domain.stock.repository.StockOrder;
 import fr.peralta.mycellar.domain.stock.repository.StockOrderEnum;
 import fr.peralta.mycellar.domain.stock.repository.StockRepository;
-import fr.peralta.mycellar.domain.stock.repository.StockSearchForm;
 import fr.peralta.mycellar.domain.user.User;
 import fr.peralta.mycellar.domain.wine.Format;
 import fr.peralta.mycellar.domain.wine.Wine;
@@ -71,12 +71,17 @@ public class HibernateStockRepository extends HibernateRepository implements Sto
      * {@inheritDoc}
      */
     @Override
-    public long countMovements(MovementSearchForm searchForm) {
+    public long countMovements(SearchForm searchForm) {
         CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();
         CriteriaQuery<Long> query = criteriaBuilder.createQuery(Long.class);
         Root<Movement> root = query.from(Movement.class);
         query = query.select(criteriaBuilder.count(root));
-        query = where(query, root, searchForm, criteriaBuilder);
+        List<Predicate> predicates = new ArrayList<Predicate>();
+        in(predicates, searchForm.getSet(FilterEnum.CELLAR), root.get("cellar"), criteriaBuilder);
+        in(predicates, searchForm.getSet(FilterEnum.USER), root.get("cellar").get("owner"),
+                criteriaBuilder);
+
+        query = where(query, criteriaBuilder, predicates);
         return entityManager.createQuery(query).getSingleResult();
     }
 
@@ -84,13 +89,18 @@ public class HibernateStockRepository extends HibernateRepository implements Sto
      * {@inheritDoc}
      */
     @Override
-    public List<Movement<?>> getMovements(MovementSearchForm searchForm, MovementOrder orders,
-            int first, int count) {
+    public List<Movement<?>> getMovements(SearchForm searchForm, MovementOrder orders, int first,
+            int count) {
         CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();
         CriteriaQuery<Movement> query = criteriaBuilder.createQuery(Movement.class);
         Root<Movement> root = query.from(Movement.class);
         query = query.select(root);
-        query = where(query, root, searchForm, criteriaBuilder);
+        List<Predicate> predicates = new ArrayList<Predicate>();
+        in(predicates, searchForm.getSet(FilterEnum.CELLAR), root.get("cellar"), criteriaBuilder);
+        in(predicates, searchForm.getSet(FilterEnum.USER), root.get("cellar").get("owner"),
+                criteriaBuilder);
+
+        query = where(query, criteriaBuilder, predicates);
         List<Movement> queryResult = entityManager
                 .createQuery(orderBy(query, root, orders, criteriaBuilder)).setFirstResult(first)
                 .setMaxResults(count).getResultList();
@@ -105,7 +115,7 @@ public class HibernateStockRepository extends HibernateRepository implements Sto
      * {@inheritDoc}
      */
     @Override
-    public long countStocks(StockSearchForm searchForm) {
+    public long countStocks(SearchForm searchForm) {
         CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();
         CriteriaQuery<Long> query = criteriaBuilder.createQuery(Long.class);
         Root<Stock> root = query.from(Stock.class);
@@ -118,7 +128,7 @@ public class HibernateStockRepository extends HibernateRepository implements Sto
      * {@inheritDoc}
      */
     @Override
-    public List<Stock> getStocks(StockSearchForm searchForm, StockOrder orders, int first, int count) {
+    public List<Stock> getStocks(SearchForm searchForm, StockOrder orders, int first, int count) {
         CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();
         CriteriaQuery<Stock> query = criteriaBuilder.createQuery(Stock.class);
         Root<Stock> root = query.from(Stock.class);
@@ -228,38 +238,29 @@ public class HibernateStockRepository extends HibernateRepository implements Sto
      * @param criteriaBuilder
      * @return
      */
-    private <O> CriteriaQuery<O> where(CriteriaQuery<O> query, Root<Movement> root,
-            MovementSearchForm searchForm, CriteriaBuilder criteriaBuilder) {
-        List<Predicate> predicates = new ArrayList<Predicate>();
-        in(predicates, searchForm.getCellars(), root.get("cellar"));
-        in(predicates, searchForm.getUser(), root.get("cellar").get("owner"), criteriaBuilder);
-
-        return where(query, criteriaBuilder, predicates);
-    }
-
-    /**
-     * @param query
-     * @param root
-     * @param searchForm
-     * @param criteriaBuilder
-     * @return
-     */
     private <O> CriteriaQuery<O> where(CriteriaQuery<O> query, Root<Stock> root,
-            StockSearchForm searchForm, CriteriaBuilder criteriaBuilder) {
+            SearchForm searchForm, CriteriaBuilder criteriaBuilder) {
         List<Predicate> predicates = new ArrayList<Predicate>();
-        in(predicates, searchForm.getCellars(), root.get("cellar"));
-        in(predicates, searchForm.getUser(), root.get("cellar").get("owner"), criteriaBuilder);
-        in(predicates, searchForm.getTypes(), root.get("bottle").get("wine").get("type"));
-        in(predicates, searchForm.getColors(), root.get("bottle").get("wine").get("color"));
-        in(predicates, searchForm.getAppellations(),
-                root.get("bottle").get("wine").get("appellation"));
-        in(predicates, searchForm.getRegions(), root.get("bottle").get("wine").get("appellation")
-                .get("region"));
-        in(predicates, searchForm.getCountries(), root.get("bottle").get("wine").get("appellation")
-                .get("region").get("country"));
-        in(predicates, searchForm.getProducers(), root.get("bottle").get("wine").get("producer"));
-        in(predicates, searchForm.getVintages(), root.get("bottle").get("wine").get("vintage"));
-        in(predicates, searchForm.getFormats(), root.get("bottle").get("format"));
+        in(predicates, searchForm.getSet(FilterEnum.CELLAR), root.get("cellar"), criteriaBuilder);
+        in(predicates, searchForm.getSet(FilterEnum.USER), root.get("cellar").get("owner"),
+                criteriaBuilder);
+        in(predicates, searchForm.getSet(FilterEnum.TYPE),
+                root.get("bottle").get("wine").get("type"), criteriaBuilder);
+        in(predicates, searchForm.getSet(FilterEnum.COLOR),
+                root.get("bottle").get("wine").get("color"), criteriaBuilder);
+        in(predicates, searchForm.getSet(FilterEnum.APPELLATION), root.get("bottle").get("wine")
+                .get("appellation"), criteriaBuilder);
+        in(predicates, searchForm.getSet(FilterEnum.REGION),
+                root.get("bottle").get("wine").get("appellation").get("region"), criteriaBuilder);
+        in(predicates, searchForm.getSet(FilterEnum.COUNTRY),
+                root.get("bottle").get("wine").get("appellation").get("region").get("country"),
+                criteriaBuilder);
+        in(predicates, searchForm.getSet(FilterEnum.PRODUCER),
+                root.get("bottle").get("wine").get("producer"), criteriaBuilder);
+        in(predicates, searchForm.getSet(FilterEnum.VINTAGE),
+                root.get("bottle").get("wine").get("vintage"), criteriaBuilder);
+        in(predicates, searchForm.getSet(FilterEnum.FORMAT), root.get("bottle").get("format"),
+                criteriaBuilder);
 
         return where(query, criteriaBuilder, predicates);
     }

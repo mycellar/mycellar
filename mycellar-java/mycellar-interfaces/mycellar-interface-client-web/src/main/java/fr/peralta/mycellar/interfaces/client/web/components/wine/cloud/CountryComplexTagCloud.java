@@ -22,9 +22,10 @@ import org.apache.wicket.Component;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 
+import fr.peralta.mycellar.domain.shared.repository.FilterEnum;
+import fr.peralta.mycellar.domain.shared.repository.SearchForm;
 import fr.peralta.mycellar.domain.wine.Country;
 import fr.peralta.mycellar.domain.wine.repository.CountryCountEnum;
-import fr.peralta.mycellar.domain.wine.repository.CountrySearchForm;
 import fr.peralta.mycellar.interfaces.client.web.components.shared.cloud.ComplexTagCloud;
 import fr.peralta.mycellar.interfaces.client.web.components.shared.cloud.TagCloudPanel;
 import fr.peralta.mycellar.interfaces.client.web.components.wine.edit.CountryEditPanel;
@@ -75,7 +76,7 @@ public class CountryComplexTagCloud extends ComplexTagCloud<Country> {
     @Override
     protected TagCloudPanel<Country> createTagCloudPanel(String id) {
         return new TagCloudPanel<Country>(id, getListFrom(wineServiceFacade.getCountries(
-                new CountrySearchForm(UserKey.getUserLoggedIn()), count)));
+                new SearchForm().addToSet(FilterEnum.USER, UserKey.getUserLoggedIn()), count)));
     }
 
     /**

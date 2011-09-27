@@ -24,8 +24,8 @@ import org.apache.wicket.markup.repeater.data.DataViewBase;
 import org.apache.wicket.model.CompoundPropertyModel;
 import org.apache.wicket.model.IModel;
 
+import fr.peralta.mycellar.domain.shared.repository.SearchForm;
 import fr.peralta.mycellar.domain.stock.Stock;
-import fr.peralta.mycellar.domain.stock.repository.StockSearchForm;
 
 /**
  * @author speralta
@@ -39,7 +39,7 @@ public class StockDataView extends DataViewBase<Stock> {
      * @param id
      * @param searchFormModel
      */
-    public StockDataView(String id, IModel<StockSearchForm> searchFormModel) {
+    public StockDataView(String id, IModel<SearchForm> searchFormModel) {
         super(id, new StockDataProvider(searchFormModel));
     }
 

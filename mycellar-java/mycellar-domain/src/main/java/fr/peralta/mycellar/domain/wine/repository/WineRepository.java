@@ -21,6 +21,7 @@ package fr.peralta.mycellar.domain.wine.repository;
 import java.util.List;
 import java.util.Map;
 
+import fr.peralta.mycellar.domain.shared.repository.SearchForm;
 import fr.peralta.mycellar.domain.wine.Appellation;
 import fr.peralta.mycellar.domain.wine.Country;
 import fr.peralta.mycellar.domain.wine.Format;
@@ -39,7 +40,7 @@ public interface WineRepository {
      * @param searchForm
      * @return
      */
-    long countWines(WineSearchForm searchForm);
+    long countWines(SearchForm searchForm);
 
     /**
      * @param searchForm
@@ -48,28 +49,28 @@ public interface WineRepository {
      * @param count
      * @return
      */
-    List<Wine> getWines(WineSearchForm searchForm, WineOrder orders, int first, int count);
+    List<Wine> getWines(SearchForm searchForm, WineOrder orders, int first, int count);
 
     /**
      * @param searchForm
      * @param countryCountEnum
      * @return
      */
-    Map<Country, Long> getCountries(CountrySearchForm searchForm, CountryCountEnum countryCountEnum);
+    Map<Country, Long> getCountries(SearchForm searchForm, CountryCountEnum countryCountEnum);
 
     /**
      * @param searchForm
      * @param regionCountEnum
      * @return
      */
-    Map<Region, Long> getRegions(RegionSearchForm searchForm, RegionCountEnum regionCountEnum);
+    Map<Region, Long> getRegions(SearchForm searchForm, RegionCountEnum regionCountEnum);
 
     /**
      * @param searchForm
      * @param appellationCountEnum
      * @return
      */
-    Map<Appellation, Long> getAppellations(AppellationSearchForm searchForm,
+    Map<Appellation, Long> getAppellations(SearchForm searchForm,
             AppellationCountEnum appellationCountEnum);
 
     /**

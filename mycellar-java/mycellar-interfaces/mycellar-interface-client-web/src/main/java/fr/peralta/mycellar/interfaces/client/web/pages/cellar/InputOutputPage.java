@@ -21,17 +21,17 @@ package fr.peralta.mycellar.interfaces.client.web.pages.cellar;
 import org.apache.wicket.ajax.markup.html.navigation.paging.AjaxPagingNavigator;
 import org.apache.wicket.event.IEvent;
 import org.apache.wicket.markup.html.WebMarkupContainer;
-import org.apache.wicket.model.CompoundPropertyModel;
-import org.apache.wicket.model.Model;
 import org.apache.wicket.request.mapper.parameter.PageParameters;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import fr.peralta.mycellar.domain.shared.repository.FilterEnum;
+import fr.peralta.mycellar.domain.shared.repository.SearchForm;
 import fr.peralta.mycellar.domain.stock.Cellar;
-import fr.peralta.mycellar.domain.stock.repository.MovementSearchForm;
 import fr.peralta.mycellar.interfaces.client.web.components.shared.Action;
 import fr.peralta.mycellar.interfaces.client.web.components.shared.AjaxTool;
+import fr.peralta.mycellar.interfaces.client.web.components.shared.SearchFormModel;
 import fr.peralta.mycellar.interfaces.client.web.components.shared.multiple.MultiplePanel;
 import fr.peralta.mycellar.interfaces.client.web.components.wine.data.MovementDataView;
 import fr.peralta.mycellar.interfaces.client.web.pages.shared.CellarSuperPage;
@@ -58,13 +58,13 @@ public class InputOutputPage extends CellarSuperPage {
     public InputOutputPage(PageParameters parameters) {
         super(parameters);
         setOutputMarkupId(true);
+        SearchFormModel searchFormModel = new SearchFormModel(new SearchForm().addToSet(
+                FilterEnum.USER, UserKey.getUserLoggedIn()));
+        setDefaultModel(searchFormModel);
         add(new MultiplePanel<Cellar>(CELLARS_COMPONENT_ID,
                 stockServiceFacade.getAllCellarsWithCountsFromUser(UserKey.getUserLoggedIn())));
-        setDefaultModel(new CompoundPropertyModel<MovementSearchForm>(new MovementSearchForm(
-                UserKey.getUserLoggedIn())));
 
-        MovementDataView movementDataView = new MovementDataView("movements",
-                new Model<MovementSearchForm>((MovementSearchForm) getDefaultModelObject()));
+        MovementDataView movementDataView = new MovementDataView("movements", searchFormModel);
         movementDataView.setItemsPerPage(25);
         add(new WebMarkupContainer("noMovements").setVisible(movementDataView.getViewSize() == 0));
         add(movementDataView);

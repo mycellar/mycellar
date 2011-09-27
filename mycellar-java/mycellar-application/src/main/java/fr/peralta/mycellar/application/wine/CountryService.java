@@ -20,9 +20,9 @@ package fr.peralta.mycellar.application.wine;
 
 import java.util.Map;
 
+import fr.peralta.mycellar.domain.shared.repository.SearchForm;
 import fr.peralta.mycellar.domain.wine.Country;
 import fr.peralta.mycellar.domain.wine.repository.CountryCountEnum;
-import fr.peralta.mycellar.domain.wine.repository.CountrySearchForm;
 
 /**
  * @author speralta
@@ -34,6 +34,6 @@ public interface CountryService {
      * @param count
      * @return
      */
-    Map<Country, Long> getAll(CountrySearchForm searchForm, CountryCountEnum count);
+    Map<Country, Long> getAll(SearchForm searchForm, CountryCountEnum count);
 
 }

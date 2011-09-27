@@ -21,15 +21,14 @@ package fr.peralta.mycellar.interfaces.facades.stock;
 import java.util.List;
 import java.util.Map;
 
+import fr.peralta.mycellar.domain.shared.repository.SearchForm;
 import fr.peralta.mycellar.domain.stock.Arrival;
 import fr.peralta.mycellar.domain.stock.Bottle;
 import fr.peralta.mycellar.domain.stock.Cellar;
 import fr.peralta.mycellar.domain.stock.Movement;
 import fr.peralta.mycellar.domain.stock.Stock;
 import fr.peralta.mycellar.domain.stock.repository.MovementOrder;
-import fr.peralta.mycellar.domain.stock.repository.MovementSearchForm;
 import fr.peralta.mycellar.domain.stock.repository.StockOrder;
-import fr.peralta.mycellar.domain.stock.repository.StockSearchForm;
 import fr.peralta.mycellar.domain.user.User;
 import fr.peralta.mycellar.domain.wine.Format;
 import fr.peralta.mycellar.domain.wine.Wine;
@@ -66,14 +65,13 @@ public interface StockServiceFacade {
      * @param count
      * @return
      */
-    List<Movement<?>> getMovements(MovementSearchForm searchForm, MovementOrder orders, int first,
-            int count);
+    List<Movement<?>> getMovements(SearchForm searchForm, MovementOrder orders, int first, int count);
 
     /**
      * @param searchForm
      * @return
      */
-    long countMovements(MovementSearchForm searchForm);
+    long countMovements(SearchForm searchForm);
 
     /**
      * @param searchForm
@@ -82,12 +80,12 @@ public interface StockServiceFacade {
      * @param count
      * @return
      */
-    List<Stock> getStocks(StockSearchForm searchForm, StockOrder orders, int first, int count);
+    List<Stock> getStocks(SearchForm searchForm, StockOrder orders, int first, int count);
 
     /**
      * @param searchForm
      * @return
      */
-    long countStocks(StockSearchForm searchForm);
+    long countStocks(SearchForm searchForm);
 
 }

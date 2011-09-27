@@ -26,6 +26,7 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
 import fr.peralta.mycellar.application.stock.StockService;
+import fr.peralta.mycellar.domain.shared.repository.SearchForm;
 import fr.peralta.mycellar.domain.stock.Arrival;
 import fr.peralta.mycellar.domain.stock.ArrivalBottle;
 import fr.peralta.mycellar.domain.stock.Bottle;
@@ -34,10 +35,8 @@ import fr.peralta.mycellar.domain.stock.Input;
 import fr.peralta.mycellar.domain.stock.Movement;
 import fr.peralta.mycellar.domain.stock.Stock;
 import fr.peralta.mycellar.domain.stock.repository.MovementOrder;
-import fr.peralta.mycellar.domain.stock.repository.MovementSearchForm;
 import fr.peralta.mycellar.domain.stock.repository.StockOrder;
 import fr.peralta.mycellar.domain.stock.repository.StockRepository;
-import fr.peralta.mycellar.domain.stock.repository.StockSearchForm;
 
 /**
  * @author speralta
@@ -124,7 +123,7 @@ public class StockServiceImpl implements StockService {
      * {@inheritDoc}
      */
     @Override
-    public long countMovements(MovementSearchForm searchForm) {
+    public long countMovements(SearchForm searchForm) {
         return stockRepository.countMovements(searchForm);
     }
 
@@ -132,8 +131,8 @@ public class StockServiceImpl implements StockService {
      * {@inheritDoc}
      */
     @Override
-    public List<Movement<?>> getMovements(MovementSearchForm searchForm, MovementOrder orders,
-            int first, int count) {
+    public List<Movement<?>> getMovements(SearchForm searchForm, MovementOrder orders, int first,
+            int count) {
         return stockRepository.getMovements(searchForm, orders, first, count);
     }
 
@@ -141,7 +140,7 @@ public class StockServiceImpl implements StockService {
      * {@inheritDoc}
      */
     @Override
-    public List<Stock> getStocks(StockSearchForm searchForm, StockOrder orders, int first, int count) {
+    public List<Stock> getStocks(SearchForm searchForm, StockOrder orders, int first, int count) {
         return stockRepository.getStocks(searchForm, orders, first, count);
     }
 
@@ -149,7 +148,7 @@ public class StockServiceImpl implements StockService {
      * {@inheritDoc}
      */
     @Override
-    public long countStocks(StockSearchForm searchForm) {
+    public long countStocks(SearchForm searchForm) {
         return stockRepository.countStocks(searchForm);
     }
 
