@@ -18,8 +18,6 @@
  */
 package fr.peralta.mycellar.interfaces.client.web.components.shared.multiple;
 
-import java.util.List;
-
 import org.apache.wicket.AttributeModifier;
 import org.apache.wicket.markup.html.list.ListItem;
 import org.apache.wicket.markup.html.list.PropertyListView;
@@ -33,10 +31,9 @@ class Multiple<O> extends PropertyListView<MultipleData<O>> {
 
     /**
      * @param id
-     * @param list
      */
-    public Multiple(String id, List<? extends MultipleData<O>> list) {
-        super(id, list);
+    public Multiple(String id) {
+        super(id);
     }
 
     /**

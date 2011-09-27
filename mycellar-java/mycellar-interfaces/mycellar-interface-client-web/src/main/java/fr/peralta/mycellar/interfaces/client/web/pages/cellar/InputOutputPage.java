@@ -22,24 +22,21 @@ import org.apache.wicket.ajax.markup.html.navigation.paging.AjaxPagingNavigator;
 import org.apache.wicket.event.IEvent;
 import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.request.mapper.parameter.PageParameters;
-import org.apache.wicket.spring.injection.annot.SpringBean;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import fr.peralta.mycellar.domain.shared.repository.CountEnum;
 import fr.peralta.mycellar.domain.shared.repository.FilterEnum;
 import fr.peralta.mycellar.domain.shared.repository.SearchForm;
-import fr.peralta.mycellar.domain.stock.Cellar;
 import fr.peralta.mycellar.interfaces.client.web.components.shared.Action;
 import fr.peralta.mycellar.interfaces.client.web.components.shared.ActionLink;
 import fr.peralta.mycellar.interfaces.client.web.components.shared.AjaxTool;
 import fr.peralta.mycellar.interfaces.client.web.components.shared.SearchFormModel;
-import fr.peralta.mycellar.interfaces.client.web.components.shared.multiple.MultiplePanel;
+import fr.peralta.mycellar.interfaces.client.web.components.stock.multiple.CellarMultiplePanel;
 import fr.peralta.mycellar.interfaces.client.web.components.wine.data.MovementDataView;
 import fr.peralta.mycellar.interfaces.client.web.pages.shared.CellarSuperPage;
 import fr.peralta.mycellar.interfaces.client.web.security.UserKey;
 import fr.peralta.mycellar.interfaces.client.web.shared.LoggingUtils;
-import fr.peralta.mycellar.interfaces.facades.stock.StockServiceFacade;
 
 /**
  * @author speralta
@@ -51,9 +48,6 @@ public class InputOutputPage extends CellarSuperPage {
 
     private static final String CELLARS_COMPONENT_ID = "cellars";
 
-    @SpringBean
-    private StockServiceFacade stockServiceFacade;
-
     /**
      * @param parameters
      */
@@ -63,9 +57,7 @@ public class InputOutputPage extends CellarSuperPage {
         SearchFormModel searchFormModel = new SearchFormModel(new SearchForm().addToSet(
                 FilterEnum.USER, UserKey.getUserLoggedIn()));
         setDefaultModel(searchFormModel);
-        add(new MultiplePanel<Cellar>(CELLARS_COMPONENT_ID, stockServiceFacade.getCellars(
-                new SearchForm().addToSet(FilterEnum.USER, UserKey.getUserLoggedIn()),
-                CountEnum.STOCK_QUANTITY)));
+        add(new CellarMultiplePanel(CELLARS_COMPONENT_ID, searchFormModel, CountEnum.STOCK_QUANTITY));
         add(new ActionLink("clearFilters", Action.CANCEL));
 
         MovementDataView movementDataView = new MovementDataView("movements", searchFormModel);

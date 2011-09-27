@@ -41,7 +41,7 @@ import fr.peralta.mycellar.interfaces.client.web.shared.LoggingUtils;
 /**
  * @author speralta
  */
-public class MultiplePanel<O> extends Panel {
+public abstract class MultiplePanel<O> extends Panel {
 
     private static final long serialVersionUID = 201108041152L;
     private static final Logger logger = LoggerFactory.getLogger(MultiplePanel.class);
@@ -53,13 +53,36 @@ public class MultiplePanel<O> extends Panel {
 
     /**
      * @param id
-     * @param list
      */
-    public MultiplePanel(String id, Map<O, Long> objects) {
+    public MultiplePanel(String id) {
         super(id);
         setOutputMarkupId(true);
-        add(new Multiple<O>(MULTIPLE_COMPONENT_ID, getListFrom(objects)));
+        add(new Multiple<O>(MULTIPLE_COMPONENT_ID));
     }
+
+    /**
+     * {@inheritDoc}
+     */
+    @SuppressWarnings("unchecked")
+    @Override
+    protected void onBeforeRender() {
+        Map<O, Long> objects = getData();
+        if (getModelObject() != null) {
+            for (Iterator<O> iterator = getModelObject().iterator(); iterator.hasNext();) {
+                O object = iterator.next();
+                if (!objects.containsKey(object)) {
+                    iterator.remove();
+                }
+            }
+        }
+        ((Multiple<O>) get(MULTIPLE_COMPONENT_ID)).setList(getListFrom(objects));
+        super.onBeforeRender();
+    }
+
+    /**
+     * @return
+     */
+    protected abstract Map<O, Long> getData();
 
     /**
      * Sets model.
@@ -164,19 +187,4 @@ public class MultiplePanel<O> extends Panel {
         return rendererServiceFacade.render(object);
     }
 
-    /**
-     * @param objects
-     */
-    @SuppressWarnings("unchecked")
-    public void setChoices(Map<O, Long> objects) {
-        if (getModelObject() != null) {
-            for (Iterator<O> iterator = getModelObject().iterator(); iterator.hasNext();) {
-                O object = iterator.next();
-                if (!objects.containsKey(object)) {
-                    iterator.remove();
-                }
-            }
-        }
-        ((Multiple<O>) get(MULTIPLE_COMPONENT_ID)).setList(getListFrom(objects));
-    }
 }

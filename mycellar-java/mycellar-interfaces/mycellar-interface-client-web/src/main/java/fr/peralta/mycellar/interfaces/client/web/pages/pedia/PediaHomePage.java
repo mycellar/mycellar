@@ -22,26 +22,23 @@ import org.apache.wicket.ajax.markup.html.navigation.paging.AjaxPagingNavigator;
 import org.apache.wicket.event.IEvent;
 import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.request.mapper.parameter.PageParameters;
-import org.apache.wicket.spring.injection.annot.SpringBean;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import fr.peralta.mycellar.domain.shared.repository.CountEnum;
 import fr.peralta.mycellar.domain.shared.repository.SearchForm;
-import fr.peralta.mycellar.domain.wine.Appellation;
-import fr.peralta.mycellar.domain.wine.Country;
-import fr.peralta.mycellar.domain.wine.Region;
-import fr.peralta.mycellar.domain.wine.WineColorEnum;
-import fr.peralta.mycellar.domain.wine.WineTypeEnum;
 import fr.peralta.mycellar.interfaces.client.web.components.shared.Action;
 import fr.peralta.mycellar.interfaces.client.web.components.shared.ActionLink;
 import fr.peralta.mycellar.interfaces.client.web.components.shared.AjaxTool;
 import fr.peralta.mycellar.interfaces.client.web.components.shared.SearchFormModel;
-import fr.peralta.mycellar.interfaces.client.web.components.shared.multiple.MultiplePanel;
 import fr.peralta.mycellar.interfaces.client.web.components.stock.data.WineDataView;
+import fr.peralta.mycellar.interfaces.client.web.components.wine.multiple.AppellationMultiplePanel;
+import fr.peralta.mycellar.interfaces.client.web.components.wine.multiple.CountryMultiplePanel;
+import fr.peralta.mycellar.interfaces.client.web.components.wine.multiple.RegionMultiplePanel;
+import fr.peralta.mycellar.interfaces.client.web.components.wine.multiple.WineColorEnumMultiplePanel;
+import fr.peralta.mycellar.interfaces.client.web.components.wine.multiple.WineTypeEnumMultiplePanel;
 import fr.peralta.mycellar.interfaces.client.web.pages.shared.PediaSuperPage;
 import fr.peralta.mycellar.interfaces.client.web.shared.LoggingUtils;
-import fr.peralta.mycellar.interfaces.facades.wine.WineServiceFacade;
 
 /**
  * @author speralta
@@ -57,9 +54,6 @@ public class PediaHomePage extends PediaSuperPage {
     private static final String TYPES_COMPONENT_ID = "types";
     private static final String COLORS_COMPONENT_ID = "colors";
 
-    @SpringBean
-    private WineServiceFacade wineServiceFacade;
-
     /**
      * @param parameters
      */
@@ -68,16 +62,11 @@ public class PediaHomePage extends PediaSuperPage {
         setOutputMarkupId(true);
         SearchFormModel searchFormModel = new SearchFormModel(new SearchForm());
         setDefaultModel(searchFormModel);
-        add(new MultiplePanel<Country>(COUNTRIES_COMPONENT_ID, wineServiceFacade.getCountries(
-                searchFormModel.getObject(), CountEnum.WINE)));
-        add(new MultiplePanel<Region>(REGIONS_COMPONENT_ID, wineServiceFacade.getRegions(
-                searchFormModel.getObject(), CountEnum.WINE)));
-        add(new MultiplePanel<Appellation>(APPELLATIONS_COMPONENT_ID,
-                wineServiceFacade.getAppellations(searchFormModel.getObject(), CountEnum.WINE)));
-        add(new MultiplePanel<WineTypeEnum>(TYPES_COMPONENT_ID, wineServiceFacade.getTypes(
-                searchFormModel.getObject(), CountEnum.WINE)));
-        add(new MultiplePanel<WineColorEnum>(COLORS_COMPONENT_ID, wineServiceFacade.getColors(
-                searchFormModel.getObject(), CountEnum.WINE)));
+        add(new CountryMultiplePanel(COUNTRIES_COMPONENT_ID, searchFormModel, CountEnum.WINE));
+        add(new RegionMultiplePanel(REGIONS_COMPONENT_ID, searchFormModel, CountEnum.WINE));
+        add(new AppellationMultiplePanel(APPELLATIONS_COMPONENT_ID, searchFormModel, CountEnum.WINE));
+        add(new WineTypeEnumMultiplePanel(TYPES_COMPONENT_ID, searchFormModel, CountEnum.WINE));
+        add(new WineColorEnumMultiplePanel(COLORS_COMPONENT_ID, searchFormModel, CountEnum.WINE));
         add(new ActionLink("clearFilters", Action.CANCEL));
 
         WineDataView wineDataView = new WineDataView("wines", searchFormModel);
@@ -91,7 +80,6 @@ public class PediaHomePage extends PediaSuperPage {
     /**
      * {@inheritDoc}
      */
-    @SuppressWarnings("unchecked")
     @Override
     public void onEvent(IEvent<?> event) {
         LoggingUtils.logEventReceived(logger, event);
@@ -99,25 +87,10 @@ public class PediaHomePage extends PediaSuperPage {
             Action action = (Action) event.getPayload();
             switch (action) {
             case MODEL_CHANGED:
-                if (event.getSource() instanceof MultiplePanel) {
-                    MultiplePanel<?> component = (MultiplePanel<?>) event.getSource();
-                    SearchForm searchForm = (SearchForm) getDefaultModelObject();
-                    if (COUNTRIES_COMPONENT_ID.equals(component.getId())) {
-                        ((MultiplePanel<Region>) get(REGIONS_COMPONENT_ID))
-                                .setChoices(wineServiceFacade
-                                        .getRegions(searchForm, CountEnum.WINE));
-                        ((MultiplePanel<Appellation>) get(APPELLATIONS_COMPONENT_ID))
-                                .setChoices(wineServiceFacade.getAppellations(searchForm,
-                                        CountEnum.WINE));
-                    } else if (REGIONS_COMPONENT_ID.equals(component.getId())) {
-                        ((MultiplePanel<Appellation>) get(APPELLATIONS_COMPONENT_ID))
-                                .setChoices(wineServiceFacade.getAppellations(searchForm,
-                                        CountEnum.WINE));
-                    }
-                }
                 break;
             case CANCEL:
                 setDefaultModelObject(new SearchForm());
+                break;
             }
             AjaxTool.ajaxReRender(this);
         }
