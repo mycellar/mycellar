@@ -31,6 +31,7 @@ import fr.peralta.mycellar.domain.shared.repository.FilterEnum;
 import fr.peralta.mycellar.domain.shared.repository.SearchForm;
 import fr.peralta.mycellar.domain.stock.Cellar;
 import fr.peralta.mycellar.interfaces.client.web.components.shared.Action;
+import fr.peralta.mycellar.interfaces.client.web.components.shared.ActionLink;
 import fr.peralta.mycellar.interfaces.client.web.components.shared.AjaxTool;
 import fr.peralta.mycellar.interfaces.client.web.components.shared.SearchFormModel;
 import fr.peralta.mycellar.interfaces.client.web.components.shared.multiple.MultiplePanel;
@@ -65,6 +66,7 @@ public class InputOutputPage extends CellarSuperPage {
         add(new MultiplePanel<Cellar>(CELLARS_COMPONENT_ID, stockServiceFacade.getCellars(
                 new SearchForm().addToSet(FilterEnum.USER, UserKey.getUserLoggedIn()),
                 CountEnum.STOCK_QUANTITY)));
+        add(new ActionLink("clearFilters", Action.CANCEL));
 
         MovementDataView movementDataView = new MovementDataView("movements", searchFormModel);
         movementDataView.setItemsPerPage(25);
@@ -84,6 +86,8 @@ public class InputOutputPage extends CellarSuperPage {
             Action action = (Action) event.getPayload();
             switch (action) {
             case MODEL_CHANGED:
+                break;
+            case CANCEL:
                 break;
             }
             AjaxTool.ajaxReRender(this);

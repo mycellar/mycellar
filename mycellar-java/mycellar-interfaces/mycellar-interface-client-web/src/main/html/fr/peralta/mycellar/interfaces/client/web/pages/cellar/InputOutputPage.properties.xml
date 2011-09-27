@@ -8,4 +8,5 @@
   <entry key="number">Quantité</entry>
   <entry key="io">E/S</entry>
   <entry key="noMatchingMovements">Aucune entrées/sorties ne correspond</entry>
+  <entry key="clearFilters">Supprimer les filtres</entry>
 </properties> 

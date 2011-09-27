@@ -34,6 +34,7 @@ import fr.peralta.mycellar.domain.wine.Region;
 import fr.peralta.mycellar.domain.wine.WineColorEnum;
 import fr.peralta.mycellar.domain.wine.WineTypeEnum;
 import fr.peralta.mycellar.interfaces.client.web.components.shared.Action;
+import fr.peralta.mycellar.interfaces.client.web.components.shared.ActionLink;
 import fr.peralta.mycellar.interfaces.client.web.components.shared.AjaxTool;
 import fr.peralta.mycellar.interfaces.client.web.components.shared.SearchFormModel;
 import fr.peralta.mycellar.interfaces.client.web.components.shared.multiple.MultiplePanel;
@@ -77,6 +78,7 @@ public class PediaHomePage extends PediaSuperPage {
                 searchFormModel.getObject(), CountEnum.WINE)));
         add(new MultiplePanel<WineColorEnum>(COLORS_COMPONENT_ID, wineServiceFacade.getColors(
                 searchFormModel.getObject(), CountEnum.WINE)));
+        add(new ActionLink("clearFilters", Action.CANCEL));
 
         WineDataView wineDataView = new WineDataView("wines", searchFormModel);
         wineDataView.setItemsPerPage(25);
@@ -114,6 +116,8 @@ public class PediaHomePage extends PediaSuperPage {
                     }
                 }
                 break;
+            case CANCEL:
+                setDefaultModelObject(new SearchForm());
             }
             AjaxTool.ajaxReRender(this);
         }

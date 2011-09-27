@@ -11,4 +11,5 @@
   <entry key="type">Type</entry>
   <entry key="vintage">Millésime</entry>
   <entry key="noMatchingWines">Aucun vin ne correspond</entry>
+  <entry key="clearFilters">Supprimer les filtres</entry>
 </properties> 

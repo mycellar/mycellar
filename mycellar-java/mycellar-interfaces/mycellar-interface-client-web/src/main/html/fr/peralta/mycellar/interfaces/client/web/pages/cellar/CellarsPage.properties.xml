@@ -14,4 +14,5 @@
   <entry key="format">Format</entry>
   <entry key="quantity">Quantité</entry>
   <entry key="noMatchingStocks">Aucune bouteille en cave ne correspond</entry>
+  <entry key="clearFilters">Supprimer les filtres</entry>
 </properties> 

@@ -38,6 +38,7 @@ import fr.peralta.mycellar.domain.wine.Region;
 import fr.peralta.mycellar.domain.wine.WineColorEnum;
 import fr.peralta.mycellar.domain.wine.WineTypeEnum;
 import fr.peralta.mycellar.interfaces.client.web.components.shared.Action;
+import fr.peralta.mycellar.interfaces.client.web.components.shared.ActionLink;
 import fr.peralta.mycellar.interfaces.client.web.components.shared.AjaxTool;
 import fr.peralta.mycellar.interfaces.client.web.components.shared.SearchFormModel;
 import fr.peralta.mycellar.interfaces.client.web.components.shared.multiple.MultiplePanel;
@@ -96,6 +97,7 @@ public class CellarsPage extends CellarSuperPage {
                 searchFormModel.getObject(), CountEnum.STOCK_QUANTITY)));
         add(new MultiplePanel<Format>(FORMATS_COMPONENT_ID, wineServiceFacade.getFormats(
                 searchFormModel.getObject(), CountEnum.STOCK_QUANTITY)));
+        add(new ActionLink("clearFilters", Action.CANCEL));
 
         StockDataView stockDataView = new StockDataView("stocks", searchFormModel);
         stockDataView.setItemsPerPage(25);
@@ -140,6 +142,27 @@ public class CellarsPage extends CellarSuperPage {
                             .setChoices(wineServiceFacade.getFormats(searchForm,
                                     CountEnum.STOCK_QUANTITY));
                 }
+                break;
+            case CANCEL:
+                setDefaultModelObject(new SearchForm());
+                SearchForm searchForm = (SearchForm) getDefaultModelObject();
+                ((MultiplePanel<Cellar>) get(CELLARS_COMPONENT_ID)).setChoices(stockServiceFacade
+                        .getCellars(searchForm, CountEnum.STOCK_QUANTITY));
+                ((MultiplePanel<Country>) get(COUNTRIES_COMPONENT_ID)).setChoices(wineServiceFacade
+                        .getCountries(searchForm, CountEnum.STOCK_QUANTITY));
+                ((MultiplePanel<Region>) get(REGIONS_COMPONENT_ID)).setChoices(wineServiceFacade
+                        .getRegions(searchForm, CountEnum.STOCK_QUANTITY));
+                ((MultiplePanel<Appellation>) get(APPELLATIONS_COMPONENT_ID))
+                        .setChoices(wineServiceFacade.getAppellations(searchForm,
+                                CountEnum.STOCK_QUANTITY));
+                ((MultiplePanel<WineTypeEnum>) get(TYPES_COMPONENT_ID))
+                        .setChoices(wineServiceFacade
+                                .getTypes(searchForm, CountEnum.STOCK_QUANTITY));
+                ((MultiplePanel<WineColorEnum>) get(COLORS_COMPONENT_ID))
+                        .setChoices(wineServiceFacade.getColors(searchForm,
+                                CountEnum.STOCK_QUANTITY));
+                ((MultiplePanel<Format>) get(FORMATS_COMPONENT_ID)).setChoices(wineServiceFacade
+                        .getFormats(searchForm, CountEnum.STOCK_QUANTITY));
                 break;
             }
             AjaxTool.ajaxReRender(this);
