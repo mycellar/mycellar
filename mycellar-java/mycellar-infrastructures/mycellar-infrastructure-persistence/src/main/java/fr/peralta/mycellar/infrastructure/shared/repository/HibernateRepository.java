@@ -22,8 +22,8 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
+import javax.persistence.criteria.AbstractQuery;
 import javax.persistence.criteria.CriteriaBuilder;
-import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Expression;
 import javax.persistence.criteria.Path;
 import javax.persistence.criteria.Predicate;
@@ -41,34 +41,67 @@ public abstract class HibernateRepository {
 
     /**
      * @param query
-     * @param root
+     * @param path
      * @param searchForm
      * @param criteriaBuilder
      * @return
      */
-    protected <O> CriteriaQuery<O> where(CriteriaQuery<O> query, Path<Stock> root,
+    protected <Q extends AbstractQuery<O>, O> Q where(Q query, Path<Stock> path,
             SearchForm searchForm, CriteriaBuilder criteriaBuilder) {
+        return where(query, path, searchForm, criteriaBuilder, null);
+    }
+
+    /**
+     * @param query
+     * @param path
+     * @param searchForm
+     * @param criteriaBuilder
+     * @param filterEnum
+     * @return
+     */
+    protected <Q extends AbstractQuery<O>, O> Q where(Q query, Path<Stock> path,
+            SearchForm searchForm, CriteriaBuilder criteriaBuilder, FilterEnum filterEnum) {
         List<Predicate> predicates = new ArrayList<Predicate>();
-        in(predicates, searchForm.getSet(FilterEnum.APPELLATION), root.get("bottle").get("wine")
-                .get("appellation"), criteriaBuilder);
-        in(predicates, searchForm.getSet(FilterEnum.CELLAR), root.get("cellar"), criteriaBuilder);
-        in(predicates, searchForm.getSet(FilterEnum.COLOR),
-                root.get("bottle").get("wine").get("color"), criteriaBuilder);
-        in(predicates, searchForm.getSet(FilterEnum.COUNTRY),
-                root.get("bottle").get("wine").get("appellation").get("region").get("country"),
-                criteriaBuilder);
-        in(predicates, searchForm.getSet(FilterEnum.FORMAT), root.get("bottle").get("format"),
-                criteriaBuilder);
-        in(predicates, searchForm.getSet(FilterEnum.PRODUCER),
-                root.get("bottle").get("wine").get("producer"), criteriaBuilder);
-        in(predicates, searchForm.getSet(FilterEnum.REGION),
-                root.get("bottle").get("wine").get("appellation").get("region"), criteriaBuilder);
-        in(predicates, searchForm.getSet(FilterEnum.TYPE),
-                root.get("bottle").get("wine").get("type"), criteriaBuilder);
-        in(predicates, searchForm.getSet(FilterEnum.USER), root.get("cellar").get("owner"),
-                criteriaBuilder);
-        in(predicates, searchForm.getSet(FilterEnum.VINTAGE),
-                root.get("bottle").get("wine").get("vintage"), criteriaBuilder);
+        if (filterEnum != FilterEnum.APPELLATION) {
+            in(predicates, searchForm.getSet(FilterEnum.APPELLATION), path.get("bottle")
+                    .get("wine").get("appellation"), criteriaBuilder);
+        }
+        if (filterEnum != FilterEnum.CELLAR) {
+            in(predicates, searchForm.getSet(FilterEnum.CELLAR), path.get("cellar"),
+                    criteriaBuilder);
+        }
+        if (filterEnum != FilterEnum.COLOR) {
+            in(predicates, searchForm.getSet(FilterEnum.COLOR),
+                    path.get("bottle").get("wine").get("color"), criteriaBuilder);
+        }
+        if (filterEnum != FilterEnum.COUNTRY) {
+            in(predicates, searchForm.getSet(FilterEnum.COUNTRY), path.get("bottle").get("wine")
+                    .get("appellation").get("region").get("country"), criteriaBuilder);
+        }
+        if (filterEnum != FilterEnum.FORMAT) {
+            in(predicates, searchForm.getSet(FilterEnum.FORMAT), path.get("bottle").get("format"),
+                    criteriaBuilder);
+        }
+        if (filterEnum != FilterEnum.PRODUCER) {
+            in(predicates, searchForm.getSet(FilterEnum.PRODUCER), path.get("bottle").get("wine")
+                    .get("producer"), criteriaBuilder);
+        }
+        if (filterEnum != FilterEnum.REGION) {
+            in(predicates, searchForm.getSet(FilterEnum.REGION), path.get("bottle").get("wine")
+                    .get("appellation").get("region"), criteriaBuilder);
+        }
+        if (filterEnum != FilterEnum.TYPE) {
+            in(predicates, searchForm.getSet(FilterEnum.TYPE),
+                    path.get("bottle").get("wine").get("type"), criteriaBuilder);
+        }
+        if (filterEnum != FilterEnum.USER) {
+            in(predicates, searchForm.getSet(FilterEnum.USER), path.get("cellar").get("owner"),
+                    criteriaBuilder);
+        }
+        if (filterEnum != FilterEnum.VINTAGE) {
+            in(predicates, searchForm.getSet(FilterEnum.VINTAGE), path.get("bottle").get("wine")
+                    .get("vintage"), criteriaBuilder);
+        }
         return where(query, criteriaBuilder, predicates);
     }
 
@@ -101,7 +134,7 @@ public abstract class HibernateRepository {
      * @param predicates
      * @return
      */
-    protected <O> CriteriaQuery<O> where(CriteriaQuery<O> query, CriteriaBuilder criteriaBuilder,
+    protected <Q extends AbstractQuery<O>, O> Q where(Q query, CriteriaBuilder criteriaBuilder,
             List<Predicate> predicates) {
         Predicate wherePredicate;
         switch (predicates.size()) {

@@ -63,14 +63,7 @@ public class WineServiceImpl implements WineService {
      */
     @Override
     public Map<WineTypeEnum, Long> getTypes(SearchForm searchForm, CountEnum count) {
-        Map<WineTypeEnum, Long> result = wineRepository.getTypes(searchForm, count);
-        // add missing types
-        for (WineTypeEnum color : WineTypeEnum.values()) {
-            if (!result.containsKey(color)) {
-                result.put(color, 0l);
-            }
-        }
-        return result;
+        return wineRepository.getTypes(searchForm, count);
     }
 
     /**
@@ -78,14 +71,7 @@ public class WineServiceImpl implements WineService {
      */
     @Override
     public Map<WineColorEnum, Long> getColors(SearchForm searchForm, CountEnum count) {
-        Map<WineColorEnum, Long> result = wineRepository.getColors(searchForm, count);
-        // add missing colors
-        for (WineColorEnum color : WineColorEnum.values()) {
-            if (!result.containsKey(color)) {
-                result.put(color, 0l);
-            }
-        }
-        return result;
+        return wineRepository.getColors(searchForm, count);
     }
 
     /**
