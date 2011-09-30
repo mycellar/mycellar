@@ -79,10 +79,10 @@ public class RegionComplexTagCloud extends ComplexTagCloud<Region> {
      */
     @Override
     protected TagCloudPanel<Region> createTagCloudPanel(String id) {
-        SearchForm regionSearchForm = new SearchForm();
-        regionSearchForm.addToSet(FilterEnum.COUNTRY, countryModel.getObject());
+        SearchForm searchForm = new SearchForm();
+        searchForm.addToSet(FilterEnum.COUNTRY, countryModel.getObject());
         return new TagCloudPanel<Region>(id, getListFrom(wineServiceFacade.getRegions(
-                regionSearchForm, count)));
+                searchForm, count)));
     }
 
     /**

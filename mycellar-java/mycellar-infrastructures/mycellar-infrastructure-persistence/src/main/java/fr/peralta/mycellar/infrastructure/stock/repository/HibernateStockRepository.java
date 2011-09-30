@@ -47,6 +47,7 @@ import fr.peralta.mycellar.domain.stock.Bottle;
 import fr.peralta.mycellar.domain.stock.Cellar;
 import fr.peralta.mycellar.domain.stock.Input;
 import fr.peralta.mycellar.domain.stock.Movement;
+import fr.peralta.mycellar.domain.stock.Output;
 import fr.peralta.mycellar.domain.stock.Stock;
 import fr.peralta.mycellar.domain.stock.repository.MovementOrder;
 import fr.peralta.mycellar.domain.stock.repository.MovementOrderEnum;
@@ -293,6 +294,14 @@ public class HibernateStockRepository extends HibernateRepository implements Sto
     @Override
     public Input save(Input input) {
         return entityManager.merge(input);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public Output save(Output output) {
+        return entityManager.merge(output);
     }
 
     /**

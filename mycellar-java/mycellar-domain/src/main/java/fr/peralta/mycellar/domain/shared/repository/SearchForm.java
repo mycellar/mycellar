@@ -34,6 +34,35 @@ public class SearchForm implements Serializable {
 
     private final Map<FilterEnum, Set<?>> sets = new HashMap<FilterEnum, Set<?>>();
 
+    public final <O> SearchForm replaceSet(FilterEnum filter, Collection<? extends O> objects) {
+        Set<O> set = getSet(filter);
+        if (set == null) {
+            set = new HashSet<O>();
+            sets.put(filter, set);
+        } else {
+            set.clear();
+        }
+        set.addAll(objects);
+        return this;
+    }
+
+    /**
+     * @param filter
+     * @param object
+     * @return
+     */
+    public final <O> SearchForm replaceSet(FilterEnum filter, O object) {
+        Set<O> set = getSet(filter);
+        if (set == null) {
+            set = new HashSet<O>();
+            sets.put(filter, set);
+        } else {
+            set.clear();
+        }
+        set.add(object);
+        return this;
+    }
+
     /**
      * @param filter
      * @param set

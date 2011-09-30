@@ -35,6 +35,7 @@ import fr.peralta.mycellar.interfaces.client.web.pages.HomePage;
 import fr.peralta.mycellar.interfaces.client.web.pages.ListUsersPage;
 import fr.peralta.mycellar.interfaces.client.web.pages.NewUserPage;
 import fr.peralta.mycellar.interfaces.client.web.pages.cellar.CellarsPage;
+import fr.peralta.mycellar.interfaces.client.web.pages.cellar.DrinkBottlesPage;
 import fr.peralta.mycellar.interfaces.client.web.pages.cellar.InputOutputPage;
 import fr.peralta.mycellar.interfaces.client.web.pages.cellar.PackageArrivalPage;
 import fr.peralta.mycellar.interfaces.client.web.pages.pedia.PediaHomePage;
@@ -56,6 +57,7 @@ public abstract class MyCellarWebApplication extends SwarmWebApplication {
         mountPage("/cellars", CellarsPage.class);
         mountPage("/io", InputOutputPage.class);
         mountPage("/packageArrival", PackageArrivalPage.class);
+        mountPage("/drinkBottles", DrinkBottlesPage.class);
         mountPage("/pedia", PediaHomePage.class);
         mountPage("/newUser", NewUserPage.class);
         mountPage("/listUsers", ListUsersPage.class);

@@ -27,6 +27,7 @@ import fr.peralta.mycellar.domain.stock.Bottle;
 import fr.peralta.mycellar.domain.stock.Cellar;
 import fr.peralta.mycellar.domain.stock.Input;
 import fr.peralta.mycellar.domain.stock.Movement;
+import fr.peralta.mycellar.domain.stock.Output;
 import fr.peralta.mycellar.domain.stock.Stock;
 import fr.peralta.mycellar.domain.wine.Format;
 import fr.peralta.mycellar.domain.wine.Wine;
@@ -59,16 +60,25 @@ public interface StockRepository {
 
     /**
      * @param cellar
+     * @return
      */
     Cellar save(Cellar cellar);
 
     /**
      * @param input
+     * @return
      */
     Input save(Input input);
 
     /**
+     * @param output
+     * @return
+     */
+    Output save(Output output);
+
+    /**
      * @param stock
+     * @return
      */
     Stock save(Stock stock);
 

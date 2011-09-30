@@ -33,6 +33,7 @@ import fr.peralta.mycellar.domain.shared.repository.SearchForm;
 import fr.peralta.mycellar.domain.stock.Arrival;
 import fr.peralta.mycellar.domain.stock.Bottle;
 import fr.peralta.mycellar.domain.stock.Cellar;
+import fr.peralta.mycellar.domain.stock.Drink;
 import fr.peralta.mycellar.domain.stock.Movement;
 import fr.peralta.mycellar.domain.stock.Stock;
 import fr.peralta.mycellar.domain.stock.repository.MovementOrder;
@@ -59,6 +60,15 @@ public class StockServiceFacadeImpl implements StockServiceFacade {
     @Transactional
     public void arrival(Arrival arrival) {
         stockService.stock(arrival);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    @Transactional
+    public void drink(Drink drink) {
+        stockService.drink(drink);
     }
 
     /**

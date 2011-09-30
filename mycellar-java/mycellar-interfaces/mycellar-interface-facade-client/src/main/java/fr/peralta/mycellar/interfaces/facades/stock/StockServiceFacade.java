@@ -26,6 +26,7 @@ import fr.peralta.mycellar.domain.shared.repository.SearchForm;
 import fr.peralta.mycellar.domain.stock.Arrival;
 import fr.peralta.mycellar.domain.stock.Bottle;
 import fr.peralta.mycellar.domain.stock.Cellar;
+import fr.peralta.mycellar.domain.stock.Drink;
 import fr.peralta.mycellar.domain.stock.Movement;
 import fr.peralta.mycellar.domain.stock.Stock;
 import fr.peralta.mycellar.domain.stock.repository.MovementOrder;
@@ -38,7 +39,15 @@ import fr.peralta.mycellar.domain.wine.Wine;
  */
 public interface StockServiceFacade {
 
+    /**
+     * @param arrival
+     */
     void arrival(Arrival arrival);
+
+    /**
+     * @param drink
+     */
+    void drink(Drink drink);
 
     /**
      * @param cellar

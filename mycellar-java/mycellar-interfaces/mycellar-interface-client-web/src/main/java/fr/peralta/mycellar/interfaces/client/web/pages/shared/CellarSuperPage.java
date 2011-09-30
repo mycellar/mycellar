@@ -26,6 +26,7 @@ import org.apache.wicket.request.mapper.parameter.PageParameters;
 import fr.peralta.mycellar.interfaces.client.web.components.shared.menu.MenuPanel;
 import fr.peralta.mycellar.interfaces.client.web.components.shared.menu.MenuablePageDescriptor;
 import fr.peralta.mycellar.interfaces.client.web.pages.cellar.CellarsPage;
+import fr.peralta.mycellar.interfaces.client.web.pages.cellar.DrinkBottlesPage;
 import fr.peralta.mycellar.interfaces.client.web.pages.cellar.InputOutputPage;
 import fr.peralta.mycellar.interfaces.client.web.pages.cellar.PackageArrivalPage;
 
@@ -55,6 +56,8 @@ public abstract class CellarSuperPage extends BasePage {
                 "I/O"));
         descriptors.add(new MenuablePageDescriptor(PackageArrivalPage.class,
                 PackageArrivalPage.class, "Package arrival"));
+        descriptors.add(new MenuablePageDescriptor(DrinkBottlesPage.class, DrinkBottlesPage.class,
+                "Drink bottles"));
         return descriptors;
     }
 

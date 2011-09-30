@@ -17,6 +17,8 @@ grant principal fr.peralta.mycellar.interfaces.client.web.security.MyCellarPrinc
 	permission ${ComponentPermission} "fr.peralta.mycellar.interfaces.client.web.pages.cellar.InputOutputPage", "enable";
 	permission ${ComponentPermission} "fr.peralta.mycellar.interfaces.client.web.pages.cellar.PackageArrivalPage", "inherit, render";
     permission ${ComponentPermission} "fr.peralta.mycellar.interfaces.client.web.pages.cellar.PackageArrivalPage", "enable";
+    permission ${ComponentPermission} "fr.peralta.mycellar.interfaces.client.web.pages.cellar.DrinkBottlesPage", "inherit, render";
+    permission ${ComponentPermission} "fr.peralta.mycellar.interfaces.client.web.pages.cellar.DrinkBottlesPage", "enable";
 };
 grant principal fr.peralta.mycellar.interfaces.client.web.security.MyCellarPrincipal "admin"
 {

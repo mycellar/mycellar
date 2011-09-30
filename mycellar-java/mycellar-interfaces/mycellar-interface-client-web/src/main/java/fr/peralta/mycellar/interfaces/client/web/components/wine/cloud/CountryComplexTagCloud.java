@@ -77,12 +77,4 @@ public class CountryComplexTagCloud extends ComplexTagCloud<Country> {
                 new SearchForm(), count)));
     }
 
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    protected boolean isReadyToSelect() {
-        return true;
-    }
-
 }

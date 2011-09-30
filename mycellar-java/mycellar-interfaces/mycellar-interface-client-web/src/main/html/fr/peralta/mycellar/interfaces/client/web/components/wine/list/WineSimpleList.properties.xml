@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE properties SYSTEM "http://java.sun.com/dtd/properties.dtd">
+<properties>
+  <entry key="appellation">Appellation</entry>
+  <entry key="producer">Producteur</entry>
+  <entry key="type">Type</entry>
+  <entry key="color">Couleur</entry>
+  <entry key="vintage">Millésime</entry>
+</properties> 

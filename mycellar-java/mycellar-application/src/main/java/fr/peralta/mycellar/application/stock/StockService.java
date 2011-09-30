@@ -26,6 +26,7 @@ import fr.peralta.mycellar.domain.shared.repository.SearchForm;
 import fr.peralta.mycellar.domain.stock.Arrival;
 import fr.peralta.mycellar.domain.stock.Bottle;
 import fr.peralta.mycellar.domain.stock.Cellar;
+import fr.peralta.mycellar.domain.stock.Drink;
 import fr.peralta.mycellar.domain.stock.Movement;
 import fr.peralta.mycellar.domain.stock.Stock;
 import fr.peralta.mycellar.domain.stock.repository.MovementOrder;
@@ -49,11 +50,27 @@ public interface StockService {
             float price, String source);
 
     /**
+     * @param cellar
+     * @param bottle
+     * @param quantity
+     * @param date
+     * @param destination
+     * @param price
+     */
+    void removeFromStock(Cellar cellar, Bottle bottle, Integer quantity, LocalDate date,
+            String destination, float price);
+
+    /**
      * @param bottle
      * @param cellar
      * @return
      */
     Stock findStock(Bottle bottle, Cellar cellar);
+
+    /**
+     * @param drink
+     */
+    void drink(Drink drink);
 
     /**
      * @param arrival

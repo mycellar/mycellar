@@ -31,8 +31,11 @@ import fr.peralta.mycellar.domain.stock.Arrival;
 import fr.peralta.mycellar.domain.stock.ArrivalBottle;
 import fr.peralta.mycellar.domain.stock.Bottle;
 import fr.peralta.mycellar.domain.stock.Cellar;
+import fr.peralta.mycellar.domain.stock.Drink;
+import fr.peralta.mycellar.domain.stock.DrinkBottle;
 import fr.peralta.mycellar.domain.stock.Input;
 import fr.peralta.mycellar.domain.stock.Movement;
+import fr.peralta.mycellar.domain.stock.Output;
 import fr.peralta.mycellar.domain.stock.Stock;
 import fr.peralta.mycellar.domain.stock.repository.MovementOrder;
 import fr.peralta.mycellar.domain.stock.repository.StockOrder;
@@ -45,6 +48,19 @@ import fr.peralta.mycellar.domain.stock.repository.StockRepository;
 public class StockServiceImpl implements StockService {
 
     private StockRepository stockRepository;
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void drink(Drink drink) {
+        Cellar cellar = drink.getCellar();
+        for (DrinkBottle drinkBottle : drink.getDrinkBottles()) {
+            Bottle bottle = drinkBottle.getBottle();
+            removeFromStock(cellar, bottle, drinkBottle.getQuantity(), drink.getDate(),
+                    drink.getDrinkWith(), 0);
+        }
+    }
 
     /**
      * {@inheritDoc}
@@ -69,6 +85,37 @@ public class StockServiceImpl implements StockService {
         Stock stock = updateStock(cellar, bottle, quantity);
         // Use cellar and bottle from stock, they could have been merged.
         createInput(stock.getCellar(), stock.getBottle(), quantity, date, charges, price, source);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void removeFromStock(Cellar cellar, Bottle bottle, Integer quantity, LocalDate date,
+            String destination, float price) {
+        Stock stock = updateStock(cellar, bottle, -quantity);
+        // Use cellar and bottle from stock, they could have been merged.
+        createOutput(stock.getCellar(), stock.getBottle(), quantity, date, destination, price);
+    }
+
+    /**
+     * @param cellar
+     * @param bottle
+     * @param quantity
+     * @param date
+     * @param destination
+     * @param price
+     */
+    private void createOutput(Cellar cellar, Bottle bottle, Integer quantity, LocalDate date,
+            String destination, float price) {
+        Output output = new Output();
+        output.setBottle(bottle);
+        output.setCellar(cellar);
+        output.setDate(date);
+        output.setDestination(destination);
+        output.setNumber(quantity);
+        output.setPrice(price);
+        stockRepository.save(output);
     }
 
     /**

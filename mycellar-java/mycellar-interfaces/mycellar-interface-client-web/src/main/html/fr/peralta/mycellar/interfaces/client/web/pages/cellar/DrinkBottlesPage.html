@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="fr" xmlns:wicket="">
+  <head>
+    <title>MyCellar</title>
+    <meta charset="utf-8">
+    <link rel="stylesheet" href="../shared/master.css" type="text/css" media="screen" />
+  </head>
+  <body>
+    <header>
+      <h1>Page d'accueil</h1>
+    </header>
+    <nav role="main">
+      <ul>
+        <li><a>Nav 1</a></li>
+        <li><a>Nav 2</a></li>
+        <li><a>Nav 3</a></li>
+      </ul>
+    </nav>
+    <wicket:extend>
+      <section>
+        <form wicket:id="form">
+          <fieldset class="step">
+            <legend><wicket:message key="package">Fieldset legend</wicket:message></legend>
+            <div class="formDiv">
+              <label for="date"><wicket:message key="date">Drink</wicket:message></label>
+              <input id="date" wicket:id="date" type="text" size="10" maxlength="10" />
+            </div>
+            <div class="formDiv">
+              <label for="drinkWith"><wicket:message key="drinkWith">Drink with</wicket:message></label>
+              <input id="drinkWith" wicket:id="drinkWith" type="text" wicket:message="placeholder:drinkWithEx" size="50" maxlength="50" />
+            </div>
+            <div wicket:id="cellar" />
+          </fieldset>
+          <fieldset class="step">
+            <legend><wicket:message key="drinkBottles">Bottles</wicket:message></legend>
+            <div class="formDiv" wicket:id="drinkBottles">
+              <table class="border large">
+                <thead>
+                  <tr>
+                    <th><wicket:message key="country">Country</wicket:message></th>
+                    <th><wicket:message key="region">Region</wicket:message></th>
+                    <th><wicket:message key="appellation">Appellation</wicket:message></th>
+                    <th><wicket:message key="producer">Producer</wicket:message></th>
+                    <th><wicket:message key="name">Name</wicket:message></th>
+                    <th><wicket:message key="vintage">Vintage</wicket:message></th>
+                    <th><wicket:message key="format">Format</wicket:message></th>
+                    <th><wicket:message key="quantity">Quantity</wicket:message></th>
+                    <th><a wicket:id="addBottle"><wicket:message key="addBottle">Add bottle</wicket:message></a></th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr wicket:id="drinkBottles">
+                    <td wicket:id="bottle.wine.appellation.region.country.name">Country</td>
+                    <td wicket:id="bottle.wine.appellation.region.name">Region</td>
+                    <td wicket:id="bottle.wine.appellation.name">Appellation</td>
+                    <td wicket:id="bottle.wine.producer.name">Producer</td>
+                    <td wicket:id="bottle.wine.name">Name</td>
+                    <td wicket:id="bottle.wine.vintage">Vintage</td>
+                    <td wicket:id="bottle.format.name">Format</td>
+                    <td wicket:id="quantity">Quantity</td>
+                    <td wicket:id="remove"><a wicket:id="removeBottle"><wicket:message key="removeBottle">Remove bottle</wicket:message></a></td>
+                  </tr>
+                  <tr wicket:id="noBottles">
+                    <td colSpan="9" class="ca"><wicket:message key="noBottles">No bottles</wicket:message></td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </fieldset>
+          <form wicket:id="drinkBottle">
+            <fieldset>
+              <legend><wicket:message key="drinkBottle">Arrival bottle</wicket:message></legend>
+              <div wicket:id="newObject" />
+              <input wicket:id="saveObject" type="submit" wicket:message="value:saveBottle" />
+              <input wicket:id="cancelObject" type="submit" wicket:message="value:cancelBottle" />
+            </fieldset>
+          </form>
+          <input type="submit" wicket:message="value:saveDrink" />
+        </form>
+      </section>
+    </wicket:extend>
+    <footer>
+      <div>
+        <p>
+          <a href="http://validator.w3.org/check?uri=referer">HTML 5</a>
+          |
+          <a href="http://jigsaw.w3.org/css-validator/check/referer">CSS</a>
+          |
+          Copyright
+        </p>
+      </div>
+    </footer>
+  </body>
+</html>
+

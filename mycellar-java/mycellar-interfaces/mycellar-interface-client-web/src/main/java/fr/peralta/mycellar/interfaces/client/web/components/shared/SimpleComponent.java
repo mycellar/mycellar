@@ -159,7 +159,9 @@ public abstract class SimpleComponent<O> extends Panel {
     /**
      * @return
      */
-    protected abstract boolean isReadyToSelect();
+    protected boolean isReadyToSelect() {
+        return true;
+    }
 
     /**
      * @param object
