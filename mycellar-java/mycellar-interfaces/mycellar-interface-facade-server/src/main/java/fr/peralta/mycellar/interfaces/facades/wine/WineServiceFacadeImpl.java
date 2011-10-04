@@ -102,15 +102,6 @@ public class WineServiceFacadeImpl implements WineServiceFacade {
      */
     @Override
     @Transactional(readOnly = true)
-    public List<Wine> getWinesLike(Wine wine) {
-        return wineService.getWinesLike(wine);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    @Transactional(readOnly = true)
     public Map<WineTypeEnum, Long> getTypes(SearchForm searchForm, CountEnum count) {
         return wineService.getTypes(searchForm, count);
     }

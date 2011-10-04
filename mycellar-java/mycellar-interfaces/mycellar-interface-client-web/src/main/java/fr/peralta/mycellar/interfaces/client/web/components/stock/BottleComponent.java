@@ -29,6 +29,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import fr.peralta.mycellar.domain.shared.repository.CountEnum;
+import fr.peralta.mycellar.domain.shared.repository.SearchForm;
 import fr.peralta.mycellar.domain.stock.Bottle;
 import fr.peralta.mycellar.domain.wine.Format;
 import fr.peralta.mycellar.domain.wine.Wine;
@@ -50,18 +51,23 @@ public class BottleComponent extends Panel {
     private static final String WINE_COMPONENT_ID = "wine";
     private static final String FORMAT_COMPONENT_ID = "format";
 
+    private final IModel<SearchForm> searchFormModel;
+
     @SpringBean
     private StockServiceFacade stockServiceFacade;
 
     /**
      * @param id
+     * @param searchFormModel
      */
-    public BottleComponent(String id) {
+    public BottleComponent(String id, IModel<SearchForm> searchFormModel, CountEnum count) {
         super(id);
+        this.searchFormModel = searchFormModel;
         setOutputMarkupId(true);
-        add(new WineComplexList(WINE_COMPONENT_ID, new StringResourceModel("wine", this, null)));
+        add(new WineComplexList(WINE_COMPONENT_ID, new StringResourceModel("wine", this, null),
+                searchFormModel, count));
         add(new FormatComplexTagCloud(FORMAT_COMPONENT_ID, new StringResourceModel("format", this,
-                null), CountEnum.STOCK_QUANTITY));
+                null), searchFormModel, count));
     }
 
     /**
@@ -82,6 +88,15 @@ public class BottleComponent extends Panel {
         if (getDefaultModelObject() == null) {
             setDefaultModelObject(new Bottle());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void detachModels() {
+        searchFormModel.detach();
+        super.detachModels();
     }
 
     /**

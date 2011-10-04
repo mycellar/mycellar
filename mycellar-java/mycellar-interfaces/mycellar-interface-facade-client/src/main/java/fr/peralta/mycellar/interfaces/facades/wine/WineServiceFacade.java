@@ -96,10 +96,4 @@ public interface WineServiceFacade {
      */
     Map<Format, Long> getFormats(SearchForm searchForm, CountEnum count);
 
-    /**
-     * @param wine
-     * @return
-     */
-    List<Wine> getWinesLike(Wine wine);
-
 }

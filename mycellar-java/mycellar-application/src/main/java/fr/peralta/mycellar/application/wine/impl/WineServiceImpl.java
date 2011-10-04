@@ -26,7 +26,6 @@ import org.springframework.stereotype.Service;
 
 import fr.peralta.mycellar.application.wine.WineService;
 import fr.peralta.mycellar.domain.shared.repository.CountEnum;
-import fr.peralta.mycellar.domain.shared.repository.FilterEnum;
 import fr.peralta.mycellar.domain.shared.repository.SearchForm;
 import fr.peralta.mycellar.domain.wine.Wine;
 import fr.peralta.mycellar.domain.wine.WineColorEnum;
@@ -72,40 +71,6 @@ public class WineServiceImpl implements WineService {
     @Override
     public Map<WineColorEnum, Long> getColors(SearchForm searchForm, CountEnum count) {
         return wineRepository.getColors(searchForm, count);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public List<Wine> getWinesLike(Wine wine) {
-        SearchForm wineSearchForm = new SearchForm();
-        if (wine.getAppellation() != null) {
-            if (wine.getAppellation().getId() != null) {
-                wineSearchForm.addToSet(FilterEnum.APPELLATION, wine.getAppellation());
-            } else if (wine.getAppellation().getRegion() != null) {
-                if (wine.getAppellation().getRegion().getId() != null) {
-                    wineSearchForm.addToSet(FilterEnum.REGION, wine.getAppellation().getRegion());
-                } else if ((wine.getAppellation().getRegion().getCountry() != null)
-                        && (wine.getAppellation().getRegion().getCountry().getId() != null)) {
-                    wineSearchForm.addToSet(FilterEnum.COUNTRY, wine.getAppellation().getRegion()
-                            .getCountry());
-                }
-            }
-        }
-        if ((wine.getProducer() != null) && (wine.getProducer().getId() != null)) {
-            wineSearchForm.addToSet(FilterEnum.PRODUCER, wine.getProducer());
-        }
-        if (wine.getType() != null) {
-            wineSearchForm.addToSet(FilterEnum.TYPE, wine.getType());
-        }
-        if (wine.getColor() != null) {
-            wineSearchForm.addToSet(FilterEnum.COLOR, wine.getColor());
-        }
-        if (wine.getVintage() != null) {
-            wineSearchForm.addToSet(FilterEnum.VINTAGE, wine.getVintage());
-        }
-        return wineRepository.getWines(wineSearchForm, new WineOrder(), 1, 10);
     }
 
     /**

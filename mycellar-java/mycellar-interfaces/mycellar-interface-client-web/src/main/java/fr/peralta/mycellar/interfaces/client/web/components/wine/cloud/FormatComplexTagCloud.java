@@ -40,23 +40,20 @@ public class FormatComplexTagCloud extends ComplexTagCloud<Format> {
     @SpringBean
     private WineServiceFacade wineServiceFacade;
 
+    private final IModel<SearchForm> searchFormModel;
     private final CountEnum count;
 
     /**
      * @param id
      * @param label
+     * @param searchFormModel
+     * @param count
      */
-    public FormatComplexTagCloud(String id, IModel<String> label, CountEnum count) {
+    public FormatComplexTagCloud(String id, IModel<String> label,
+            IModel<SearchForm> searchFormModel, CountEnum count) {
         super(id, label);
+        this.searchFormModel = searchFormModel;
         this.count = count;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    protected boolean isReadyToSelect() {
-        return true;
     }
 
     /**
@@ -65,7 +62,7 @@ public class FormatComplexTagCloud extends ComplexTagCloud<Format> {
     @Override
     protected TagCloudPanel<Format> createTagCloudPanel(String id) {
         return new TagCloudPanel<Format>(id, getListFrom(wineServiceFacade.getFormats(
-                new SearchForm(), count)));
+                searchFormModel.getObject(), count)));
     }
 
     /**
@@ -82,6 +79,15 @@ public class FormatComplexTagCloud extends ComplexTagCloud<Format> {
     @Override
     protected Format createObject() {
         return new Format();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void detachModels() {
+        searchFormModel.detach();
+        super.detachModels();
     }
 
 }

@@ -33,6 +33,10 @@ import fr.peralta.mycellar.domain.wine.repository.WineOrder;
  */
 public interface WineService {
 
+    /**
+     * @param searchForm
+     * @return
+     */
     long countWines(SearchForm searchForm);
 
     /**
@@ -57,11 +61,5 @@ public interface WineService {
      * @return
      */
     Map<WineColorEnum, Long> getColors(SearchForm searchForm, CountEnum count);
-
-    /**
-     * @param wine
-     * @return
-     */
-    List<Wine> getWinesLike(Wine wine);
 
 }

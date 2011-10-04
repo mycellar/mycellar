@@ -45,7 +45,7 @@ public class RegionComplexTagCloud extends ComplexTagCloud<Region> {
 
     private static final String COUNTRY_COMPONENT_ID = "country";
 
-    private IModel<Country> countryModel;
+    private final IModel<SearchForm> searchFormModel;
 
     private final CountEnum count;
 
@@ -55,12 +55,20 @@ public class RegionComplexTagCloud extends ComplexTagCloud<Region> {
     /**
      * @param id
      * @param label
+     * @param searchFormModel
+     * @param count
      */
-    public RegionComplexTagCloud(String id, IModel<String> label, CountEnum count) {
+    public RegionComplexTagCloud(String id, IModel<String> label,
+            IModel<SearchForm> searchFormModel, CountEnum count) {
         super(id, label);
+        this.searchFormModel = searchFormModel;
         this.count = count;
         add(new CountryComplexTagCloud(COUNTRY_COMPONENT_ID, new StringResourceModel("country",
-                this, null), count));
+                this, null), searchFormModel, count));
+    }
+
+    private IModel<? extends Country> getCountryModel() {
+        return ((CountryComplexTagCloud) get(COUNTRY_COMPONENT_ID)).getModel();
     }
 
     /**
@@ -79,10 +87,8 @@ public class RegionComplexTagCloud extends ComplexTagCloud<Region> {
      */
     @Override
     protected TagCloudPanel<Region> createTagCloudPanel(String id) {
-        SearchForm searchForm = new SearchForm();
-        searchForm.addToSet(FilterEnum.COUNTRY, countryModel.getObject());
         return new TagCloudPanel<Region>(id, getListFrom(wineServiceFacade.getRegions(
-                searchForm, count)));
+                searchFormModel.getObject(), count)));
     }
 
     /**
@@ -123,6 +129,7 @@ public class RegionComplexTagCloud extends ComplexTagCloud<Region> {
     @Override
     protected Region createObject() {
         Region region = new Region();
+        IModel<? extends Country> countryModel = getCountryModel();
         if (countryModel != null) {
             region.setCountry(countryModel.getObject());
         }
@@ -134,8 +141,8 @@ public class RegionComplexTagCloud extends ComplexTagCloud<Region> {
      */
     @Override
     protected void detachModel() {
-        if (countryModel != null) {
-            countryModel.detach();
+        if (searchFormModel != null) {
+            searchFormModel.detach();
         }
         super.detachModel();
     }
@@ -143,12 +150,12 @@ public class RegionComplexTagCloud extends ComplexTagCloud<Region> {
     /**
      * {@inheritDoc}
      */
-    @SuppressWarnings("unchecked")
     @Override
     protected void onModelChanged(IEventSource source, Action action) {
         if (source instanceof CountryComplexTagCloud) {
             CountryComplexTagCloud countryComplexTagCloud = (CountryComplexTagCloud) source;
-            countryModel = (IModel<Country>) countryComplexTagCloud.getDefaultModel();
+            IModel<? extends Country> countryModel = countryComplexTagCloud.getModel();
+            searchFormModel.getObject().replaceSet(FilterEnum.COUNTRY, countryModel.getObject());
             setDefaultModelObject(createObject());
             if (countryComplexTagCloud.isValued() && (countryModel != null)
                     && (countryModel.getObject() != null)

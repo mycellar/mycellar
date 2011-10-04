@@ -40,15 +40,19 @@ public class CountryComplexTagCloud extends ComplexTagCloud<Country> {
     @SpringBean
     private WineServiceFacade wineServiceFacade;
 
+    private final IModel<SearchForm> searchFormModel;
     private final CountEnum count;
 
     /**
      * @param id
      * @param label
+     * @param searchFormModel
      * @param count
      */
-    public CountryComplexTagCloud(String id, IModel<String> label, CountEnum count) {
+    public CountryComplexTagCloud(String id, IModel<String> label,
+            IModel<SearchForm> searchFormModel, CountEnum count) {
         super(id, label);
+        this.searchFormModel = searchFormModel;
         this.count = count;
     }
 
@@ -74,7 +78,16 @@ public class CountryComplexTagCloud extends ComplexTagCloud<Country> {
     @Override
     protected TagCloudPanel<Country> createTagCloudPanel(String id) {
         return new TagCloudPanel<Country>(id, getListFrom(wineServiceFacade.getCountries(
-                new SearchForm(), count)));
+                searchFormModel.getObject(), count)));
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void detachModels() {
+        searchFormModel.detach();
+        super.detachModels();
     }
 
 }

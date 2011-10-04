@@ -45,7 +45,7 @@ public class AppellationComplexTagCloud extends ComplexTagCloud<Appellation> {
 
     private static final String REGION_COMPONENT_ID = "region";
 
-    private IModel<Region> regionModel;
+    private final IModel<SearchForm> searchFormModel;
 
     private final CountEnum count;
 
@@ -55,13 +55,20 @@ public class AppellationComplexTagCloud extends ComplexTagCloud<Appellation> {
     /**
      * @param id
      * @param label
+     * @param searchFormModel
      * @param count
      */
-    public AppellationComplexTagCloud(String id, IModel<String> label, CountEnum count) {
+    public AppellationComplexTagCloud(String id, IModel<String> label,
+            IModel<SearchForm> searchFormModel, CountEnum count) {
         super(id, label);
+        this.searchFormModel = searchFormModel;
         this.count = count;
         add(new RegionComplexTagCloud(REGION_COMPONENT_ID, new StringResourceModel("region", this,
-                null), count));
+                null), searchFormModel, count));
+    }
+
+    private IModel<? extends Region> getRegionModel() {
+        return ((RegionComplexTagCloud) get(REGION_COMPONENT_ID)).getModel();
     }
 
     /**
@@ -89,6 +96,7 @@ public class AppellationComplexTagCloud extends ComplexTagCloud<Appellation> {
     @Override
     protected Appellation createObject() {
         Appellation appellation = new Appellation();
+        IModel<? extends Region> regionModel = getRegionModel();
         if (regionModel != null) {
             appellation.setRegion(regionModel.getObject());
         }
@@ -100,10 +108,8 @@ public class AppellationComplexTagCloud extends ComplexTagCloud<Appellation> {
      */
     @Override
     protected TagCloudPanel<Appellation> createTagCloudPanel(String id) {
-        SearchForm searchForm = new SearchForm();
-        searchForm.addToSet(FilterEnum.REGION, regionModel.getObject());
         return new TagCloudPanel<Appellation>(id, getListFrom(wineServiceFacade.getAppellations(
-                searchForm, count)));
+                searchFormModel.getObject(), count)));
     }
 
     /**
@@ -135,8 +141,8 @@ public class AppellationComplexTagCloud extends ComplexTagCloud<Appellation> {
      */
     @Override
     protected void detachModel() {
-        if (regionModel != null) {
-            regionModel.detach();
+        if (searchFormModel != null) {
+            searchFormModel.detach();
         }
         super.detachModel();
     }
@@ -144,12 +150,12 @@ public class AppellationComplexTagCloud extends ComplexTagCloud<Appellation> {
     /**
      * {@inheritDoc}
      */
-    @SuppressWarnings("unchecked")
     @Override
     protected void onModelChanged(IEventSource source, Action action) {
         if (source instanceof RegionComplexTagCloud) {
             RegionComplexTagCloud regionComplexTagCloud = (RegionComplexTagCloud) source;
-            regionModel = (IModel<Region>) regionComplexTagCloud.getDefaultModel();
+            IModel<? extends Region> regionModel = regionComplexTagCloud.getModel();
+            searchFormModel.getObject().replaceSet(FilterEnum.REGION, regionModel.getObject());
             setDefaultModelObject(createObject());
             if (regionComplexTagCloud.isValued() && (regionModel != null)
                     && (regionModel.getObject() != null)
@@ -160,4 +166,5 @@ public class AppellationComplexTagCloud extends ComplexTagCloud<Appellation> {
             super.onModelChanged(source, action);
         }
     }
+
 }

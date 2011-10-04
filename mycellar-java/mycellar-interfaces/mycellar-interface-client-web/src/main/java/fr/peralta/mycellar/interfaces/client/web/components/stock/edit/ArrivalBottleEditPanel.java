@@ -20,7 +20,11 @@ package fr.peralta.mycellar.interfaces.client.web.components.stock.edit;
 
 import org.apache.wicket.markup.html.form.TextField;
 import org.apache.wicket.markup.html.panel.Panel;
+import org.apache.wicket.model.IModel;
+import org.apache.wicket.model.Model;
 
+import fr.peralta.mycellar.domain.shared.repository.CountEnum;
+import fr.peralta.mycellar.domain.shared.repository.SearchForm;
 import fr.peralta.mycellar.interfaces.client.web.components.stock.BottleComponent;
 
 /**
@@ -35,7 +39,8 @@ public class ArrivalBottleEditPanel extends Panel {
      */
     public ArrivalBottleEditPanel(String id) {
         super(id);
-        add(new BottleComponent("bottle"));
+        IModel<SearchForm> searchFormModel = new Model<SearchForm>(new SearchForm());
+        add(new BottleComponent("bottle", searchFormModel, CountEnum.STOCK_QUANTITY));
         add(new TextField<Integer>("quantity").setRequired(true));
     }
 

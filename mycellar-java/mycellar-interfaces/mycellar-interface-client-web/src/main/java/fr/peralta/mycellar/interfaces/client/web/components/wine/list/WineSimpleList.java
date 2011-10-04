@@ -29,14 +29,17 @@ import org.apache.wicket.spring.injection.annot.SpringBean;
 import org.joda.time.LocalDate;
 
 import fr.peralta.mycellar.domain.shared.repository.CountEnum;
+import fr.peralta.mycellar.domain.shared.repository.FilterEnum;
 import fr.peralta.mycellar.domain.shared.repository.SearchForm;
 import fr.peralta.mycellar.domain.wine.Producer;
 import fr.peralta.mycellar.domain.wine.Wine;
 import fr.peralta.mycellar.domain.wine.WineTypeEnum;
+import fr.peralta.mycellar.domain.wine.repository.WineOrder;
 import fr.peralta.mycellar.interfaces.client.web.components.shared.Action;
 import fr.peralta.mycellar.interfaces.client.web.components.shared.OnBlurDefaultAjaxBehavior;
 import fr.peralta.mycellar.interfaces.client.web.components.shared.list.SimpleList;
 import fr.peralta.mycellar.interfaces.client.web.components.wine.autocomplete.ProducerSimpleAutocomplete;
+import fr.peralta.mycellar.interfaces.client.web.components.wine.cloud.AppellationComplexTagCloud;
 import fr.peralta.mycellar.interfaces.client.web.components.wine.cloud.AppellationSimpleTagCloud;
 import fr.peralta.mycellar.interfaces.client.web.components.wine.cloud.WineColorEnumFromProducerAndTypeTagCloud;
 import fr.peralta.mycellar.interfaces.client.web.components.wine.cloud.WineTypeEnumFromProducerTagCloud;
@@ -109,7 +112,7 @@ public class WineSimpleList extends SimpleList<Wine> {
      */
     @Override
     protected List<Wine> getList() {
-        return wineServiceFacade.getWinesLike(getModelObject());
+        return wineServiceFacade.getWines(searchFormModel.getObject(), new WineOrder(), 0, 10);
     }
 
     /**
@@ -148,10 +151,16 @@ public class WineSimpleList extends SimpleList<Wine> {
             }
             refreshList();
         } else if (source instanceof WineColorEnumFromProducerAndTypeTagCloud) {
+            searchFormModel.getObject().replaceSet(FilterEnum.COLOR,
+                    ((WineColorEnumFromProducerAndTypeTagCloud) source).getModelObject());
             refreshList();
         } else if (source instanceof AppellationSimpleTagCloud) {
+            searchFormModel.getObject().replaceSet(FilterEnum.APPELLATION,
+                    ((AppellationComplexTagCloud) source).getModelObject());
             refreshList();
         } else if (source instanceof NumberTextField) {
+            searchFormModel.getObject().replaceSet(FilterEnum.VINTAGE,
+                    ((NumberTextField<?>) source).getModelObject());
             refreshList();
         } else {
             super.onModelChanged(source, action);

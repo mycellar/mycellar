@@ -30,11 +30,16 @@ import org.apache.wicket.spring.injection.annot.SpringBean;
 import org.joda.time.LocalDate;
 
 import fr.peralta.mycellar.domain.shared.repository.CountEnum;
+import fr.peralta.mycellar.domain.shared.repository.FilterEnum;
+import fr.peralta.mycellar.domain.shared.repository.OrderWayEnum;
+import fr.peralta.mycellar.domain.shared.repository.SearchForm;
 import fr.peralta.mycellar.domain.wine.Appellation;
 import fr.peralta.mycellar.domain.wine.Producer;
 import fr.peralta.mycellar.domain.wine.Wine;
 import fr.peralta.mycellar.domain.wine.WineColorEnum;
 import fr.peralta.mycellar.domain.wine.WineTypeEnum;
+import fr.peralta.mycellar.domain.wine.repository.WineOrder;
+import fr.peralta.mycellar.domain.wine.repository.WineOrderEnum;
 import fr.peralta.mycellar.interfaces.client.web.components.shared.Action;
 import fr.peralta.mycellar.interfaces.client.web.components.shared.OnBlurDefaultAjaxBehavior;
 import fr.peralta.mycellar.interfaces.client.web.components.shared.list.ComplexList;
@@ -61,15 +66,21 @@ public class WineComplexList extends ComplexList<Wine> {
     @SpringBean
     private WineServiceFacade wineServiceFacade;
 
+    private final IModel<SearchForm> searchFormModel;
+
     /**
      * @param id
      * @param label
+     * @param searchFormModel
+     * @param count
      */
-    public WineComplexList(String id, IModel<String> label) {
+    public WineComplexList(String id, IModel<String> label, IModel<SearchForm> searchFormModel,
+            CountEnum count) {
         super(id, label);
         setOutputMarkupId(true);
+        this.searchFormModel = searchFormModel;
         add(new AppellationComplexTagCloud(APPELLATION_COMPONENT_ID, new StringResourceModel(
-                "appellation", this, null), CountEnum.STOCK_QUANTITY));
+                "appellation", this, null), searchFormModel, count));
         add(new ProducerComplexAutocomplete(PRODUCER_COMPONENT_ID, new StringResourceModel(
                 "producer", this, null)));
         add(new EmptyPanel(TYPE_COMPONENT_ID).setOutputMarkupId(true));
@@ -151,7 +162,8 @@ public class WineComplexList extends ComplexList<Wine> {
      */
     @Override
     protected List<Wine> getList() {
-        return wineServiceFacade.getWinesLike(getModelObject());
+        return wineServiceFacade.getWines(searchFormModel.getObject(),
+                new WineOrder().add(WineOrderEnum.VINTAGE, OrderWayEnum.DESC), 0, 10);
     }
 
     /**
@@ -190,10 +202,16 @@ public class WineComplexList extends ComplexList<Wine> {
             }
             refreshList();
         } else if (source instanceof WineColorEnumFromProducerAndTypeTagCloud) {
+            searchFormModel.getObject().replaceSet(FilterEnum.COLOR,
+                    ((WineColorEnumFromProducerAndTypeTagCloud) source).getModelObject());
             refreshList();
         } else if (source instanceof AppellationComplexTagCloud) {
+            searchFormModel.getObject().replaceSet(FilterEnum.APPELLATION,
+                    ((AppellationComplexTagCloud) source).getModelObject());
             refreshList();
         } else if (source instanceof NumberTextField) {
+            searchFormModel.getObject().replaceSet(FilterEnum.VINTAGE,
+                    ((NumberTextField<?>) source).getModelObject());
             refreshList();
         } else {
             super.onModelChanged(source, action);
