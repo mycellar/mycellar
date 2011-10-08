@@ -33,4 +33,23 @@
   <packaging>jar</packaging>
   <name>MyCellar - Web Config</name>
 
+  <build>
+    <resources>
+      <resource>
+        <directory>src/main/resources</directory>
+        <includes>
+          <include>*.properties</include>
+        </includes>
+        <filtering>true</filtering>
+      </resource>
+      <resource>
+        <directory>src/main/resources</directory>
+        <excludes>
+          <exclude>*.properties</exclude>
+        </excludes>
+        <filtering>false</filtering>
+      </resource>
+    </resources>
+  </build>
+
 </project>
