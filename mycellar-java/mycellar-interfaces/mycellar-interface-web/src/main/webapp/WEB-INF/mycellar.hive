@@ -22,6 +22,8 @@ grant principal fr.peralta.mycellar.interfaces.client.web.security.MyCellarPrinc
 };
 grant principal fr.peralta.mycellar.interfaces.client.web.security.MyCellarPrincipal "admin"
 {
-    permission ${ComponentPermission} "fr.peralta.mycellar.interfaces.client.web.pages.ListUsersPage", "inherit, render";
-    permission ${ComponentPermission} "fr.peralta.mycellar.interfaces.client.web.pages.ListUsersPage", "enable";
+    permission ${ComponentPermission} "fr.peralta.mycellar.interfaces.client.web.pages.admin.AdminPage", "inherit, render";
+    permission ${ComponentPermission} "fr.peralta.mycellar.interfaces.client.web.pages.admin.AdminPage", "enable";
+    permission ${ComponentPermission} "fr.peralta.mycellar.interfaces.client.web.pages.admin.ListUsersPage", "inherit, render";
+    permission ${ComponentPermission} "fr.peralta.mycellar.interfaces.client.web.pages.admin.ListUsersPage", "enable";
 };

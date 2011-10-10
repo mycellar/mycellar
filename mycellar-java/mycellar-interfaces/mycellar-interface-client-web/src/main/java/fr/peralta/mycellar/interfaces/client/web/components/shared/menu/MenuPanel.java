@@ -27,6 +27,8 @@ import org.apache.wicket.markup.html.list.ListItem;
 import org.apache.wicket.markup.html.list.ListView;
 import org.apache.wicket.markup.html.panel.Panel;
 import org.apache.wicket.model.Model;
+import org.wicketstuff.security.checks.LinkSecurityCheck;
+import org.wicketstuff.security.components.SecureComponentHelper;
 
 import fr.peralta.mycellar.interfaces.client.web.pages.shared.BasePage;
 
@@ -51,6 +53,8 @@ public class MenuPanel extends Panel {
             protected void populateItem(final ListItem<MenuablePageDescriptor> listItem) {
                 final BookmarkablePageLink<Void> link = new BookmarkablePageLink<Void>("link",
                         listItem.getModelObject().getPageClass());
+                SecureComponentHelper.setSecurityCheck(link, new LinkSecurityCheck(link, listItem
+                        .getModelObject().getPageClass()));
                 if (current.equals(listItem.getModelObject().getSuperPageClass())) {
                     listItem.add(new AttributeModifier("class", new Model<String>("selected")));
                 }

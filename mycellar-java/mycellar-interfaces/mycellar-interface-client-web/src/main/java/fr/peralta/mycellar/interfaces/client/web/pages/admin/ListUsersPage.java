@@ -16,7 +16,7 @@
  * You should have received a copy of the GNU General Public License
  * along with MyCellar. If not, see <http://www.gnu.org/licenses/>.
  */
-package fr.peralta.mycellar.interfaces.client.web.pages;
+package fr.peralta.mycellar.interfaces.client.web.pages.admin;
 
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.list.ListItem;
@@ -26,15 +26,15 @@ import org.apache.wicket.request.mapper.parameter.PageParameters;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 
 import fr.peralta.mycellar.domain.user.User;
-import fr.peralta.mycellar.interfaces.client.web.pages.shared.HomeSuperPage;
+import fr.peralta.mycellar.interfaces.client.web.pages.shared.AdminSuperPage;
 import fr.peralta.mycellar.interfaces.facades.user.UserServiceFacade;
 
 /**
  * @author speralta
  */
-public class ListUsersPage extends HomeSuperPage {
+public class ListUsersPage extends AdminSuperPage {
 
-    private static final long serialVersionUID = 201117181723L;
+    private static final long serialVersionUID = 201111101705L;
 
     @SpringBean
     private UserServiceFacade userServiceFacade;

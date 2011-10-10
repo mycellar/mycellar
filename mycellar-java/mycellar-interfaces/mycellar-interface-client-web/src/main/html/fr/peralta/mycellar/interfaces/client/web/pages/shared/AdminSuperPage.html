@@ -1,9 +1,9 @@
 <!DOCTYPE html>
-<html lang="fr">
+<html lang="fr" xmlns:wicket="">
   <head>
     <title>MyCellar</title>
     <meta charset="utf-8">
-    <link rel="stylesheet" href="shared/master.css" type="text/css" media="screen" />
+    <link rel="stylesheet" href="master.css" type="text/css" media="screen" />
   </head>
   <body>
     <header>
@@ -17,9 +17,8 @@
       </ul>
     </nav>
     <wicket:extend>
-      <section>
-        <a href="#" wicket:id="newUser"><wicket:message key="newUserLink">New User</wicket:message></a>
-      </section>
+      <header role="secondary"><h3><wicket:message key="header">Header</wicket:message></h3></header>
+      <wicket:child />
     </wicket:extend>
     <footer>
       <div>

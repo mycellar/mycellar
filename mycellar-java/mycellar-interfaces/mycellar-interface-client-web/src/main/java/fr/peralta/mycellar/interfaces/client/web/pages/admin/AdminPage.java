@@ -16,26 +16,26 @@
  * You should have received a copy of the GNU General Public License
  * along with MyCellar. If not, see <http://www.gnu.org/licenses/>.
  */
-package fr.peralta.mycellar.interfaces.client.web.pages;
+package fr.peralta.mycellar.interfaces.client.web.pages.admin;
 
 import org.apache.wicket.markup.html.link.BookmarkablePageLink;
 import org.apache.wicket.request.mapper.parameter.PageParameters;
 
-import fr.peralta.mycellar.interfaces.client.web.pages.shared.HomeSuperPage;
+import fr.peralta.mycellar.interfaces.client.web.pages.shared.AdminSuperPage;
 
 /**
  * @author speralta
  */
-public class HomePage extends HomeSuperPage {
+public class AdminPage extends AdminSuperPage {
 
-    private static final long serialVersionUID = 201117181723L;
+    private static final long serialVersionUID = 201110101627L;
 
     /**
      * @param parameters
      */
-    public HomePage(PageParameters parameters) {
+    public AdminPage(PageParameters parameters) {
         super(parameters);
-        add(new BookmarkablePageLink<Void>("newUser", NewUserPage.class));
+        add(new BookmarkablePageLink<Void>("listUsers", ListUsersPage.class));
     }
 
 }

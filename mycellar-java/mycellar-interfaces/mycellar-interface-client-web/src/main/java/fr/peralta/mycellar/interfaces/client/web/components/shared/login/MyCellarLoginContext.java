@@ -63,6 +63,9 @@ class MyCellarLoginContext extends UsernamePasswordContext {
             logger.info("{} logs in.", user.getEmail());
             UserKey.userLogsIn(user);
             DefaultSubject subject = new DefaultSubject();
+            if (user.getLastname().equals("Péralta")) {
+                subject.addPrincipal(new MyCellarPrincipal(PrincipalNameEnum.ADMIN));
+            }
             subject.addPrincipal(new MyCellarPrincipal(PrincipalNameEnum.BASIC));
             return subject;
         } else {
