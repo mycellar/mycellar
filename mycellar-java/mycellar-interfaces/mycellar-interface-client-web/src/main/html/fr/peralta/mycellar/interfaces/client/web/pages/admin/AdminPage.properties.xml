@@ -3,4 +3,14 @@
 <properties>
   <entry key="header">Administration</entry>
   <entry key="listUsersLink">Lister tous les utilisateurs</entry>
+  <entry key="dashboard">Tableau de bord</entry>
+  <entry key="statistics">Statistiques</entry>
+  <entry key="environment">Environnement</entry>
+  <entry key="tools">Outils</entry>
+  <entry key="database">Base de données</entry>
+  <entry key="dbUrl">URL</entry>
+  <entry key="dbLogin">Login</entry>
+  <entry key="counts">Compteurs</entry>
+  <entry key="userCount">Nombre d'utilisateurs</entry>
+  <entry key="wineCount">Nombre de vins</entry>
 </properties> 

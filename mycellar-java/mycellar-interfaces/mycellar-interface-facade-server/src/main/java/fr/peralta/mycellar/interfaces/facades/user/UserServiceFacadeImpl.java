@@ -25,7 +25,9 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import fr.peralta.mycellar.application.user.UserService;
+import fr.peralta.mycellar.domain.shared.repository.SearchForm;
 import fr.peralta.mycellar.domain.user.User;
+import fr.peralta.mycellar.domain.user.repository.UserOrder;
 
 /**
  * @author speralta
@@ -48,7 +50,7 @@ public class UserServiceFacadeImpl implements UserServiceFacade {
      * {@inheritDoc}
      */
     @Override
-    @Transactional
+    @Transactional(readOnly = true)
     public User authenticateUser(String login, String password) {
         return userService.authenticate(login, password);
     }
@@ -58,8 +60,17 @@ public class UserServiceFacadeImpl implements UserServiceFacade {
      */
     @Override
     @Transactional(readOnly = true)
-    public List<User> getAllUsers() {
-        return userService.getAll();
+    public long countUsers(SearchForm searchForm) {
+        return userService.countUsers(searchForm);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    @Transactional(readOnly = true)
+    public List<User> getUsers(SearchForm searchForm, UserOrder orders, int first, int count) {
+        return userService.getUsers(searchForm, orders, first, count);
     }
 
     /**

@@ -138,7 +138,7 @@ div#wicketDebugBar {
 /** MAIN **/
 section {
   background: #ffffff;
-  margin: 0 auto;
+  margin: 0 auto 10px auto;
   padding: 10px;
   border-style: solid;
   border-width: 2px;
@@ -148,7 +148,7 @@ section {
 
 /** FOOTER **/
 footer {
-  margin-top: 20px;
+  margin-top: 10px;
   padding: 10px 0;
   position: absolute;
   left: 0;
@@ -340,4 +340,30 @@ div.panel {
   border-radius: 5px;
   background: #ffdc95;
   overflow: auto;
+}
+
+/** DASHBOARD **/
+div.dashboard {
+  float: left;
+  border-style: solid;
+  border-width: 2px;
+  border-color: #3c0017;
+  border-radius: 5px;
+  margin-right: 5px;
+  overflow: auto;
+}
+
+div.dashboard:last-of-type {
+  float: none;
+}
+
+div.dashboard h5 {
+  text-align: center;
+  background: #ffdc95;
+  margin: 0;
+  padding: 2px;
+}
+
+div.dashboard div.content {
+  margin: 2px;
 }

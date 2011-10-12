@@ -33,6 +33,7 @@ import fr.peralta.mycellar.interfaces.client.web.converters.WineColorEnumConvert
 import fr.peralta.mycellar.interfaces.client.web.converters.WineTypeEnumConverter;
 import fr.peralta.mycellar.interfaces.client.web.pages.HomePage;
 import fr.peralta.mycellar.interfaces.client.web.pages.NewUserPage;
+import fr.peralta.mycellar.interfaces.client.web.pages.admin.AdminPage;
 import fr.peralta.mycellar.interfaces.client.web.pages.admin.ListUsersPage;
 import fr.peralta.mycellar.interfaces.client.web.pages.cellar.CellarsPage;
 import fr.peralta.mycellar.interfaces.client.web.pages.cellar.DrinkBottlesPage;
@@ -61,6 +62,7 @@ public abstract class MyCellarWebApplication extends SwarmWebApplication {
         mountPage("/pedia", PediaHomePage.class);
         mountPage("/newUser", NewUserPage.class);
         mountPage("/listUsers", ListUsersPage.class);
+        mountPage("/admin", AdminPage.class);
     }
 
     /**

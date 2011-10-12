@@ -20,7 +20,9 @@ package fr.peralta.mycellar.application.user;
 
 import java.util.List;
 
+import fr.peralta.mycellar.domain.shared.repository.SearchForm;
 import fr.peralta.mycellar.domain.user.User;
+import fr.peralta.mycellar.domain.user.repository.UserOrder;
 
 /**
  * @author speralta
@@ -33,9 +35,19 @@ public interface UserService {
     void newUser(User user);
 
     /**
+     * @param searchForm
      * @return
      */
-    List<User> getAll();
+    long countUsers(SearchForm searchForm);
+
+    /**
+     * @param searchForm
+     * @param orders
+     * @param first
+     * @param count
+     * @return
+     */
+    List<User> getUsers(SearchForm searchForm, UserOrder orders, int first, int count);
 
     /**
      * @param login

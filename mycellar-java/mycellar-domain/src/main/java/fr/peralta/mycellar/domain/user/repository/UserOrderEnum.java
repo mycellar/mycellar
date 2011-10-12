@@ -18,41 +18,9 @@
  */
 package fr.peralta.mycellar.domain.user.repository;
 
-import java.util.List;
-
-import fr.peralta.mycellar.domain.shared.repository.SearchForm;
-import fr.peralta.mycellar.domain.user.User;
-
 /**
  * @author speralta
  */
-public interface UserRepository {
-
-    /**
-     * @param user
-     */
-    void newUser(User user);
-
-    /**
-     * @param login
-     * @param password
-     * @return
-     */
-    User find(String login, String password);
-
-    /**
-     * @param searchForm
-     * @return
-     */
-    long countUsers(SearchForm searchForm);
-
-    /**
-     * @param searchForm
-     * @param orders
-     * @param first
-     * @param count
-     * @return
-     */
-    List<User> getUsers(SearchForm searchForm, UserOrder orders, int first, int count);
-
+public enum UserOrderEnum {
+    EMAIL, FIRSTNAME, LASTNAME
 }

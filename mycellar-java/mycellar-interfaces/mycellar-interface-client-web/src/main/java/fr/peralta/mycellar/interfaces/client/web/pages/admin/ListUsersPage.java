@@ -18,16 +18,12 @@
  */
 package fr.peralta.mycellar.interfaces.client.web.pages.admin;
 
-import org.apache.wicket.markup.html.basic.Label;
-import org.apache.wicket.markup.html.list.ListItem;
-import org.apache.wicket.markup.html.list.ListView;
-import org.apache.wicket.model.CompoundPropertyModel;
 import org.apache.wicket.request.mapper.parameter.PageParameters;
-import org.apache.wicket.spring.injection.annot.SpringBean;
 
-import fr.peralta.mycellar.domain.user.User;
+import fr.peralta.mycellar.domain.shared.repository.SearchForm;
+import fr.peralta.mycellar.interfaces.client.web.components.shared.SearchFormModel;
+import fr.peralta.mycellar.interfaces.client.web.components.user.data.UserDataView;
 import fr.peralta.mycellar.interfaces.client.web.pages.shared.AdminSuperPage;
-import fr.peralta.mycellar.interfaces.facades.user.UserServiceFacade;
 
 /**
  * @author speralta
@@ -36,26 +32,12 @@ public class ListUsersPage extends AdminSuperPage {
 
     private static final long serialVersionUID = 201111101705L;
 
-    @SpringBean
-    private UserServiceFacade userServiceFacade;
-
     /**
      * @param parameters
      */
     public ListUsersPage(PageParameters parameters) {
         super(parameters);
-        add(new ListView<User>("users", userServiceFacade.getAllUsers()) {
-            private static final long serialVersionUID = 3683050941476201289L;
-
-            @Override
-            protected void populateItem(ListItem<User> item) {
-                item.setModel(new CompoundPropertyModel<User>(item.getModelObject()));
-                item.add(new Label("email"));
-                item.add(new Label("firstname"));
-                item.add(new Label("lastname"));
-                item.add(new Label("password"));
-            }
-        });
+        add(new UserDataView("users", new SearchFormModel(new SearchForm())));
     }
 
 }

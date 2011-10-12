@@ -24,7 +24,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import fr.peralta.mycellar.application.user.UserService;
+import fr.peralta.mycellar.domain.shared.repository.SearchForm;
 import fr.peralta.mycellar.domain.user.User;
+import fr.peralta.mycellar.domain.user.repository.UserOrder;
 import fr.peralta.mycellar.domain.user.repository.UserRepository;
 
 /**
@@ -47,8 +49,16 @@ public class UserServiceImpl implements UserService {
      * {@inheritDoc}
      */
     @Override
-    public List<User> getAll() {
-        return userRepository.getAll();
+    public long countUsers(SearchForm searchForm) {
+        return userRepository.countUsers(searchForm);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public List<User> getUsers(SearchForm searchForm, UserOrder orders, int first, int count) {
+        return userRepository.getUsers(searchForm, orders, first, count);
     }
 
     /**

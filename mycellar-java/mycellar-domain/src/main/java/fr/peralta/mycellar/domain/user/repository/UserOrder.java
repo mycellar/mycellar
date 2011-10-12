@@ -16,15 +16,13 @@
  * You should have received a copy of the GNU General Public License
  * along with MyCellar. If not, see <http://www.gnu.org/licenses/>.
  */
-package fr.peralta.mycellar.domain.shared;
+package fr.peralta.mycellar.domain.user.repository;
 
-import java.util.List;
+import fr.peralta.mycellar.domain.shared.repository.AbstractEntityOrder;
 
 /**
  * @author speralta
  */
-public interface Repository<E extends IdentifiedEntity<E>> {
-
-    List<E> getAll();
+public class UserOrder extends AbstractEntityOrder<UserOrderEnum, UserOrder> {
 
 }

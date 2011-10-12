@@ -18,6 +18,39 @@
     </nav>
     <wicket:extend>
       <section>
+        <header role="tertiary"><h4><wicket:message key="dashboard">Dashboard</wicket:message></h4></header>
+        <div class="dashboard">
+          <h5><wicket:message key="statistics">Stats</wicket:message></h5>
+          <div class="content">
+            <ul>
+              <li>
+                <wicket:message key="counts">Counts</wicket:message>
+                <ul>
+                  <li><wicket:message key="userCount">User count</wicket:message> : <span wicket:id="userCount">0</span></li>
+                  <li><wicket:message key="wineCount">Wine count</wicket:message> : <span wicket:id="wineCount">0</span></li>
+                </ul>
+              </li>
+            </ul>
+          </div>
+        </div>
+        <div class="dashboard">
+          <h5><wicket:message key="environment">Env</wicket:message></h5>
+          <div class="content">
+            <ul>
+              <li>
+                <wicket:message key="database">DB</wicket:message>
+                <ul>
+                  <li><wicket:message key="dbUrl">URL</wicket:message> : <span wicket:id="dbUrl">url</span></li>
+                  <li><wicket:message key="dbLogin">Login</wicket:message> : <span wicket:id="dbLogin">login</span></li>
+                </ul>
+              </li>
+            </ul>
+          </div>
+        </div>
+        <p style="clear: both;" />
+      </section>
+      <section>
+        <header role="tertiary"><h4><wicket:message key="tools">Tools</wicket:message></h4></header>
         <a href="#" wicket:id="listUsers"><wicket:message key="listUsersLink">List Users</wicket:message></a>
       </section>
     </wicket:extend>
