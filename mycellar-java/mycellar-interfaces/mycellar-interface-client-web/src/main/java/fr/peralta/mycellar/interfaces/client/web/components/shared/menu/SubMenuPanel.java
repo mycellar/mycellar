@@ -21,15 +21,12 @@ package fr.peralta.mycellar.interfaces.client.web.components.shared.menu;
 import java.util.List;
 
 import org.apache.wicket.AttributeModifier;
-import org.apache.wicket.markup.html.IHeaderResponse;
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.link.BookmarkablePageLink;
 import org.apache.wicket.markup.html.list.ListItem;
 import org.apache.wicket.markup.html.list.ListView;
 import org.apache.wicket.markup.html.panel.Panel;
-import org.odlabs.wiquery.core.IWiQueryPlugin;
-import org.odlabs.wiquery.core.javascript.JsQuery;
-import org.odlabs.wiquery.core.javascript.JsStatement;
+import org.apache.wicket.model.Model;
 import org.wicketstuff.security.checks.LinkSecurityCheck;
 import org.wicketstuff.security.components.SecureComponentHelper;
 
@@ -38,57 +35,35 @@ import fr.peralta.mycellar.interfaces.client.web.pages.shared.BasePage;
 /**
  * @author speralta
  */
-public class MenuPanel extends Panel implements IWiQueryPlugin {
+public class SubMenuPanel extends Panel {
 
-    private static final long serialVersionUID = 201011122248L;
+    private static final long serialVersionUID = 201110130735L;
 
     /**
      * @param id
      * @param current
-     * @param subCurrent
      * @param descriptors
      */
-    public MenuPanel(String id, final Class<? extends BasePage> current,
-            final Class<? extends BasePage> subCurrent, List<MenuablePageDescriptor> descriptors) {
+    public SubMenuPanel(String id, final Class<? extends BasePage> current,
+            List<MenuableSubPageDescriptor> descriptors) {
         super(id);
-        add(new ListView<MenuablePageDescriptor>("menuEntry", descriptors) {
+        add(new ListView<MenuableSubPageDescriptor>("subMenuEntry", descriptors) {
             private static final long serialVersionUID = 201011122248L;
 
             @Override
-            protected void populateItem(final ListItem<MenuablePageDescriptor> listItem) {
-                final SubMenuPanel subMenu = new SubMenuPanel("subMenu", subCurrent, listItem
-                        .getModelObject().getSubPages());
-                listItem.add(subMenu);
+            protected void populateItem(final ListItem<MenuableSubPageDescriptor> listItem) {
                 final BookmarkablePageLink<Void> link = new BookmarkablePageLink<Void>("link",
                         listItem.getModelObject().getPageClass());
-                if (subMenu.isVisibilityAllowed()) {
-                    link.add(new AttributeModifier("class", "dropdown-toggle"));
-                }
                 SecureComponentHelper.setSecurityCheck(link, new LinkSecurityCheck(link, listItem
                         .getModelObject().getPageClass()));
                 if (current.equals(listItem.getModelObject().getSuperPageClass())) {
-                    listItem.add(new AttributeModifier("class", "selected"));
+                    listItem.add(new AttributeModifier("class", new Model<String>("selected")));
                 }
                 link.add(new Label("label", listItem.getModelObject().getPageTitle()));
                 listItem.add(link);
             }
         });
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public JsStatement statement() {
-        return new JsQuery(this).$().chain("dropdown");
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public void renderHead(IHeaderResponse response) {
-        response.renderJavaScriptReference(MenuPanelJavaScriptResourceReference.get());
+        setVisibilityAllowed(descriptors.size() > 0);
     }
 
 }

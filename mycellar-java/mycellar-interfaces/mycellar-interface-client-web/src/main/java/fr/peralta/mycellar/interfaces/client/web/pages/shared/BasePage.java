@@ -40,8 +40,8 @@ public abstract class BasePage extends SecureWebPage {
      */
     public BasePage(PageParameters parameters) {
         super(parameters);
-        add(new MenuPanel("menu", getMenuClass(), MyCellarWebApplicationDescriptor.get()
-                .getMenuablePageDescriptors()));
+        add(new MenuPanel("menu", getMenuClass(), getSubMenuClass(),
+                MyCellarWebApplicationDescriptor.get().getMenuablePageDescriptors()));
         add(new LoginPanel("login"));
         add(new DebugBar("debug"));
     }
@@ -58,5 +58,9 @@ public abstract class BasePage extends SecureWebPage {
      * @return the class of the menu page (for selecting it in {@link MenuPanel}
      */
     protected abstract Class<? extends BasePage> getMenuClass();
+
+    protected Class<? extends BasePage> getSubMenuClass() {
+        return this.getClass();
+    }
 
 }

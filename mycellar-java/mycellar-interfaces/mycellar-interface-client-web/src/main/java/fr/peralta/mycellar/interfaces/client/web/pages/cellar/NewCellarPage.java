@@ -25,6 +25,7 @@ import org.apache.wicket.request.mapper.parameter.PageParameters;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 
 import fr.peralta.mycellar.domain.stock.Cellar;
+import fr.peralta.mycellar.interfaces.client.web.pages.shared.BasePage;
 import fr.peralta.mycellar.interfaces.client.web.pages.shared.CellarSuperPage;
 import fr.peralta.mycellar.interfaces.client.web.security.UserKey;
 import fr.peralta.mycellar.interfaces.facades.stock.StockServiceFacade;
@@ -64,7 +65,7 @@ public class NewCellarPage extends CellarSuperPage {
      * {@inheritDoc}
      */
     @Override
-    protected Class<? extends CellarSuperPage> getSubMenuClass() {
+    protected Class<? extends BasePage> getSubMenuClass() {
         return CellarsPage.class;
     }
 

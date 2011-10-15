@@ -19,15 +19,13 @@
 package fr.peralta.mycellar.interfaces.client.web.components.shared.menu;
 
 import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.List;
 
 import fr.peralta.mycellar.interfaces.client.web.pages.shared.BasePage;
 
 /**
  * @author speralta
  */
-public class MenuablePageDescriptor implements Serializable {
+public class MenuableSubPageDescriptor implements Serializable {
 
     private static final long serialVersionUID = 201011122248L;
 
@@ -35,14 +33,12 @@ public class MenuablePageDescriptor implements Serializable {
 
     private final Class<? extends BasePage> superPageClass;
 
-    private final List<MenuableSubPageDescriptor> subPages = new ArrayList<MenuableSubPageDescriptor>();
-
     private final String pageTitle;
 
     /**
      * @param pageClass
      */
-    public MenuablePageDescriptor(Class<? extends BasePage> pageClass,
+    public MenuableSubPageDescriptor(Class<? extends BasePage> pageClass,
             Class<? extends BasePage> superPageClass, String pageTitle) {
         this.pageClass = pageClass;
         this.superPageClass = superPageClass;
@@ -69,24 +65,5 @@ public class MenuablePageDescriptor implements Serializable {
     public Class<? extends BasePage> getPageClass() {
         return pageClass;
     }
-
-    /**
-     * @return the subPages
-     */
-    public List<MenuableSubPageDescriptor> getSubPages() {
-        return subPages;
-    }
-
-    /**
-     * @param e
-     * @return this
-     * @see java.util.List#add(java.lang.Object)
-     */
-    public MenuablePageDescriptor add(MenuableSubPageDescriptor e) {
-        subPages.add(e);
-        return this;
-    }
-    
-    
 
 }

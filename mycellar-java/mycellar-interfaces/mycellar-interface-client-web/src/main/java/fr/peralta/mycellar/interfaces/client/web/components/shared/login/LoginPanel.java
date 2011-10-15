@@ -18,7 +18,10 @@
  */
 package fr.peralta.mycellar.interfaces.client.web.components.shared.login;
 
+import org.apache.wicket.markup.html.image.Image;
 import org.apache.wicket.markup.html.panel.Panel;
+
+import fr.peralta.mycellar.interfaces.client.web.components.shared.img.ImageReferences;
 
 /**
  * @author speralta
@@ -35,6 +38,7 @@ public class LoginPanel extends Panel {
         add(new LoginFeedbackPanel("feedback"));
         add(new LoginForm("loginForm"));
         add(new EmailLabel("email"));
-        add(new LogoutLink("logout"));
+        add(new LogoutLink("logout").add(new Image("logoutImage", ImageReferences
+                .getDisconnectImage())));
     }
 }

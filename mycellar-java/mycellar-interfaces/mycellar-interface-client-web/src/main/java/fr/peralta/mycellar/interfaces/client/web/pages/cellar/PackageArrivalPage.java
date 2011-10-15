@@ -27,6 +27,7 @@ import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.form.Form;
 import org.apache.wicket.markup.html.form.TextField;
+import org.apache.wicket.markup.html.image.Image;
 import org.apache.wicket.markup.html.list.ListItem;
 import org.apache.wicket.markup.html.list.PropertyListView;
 import org.apache.wicket.model.CompoundPropertyModel;
@@ -45,6 +46,7 @@ import fr.peralta.mycellar.interfaces.client.web.components.shared.Action;
 import fr.peralta.mycellar.interfaces.client.web.components.shared.ActionLink;
 import fr.peralta.mycellar.interfaces.client.web.components.shared.AjaxTool;
 import fr.peralta.mycellar.interfaces.client.web.components.shared.form.ObjectForm;
+import fr.peralta.mycellar.interfaces.client.web.components.shared.img.ImageReferences;
 import fr.peralta.mycellar.interfaces.client.web.components.stock.cloud.CellarComplexTagCloud;
 import fr.peralta.mycellar.interfaces.client.web.components.stock.edit.ArrivalBottleEditPanel;
 import fr.peralta.mycellar.interfaces.client.web.pages.shared.CellarSuperPage;
@@ -68,7 +70,8 @@ public class PackageArrivalPage extends CellarSuperPage {
         public ArrivalBottlesEditPanel(String id) {
             super(id);
             add(new ArrivalBottlesView("arrivalBottles"));
-            add(new ActionLink("addBottle", Action.ADD));
+            add(new ActionLink("addBottle", Action.ADD).add(new Image("addBottleImg",
+                    ImageReferences.getAddImage())));
             add(new WebMarkupContainer(NO_BOTTLES_COMPONENT_ID) {
                 private static final long serialVersionUID = 201108082329L;
 
@@ -129,7 +132,8 @@ public class PackageArrivalPage extends CellarSuperPage {
             item.add(new Label("bottle.wine.vintage"));
             item.add(new Label("bottle.format.name"));
             item.add(new Label("quantity"));
-            item.add(new WebMarkupContainer("remove").add(removeLink("removeBottle", item)));
+            item.add(new WebMarkupContainer("remove").add(removeLink("removeBottle", item).add(
+                    new Image("removeBottleImg", ImageReferences.getRemoveImage()))));
         }
 
     }

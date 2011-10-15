@@ -16,30 +16,33 @@
  * You should have received a copy of the GNU General Public License
  * along with MyCellar. If not, see <http://www.gnu.org/licenses/>.
  */
-package fr.peralta.mycellar.interfaces.client.web.pages.shared;
+package fr.peralta.mycellar.interfaces.client.web.components.shared.img;
 
-import org.apache.wicket.request.mapper.parameter.PageParameters;
+import org.apache.wicket.request.resource.PackageResourceReference;
+import org.apache.wicket.request.resource.ResourceReference;
 
 /**
  * @author speralta
  */
-public abstract class CellarSuperPage extends BasePage {
+public class ImageReferences {
 
-    private static final long serialVersionUID = 201117181723L;
+    public static ResourceReference getAddImage() {
+        return new PackageResourceReference(ImageReferences.class, "add.png");
+    }
 
-    /**
-     * @param parameters
-     */
-    public CellarSuperPage(PageParameters parameters) {
-        super(parameters);
+    public static ResourceReference getRemoveImage() {
+        return new PackageResourceReference(ImageReferences.class, "delete.png");
+    }
+
+    public static ResourceReference getDisconnectImage() {
+        return new PackageResourceReference(ImageReferences.class, "disconnect.png");
     }
 
     /**
-     * {@inheritDoc}
+     * Refuse instanciation.
      */
-    @Override
-    protected final Class<? extends BasePage> getMenuClass() {
-        return CellarSuperPage.class;
+    private ImageReferences() {
+        throw new UnsupportedOperationException();
     }
 
 }

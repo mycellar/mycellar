@@ -23,9 +23,13 @@ import java.util.ArrayList;
 import java.util.List;
 
 import fr.peralta.mycellar.interfaces.client.web.components.shared.menu.MenuablePageDescriptor;
+import fr.peralta.mycellar.interfaces.client.web.components.shared.menu.MenuableSubPageDescriptor;
 import fr.peralta.mycellar.interfaces.client.web.pages.HomePage;
 import fr.peralta.mycellar.interfaces.client.web.pages.admin.AdminPage;
 import fr.peralta.mycellar.interfaces.client.web.pages.cellar.CellarsPage;
+import fr.peralta.mycellar.interfaces.client.web.pages.cellar.DrinkBottlesPage;
+import fr.peralta.mycellar.interfaces.client.web.pages.cellar.InputOutputPage;
+import fr.peralta.mycellar.interfaces.client.web.pages.cellar.PackageArrivalPage;
 import fr.peralta.mycellar.interfaces.client.web.pages.pedia.PediaHomePage;
 import fr.peralta.mycellar.interfaces.client.web.pages.shared.AdminSuperPage;
 import fr.peralta.mycellar.interfaces.client.web.pages.shared.CellarSuperPage;
@@ -54,7 +58,15 @@ public class MyCellarWebApplicationDescriptor implements Serializable {
         menuablePageDescriptors.add(new MenuablePageDescriptor(HomePage.class, HomeSuperPage.class,
                 "Home"));
         menuablePageDescriptors.add(new MenuablePageDescriptor(CellarsPage.class,
-                CellarSuperPage.class, "Your cellar"));
+                CellarSuperPage.class, "Your cellar")
+                .add(new MenuableSubPageDescriptor(CellarsPage.class, CellarsPage.class,
+                        "Your cellars"))
+                .add(new MenuableSubPageDescriptor(InputOutputPage.class, InputOutputPage.class,
+                        "I/O"))
+                .add(new MenuableSubPageDescriptor(PackageArrivalPage.class,
+                        PackageArrivalPage.class, "Package arrival"))
+                .add(new MenuableSubPageDescriptor(DrinkBottlesPage.class, DrinkBottlesPage.class,
+                        "Drink bottles")));
         menuablePageDescriptors.add(new MenuablePageDescriptor(PediaHomePage.class,
                 PediaSuperPage.class, "Vinopedia"));
         menuablePageDescriptors.add(new MenuablePageDescriptor(AdminPage.class,

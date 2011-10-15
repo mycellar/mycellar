@@ -5,14 +5,16 @@
   <wicket:child />
   <div class="formDiv" wicket:id="container">
     <label wicket:id="label">Label</label>
-    <a wicket:id="add"><wicket:message key="addLink">Add</wicket:message></a>
+    <a class="add" wicket:id="add"><wicket:message key="addLink">Add</wicket:message></a>
     <input type="text" wicket:id="value" />
     <a wicket:id="cancel"><span>Cancel (img)</span></a>
-    <div wicket:id="selector" />
-    <form wicket:id="createForm">
+    <div class="selector" wicket:id="selector" />
+    <form class="subForm" wicket:id="createForm">
       <div wicket:id="newObject" />
-      <input wicket:id="saveObject" type="submit" wicket:message="value:createButton" />
-      <input wicket:id="cancelObject" type="submit" wicket:message="value:cancelButton" />
+      <div class="submits">
+        <input wicket:id="saveObject" type="submit" wicket:message="value:createButton" />
+        <input wicket:id="cancelObject" type="submit" wicket:message="value:cancelButton" />
+      </div>
     </form>
   </div>
 </wicket:panel>
