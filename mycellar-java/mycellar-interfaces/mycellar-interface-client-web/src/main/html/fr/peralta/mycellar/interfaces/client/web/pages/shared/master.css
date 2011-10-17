@@ -320,6 +320,10 @@ div.subForm {
   border-radius: 5px;
 }
 
+div.subForm>div:first-of-type {
+  margin: 5px;
+}
+
 fieldset {
   border: none;
   padding: 5px;
