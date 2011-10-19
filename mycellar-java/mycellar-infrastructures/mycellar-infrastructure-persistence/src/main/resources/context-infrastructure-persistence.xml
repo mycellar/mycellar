@@ -18,14 +18,14 @@
   <bean id="transactionManager" class="org.springframework.orm.jpa.JpaTransactionManager"
     p:entityManagerFactory-ref="entityManagerFactory" />
 
-  <bean id="dataSource"
-    class="org.springframework.jdbc.datasource.DriverManagerDataSource"
-    p:driverClassName="${dataSource.driverClassName}" p:url="${dataSource.url}"
-    p:username="${dataSource.username}" p:password="${dataSource.password}" />
+  <bean id="dataSource" class="org.springframework.jndi.JndiObjectFactoryBean">
+    <property name="jndiName" value="jdbc/MyCellar_DS" />
+    <property name="resourceRef" value="true" />
+  </bean>
 
   <bean id="jpaVendorAdapter"
     class="org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter"
-    p:database="${jpa.database}" p:generateDdl="${jpa.generateDdl}" />
+    p:database="${dataSource.dialect}" p:generateDdl="${dataSource.generateDdl}" />
 
   <bean id="entityManagerFactory"
     class="org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean"

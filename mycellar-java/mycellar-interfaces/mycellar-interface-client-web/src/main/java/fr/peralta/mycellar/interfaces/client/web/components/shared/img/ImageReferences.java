@@ -27,15 +27,23 @@ import org.apache.wicket.request.resource.ResourceReference;
 public class ImageReferences {
 
     public static ResourceReference getAddImage() {
-        return new PackageResourceReference(ImageReferences.class, "add.png");
+        return getImage("add.png");
     }
 
     public static ResourceReference getRemoveImage() {
-        return new PackageResourceReference(ImageReferences.class, "delete.png");
+        return getImage("delete.png");
     }
 
     public static ResourceReference getDisconnectImage() {
-        return new PackageResourceReference(ImageReferences.class, "disconnect.png");
+        return getImage("disconnect.png");
+    }
+
+    public static ResourceReference getDatabaseImage() {
+        return getImage("database.png");
+    }
+
+    private static ResourceReference getImage(String filename) {
+        return new PackageResourceReference(ImageReferences.class, filename);
     }
 
     /**

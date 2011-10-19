@@ -34,7 +34,6 @@
   <name>MyCellar - Config</name>
   
   <modules>
-    <module>mycellar-config-test</module>
     <module>mycellar-config-web</module>
   </modules>
   
@@ -47,46 +46,25 @@
         </property>
       </activation>
       <properties>
-        <db.name>HSQL</db.name>
         <db.driver>org.hsqldb.jdbcDriver</db.driver>
         <db.url>jdbc:hsqldb:mem:mycellar</db.url>
         <db.user>sa</db.user>
         <db.pass></db.pass>
-        <db.generate>true</db.generate>
       </properties>
     </profile>
     <profile>
-      <id>db-dev</id>
+      <id>db-hd</id>
       <activation>
         <property>
           <name>db</name>
-          <value>dev</value>
+          <value>hd</value>
         </property>
       </activation>
       <properties>
-        <db.name>HSQL</db.name>
         <db.driver>org.hsqldb.jdbcDriver</db.driver>
         <db.url>jdbc:hsqldb:/work/mycellardb/mycellar.db</db.url>
         <db.user>sa</db.user>
         <db.pass></db.pass>
-        <db.generate>false</db.generate>
-      </properties>
-    </profile>
-    <profile>
-      <id>db-prod</id>
-      <activation>
-        <property>
-          <name>db</name>
-          <value>prod</value>
-        </property>
-      </activation>
-      <properties>
-        <db.name>MYSQL</db.name>
-        <db.driver>com.mysql.jdbc.Driver</db.driver>
-        <db.url>jdbc:mysql://192.168.111.5:3306/mycellar?autoReconnect=true</db.url>
-        <db.user>mycellar</db.user>
-        <db.pass>mycellar</db.pass>
-        <db.generate>false</db.generate>
       </properties>
     </profile>
   </profiles>

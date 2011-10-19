@@ -50,10 +50,6 @@
       <groupId>org.mockito</groupId>
       <artifactId>mockito-core</artifactId>
     </dependency>
-    <dependency>
-      <groupId>${project.groupId}</groupId>
-      <artifactId>mycellar-config-test</artifactId>
-    </dependency>
   </dependencies>
 
 </project>

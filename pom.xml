@@ -354,11 +354,6 @@
       </dependency>
       <dependency>
         <groupId>${project.groupId}</groupId>
-        <artifactId>mycellar-config-test</artifactId>
-        <version>${project.version}</version>
-      </dependency>
-      <dependency>
-        <groupId>${project.groupId}</groupId>
         <artifactId>mycellar-interface-facade-client</artifactId>
         <version>${project.version}</version>
         <type>test-jar</type>

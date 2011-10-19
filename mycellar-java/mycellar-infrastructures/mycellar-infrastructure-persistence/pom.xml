@@ -47,5 +47,41 @@
       <artifactId>spring-tx</artifactId>
     </dependency>
   </dependencies>
+  
+  <properties>
+    <db.dialect>HSQL</db.dialect>
+    <db.generate>true</db.generate>
+  </properties>
+  
+  <profiles>
+    <profile>
+      <id>db-hd</id>
+      <activation>
+        <property>
+          <name>db</name>
+          <value>hd</value>
+        </property>
+      </activation>
+      <properties>
+        <db.generate>false</db.generate>
+      </properties>
+    </profile>
+    <profile>
+      <id>package</id>
+      <properties>
+        <db.dialect>MYSQL</db.dialect>
+        <db.generate>false</db.generate>
+      </properties>
+    </profile>
+  </profiles>
+  
+  <build>
+    <resources>
+      <resource>
+        <directory>src/main/resources</directory>
+        <filtering>true</filtering>
+      </resource>
+    </resources>
+  </build>
 
 </project>

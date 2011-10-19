@@ -18,12 +18,20 @@
  */
 package fr.peralta.mycellar.interfaces.client.web.pages.admin;
 
+import java.sql.DatabaseMetaData;
+import java.sql.SQLException;
+
+import javax.sql.DataSource;
+
 import org.apache.wicket.markup.html.basic.Label;
+import org.apache.wicket.markup.html.image.Image;
 import org.apache.wicket.markup.html.link.BookmarkablePageLink;
+import org.apache.wicket.model.StringResourceModel;
 import org.apache.wicket.request.mapper.parameter.PageParameters;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 
 import fr.peralta.mycellar.domain.shared.repository.SearchForm;
+import fr.peralta.mycellar.interfaces.client.web.components.shared.img.ImageReferences;
 import fr.peralta.mycellar.interfaces.client.web.pages.shared.AdminSuperPage;
 import fr.peralta.mycellar.interfaces.facades.user.UserServiceFacade;
 import fr.peralta.mycellar.interfaces.facades.wine.WineServiceFacade;
@@ -41,6 +49,9 @@ public class AdminPage extends AdminSuperPage {
     @SpringBean
     private WineServiceFacade wineServiceFacade;
 
+    @SpringBean
+    private DataSource dataSource;
+
     /**
      * @param parameters
      */
@@ -48,8 +59,23 @@ public class AdminPage extends AdminSuperPage {
         super(parameters);
         add(new Label("userCount", Long.toString(userServiceFacade.countUsers(new SearchForm()))));
         add(new Label("wineCount", Long.toString(wineServiceFacade.countWines(new SearchForm()))));
-        add(new Label("dbUrl", "tomap"));
-        add(new Label("dbLogin", "tomap"));
+        add(new Image("db", ImageReferences.getDatabaseImage()));
+        String dbUrl;
+        String dbLogin;
+        String dbDriver;
+        try {
+            DatabaseMetaData databaseMetaData = dataSource.getConnection().getMetaData();
+            dbUrl = databaseMetaData.getURL();
+            dbLogin = databaseMetaData.getUserName();
+            dbDriver = databaseMetaData.getDriverName();
+        } catch (SQLException e) {
+            dbUrl = new StringResourceModel("metadataFailure", this, null).getObject();
+            dbLogin = new StringResourceModel("metadataFailure", this, null).getObject();
+            dbDriver = new StringResourceModel("metadataFailure", this, null).getObject();
+        }
+        add(new Label("dbDriver", dbDriver));
+        add(new Label("dbUrl", dbUrl));
+        add(new Label("dbLogin", dbLogin));
         add(new BookmarkablePageLink<Void>("listUsers", ListUsersPage.class));
     }
 

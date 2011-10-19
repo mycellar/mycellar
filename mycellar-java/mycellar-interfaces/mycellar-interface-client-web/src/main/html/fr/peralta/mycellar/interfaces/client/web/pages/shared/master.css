@@ -308,6 +308,11 @@ table td.tableNav>span {
   text-align: right;
 }
 
+/** VERTICAL-ALIGN **/
+.vam {
+  vertical-align: middle;
+}
+
 /** FIELDSET **/
 form {
   counter-reset: fieldsets;
