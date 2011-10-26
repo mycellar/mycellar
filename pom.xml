@@ -40,7 +40,7 @@
     
     <!-- Versions -->
     <slf4j.version>1.6.2</slf4j.version>
-    <wicket.version>1.5.0</wicket.version>
+    <wicket.version>1.5.2</wicket.version>
     <wicketstuff.version>1.5.0</wicketstuff.version>
     <spring.version>3.0.6.RELEASE</spring.version>
     <hibernate.version>4.0.0.CR2</hibernate.version>
@@ -288,7 +288,7 @@
       <dependency>
         <groupId>org.odlabs.wiquery</groupId>
         <artifactId>wiquery-jquery-ui</artifactId>
-        <version>1.5.0</version>
+        <version>1.5.1</version>
       </dependency>
       
       <!-- SLF4J -->
