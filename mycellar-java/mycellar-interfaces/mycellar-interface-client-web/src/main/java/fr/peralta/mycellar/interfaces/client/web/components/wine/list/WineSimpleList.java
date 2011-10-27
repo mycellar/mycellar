@@ -39,7 +39,6 @@ import fr.peralta.mycellar.interfaces.client.web.components.shared.Action;
 import fr.peralta.mycellar.interfaces.client.web.components.shared.OnBlurDefaultAjaxBehavior;
 import fr.peralta.mycellar.interfaces.client.web.components.shared.list.SimpleList;
 import fr.peralta.mycellar.interfaces.client.web.components.wine.autocomplete.ProducerSimpleAutocomplete;
-import fr.peralta.mycellar.interfaces.client.web.components.wine.cloud.AppellationComplexTagCloud;
 import fr.peralta.mycellar.interfaces.client.web.components.wine.cloud.AppellationSimpleTagCloud;
 import fr.peralta.mycellar.interfaces.client.web.components.wine.cloud.WineColorEnumFromProducerAndTypeTagCloud;
 import fr.peralta.mycellar.interfaces.client.web.components.wine.cloud.WineTypeEnumFromProducerTagCloud;
@@ -156,7 +155,7 @@ public class WineSimpleList extends SimpleList<Wine> {
             refreshList();
         } else if (source instanceof AppellationSimpleTagCloud) {
             searchFormModel.getObject().replaceSet(FilterEnum.APPELLATION,
-                    ((AppellationComplexTagCloud) source).getModelObject());
+                    ((AppellationSimpleTagCloud) source).getModelObject());
             refreshList();
         } else if (source instanceof NumberTextField) {
             searchFormModel.getObject().replaceSet(FilterEnum.VINTAGE,
