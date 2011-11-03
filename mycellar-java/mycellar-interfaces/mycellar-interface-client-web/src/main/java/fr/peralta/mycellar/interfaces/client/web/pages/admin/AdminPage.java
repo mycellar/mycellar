@@ -27,6 +27,7 @@ import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.image.Image;
 import org.apache.wicket.markup.html.link.BookmarkablePageLink;
 import org.apache.wicket.model.StringResourceModel;
+import org.apache.wicket.protocol.http.WebApplication;
 import org.apache.wicket.request.mapper.parameter.PageParameters;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 
@@ -57,6 +58,7 @@ public class AdminPage extends AdminSuperPage {
      */
     public AdminPage(PageParameters parameters) {
         super(parameters);
+        add(new Label("configType", WebApplication.get().getConfigurationType().name()));
         add(new Label("userCount", Long.toString(userServiceFacade.countUsers(new SearchForm()))));
         add(new Label("wineCount", Long.toString(wineServiceFacade.countWines(new SearchForm()))));
         add(new Image("db", ImageReferences.getDatabaseImage()));
@@ -77,6 +79,7 @@ public class AdminPage extends AdminSuperPage {
         add(new Label("dbUrl", dbUrl));
         add(new Label("dbLogin", dbLogin));
         add(new BookmarkablePageLink<Void>("listUsers", ListUsersPage.class));
+        add(new BookmarkablePageLink<Void>("throw", ThrowExceptionTestPage.class));
     }
 
 }

@@ -21,6 +21,14 @@
       <section>
         <header role="tertiary"><h4><wicket:message key="dashboard">Dashboard</wicket:message></h4></header>
         <div class="dashboard">
+          <h5><wicket:message key="wicket">wicket</wicket:message></h5>
+          <div class="content">
+            <ul>
+              <li><wicket:message key="configType">Configuration type</wicket:message> : <span wicket:id="configType">DEPLOYMENT</span></li>
+            </ul>
+          </div>
+        </div>
+        <div class="dashboard">
           <h5><wicket:message key="counts">Counts</wicket:message></h5>
           <div class="content">
             <ul>
@@ -44,6 +52,7 @@
       <section>
         <header role="tertiary"><h4><wicket:message key="tools">Tools</wicket:message></h4></header>
         <a href="#" wicket:id="listUsers"><wicket:message key="listUsersLink">List Users</wicket:message></a>
+        <a href="#" wicket:id="throw"><wicket:message key="throwExceptionLink">Throw exception</wicket:message></a>
       </section>
     </wicket:extend>
     <footer>

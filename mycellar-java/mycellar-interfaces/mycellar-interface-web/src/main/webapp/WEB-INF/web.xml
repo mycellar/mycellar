@@ -25,7 +25,7 @@
 
   <context-param>
     <param-name>configuration</param-name>
-    <param-value>development</param-value>
+    <param-value>${wicket.configuration}</param-value>
   </context-param>
 
   <filter>

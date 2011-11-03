@@ -21,6 +21,7 @@ package fr.peralta.mycellar.interfaces.client.web;
 import org.apache.wicket.ConverterLocator;
 import org.apache.wicket.IConverterLocator;
 import org.apache.wicket.Page;
+import org.apache.wicket.markup.html.pages.InternalErrorPage;
 import org.apache.wicket.spring.injection.annot.SpringComponentInjector;
 import org.joda.time.LocalDate;
 import org.springframework.context.ApplicationContext;
@@ -35,6 +36,7 @@ import fr.peralta.mycellar.interfaces.client.web.pages.HomePage;
 import fr.peralta.mycellar.interfaces.client.web.pages.NewUserPage;
 import fr.peralta.mycellar.interfaces.client.web.pages.admin.AdminPage;
 import fr.peralta.mycellar.interfaces.client.web.pages.admin.ListUsersPage;
+import fr.peralta.mycellar.interfaces.client.web.pages.admin.ThrowExceptionTestPage;
 import fr.peralta.mycellar.interfaces.client.web.pages.cellar.CellarsPage;
 import fr.peralta.mycellar.interfaces.client.web.pages.cellar.DrinkBottlesPage;
 import fr.peralta.mycellar.interfaces.client.web.pages.cellar.InputOutputPage;
@@ -63,6 +65,8 @@ public abstract class MyCellarWebApplication extends SwarmWebApplication {
         mountPage("/newUser", NewUserPage.class);
         mountPage("/listUsers", ListUsersPage.class);
         mountPage("/admin", AdminPage.class);
+        mountPage("/error", InternalErrorPage.class);
+        mountPage("/throw", ThrowExceptionTestPage.class);
     }
 
     /**
