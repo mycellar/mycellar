@@ -2,4 +2,5 @@
 <!DOCTYPE properties SYSTEM "http://java.sun.com/dtd/properties.dtd">
 <properties>
   <entry key="quantity">Quantité</entry>
+  <entry key="price">Prix</entry>
 </properties> 

@@ -42,6 +42,7 @@ public class ArrivalBottleEditPanel extends Panel {
         IModel<SearchForm> searchFormModel = new Model<SearchForm>(new SearchForm());
         add(new BottleComponent("bottle", searchFormModel, CountEnum.STOCK_QUANTITY));
         add(new TextField<Integer>("quantity").setRequired(true));
+        add(new TextField<Float>("price").setRequired(true));
     }
 
 }
