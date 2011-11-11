@@ -16,22 +16,11 @@
  * You should have received a copy of the GNU General Public License
  * along with MyCellar. If not, see <http://www.gnu.org/licenses/>.
  */
-package fr.peralta.mycellar.interfaces.client.web.pages.admin;
-
-import org.apache.wicket.request.mapper.parameter.PageParameters;
+package fr.peralta.mycellar.domain.stack.repository;
 
 /**
  * @author speralta
  */
-public class ThrowExceptionTestPage extends AdminPage {
-
-    private static final long serialVersionUID = 201110270842L;
-
-    /**
-     * @param parameters
-     */
-    private ThrowExceptionTestPage(PageParameters parameters) {
-        super(parameters);
-    }
-
+public enum StackOrderEnum {
+    COUNT
 }

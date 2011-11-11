@@ -36,12 +36,13 @@ import fr.peralta.mycellar.interfaces.client.web.pages.HomePage;
 import fr.peralta.mycellar.interfaces.client.web.pages.NewUserPage;
 import fr.peralta.mycellar.interfaces.client.web.pages.admin.AdminPage;
 import fr.peralta.mycellar.interfaces.client.web.pages.admin.ListUsersPage;
-import fr.peralta.mycellar.interfaces.client.web.pages.admin.ThrowExceptionTestPage;
+import fr.peralta.mycellar.interfaces.client.web.pages.admin.StackPage;
 import fr.peralta.mycellar.interfaces.client.web.pages.cellar.CellarsPage;
 import fr.peralta.mycellar.interfaces.client.web.pages.cellar.DrinkBottlesPage;
 import fr.peralta.mycellar.interfaces.client.web.pages.cellar.InputOutputPage;
 import fr.peralta.mycellar.interfaces.client.web.pages.cellar.PackageArrivalPage;
 import fr.peralta.mycellar.interfaces.client.web.pages.pedia.PediaHomePage;
+import fr.peralta.mycellar.interfaces.client.web.shared.ExceptionListener;
 
 /**
  * @author speralta
@@ -56,6 +57,7 @@ public abstract class MyCellarWebApplication extends SwarmWebApplication {
         super.init();
         getComponentInstantiationListeners().add(
                 new SpringComponentInjector(this, getApplicationContext()));
+        getRequestCycleListeners().add(new ExceptionListener());
         mountPage("/home", getHomePage());
         mountPage("/cellars", CellarsPage.class);
         mountPage("/io", InputOutputPage.class);
@@ -66,7 +68,7 @@ public abstract class MyCellarWebApplication extends SwarmWebApplication {
         mountPage("/listUsers", ListUsersPage.class);
         mountPage("/admin", AdminPage.class);
         mountPage("/error", InternalErrorPage.class);
-        mountPage("/throw", ThrowExceptionTestPage.class);
+        mountPage("/stack", StackPage.class);
     }
 
     /**

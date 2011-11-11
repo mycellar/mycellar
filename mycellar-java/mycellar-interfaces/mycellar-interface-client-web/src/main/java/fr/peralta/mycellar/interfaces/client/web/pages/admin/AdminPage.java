@@ -23,17 +23,23 @@ import java.sql.SQLException;
 
 import javax.sql.DataSource;
 
+import org.apache.wicket.ajax.markup.html.navigation.paging.AjaxPagingNavigator;
+import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.image.Image;
 import org.apache.wicket.markup.html.link.BookmarkablePageLink;
+import org.apache.wicket.markup.html.link.Link;
 import org.apache.wicket.model.StringResourceModel;
 import org.apache.wicket.protocol.http.WebApplication;
 import org.apache.wicket.request.mapper.parameter.PageParameters;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 
 import fr.peralta.mycellar.domain.shared.repository.SearchForm;
+import fr.peralta.mycellar.interfaces.client.web.components.shared.SearchFormModel;
 import fr.peralta.mycellar.interfaces.client.web.components.shared.img.ImageReferences;
+import fr.peralta.mycellar.interfaces.client.web.components.stack.data.StackDataView;
 import fr.peralta.mycellar.interfaces.client.web.pages.shared.AdminSuperPage;
+import fr.peralta.mycellar.interfaces.facades.stack.StackServiceFacade;
 import fr.peralta.mycellar.interfaces.facades.user.UserServiceFacade;
 import fr.peralta.mycellar.interfaces.facades.wine.WineServiceFacade;
 
@@ -51,6 +57,9 @@ public class AdminPage extends AdminSuperPage {
     private WineServiceFacade wineServiceFacade;
 
     @SpringBean
+    private StackServiceFacade stackServiceFacade;
+
+    @SpringBean
     private DataSource dataSource;
 
     /**
@@ -61,6 +70,7 @@ public class AdminPage extends AdminSuperPage {
         add(new Label("configType", WebApplication.get().getConfigurationType().name()));
         add(new Label("userCount", Long.toString(userServiceFacade.countUsers(new SearchForm()))));
         add(new Label("wineCount", Long.toString(wineServiceFacade.countWines(new SearchForm()))));
+        add(new Label("stackCount", Long.toString(stackServiceFacade.countStacks(new SearchForm()))));
         add(new Image("db", ImageReferences.getDatabaseImage()));
         String dbUrl;
         String dbLogin;
@@ -78,8 +88,24 @@ public class AdminPage extends AdminSuperPage {
         add(new Label("dbDriver", dbDriver));
         add(new Label("dbUrl", dbUrl));
         add(new Label("dbLogin", dbLogin));
-        add(new BookmarkablePageLink<Void>("listUsers", ListUsersPage.class));
-        add(new BookmarkablePageLink<Void>("throw", ThrowExceptionTestPage.class));
-    }
 
+        StackDataView stackDataView = new StackDataView("stacks", new SearchFormModel(
+                new SearchForm()));
+        stackDataView.setItemsPerPage(25);
+        add(new WebMarkupContainer("noStacks").setVisible(stackDataView.getViewSize() == 0));
+        add(stackDataView);
+        add(new AjaxPagingNavigator("stacksTopNav", stackDataView));
+        add(new AjaxPagingNavigator("stacksBottomNav", stackDataView));
+
+        add(new BookmarkablePageLink<Void>("listUsers", ListUsersPage.class));
+        add(new Link<Void>("cleanStacks") {
+            private static final long serialVersionUID = 201111071322L;
+
+            @Override
+            public void onClick() {
+                stackServiceFacade.deleteAllStacks();
+                setResponsePage(AdminPage.class);
+            }
+        });
+    }
 }

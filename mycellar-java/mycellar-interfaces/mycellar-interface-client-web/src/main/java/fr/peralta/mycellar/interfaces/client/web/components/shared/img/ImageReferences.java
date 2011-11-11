@@ -42,6 +42,10 @@ public class ImageReferences {
         return getImage("database.png");
     }
 
+    public static ResourceReference getEyeImage() {
+        return getImage("eye.png");
+    }
+
     private static ResourceReference getImage(String filename) {
         return new PackageResourceReference(ImageReferences.class, filename);
     }

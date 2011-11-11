@@ -4,10 +4,10 @@
   <entry key="header">Administration</entry>
   <entry key="listUsersLink">Lister tous les utilisateurs</entry>
   <entry key="throwExceptionLink">Lancer une exception</entry>
+  <entry key="cleanStacksLink">Purger les stacks</entry>
   <entry key="dashboard">Tableau de bord</entry>
   <entry key="wicket">wicket</entry>
   <entry key="configType">Configuration wicket</entry>
-  <entry key="debugSwitchLink">Changer de mode (DEBUG)</entry>
   <entry key="tools">Outils</entry>
   <entry key="database">Base de données</entry>
   <entry key="metadataFailure">Lecture impossible</entry>
@@ -17,4 +17,12 @@
   <entry key="counts">Compteurs</entry>
   <entry key="userCount">Nombre d'utilisateurs</entry>
   <entry key="wineCount">Nombre de vins</entry>
+  <entry key="stackCount">Nombre de stacks</entry>
+  <entry key="stacks">Stacks</entry>
+  <entry key="noStacks">Pas de stacks</entry>
+  <entry key="hashCode">Hash code</entry>
+  <entry key="content">Contenu</entry>
+  <entry key="count">Occurence</entry>
+  <entry key="detail">Détail</entry>
+  <entry key="detailStack">Détail d'une stack</entry>
 </properties> 

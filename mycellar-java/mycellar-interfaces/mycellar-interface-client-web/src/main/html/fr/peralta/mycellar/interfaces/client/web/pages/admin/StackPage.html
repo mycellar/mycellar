@@ -19,16 +19,8 @@
     <header role="secondary"><h3>Header</h3></header>
     <wicket:extend>
       <section>
-        <form wicket:id="form">
-          <fieldset>
-            <legend><wicket:message key="details">Cellar details</wicket:message></legend>
-            <p>
-              <label for="name"><wicket:message key="name">Name</wicket:message></label>
-              <input id="name" wicket:id="name" type="text" value="" />
-            </p>
-          </fieldset>
-          <input type="submit" wicket:message="value:newCellar" />
-        </form>
+        <header role="tertiary"><h4><wicket:message key="stack">Stack</wicket:message></h4></header>
+        <div wicket:id="stack" />
       </section>
     </wicket:extend>
     <footer>
