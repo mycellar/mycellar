@@ -27,6 +27,7 @@ import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.form.Form;
 import org.apache.wicket.markup.html.form.TextField;
+import org.apache.wicket.markup.html.image.Image;
 import org.apache.wicket.markup.html.list.ListItem;
 import org.apache.wicket.markup.html.list.PropertyListView;
 import org.apache.wicket.model.CompoundPropertyModel;
@@ -48,7 +49,9 @@ import fr.peralta.mycellar.interfaces.client.web.components.shared.Action;
 import fr.peralta.mycellar.interfaces.client.web.components.shared.ActionLink;
 import fr.peralta.mycellar.interfaces.client.web.components.shared.AjaxTool;
 import fr.peralta.mycellar.interfaces.client.web.components.shared.form.ObjectForm;
+import fr.peralta.mycellar.interfaces.client.web.components.shared.img.ImageReferences;
 import fr.peralta.mycellar.interfaces.client.web.components.stock.cloud.CellarComplexTagCloud;
+import fr.peralta.mycellar.interfaces.client.web.components.stock.cloud.CellarSimpleTagCloud;
 import fr.peralta.mycellar.interfaces.client.web.components.stock.edit.DrinkBottleEditPanel;
 import fr.peralta.mycellar.interfaces.client.web.pages.shared.CellarSuperPage;
 import fr.peralta.mycellar.interfaces.client.web.security.UserKey;
@@ -72,7 +75,8 @@ public class DrinkBottlesPage extends CellarSuperPage {
         public DrinkBottlesEditPanel(String id) {
             super(id);
             add(new DrinkBottlesView("drinkBottles"));
-            add(new ActionLink("addBottle", Action.ADD));
+            add(new ActionLink("addBottle", Action.ADD).add(new Image("addBottleImg",
+                    ImageReferences.getAddImage())));
             add(new WebMarkupContainer(NO_BOTTLES_COMPONENT_ID) {
                 private static final long serialVersionUID = 201108082329L;
 
@@ -87,7 +91,6 @@ public class DrinkBottlesPage extends CellarSuperPage {
                 }
             });
         }
-
     }
 
     private static class DrinkBottlesView extends PropertyListView<DrinkBottle> {
@@ -133,9 +136,9 @@ public class DrinkBottlesPage extends CellarSuperPage {
             item.add(new Label("bottle.wine.vintage"));
             item.add(new Label("bottle.format.name"));
             item.add(new Label("quantity"));
-            item.add(new WebMarkupContainer("remove").add(removeLink("removeBottle", item)));
+            item.add(new WebMarkupContainer("remove").add(removeLink("removeBottle", item).add(
+                    new Image("removeBottleImg", ImageReferences.getRemoveImage()))));
         }
-
     }
 
     private static class DrinkForm extends Form<Drink> {
@@ -185,7 +188,7 @@ public class DrinkBottlesPage extends CellarSuperPage {
         form.add(new DatePicker<LocalDate>("date"));
         form.add(new TextField<String>("drinkWith"));
         form.add(new DrinkBottlesEditPanel(DRINK_BOTTLES_COMPONENT_ID));
-        form.add(new CellarComplexTagCloud(CELLAR_COMPONENT_ID, new StringResourceModel("cellar",
+        form.add(new CellarSimpleTagCloud(CELLAR_COMPONENT_ID, new StringResourceModel("cellar",
                 this, null)));
         form.add(createHiddenBottleForm());
         add(form);

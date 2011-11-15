@@ -20,6 +20,7 @@ package fr.peralta.mycellar.interfaces.client.web.components.stock;
 
 import org.apache.wicket.WicketRuntimeException;
 import org.apache.wicket.event.IEvent;
+import org.apache.wicket.markup.html.panel.EmptyPanel;
 import org.apache.wicket.markup.html.panel.Panel;
 import org.apache.wicket.model.CompoundPropertyModel;
 import org.apache.wicket.model.IModel;
@@ -35,7 +36,7 @@ import fr.peralta.mycellar.domain.wine.Format;
 import fr.peralta.mycellar.domain.wine.Wine;
 import fr.peralta.mycellar.interfaces.client.web.components.shared.Action;
 import fr.peralta.mycellar.interfaces.client.web.components.shared.AjaxTool;
-import fr.peralta.mycellar.interfaces.client.web.components.wine.cloud.FormatSimpleTagCloud;
+import fr.peralta.mycellar.interfaces.client.web.components.wine.cloud.FormatFromWineTagCloud;
 import fr.peralta.mycellar.interfaces.client.web.components.wine.list.WineSimpleList;
 import fr.peralta.mycellar.interfaces.client.web.shared.LoggingUtils;
 import fr.peralta.mycellar.interfaces.facades.stock.StockServiceFacade;
@@ -66,8 +67,7 @@ public class BottleSelectComponent extends Panel {
         this.searchFormModel = searchFormModel;
         add(new WineSimpleList(WINE_COMPONENT_ID, new StringResourceModel("wine", this, null),
                 searchFormModel));
-        add(new FormatSimpleTagCloud(FORMAT_COMPONENT_ID, new StringResourceModel("format", this,
-                null), CountEnum.STOCK_QUANTITY));
+        add(new EmptyPanel(FORMAT_COMPONENT_ID).setOutputMarkupId(true));
     }
 
     /**
@@ -102,6 +102,7 @@ public class BottleSelectComponent extends Panel {
     /**
      * {@inheritDoc}
      */
+    @SuppressWarnings("unchecked")
     @Override
     public void onEvent(IEvent<?> event) {
         LoggingUtils.logEventReceived(logger, event);
@@ -110,11 +111,23 @@ public class BottleSelectComponent extends Panel {
             switch (action) {
             case MODEL_CHANGED:
                 Wine wine = (Wine) get(WINE_COMPONENT_ID).getDefaultModelObject();
-                Format format = (Format) get(FORMAT_COMPONENT_ID).getDefaultModelObject();
-                if ((wine != null) && (format != null)) {
-                    Bottle bottle = stockServiceFacade.findBottle(wine, format);
-                    if (bottle != null) {
-                        setDefaultModelObject(bottle);
+                if (event.getSource() instanceof WineSimpleList) {
+                    WineSimpleList wineSimpleList = (WineSimpleList) event.getSource();
+                    if ((wine != null) && wineSimpleList.isValued()) {
+                        replace(new FormatFromWineTagCloud(FORMAT_COMPONENT_ID,
+                                new StringResourceModel("format", this, null),
+                                (IModel<Wine>) wineSimpleList.getModel(), CountEnum.STOCK_QUANTITY));
+                    } else {
+                        get(FORMAT_COMPONENT_ID).setDefaultModelObject(null).replaceWith(
+                                new EmptyPanel(FORMAT_COMPONENT_ID));
+                    }
+                } else if (event.getSource() instanceof FormatFromWineTagCloud) {
+                    Format format = (Format) get(FORMAT_COMPONENT_ID).getDefaultModelObject();
+                    if ((wine != null) && (format != null)) {
+                        Bottle bottle = stockServiceFacade.findBottle(wine, format);
+                        if (bottle != null) {
+                            setDefaultModelObject(bottle);
+                        }
                     }
                 }
                 break;

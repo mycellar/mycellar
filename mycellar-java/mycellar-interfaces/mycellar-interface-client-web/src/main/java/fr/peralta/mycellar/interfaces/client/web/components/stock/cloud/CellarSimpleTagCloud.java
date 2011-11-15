@@ -16,46 +16,46 @@
  * You should have received a copy of the GNU General Public License
  * along with MyCellar. If not, see <http://www.gnu.org/licenses/>.
  */
-package fr.peralta.mycellar.interfaces.client.web.components.wine.cloud;
+package fr.peralta.mycellar.interfaces.client.web.components.stock.cloud;
 
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 
 import fr.peralta.mycellar.domain.shared.repository.CountEnum;
+import fr.peralta.mycellar.domain.shared.repository.FilterEnum;
 import fr.peralta.mycellar.domain.shared.repository.SearchForm;
-import fr.peralta.mycellar.domain.wine.Format;
+import fr.peralta.mycellar.domain.stock.Cellar;
 import fr.peralta.mycellar.interfaces.client.web.components.shared.cloud.SimpleTagCloud;
 import fr.peralta.mycellar.interfaces.client.web.components.shared.cloud.TagCloudPanel;
-import fr.peralta.mycellar.interfaces.facades.wine.WineServiceFacade;
+import fr.peralta.mycellar.interfaces.client.web.security.UserKey;
+import fr.peralta.mycellar.interfaces.facades.stock.StockServiceFacade;
 
 /**
  * @author speralta
  */
-public class FormatSimpleTagCloud extends SimpleTagCloud<Format> {
+public class CellarSimpleTagCloud extends SimpleTagCloud<Cellar> {
 
-    private static final long serialVersionUID = 201107252130L;
+    private static final long serialVersionUID = 201111151904L;
 
     @SpringBean
-    private WineServiceFacade wineServiceFacade;
-
-    private final CountEnum count;
+    private StockServiceFacade stockServiceFacade;
 
     /**
      * @param id
      * @param label
      */
-    public FormatSimpleTagCloud(String id, IModel<String> label, CountEnum count) {
+    public CellarSimpleTagCloud(String id, IModel<String> label) {
         super(id, label);
-        this.count = count;
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    protected TagCloudPanel<Format> createTagCloudPanel(String id) {
-        return new TagCloudPanel<Format>(id, getListFrom(wineServiceFacade.getFormats(
-                new SearchForm(), count)));
+    protected TagCloudPanel<Cellar> createTagCloudPanel(String id) {
+        return new TagCloudPanel<Cellar>(id, getListFrom(stockServiceFacade.getCellars(
+                new SearchForm().addToSet(FilterEnum.USER, UserKey.getUserLoggedIn()),
+                CountEnum.STOCK_QUANTITY)));
     }
 
 }

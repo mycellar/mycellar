@@ -22,5 +22,5 @@ package fr.peralta.mycellar.domain.shared.repository;
  * @author speralta
  */
 public enum FilterEnum {
-    COUNTRY, REGION, APPELLATION, TYPE, COLOR, VINTAGE, USER, CELLAR, PRODUCER, FORMAT;
+    COUNTRY, REGION, APPELLATION, TYPE, COLOR, VINTAGE, USER, CELLAR, PRODUCER, FORMAT, WINE;
 }

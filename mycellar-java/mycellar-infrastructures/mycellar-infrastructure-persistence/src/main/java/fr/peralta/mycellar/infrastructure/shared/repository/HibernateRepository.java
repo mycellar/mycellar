@@ -102,6 +102,10 @@ public abstract class HibernateRepository {
             in(predicates, searchForm.getSet(FilterEnum.VINTAGE), path.get("bottle").get("wine")
                     .get("vintage"), criteriaBuilder);
         }
+        if (filterEnum != FilterEnum.WINE) {
+            in(predicates, searchForm.getSet(FilterEnum.WINE), path.get("bottle").get("wine"),
+                    criteriaBuilder);
+        }
         return where(query, criteriaBuilder, predicates);
     }
 
