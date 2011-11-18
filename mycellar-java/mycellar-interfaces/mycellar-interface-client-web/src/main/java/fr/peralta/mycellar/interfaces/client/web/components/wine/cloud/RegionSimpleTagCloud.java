@@ -18,6 +18,8 @@
  */
 package fr.peralta.mycellar.interfaces.client.web.components.wine.cloud;
 
+import java.util.Map;
+
 import org.apache.wicket.event.IEventSource;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.StringResourceModel;
@@ -30,7 +32,6 @@ import fr.peralta.mycellar.domain.wine.Country;
 import fr.peralta.mycellar.domain.wine.Region;
 import fr.peralta.mycellar.interfaces.client.web.components.shared.Action;
 import fr.peralta.mycellar.interfaces.client.web.components.shared.cloud.SimpleTagCloud;
-import fr.peralta.mycellar.interfaces.client.web.components.shared.cloud.TagCloudPanel;
 import fr.peralta.mycellar.interfaces.facades.wine.WineServiceFacade;
 
 /**
@@ -38,7 +39,7 @@ import fr.peralta.mycellar.interfaces.facades.wine.WineServiceFacade;
  */
 public class RegionSimpleTagCloud extends SimpleTagCloud<Region> {
 
-    private static final long serialVersionUID = 201107252130L;
+    private static final long serialVersionUID = 201111161904L;
 
     private static final String COUNTRY_COMPONENT_ID = "country";
 
@@ -73,22 +74,10 @@ public class RegionSimpleTagCloud extends SimpleTagCloud<Region> {
      * {@inheritDoc}
      */
     @Override
-    protected void internalConfigureComponent(Region modelObject) {
-        super.internalConfigureComponent(modelObject);
-        if (modelObject == null) {
-            setModelObject(new Region());
-        }
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    protected TagCloudPanel<Region> createTagCloudPanel(String id) {
+    protected Map<Region, Long> getChoices() {
         SearchForm searchForm = searchFormModel.getObject();
-        searchForm.addToSet(FilterEnum.COUNTRY, getCountryModel().getObject());
-        return new TagCloudPanel<Region>(id, getListFrom(wineServiceFacade.getRegions(searchForm,
-                count)));
+        searchForm.replaceSet(FilterEnum.COUNTRY, getCountryModel().getObject());
+        return wineServiceFacade.getRegions(searchForm, count);
     }
 
     /**
@@ -111,6 +100,14 @@ public class RegionSimpleTagCloud extends SimpleTagCloud<Region> {
      * {@inheritDoc}
      */
     @Override
+    protected String getSelectorLabelFor(Region object) {
+        return object.getName();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
     protected void detachModel() {
         searchFormModel.detach();
         super.detachModel();
@@ -121,7 +118,15 @@ public class RegionSimpleTagCloud extends SimpleTagCloud<Region> {
      */
     @Override
     protected void onModelChanged(IEventSource source, Action action) {
-        // Nothing to do
+        refreshTagCloud();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    protected Region createDefaultObject() {
+        return new Region();
     }
 
 }

@@ -26,6 +26,7 @@ import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
 import org.apache.commons.lang3.ObjectUtils;
+import org.apache.commons.lang3.builder.ToStringBuilder;
 
 import fr.peralta.mycellar.domain.shared.NamedEntity;
 
@@ -36,7 +37,8 @@ import fr.peralta.mycellar.domain.shared.NamedEntity;
 @Table(name = "IMAGE")
 @SequenceGenerator(name = "IMAGE_ID_GENERATOR", allocationSize = 1)
 public class Image extends NamedEntity<Image> {
-    private static final long serialVersionUID = 201011082031L;
+
+    private static final long serialVersionUID = 201111181451L;
 
     @Column(name = "CONTENT")
     private byte[] content;
@@ -129,7 +131,7 @@ public class Image extends NamedEntity<Image> {
     @Override
     protected boolean dataEquals(Image other) {
         boolean result;
-        if (getContent() == null || other.getContent() == null) {
+        if ((getContent() == null) || (other.getContent() == null)) {
             result = ObjectUtils.equals(getName(), other.getName())
                     && ObjectUtils.equals(getContentType(), other.getContentType());
         } else {
@@ -144,6 +146,15 @@ public class Image extends NamedEntity<Image> {
     @Override
     protected Object[] getHashCodeData() {
         return new Object[] { getName() };
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    protected ToStringBuilder toStringBuilder() {
+        return super.toStringBuilder().append("contentType", contentType).append("height", height)
+                .append("width", width);
     }
 
 }

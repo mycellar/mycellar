@@ -18,6 +18,8 @@
  */
 package fr.peralta.mycellar.interfaces.client.web.components.wine.cloud;
 
+import java.util.Map;
+
 import org.apache.wicket.Component;
 import org.apache.wicket.event.Broadcast;
 import org.apache.wicket.event.IEventSource;
@@ -32,7 +34,6 @@ import fr.peralta.mycellar.domain.wine.Country;
 import fr.peralta.mycellar.domain.wine.Region;
 import fr.peralta.mycellar.interfaces.client.web.components.shared.Action;
 import fr.peralta.mycellar.interfaces.client.web.components.shared.cloud.ComplexTagCloud;
-import fr.peralta.mycellar.interfaces.client.web.components.shared.cloud.TagCloudPanel;
 import fr.peralta.mycellar.interfaces.client.web.components.wine.edit.RegionEditPanel;
 import fr.peralta.mycellar.interfaces.facades.wine.WineServiceFacade;
 
@@ -41,7 +42,7 @@ import fr.peralta.mycellar.interfaces.facades.wine.WineServiceFacade;
  */
 public class RegionComplexTagCloud extends ComplexTagCloud<Region> {
 
-    private static final long serialVersionUID = 201107252130L;
+    private static final long serialVersionUID = 201111161904L;
 
     private static final String COUNTRY_COMPONENT_ID = "country";
 
@@ -75,20 +76,10 @@ public class RegionComplexTagCloud extends ComplexTagCloud<Region> {
      * {@inheritDoc}
      */
     @Override
-    protected void internalConfigureComponent(Region modelObject) {
-        super.internalConfigureComponent(modelObject);
-        if (modelObject == null) {
-            setModelObject(createObject());
-        }
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    protected TagCloudPanel<Region> createTagCloudPanel(String id) {
-        return new TagCloudPanel<Region>(id, getListFrom(wineServiceFacade.getRegions(
-                searchFormModel.getObject(), count)));
+    protected Map<Region, Long> getChoices() {
+        SearchForm searchForm = searchFormModel.getObject();
+        searchForm.replaceSet(FilterEnum.COUNTRY, getCountryModel().getObject());
+        return wineServiceFacade.getRegions(searchForm, count);
     }
 
     /**
@@ -141,9 +132,7 @@ public class RegionComplexTagCloud extends ComplexTagCloud<Region> {
      */
     @Override
     protected void detachModel() {
-        if (searchFormModel != null) {
-            searchFormModel.detach();
-        }
+        searchFormModel.detach();
         super.detachModel();
     }
 
@@ -153,13 +142,13 @@ public class RegionComplexTagCloud extends ComplexTagCloud<Region> {
     @Override
     protected void onModelChanged(IEventSource source, Action action) {
         if (source instanceof CountryComplexTagCloud) {
+            refreshTagCloud();
             CountryComplexTagCloud countryComplexTagCloud = (CountryComplexTagCloud) source;
             IModel<? extends Country> countryModel = countryComplexTagCloud.getModel();
-            searchFormModel.getObject().replaceSet(FilterEnum.COUNTRY, countryModel.getObject());
-            setDefaultModelObject(createObject());
             if (countryComplexTagCloud.isValued() && (countryModel != null)
                     && (countryModel.getObject() != null)
                     && (countryModel.getObject().getId() == null)) {
+                setDefaultModelObject(createObject());
                 send(this, Broadcast.EXACT, Action.ADD);
             }
         } else {

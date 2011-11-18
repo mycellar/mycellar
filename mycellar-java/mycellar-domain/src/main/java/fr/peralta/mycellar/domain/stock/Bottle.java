@@ -34,6 +34,7 @@ import javax.persistence.Table;
 import javax.persistence.UniqueConstraint;
 
 import org.apache.commons.lang3.ObjectUtils;
+import org.apache.commons.lang3.builder.ToStringBuilder;
 
 import fr.peralta.mycellar.domain.shared.IdentifiedEntity;
 import fr.peralta.mycellar.domain.wine.Format;
@@ -47,7 +48,7 @@ import fr.peralta.mycellar.domain.wine.Wine;
 @SequenceGenerator(name = "BOTTLE_ID_GENERATOR", allocationSize = 1)
 public class Bottle extends IdentifiedEntity<Bottle> {
 
-    private static final long serialVersionUID = 201010311742L;
+    private static final long serialVersionUID = 201111181451L;
 
     @SuppressWarnings("unused")
     @OneToMany(mappedBy = "bottle")
@@ -119,6 +120,14 @@ public class Bottle extends IdentifiedEntity<Bottle> {
     @Override
     protected Object[] getHashCodeData() {
         return new Object[] { getFormat(), getWine() };
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    protected ToStringBuilder toStringBuilder() {
+        return super.toStringBuilder().append("format", format).append("wine", wine);
     }
 
 }

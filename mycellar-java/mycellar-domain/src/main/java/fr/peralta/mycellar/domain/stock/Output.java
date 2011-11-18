@@ -23,6 +23,7 @@ import javax.persistence.DiscriminatorValue;
 import javax.persistence.Entity;
 
 import org.apache.commons.lang3.ObjectUtils;
+import org.apache.commons.lang3.builder.ToStringBuilder;
 
 /**
  * @author bperalta
@@ -31,7 +32,7 @@ import org.apache.commons.lang3.ObjectUtils;
 @DiscriminatorValue("O")
 public class Output extends Movement<Output> {
 
-    private static final long serialVersionUID = 201109161849L;
+    private static final long serialVersionUID = 201111181451L;
 
     @Column(name = "DESTINATION")
     private String destination;
@@ -88,5 +89,13 @@ public class Output extends Movement<Output> {
     @Override
     protected Object[] getHashCodeData() {
         return new Object[] { getDate(), getCellar(), getBottle() };
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    protected ToStringBuilder toStringBuilder() {
+        return super.toStringBuilder().append("destination", destination).append("price", price);
     }
 }

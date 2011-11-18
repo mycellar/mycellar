@@ -34,7 +34,7 @@ import org.hibernate.Hibernate;
 @MappedSuperclass
 public abstract class IdentifiedEntity<E extends IdentifiedEntity<E>> implements Serializable {
 
-    private static final long serialVersionUID = 201010311742L;
+    private static final long serialVersionUID = 201111181451L;
 
     @Version
     @Column(name = "VERSION")
@@ -94,7 +94,11 @@ public abstract class IdentifiedEntity<E extends IdentifiedEntity<E>> implements
      */
     @Override
     public String toString() {
-        return ToStringBuilder.reflectionToString(this);
+        return toStringBuilder().toString();
+    }
+
+    protected ToStringBuilder toStringBuilder() {
+        return new ToStringBuilder(this).append("id", getId()).append("version", version);
     }
 
     /**

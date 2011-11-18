@@ -33,6 +33,7 @@ import javax.persistence.ManyToOne;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
+import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.hibernate.annotations.Type;
 import org.joda.time.LocalDate;
 
@@ -49,7 +50,7 @@ import fr.peralta.mycellar.domain.shared.IdentifiedEntity;
 @SequenceGenerator(name = "MOVEMENT_ID_GENERATOR", allocationSize = 1)
 public abstract class Movement<E extends Movement<E>> extends IdentifiedEntity<E> {
 
-    private static final long serialVersionUID = 201109161845L;
+    private static final long serialVersionUID = 201111181451L;
 
     @ManyToOne(cascade = { CascadeType.PERSIST, CascadeType.MERGE })
     @JoinColumn(name = "BOTTLE", nullable = false)
@@ -145,6 +146,15 @@ public abstract class Movement<E extends Movement<E>> extends IdentifiedEntity<E
      */
     public void setNumber(int number) {
         this.number = number;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    protected ToStringBuilder toStringBuilder() {
+        return super.toStringBuilder().append("bottle", bottle).append("cellar", cellar)
+                .append("date", date).append("number", number);
     }
 
 }

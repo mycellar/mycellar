@@ -32,6 +32,7 @@ import javax.persistence.Table;
 import javax.persistence.UniqueConstraint;
 
 import org.apache.commons.lang3.ObjectUtils;
+import org.apache.commons.lang3.builder.ToStringBuilder;
 
 import fr.peralta.mycellar.domain.shared.IdentifiedEntity;
 import fr.peralta.mycellar.domain.stock.Cellar;
@@ -44,7 +45,7 @@ import fr.peralta.mycellar.domain.stock.Cellar;
 @SequenceGenerator(name = "USER_ID_GENERATOR", allocationSize = 1)
 public class User extends IdentifiedEntity<User> {
 
-    private static final long serialVersionUID = 201011121629L;
+    private static final long serialVersionUID = 201111181451L;
 
     @OneToMany(mappedBy = "owner")
     private final Set<Cellar> cellars = new HashSet<Cellar>();
@@ -155,6 +156,15 @@ public class User extends IdentifiedEntity<User> {
     @Override
     protected Object[] getHashCodeData() {
         return new Object[] { getEmail() };
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    protected ToStringBuilder toStringBuilder() {
+        return super.toStringBuilder().append("email", email).append("firstname", firstname)
+                .append("lastname", lastname).append("password", password);
     }
 
 }

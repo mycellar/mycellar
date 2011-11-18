@@ -18,7 +18,10 @@
  */
 package fr.peralta.mycellar.interfaces.client.web.components.wine.cloud;
 
+import java.util.Map;
+
 import org.apache.wicket.model.IModel;
+import org.apache.wicket.model.Model;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 
 import fr.peralta.mycellar.domain.shared.repository.CountEnum;
@@ -28,7 +31,6 @@ import fr.peralta.mycellar.domain.wine.Producer;
 import fr.peralta.mycellar.domain.wine.WineColorEnum;
 import fr.peralta.mycellar.domain.wine.WineTypeEnum;
 import fr.peralta.mycellar.interfaces.client.web.components.shared.cloud.SimpleTagCloud;
-import fr.peralta.mycellar.interfaces.client.web.components.shared.cloud.TagCloudPanel;
 import fr.peralta.mycellar.interfaces.facades.wine.WineServiceFacade;
 
 /**
@@ -36,35 +38,24 @@ import fr.peralta.mycellar.interfaces.facades.wine.WineServiceFacade;
  */
 public class WineColorEnumFromProducerAndTypeTagCloud extends SimpleTagCloud<WineColorEnum> {
 
-    private static final long serialVersionUID = 201107252130L;
+    private static final long serialVersionUID = 201111161904L;
 
     @SpringBean
     private WineServiceFacade wineServiceFacade;
 
-    private final IModel<WineTypeEnum> wineTypeEnumModel;
+    private final IModel<WineTypeEnum> wineTypeEnumModel = new Model<WineTypeEnum>();
 
-    private final IModel<Producer> producerModel;
+    private final IModel<Producer> producerModel = new Model<Producer>();
 
     private final CountEnum count;
 
     /**
      * @param id
      * @param label
-     * @param producerModel
-     * @param wineTypeEnumModel
      * @param count
      */
-    public WineColorEnumFromProducerAndTypeTagCloud(String id, IModel<String> label,
-            IModel<Producer> producerModel, IModel<WineTypeEnum> wineTypeEnumModel, CountEnum count) {
+    public WineColorEnumFromProducerAndTypeTagCloud(String id, IModel<String> label, CountEnum count) {
         super(id, label);
-        if (producerModel == null) {
-            throw new NullPointerException("Producer model cannot be null.");
-        }
-        if (wineTypeEnumModel == null) {
-            throw new NullPointerException("WineTypeEnum model cannot be null.");
-        }
-        this.producerModel = producerModel;
-        this.wineTypeEnumModel = wineTypeEnumModel;
         this.count = count;
     }
 
@@ -72,12 +63,11 @@ public class WineColorEnumFromProducerAndTypeTagCloud extends SimpleTagCloud<Win
      * {@inheritDoc}
      */
     @Override
-    protected TagCloudPanel<WineColorEnum> createTagCloudPanel(String id) {
+    protected Map<WineColorEnum, Long> getChoices() {
         SearchForm searchForm = new SearchForm();
         searchForm.addToSet(FilterEnum.TYPE, wineTypeEnumModel.getObject());
         searchForm.addToSet(FilterEnum.PRODUCER, producerModel.getObject());
-        return new TagCloudPanel<WineColorEnum>(id, getListFrom(wineServiceFacade.getColors(
-                searchForm, count)));
+        return wineServiceFacade.getColors(searchForm, count);
     }
 
     /**
@@ -86,6 +76,22 @@ public class WineColorEnumFromProducerAndTypeTagCloud extends SimpleTagCloud<Win
     @Override
     protected boolean isReadyToSelect() {
         return (producerModel.getObject() != null) && (wineTypeEnumModel.getObject() != null);
+    }
+
+    /**
+     * @param producer
+     */
+    public void setProducer(Producer producer) {
+        producerModel.setObject(producer);
+        refreshTagCloud();
+    }
+
+    /**
+     * @param type
+     */
+    public void setType(WineTypeEnum type) {
+        wineTypeEnumModel.setObject(type);
+        refreshTagCloud();
     }
 
 }

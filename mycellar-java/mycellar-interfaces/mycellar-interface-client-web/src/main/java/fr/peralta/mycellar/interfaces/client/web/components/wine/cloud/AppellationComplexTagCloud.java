@@ -18,6 +18,8 @@
  */
 package fr.peralta.mycellar.interfaces.client.web.components.wine.cloud;
 
+import java.util.Map;
+
 import org.apache.wicket.Component;
 import org.apache.wicket.event.Broadcast;
 import org.apache.wicket.event.IEventSource;
@@ -32,7 +34,6 @@ import fr.peralta.mycellar.domain.wine.Appellation;
 import fr.peralta.mycellar.domain.wine.Region;
 import fr.peralta.mycellar.interfaces.client.web.components.shared.Action;
 import fr.peralta.mycellar.interfaces.client.web.components.shared.cloud.ComplexTagCloud;
-import fr.peralta.mycellar.interfaces.client.web.components.shared.cloud.TagCloudPanel;
 import fr.peralta.mycellar.interfaces.client.web.components.wine.edit.AppellationEditPanel;
 import fr.peralta.mycellar.interfaces.facades.wine.WineServiceFacade;
 
@@ -41,7 +42,7 @@ import fr.peralta.mycellar.interfaces.facades.wine.WineServiceFacade;
  */
 public class AppellationComplexTagCloud extends ComplexTagCloud<Appellation> {
 
-    private static final long serialVersionUID = 201108062231L;
+    private static final long serialVersionUID = 201111161904L;
 
     private static final String REGION_COMPONENT_ID = "region";
 
@@ -75,17 +76,6 @@ public class AppellationComplexTagCloud extends ComplexTagCloud<Appellation> {
      * {@inheritDoc}
      */
     @Override
-    protected void internalConfigureComponent(Appellation modelObject) {
-        super.internalConfigureComponent(modelObject);
-        if (modelObject == null) {
-            setModelObject(createObject());
-        }
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
     protected Component createComponentForCreation(String id) {
         return new AppellationEditPanel(id);
     }
@@ -107,9 +97,10 @@ public class AppellationComplexTagCloud extends ComplexTagCloud<Appellation> {
      * {@inheritDoc}
      */
     @Override
-    protected TagCloudPanel<Appellation> createTagCloudPanel(String id) {
-        return new TagCloudPanel<Appellation>(id, getListFrom(wineServiceFacade.getAppellations(
-                searchFormModel.getObject(), count)));
+    protected Map<Appellation, Long> getChoices() {
+        SearchForm searchForm = searchFormModel.getObject();
+        searchForm.replaceSet(FilterEnum.REGION, getRegionModel().getObject());
+        return wineServiceFacade.getAppellations(searchForm, count);
     }
 
     /**
@@ -141,9 +132,7 @@ public class AppellationComplexTagCloud extends ComplexTagCloud<Appellation> {
      */
     @Override
     protected void detachModel() {
-        if (searchFormModel != null) {
-            searchFormModel.detach();
-        }
+        searchFormModel.detach();
         super.detachModel();
     }
 
@@ -153,13 +142,13 @@ public class AppellationComplexTagCloud extends ComplexTagCloud<Appellation> {
     @Override
     protected void onModelChanged(IEventSource source, Action action) {
         if (source instanceof RegionComplexTagCloud) {
+            refreshTagCloud();
             RegionComplexTagCloud regionComplexTagCloud = (RegionComplexTagCloud) source;
             IModel<? extends Region> regionModel = regionComplexTagCloud.getModel();
-            searchFormModel.getObject().replaceSet(FilterEnum.REGION, regionModel.getObject());
-            setDefaultModelObject(createObject());
             if (regionComplexTagCloud.isValued() && (regionModel != null)
                     && (regionModel.getObject() != null)
                     && (regionModel.getObject().getId() == null)) {
+                setDefaultModelObject(createObject());
                 send(this, Broadcast.EXACT, Action.ADD);
             }
         } else {

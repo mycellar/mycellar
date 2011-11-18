@@ -22,7 +22,6 @@ import java.util.List;
 
 import org.apache.wicket.event.IEventSource;
 import org.apache.wicket.markup.html.form.NumberTextField;
-import org.apache.wicket.markup.html.panel.EmptyPanel;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.StringResourceModel;
 import org.apache.wicket.spring.injection.annot.SpringBean;
@@ -75,8 +74,10 @@ public class WineSimpleList extends SimpleList<Wine> {
                 "appellation", this, null), searchFormModel, CountEnum.STOCK_QUANTITY));
         add(new ProducerSimpleAutocomplete(PRODUCER_COMPONENT_ID, new StringResourceModel(
                 "producer", this, null)));
-        add(new EmptyPanel(TYPE_COMPONENT_ID).setOutputMarkupId(true));
-        add(new EmptyPanel(COLOR_COMPONENT_ID).setOutputMarkupId(true));
+        add(new WineTypeEnumFromProducerTagCloud(TYPE_COMPONENT_ID, new StringResourceModel("type",
+                this, null), CountEnum.WINE));
+        add(new WineColorEnumFromProducerAndTypeTagCloud(COLOR_COMPONENT_ID,
+                new StringResourceModel("color", this, null), CountEnum.WINE));
         add(new NumberTextField<Integer>(VINTAGE_COMPONENT_ID).setMinimum(1800)
                 .setMaximum(new LocalDate().getYear()).add(new OnBlurDefaultAjaxBehavior()));
     }
@@ -85,16 +86,14 @@ public class WineSimpleList extends SimpleList<Wine> {
      * {@inheritDoc}
      */
     @Override
-    protected void internalConfigureComponent(Wine modelObject) {
-        super.internalConfigureComponent(modelObject);
-        if (modelObject == null) {
-            setModelObject(new Wine());
-        }
-        get(APPELLATION_COMPONENT_ID).setVisibilityAllowed(!isValued());
-        get(PRODUCER_COMPONENT_ID).setVisibilityAllowed(!isValued());
-        get(TYPE_COMPONENT_ID).setVisibilityAllowed(!isValued());
-        get(COLOR_COMPONENT_ID).setVisibilityAllowed(!isValued());
-        get(VINTAGE_COMPONENT_ID).setVisibilityAllowed(!isValued());
+    protected void internalOnConfigure() {
+        super.internalOnConfigure();
+        boolean isValued = isValued();
+        get(APPELLATION_COMPONENT_ID).setVisibilityAllowed(!isValued);
+        get(PRODUCER_COMPONENT_ID).setVisibilityAllowed(!isValued);
+        get(TYPE_COMPONENT_ID).setVisibilityAllowed(!isValued);
+        get(COLOR_COMPONENT_ID).setVisibilityAllowed(!isValued);
+        get(VINTAGE_COMPONENT_ID).setVisibilityAllowed(!isValued);
     }
 
     /**
@@ -110,43 +109,37 @@ public class WineSimpleList extends SimpleList<Wine> {
      * {@inheritDoc}
      */
     @Override
-    protected List<Wine> getList() {
+    protected List<Wine> getChoices() {
         return wineServiceFacade.getWines(searchFormModel.getObject(), new WineOrder(), 0, 10);
     }
 
     /**
      * {@inheritDoc}
      */
-    @SuppressWarnings("unchecked")
     @Override
     protected void onModelChanged(IEventSource source, Action action) {
         if (source instanceof ProducerSimpleAutocomplete) {
             ProducerSimpleAutocomplete producerSimpleAutocomplete = (ProducerSimpleAutocomplete) source;
             Producer sourceObject = producerSimpleAutocomplete.getModelObject();
             if ((sourceObject != null) && producerSimpleAutocomplete.isValued()) {
-                replace(new WineTypeEnumFromProducerTagCloud(TYPE_COMPONENT_ID,
-                        new StringResourceModel("type", this, null),
-                        (IModel<Producer>) producerSimpleAutocomplete.getDefaultModel(),
-                        CountEnum.WINE));
+                ((WineTypeEnumFromProducerTagCloud) get(TYPE_COMPONENT_ID))
+                        .setProducer(sourceObject);
+                ((WineColorEnumFromProducerAndTypeTagCloud) get(COLOR_COMPONENT_ID))
+                        .setProducer(sourceObject);
             } else {
-                get(TYPE_COMPONENT_ID).setDefaultModelObject(null).replaceWith(
-                        new EmptyPanel(TYPE_COMPONENT_ID));
-                get(COLOR_COMPONENT_ID).setDefaultModelObject(null).replaceWith(
-                        new EmptyPanel(COLOR_COMPONENT_ID));
+                ((WineTypeEnumFromProducerTagCloud) get(TYPE_COMPONENT_ID)).setProducer(null);
+                ((WineColorEnumFromProducerAndTypeTagCloud) get(COLOR_COMPONENT_ID))
+                        .setProducer(null);
             }
             refreshList();
         } else if (source instanceof WineTypeEnumFromProducerTagCloud) {
             WineTypeEnumFromProducerTagCloud wineTypeEnumFromProducerTagCloud = (WineTypeEnumFromProducerTagCloud) source;
             WineTypeEnum sourceObject = wineTypeEnumFromProducerTagCloud.getModelObject();
             if ((sourceObject != null) && wineTypeEnumFromProducerTagCloud.isValued()) {
-                replace(new WineColorEnumFromProducerAndTypeTagCloud(COLOR_COMPONENT_ID,
-                        new StringResourceModel("color", this, null), (IModel<Producer>) get(
-                                PRODUCER_COMPONENT_ID).getDefaultModel(),
-                        (IModel<WineTypeEnum>) wineTypeEnumFromProducerTagCloud.getDefaultModel(),
-                        CountEnum.WINE));
+                ((WineColorEnumFromProducerAndTypeTagCloud) get(COLOR_COMPONENT_ID))
+                        .setType(sourceObject);
             } else {
-                get(COLOR_COMPONENT_ID).setDefaultModelObject(null).replaceWith(
-                        new EmptyPanel(COLOR_COMPONENT_ID));
+                ((WineColorEnumFromProducerAndTypeTagCloud) get(COLOR_COMPONENT_ID)).setType(null);
             }
             refreshList();
         } else if (source instanceof WineColorEnumFromProducerAndTypeTagCloud) {
@@ -173,6 +166,14 @@ public class WineSimpleList extends SimpleList<Wine> {
     public void detachModels() {
         searchFormModel.detach();
         super.detachModels();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    protected Wine createDefaultObject() {
+        return new Wine();
     }
 
 }

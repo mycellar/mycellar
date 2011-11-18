@@ -63,7 +63,7 @@ public abstract class ComplexComponent<O> extends SimpleComponent<O> {
      * {@inheritDoc}
      */
     @Override
-    protected void internalConfigureComponent(O modelObject) {
+    protected void internalOnConfigure() {
         get(CONTAINER_COMPONENT_ID + PATH_SEPARATOR + SELECTOR_COMPONENT_ID).setVisibilityAllowed(
                 !isValued()
                         && !get(CONTAINER_COMPONENT_ID + PATH_SEPARATOR + CREATE_FORM_COMPONENT_ID)
@@ -77,12 +77,15 @@ public abstract class ComplexComponent<O> extends SimpleComponent<O> {
     /**
      * {@inheritDoc}
      */
+    @SuppressWarnings("unchecked")
     @Override
     protected void onSave(IEventSource source, Action action) {
-        setValued(true);
-        setDefaultModelObject(get(
-                CONTAINER_COMPONENT_ID + PATH_SEPARATOR + CREATE_FORM_COMPONENT_ID)
-                .setVisibilityAllowed(false).getDefaultModelObject());
+        ObjectForm<O> objectForm = ((ObjectForm<O>) get(CONTAINER_COMPONENT_ID + PATH_SEPARATOR
+                + CREATE_FORM_COMPONENT_ID));
+        objectForm.setVisibilityAllowed(false);
+        markAsValued(((ObjectForm<O>) get(CONTAINER_COMPONENT_ID + PATH_SEPARATOR
+                + CREATE_FORM_COMPONENT_ID)).getModelObject());
+
     }
 
     /**
@@ -90,10 +93,9 @@ public abstract class ComplexComponent<O> extends SimpleComponent<O> {
      */
     @Override
     protected void onCancel(IEventSource source, Action action) {
-        setValued(false);
         get(CONTAINER_COMPONENT_ID + PATH_SEPARATOR + CREATE_FORM_COMPONENT_ID)
                 .setVisibilityAllowed(false);
-        setDefaultModelObject(createObject());
+        markAsNonValued();
     }
 
     /**
@@ -104,6 +106,14 @@ public abstract class ComplexComponent<O> extends SimpleComponent<O> {
     protected void onAdd(IEventSource source, Action action) {
         ((ObjectForm<O>) get(CONTAINER_COMPONENT_ID + PATH_SEPARATOR + CREATE_FORM_COMPONENT_ID))
                 .setNewObject(createObject()).setVisibilityAllowed(true);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    protected final O createDefaultObject() {
+        return createObject();
     }
 
 }

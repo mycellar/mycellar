@@ -20,9 +20,6 @@ package fr.peralta.mycellar.interfaces.client.web.components.stock;
 
 import org.apache.wicket.WicketRuntimeException;
 import org.apache.wicket.event.IEvent;
-import org.apache.wicket.markup.html.panel.EmptyPanel;
-import org.apache.wicket.markup.html.panel.Panel;
-import org.apache.wicket.model.CompoundPropertyModel;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.StringResourceModel;
 import org.apache.wicket.spring.injection.annot.SpringBean;
@@ -36,6 +33,7 @@ import fr.peralta.mycellar.domain.wine.Format;
 import fr.peralta.mycellar.domain.wine.Wine;
 import fr.peralta.mycellar.interfaces.client.web.components.shared.Action;
 import fr.peralta.mycellar.interfaces.client.web.components.shared.AjaxTool;
+import fr.peralta.mycellar.interfaces.client.web.components.shared.CompoundPropertyPanel;
 import fr.peralta.mycellar.interfaces.client.web.components.wine.cloud.FormatFromWineTagCloud;
 import fr.peralta.mycellar.interfaces.client.web.components.wine.list.WineSimpleList;
 import fr.peralta.mycellar.interfaces.client.web.shared.LoggingUtils;
@@ -44,7 +42,7 @@ import fr.peralta.mycellar.interfaces.facades.stock.StockServiceFacade;
 /**
  * @author speralta
  */
-public class BottleSelectComponent extends Panel {
+public class BottleSelectComponent extends CompoundPropertyPanel<Bottle> {
 
     private static final long serialVersionUID = 201109081922L;
     private static final Logger logger = LoggerFactory.getLogger(BottleSelectComponent.class);
@@ -67,27 +65,8 @@ public class BottleSelectComponent extends Panel {
         this.searchFormModel = searchFormModel;
         add(new WineSimpleList(WINE_COMPONENT_ID, new StringResourceModel("wine", this, null),
                 searchFormModel));
-        add(new EmptyPanel(FORMAT_COMPONENT_ID).setOutputMarkupId(true));
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @SuppressWarnings("unchecked")
-    @Override
-    protected IModel<?> initModel() {
-        return new CompoundPropertyModel<Bottle>((IModel<Bottle>) super.initModel());
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    protected void onConfigure() {
-        super.onConfigure();
-        if (getDefaultModelObject() == null) {
-            setDefaultModelObject(new Bottle());
-        }
+        add(new FormatFromWineTagCloud(FORMAT_COMPONENT_ID, new StringResourceModel("format", this,
+                null), CountEnum.STOCK_QUANTITY));
     }
 
     /**
@@ -102,7 +81,6 @@ public class BottleSelectComponent extends Panel {
     /**
      * {@inheritDoc}
      */
-    @SuppressWarnings("unchecked")
     @Override
     public void onEvent(IEvent<?> event) {
         LoggingUtils.logEventReceived(logger, event);
@@ -112,15 +90,7 @@ public class BottleSelectComponent extends Panel {
             case MODEL_CHANGED:
                 Wine wine = (Wine) get(WINE_COMPONENT_ID).getDefaultModelObject();
                 if (event.getSource() instanceof WineSimpleList) {
-                    WineSimpleList wineSimpleList = (WineSimpleList) event.getSource();
-                    if ((wine != null) && wineSimpleList.isValued()) {
-                        replace(new FormatFromWineTagCloud(FORMAT_COMPONENT_ID,
-                                new StringResourceModel("format", this, null),
-                                (IModel<Wine>) wineSimpleList.getModel(), CountEnum.STOCK_QUANTITY));
-                    } else {
-                        get(FORMAT_COMPONENT_ID).setDefaultModelObject(null).replaceWith(
-                                new EmptyPanel(FORMAT_COMPONENT_ID));
-                    }
+                    ((FormatFromWineTagCloud) get(FORMAT_COMPONENT_ID)).setWine(wine);
                 } else if (event.getSource() instanceof FormatFromWineTagCloud) {
                     Format format = (Format) get(FORMAT_COMPONENT_ID).getDefaultModelObject();
                     if ((wine != null) && (format != null)) {
@@ -138,6 +108,14 @@ public class BottleSelectComponent extends Panel {
             AjaxTool.ajaxReRender(this);
         }
         LoggingUtils.logEventProcessed(logger, event);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    protected Bottle createDefaultObject() {
+        return new Bottle();
     }
 
 }

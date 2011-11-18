@@ -39,4 +39,12 @@ public class TagCloudPanel<O> extends Panel {
         super(id);
         add(new TagCloud<O>(CLOUD_COMPONENT_ID, list));
     }
+
+    /**
+     * @param list
+     */
+    @SuppressWarnings("unchecked")
+    public void changeList(List<TagData<O>> list) {
+        ((TagCloud<O>) get(CLOUD_COMPONENT_ID)).setList(list);
+    }
 }

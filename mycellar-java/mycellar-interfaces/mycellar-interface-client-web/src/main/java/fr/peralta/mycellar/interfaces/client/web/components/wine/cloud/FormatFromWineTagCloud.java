@@ -18,7 +18,10 @@
  */
 package fr.peralta.mycellar.interfaces.client.web.components.wine.cloud;
 
+import java.util.Map;
+
 import org.apache.wicket.model.IModel;
+import org.apache.wicket.model.Model;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 
 import fr.peralta.mycellar.domain.shared.repository.CountEnum;
@@ -27,7 +30,6 @@ import fr.peralta.mycellar.domain.shared.repository.SearchForm;
 import fr.peralta.mycellar.domain.wine.Format;
 import fr.peralta.mycellar.domain.wine.Wine;
 import fr.peralta.mycellar.interfaces.client.web.components.shared.cloud.SimpleTagCloud;
-import fr.peralta.mycellar.interfaces.client.web.components.shared.cloud.TagCloudPanel;
 import fr.peralta.mycellar.interfaces.facades.wine.WineServiceFacade;
 
 /**
@@ -35,24 +37,21 @@ import fr.peralta.mycellar.interfaces.facades.wine.WineServiceFacade;
  */
 public class FormatFromWineTagCloud extends SimpleTagCloud<Format> {
 
-    private static final long serialVersionUID = 201107252130L;
+    private static final long serialVersionUID = 201111161904L;
 
     @SpringBean
     private WineServiceFacade wineServiceFacade;
 
     private final CountEnum count;
-    private final IModel<Wine> wineModel;
+    private final IModel<Wine> wineModel = new Model<Wine>();
 
     /**
      * @param id
      * @param label
-     * @param wineModel
      * @param count
      */
-    public FormatFromWineTagCloud(String id, IModel<String> label, IModel<Wine> wineModel,
-            CountEnum count) {
+    public FormatFromWineTagCloud(String id, IModel<String> label, CountEnum count) {
         super(id, label);
-        this.wineModel = wineModel;
         this.count = count;
     }
 
@@ -60,11 +59,10 @@ public class FormatFromWineTagCloud extends SimpleTagCloud<Format> {
      * {@inheritDoc}
      */
     @Override
-    protected TagCloudPanel<Format> createTagCloudPanel(String id) {
+    protected Map<Format, Long> getChoices() {
         SearchForm searchForm = new SearchForm();
-        searchForm.addToSet(FilterEnum.WINE, wineModel.getObject());
-        return new TagCloudPanel<Format>(id, getListFrom(wineServiceFacade.getFormats(searchForm,
-                count)));
+        searchForm.replaceSet(FilterEnum.WINE, wineModel.getObject());
+        return wineServiceFacade.getFormats(searchForm, count);
     }
 
     /**
@@ -72,7 +70,24 @@ public class FormatFromWineTagCloud extends SimpleTagCloud<Format> {
      */
     @Override
     protected boolean isReadyToSelect() {
-        return (wineModel != null) && (wineModel.getObject() != null);
+        return (wineModel.getObject() != null) && (wineModel.getObject().getId() != null);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void detachModels() {
+        wineModel.detach();
+        super.detachModels();
+    }
+
+    /**
+     * @param wine
+     */
+    public void setWine(Wine wine) {
+        wineModel.setObject(wine);
+        refreshTagCloud();
     }
 
 }

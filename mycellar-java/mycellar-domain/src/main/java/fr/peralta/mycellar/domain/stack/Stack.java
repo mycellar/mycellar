@@ -26,6 +26,7 @@ import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
 import org.apache.commons.lang3.ObjectUtils;
+import org.apache.commons.lang3.builder.ToStringBuilder;
 
 import fr.peralta.mycellar.domain.shared.IdentifiedEntity;
 
@@ -37,7 +38,7 @@ import fr.peralta.mycellar.domain.shared.IdentifiedEntity;
 @SequenceGenerator(name = "STACK_ID_GENERATOR", allocationSize = 1)
 public class Stack extends IdentifiedEntity<Stack> {
 
-    private static final long serialVersionUID = 201111031811L;
+    private static final long serialVersionUID = 201111181451L;
 
     @Id
     @GeneratedValue(generator = "STACK_ID_GENERATOR")
@@ -112,6 +113,15 @@ public class Stack extends IdentifiedEntity<Stack> {
     @Override
     protected Object[] getHashCodeData() {
         return new Object[] { getStack() };
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    protected ToStringBuilder toStringBuilder() {
+        return super.toStringBuilder().append("count", count).append("hashCode", hashCode)
+                .append("stack", stack);
     }
 
 }

@@ -18,7 +18,10 @@
  */
 package fr.peralta.mycellar.interfaces.client.web.components.wine.cloud;
 
+import java.util.Map;
+
 import org.apache.wicket.model.IModel;
+import org.apache.wicket.model.Model;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 
 import fr.peralta.mycellar.domain.shared.repository.CountEnum;
@@ -27,7 +30,6 @@ import fr.peralta.mycellar.domain.shared.repository.SearchForm;
 import fr.peralta.mycellar.domain.wine.Producer;
 import fr.peralta.mycellar.domain.wine.WineTypeEnum;
 import fr.peralta.mycellar.interfaces.client.web.components.shared.cloud.SimpleTagCloud;
-import fr.peralta.mycellar.interfaces.client.web.components.shared.cloud.TagCloudPanel;
 import fr.peralta.mycellar.interfaces.facades.wine.WineServiceFacade;
 
 /**
@@ -35,37 +37,33 @@ import fr.peralta.mycellar.interfaces.facades.wine.WineServiceFacade;
  */
 public class WineTypeEnumFromProducerTagCloud extends SimpleTagCloud<WineTypeEnum> {
 
-    private static final long serialVersionUID = 201107252130L;
+    private static final long serialVersionUID = 201111161904L;
 
     @SpringBean
     private WineServiceFacade wineServiceFacade;
 
-    private final IModel<Producer> producerModel;
+    private final IModel<Producer> producerModel = new Model<Producer>();
 
     private final CountEnum count;
 
     /**
      * @param id
      * @param label
-     * @param producerModel
      * @param count
      */
-    public WineTypeEnumFromProducerTagCloud(String id, IModel<String> label,
-            IModel<Producer> producerModel, CountEnum count) {
+    public WineTypeEnumFromProducerTagCloud(String id, IModel<String> label, CountEnum count) {
         super(id, label);
         this.count = count;
-        this.producerModel = producerModel;
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    protected TagCloudPanel<WineTypeEnum> createTagCloudPanel(String id) {
+    protected Map<WineTypeEnum, Long> getChoices() {
         SearchForm searchForm = new SearchForm();
         searchForm.addToSet(FilterEnum.PRODUCER, producerModel.getObject());
-        return new TagCloudPanel<WineTypeEnum>(id, getListFrom(wineServiceFacade.getTypes(
-                searchForm, count)));
+        return wineServiceFacade.getTypes(searchForm, count);
     }
 
     /**
@@ -73,7 +71,15 @@ public class WineTypeEnumFromProducerTagCloud extends SimpleTagCloud<WineTypeEnu
      */
     @Override
     protected boolean isReadyToSelect() {
-        return (producerModel != null) && (producerModel.getObject() != null);
+        return producerModel.getObject() != null;
+    }
+
+    /**
+     * @param producer
+     */
+    public void setProducer(Producer producer) {
+        producerModel.setObject(producer);
+        refreshTagCloud();
     }
 
 }
