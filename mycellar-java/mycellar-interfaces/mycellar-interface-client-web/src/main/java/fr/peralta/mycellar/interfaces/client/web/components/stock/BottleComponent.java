@@ -92,13 +92,11 @@ public class BottleComponent extends CompoundPropertyPanel<Bottle> {
                 Format format = (Format) get(FORMAT_COMPONENT_ID).getDefaultModelObject();
                 if ((wine != null) && (format != null)) {
                     Bottle bottle = stockServiceFacade.findBottle(wine, format);
-                    if (bottle != null) {
-                        setModelObject(bottle);
+                    if (bottle == null) {
+                        bottle = new Bottle();
+                        bottle.setWine(wine);
+                        bottle.setFormat(format);
                     }
-                } else {
-                    Bottle bottle = new Bottle();
-                    bottle.setWine(wine);
-                    bottle.setFormat(format);
                     setModelObject(bottle);
                 }
                 break;
