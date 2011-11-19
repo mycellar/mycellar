@@ -18,7 +18,6 @@
  */
 package fr.peralta.mycellar.interfaces.client.web.components.shared;
 
-import org.apache.wicket.AttributeModifier;
 import org.apache.wicket.Component;
 import org.apache.wicket.WicketRuntimeException;
 import org.apache.wicket.event.Broadcast;
@@ -26,7 +25,6 @@ import org.apache.wicket.event.IEvent;
 import org.apache.wicket.event.IEventSource;
 import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.basic.Label;
-import org.apache.wicket.markup.html.form.TextField;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.Model;
 import org.apache.wicket.spring.injection.annot.SpringBean;
@@ -45,7 +43,6 @@ public abstract class SimpleComponent<O> extends CompoundPropertyPanel<O> {
     private static final Logger logger = LoggerFactory.getLogger(SimpleComponent.class);
 
     protected static final String CONTAINER_COMPONENT_ID = "container";
-    protected static final String CANCEL_COMPONENT_ID = "cancel";
     protected static final String LABEL_COMPONENT_ID = "label";
     protected static final String SELECTOR_COMPONENT_ID = "selector";
     protected static final String VALUE_COMPONENT_ID = "value";
@@ -64,9 +61,7 @@ public abstract class SimpleComponent<O> extends CompoundPropertyPanel<O> {
         setOutputMarkupId(true);
         WebMarkupContainer container = new WebMarkupContainer(CONTAINER_COMPONENT_ID);
         container.add(new Label(LABEL_COMPONENT_ID, label));
-        container.add(new TextField<String>(VALUE_COMPONENT_ID).setEnabled(false).setDefaultModel(
-                new Model<String>()));
-        container.add(new ActionLink(CANCEL_COMPONENT_ID, Action.CANCEL));
+        container.add(new ValueComponent(VALUE_COMPONENT_ID));
         add(container);
     }
 
@@ -109,8 +104,6 @@ public abstract class SimpleComponent<O> extends CompoundPropertyPanel<O> {
         super.onConfigure();
         get(CONTAINER_COMPONENT_ID).setVisibilityAllowed(isReadyToSelect());
         internalOnConfigure();
-        get(CONTAINER_COMPONENT_ID + PATH_SEPARATOR + CANCEL_COMPONENT_ID).setVisibilityAllowed(
-                valued);
         get(CONTAINER_COMPONENT_ID + PATH_SEPARATOR + VALUE_COMPONENT_ID).setVisibilityAllowed(
                 valued);
     }
@@ -151,8 +144,7 @@ public abstract class SimpleComponent<O> extends CompoundPropertyPanel<O> {
         Component valueComponent = get(CONTAINER_COMPONENT_ID + PATH_SEPARATOR + VALUE_COMPONENT_ID);
         if (valued) {
             String value = getValueLabelFor(getModelObject());
-            valueComponent.setDefaultModel(new Model<String>(value)).add(
-                    new AttributeModifier("size", new Model<Integer>(value.length())));
+            valueComponent.setDefaultModel(new Model<String>(value));
         } else {
             valueComponent.setDefaultModel(new Model<String>());
         }

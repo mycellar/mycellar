@@ -30,6 +30,10 @@ public class ImageReferences {
         return getImage("add.png");
     }
 
+    public static ResourceReference getCancelImage() {
+        return getImage("cancel.png");
+    }
+
     public static ResourceReference getRemoveImage() {
         return getImage("delete.png");
     }
