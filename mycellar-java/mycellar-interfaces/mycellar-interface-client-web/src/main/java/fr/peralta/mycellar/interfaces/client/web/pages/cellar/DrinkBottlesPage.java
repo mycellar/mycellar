@@ -182,8 +182,7 @@ public class DrinkBottlesPage extends CellarSuperPage {
     public DrinkBottlesPage(PageParameters parameters) {
         super(parameters);
         setOutputMarkupId(true);
-        searchFormModel = new Model<SearchForm>(new SearchForm().addToSet(FilterEnum.USER,
-                UserKey.getUserLoggedIn()));
+        searchFormModel = new Model<SearchForm>();
         DrinkForm form = new DrinkForm(FORM_COMPONENT_ID);
         form.add(new DatePicker<LocalDate>("date"));
         form.add(new TextField<String>("drinkWith"));
@@ -240,9 +239,26 @@ public class DrinkBottlesPage extends CellarSuperPage {
      * @return
      */
     private Component createHiddenBottleForm() {
+        createNewSearchForm();
         return new ObjectForm<DrinkBottle>(DRINK_BOTTLE_COMPONENT_ID, new DrinkBottle()).replace(
                 new DrinkBottleEditPanel(ObjectForm.EDIT_PANEL_COMPONENT_ID, searchFormModel))
                 .setVisibilityAllowed(false);
+    }
+
+    /**
+     * 
+     */
+    private void createNewSearchForm() {
+        SearchForm searchForm = new SearchForm().addToSet(FilterEnum.USER,
+                UserKey.getUserLoggedIn());
+        Component cellarComponent = get(FORM_COMPONENT_ID + PATH_SEPARATOR + CELLAR_COMPONENT_ID);
+        if (cellarComponent != null) {
+            Object cellar = cellarComponent.getDefaultModelObject();
+            if (cellar != null) {
+                searchForm.replaceSet(FilterEnum.CELLAR, cellar);
+            }
+        }
+        searchFormModel.setObject(searchForm);
     }
 
     /**
