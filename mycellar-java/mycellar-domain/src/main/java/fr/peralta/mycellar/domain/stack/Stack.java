@@ -22,6 +22,7 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.Lob;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
@@ -45,6 +46,7 @@ public class Stack extends IdentifiedEntity<Stack> {
     @Column(name = "ID", nullable = false, unique = true)
     private Integer id;
 
+    @Lob
     @Column(name = "STACK")
     private String stack;
 
