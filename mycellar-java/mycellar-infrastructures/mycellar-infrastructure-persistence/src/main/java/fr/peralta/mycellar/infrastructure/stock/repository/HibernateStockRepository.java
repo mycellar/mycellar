@@ -25,6 +25,7 @@ import java.util.Map;
 import java.util.Map.Entry;
 
 import javax.persistence.EntityManager;
+import javax.persistence.NoResultException;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Tuple;
 import javax.persistence.criteria.CriteriaBuilder;
@@ -227,11 +228,15 @@ public class HibernateStockRepository extends HibernateRepository implements Sto
         CriteriaQuery<Bottle> query = criteriaBuilder.createQuery(Bottle.class);
         Root<Bottle> root = query.from(Bottle.class);
 
-        return entityManager.createQuery(
-                query.select(root).where(
-                        criteriaBuilder.and(criteriaBuilder.equal(root.get("wine"), wine),
-                                criteriaBuilder.equal(root.get("format"), format))))
-                .getSingleResult();
+        try {
+            return entityManager.createQuery(
+                    query.select(root).where(
+                            criteriaBuilder.and(criteriaBuilder.equal(root.get("wine"), wine),
+                                    criteriaBuilder.equal(root.get("format"), format))))
+                    .getSingleResult();
+        } catch (NoResultException e) {
+            return null;
+        }
     }
 
     /**

@@ -19,6 +19,7 @@
 package fr.peralta.mycellar.interfaces.client.web.components.shared.cloud;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -36,7 +37,7 @@ import fr.peralta.mycellar.interfaces.client.web.components.shared.ComplexCompon
  */
 public abstract class ComplexTagCloud<O> extends ComplexComponent<O> {
 
-    private static final long serialVersionUID = 201107252130L;
+    private static final long serialVersionUID = 201111161904L;
 
     /**
      * @param id
@@ -44,29 +45,6 @@ public abstract class ComplexTagCloud<O> extends ComplexComponent<O> {
      */
     public ComplexTagCloud(String id, IModel<String> label) {
         super(id, label);
-    }
-
-    /**
-     * @param objects
-     * @return
-     */
-    protected List<TagData<O>> getListFrom(Map<O, Long> objects) {
-        List<TagData<O>> list = new ArrayList<TagData<O>>();
-        long min = 0;
-        long max = 0;
-        for (long value : objects.values()) {
-            if (min == 0) {
-                min = value;
-            } else {
-                min = Math.min(min, value);
-            }
-            max = Math.max(max, value);
-        }
-        for (O object : objects.keySet()) {
-            list.add(new TagData<O>(object, ((float) (objects.get(object) - min) / (float) Math
-                    .max(1, max - min)) + 1, getSelectorLabelFor(object)));
-        }
-        return list;
     }
 
     /**
@@ -96,13 +74,50 @@ public abstract class ComplexTagCloud<O> extends ComplexComponent<O> {
      */
     @Override
     protected final Component createSelectorComponent(String id) {
-        return createTagCloudPanel(id);
+        return new TagCloudPanel<O>(id, getList());
+    }
+
+    @SuppressWarnings("unchecked")
+    protected void refreshTagCloud() {
+        TagCloudPanel<O> tagCloudPanel = ((TagCloudPanel<O>) get(CONTAINER_COMPONENT_ID
+                + PATH_SEPARATOR + SELECTOR_COMPONENT_ID));
+        if (tagCloudPanel != null) {
+            tagCloudPanel.changeList(getList());
+        }
     }
 
     /**
-     * @param id
+     * @param objects
      * @return
      */
-    protected abstract TagCloudPanel<O> createTagCloudPanel(String id);
+    private List<TagData<O>> getList() {
+        Map<O, Long> choices;
+        if (isReadyToSelect()) {
+            choices = getChoices();
+        } else {
+            choices = new HashMap<O, Long>();
+        }
+        List<TagData<O>> list = new ArrayList<TagData<O>>();
+        long min = 0;
+        long max = 0;
+        for (long value : choices.values()) {
+            if (min == 0) {
+                min = value;
+            } else {
+                min = Math.min(min, value);
+            }
+            max = Math.max(max, value);
+        }
+        for (O object : choices.keySet()) {
+            list.add(new TagData<O>(object, ((float) (choices.get(object) - min) / (float) Math
+                    .max(1, max - min)) + 1, getSelectorLabelFor(object)));
+        }
+        return list;
+    }
+
+    /**
+     * @return
+     */
+    protected abstract Map<O, Long> getChoices();
 
 }

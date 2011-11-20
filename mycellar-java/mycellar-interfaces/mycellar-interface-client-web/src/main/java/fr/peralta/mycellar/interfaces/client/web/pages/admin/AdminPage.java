@@ -67,6 +67,7 @@ public class AdminPage extends AdminSuperPage {
      */
     public AdminPage(PageParameters parameters) {
         super(parameters);
+        setOutputMarkupId(true);
         add(new Label("configType", WebApplication.get().getConfigurationType().name()));
         add(new Label("userCount", Long.toString(userServiceFacade.countUsers(new SearchForm()))));
         add(new Label("wineCount", Long.toString(wineServiceFacade.countWines(new SearchForm()))));

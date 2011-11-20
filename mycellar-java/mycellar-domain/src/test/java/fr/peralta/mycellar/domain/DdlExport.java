@@ -28,6 +28,7 @@ import fr.peralta.mycellar.domain.position.Map;
 import fr.peralta.mycellar.domain.position.Position;
 import fr.peralta.mycellar.domain.shared.IdentifiedEntity;
 import fr.peralta.mycellar.domain.shared.NamedEntity;
+import fr.peralta.mycellar.domain.stack.Stack;
 import fr.peralta.mycellar.domain.stock.Bottle;
 import fr.peralta.mycellar.domain.stock.Cellar;
 import fr.peralta.mycellar.domain.stock.Input;
@@ -68,6 +69,7 @@ public class DdlExport {
         cfg.addAnnotatedClass(Region.class);
         cfg.addAnnotatedClass(Varietal.class);
         cfg.addAnnotatedClass(Wine.class);
+        cfg.addAnnotatedClass(Stack.class);
         SchemaExport schemaExport = new SchemaExport(cfg);
         schemaExport.setDelimiter(";");
         schemaExport.execute(true, false, false, true);

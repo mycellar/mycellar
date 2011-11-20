@@ -21,13 +21,15 @@ package fr.peralta.mycellar.domain.shared;
 import javax.persistence.Column;
 import javax.persistence.MappedSuperclass;
 
+import org.apache.commons.lang3.builder.ToStringBuilder;
+
 /**
  * @author speralta
  */
 @MappedSuperclass
 public abstract class NamedEntity<E extends NamedEntity<E>> extends IdentifiedEntity<E> {
 
-    private static final long serialVersionUID = 201010311742L;
+    private static final long serialVersionUID = 201111181451L;
 
     @Column(name = "NAME", nullable = false)
     private String name;
@@ -45,6 +47,14 @@ public abstract class NamedEntity<E extends NamedEntity<E>> extends IdentifiedEn
      */
     public void setName(String name) {
         this.name = name;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    protected ToStringBuilder toStringBuilder() {
+        return super.toStringBuilder().append("name", name);
     }
 
 }

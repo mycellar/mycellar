@@ -20,8 +20,6 @@ package fr.peralta.mycellar.interfaces.client.web.components.stock;
 
 import org.apache.wicket.WicketRuntimeException;
 import org.apache.wicket.event.IEvent;
-import org.apache.wicket.markup.html.panel.Panel;
-import org.apache.wicket.model.CompoundPropertyModel;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.StringResourceModel;
 import org.apache.wicket.spring.injection.annot.SpringBean;
@@ -35,6 +33,7 @@ import fr.peralta.mycellar.domain.wine.Format;
 import fr.peralta.mycellar.domain.wine.Wine;
 import fr.peralta.mycellar.interfaces.client.web.components.shared.Action;
 import fr.peralta.mycellar.interfaces.client.web.components.shared.AjaxTool;
+import fr.peralta.mycellar.interfaces.client.web.components.shared.CompoundPropertyPanel;
 import fr.peralta.mycellar.interfaces.client.web.components.wine.cloud.FormatComplexTagCloud;
 import fr.peralta.mycellar.interfaces.client.web.components.wine.list.WineComplexList;
 import fr.peralta.mycellar.interfaces.client.web.shared.LoggingUtils;
@@ -43,7 +42,7 @@ import fr.peralta.mycellar.interfaces.facades.stock.StockServiceFacade;
 /**
  * @author speralta
  */
-public class BottleComponent extends Panel {
+public class BottleComponent extends CompoundPropertyPanel<Bottle> {
 
     private static final long serialVersionUID = 201109081922L;
     private static final Logger logger = LoggerFactory.getLogger(BottleComponent.class);
@@ -73,26 +72,6 @@ public class BottleComponent extends Panel {
     /**
      * {@inheritDoc}
      */
-    @SuppressWarnings("unchecked")
-    @Override
-    protected IModel<?> initModel() {
-        return new CompoundPropertyModel<Bottle>((IModel<Bottle>) super.initModel());
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    protected void onConfigure() {
-        super.onConfigure();
-        if (getDefaultModelObject() == null) {
-            setDefaultModelObject(new Bottle());
-        }
-    }
-
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public void detachModels() {
         searchFormModel.detach();
@@ -113,14 +92,12 @@ public class BottleComponent extends Panel {
                 Format format = (Format) get(FORMAT_COMPONENT_ID).getDefaultModelObject();
                 if ((wine != null) && (format != null)) {
                     Bottle bottle = stockServiceFacade.findBottle(wine, format);
-                    if (bottle != null) {
-                        setDefaultModelObject(bottle);
+                    if (bottle == null) {
+                        bottle = new Bottle();
+                        bottle.setWine(wine);
+                        bottle.setFormat(format);
                     }
-                } else {
-                    Bottle bottle = new Bottle();
-                    bottle.setWine(wine);
-                    bottle.setFormat(format);
-                    setDefaultModelObject(bottle);
+                    setModelObject(bottle);
                 }
                 break;
             default:
@@ -130,6 +107,14 @@ public class BottleComponent extends Panel {
             AjaxTool.ajaxReRender(this);
         }
         LoggingUtils.logEventProcessed(logger, event);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    protected Bottle createDefaultObject() {
+        return new Bottle();
     }
 
 }

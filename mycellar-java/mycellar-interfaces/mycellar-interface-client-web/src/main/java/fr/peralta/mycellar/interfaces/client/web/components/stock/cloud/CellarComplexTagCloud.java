@@ -18,6 +18,8 @@
  */
 package fr.peralta.mycellar.interfaces.client.web.components.stock.cloud;
 
+import java.util.Map;
+
 import org.apache.wicket.Component;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.spring.injection.annot.SpringBean;
@@ -27,7 +29,6 @@ import fr.peralta.mycellar.domain.shared.repository.FilterEnum;
 import fr.peralta.mycellar.domain.shared.repository.SearchForm;
 import fr.peralta.mycellar.domain.stock.Cellar;
 import fr.peralta.mycellar.interfaces.client.web.components.shared.cloud.ComplexTagCloud;
-import fr.peralta.mycellar.interfaces.client.web.components.shared.cloud.TagCloudPanel;
 import fr.peralta.mycellar.interfaces.client.web.components.stock.edit.CellarEditPanel;
 import fr.peralta.mycellar.interfaces.client.web.security.UserKey;
 import fr.peralta.mycellar.interfaces.facades.stock.StockServiceFacade;
@@ -72,10 +73,10 @@ public class CellarComplexTagCloud extends ComplexTagCloud<Cellar> {
      * {@inheritDoc}
      */
     @Override
-    protected TagCloudPanel<Cellar> createTagCloudPanel(String id) {
-        return new TagCloudPanel<Cellar>(id, getListFrom(stockServiceFacade.getCellars(
+    protected Map<Cellar, Long> getChoices() {
+        return stockServiceFacade.getCellars(
                 new SearchForm().addToSet(FilterEnum.USER, UserKey.getUserLoggedIn()),
-                CountEnum.STOCK_QUANTITY)));
+                CountEnum.STOCK_QUANTITY);
     }
 
     /**

@@ -18,7 +18,7 @@
     </nav>
     <header role="secondary"><h3>Header</h3></header>
     <wicket:extend>
-      <section>
+      <section class="form">
         <form wicket:id="form">
           <fieldset class="step">
             <legend><wicket:message key="package">Fieldset legend</wicket:message></legend>
@@ -46,7 +46,7 @@
                     <th><wicket:message key="vintage">Vintage</wicket:message></th>
                     <th><wicket:message key="format">Format</wicket:message></th>
                     <th><wicket:message key="quantity">Quantity</wicket:message></th>
-                    <th><a wicket:id="addBottle"><wicket:message key="addBottle">Add bottle</wicket:message></a></th>
+                    <th><a wicket:id="addBottle"><img wicket:id="addBottleImg" wicket:message="title:addBottle" /></a></th>
                   </tr>
                 </thead>
                 <tbody>
@@ -59,7 +59,7 @@
                     <td wicket:id="bottle.wine.vintage">Vintage</td>
                     <td wicket:id="bottle.format.name">Format</td>
                     <td wicket:id="quantity">Quantity</td>
-                    <td wicket:id="remove"><a wicket:id="removeBottle"><wicket:message key="removeBottle">Remove bottle</wicket:message></a></td>
+                    <td wicket:id="remove" class="ca"><a wicket:id="removeBottle"><img wicket:id="removeBottleImg" wicket:message="title:removeBottle" /></a></td>
                   </tr>
                   <tr wicket:id="noBottles">
                     <td colSpan="9" class="ca"><wicket:message key="noBottles">No bottles</wicket:message></td>
@@ -72,11 +72,15 @@
             <fieldset>
               <legend><wicket:message key="drinkBottle">Arrival bottle</wicket:message></legend>
               <div wicket:id="newObject" />
-              <input wicket:id="saveObject" type="submit" wicket:message="value:saveBottle" />
-              <input wicket:id="cancelObject" type="submit" wicket:message="value:cancelBottle" />
+              <div class="submits">
+                <input wicket:id="saveObject" type="submit" wicket:message="value:saveBottle" />
+                <input wicket:id="cancelObject" type="submit" wicket:message="value:cancelBottle" />
+              </div>
             </fieldset>
           </form>
-          <input type="submit" wicket:message="value:saveDrink" />
+          <div class="submits">
+            <input type="submit" wicket:message="value:saveDrink" />
+          </div>
         </form>
       </section>
     </wicket:extend>

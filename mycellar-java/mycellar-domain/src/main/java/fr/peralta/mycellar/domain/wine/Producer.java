@@ -28,6 +28,8 @@ import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 import javax.validation.constraints.Pattern;
 
+import org.apache.commons.lang3.builder.ToStringBuilder;
+
 import fr.peralta.mycellar.domain.position.Address;
 import fr.peralta.mycellar.domain.shared.NamedEntity;
 import fr.peralta.mycellar.domain.shared.ValidationPattern;
@@ -41,7 +43,7 @@ import fr.peralta.mycellar.domain.shared.ValidationPattern;
 @SequenceGenerator(name = "PRODUCER_ID_GENERATOR", allocationSize = 1)
 public class Producer extends NamedEntity<Producer> {
 
-    private static final long serialVersionUID = 201011071626L;
+    private static final long serialVersionUID = 201111181451L;
 
     @Embedded
     private Address address;
@@ -125,6 +127,15 @@ public class Producer extends NamedEntity<Producer> {
     @Override
     protected Object[] getHashCodeData() {
         return new Object[] { getName() };
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    protected ToStringBuilder toStringBuilder() {
+        return super.toStringBuilder().append("address", address)
+                .append("description", description).append("websiteUrl", websiteUrl);
     }
 
 }

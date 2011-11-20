@@ -33,6 +33,7 @@ import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
 import org.apache.commons.lang3.ObjectUtils;
+import org.apache.commons.lang3.builder.ToStringBuilder;
 
 import fr.peralta.mycellar.domain.shared.NamedEntity;
 import fr.peralta.mycellar.domain.user.User;
@@ -46,7 +47,7 @@ import fr.peralta.mycellar.domain.user.User;
 @SequenceGenerator(name = "CELLAR_ID_GENERATOR", allocationSize = 1)
 public class Cellar extends NamedEntity<Cellar> {
 
-    private static final long serialVersionUID = 201011111734L;
+    private static final long serialVersionUID = 201111181451L;
 
     @SuppressWarnings("unused")
     @OneToMany(mappedBy = "cellar")
@@ -99,6 +100,14 @@ public class Cellar extends NamedEntity<Cellar> {
     @Override
     protected Object[] getHashCodeData() {
         return new Object[] { getName(), getOwner() };
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    protected ToStringBuilder toStringBuilder() {
+        return super.toStringBuilder().append("owner", owner);
     }
 
 }

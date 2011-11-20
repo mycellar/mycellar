@@ -51,8 +51,12 @@ public abstract class ComplexList<O> extends ComplexComponent<O> {
         return createListComponentPanel(id);
     }
 
+    /**
+     * @param id
+     * @return
+     */
     protected ListComponentPanel<O> createListComponentPanel(String id) {
-        return new ListComponentPanel<O>(id, getListFrom(getList()));
+        return new ListComponentPanel<O>(id, getList());
     }
 
     /**
@@ -70,18 +74,6 @@ public abstract class ComplexList<O> extends ComplexComponent<O> {
     }
 
     /**
-     * @param objects
-     * @return
-     */
-    protected List<ListData<O>> getListFrom(List<O> objects) {
-        List<ListData<O>> list = new ArrayList<ListData<O>>();
-        for (O object : objects) {
-            list.add(new ListData<O>(object, getSelectorLabelFor(object)));
-        }
-        return list;
-    }
-
-    /**
      * @param object
      * @return
      */
@@ -91,18 +83,33 @@ public abstract class ComplexList<O> extends ComplexComponent<O> {
 
     @SuppressWarnings("unchecked")
     protected void refreshList() {
-        if (isReadyToSelect()) {
-            Component component = get(CONTAINER_COMPONENT_ID + PATH_SEPARATOR
-                    + SELECTOR_COMPONENT_ID);
-            if (component instanceof ListComponentPanel<?>) {
-                ((ListComponentPanel<O>) component).changeList(getListFrom(getList()));
-            }
+        ListComponentPanel<O> listComponentPanel = ((ListComponentPanel<O>) get(CONTAINER_COMPONENT_ID
+                + PATH_SEPARATOR + SELECTOR_COMPONENT_ID));
+        if (listComponentPanel != null) {
+            listComponentPanel.changeList(getList());
         }
     }
 
     /**
      * @return
      */
-    protected abstract List<O> getList();
+    private final List<ListData<O>> getList() {
+        List<O> list;
+        if (isReadyToSelect()) {
+            list = getChoices();
+        } else {
+            list = new ArrayList<O>();
+        }
+        List<ListData<O>> result = new ArrayList<ListData<O>>();
+        for (O object : list) {
+            result.add(new ListData<O>(object, getSelectorLabelFor(object)));
+        }
+        return result;
+    }
+
+    /**
+     * @return
+     */
+    protected abstract List<O> getChoices();
 
 }

@@ -32,6 +32,7 @@ import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
 import org.apache.commons.lang3.ObjectUtils;
+import org.apache.commons.lang3.builder.ToStringBuilder;
 
 import fr.peralta.mycellar.domain.position.Map;
 import fr.peralta.mycellar.domain.shared.NamedEntity;
@@ -45,7 +46,7 @@ import fr.peralta.mycellar.domain.shared.NamedEntity;
 @SequenceGenerator(name = "COUNTRY_ID_GENERATOR", allocationSize = 1)
 public class Country extends NamedEntity<Country> {
 
-    private static final long serialVersionUID = 201011071641L;
+    private static final long serialVersionUID = 201111181451L;
 
     @Column(name = "DESCRIPTION")
     private String description;
@@ -114,6 +115,14 @@ public class Country extends NamedEntity<Country> {
     @Override
     protected Object[] getHashCodeData() {
         return new Object[] { getName() };
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    protected ToStringBuilder toStringBuilder() {
+        return super.toStringBuilder().append("description", description).append("map", map);
     }
 
 }

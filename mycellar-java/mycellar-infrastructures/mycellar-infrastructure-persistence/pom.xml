@@ -26,7 +26,7 @@
   <parent>
     <groupId>fr.peralta.mycellar</groupId>
     <artifactId>mycellar-infrastructures</artifactId>
-    <version>0.1.0</version>
+    <version>0.2.0</version>
     <relativePath>../pom.xml</relativePath>
   </parent>
   <artifactId>mycellar-infrastructure-persistence</artifactId>

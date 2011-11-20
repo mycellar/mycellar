@@ -30,6 +30,7 @@ import javax.persistence.Table;
 import javax.persistence.UniqueConstraint;
 
 import org.apache.commons.lang3.ObjectUtils;
+import org.apache.commons.lang3.builder.ToStringBuilder;
 
 import fr.peralta.mycellar.domain.shared.IdentifiedEntity;
 
@@ -41,7 +42,7 @@ import fr.peralta.mycellar.domain.shared.IdentifiedEntity;
 @SequenceGenerator(name = "STOCK_ID_GENERATOR", allocationSize = 1)
 public class Stock extends IdentifiedEntity<Stock> {
 
-    private static final long serialVersionUID = 201011111811L;
+    private static final long serialVersionUID = 201111181451L;
 
     @ManyToOne(cascade = { CascadeType.PERSIST, CascadeType.MERGE })
     @JoinColumn(name = "BOTTLE", nullable = false)
@@ -126,6 +127,15 @@ public class Stock extends IdentifiedEntity<Stock> {
     @Override
     protected Object[] getHashCodeData() {
         return new Object[] { getBottle() };
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    protected ToStringBuilder toStringBuilder() {
+        return super.toStringBuilder().append("bottle", bottle).append("cellar", cellar)
+                .append("quantity", quantity);
     }
 
 }

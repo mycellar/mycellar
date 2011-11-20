@@ -18,7 +18,6 @@
  */
 package fr.peralta.mycellar.interfaces.client.web.components.shared;
 
-import org.apache.wicket.AttributeModifier;
 import org.apache.wicket.Component;
 import org.apache.wicket.WicketRuntimeException;
 import org.apache.wicket.event.Broadcast;
@@ -26,10 +25,6 @@ import org.apache.wicket.event.IEvent;
 import org.apache.wicket.event.IEventSource;
 import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.basic.Label;
-import org.apache.wicket.markup.html.form.TextField;
-import org.apache.wicket.markup.html.panel.EmptyPanel;
-import org.apache.wicket.markup.html.panel.Panel;
-import org.apache.wicket.model.CompoundPropertyModel;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.Model;
 import org.apache.wicket.spring.injection.annot.SpringBean;
@@ -42,13 +37,12 @@ import fr.peralta.mycellar.interfaces.client.web.shared.LoggingUtils;
 /**
  * @author speralta
  */
-public abstract class SimpleComponent<O> extends Panel {
+public abstract class SimpleComponent<O> extends CompoundPropertyPanel<O> {
 
     private static final long serialVersionUID = 201107281247L;
     private static final Logger logger = LoggerFactory.getLogger(SimpleComponent.class);
 
     protected static final String CONTAINER_COMPONENT_ID = "container";
-    protected static final String CANCEL_COMPONENT_ID = "cancel";
     protected static final String LABEL_COMPONENT_ID = "label";
     protected static final String SELECTOR_COMPONENT_ID = "selector";
     protected static final String VALUE_COMPONENT_ID = "value";
@@ -65,89 +59,20 @@ public abstract class SimpleComponent<O> extends Panel {
     public SimpleComponent(String id, IModel<String> label) {
         super(id);
         setOutputMarkupId(true);
-        WebMarkupContainer container = new WebMarkupContainer("container");
+        WebMarkupContainer container = new WebMarkupContainer(CONTAINER_COMPONENT_ID);
         container.add(new Label(LABEL_COMPONENT_ID, label));
-        container.add(new EmptyPanel(SELECTOR_COMPONENT_ID));
-        container.add(new TextField<String>(VALUE_COMPONENT_ID).setEnabled(false).setDefaultModel(
-                new Model<String>()));
-        container.add(new ActionLink(CANCEL_COMPONENT_ID, Action.CANCEL));
+        container.add(new ValueComponent(VALUE_COMPONENT_ID));
         add(container);
     }
 
     /**
-     * Sets model.
-     * 
-     * @param model
+     * {@inheritDoc}
      */
-    @SuppressWarnings("unchecked")
-    public final IModel<? extends O> getModel() {
-        return (IModel<? extends O>) getDefaultModel();
-    }
-
-    /**
-     * Gets model object.
-     * 
-     * @return model object
-     */
-    @SuppressWarnings("unchecked")
-    public final O getModelObject() {
-        return (O) getDefaultModelObject();
-    }
-
-    /**
-     * Sets model.
-     * 
-     * @param model
-     *            the model
-     */
-    public final void setModel(IModel<? extends O> model) {
-        setDefaultModel(model);
-    }
-
-    /**
-     * Sets model object.
-     * 
-     * @param object
-     *            the model object
-     */
-    public final void setModelObject(O object) {
-        setDefaultModelObject(object);
-    }
-
-    /**
-     * @param modelObject
-     */
-    private void configureComponent(O modelObject) {
-        if (isReadyToSelect()
-                && (get(CONTAINER_COMPONENT_ID + PATH_SEPARATOR + SELECTOR_COMPONENT_ID) instanceof EmptyPanel)) {
-            get(CONTAINER_COMPONENT_ID + PATH_SEPARATOR + SELECTOR_COMPONENT_ID).replaceWith(
-                    createSelectorComponent(SELECTOR_COMPONENT_ID));
-        } else if (!isReadyToSelect()
-                && !(get(CONTAINER_COMPONENT_ID + PATH_SEPARATOR + SELECTOR_COMPONENT_ID) instanceof EmptyPanel)) {
-            get(CONTAINER_COMPONENT_ID + PATH_SEPARATOR + SELECTOR_COMPONENT_ID).replaceWith(
-                    new EmptyPanel(SELECTOR_COMPONENT_ID));
-        }
-        internalConfigureComponent(modelObject);
-        get(CONTAINER_COMPONENT_ID).setVisibilityAllowed(isReadyToSelect());
-        get(CONTAINER_COMPONENT_ID + PATH_SEPARATOR + CANCEL_COMPONENT_ID).setVisibilityAllowed(
-                isValued());
-        Component valueComponent = get(CONTAINER_COMPONENT_ID + PATH_SEPARATOR + VALUE_COMPONENT_ID)
-                .setVisibilityAllowed(isValued());
-        if (isValued()) {
-            String value = getValueLabelFor(modelObject);
-            valueComponent.setDefaultModel(new Model<String>(value)).add(
-                    new AttributeModifier("size", new Model<Integer>(value.length())));
-        } else {
-            valueComponent.setDefaultModel(new Model<String>());
-        }
-    }
-
-    /**
-     * @param modelObject
-     */
-    protected void internalConfigureComponent(O modelObject) {
-        get(CONTAINER_COMPONENT_ID + PATH_SEPARATOR + SELECTOR_COMPONENT_ID).setVisibilityAllowed(
-                !isValued());
+    @Override
+    protected void onInitialize() {
+        super.onInitialize();
+        ((WebMarkupContainer) get(CONTAINER_COMPONENT_ID))
+                .add(createSelectorComponent(SELECTOR_COMPONENT_ID));
     }
 
     /**
@@ -177,16 +102,18 @@ public abstract class SimpleComponent<O> extends Panel {
     @Override
     protected final void onConfigure() {
         super.onConfigure();
-        configureComponent(getModelObject());
+        get(CONTAINER_COMPONENT_ID).setVisibilityAllowed(isReadyToSelect());
+        internalOnConfigure();
+        get(CONTAINER_COMPONENT_ID + PATH_SEPARATOR + VALUE_COMPONENT_ID).setVisibilityAllowed(
+                valued);
     }
 
     /**
-     * {@inheritDoc}
+     * 
      */
-    @SuppressWarnings("unchecked")
-    @Override
-    protected IModel<?> initModel() {
-        return new CompoundPropertyModel<O>((IModel<O>) super.initModel());
+    protected void internalOnConfigure() {
+        get(CONTAINER_COMPONENT_ID + PATH_SEPARATOR + SELECTOR_COMPONENT_ID).setVisibilityAllowed(
+                !valued);
     }
 
     /**
@@ -194,16 +121,18 @@ public abstract class SimpleComponent<O> extends Panel {
      *            not null
      * @return true if the object is created or selected
      */
-    public boolean isValued() {
+    public final boolean isValued() {
         return valued;
     }
 
-    /**
-     * @param valued
-     *            the valued to set
-     */
-    protected void setValued(boolean valued) {
-        this.valued = valued;
+    protected final void markAsNonValued() {
+        valued = false;
+        setModelObject(createDefaultObject());
+    }
+
+    protected final void markAsValued(O object) {
+        valued = true;
+        setModelObject(object);
     }
 
     /**
@@ -212,6 +141,13 @@ public abstract class SimpleComponent<O> extends Panel {
     @Override
     protected void onModelChanged() {
         send(getParent(), Broadcast.BUBBLE, Action.MODEL_CHANGED);
+        Component valueComponent = get(CONTAINER_COMPONENT_ID + PATH_SEPARATOR + VALUE_COMPONENT_ID);
+        if (valued) {
+            String value = getValueLabelFor(getModelObject());
+            valueComponent.setDefaultModel(new Model<String>(value));
+        } else {
+            valueComponent.setDefaultModel(new Model<String>());
+        }
     }
 
     /**
@@ -254,13 +190,11 @@ public abstract class SimpleComponent<O> extends Panel {
     }
 
     protected void onSelect(IEventSource source, Action action) {
-        setValued(true);
-        setModelObject(getModelObjectFromEvent(source));
+        markAsValued(getModelObjectFromEvent(source));
     }
 
     protected void onCancel(IEventSource source, Action action) {
-        setValued(false);
-        setModelObject(null);
+        markAsNonValued();
     }
 
     protected void onModelChanged(IEventSource source, Action action) {

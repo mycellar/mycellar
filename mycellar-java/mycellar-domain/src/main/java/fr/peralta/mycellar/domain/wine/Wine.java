@@ -44,6 +44,7 @@ import javax.validation.Valid;
 import javax.validation.constraints.Pattern;
 
 import org.apache.commons.lang3.ObjectUtils;
+import org.apache.commons.lang3.builder.ToStringBuilder;
 
 import fr.peralta.mycellar.domain.shared.NamedEntity;
 import fr.peralta.mycellar.domain.shared.ValidationPattern;
@@ -58,7 +59,7 @@ import fr.peralta.mycellar.domain.stock.Bottle;
 @SequenceGenerator(name = "WINE_ID_GENERATOR", allocationSize = 1)
 public class Wine extends NamedEntity<Wine> {
 
-    private static final long serialVersionUID = 201011121600L;
+    private static final long serialVersionUID = 201111181451L;
 
     @SuppressWarnings("unused")
     @OneToMany(mappedBy = "wine")
@@ -260,5 +261,15 @@ public class Wine extends NamedEntity<Wine> {
     @Override
     protected Object[] getHashCodeData() {
         return new Object[] { getName(), getVintage(), getColor(), getType() };
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    protected ToStringBuilder toStringBuilder() {
+        return super.toStringBuilder().append("description", description)
+                .append("photoUrl", photoUrl).append("producer", producer)
+                .append("ranking", ranking).append("type", type).append("vintage", vintage);
     }
 }

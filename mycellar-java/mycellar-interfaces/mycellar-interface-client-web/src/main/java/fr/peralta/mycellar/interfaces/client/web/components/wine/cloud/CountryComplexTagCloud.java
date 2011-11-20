@@ -18,6 +18,8 @@
  */
 package fr.peralta.mycellar.interfaces.client.web.components.wine.cloud;
 
+import java.util.Map;
+
 import org.apache.wicket.Component;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.spring.injection.annot.SpringBean;
@@ -26,7 +28,6 @@ import fr.peralta.mycellar.domain.shared.repository.CountEnum;
 import fr.peralta.mycellar.domain.shared.repository.SearchForm;
 import fr.peralta.mycellar.domain.wine.Country;
 import fr.peralta.mycellar.interfaces.client.web.components.shared.cloud.ComplexTagCloud;
-import fr.peralta.mycellar.interfaces.client.web.components.shared.cloud.TagCloudPanel;
 import fr.peralta.mycellar.interfaces.client.web.components.wine.edit.CountryEditPanel;
 import fr.peralta.mycellar.interfaces.facades.wine.WineServiceFacade;
 
@@ -35,7 +36,7 @@ import fr.peralta.mycellar.interfaces.facades.wine.WineServiceFacade;
  */
 public class CountryComplexTagCloud extends ComplexTagCloud<Country> {
 
-    private static final long serialVersionUID = 201107252130L;
+    private static final long serialVersionUID = 201111161904L;
 
     @SpringBean
     private WineServiceFacade wineServiceFacade;
@@ -76,9 +77,8 @@ public class CountryComplexTagCloud extends ComplexTagCloud<Country> {
      * {@inheritDoc}
      */
     @Override
-    protected TagCloudPanel<Country> createTagCloudPanel(String id) {
-        return new TagCloudPanel<Country>(id, getListFrom(wineServiceFacade.getCountries(
-                searchFormModel.getObject(), count)));
+    protected Map<Country, Long> getChoices() {
+        return wineServiceFacade.getCountries(searchFormModel.getObject(), count);
     }
 
     /**

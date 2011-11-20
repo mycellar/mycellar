@@ -36,6 +36,7 @@ import javax.persistence.Table;
 import javax.persistence.UniqueConstraint;
 
 import org.apache.commons.lang3.ObjectUtils;
+import org.apache.commons.lang3.builder.ToStringBuilder;
 
 import fr.peralta.mycellar.domain.position.Map;
 import fr.peralta.mycellar.domain.shared.NamedEntity;
@@ -49,7 +50,7 @@ import fr.peralta.mycellar.domain.shared.NamedEntity;
 @SequenceGenerator(name = "APPELLATION_ID_GENERATOR", allocationSize = 1)
 public class Appellation extends NamedEntity<Appellation> {
 
-    private static final long serialVersionUID = 201011071628L;
+    private static final long serialVersionUID = 201111181451L;
 
     @Column(name = "DESCRIPTION")
     private String description;
@@ -138,6 +139,15 @@ public class Appellation extends NamedEntity<Appellation> {
     @Override
     protected Object[] getHashCodeData() {
         return new Object[] { getName() };
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    protected ToStringBuilder toStringBuilder() {
+        return super.toStringBuilder().append("description", description).append("map", map)
+                .append("region", region);
     }
 
 }

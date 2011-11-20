@@ -29,6 +29,7 @@ import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
 import org.apache.commons.lang3.ObjectUtils;
+import org.apache.commons.lang3.builder.ToStringBuilder;
 
 import fr.peralta.mycellar.domain.shared.NamedEntity;
 
@@ -45,7 +46,7 @@ import fr.peralta.mycellar.domain.shared.NamedEntity;
 @SequenceGenerator(name = "VARIETAL_ID_GENERATOR", allocationSize = 1)
 public class Varietal extends NamedEntity<Varietal> {
 
-    private static final long serialVersionUID = 201010311742L;
+    private static final long serialVersionUID = 201111181451L;
 
     @Column(name = "DESCRIPTION")
     private String description;
@@ -130,6 +131,15 @@ public class Varietal extends NamedEntity<Varietal> {
     @Override
     protected Object[] getHashCodeData() {
         return new Object[] { getName() };
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    protected ToStringBuilder toStringBuilder() {
+        return super.toStringBuilder().append("description", description).append("flesh", flesh)
+                .append("skin", skin);
     }
 
 }

@@ -37,6 +37,7 @@ import javax.persistence.UniqueConstraint;
 import javax.validation.Valid;
 
 import org.apache.commons.lang3.ObjectUtils;
+import org.apache.commons.lang3.builder.ToStringBuilder;
 
 import fr.peralta.mycellar.domain.position.Map;
 import fr.peralta.mycellar.domain.shared.NamedEntity;
@@ -50,7 +51,7 @@ import fr.peralta.mycellar.domain.shared.NamedEntity;
 @SequenceGenerator(name = "REGION_ID_GENERATOR", allocationSize = 1)
 public class Region extends NamedEntity<Region> {
 
-    private static final long serialVersionUID = 201010311741L;
+    private static final long serialVersionUID = 201111181451L;
 
     @SuppressWarnings("unused")
     @OneToMany(mappedBy = "region")
@@ -140,6 +141,15 @@ public class Region extends NamedEntity<Region> {
     @Override
     protected Object[] getHashCodeData() {
         return new Object[] { getName() };
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    protected ToStringBuilder toStringBuilder() {
+        return super.toStringBuilder().append("country", country)
+                .append("description", description).append("map", map);
     }
 
 }

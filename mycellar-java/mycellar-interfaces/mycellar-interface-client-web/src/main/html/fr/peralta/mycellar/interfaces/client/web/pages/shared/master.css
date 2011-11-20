@@ -413,7 +413,7 @@ input[type="file"]:focus,input[type="checkbox"]:focus,select:focus {
   outline: 1px dotted #666;
 }
 
-input[type="button"],input[type="submit"] {
+input[type="button"],input[type="submit"],input[type="image"]:hover {
   cursor: pointer;
   display: inline-block;
   background-color: #e6e6e6;
@@ -442,10 +442,29 @@ input[type="button"],input[type="submit"] {
   transition: 0.1s linear all;
 }
 
-input[type="button"]:hover,input[type="submit"]:hover {
+input[type="button"]:hover,input[type="submit"]:hover,input[type="image"] {
   background-position: 0 -10px;
   color: #333;
   text-decoration: none;
+}
+
+/** VALUE **/
+.value .input {
+  border-radius: 3px 0 0 3px;
+  float: left;
+}
+
+.value .cancel {
+  float: left;
+  border-width: 1px 1px 1px 0px;
+  border-radius: 0px 3px 3px 0px;
+  padding: 4px;
+}
+
+.value .cancel:hover {
+  border-width: 1px 1px 1px 0px;
+  border-radius: 0px 3px 3px 0px;
+  padding: 4px;
 }
 
 /** CLOUD **/
