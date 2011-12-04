@@ -18,9 +18,7 @@
  */
 package fr.peralta.mycellar.interfaces.client.web.pages.cellar;
 
-import org.apache.wicket.ajax.markup.html.navigation.paging.AjaxPagingNavigator;
 import org.apache.wicket.event.IEvent;
-import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.request.mapper.parameter.PageParameters;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -32,8 +30,8 @@ import fr.peralta.mycellar.interfaces.client.web.components.shared.Action;
 import fr.peralta.mycellar.interfaces.client.web.components.shared.ActionLink;
 import fr.peralta.mycellar.interfaces.client.web.components.shared.AjaxTool;
 import fr.peralta.mycellar.interfaces.client.web.components.shared.SearchFormModel;
+import fr.peralta.mycellar.interfaces.client.web.components.stock.data.MovementDataView;
 import fr.peralta.mycellar.interfaces.client.web.components.stock.multiple.CellarMultiplePanel;
-import fr.peralta.mycellar.interfaces.client.web.components.wine.data.MovementDataView;
 import fr.peralta.mycellar.interfaces.client.web.pages.shared.CellarSuperPage;
 import fr.peralta.mycellar.interfaces.client.web.security.UserKey;
 import fr.peralta.mycellar.interfaces.client.web.shared.LoggingUtils;
@@ -60,12 +58,7 @@ public class InputOutputPage extends CellarSuperPage {
         add(new CellarMultiplePanel(CELLARS_COMPONENT_ID, searchFormModel, CountEnum.STOCK_QUANTITY));
         add(new ActionLink("clearFilters", Action.CANCEL));
 
-        MovementDataView movementDataView = new MovementDataView("movements", searchFormModel);
-        movementDataView.setItemsPerPage(25);
-        add(new WebMarkupContainer("noMovements").setVisible(movementDataView.getViewSize() == 0));
-        add(movementDataView);
-        add(new AjaxPagingNavigator("movementsTopNav", movementDataView));
-        add(new AjaxPagingNavigator("movementsBottomNav", movementDataView));
+        add(new MovementDataView("movements", searchFormModel));
     }
 
     /**

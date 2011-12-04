@@ -18,9 +18,7 @@
  */
 package fr.peralta.mycellar.interfaces.client.web.pages.pedia;
 
-import org.apache.wicket.ajax.markup.html.navigation.paging.AjaxPagingNavigator;
 import org.apache.wicket.event.IEvent;
-import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.request.mapper.parameter.PageParameters;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -31,7 +29,7 @@ import fr.peralta.mycellar.interfaces.client.web.components.shared.Action;
 import fr.peralta.mycellar.interfaces.client.web.components.shared.ActionLink;
 import fr.peralta.mycellar.interfaces.client.web.components.shared.AjaxTool;
 import fr.peralta.mycellar.interfaces.client.web.components.shared.SearchFormModel;
-import fr.peralta.mycellar.interfaces.client.web.components.stock.data.WineDataView;
+import fr.peralta.mycellar.interfaces.client.web.components.wine.data.WineDataView;
 import fr.peralta.mycellar.interfaces.client.web.components.wine.multiple.AppellationMultiplePanel;
 import fr.peralta.mycellar.interfaces.client.web.components.wine.multiple.CountryMultiplePanel;
 import fr.peralta.mycellar.interfaces.client.web.components.wine.multiple.RegionMultiplePanel;
@@ -69,12 +67,7 @@ public class PediaHomePage extends PediaSuperPage {
         add(new WineColorEnumMultiplePanel(COLORS_COMPONENT_ID, searchFormModel, CountEnum.WINE));
         add(new ActionLink("clearFilters", Action.CANCEL));
 
-        WineDataView wineDataView = new WineDataView("wines", searchFormModel);
-        wineDataView.setItemsPerPage(25);
-        add(new WebMarkupContainer("noWines").setVisible(wineDataView.getViewSize() == 0));
-        add(wineDataView);
-        add(new AjaxPagingNavigator("winesTopNav", wineDataView));
-        add(new AjaxPagingNavigator("winesBottomNav", wineDataView));
+        add(new WineDataView("wines", searchFormModel));
     }
 
     /**

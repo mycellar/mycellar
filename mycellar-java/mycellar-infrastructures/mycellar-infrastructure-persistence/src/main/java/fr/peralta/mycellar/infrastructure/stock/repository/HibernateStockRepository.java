@@ -111,6 +111,40 @@ public class HibernateStockRepository extends HibernateRepository implements Sto
             case DATE:
                 path = root.get("date");
                 break;
+            case CELLAR_NAME:
+                path = root.get("cellar").get("name");
+                break;
+            case APPELLATION_NAME:
+                path = root.get("bottle").get("wine").get("appellation").get("name");
+                break;
+            case COUNTRY_NAME:
+                path = root.get("bottle").get("wine").get("appellation").get("region")
+                        .get("country").get("name");
+                break;
+            case WINE_NAME:
+                path = root.get("bottle").get("wine").get("name");
+                break;
+            case REGION_NAME:
+                path = root.get("bottle").get("wine").get("appellation").get("name");
+                break;
+            case WINE_VINTAGE:
+                path = root.get("bottle").get("wine").get("vintage");
+                break;
+            case FORMAT_NAME:
+                path = root.get("bottle").get("format").get("name");
+                break;
+            case PRODUCER_NAME:
+                path = root.get("bottle").get("wine").get("producer").get("name");
+                break;
+            case COLOR:
+                path = root.get("bottle").get("wine").get("color");
+                break;
+            case TYPE:
+                path = root.get("bottle").get("wine").get("type");
+                break;
+            case NUMBER:
+                path = root.get("number");
+                break;
             default:
                 throw new IllegalStateException("Unknwon "
                         + MovementOrderEnum.class.getSimpleName() + " value [" + entry.getKey()
@@ -176,13 +210,13 @@ public class HibernateStockRepository extends HibernateRepository implements Sto
                 path = root.get("bottle").get("wine").get("appellation").get("region")
                         .get("country").get("name");
                 break;
-            case NAME:
+            case WINE_NAME:
                 path = root.get("bottle").get("wine").get("name");
                 break;
             case REGION_NAME:
                 path = root.get("bottle").get("wine").get("appellation").get("name");
                 break;
-            case VINTAGE:
+            case WINE_VINTAGE:
                 path = root.get("bottle").get("wine").get("vintage");
                 break;
             case FORMAT_NAME:
@@ -190,6 +224,15 @@ public class HibernateStockRepository extends HibernateRepository implements Sto
                 break;
             case QUANTITY:
                 path = root.get("quantity");
+                break;
+            case PRODUCER_NAME:
+                path = root.get("bottle").get("wine").get("producer").get("name");
+                break;
+            case COLOR:
+                path = root.get("bottle").get("wine").get("color");
+                break;
+            case TYPE:
+                path = root.get("bottle").get("wine").get("type");
                 break;
             default:
                 throw new IllegalStateException("Unknwon " + StockOrderEnum.class.getSimpleName()

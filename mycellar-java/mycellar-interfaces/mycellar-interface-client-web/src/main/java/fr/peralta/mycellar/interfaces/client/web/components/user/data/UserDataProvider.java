@@ -21,7 +21,6 @@ package fr.peralta.mycellar.interfaces.client.web.components.user.data;
 import java.util.Iterator;
 
 import org.apache.wicket.injection.Injector;
-import org.apache.wicket.markup.repeater.data.IDataProvider;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.Model;
 import org.apache.wicket.spring.injection.annot.SpringBean;
@@ -31,13 +30,14 @@ import fr.peralta.mycellar.domain.shared.repository.SearchForm;
 import fr.peralta.mycellar.domain.user.User;
 import fr.peralta.mycellar.domain.user.repository.UserOrder;
 import fr.peralta.mycellar.domain.user.repository.UserOrderEnum;
+import fr.peralta.mycellar.interfaces.client.web.components.shared.data.MultipleSortableDataProvider;
 import fr.peralta.mycellar.interfaces.facades.user.UserServiceFacade;
 
 /**
  * @author speralta
  * 
  */
-public class UserDataProvider implements IDataProvider<User> {
+public class UserDataProvider extends MultipleSortableDataProvider<User, UserOrderEnum, UserOrder> {
 
     private static final long serialVersionUID = 201109192010L;
 
@@ -50,6 +50,8 @@ public class UserDataProvider implements IDataProvider<User> {
      * @param searchFormModel
      */
     public UserDataProvider(IModel<SearchForm> searchFormModel) {
+        super(new UserOrder().add(UserOrderEnum.LASTNAME, OrderWayEnum.ASC).add(
+                UserOrderEnum.FIRSTNAME, OrderWayEnum.ASC));
         Injector.get().inject(this);
         this.searchFormModel = searchFormModel;
     }
@@ -67,10 +69,8 @@ public class UserDataProvider implements IDataProvider<User> {
      */
     @Override
     public Iterator<? extends User> iterator(int first, int count) {
-        return userServiceFacade.getUsers(
-                searchFormModel.getObject(),
-                new UserOrder().add(UserOrderEnum.LASTNAME, OrderWayEnum.ASC).add(
-                        UserOrderEnum.FIRSTNAME, OrderWayEnum.ASC), first, count).iterator();
+        return userServiceFacade.getUsers(searchFormModel.getObject(), getState().getOrders(),
+                first, count).iterator();
     }
 
     /**

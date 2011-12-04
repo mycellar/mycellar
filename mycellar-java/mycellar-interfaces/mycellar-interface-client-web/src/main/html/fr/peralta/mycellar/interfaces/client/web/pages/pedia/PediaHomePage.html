@@ -27,47 +27,7 @@
           <div wicket:id="appellations" class="filter" />
           <p class="filter"><a wicket:id="clearFilters"><wicket:message key="clearFilters">Clear filters</wicket:message></a></p>
         </div>
-        <table class="large border">
-          <thead>
-            <tr>
-              <td class="tableNav" colSpan="8">
-                <span wicket:id="winesTopNav" />
-              </td>
-            </tr>
-            <tr>
-              <th><wicket:message key="country">Country</wicket:message></th>
-              <th><wicket:message key="region">Region</wicket:message></th>
-              <th><wicket:message key="appellation">Appellation</wicket:message></th>
-              <th><wicket:message key="producer">Producer</wicket:message></th>
-              <th><wicket:message key="name">Name</wicket:message></th>
-              <th><wicket:message key="type">Type</wicket:message></th>
-              <th><wicket:message key="color">Color</wicket:message></th>
-              <th><wicket:message key="vintage">Vintage</wicket:message></th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr wicket:id="wines">
-              <td wicket:id="appellation.region.country.name">Country</td>
-              <td wicket:id="appellation.region.name">region</td>
-              <td wicket:id="appellation.name">Appellation</td>
-              <td wicket:id="producer.name">Producer</td>
-              <td wicket:id="name">Name</td>
-              <td wicket:id="type">Type</td>
-              <td wicket:id="color">Color</td>
-              <td wicket:id="vintage">Vintage</td>
-            </tr>
-            <tr wicket:id="noWines">
-              <td colSpan="8" class="ca"><wicket:message key="noMatchingWines">No matching wines</wicket:message></td>
-            </tr>
-          </tbody>
-          <tfoot>
-            <tr>
-              <td colSpan="8" class="tableNav">
-                <span wicket:id="winesBottomNav" />
-              </td>
-            </tr>
-          </tfoot>
-        </table>
+        <table class="large border" wicket:id="wines" />
       </section>
     </wicket:extend>
     <footer>

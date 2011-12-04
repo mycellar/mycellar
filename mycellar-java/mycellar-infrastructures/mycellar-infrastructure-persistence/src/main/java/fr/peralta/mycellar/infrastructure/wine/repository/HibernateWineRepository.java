@@ -296,9 +296,15 @@ public class HibernateWineRepository extends HibernateRepository implements Wine
         case NAME:
             return root.get("name");
         case REGION_NAME:
-            return root.get("appellation").get("name");
+            return root.get("appellation").get("region").get("name");
         case VINTAGE:
             return root.get("vintage");
+        case COLOR:
+            return root.get("color");
+        case PRODUCER_NAME:
+            return root.get("producer").get("name");
+        case TYPE:
+            return root.get("type");
         default:
             throw new IllegalStateException("Unknwon " + WineOrderEnum.class.getSimpleName()
                     + " value [" + order + "].");

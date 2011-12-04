@@ -22,5 +22,5 @@ package fr.peralta.mycellar.domain.stock.repository;
  * @author speralta
  */
 public enum StockOrderEnum {
-    NAME, COUNTRY_NAME, REGION_NAME, APPELLATION_NAME, VINTAGE, FORMAT_NAME, QUANTITY
+    WINE_NAME, COUNTRY_NAME, REGION_NAME, APPELLATION_NAME, WINE_VINTAGE, FORMAT_NAME, QUANTITY, PRODUCER_NAME, TYPE, COLOR
 }

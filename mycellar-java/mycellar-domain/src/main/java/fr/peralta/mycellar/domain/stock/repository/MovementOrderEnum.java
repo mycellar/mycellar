@@ -22,5 +22,5 @@ package fr.peralta.mycellar.domain.stock.repository;
  * @author speralta
  */
 public enum MovementOrderEnum {
-    DATE
+    DATE, CELLAR_NAME, WINE_NAME, COUNTRY_NAME, REGION_NAME, APPELLATION_NAME, WINE_VINTAGE, FORMAT_NAME, PRODUCER_NAME, TYPE, COLOR, NUMBER
 }

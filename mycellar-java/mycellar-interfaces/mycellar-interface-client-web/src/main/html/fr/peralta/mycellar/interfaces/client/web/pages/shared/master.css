@@ -20,6 +20,10 @@ body {
   padding: 50px 10px 10px;
 }
 
+img.icon {
+  vertical-align: text-top;
+}
+
 /** NAV **/
 nav[role="main"] {
   position: absolute;

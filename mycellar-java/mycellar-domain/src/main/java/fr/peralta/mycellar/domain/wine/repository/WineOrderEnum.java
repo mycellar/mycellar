@@ -22,5 +22,5 @@ package fr.peralta.mycellar.domain.wine.repository;
  * @author speralta
  */
 public enum WineOrderEnum {
-    NAME, COUNTRY_NAME, REGION_NAME, APPELLATION_NAME, VINTAGE
+    NAME, COUNTRY_NAME, REGION_NAME, APPELLATION_NAME, VINTAGE, PRODUCER_NAME, TYPE, COLOR
 }

@@ -24,6 +24,8 @@ import org.apache.wicket.markup.html.form.Form;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.Model;
 import org.apache.wicket.request.resource.ResourceReference;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import fr.peralta.mycellar.interfaces.client.web.components.shared.Action;
 
@@ -34,6 +36,7 @@ import fr.peralta.mycellar.interfaces.client.web.components.shared.Action;
 public class ActionAjaxImageButton extends AjaxImageButton {
 
     private static final long serialVersionUID = 201111181935L;
+    private static final Logger logger = LoggerFactory.getLogger(ActionAjaxImageButton.class);
 
     private final IModel<Action> actionModel;
 
@@ -61,8 +64,7 @@ public class ActionAjaxImageButton extends AjaxImageButton {
      */
     @Override
     protected void onError(AjaxRequestTarget target, Form<?> form) {
-        // TODO Auto-generated method stub
-
+        logger.warn("ajax error {} : {}", new Object[] { target, form });
     }
 
     /**

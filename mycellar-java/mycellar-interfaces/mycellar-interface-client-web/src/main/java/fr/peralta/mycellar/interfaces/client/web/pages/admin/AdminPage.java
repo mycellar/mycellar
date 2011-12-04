@@ -23,8 +23,6 @@ import java.sql.SQLException;
 
 import javax.sql.DataSource;
 
-import org.apache.wicket.ajax.markup.html.navigation.paging.AjaxPagingNavigator;
-import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.image.Image;
 import org.apache.wicket.markup.html.link.BookmarkablePageLink;
@@ -90,13 +88,7 @@ public class AdminPage extends AdminSuperPage {
         add(new Label("dbUrl", dbUrl));
         add(new Label("dbLogin", dbLogin));
 
-        StackDataView stackDataView = new StackDataView("stacks", new SearchFormModel(
-                new SearchForm()));
-        stackDataView.setItemsPerPage(25);
-        add(new WebMarkupContainer("noStacks").setVisible(stackDataView.getViewSize() == 0));
-        add(stackDataView);
-        add(new AjaxPagingNavigator("stacksTopNav", stackDataView));
-        add(new AjaxPagingNavigator("stacksBottomNav", stackDataView));
+        add(new StackDataView("stacks", new SearchFormModel(new SearchForm())));
 
         add(new BookmarkablePageLink<Void>("listUsers", ListUsersPage.class));
         add(new Link<Void>("cleanStacks") {

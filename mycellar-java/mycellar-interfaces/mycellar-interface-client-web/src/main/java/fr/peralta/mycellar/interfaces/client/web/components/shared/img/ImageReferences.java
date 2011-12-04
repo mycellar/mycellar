@@ -50,6 +50,34 @@ public class ImageReferences {
         return getImage("eye.png");
     }
 
+    public static ResourceReference getPagingFirstImage() {
+        return getImage("resultset_first.png");
+    }
+
+    public static ResourceReference getPagingPrevImage() {
+        return getImage("resultset_previous.png");
+    }
+
+    public static ResourceReference getPagingNextImage() {
+        return getImage("resultset_next.png");
+    }
+
+    public static ResourceReference getPagingLastImage() {
+        return getImage("resultset_last.png");
+    }
+
+    public static ResourceReference getBulletArrowDownImage() {
+        return getImage("bullet_arrow_down.png");
+    }
+
+    public static ResourceReference getBulletArrowUpImage() {
+        return getImage("bullet_arrow_up.png");
+    }
+
+    public static ResourceReference getBulletArrowUpDownImage() {
+        return getImage("bullet_arrow_up_down.png");
+    }
+
     private static ResourceReference getImage(String filename) {
         return new PackageResourceReference(ImageReferences.class, filename);
     }

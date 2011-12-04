@@ -23,46 +23,7 @@
           <div wicket:id="cellars" class="filter" />
           <p class="filter"><a wicket:id="clearFilters"><wicket:message key="clearFilters">Clear filters</wicket:message></a></p>
         </div>
-        <table class="large border">
-          <col width="10%" />
-          <col width="15%" />
-          <col width="70%" />
-          <col width="10%" />
-          <col width="5%" />
-          <thead>
-            <tr>
-              <td class="tableNav" colSpan="5">
-                <span wicket:id="movementsTopNav" />
-              </td>
-            </tr>
-            <tr>
-              <th><wicket:message key="date">Date</wicket:message></th>
-              <th><wicket:message key="cellar">Cellar</wicket:message></th>
-              <th><wicket:message key="bottle">Reference</wicket:message></th>
-              <th><wicket:message key="number">Quantity</wicket:message></th>
-              <th><wicket:message key="io">I/O</wicket:message></th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr wicket:id="movements">
-              <td class="ca" wicket:id="date">10/01/2011</td>
-              <td class="la" wicket:id="cellar.name">Cellar</td>
-              <td class="la" wicket:id="bottle">Bottle</td>
-              <td class="ra" wicket:id="number">1</td>
-              <td class="ca" wicket:id="io">I</td>
-            </tr>
-            <tr wicket:id="noMovements">
-              <td colSpan="8" class="ca"><wicket:message key="noMatchingMovements">No matching movements</wicket:message></td>
-            </tr>
-          </tbody>
-          <tfoot>
-            <tr>
-              <td colSpan="5" class="tableNav">
-                <span wicket:id="movementsBottomNav" />
-              </td>
-            </tr>
-          </tfoot>
-        </table>
+        <table class="large border" wicket:id="movements" />
       </section>
     </wicket:extend>
     <footer>

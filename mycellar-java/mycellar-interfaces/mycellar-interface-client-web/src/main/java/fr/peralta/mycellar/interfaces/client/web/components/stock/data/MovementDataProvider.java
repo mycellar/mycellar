@@ -21,34 +21,36 @@ package fr.peralta.mycellar.interfaces.client.web.components.stock.data;
 import java.util.Iterator;
 
 import org.apache.wicket.injection.Injector;
-import org.apache.wicket.markup.repeater.data.IDataProvider;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.Model;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 
 import fr.peralta.mycellar.domain.shared.repository.OrderWayEnum;
 import fr.peralta.mycellar.domain.shared.repository.SearchForm;
-import fr.peralta.mycellar.domain.wine.Wine;
-import fr.peralta.mycellar.domain.wine.repository.WineOrder;
-import fr.peralta.mycellar.domain.wine.repository.WineOrderEnum;
-import fr.peralta.mycellar.interfaces.facades.wine.WineServiceFacade;
+import fr.peralta.mycellar.domain.stock.Movement;
+import fr.peralta.mycellar.domain.stock.repository.MovementOrder;
+import fr.peralta.mycellar.domain.stock.repository.MovementOrderEnum;
+import fr.peralta.mycellar.interfaces.client.web.components.shared.data.MultipleSortableDataProvider;
+import fr.peralta.mycellar.interfaces.facades.stock.StockServiceFacade;
 
 /**
  * @author speralta
  */
-public class WineDataProvider implements IDataProvider<Wine> {
+public class MovementDataProvider extends
+        MultipleSortableDataProvider<Movement<?>, MovementOrderEnum, MovementOrder> {
 
     private static final long serialVersionUID = 201109192010L;
 
     @SpringBean
-    private WineServiceFacade wineServiceFacade;
+    private StockServiceFacade stockServiceFacade;
 
     private final IModel<SearchForm> searchFormModel;
 
     /**
      * @param searchFormModel
      */
-    public WineDataProvider(IModel<SearchForm> searchFormModel) {
+    public MovementDataProvider(IModel<SearchForm> searchFormModel) {
+        super(new MovementOrder().add(MovementOrderEnum.DATE, OrderWayEnum.DESC));
         Injector.get().inject(this);
         this.searchFormModel = searchFormModel;
     }
@@ -65,13 +67,9 @@ public class WineDataProvider implements IDataProvider<Wine> {
      * {@inheritDoc}
      */
     @Override
-    public Iterator<? extends Wine> iterator(int first, int count) {
-        return wineServiceFacade.getWines(
-                searchFormModel.getObject(),
-                new WineOrder().add(WineOrderEnum.COUNTRY_NAME, OrderWayEnum.ASC)
-                        .add(WineOrderEnum.REGION_NAME, OrderWayEnum.ASC)
-                        .add(WineOrderEnum.APPELLATION_NAME, OrderWayEnum.ASC), first, count)
-                .iterator();
+    public Iterator<? extends Movement<?>> iterator(int first, int count) {
+        return stockServiceFacade.getMovements(searchFormModel.getObject(), getState().getOrders(),
+                first, count).iterator();
     }
 
     /**
@@ -79,15 +77,15 @@ public class WineDataProvider implements IDataProvider<Wine> {
      */
     @Override
     public int size() {
-        return (int) wineServiceFacade.countWines(searchFormModel.getObject());
+        return (int) stockServiceFacade.countMovements(searchFormModel.getObject());
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public IModel<Wine> model(Wine object) {
-        return new Model<Wine>(object);
+    public IModel<Movement<?>> model(Movement<?> object) {
+        return new Model<Movement<?>>(object);
     }
 
 }

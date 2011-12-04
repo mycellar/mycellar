@@ -57,43 +57,7 @@
       </section>
       <section>
         <header role="tertiary"><h4><wicket:message key="stacks">Stacks</wicket:message></h4></header>
-        <table class="border large">
-          <col width="10%" />
-          <col width="77%" />
-          <col width="8%" />
-          <col width="5%" />
-          <thead>
-            <tr>
-              <td class="tableNav" colSpan="10">
-                <span wicket:id="stacksTopNav" />
-              </td>
-            </tr>
-            <tr>
-              <th><wicket:message key="hashCode">Hashcode</wicket:message></th>
-              <th><wicket:message key="content">Content</wicket:message></th>
-              <th><wicket:message key="count">Count</wicket:message></th>
-              <th><wicket:message key="detail">Detail</wicket:message></th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr wicket:id="stacks">
-              <td wicket:id="hashCode">HASH</td>
-              <td wicket:id="content">CONTENT</td>
-              <td wicket:id="count" class="ra">COUNT</td>
-              <td wicket:id="detail" class="ca"><a wicket:id="detailStack"><img wicket:id="detailStackImg" wicket:message="title:detailStack" /></a></td>
-            </tr>
-            <tr wicket:id="noStacks">
-              <td colSpan="10" class="ca"><wicket:message key="noStacks">No stacks</wicket:message></td>
-            </tr>
-          </tbody>
-          <tfoot>
-            <tr>
-              <td colSpan="10" class="tableNav">
-                <span wicket:id="stacksBottomNav" />
-              </td>
-            </tr>
-          </tfoot>
-        </table>
+        <table class="border large" wicket:id="stacks" />
       </section>
     </wicket:extend>
     <footer>

@@ -21,7 +21,6 @@ package fr.peralta.mycellar.interfaces.client.web.components.stack.data;
 import java.util.Iterator;
 
 import org.apache.wicket.injection.Injector;
-import org.apache.wicket.markup.repeater.data.IDataProvider;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.Model;
 import org.apache.wicket.spring.injection.annot.SpringBean;
@@ -31,12 +30,14 @@ import fr.peralta.mycellar.domain.shared.repository.SearchForm;
 import fr.peralta.mycellar.domain.stack.Stack;
 import fr.peralta.mycellar.domain.stack.repository.StackOrder;
 import fr.peralta.mycellar.domain.stack.repository.StackOrderEnum;
+import fr.peralta.mycellar.interfaces.client.web.components.shared.data.MultipleSortableDataProvider;
 import fr.peralta.mycellar.interfaces.facades.stack.StackServiceFacade;
 
 /**
  * @author speralta
  */
-public class StackDataProvider implements IDataProvider<Stack> {
+public class StackDataProvider extends
+        MultipleSortableDataProvider<Stack, StackOrderEnum, StackOrder> {
 
     private static final long serialVersionUID = 201111081450L;
 
@@ -49,6 +50,7 @@ public class StackDataProvider implements IDataProvider<Stack> {
      * @param searchFormModel
      */
     public StackDataProvider(IModel<SearchForm> searchFormModel) {
+        super(new StackOrder().add(StackOrderEnum.COUNT, OrderWayEnum.DESC));
         Injector.get().inject(this);
         this.searchFormModel = searchFormModel;
     }
@@ -66,9 +68,8 @@ public class StackDataProvider implements IDataProvider<Stack> {
      */
     @Override
     public Iterator<? extends Stack> iterator(int first, int count) {
-        return stackServiceFacade.getStacks(searchFormModel.getObject(),
-                new StackOrder().add(StackOrderEnum.COUNT, OrderWayEnum.DESC), first, count)
-                .iterator();
+        return stackServiceFacade.getStacks(searchFormModel.getObject(), getState().getOrders(),
+                first, count).iterator();
     }
 
     /**

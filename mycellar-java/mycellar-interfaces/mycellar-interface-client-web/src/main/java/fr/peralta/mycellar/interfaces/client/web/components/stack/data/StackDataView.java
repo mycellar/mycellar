@@ -18,48 +18,78 @@
  */
 package fr.peralta.mycellar.interfaces.client.web.components.stack.data;
 
-import org.apache.wicket.markup.html.WebMarkupContainer;
+import java.util.ArrayList;
+import java.util.List;
+
+import org.apache.wicket.extensions.markup.html.repeater.data.grid.ICellPopulator;
+import org.apache.wicket.extensions.markup.html.repeater.data.table.AbstractColumn;
+import org.apache.wicket.extensions.markup.html.repeater.data.table.IColumn;
+import org.apache.wicket.extensions.markup.html.repeater.data.table.PropertyColumn;
 import org.apache.wicket.markup.html.basic.Label;
-import org.apache.wicket.markup.html.image.Image;
-import org.apache.wicket.markup.html.link.BookmarkablePageLink;
 import org.apache.wicket.markup.repeater.Item;
-import org.apache.wicket.markup.repeater.data.DataViewBase;
-import org.apache.wicket.model.CompoundPropertyModel;
 import org.apache.wicket.model.IModel;
+import org.apache.wicket.model.ResourceModel;
 
 import fr.peralta.mycellar.domain.shared.repository.SearchForm;
 import fr.peralta.mycellar.domain.stack.Stack;
-import fr.peralta.mycellar.interfaces.client.web.components.shared.img.ImageReferences;
-import fr.peralta.mycellar.interfaces.client.web.pages.admin.StackPage;
+import fr.peralta.mycellar.domain.stack.repository.StackOrderEnum;
+import fr.peralta.mycellar.interfaces.client.web.components.shared.data.AdvancedTable;
 
 /**
  * @author speralta
  */
-public class StackDataView extends DataViewBase<Stack> {
+public class StackDataView extends AdvancedTable<Stack> {
 
     private static final long serialVersionUID = 201111081449L;
+
+    private static List<IColumn<Stack>> getNewColumns() {
+        List<IColumn<Stack>> columns = new ArrayList<IColumn<Stack>>();
+        columns.add(new PropertyColumn<Stack>(new ResourceModel("hashCode"), "hashCode"));
+        columns.add(new AbstractColumn<Stack>(new ResourceModel("content")) {
+            private static final long serialVersionUID = 201111290925L;
+
+            @Override
+            public void populateItem(Item<ICellPopulator<Stack>> cellItem, String componentId,
+                    IModel<Stack> rowModel) {
+                cellItem.add(new Label(componentId, rowModel.getObject().getStack()
+                        .substring(0, rowModel.getObject().getStack().indexOf("\n"))));
+            }
+        });
+        columns.add(new PropertyColumn<Stack>(new ResourceModel("count"), StackOrderEnum.COUNT
+                .name(), "count"));
+        columns.add(new AbstractColumn<Stack>(new ResourceModel("detail")) {
+            private static final long serialVersionUID = 201111290925L;
+
+            @Override
+            public void populateItem(Item<ICellPopulator<Stack>> cellItem, String componentId,
+                    IModel<Stack> rowModel) {
+                cellItem.add(new StackDetailPanel(componentId, rowModel.getObject().getId()));
+            }
+
+            @Override
+            public String getCssClass() {
+                return "ca";
+            }
+
+        });
+        return columns;
+    }
+
+    private static List<Integer> getColSizes() {
+        List<Integer> colSizes = new ArrayList<Integer>();
+        colSizes.add(10);
+        colSizes.add(75);
+        colSizes.add(10);
+        colSizes.add(5);
+        return colSizes;
+    }
 
     /**
      * @param id
      * @param searchFormModel
      */
     public StackDataView(String id, IModel<SearchForm> searchFormModel) {
-        super(id, new StackDataProvider(searchFormModel));
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    protected void populateItem(Item<Stack> item) {
-        item.setModel(new CompoundPropertyModel<Stack>(item.getModel()));
-        item.add(new Label("hashCode"));
-        int firstLineIndex = item.getModelObject().getStack().indexOf("\n");
-        item.add(new Label("content", item.getModelObject().getStack().substring(0, firstLineIndex)));
-        item.add(new Label("count"));
-        item.add(new WebMarkupContainer("detail").add(new BookmarkablePageLink<Void>("detailStack",
-                StackPage.class, StackPage.getPageParameters(item.getModelObject().getId()))
-                .add(new Image("detailStackImg", ImageReferences.getEyeImage()))));
+        super(id, getNewColumns(), getColSizes(), new StackDataProvider(searchFormModel), 20);
     }
 
 }

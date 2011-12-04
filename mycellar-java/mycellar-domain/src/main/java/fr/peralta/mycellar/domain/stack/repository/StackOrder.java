@@ -25,4 +25,14 @@ import fr.peralta.mycellar.domain.shared.repository.AbstractEntityOrder;
  */
 public class StackOrder extends AbstractEntityOrder<StackOrderEnum, StackOrder> {
 
+    private static final long serialVersionUID = 201111291820L;
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public StackOrderEnum getFrom(String property) {
+        return StackOrderEnum.valueOf(property);
+    }
+
 }

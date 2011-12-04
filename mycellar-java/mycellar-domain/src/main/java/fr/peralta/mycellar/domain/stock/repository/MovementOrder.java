@@ -25,4 +25,14 @@ import fr.peralta.mycellar.domain.shared.repository.AbstractEntityOrder;
  */
 public class MovementOrder extends AbstractEntityOrder<MovementOrderEnum, MovementOrder> {
 
+    private static final long serialVersionUID = 201111290937L;
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public MovementOrderEnum getFrom(String property) {
+        return MovementOrderEnum.valueOf(property);
+    }
+
 }

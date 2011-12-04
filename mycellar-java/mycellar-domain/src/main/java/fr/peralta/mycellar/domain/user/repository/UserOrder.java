@@ -25,4 +25,14 @@ import fr.peralta.mycellar.domain.shared.repository.AbstractEntityOrder;
  */
 public class UserOrder extends AbstractEntityOrder<UserOrderEnum, UserOrder> {
 
+    private static final long serialVersionUID = 201111291821L;
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public UserOrderEnum getFrom(String property) {
+        return UserOrderEnum.valueOf(property);
+    }
+
 }
