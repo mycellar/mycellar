@@ -4,4 +4,5 @@
   <entry key="createButton">Valider</entry>
   <entry key="cancelButton">Annuler</entry>
   <entry key="addLink">Nouveau</entry>
+  <entry key="cancelButton">Annuler</entry>
 </properties>
