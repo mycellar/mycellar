@@ -322,8 +322,8 @@ form {
 }
 
 div.subForm {
-  width: 80%;
-  margin: auto;
+  margin-left: 110px;
+  margin-right: 110px;
   border: 2px solid;
   border-radius: 5px;
 }
