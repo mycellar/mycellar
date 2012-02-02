@@ -33,9 +33,11 @@ import fr.peralta.mycellar.domain.shared.repository.SearchForm;
 import fr.peralta.mycellar.domain.stock.Arrival;
 import fr.peralta.mycellar.domain.stock.Bottle;
 import fr.peralta.mycellar.domain.stock.Cellar;
+import fr.peralta.mycellar.domain.stock.CellarShare;
 import fr.peralta.mycellar.domain.stock.Drink;
 import fr.peralta.mycellar.domain.stock.Movement;
 import fr.peralta.mycellar.domain.stock.Stock;
+import fr.peralta.mycellar.domain.stock.repository.CellarShareOrder;
 import fr.peralta.mycellar.domain.stock.repository.MovementOrder;
 import fr.peralta.mycellar.domain.stock.repository.StockOrder;
 import fr.peralta.mycellar.domain.wine.Format;
@@ -76,8 +78,17 @@ public class StockServiceFacadeImpl implements StockServiceFacade {
      */
     @Override
     @Transactional
-    public void newCellar(Cellar cellar) {
-        cellarService.newCellar(cellar);
+    public void saveCellarShare(CellarShare cellarShare) {
+        cellarService.saveCellarShare(cellarShare);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    @Transactional
+    public void deleteCellarShare(CellarShare cellarShare) {
+        cellarService.deleteCellarShare(cellarShare);
     }
 
     /**
@@ -87,6 +98,24 @@ public class StockServiceFacadeImpl implements StockServiceFacade {
     @Transactional(readOnly = true)
     public Map<Cellar, Long> getCellars(SearchForm searchForm, CountEnum count) {
         return cellarService.getAll(searchForm, count);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public List<CellarShare> getCellarShares(SearchForm searchForm, CellarShareOrder orders,
+            int first, int count) {
+        return cellarService.getShares(searchForm, orders, first, count);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    @Transactional(readOnly = true)
+    public long countCellarShares(SearchForm searchForm) {
+        return cellarService.countShares(searchForm);
     }
 
     /**

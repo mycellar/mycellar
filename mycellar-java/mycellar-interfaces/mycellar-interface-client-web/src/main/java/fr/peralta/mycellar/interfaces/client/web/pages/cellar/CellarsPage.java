@@ -19,7 +19,6 @@
 package fr.peralta.mycellar.interfaces.client.web.pages.cellar;
 
 import org.apache.wicket.event.IEvent;
-import org.apache.wicket.markup.html.link.BookmarkablePageLink;
 import org.apache.wicket.request.mapper.parameter.PageParameters;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -69,7 +68,6 @@ public class CellarsPage extends CellarSuperPage {
                 FilterEnum.USER, UserKey.getUserLoggedIn()));
         setDefaultModel(searchFormModel);
 
-        add(new BookmarkablePageLink<NewCellarPage>("newCellar", NewCellarPage.class));
         add(new CellarMultiplePanel(CELLARS_COMPONENT_ID, searchFormModel, CountEnum.STOCK_QUANTITY));
         add(new CountryMultiplePanel(COUNTRIES_COMPONENT_ID, searchFormModel,
                 CountEnum.STOCK_QUANTITY));

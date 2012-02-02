@@ -293,6 +293,11 @@ table.large {
   width: 100%;
 }
 
+/** TABLE NO RECORDS **/
+table td.norecords-td {
+  text-align: center;
+}
+
 /** TABLE NAV **/
 table td.tableNav {
   text-align: center;
@@ -497,6 +502,63 @@ input[type="button"]:hover,input[type="submit"]:hover,input[type="image"]:hover 
 
 .cloud:nth-child(3n+2) a:hover {
   color: darkGreen;
+}
+
+/** TABS **/
+.tab-row ul {
+  list-style: none outside none;
+  margin: 0 0 20px;
+  padding: 0;
+  border-bottom: 1px solid #DDDDDD;
+  float: left;
+  width: 100%;
+}
+
+.tab-row ul:before,.tab-row ul:after {
+  content: "";
+  display: table;
+}
+
+.tab-row ul:after {
+  clear: both;
+}
+
+.tab-row ul > li {
+  float: left;
+  position: relative;
+  top: 1px;
+}
+
+.tab-row ul > li > a {
+  display: block;
+  border: 1px solid transparent;
+  border-radius: 4px 4px 0 0;
+  line-height: 36px;
+  margin-right: 2px;
+  padding: 0 15px;
+}
+
+.tab-row ul > li > a:hover {
+  background-color: #EEEEEE;
+  border-color: #EEEEEE #EEEEEE #DDDDDD;
+  text-decoration: none;
+}
+
+.tab-row ul > li.selected > a {
+  -moz-border-bottom-colors: none;
+  -moz-border-image: none;
+  -moz-border-left-colors: none;
+  -moz-border-right-colors: none;
+  -moz-border-top-colors: none;
+  background-color: #FFFFFF;
+  border-color: #DDDDDD #DDDDDD transparent;
+  border-style: solid;
+  border-width: 1px;
+  color: #808080;
+}
+
+.tab-panel {
+  clear: both;
 }
 
 /** MULTIPLE **/

@@ -18,11 +18,14 @@
  */
 package fr.peralta.mycellar.application.stock;
 
+import java.util.List;
 import java.util.Map;
 
 import fr.peralta.mycellar.domain.shared.repository.CountEnum;
 import fr.peralta.mycellar.domain.shared.repository.SearchForm;
 import fr.peralta.mycellar.domain.stock.Cellar;
+import fr.peralta.mycellar.domain.stock.CellarShare;
+import fr.peralta.mycellar.domain.stock.repository.CellarShareOrder;
 
 /**
  * @author speralta
@@ -30,9 +33,9 @@ import fr.peralta.mycellar.domain.stock.Cellar;
 public interface CellarService {
 
     /**
-     * @param cellar
+     * @param cellarShare
      */
-    void newCellar(Cellar cellar);
+    void saveCellarShare(CellarShare cellarShare);
 
     /**
      * @param searchForm
@@ -40,5 +43,25 @@ public interface CellarService {
      * @return
      */
     Map<Cellar, Long> getAll(SearchForm searchForm, CountEnum count);
+
+    /**
+     * @param searchForm
+     * @param orders
+     * @param count
+     * @param first
+     * @return
+     */
+    List<CellarShare> getShares(SearchForm searchForm, CellarShareOrder orders, int first, int count);
+
+    /**
+     * @param searchForm
+     * @return
+     */
+    long countShares(SearchForm searchForm);
+
+    /**
+     * @param cellarShare
+     */
+    void deleteCellarShare(CellarShare cellarShare);
 
 }

@@ -78,6 +78,10 @@ public class ImageReferences {
         return getImage("bullet_arrow_up_down.png");
     }
 
+    public static ResourceReference getPencilImage() {
+        return getImage("pencil.png");
+    }
+
     private static ResourceReference getImage(String filename) {
         return new PackageResourceReference(ImageReferences.class, filename);
     }

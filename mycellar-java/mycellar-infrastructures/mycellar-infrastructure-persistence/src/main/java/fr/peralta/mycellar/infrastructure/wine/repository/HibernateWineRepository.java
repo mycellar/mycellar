@@ -30,6 +30,7 @@ import javax.persistence.Tuple;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Expression;
+import javax.persistence.criteria.From;
 import javax.persistence.criteria.JoinType;
 import javax.persistence.criteria.Order;
 import javax.persistence.criteria.Path;
@@ -43,6 +44,8 @@ import fr.peralta.mycellar.domain.shared.repository.FilterEnum;
 import fr.peralta.mycellar.domain.shared.repository.OrderWayEnum;
 import fr.peralta.mycellar.domain.shared.repository.SearchForm;
 import fr.peralta.mycellar.domain.stock.Bottle;
+import fr.peralta.mycellar.domain.stock.Cellar;
+import fr.peralta.mycellar.domain.stock.CellarShare;
 import fr.peralta.mycellar.domain.stock.Stock;
 import fr.peralta.mycellar.domain.wine.Appellation;
 import fr.peralta.mycellar.domain.wine.Country;
@@ -74,9 +77,12 @@ public class HibernateWineRepository extends HibernateRepository implements Wine
         CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();
         CriteriaQuery<Long> query = criteriaBuilder.createQuery(Long.class);
         Root<Wine> root = query.from(Wine.class);
+        From<Bottle, Stock> stocks = root.<Wine, Bottle> joinSet("bottles", JoinType.LEFT)
+                .<Bottle, Stock> joinSet("stocks", JoinType.LEFT);
         query = query.select(criteriaBuilder.count(root));
-        query = where(query, root.<Wine, Bottle> joinSet("bottles", JoinType.LEFT)
-                .<Bottle, Stock> joinSet("stocks", JoinType.LEFT), searchForm, criteriaBuilder);
+        query = where(query, stocks, stocks.<Stock, Cellar> join("cellar")
+                .<Cellar, CellarShare> joinSet("shares", JoinType.LEFT), searchForm,
+                criteriaBuilder);
         return entityManager.createQuery(query).getSingleResult();
     }
 
@@ -88,9 +94,12 @@ public class HibernateWineRepository extends HibernateRepository implements Wine
         CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();
         CriteriaQuery<Wine> query = criteriaBuilder.createQuery(Wine.class);
         Root<Wine> root = query.from(Wine.class);
+        From<Bottle, Stock> stocks = root.<Wine, Bottle> joinSet("bottles", JoinType.LEFT)
+                .<Bottle, Stock> joinSet("stocks", JoinType.LEFT);
         query = query.select(root);
-        query = where(query, root.<Wine, Bottle> joinSet("bottles", JoinType.LEFT)
-                .<Bottle, Stock> joinSet("stocks", JoinType.LEFT), searchForm, criteriaBuilder);
+        query = where(query, stocks, stocks.<Stock, Cellar> join("cellar")
+                .<Cellar, CellarShare> joinSet("shares", JoinType.LEFT), searchForm,
+                criteriaBuilder);
         return entityManager.createQuery(orderBy(query, root, orders, criteriaBuilder))
                 .setFirstResult(first).setMaxResults(count).getResultList();
     }
@@ -112,7 +121,9 @@ public class HibernateWineRepository extends HibernateRepository implements Wine
 
         Expression<Long> count = getCount(countEnum, stock, criteriaBuilder);
         query = query.multiselect(root, count);
-        query = where(query, stock, searchForm, criteriaBuilder, FilterEnum.COUNTRY);
+        query = where(query, stock, stock.<Stock, Cellar> join("cellar")
+                .<Cellar, CellarShare> joinSet("shares", JoinType.LEFT), searchForm,
+                criteriaBuilder, FilterEnum.COUNTRY);
 
         List<Tuple> tuples = entityManager.createQuery(
                 query.groupBy(root).orderBy(criteriaBuilder.asc(root.get("name")))).getResultList();
@@ -139,7 +150,9 @@ public class HibernateWineRepository extends HibernateRepository implements Wine
         SetJoin<Bottle, Stock> stock = bottle.joinSet("stocks", JoinType.LEFT);
         Expression<Long> count = getCount(countEnum, stock, criteriaBuilder);
         query = query.multiselect(root, count);
-        query = where(query, stock, searchForm, criteriaBuilder, FilterEnum.REGION);
+        query = where(query, stock, stock.<Stock, Cellar> join("cellar")
+                .<Cellar, CellarShare> joinSet("shares", JoinType.LEFT), searchForm,
+                criteriaBuilder, FilterEnum.REGION);
 
         List<Tuple> tuples = entityManager.createQuery(
                 query.groupBy(root).orderBy(criteriaBuilder.asc(root.get("name")))).getResultList();
@@ -165,7 +178,9 @@ public class HibernateWineRepository extends HibernateRepository implements Wine
         SetJoin<Bottle, Stock> stock = bottle.joinSet("stocks", JoinType.LEFT);
         Expression<Long> count = getCount(countEnum, stock, criteriaBuilder);
         query = query.multiselect(root, count);
-        query = where(query, stock, searchForm, criteriaBuilder, FilterEnum.APPELLATION);
+        query = where(query, stock, stock.<Stock, Cellar> join("cellar")
+                .<Cellar, CellarShare> joinSet("shares", JoinType.LEFT), searchForm,
+                criteriaBuilder, FilterEnum.APPELLATION);
 
         List<Tuple> tuples = entityManager.createQuery(
                 query.groupBy(root).orderBy(criteriaBuilder.asc(root.get("name")))).getResultList();
@@ -204,7 +219,9 @@ public class HibernateWineRepository extends HibernateRepository implements Wine
         SetJoin<Bottle, Stock> stock = bottle.joinSet("stocks", JoinType.LEFT);
         Expression<Long> count = getCount(countEnum, stock, criteriaBuilder);
         query = query.multiselect(type, count);
-        query = where(query, stock, searchForm, criteriaBuilder, FilterEnum.TYPE);
+        query = where(query, stock, stock.<Stock, Cellar> join("cellar")
+                .<Cellar, CellarShare> joinSet("shares", JoinType.LEFT), searchForm,
+                criteriaBuilder, FilterEnum.TYPE);
 
         List<Tuple> tuples = entityManager.createQuery(query.groupBy(type)).getResultList();
         Map<WineTypeEnum, Long> result = new LinkedHashMap<WineTypeEnum, Long>();
@@ -227,7 +244,9 @@ public class HibernateWineRepository extends HibernateRepository implements Wine
         SetJoin<Bottle, Stock> stock = bottle.joinSet("stocks", JoinType.LEFT);
         Expression<Long> count = getCount(countEnum, stock, criteriaBuilder);
         query = query.multiselect(color, count);
-        query = where(query, stock, searchForm, criteriaBuilder, FilterEnum.COLOR);
+        query = where(query, stock, stock.<Stock, Cellar> join("cellar")
+                .<Cellar, CellarShare> joinSet("shares", JoinType.LEFT), searchForm,
+                criteriaBuilder, FilterEnum.COLOR);
 
         List<Tuple> tuples = entityManager.createQuery(query.groupBy(color)).getResultList();
         Map<WineColorEnum, Long> result = new LinkedHashMap<WineColorEnum, Long>();
@@ -250,7 +269,9 @@ public class HibernateWineRepository extends HibernateRepository implements Wine
         SetJoin<Bottle, Stock> stock = bottle.joinSet("stocks", JoinType.LEFT);
         Expression<Long> count = getCount(countEnum, stock, criteriaBuilder);
         query = query.multiselect(root, count);
-        query = where(query, stock, searchForm, criteriaBuilder, FilterEnum.FORMAT);
+        query = where(query, stock, stock.<Stock, Cellar> join("cellar")
+                .<Cellar, CellarShare> joinSet("shares", JoinType.LEFT), searchForm,
+                criteriaBuilder, FilterEnum.FORMAT);
 
         List<Tuple> tuples = entityManager.createQuery(
                 query.groupBy(root).orderBy(criteriaBuilder.asc(root.get("name")))).getResultList();

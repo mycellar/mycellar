@@ -18,34 +18,26 @@
  */
 package fr.peralta.mycellar.interfaces.client.web.components.stock.cloud;
 
+import java.util.HashMap;
 import java.util.Map;
 
 import org.apache.wicket.model.IModel;
-import org.apache.wicket.spring.injection.annot.SpringBean;
 
-import fr.peralta.mycellar.domain.shared.repository.CountEnum;
-import fr.peralta.mycellar.domain.shared.repository.FilterEnum;
-import fr.peralta.mycellar.domain.shared.repository.SearchForm;
-import fr.peralta.mycellar.domain.stock.Cellar;
+import fr.peralta.mycellar.domain.stock.AccessRightEnum;
 import fr.peralta.mycellar.interfaces.client.web.components.shared.cloud.SimpleTagCloud;
-import fr.peralta.mycellar.interfaces.client.web.security.UserKey;
-import fr.peralta.mycellar.interfaces.facades.stock.StockServiceFacade;
 
 /**
  * @author speralta
  */
-public class CellarSimpleTagCloud extends SimpleTagCloud<Cellar> {
+public class AccessRightEnumTagCloud extends SimpleTagCloud<AccessRightEnum> {
 
-    private static final long serialVersionUID = 201111151904L;
-
-    @SpringBean
-    private StockServiceFacade stockServiceFacade;
+    private static final long serialVersionUID = 201111161904L;
 
     /**
      * @param id
      * @param label
      */
-    public CellarSimpleTagCloud(String id, IModel<String> label) {
+    public AccessRightEnumTagCloud(String id, IModel<String> label) {
         super(id, label);
     }
 
@@ -53,10 +45,11 @@ public class CellarSimpleTagCloud extends SimpleTagCloud<Cellar> {
      * {@inheritDoc}
      */
     @Override
-    protected Map<Cellar, Long> getChoices() {
-        return stockServiceFacade.getCellars(
-                new SearchForm().setCellarModification(true).addToSet(FilterEnum.USER,
-                        UserKey.getUserLoggedIn()), CountEnum.STOCK_QUANTITY);
+    protected Map<AccessRightEnum, Long> getChoices() {
+        Map<AccessRightEnum, Long> accessRightEnums = new HashMap<AccessRightEnum, Long>();
+        accessRightEnums.put(AccessRightEnum.MODIFY, 1L);
+        accessRightEnums.put(AccessRightEnum.READ, 1L);
+        return accessRightEnums;
     }
 
 }

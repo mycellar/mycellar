@@ -40,9 +40,9 @@
     <!-- Versions -->
     <slf4j.version>1.6.2</slf4j.version>
     <wicket.version>1.5.3</wicket.version>
-    <wicketstuff.version>1.5.2</wicketstuff.version>
-    <spring.version>3.0.6.RELEASE</spring.version>
-    <hibernate.version>4.0.0.CR2</hibernate.version>
+    <wicketstuff.version>1.5.3.1</wicketstuff.version>
+    <spring.version>3.1.0.RELEASE</spring.version>
+    <hibernate.version>4.0.0.Final</hibernate.version>
     <hibernate-validator.version>4.2.0.Final</hibernate-validator.version>
   </properties>
 

@@ -27,8 +27,10 @@ import org.joda.time.LocalDate;
 import org.springframework.context.ApplicationContext;
 import org.wicketstuff.security.swarm.SwarmWebApplication;
 
+import fr.peralta.mycellar.domain.stock.AccessRightEnum;
 import fr.peralta.mycellar.domain.wine.WineColorEnum;
 import fr.peralta.mycellar.domain.wine.WineTypeEnum;
+import fr.peralta.mycellar.interfaces.client.web.converters.AccessRightEnumConverter;
 import fr.peralta.mycellar.interfaces.client.web.converters.LocalDateConverter;
 import fr.peralta.mycellar.interfaces.client.web.converters.WineColorEnumConverter;
 import fr.peralta.mycellar.interfaces.client.web.converters.WineTypeEnumConverter;
@@ -41,6 +43,7 @@ import fr.peralta.mycellar.interfaces.client.web.pages.cellar.CellarsPage;
 import fr.peralta.mycellar.interfaces.client.web.pages.cellar.DrinkBottlesPage;
 import fr.peralta.mycellar.interfaces.client.web.pages.cellar.InputOutputPage;
 import fr.peralta.mycellar.interfaces.client.web.pages.cellar.PackageArrivalPage;
+import fr.peralta.mycellar.interfaces.client.web.pages.cellar.ShareCellarsPage;
 import fr.peralta.mycellar.interfaces.client.web.pages.pedia.PediaHomePage;
 import fr.peralta.mycellar.interfaces.client.web.shared.ExceptionListener;
 
@@ -69,6 +72,7 @@ public abstract class MyCellarWebApplication extends SwarmWebApplication {
         mountPage("/admin", AdminPage.class);
         mountPage("/error", InternalErrorPage.class);
         mountPage("/stack", StackPage.class);
+        mountPage("/shares", ShareCellarsPage.class);
     }
 
     /**
@@ -96,6 +100,7 @@ public abstract class MyCellarWebApplication extends SwarmWebApplication {
         converterLocator.set(LocalDate.class, new LocalDateConverter());
         converterLocator.set(WineTypeEnum.class, new WineTypeEnumConverter());
         converterLocator.set(WineColorEnum.class, new WineColorEnumConverter());
+        converterLocator.set(AccessRightEnum.class, new AccessRightEnumConverter());
         return converterLocator;
     }
 
