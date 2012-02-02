@@ -30,6 +30,7 @@ import fr.peralta.mycellar.interfaces.client.web.pages.cellar.CellarsPage;
 import fr.peralta.mycellar.interfaces.client.web.pages.cellar.DrinkBottlesPage;
 import fr.peralta.mycellar.interfaces.client.web.pages.cellar.InputOutputPage;
 import fr.peralta.mycellar.interfaces.client.web.pages.cellar.PackageArrivalPage;
+import fr.peralta.mycellar.interfaces.client.web.pages.cellar.ShareCellarsPage;
 import fr.peralta.mycellar.interfaces.client.web.pages.pedia.PediaHomePage;
 import fr.peralta.mycellar.interfaces.client.web.pages.shared.AdminSuperPage;
 import fr.peralta.mycellar.interfaces.client.web.pages.shared.CellarSuperPage;
@@ -61,6 +62,8 @@ public class MyCellarWebApplicationDescriptor implements Serializable {
                 CellarSuperPage.class, "Your cellar")
                 .add(new MenuableSubPageDescriptor(CellarsPage.class, CellarsPage.class,
                         "Your cellars"))
+                .add(new MenuableSubPageDescriptor(ShareCellarsPage.class, ShareCellarsPage.class,
+                        "Share cellars"))
                 .add(new MenuableSubPageDescriptor(InputOutputPage.class, InputOutputPage.class,
                         "I/O"))
                 .add(new MenuableSubPageDescriptor(PackageArrivalPage.class,

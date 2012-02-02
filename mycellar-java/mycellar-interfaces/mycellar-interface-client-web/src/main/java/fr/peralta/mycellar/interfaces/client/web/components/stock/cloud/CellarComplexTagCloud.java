@@ -75,8 +75,8 @@ public class CellarComplexTagCloud extends ComplexTagCloud<Cellar> {
     @Override
     protected Map<Cellar, Long> getChoices() {
         return stockServiceFacade.getCellars(
-                new SearchForm().addToSet(FilterEnum.USER, UserKey.getUserLoggedIn()),
-                CountEnum.STOCK_QUANTITY);
+                new SearchForm().setCellarModification(true).addToSet(FilterEnum.USER,
+                        UserKey.getUserLoggedIn()), CountEnum.STOCK_QUANTITY);
     }
 
     /**

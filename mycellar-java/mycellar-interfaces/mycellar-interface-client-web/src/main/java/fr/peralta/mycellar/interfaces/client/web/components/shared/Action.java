@@ -22,5 +22,5 @@ package fr.peralta.mycellar.interfaces.client.web.components.shared;
  * @author speralta
  */
 public enum Action {
-    SAVE, ADD, SELECT, CANCEL, MODEL_CHANGED;
+    SAVE, ADD, SELECT, CANCEL, MODEL_CHANGED, DELETE;
 }

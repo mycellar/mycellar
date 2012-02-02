@@ -21,10 +21,12 @@ package fr.peralta.mycellar.infrastructure.shared.repository;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+import java.util.Set;
 
 import javax.persistence.criteria.AbstractQuery;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.Expression;
+import javax.persistence.criteria.From;
 import javax.persistence.criteria.Path;
 import javax.persistence.criteria.Predicate;
 
@@ -32,7 +34,10 @@ import fr.peralta.mycellar.domain.shared.IdentifiedEntity;
 import fr.peralta.mycellar.domain.shared.repository.CountEnum;
 import fr.peralta.mycellar.domain.shared.repository.FilterEnum;
 import fr.peralta.mycellar.domain.shared.repository.SearchForm;
+import fr.peralta.mycellar.domain.stock.AccessRightEnum;
+import fr.peralta.mycellar.domain.stock.CellarShare;
 import fr.peralta.mycellar.domain.stock.Stock;
+import fr.peralta.mycellar.domain.user.User;
 
 /**
  * @author speralta
@@ -42,25 +47,28 @@ public abstract class HibernateRepository {
     /**
      * @param query
      * @param path
+     * @param shares
      * @param searchForm
      * @param criteriaBuilder
      * @return
      */
-    protected <Q extends AbstractQuery<O>, O> Q where(Q query, Path<Stock> path,
-            SearchForm searchForm, CriteriaBuilder criteriaBuilder) {
-        return where(query, path, searchForm, criteriaBuilder, null);
+    protected <Q extends AbstractQuery<O>, O> Q where(Q query, From<?, Stock> path,
+            Path<CellarShare> shares, SearchForm searchForm, CriteriaBuilder criteriaBuilder) {
+        return where(query, path, shares, searchForm, criteriaBuilder, null);
     }
 
     /**
      * @param query
      * @param path
+     * @param shares
      * @param searchForm
      * @param criteriaBuilder
      * @param filterEnum
      * @return
      */
-    protected <Q extends AbstractQuery<O>, O> Q where(Q query, Path<Stock> path,
-            SearchForm searchForm, CriteriaBuilder criteriaBuilder, FilterEnum filterEnum) {
+    protected <Q extends AbstractQuery<O>, O> Q where(Q query, From<?, Stock> path,
+            Path<CellarShare> shares, SearchForm searchForm, CriteriaBuilder criteriaBuilder,
+            FilterEnum filterEnum) {
         List<Predicate> predicates = new ArrayList<Predicate>();
         if (filterEnum != FilterEnum.APPELLATION) {
             in(predicates, searchForm.getSet(FilterEnum.APPELLATION), path.get("bottle")
@@ -95,8 +103,27 @@ public abstract class HibernateRepository {
                     path.get("bottle").get("wine").get("type"), criteriaBuilder);
         }
         if (filterEnum != FilterEnum.USER) {
-            in(predicates, searchForm.getSet(FilterEnum.USER), path.get("cellar").get("owner"),
-                    criteriaBuilder);
+            List<Predicate> userPredicates = new ArrayList<Predicate>();
+            Set<User> users = searchForm.<User> getSet(FilterEnum.USER);
+            in(userPredicates, users, path.get("cellar").get("owner"), criteriaBuilder);
+            if (users != null) {
+                for (User user : users) {
+                    if (searchForm.isCellarModification()) {
+                        userPredicates.add(criteriaBuilder.and(criteriaBuilder.equal(
+                                shares.get("email"), user.getEmail()), criteriaBuilder.equal(
+                                shares.get("accessRight"), AccessRightEnum.MODIFY)));
+                    } else {
+                        userPredicates.add(criteriaBuilder.equal(shares.get("email"),
+                                user.getEmail()));
+                    }
+                }
+            }
+            if (userPredicates.size() > 1) {
+                predicates.add(criteriaBuilder.or(userPredicates
+                        .toArray(new Predicate[userPredicates.size()])));
+            } else if (userPredicates.size() == 1) {
+                predicates.add(userPredicates.get(0));
+            }
         }
         if (filterEnum != FilterEnum.VINTAGE) {
             in(predicates, searchForm.getSet(FilterEnum.VINTAGE), path.get("bottle").get("wine")
@@ -115,7 +142,7 @@ public abstract class HibernateRepository {
      * @param criteriaBuilder
      * @return
      */
-    protected Expression<Long> getCount(CountEnum countEnum, Path<Stock> stock,
+    protected Expression<Long> getCount(CountEnum countEnum, From<?, Stock> stock,
             CriteriaBuilder criteriaBuilder) {
         Expression<Long> count;
         switch (countEnum) {

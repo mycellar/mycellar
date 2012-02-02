@@ -26,9 +26,11 @@ import fr.peralta.mycellar.domain.shared.repository.SearchForm;
 import fr.peralta.mycellar.domain.stock.Arrival;
 import fr.peralta.mycellar.domain.stock.Bottle;
 import fr.peralta.mycellar.domain.stock.Cellar;
+import fr.peralta.mycellar.domain.stock.CellarShare;
 import fr.peralta.mycellar.domain.stock.Drink;
 import fr.peralta.mycellar.domain.stock.Movement;
 import fr.peralta.mycellar.domain.stock.Stock;
+import fr.peralta.mycellar.domain.stock.repository.CellarShareOrder;
 import fr.peralta.mycellar.domain.stock.repository.MovementOrder;
 import fr.peralta.mycellar.domain.stock.repository.StockOrder;
 import fr.peralta.mycellar.domain.wine.Format;
@@ -50,9 +52,9 @@ public interface StockServiceFacade {
     void drink(Drink drink);
 
     /**
-     * @param cellar
+     * @param cellarShare
      */
-    void newCellar(Cellar cellar);
+    void saveCellarShare(CellarShare cellarShare);
 
     /**
      * @param searchForm
@@ -97,5 +99,26 @@ public interface StockServiceFacade {
      * @return
      */
     long countStocks(SearchForm searchForm);
+
+    /**
+     * @param searchForm
+     * @param orders
+     * @param count
+     * @param first
+     * @return
+     */
+    List<CellarShare> getCellarShares(SearchForm searchForm, CellarShareOrder orders, int first,
+            int count);
+
+    /**
+     * @param searchForm
+     * @return
+     */
+    long countCellarShares(SearchForm searchForm);
+
+    /**
+     * @param cellarShare
+     */
+    void deleteCellarShare(CellarShare cellarShare);
 
 }
