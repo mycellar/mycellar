@@ -21,9 +21,11 @@ package fr.peralta.mycellar.interfaces.client.web.components.shared;
 import org.apache.wicket.Component;
 import org.apache.wicket.event.IEventSource;
 import org.apache.wicket.markup.html.WebMarkupContainer;
+import org.apache.wicket.markup.html.image.Image;
 import org.apache.wicket.model.IModel;
 
 import fr.peralta.mycellar.interfaces.client.web.components.shared.form.ObjectForm;
+import fr.peralta.mycellar.interfaces.client.web.components.shared.img.ImageReferences;
 
 /**
  * @author speralta
@@ -42,7 +44,8 @@ public abstract class ComplexComponent<O> extends SimpleComponent<O> {
     public ComplexComponent(String id, IModel<String> label) {
         super(id, label);
         WebMarkupContainer container = (WebMarkupContainer) get(CONTAINER_COMPONENT_ID);
-        container.add(new ActionLink(ADD_COMPONENT_ID, Action.ADD));
+        container.add(new ActionLink(ADD_COMPONENT_ID, Action.ADD).add(new Image("addImg",
+                ImageReferences.getAddImage())));
         container.add(new ObjectForm<O>(CREATE_FORM_COMPONENT_ID).replace(
                 createComponentForCreation(ObjectForm.EDIT_PANEL_COMPONENT_ID))
                 .setVisibilityAllowed(false));
@@ -64,14 +67,22 @@ public abstract class ComplexComponent<O> extends SimpleComponent<O> {
      */
     @Override
     protected void internalOnConfigure() {
-        get(CONTAINER_COMPONENT_ID + PATH_SEPARATOR + SELECTOR_COMPONENT_ID).setVisibilityAllowed(
+        get(
+                CONTAINER_COMPONENT_ID + PATH_SEPARATOR + CONTAINER_BODY_COMPONENT_ID
+                        + PATH_SEPARATOR + SELECTOR_COMPONENT_ID).setVisibilityAllowed(
                 !isValued()
-                        && !get(CONTAINER_COMPONENT_ID + PATH_SEPARATOR + CREATE_FORM_COMPONENT_ID)
-                                .isVisibilityAllowed());
-        get(CONTAINER_COMPONENT_ID + PATH_SEPARATOR + ADD_COMPONENT_ID).setVisibilityAllowed(
+                        && !get(
+                                CONTAINER_COMPONENT_ID + PATH_SEPARATOR
+                                        + CONTAINER_BODY_COMPONENT_ID + PATH_SEPARATOR
+                                        + CREATE_FORM_COMPONENT_ID).isVisibilityAllowed());
+        get(
+                CONTAINER_COMPONENT_ID + PATH_SEPARATOR + CONTAINER_BODY_COMPONENT_ID
+                        + PATH_SEPARATOR + ADD_COMPONENT_ID).setVisibilityAllowed(
                 !isValued()
-                        && !get(CONTAINER_COMPONENT_ID + PATH_SEPARATOR + CREATE_FORM_COMPONENT_ID)
-                                .isVisibilityAllowed());
+                        && !get(
+                                CONTAINER_COMPONENT_ID + PATH_SEPARATOR
+                                        + CONTAINER_BODY_COMPONENT_ID + PATH_SEPARATOR
+                                        + CREATE_FORM_COMPONENT_ID).isVisibilityAllowed());
     }
 
     /**
@@ -81,10 +92,11 @@ public abstract class ComplexComponent<O> extends SimpleComponent<O> {
     @Override
     protected void onSave(IEventSource source, Action action) {
         ObjectForm<O> objectForm = ((ObjectForm<O>) get(CONTAINER_COMPONENT_ID + PATH_SEPARATOR
-                + CREATE_FORM_COMPONENT_ID));
+                + CONTAINER_BODY_COMPONENT_ID + PATH_SEPARATOR + CREATE_FORM_COMPONENT_ID));
         objectForm.setVisibilityAllowed(false);
         markAsValued(((ObjectForm<O>) get(CONTAINER_COMPONENT_ID + PATH_SEPARATOR
-                + CREATE_FORM_COMPONENT_ID)).getModelObject());
+                + CONTAINER_BODY_COMPONENT_ID + PATH_SEPARATOR + CREATE_FORM_COMPONENT_ID))
+                .getModelObject());
 
     }
 
@@ -93,8 +105,9 @@ public abstract class ComplexComponent<O> extends SimpleComponent<O> {
      */
     @Override
     protected void onCancel(IEventSource source, Action action) {
-        get(CONTAINER_COMPONENT_ID + PATH_SEPARATOR + CREATE_FORM_COMPONENT_ID)
-                .setVisibilityAllowed(false);
+        get(
+                CONTAINER_COMPONENT_ID + PATH_SEPARATOR + CONTAINER_BODY_COMPONENT_ID
+                        + PATH_SEPARATOR + CREATE_FORM_COMPONENT_ID).setVisibilityAllowed(false);
         markAsNonValued();
     }
 
@@ -104,8 +117,9 @@ public abstract class ComplexComponent<O> extends SimpleComponent<O> {
     @SuppressWarnings("unchecked")
     @Override
     protected void onAdd(IEventSource source, Action action) {
-        ((ObjectForm<O>) get(CONTAINER_COMPONENT_ID + PATH_SEPARATOR + CREATE_FORM_COMPONENT_ID))
-                .setNewObject(createObject()).setVisibilityAllowed(true);
+        ((ObjectForm<O>) get(CONTAINER_COMPONENT_ID + PATH_SEPARATOR + CONTAINER_BODY_COMPONENT_ID
+                + PATH_SEPARATOR + CREATE_FORM_COMPONENT_ID)).setNewObject(createObject())
+                .setVisibilityAllowed(true);
     }
 
     /**

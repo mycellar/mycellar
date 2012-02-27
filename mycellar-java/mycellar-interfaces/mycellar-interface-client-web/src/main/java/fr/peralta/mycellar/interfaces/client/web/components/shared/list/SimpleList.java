@@ -80,7 +80,10 @@ public abstract class SimpleList<O> extends SimpleComponent<O> {
     @SuppressWarnings("unchecked")
     protected void refreshList() {
         ListComponentPanel<O> listComponentPanel = ((ListComponentPanel<O>) get(CONTAINER_COMPONENT_ID
-                + PATH_SEPARATOR + SELECTOR_COMPONENT_ID));
+                + PATH_SEPARATOR
+                + CONTAINER_BODY_COMPONENT_ID
+                + PATH_SEPARATOR
+                + SELECTOR_COMPONENT_ID));
         if (listComponentPanel != null) {
             listComponentPanel.changeList(getList());
         }

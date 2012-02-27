@@ -22,6 +22,8 @@ import org.apache.wicket.markup.html.form.TextArea;
 import org.apache.wicket.markup.html.form.TextField;
 import org.apache.wicket.markup.html.panel.Panel;
 
+import fr.peralta.mycellar.interfaces.client.web.components.shared.feedback.FormComponentFeedbackBorder;
+
 /**
  * @author speralta
  */
@@ -34,7 +36,8 @@ public class CountryEditPanel extends Panel {
      */
     public CountryEditPanel(String id) {
         super(id);
-        add(new TextField<String>("name").setRequired(true));
-        add(new TextArea<String>("description"));
+        add(new FormComponentFeedbackBorder("name").add(new TextField<String>("name")
+                .setRequired(true)));
+        add(new FormComponentFeedbackBorder("description").add(new TextArea<String>("description")));
     }
 }

@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE properties SYSTEM "http://java.sun.com/dtd/properties.dtd">
+<properties>
+  <!-- VALIDATOR MESSAGES -->
+  <entry key="IConverter">${label} : '${input}' n'est pas correct pour ce champ.</entry>
+  <entry key="MinimumValidator">${label} : '${input}' doit être plus grand que ${minimum}.</entry>
+  <entry key="MaximumValidator">${label} : '${input}' doit être plus petit que ${maximum}.</entry>
+  <entry key="NotEmptyCollectionValidator">${label} : Cette liste ne doit pas être vide.</entry>
+  <entry key="RangeValidator">${label} : '${input}' doit être entre ${minimum} et ${maximum}.</entry>
+  <entry key="Required">${label} : Ce champ est obligatoire.</entry>
+
+  <!-- DOMAIN MESSAGES -->
+  <entry key="accessRight">Autorisation</entry>
+  <entry key="appellation">Appellation</entry>
+  <entry key="cellar">Cave</entry>
+  <entry key="color">Couleur</entry>
+  <entry key="country">Pays</entry>
+  <entry key="format">Format</entry>
+  <entry key="producer">Producteur</entry>
+  <entry key="region">Région</entry>
+  <entry key="type">Type</entry>
+  <entry key="user">Utilisateur</entry>
+  <entry key="varietal">Cépage</entry>
+  <entry key="wine">Vin</entry>
+
+</properties> 

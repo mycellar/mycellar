@@ -23,6 +23,7 @@ import org.apache.wicket.WicketRuntimeException;
 import org.apache.wicket.event.Broadcast;
 import org.apache.wicket.event.IEvent;
 import org.apache.wicket.event.IEventSource;
+import org.apache.wicket.markup.ComponentTag;
 import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.model.IModel;
@@ -31,6 +32,7 @@ import org.apache.wicket.spring.injection.annot.SpringBean;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import fr.peralta.mycellar.interfaces.client.web.components.shared.feedback.FormComponentFeedbackBorder;
 import fr.peralta.mycellar.interfaces.client.web.renderers.shared.RendererServiceFacade;
 import fr.peralta.mycellar.interfaces.client.web.shared.LoggingUtils;
 
@@ -39,10 +41,50 @@ import fr.peralta.mycellar.interfaces.client.web.shared.LoggingUtils;
  */
 public abstract class SimpleComponent<O> extends CompoundPropertyPanel<O> {
 
+    /**
+     * @author speralta
+     */
+    private static class SimpleComponentLabel<O> extends Label {
+
+        private static final long serialVersionUID = 201202230714L;
+
+        private final SimpleComponent<O> component;
+
+        /**
+         * @param id
+         * @param model
+         */
+        private SimpleComponentLabel(String id, IModel<?> model, SimpleComponent<O> component) {
+            super(id, model);
+            this.component = component;
+        }
+
+        /**
+         * {@inheritDoc}
+         */
+        @Override
+        protected void onComponentTag(ComponentTag tag) {
+            super.onComponentTag(tag);
+
+            if (component.isRequired()) {
+                tag.append("class", "required", " ");
+            }
+            if (!component.isValid()) {
+                tag.append("class", "error", " ");
+            }
+
+            if (!component.isEnabledInHierarchy()) {
+                tag.append("class", "disabled", " ");
+            }
+        }
+    }
+
     private static final long serialVersionUID = 201107281247L;
     private static final Logger logger = LoggerFactory.getLogger(SimpleComponent.class);
 
     protected static final String CONTAINER_COMPONENT_ID = "container";
+    protected static final String CONTAINER_BODY_COMPONENT_ID = CONTAINER_COMPONENT_ID + "_"
+            + FormComponentFeedbackBorder.BODY;
     protected static final String LABEL_COMPONENT_ID = "label";
     protected static final String SELECTOR_COMPONENT_ID = "selector";
     protected static final String VALUE_COMPONENT_ID = "value";
@@ -59,10 +101,20 @@ public abstract class SimpleComponent<O> extends CompoundPropertyPanel<O> {
     public SimpleComponent(String id, IModel<String> label) {
         super(id);
         setOutputMarkupId(true);
-        WebMarkupContainer container = new WebMarkupContainer(CONTAINER_COMPONENT_ID);
-        container.add(new Label(LABEL_COMPONENT_ID, label));
+        setRequired(true);
+        FormComponentFeedbackBorder container = new FormComponentFeedbackBorder(
+                CONTAINER_COMPONENT_ID, true, getFilteredIdsForFeedback());
+        container.add(new SimpleComponentLabel<O>(LABEL_COMPONENT_ID, label, this));
         container.add(new ValueComponent(VALUE_COMPONENT_ID));
         add(container);
+    }
+
+    protected String[] getFilteredIdsForFeedback() {
+        return null;
+    }
+
+    public boolean isContainerVisibleInHierarchy() {
+        return get(CONTAINER_COMPONENT_ID).isVisibleInHierarchy();
     }
 
     /**
@@ -104,16 +156,18 @@ public abstract class SimpleComponent<O> extends CompoundPropertyPanel<O> {
         super.onConfigure();
         get(CONTAINER_COMPONENT_ID).setVisibilityAllowed(isReadyToSelect());
         internalOnConfigure();
-        get(CONTAINER_COMPONENT_ID + PATH_SEPARATOR + VALUE_COMPONENT_ID).setVisibilityAllowed(
-                valued);
+        get(
+                CONTAINER_COMPONENT_ID + PATH_SEPARATOR + CONTAINER_BODY_COMPONENT_ID
+                        + PATH_SEPARATOR + VALUE_COMPONENT_ID).setVisibilityAllowed(valued);
     }
 
     /**
      * 
      */
     protected void internalOnConfigure() {
-        get(CONTAINER_COMPONENT_ID + PATH_SEPARATOR + SELECTOR_COMPONENT_ID).setVisibilityAllowed(
-                !valued);
+        get(
+                CONTAINER_COMPONENT_ID + PATH_SEPARATOR + CONTAINER_BODY_COMPONENT_ID
+                        + PATH_SEPARATOR + SELECTOR_COMPONENT_ID).setVisibilityAllowed(!valued);
     }
 
     /**
@@ -139,9 +193,39 @@ public abstract class SimpleComponent<O> extends CompoundPropertyPanel<O> {
      * {@inheritDoc}
      */
     @Override
+    protected void convertInput() {
+        setConvertedInput(getModelObject());
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public boolean checkRequired() {
+        if (isRequired()) {
+            return isValued();
+        }
+        return true;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void validate() {
+        if (isContainerVisibleInHierarchy()) {
+            super.validate();
+        }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
     protected void onModelChanged() {
         send(getParent(), Broadcast.BUBBLE, Action.MODEL_CHANGED);
-        Component valueComponent = get(CONTAINER_COMPONENT_ID + PATH_SEPARATOR + VALUE_COMPONENT_ID);
+        Component valueComponent = get(CONTAINER_COMPONENT_ID + PATH_SEPARATOR
+                + CONTAINER_BODY_COMPONENT_ID + PATH_SEPARATOR + VALUE_COMPONENT_ID);
         if (valued) {
             String value = getValueLabelFor(getModelObject());
             valueComponent.setDefaultModel(new Model<String>(value));

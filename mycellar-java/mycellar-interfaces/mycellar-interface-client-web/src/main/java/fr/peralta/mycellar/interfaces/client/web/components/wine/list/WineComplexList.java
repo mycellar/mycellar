@@ -26,6 +26,7 @@ import org.apache.wicket.markup.html.form.NumberTextField;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.StringResourceModel;
 import org.apache.wicket.spring.injection.annot.SpringBean;
+import org.apache.wicket.validation.ValidationError;
 import org.joda.time.LocalDate;
 
 import fr.peralta.mycellar.domain.shared.repository.CountEnum;
@@ -39,8 +40,8 @@ import fr.peralta.mycellar.domain.wine.WineColorEnum;
 import fr.peralta.mycellar.domain.wine.WineTypeEnum;
 import fr.peralta.mycellar.domain.wine.repository.WineOrder;
 import fr.peralta.mycellar.domain.wine.repository.WineOrderEnum;
+import fr.peralta.mycellar.interfaces.client.web.behaviors.OnBlurModelChangedAjaxBehavior;
 import fr.peralta.mycellar.interfaces.client.web.components.shared.Action;
-import fr.peralta.mycellar.interfaces.client.web.components.shared.OnBlurDefaultAjaxBehavior;
 import fr.peralta.mycellar.interfaces.client.web.components.shared.list.ComplexList;
 import fr.peralta.mycellar.interfaces.client.web.components.wine.autocomplete.ProducerComplexAutocomplete;
 import fr.peralta.mycellar.interfaces.client.web.components.wine.cloud.AppellationComplexTagCloud;
@@ -76,7 +77,6 @@ public class WineComplexList extends ComplexList<Wine> {
     public WineComplexList(String id, IModel<String> label, IModel<SearchForm> searchFormModel,
             CountEnum count) {
         super(id, label);
-        setOutputMarkupId(true);
         this.searchFormModel = searchFormModel;
         add(new AppellationComplexTagCloud(APPELLATION_COMPONENT_ID, new StringResourceModel(
                 "appellation", this, null), searchFormModel, count));
@@ -87,7 +87,7 @@ public class WineComplexList extends ComplexList<Wine> {
         add(new WineColorEnumFromProducerAndTypeTagCloud(COLOR_COMPONENT_ID,
                 new StringResourceModel("color", this, null), CountEnum.WINE));
         add(new NumberTextField<Integer>(VINTAGE_COMPONENT_ID).setMinimum(1800)
-                .setMaximum(new LocalDate().getYear()).add(new OnBlurDefaultAjaxBehavior()));
+                .setMaximum(new LocalDate().getYear()).add(new OnBlurModelChangedAjaxBehavior()));
     }
 
     /**
@@ -102,6 +102,14 @@ public class WineComplexList extends ComplexList<Wine> {
         get(TYPE_COMPONENT_ID).setVisibilityAllowed(!isValued);
         get(COLOR_COMPONENT_ID).setVisibilityAllowed(!isValued);
         get(VINTAGE_COMPONENT_ID).setVisibilityAllowed(!isValued);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    protected String[] getFilteredIdsForFeedback() {
+        return new String[] { PRODUCER_COMPONENT_ID, TYPE_COMPONENT_ID, COLOR_COMPONENT_ID };
     }
 
     /**
@@ -203,7 +211,8 @@ public class WineComplexList extends ComplexList<Wine> {
                 ((WineColorEnumFromProducerAndTypeTagCloud) get(COLOR_COMPONENT_ID))
                         .setType(sourceObject);
             } else {
-                ((WineColorEnumFromProducerAndTypeTagCloud) get(COLOR_COMPONENT_ID)).setType(null);
+                ((WineColorEnumFromProducerAndTypeTagCloud) get(COLOR_COMPONENT_ID))
+                        .setType((WineTypeEnum) null);
             }
             refreshList();
         } else if (source instanceof WineColorEnumFromProducerAndTypeTagCloud) {
@@ -214,6 +223,18 @@ public class WineComplexList extends ComplexList<Wine> {
             refreshList();
         } else {
             super.onModelChanged(source, action);
+        }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    protected void onAdd(IEventSource source, Action action) {
+        if (((ProducerComplexAutocomplete) get(PRODUCER_COMPONENT_ID)).isValued()) {
+            super.onAdd(source, action);
+        } else {
+            error(new ValidationError().addMessageKey("ProducerNotSet"));
         }
     }
 

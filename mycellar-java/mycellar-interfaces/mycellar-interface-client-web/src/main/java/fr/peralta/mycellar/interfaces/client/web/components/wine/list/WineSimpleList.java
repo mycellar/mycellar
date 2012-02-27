@@ -34,8 +34,8 @@ import fr.peralta.mycellar.domain.wine.Producer;
 import fr.peralta.mycellar.domain.wine.Wine;
 import fr.peralta.mycellar.domain.wine.WineTypeEnum;
 import fr.peralta.mycellar.domain.wine.repository.WineOrder;
+import fr.peralta.mycellar.interfaces.client.web.behaviors.OnBlurModelChangedAjaxBehavior;
 import fr.peralta.mycellar.interfaces.client.web.components.shared.Action;
-import fr.peralta.mycellar.interfaces.client.web.components.shared.OnBlurDefaultAjaxBehavior;
 import fr.peralta.mycellar.interfaces.client.web.components.shared.list.SimpleList;
 import fr.peralta.mycellar.interfaces.client.web.components.wine.autocomplete.ProducerSimpleAutocomplete;
 import fr.peralta.mycellar.interfaces.client.web.components.wine.cloud.AppellationSimpleTagCloud;
@@ -71,15 +71,15 @@ public class WineSimpleList extends SimpleList<Wine> {
         setOutputMarkupId(true);
         this.searchFormModel = searchFormModel;
         add(new AppellationSimpleTagCloud(APPELLATION_COMPONENT_ID, new StringResourceModel(
-                "appellation", this, null), searchFormModel, CountEnum.STOCK_QUANTITY));
+                "Appellation", this, null), searchFormModel, CountEnum.STOCK_QUANTITY));
         add(new ProducerSimpleAutocomplete(PRODUCER_COMPONENT_ID, new StringResourceModel(
-                "producer", this, null)));
-        add(new WineTypeEnumFromProducerTagCloud(TYPE_COMPONENT_ID, new StringResourceModel("type",
+                "Producer", this, null)));
+        add(new WineTypeEnumFromProducerTagCloud(TYPE_COMPONENT_ID, new StringResourceModel("Type",
                 this, null), CountEnum.WINE));
         add(new WineColorEnumFromProducerAndTypeTagCloud(COLOR_COMPONENT_ID,
-                new StringResourceModel("color", this, null), CountEnum.WINE));
+                new StringResourceModel("Color", this, null), CountEnum.WINE));
         add(new NumberTextField<Integer>(VINTAGE_COMPONENT_ID).setMinimum(1800)
-                .setMaximum(new LocalDate().getYear()).add(new OnBlurDefaultAjaxBehavior()));
+                .setMaximum(new LocalDate().getYear()).add(new OnBlurModelChangedAjaxBehavior()));
     }
 
     /**
@@ -139,7 +139,8 @@ public class WineSimpleList extends SimpleList<Wine> {
                 ((WineColorEnumFromProducerAndTypeTagCloud) get(COLOR_COMPONENT_ID))
                         .setType(sourceObject);
             } else {
-                ((WineColorEnumFromProducerAndTypeTagCloud) get(COLOR_COMPONENT_ID)).setType(null);
+                ((WineColorEnumFromProducerAndTypeTagCloud) get(COLOR_COMPONENT_ID))
+                        .setType((WineTypeEnum) null);
             }
             refreshList();
         } else if (source instanceof WineColorEnumFromProducerAndTypeTagCloud) {

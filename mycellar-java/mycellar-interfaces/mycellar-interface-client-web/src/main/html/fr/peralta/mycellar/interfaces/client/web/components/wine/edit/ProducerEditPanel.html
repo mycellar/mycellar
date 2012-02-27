@@ -1,10 +1,13 @@
 <wicket:panel>
-  <p>
-    <label for="name"><wicket:message key="name">Name</wicket:message></label>
-    <input id="name" wicket:id="name" type="text" />
-  </p>
-  <p>
-    <label for="description"><wicket:message key="description">Description</wicket:message></label>
-    <textarea id="description" wicket:id="description" />
-  </p>
+  <fieldset>
+    <legend><wicket:message key="producer">Producer</wicket:message></legend>
+    <div class="formDiv" wicket:id="name">
+      <label for="name"><wicket:message key="name">Name</wicket:message></label>
+      <input id="name" wicket:id="name" type="text" />
+    </div>
+    <div class="formDiv" wicket:id="description">
+      <label for="description"><wicket:message key="description">Description</wicket:message></label>
+      <textarea id="description" wicket:id="description" />
+    </div>
+  </fieldset>
 </wicket:panel>

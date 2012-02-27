@@ -78,8 +78,9 @@ public abstract class SimpleAutocomplete<O extends IdentifiedEntity<O>> extends 
      */
     @Override
     protected void onCancel(IEventSource source, Action action) {
-        get(CONTAINER_COMPONENT_ID + PATH_SEPARATOR + SELECTOR_COMPONENT_ID).setDefaultModel(
-                new Model<O>());
+        get(
+                CONTAINER_COMPONENT_ID + PATH_SEPARATOR + CONTAINER_BODY_COMPONENT_ID
+                        + PATH_SEPARATOR + SELECTOR_COMPONENT_ID).setDefaultModel(new Model<O>());
         super.onCancel(source, action);
     }
 

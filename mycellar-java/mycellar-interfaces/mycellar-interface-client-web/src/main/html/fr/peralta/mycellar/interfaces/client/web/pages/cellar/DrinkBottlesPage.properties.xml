@@ -10,13 +10,8 @@
   <entry key="drinkBottles">Bouteilles bues</entry>
   <entry key="saveDrink">Enregistrer les bouteilles bues</entry>
   <entry key="drinkBottle">Identification d'une bouteille bue</entry>
-  <entry key="country">Pays</entry>
-  <entry key="region">Region</entry>
-  <entry key="appellation">Appellation</entry>
-  <entry key="producer">Producteur</entry>
-  <entry key="name">Nom</entry>
-  <entry key="vintage">Millésime</entry>
-  <entry key="format">Format</entry>
+  <entry key="wineName">Nom</entry>
+  <entry key="wineVintage">Millésime</entry>
   <entry key="quantity">Quantité</entry>
   <entry key="addBottle">Ajouter une bouteille</entry>
   <entry key="removeBottle">Supprimer</entry>

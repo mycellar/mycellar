@@ -16,33 +16,28 @@
  * You should have received a copy of the GNU General Public License
  * along with MyCellar. If not, see <http://www.gnu.org/licenses/>.
  */
-package fr.peralta.mycellar.interfaces.client.web.components.shared;
+package fr.peralta.mycellar.interfaces.client.web.behaviors;
 
-import org.apache.wicket.ajax.AjaxRequestTarget;
-import org.apache.wicket.ajax.form.AjaxFormComponentUpdatingBehavior;
-import org.apache.wicket.event.Broadcast;
+import java.util.List;
+
+import org.apache.wicket.validation.IValidatable;
+import org.apache.wicket.validation.validator.AbstractValidator;
 
 /**
  * @author speralta
- * 
  */
-public class OnBlurDefaultAjaxBehavior extends AjaxFormComponentUpdatingBehavior {
+public class NotEmptyCollectionValidator extends AbstractValidator<List<?>> {
 
-    private static final long serialVersionUID = 201109131625L;
-
-    /**
-     * Default constructor.
-     */
-    public OnBlurDefaultAjaxBehavior() {
-        super("onblur");
-    }
+    private static final long serialVersionUID = 201202231614L;
 
     /**
      * {@inheritDoc}
      */
     @Override
-    protected void onUpdate(AjaxRequestTarget target) {
-        getComponent().send(getComponent().getParent(), Broadcast.BUBBLE, Action.MODEL_CHANGED);
+    protected void onValidate(IValidatable<List<?>> validatable) {
+        if (validatable.getValue().size() == 0) {
+            error(validatable);
+        }
     }
 
 }

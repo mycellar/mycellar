@@ -22,60 +22,28 @@
         <form wicket:id="form">
           <fieldset class="step">
             <legend><wicket:message key="package">Fieldset legend</wicket:message></legend>
-            <div class="formDiv">
-              <label for="date"><wicket:message key="date">Arrival</wicket:message></label>
+            <div class="formDiv" wicket:id="date">
+              <label wicket:for="date"><wicket:label key="date">Arrival</wicket:label></label>
               <input id="date" wicket:id="date" type="text" size="10" maxlength="10" />
             </div>
-            <div class="formDiv">
-              <label for="source"><wicket:message key="source">Source</wicket:message></label>
+            <div class="formDiv" wicket:id="source">
+              <label wicket:for="source"><wicket:label key="source">Source</wicket:label></label>
               <input id="source" wicket:id="source" type="text" wicket:message="placeholder:sourceEx" size="20" maxlength="20" />
             </div>
-            <div class="formDiv">
-              <label for="otherCharges"><wicket:message key="otherCharges">Other charges</wicket:message></label>
+            <div class="formDiv" wicket:id="otherCharges">
+              <label wicket:for="otherCharges"><wicket:label key="otherCharges">Other charges</wicket:label></label>
               <input id="otherCharges" wicket:id="otherCharges" type="text" wicket:message="placeholder:otherChargesEx" size="8" maxlength="8" />
             </div>
           </fieldset>
           <fieldset class="step">
             <legend><wicket:message key="arrivalBottles">Bottles</wicket:message></legend>
             <div class="formDiv" wicket:id="arrivalBottles">
-              <table class="border large">
-                <thead>
-                  <tr>
-                    <th><wicket:message key="country">Country</wicket:message></th>
-                    <th><wicket:message key="region">Region</wicket:message></th>
-                    <th><wicket:message key="appellation">Appellation</wicket:message></th>
-                    <th><wicket:message key="producer">Producer</wicket:message></th>
-                    <th><wicket:message key="name">Name</wicket:message></th>
-                    <th><wicket:message key="vintage">Vintage</wicket:message></th>
-                    <th><wicket:message key="format">Format</wicket:message></th>
-                    <th><wicket:message key="quantity">Quantity</wicket:message></th>
-                    <th><a wicket:id="addBottle"><img wicket:id="addBottleImg" wicket:message="title:addBottle" /></a></th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <tr wicket:id="arrivalBottles">
-                    <td wicket:id="bottle.wine.appellation.region.country.name">Country</td>
-                    <td wicket:id="bottle.wine.appellation.region.name">Region</td>
-                    <td wicket:id="bottle.wine.appellation.name">Appellation</td>
-                    <td wicket:id="bottle.wine.producer.name">Producer</td>
-                    <td wicket:id="bottle.wine.name">Name</td>
-                    <td wicket:id="bottle.wine.vintage">Vintage</td>
-                    <td wicket:id="bottle.format.name">Format</td>
-                    <td wicket:id="quantity">Quantity</td>
-                    <td wicket:id="remove" class="ca"><a wicket:id="removeBottle"><img wicket:id="removeBottleImg" wicket:message="title:removeBottle" /></a></td>
-                  </tr>
-                  <tr wicket:id="noBottles">
-                    <td colSpan="9" class="ca"><wicket:message key="noBottles">No bottles</wicket:message></td>
-                  </tr>
-                </tbody>
-              </table>
+              <div wicket:id="arrivalBottles" />
             </div>
           </fieldset>
           <form wicket:id="arrivalBottle" class="subForm">
-            <fieldset>
-              <legend><wicket:message key="arrivalBottle">Arrival bottle</wicket:message></legend>
-              <div wicket:id="newObject" />
-            </fieldset>
+            <div wicket:id="newObject" />
+            <div wicket:id="feedback" class="feedback" />
             <div class="submits">
               <input wicket:id="saveObject" type="submit" wicket:message="value:saveBottle" />
               <input wicket:id="cancelObject" type="submit" wicket:message="value:cancelBottle" />
@@ -85,6 +53,7 @@
             <legend><wicket:message key="cellarFieldset">Fieldset legend</wicket:message></legend>
             <div wicket:id="cellar" />
           </fieldset>
+          <div wicket:id="feedback" class="feedback" />
           <div class="submits">
             <input type="submit" wicket:message="value:saveArrival" />
           </div>

@@ -18,10 +18,11 @@
  */
 package fr.peralta.mycellar.interfaces.client.web.components.stock.edit;
 
-import org.apache.wicket.markup.html.form.TextField;
+import org.apache.wicket.markup.html.form.EmailTextField;
 import org.apache.wicket.markup.html.panel.Panel;
 import org.apache.wicket.model.StringResourceModel;
 
+import fr.peralta.mycellar.interfaces.client.web.components.shared.feedback.FormComponentFeedbackBorder;
 import fr.peralta.mycellar.interfaces.client.web.components.stock.cloud.AccessRightEnumTagCloud;
 
 /**
@@ -36,8 +37,9 @@ public class CellarShareEditPanel extends Panel {
      */
     public CellarShareEditPanel(String id) {
         super(id);
-        add(new TextField<String>("email").setRequired(true));
-        add(new AccessRightEnumTagCloud("accessRight", new StringResourceModel("accessRight", null)));
+        add(new FormComponentFeedbackBorder("email").add(new EmailTextField("email")
+                .setRequired(true)));
+        add(new AccessRightEnumTagCloud("accessRight", new StringResourceModel("AccessRight", null)));
     }
 
 }

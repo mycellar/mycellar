@@ -1,7 +1,10 @@
 <wicket:panel>
-  <div wicket:id="bottle" />
-  <div class="formDiv">
-    <label for="quantity"><wicket:message key="quantity">Quantity</wicket:message></label>
-    <input id="quantity" wicket:id="quantity" type="text" />
-  </div>
+  <fieldset>
+    <legend><wicket:message key="drinkBottle">Drink bottle</wicket:message></legend>
+    <div wicket:id="bottle" />
+    <div class="formDiv">
+      <label for="quantity"><wicket:message key="quantity">Quantity</wicket:message></label>
+      <input id="quantity" wicket:id="quantity" type="text" />
+    </div>
+  </fieldset>
 </wicket:panel>

@@ -16,27 +16,38 @@
  * You should have received a copy of the GNU General Public License
  * along with MyCellar. If not, see <http://www.gnu.org/licenses/>.
  */
-package fr.peralta.mycellar.interfaces.client.web.components.stock.edit;
+package fr.peralta.mycellar.interfaces.client.web.components.shared.feedback;
 
-import org.apache.wicket.markup.html.form.TextField;
-import org.apache.wicket.markup.html.panel.Panel;
-
-import fr.peralta.mycellar.interfaces.client.web.components.shared.feedback.FormComponentFeedbackBorder;
+import org.apache.wicket.feedback.IFeedbackMessageFilter;
 
 /**
  * @author speralta
  */
-public class CellarEditPanel extends Panel {
+public class FeedbackPanel extends org.apache.wicket.markup.html.panel.FeedbackPanel {
 
-    private static final long serialVersionUID = 201107252130L;
+    private static final long serialVersionUID = 201202161735L;
+
+    /**
+     * @param id
+     * @param filter
+     */
+    public FeedbackPanel(String id, IFeedbackMessageFilter filter) {
+        super(id, filter);
+    }
 
     /**
      * @param id
      */
-    public CellarEditPanel(String id) {
+    public FeedbackPanel(String id) {
         super(id);
-        add(new FormComponentFeedbackBorder("name").add(new TextField<String>("name")
-                .setRequired(true)));
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public boolean isVisible() {
+        return anyMessage();
     }
 
 }

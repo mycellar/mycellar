@@ -331,14 +331,13 @@ form {
 }
 
 div.subForm {
-  margin-left: 110px;
-  margin-right: 110px;
+  margin: 10px;
   border: 2px solid;
   border-radius: 5px;
 }
 
-div.subForm>div:first-of-type {
-  margin: 5px;
+div.formDiv div.subForm {
+  margin-left: 130px;
 }
 
 fieldset {
@@ -349,6 +348,14 @@ fieldset {
 
 section.form fieldset {
   margin: 10px;
+}
+
+section.form div.feedback {
+  background: none repeat scroll 0 0 #c43c35;
+  border-top: 1px solid #882a25;
+  padding: 10px 0 10px 60px;
+  color: #FFFFFF;
+  text-shadow:0 -1px 0 rgba(0, 0, 0, 0.25);
 }
 
 section.form div.submits {
@@ -373,6 +380,7 @@ fieldset div.formDiv {
 
 fieldset div.formDiv a.add {
   float: right;
+  padding-top: 4px;
 }
 
 legend {
@@ -384,7 +392,7 @@ legend {
 }
 
 label {
-  min-width: 100px;
+  min-width: 120px;
   text-align: right;
   float: left;
   margin-right: 10px;
@@ -394,6 +402,20 @@ label {
 
 label:after {
   content: " : "
+}
+
+label.required {
+  font-weight: bold;
+}
+
+label.error {
+  font-style: italic;
+}
+
+span.formError {
+  float: right;
+  padding-top: 4px;
+  margin-left: 2px;
 }
 
 input,textarea {
@@ -575,6 +597,10 @@ ul.multiple li.selected {
   border: 1px dotted;
 }
 
+div.formDiv ul.multiple {
+  margin-right: 90px;
+}
+
 /** LIST COMPONENT **/
 ul.listComponent {
   list-style: none;
@@ -598,7 +624,8 @@ ul.listComponent li:hover {
 
 /** SELECTOR **/
 div.selector {
-  margin-left: 110px;
+  margin-left: 130px;
+  margin-right: 40px;
 }
 
 /** FILTER **/

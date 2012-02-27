@@ -1,10 +1,13 @@
 <wicket:panel>
-  <p>
-    <label for="name"><wicket:message key="name">Name</wicket:message></label>
-    <input id="name" wicket:id="name" type="text" />
-  </p>
-  <p>
-    <label for="capacity"><wicket:message key="capacity">Capacity</wicket:message></label>
-    <input id="capacity" wicket:id="capacity" type="text" />
-  </p>
+  <fieldset>
+    <legend><wicket:message key="formatEdit">Format</wicket:message></legend>
+    <div class="formDiv" wicket:id="name">
+      <label for="name"><wicket:message key="name">Name</wicket:message></label>
+      <input id="name" wicket:id="name" type="text" />
+    </div>
+    <div class="formDiv" wicket:id="capacity">
+      <label for="capacity"><wicket:message key="capacity">Capacity</wicket:message></label>
+      <input id="capacity" wicket:id="capacity" type="text" />
+    </div>
+  </fieldset>
 </wicket:panel>

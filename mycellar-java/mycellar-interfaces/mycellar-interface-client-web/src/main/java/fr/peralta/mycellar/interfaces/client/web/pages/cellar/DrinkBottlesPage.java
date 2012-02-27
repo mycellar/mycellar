@@ -48,6 +48,7 @@ import fr.peralta.mycellar.domain.stock.DrinkBottle;
 import fr.peralta.mycellar.interfaces.client.web.components.shared.Action;
 import fr.peralta.mycellar.interfaces.client.web.components.shared.ActionLink;
 import fr.peralta.mycellar.interfaces.client.web.components.shared.AjaxTool;
+import fr.peralta.mycellar.interfaces.client.web.components.shared.feedback.FeedbackPanel;
 import fr.peralta.mycellar.interfaces.client.web.components.shared.form.ObjectForm;
 import fr.peralta.mycellar.interfaces.client.web.components.shared.img.ImageReferences;
 import fr.peralta.mycellar.interfaces.client.web.components.stock.cloud.CellarComplexTagCloud;
@@ -153,6 +154,7 @@ public class DrinkBottlesPage extends CellarSuperPage {
          */
         public DrinkForm(String id) {
             super(id, new CompoundPropertyModel<Drink>(new Drink()));
+            add(new FeedbackPanel("feedback"));
         }
 
         /**

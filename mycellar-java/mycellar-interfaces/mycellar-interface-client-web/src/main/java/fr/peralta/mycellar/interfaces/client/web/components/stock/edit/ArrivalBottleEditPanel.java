@@ -22,9 +22,11 @@ import org.apache.wicket.markup.html.form.TextField;
 import org.apache.wicket.markup.html.panel.Panel;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.Model;
+import org.apache.wicket.validation.validator.MinimumValidator;
 
 import fr.peralta.mycellar.domain.shared.repository.CountEnum;
 import fr.peralta.mycellar.domain.shared.repository.SearchForm;
+import fr.peralta.mycellar.interfaces.client.web.components.shared.feedback.FormComponentFeedbackBorder;
 import fr.peralta.mycellar.interfaces.client.web.components.stock.BottleComponent;
 
 /**
@@ -41,8 +43,10 @@ public class ArrivalBottleEditPanel extends Panel {
         super(id);
         IModel<SearchForm> searchFormModel = new Model<SearchForm>(new SearchForm());
         add(new BottleComponent("bottle", searchFormModel, CountEnum.STOCK_QUANTITY));
-        add(new TextField<Integer>("quantity").setRequired(true));
-        add(new TextField<Float>("price").setRequired(true));
+        add(new FormComponentFeedbackBorder("quantity").add(new TextField<Integer>("quantity")
+                .setRequired(true).add(new MinimumValidator<Integer>(1))));
+        add(new FormComponentFeedbackBorder("price").add(new TextField<Float>("price").setRequired(
+                true).add(new MinimumValidator<Float>(0f))));
     }
 
 }

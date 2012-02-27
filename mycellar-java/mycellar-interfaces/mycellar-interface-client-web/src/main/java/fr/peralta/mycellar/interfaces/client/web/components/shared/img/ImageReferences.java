@@ -46,6 +46,10 @@ public class ImageReferences {
         return getImage("database.png");
     }
 
+    public static ResourceReference getErrorImage() {
+        return getImage("error.png");
+    }
+
     public static ResourceReference getEyeImage() {
         return getImage("eye.png");
     }

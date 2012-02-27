@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE properties SYSTEM "http://java.sun.com/dtd/properties.dtd">
 <properties>
+  <entry key="regionEdit">Région</entry>
   <entry key="country.name">Pays</entry>
   <entry key="name">Nom</entry>
   <entry key="description">Description</entry>

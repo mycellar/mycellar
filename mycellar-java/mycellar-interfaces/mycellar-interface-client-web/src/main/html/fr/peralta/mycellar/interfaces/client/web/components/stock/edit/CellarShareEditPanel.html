@@ -1,7 +1,10 @@
 <wicket:panel>
-  <div class="formDiv">
-    <label for="email"><wicket:message key="email">Email</wicket:message></label>
-    <input id="name" wicket:id="email" type="text" />
-  </div>
-  <div wicket:id="accessRight" />
+  <fieldset>
+    <legend><wicket:message key="cellarShareEdit">Cellar share</wicket:message></legend>
+    <div class="formDiv" wicket:id="email">
+      <label for="email"><wicket:message key="email">Email</wicket:message></label>
+      <input id="name" wicket:id="email" type="text" />
+    </div>
+    <div wicket:id="accessRight" />
+  </fieldset>
 </wicket:panel>

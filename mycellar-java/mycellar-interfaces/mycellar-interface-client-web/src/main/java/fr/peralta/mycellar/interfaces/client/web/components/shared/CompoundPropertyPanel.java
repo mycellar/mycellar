@@ -18,14 +18,14 @@
  */
 package fr.peralta.mycellar.interfaces.client.web.components.shared;
 
-import org.apache.wicket.markup.html.panel.Panel;
+import org.apache.wicket.markup.html.form.FormComponentPanel;
 import org.apache.wicket.model.CompoundPropertyModel;
 import org.apache.wicket.model.IModel;
 
 /**
  * @author speralta
  */
-public class CompoundPropertyPanel<O> extends Panel {
+public class CompoundPropertyPanel<O> extends FormComponentPanel<O> {
 
     private static final long serialVersionUID = 201111181310L;
 
@@ -34,46 +34,6 @@ public class CompoundPropertyPanel<O> extends Panel {
      */
     public CompoundPropertyPanel(String id) {
         super(id);
-    }
-
-    /**
-     * Gets model.
-     * 
-     * @return model
-     */
-    @SuppressWarnings("unchecked")
-    public final IModel<? extends O> getModel() {
-        return (IModel<? extends O>) getDefaultModel();
-    }
-
-    /**
-     * Gets model object.
-     * 
-     * @return model object
-     */
-    @SuppressWarnings("unchecked")
-    public final O getModelObject() {
-        return (O) getDefaultModelObject();
-    }
-
-    /**
-     * Sets model.
-     * 
-     * @param model
-     *            the model
-     */
-    public final void setModel(IModel<? extends O> model) {
-        setDefaultModel(model);
-    }
-
-    /**
-     * Sets model object.
-     * 
-     * @param object
-     *            the model object
-     */
-    public final void setModelObject(O object) {
-        setDefaultModelObject(object);
     }
 
     /**

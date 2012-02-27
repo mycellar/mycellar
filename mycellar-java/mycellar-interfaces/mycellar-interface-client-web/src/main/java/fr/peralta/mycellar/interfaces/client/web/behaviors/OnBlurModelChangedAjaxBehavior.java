@@ -16,27 +16,35 @@
  * You should have received a copy of the GNU General Public License
  * along with MyCellar. If not, see <http://www.gnu.org/licenses/>.
  */
-package fr.peralta.mycellar.interfaces.client.web.components.stock.edit;
+package fr.peralta.mycellar.interfaces.client.web.behaviors;
 
-import org.apache.wicket.markup.html.form.TextField;
-import org.apache.wicket.markup.html.panel.Panel;
+import org.apache.wicket.ajax.AjaxRequestTarget;
+import org.apache.wicket.ajax.form.AjaxFormComponentUpdatingBehavior;
+import org.apache.wicket.event.Broadcast;
 
-import fr.peralta.mycellar.interfaces.client.web.components.shared.feedback.FormComponentFeedbackBorder;
+import fr.peralta.mycellar.interfaces.client.web.components.shared.Action;
 
 /**
  * @author speralta
+ * 
  */
-public class CellarEditPanel extends Panel {
+public class OnBlurModelChangedAjaxBehavior extends AjaxFormComponentUpdatingBehavior {
 
-    private static final long serialVersionUID = 201107252130L;
+    private static final long serialVersionUID = 201109131625L;
 
     /**
-     * @param id
+     * Default constructor.
      */
-    public CellarEditPanel(String id) {
-        super(id);
-        add(new FormComponentFeedbackBorder("name").add(new TextField<String>("name")
-                .setRequired(true)));
+    public OnBlurModelChangedAjaxBehavior() {
+        super("onblur");
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    protected void onUpdate(AjaxRequestTarget target) {
+        getComponent().send(getComponent().getParent(), Broadcast.BUBBLE, Action.MODEL_CHANGED);
     }
 
 }
