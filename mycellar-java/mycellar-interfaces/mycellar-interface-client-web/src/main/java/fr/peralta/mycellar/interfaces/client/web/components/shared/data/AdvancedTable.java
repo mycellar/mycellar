@@ -35,16 +35,14 @@ public class AdvancedTable<T> extends DataTable<T> {
     /**
      * @param id
      * @param columns
-     * @param colSizes
      * @param dataProvider
      * @param rowsPerPage
      */
-    public AdvancedTable(String id, List<IColumn<T>> columns, List<Integer> colSizes,
+    public AdvancedTable(String id, List<IColumn<T>> columns,
             ISortableDataProvider<T> dataProvider, int rowsPerPage) {
         super(id, columns, dataProvider, rowsPerPage);
         setOutputMarkupId(true);
         setVersioned(false);
-        add(new ColsRepeater("cols", colSizes));
         addTopToolbar(new ImageAjaxNavigationToolbar(this));
         addTopToolbar(new AdvancedAjaxFallbackHeadersToolbar(this, dataProvider));
         ((WebMarkupContainer) get("body")).add(new NoRecordsRow(this));

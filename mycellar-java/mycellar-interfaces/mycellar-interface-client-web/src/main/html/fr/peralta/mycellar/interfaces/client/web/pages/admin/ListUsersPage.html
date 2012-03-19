@@ -1,27 +1,36 @@
 <!DOCTYPE html>
-<html lang="fr">
+<html lang="fr" xmlns:wicket="http://wicket.apache.org">
   <head>
     <title>MyCellar</title>
     <meta charset="utf-8">
-    <link rel="stylesheet" href="../shared/master.css" type="text/css" media="screen" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="../../resources/css/bootstrap.min.css" type="text/css" media="screen" />
+    <link rel="stylesheet" href="../../resources/css/master.css" type="text/css" media="screen" />
+    <link rel="stylesheet" href="../../resources/css/bootstrap-responsive.min.css" type="text/css" media="screen" />
+    <link rel="stylesheet" href="../../resources/css/master-responsive.css" type="text/css" media="screen" />
   </head>
   <body>
-    <header role="main">
-      <h1>MyCellar</h1>
-    </header>
-    <nav role="main">
-      <ul>
-        <li><a>Nav 1</a></li>
-        <li><a>Nav 2</a></li>
-        <li><a>Nav 3</a></li>
-      </ul>
+    <nav class="navbar navbar-fixed-top" role="main">
+      <div class="navbar-inner">
+        <div class="container">
+          <div class="nav-collapse">
+            <ul>
+              <li><a>Nav 1</a></li>
+              <li><a>Nav 2</a></li>
+              <li><a>Nav 3</a></li>
+            </ul>
+          </div>
+        </div>
+      </div>
     </nav>
-    <header role="secondary"><h3>Header</h3></header>
-    <wicket:extend>
-      <section>
-        <table class="large border" wicket:id="users" />>
-      </section>
-    </wicket:extend>
+    <div class="container-fluid">
+      <header role="primary" class="page-header"><h1>Header</h1></header>
+      <wicket:extend>
+        <section>
+          <table class="table table-bordered table-striped table-condensed" wicket:id="users" />
+        </section>
+      </wicket:extend>
+    </div>
     <footer>
       <div>
         <p>

@@ -210,6 +210,14 @@ public class HibernateWineRepository extends HibernateRepository implements Wine
      * {@inheritDoc}
      */
     @Override
+    public Producer getProducerById(Integer producerId) {
+        return entityManager.find(Producer.class, producerId);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
     public Map<WineTypeEnum, Long> getTypes(SearchForm searchForm, CountEnum countEnum) {
         CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();
         CriteriaQuery<Tuple> query = criteriaBuilder.createTupleQuery();

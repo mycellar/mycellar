@@ -20,13 +20,12 @@ package fr.peralta.mycellar.interfaces.client.web.components.shared.menu;
 
 import java.util.List;
 
-import org.apache.wicket.AttributeModifier;
+import org.apache.wicket.behavior.AttributeAppender;
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.link.BookmarkablePageLink;
 import org.apache.wicket.markup.html.list.ListItem;
 import org.apache.wicket.markup.html.list.ListView;
 import org.apache.wicket.markup.html.panel.Panel;
-import org.apache.wicket.model.Model;
 import org.wicketstuff.security.checks.LinkSecurityCheck;
 import org.wicketstuff.security.components.SecureComponentHelper;
 
@@ -57,7 +56,7 @@ public class SubMenuPanel extends Panel {
                 SecureComponentHelper.setSecurityCheck(link, new LinkSecurityCheck(link, listItem
                         .getModelObject().getPageClass()));
                 if (current.equals(listItem.getModelObject().getSuperPageClass())) {
-                    listItem.add(new AttributeModifier("class", new Model<String>("selected")));
+                    listItem.add(new AttributeAppender("class", "active").setSeparator(" "));
                 }
                 link.add(new Label("label", listItem.getModelObject().getPageTitle()));
                 listItem.add(link);
@@ -65,5 +64,4 @@ public class SubMenuPanel extends Panel {
         });
         setVisibilityAllowed(descriptors.size() > 0);
     }
-
 }

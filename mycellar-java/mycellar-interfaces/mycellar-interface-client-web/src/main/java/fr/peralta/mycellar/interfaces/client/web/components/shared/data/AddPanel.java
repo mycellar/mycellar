@@ -18,12 +18,10 @@
  */
 package fr.peralta.mycellar.interfaces.client.web.components.shared.data;
 
-import org.apache.wicket.markup.html.image.Image;
 import org.apache.wicket.markup.html.panel.Panel;
 
 import fr.peralta.mycellar.interfaces.client.web.components.shared.Action;
 import fr.peralta.mycellar.interfaces.client.web.components.shared.ActionLink;
-import fr.peralta.mycellar.interfaces.client.web.components.shared.img.ImageReferences;
 
 /**
  * @author speralta
@@ -37,8 +35,7 @@ public class AddPanel extends Panel {
      */
     public AddPanel(String id) {
         super(id);
-        add(new ActionLink("addLink", Action.ADD).add(new Image("addImg", ImageReferences
-                .getAddImage())));
+        add(new ActionLink("addLink", Action.ADD));
     }
 
 }

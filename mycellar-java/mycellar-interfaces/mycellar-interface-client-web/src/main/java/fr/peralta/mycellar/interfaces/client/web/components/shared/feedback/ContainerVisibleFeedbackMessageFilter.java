@@ -53,8 +53,11 @@ public class ContainerVisibleFeedbackMessageFilter implements IFeedbackMessageFi
      */
     @Override
     public boolean accept(FeedbackMessage message) {
-        final Component reporter = message.getReporter();
+        if (message.isRendered()) {
+            return false;
+        }
 
+        final Component reporter = message.getReporter();
         if (reporter instanceof SimpleComponent) {
             return (reporter != null)
                     && ((SimpleComponent<?>) reporter).isContainerVisibleInHierarchy()

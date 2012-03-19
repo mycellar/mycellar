@@ -1,13 +1,10 @@
 <wicket:extend>
-  <form wicket:id="cellarShare">
-    <fieldset>
-      <legend><wicket:message key="cellarShare">Cellar share</wicket:message></legend>
-      <div wicket:id="newObject" />
-    </fieldset>
+  <form wicket:id="cellarShare" class="well">
+    <div wicket:id="newObject" />
     <div wicket:id="feedback" class="feedback" />
-    <div class="submits">
-      <input wicket:id="saveObject" type="submit" wicket:message="value:saveCellarShare" />
-      <input wicket:id="cancelObject" type="submit" wicket:message="value:cancelCellarShare" />
+    <div class="form-actions">
+      <input class="btn btn-primary" wicket:id="saveObject" type="submit" wicket:message="value:saveCellarShare" />
+      <input class="btn" wicket:id="cancelObject" type="submit" wicket:message="value:cancelCellarShare" />
     </div>
   </form>
 </wicket:extend>

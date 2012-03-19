@@ -2,5 +2,7 @@
 <!DOCTYPE properties SYSTEM "http://java.sun.com/dtd/properties.dtd">
 <properties>
   <entry key="header">Page d'accueil</entry>
-  <entry key="newUserLink">Créer un nouvel utilisateur</entry>
+  <entry key="welcome1">Bienvenue sur MyCellar !</entry>
+  <entry key="welcome2">Essayez le sur votre téléphone portable !</entry>
+  <entry key="welcome3">Bientôt CAVE ET TERROIRS !</entry>
 </properties> 

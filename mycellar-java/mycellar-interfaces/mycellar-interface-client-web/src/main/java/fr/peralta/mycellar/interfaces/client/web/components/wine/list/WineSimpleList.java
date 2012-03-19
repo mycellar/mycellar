@@ -36,8 +36,9 @@ import fr.peralta.mycellar.domain.wine.WineTypeEnum;
 import fr.peralta.mycellar.domain.wine.repository.WineOrder;
 import fr.peralta.mycellar.interfaces.client.web.behaviors.OnBlurModelChangedAjaxBehavior;
 import fr.peralta.mycellar.interfaces.client.web.components.shared.Action;
+import fr.peralta.mycellar.interfaces.client.web.components.shared.feedback.FormComponentFeedbackBorder;
 import fr.peralta.mycellar.interfaces.client.web.components.shared.list.SimpleList;
-import fr.peralta.mycellar.interfaces.client.web.components.wine.autocomplete.ProducerSimpleAutocomplete;
+import fr.peralta.mycellar.interfaces.client.web.components.wine.autocomplete.ProducerSimpleAutoComplete;
 import fr.peralta.mycellar.interfaces.client.web.components.wine.cloud.AppellationSimpleTagCloud;
 import fr.peralta.mycellar.interfaces.client.web.components.wine.cloud.WineColorEnumFromProducerAndTypeTagCloud;
 import fr.peralta.mycellar.interfaces.client.web.components.wine.cloud.WineTypeEnumFromProducerTagCloud;
@@ -71,15 +72,16 @@ public class WineSimpleList extends SimpleList<Wine> {
         setOutputMarkupId(true);
         this.searchFormModel = searchFormModel;
         add(new AppellationSimpleTagCloud(APPELLATION_COMPONENT_ID, new StringResourceModel(
-                "Appellation", this, null), searchFormModel, CountEnum.STOCK_QUANTITY));
-        add(new ProducerSimpleAutocomplete(PRODUCER_COMPONENT_ID, new StringResourceModel(
-                "Producer", this, null)));
-        add(new WineTypeEnumFromProducerTagCloud(TYPE_COMPONENT_ID, new StringResourceModel("Type",
+                "appellation", this, null), searchFormModel, CountEnum.STOCK_QUANTITY));
+        add(new ProducerSimpleAutoComplete(PRODUCER_COMPONENT_ID, new StringResourceModel(
+                "producer", this, null)));
+        add(new WineTypeEnumFromProducerTagCloud(TYPE_COMPONENT_ID, new StringResourceModel("type",
                 this, null), CountEnum.WINE));
         add(new WineColorEnumFromProducerAndTypeTagCloud(COLOR_COMPONENT_ID,
-                new StringResourceModel("Color", this, null), CountEnum.WINE));
-        add(new NumberTextField<Integer>(VINTAGE_COMPONENT_ID).setMinimum(1800)
-                .setMaximum(new LocalDate().getYear()).add(new OnBlurModelChangedAjaxBehavior()));
+                new StringResourceModel("color", this, null), CountEnum.WINE));
+        add(new FormComponentFeedbackBorder(VINTAGE_COMPONENT_ID).add(new NumberTextField<Integer>(
+                VINTAGE_COMPONENT_ID).setMinimum(1800).setMaximum(new LocalDate().getYear())
+                .add(new OnBlurModelChangedAjaxBehavior())));
     }
 
     /**
@@ -101,7 +103,7 @@ public class WineSimpleList extends SimpleList<Wine> {
      */
     @Override
     protected boolean isReadyToSelect() {
-        return ((ProducerSimpleAutocomplete) get(PRODUCER_COMPONENT_ID)).isValued()
+        return ((ProducerSimpleAutoComplete) get(PRODUCER_COMPONENT_ID)).isValued()
                 || ((AppellationSimpleTagCloud) get(APPELLATION_COMPONENT_ID)).isValued();
     }
 
@@ -118,10 +120,10 @@ public class WineSimpleList extends SimpleList<Wine> {
      */
     @Override
     protected void onModelChanged(IEventSource source, Action action) {
-        if (source instanceof ProducerSimpleAutocomplete) {
-            ProducerSimpleAutocomplete producerSimpleAutocomplete = (ProducerSimpleAutocomplete) source;
-            Producer sourceObject = producerSimpleAutocomplete.getModelObject();
-            if ((sourceObject != null) && producerSimpleAutocomplete.isValued()) {
+        if (source instanceof ProducerSimpleAutoComplete) {
+            ProducerSimpleAutoComplete producerSimpleAutoComplete = (ProducerSimpleAutoComplete) source;
+            Producer sourceObject = producerSimpleAutoComplete.getModelObject();
+            if ((sourceObject != null) && producerSimpleAutoComplete.isValued()) {
                 ((WineTypeEnumFromProducerTagCloud) get(TYPE_COMPONENT_ID))
                         .setProducer(sourceObject);
                 ((WineColorEnumFromProducerAndTypeTagCloud) get(COLOR_COMPONENT_ID))

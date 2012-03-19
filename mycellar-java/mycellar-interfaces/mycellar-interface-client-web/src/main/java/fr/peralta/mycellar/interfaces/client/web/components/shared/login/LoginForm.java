@@ -18,16 +18,17 @@
  */
 package fr.peralta.mycellar.interfaces.client.web.components.shared.login;
 
+import org.apache.wicket.markup.html.form.EmailTextField;
 import org.apache.wicket.markup.html.form.PasswordTextField;
 import org.apache.wicket.markup.html.form.StatelessForm;
-import org.apache.wicket.markup.html.form.TextField;
+import org.apache.wicket.markup.html.link.BookmarkablePageLink;
 import org.apache.wicket.model.CompoundPropertyModel;
 import org.apache.wicket.util.value.ValueMap;
 import org.wicketstuff.security.WaspSession;
 import org.wicketstuff.security.authentication.LoginException;
 import org.wicketstuff.security.hive.authentication.LoginContext;
 
-import fr.peralta.mycellar.interfaces.client.web.security.UserKey;
+import fr.peralta.mycellar.interfaces.client.web.pages.user.NewUserPage;
 
 /**
  * @author speralta
@@ -41,17 +42,9 @@ class LoginForm extends StatelessForm<ValueMap> {
      */
     public LoginForm(String id) {
         super(id, new CompoundPropertyModel<ValueMap>(new ValueMap()));
-        add(new TextField<String>("username").setType(String.class).setRequired(true));
+        add(new EmailTextField("username").setType(String.class).setRequired(true));
         add(new PasswordTextField("password").setType(String.class).setRequired(true));
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    protected void onConfigure() {
-        super.onConfigure();
-        setVisibilityAllowed(UserKey.getUserLoggedIn() == null);
+        add(new BookmarkablePageLink<Void>("newUserLink", NewUserPage.class));
     }
 
     /**
@@ -67,7 +60,7 @@ class LoginForm extends StatelessForm<ValueMap> {
         try {
             ((WaspSession) getSession()).login(ctx);
             if (!getPage().continueToOriginalDestination()) {
-                setResponsePage(getPage());
+                setResponsePage(getPage().getClass());
             }
         } catch (LoginException e) {
             error(getLocalizer().getString("exception.login", this));

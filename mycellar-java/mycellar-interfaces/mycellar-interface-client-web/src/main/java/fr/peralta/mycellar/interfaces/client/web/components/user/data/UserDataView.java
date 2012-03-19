@@ -49,20 +49,12 @@ public class UserDataView extends AdvancedTable<User> {
         return columns;
     }
 
-    private static List<Integer> getColSizes() {
-        List<Integer> colSizes = new ArrayList<Integer>();
-        colSizes.add(50);
-        colSizes.add(25);
-        colSizes.add(25);
-        return colSizes;
-    }
-
     /**
      * @param id
      * @param searchFormModel
      */
     public UserDataView(String id, IModel<SearchForm> searchFormModel) {
-        super(id, getNewColumns(), getColSizes(), new UserDataProvider(searchFormModel), 30);
+        super(id, getNewColumns(), new UserDataProvider(searchFormModel), 30);
     }
 
 }

@@ -22,6 +22,7 @@ import java.util.List;
 
 import org.apache.wicket.Component;
 import org.apache.wicket.event.IEventSource;
+import org.apache.wicket.markup.html.border.Border;
 import org.apache.wicket.markup.html.form.NumberTextField;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.StringResourceModel;
@@ -42,8 +43,9 @@ import fr.peralta.mycellar.domain.wine.repository.WineOrder;
 import fr.peralta.mycellar.domain.wine.repository.WineOrderEnum;
 import fr.peralta.mycellar.interfaces.client.web.behaviors.OnBlurModelChangedAjaxBehavior;
 import fr.peralta.mycellar.interfaces.client.web.components.shared.Action;
+import fr.peralta.mycellar.interfaces.client.web.components.shared.feedback.FormComponentFeedbackBorder;
 import fr.peralta.mycellar.interfaces.client.web.components.shared.list.ComplexList;
-import fr.peralta.mycellar.interfaces.client.web.components.wine.autocomplete.ProducerComplexAutocomplete;
+import fr.peralta.mycellar.interfaces.client.web.components.wine.autocomplete.ProducerComplexAutoComplete;
 import fr.peralta.mycellar.interfaces.client.web.components.wine.cloud.AppellationComplexTagCloud;
 import fr.peralta.mycellar.interfaces.client.web.components.wine.cloud.WineColorEnumFromProducerAndTypeTagCloud;
 import fr.peralta.mycellar.interfaces.client.web.components.wine.cloud.WineTypeEnumFromProducerTagCloud;
@@ -80,14 +82,15 @@ public class WineComplexList extends ComplexList<Wine> {
         this.searchFormModel = searchFormModel;
         add(new AppellationComplexTagCloud(APPELLATION_COMPONENT_ID, new StringResourceModel(
                 "appellation", this, null), searchFormModel, count));
-        add(new ProducerComplexAutocomplete(PRODUCER_COMPONENT_ID, new StringResourceModel(
+        add(new ProducerComplexAutoComplete(PRODUCER_COMPONENT_ID, new StringResourceModel(
                 "producer", this, null)));
         add(new WineTypeEnumFromProducerTagCloud(TYPE_COMPONENT_ID, new StringResourceModel("type",
                 this, null), CountEnum.WINE));
         add(new WineColorEnumFromProducerAndTypeTagCloud(COLOR_COMPONENT_ID,
                 new StringResourceModel("color", this, null), CountEnum.WINE));
-        add(new NumberTextField<Integer>(VINTAGE_COMPONENT_ID).setMinimum(1800)
-                .setMaximum(new LocalDate().getYear()).add(new OnBlurModelChangedAjaxBehavior()));
+        add(new FormComponentFeedbackBorder(VINTAGE_COMPONENT_ID).add(new NumberTextField<Integer>(
+                VINTAGE_COMPONENT_ID).setMinimum(1800).setMaximum(new LocalDate().getYear())
+                .add(new OnBlurModelChangedAjaxBehavior())));
     }
 
     /**
@@ -147,8 +150,9 @@ public class WineComplexList extends ComplexList<Wine> {
         if (colorModel != null) {
             wine.setColor(colorModel.getObject());
         }
-        IModel<Integer> vintageModel = (IModel<Integer>) get(VINTAGE_COMPONENT_ID)
-                .getDefaultModel();
+        IModel<Integer> vintageModel = (IModel<Integer>) get(
+                VINTAGE_COMPONENT_ID + PATH_SEPARATOR + VINTAGE_COMPONENT_ID + "_" + Border.BODY
+                        + PATH_SEPARATOR + VINTAGE_COMPONENT_ID).getDefaultModel();
         if (vintageModel != null) {
             wine.setVintage(vintageModel.getObject());
         }
@@ -160,7 +164,7 @@ public class WineComplexList extends ComplexList<Wine> {
      */
     @Override
     protected boolean isReadyToSelect() {
-        return ((ProducerComplexAutocomplete) get(PRODUCER_COMPONENT_ID)).isValued()
+        return ((ProducerComplexAutoComplete) get(PRODUCER_COMPONENT_ID)).isValued()
                 || ((AppellationComplexTagCloud) get(APPELLATION_COMPONENT_ID)).isValued();
     }
 
@@ -170,8 +174,9 @@ public class WineComplexList extends ComplexList<Wine> {
     @Override
     protected List<Wine> getChoices() {
         SearchForm searchForm = searchFormModel.getObject();
-        searchForm.replaceSet(FilterEnum.VINTAGE,
-                ((NumberTextField<?>) get(VINTAGE_COMPONENT_ID)).getModelObject());
+        searchForm.replaceSet(FilterEnum.VINTAGE, ((NumberTextField<?>) get(VINTAGE_COMPONENT_ID
+                + PATH_SEPARATOR + VINTAGE_COMPONENT_ID + "_" + Border.BODY + PATH_SEPARATOR
+                + VINTAGE_COMPONENT_ID)).getModelObject());
         searchForm.replaceSet(FilterEnum.APPELLATION,
                 ((AppellationComplexTagCloud) get(APPELLATION_COMPONENT_ID)).getModelObject());
         searchForm.replaceSet(FilterEnum.COLOR,
@@ -180,7 +185,7 @@ public class WineComplexList extends ComplexList<Wine> {
         searchForm.replaceSet(FilterEnum.TYPE,
                 ((WineTypeEnumFromProducerTagCloud) get(TYPE_COMPONENT_ID)).getModelObject());
         searchForm.replaceSet(FilterEnum.PRODUCER,
-                ((ProducerComplexAutocomplete) get(PRODUCER_COMPONENT_ID)).getModelObject());
+                ((ProducerComplexAutoComplete) get(PRODUCER_COMPONENT_ID)).getModelObject());
         return wineServiceFacade.getWines(searchForm,
                 new WineOrder().add(WineOrderEnum.VINTAGE, OrderWayEnum.DESC), 0, 10);
     }
@@ -190,10 +195,10 @@ public class WineComplexList extends ComplexList<Wine> {
      */
     @Override
     protected void onModelChanged(IEventSource source, Action action) {
-        if (source instanceof ProducerComplexAutocomplete) {
-            ProducerComplexAutocomplete producerComplexAutocomplete = (ProducerComplexAutocomplete) source;
-            Producer sourceObject = producerComplexAutocomplete.getModelObject();
-            if ((sourceObject != null) && producerComplexAutocomplete.isValued()) {
+        if (source instanceof ProducerComplexAutoComplete) {
+            ProducerComplexAutoComplete producerComplexAutoComplete = (ProducerComplexAutoComplete) source;
+            Producer sourceObject = producerComplexAutoComplete.getModelObject();
+            if ((sourceObject != null) && producerComplexAutoComplete.isValued()) {
                 ((WineTypeEnumFromProducerTagCloud) get(TYPE_COMPONENT_ID))
                         .setProducer(sourceObject);
                 ((WineColorEnumFromProducerAndTypeTagCloud) get(COLOR_COMPONENT_ID))
@@ -231,7 +236,7 @@ public class WineComplexList extends ComplexList<Wine> {
      */
     @Override
     protected void onAdd(IEventSource source, Action action) {
-        if (((ProducerComplexAutocomplete) get(PRODUCER_COMPONENT_ID)).isValued()) {
+        if (((ProducerComplexAutoComplete) get(PRODUCER_COMPONENT_ID)).isValued()) {
             super.onAdd(source, action);
         } else {
             error(new ValidationError().addMessageKey("ProducerNotSet"));

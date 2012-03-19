@@ -21,7 +21,6 @@ package fr.peralta.mycellar.interfaces.client.web.pages.cellar;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.apache.wicket.extensions.ajax.markup.html.tabs.AjaxTabbedPanel;
 import org.apache.wicket.extensions.markup.html.tabs.AbstractTab;
 import org.apache.wicket.extensions.markup.html.tabs.ITab;
 import org.apache.wicket.markup.html.WebMarkupContainer;
@@ -36,6 +35,7 @@ import fr.peralta.mycellar.domain.shared.repository.CountEnum;
 import fr.peralta.mycellar.domain.shared.repository.FilterEnum;
 import fr.peralta.mycellar.domain.shared.repository.SearchForm;
 import fr.peralta.mycellar.domain.stock.Cellar;
+import fr.peralta.mycellar.interfaces.client.web.components.shared.tab.BootstrapAjaxTabbedPanel;
 import fr.peralta.mycellar.interfaces.client.web.components.stock.tab.CellarShareTabPanel;
 import fr.peralta.mycellar.interfaces.client.web.pages.shared.CellarSuperPage;
 import fr.peralta.mycellar.interfaces.client.web.security.UserKey;
@@ -101,7 +101,7 @@ public class ShareCellarsPage extends CellarSuperPage {
         if (tabs.size() == 0) {
             add(new Label("cellars", new StringResourceModel("noCellar", null)));
         } else {
-            add(new AjaxTabbedPanel("cellars", tabs));
+            add(new BootstrapAjaxTabbedPanel("cellars", tabs));
         }
     }
 

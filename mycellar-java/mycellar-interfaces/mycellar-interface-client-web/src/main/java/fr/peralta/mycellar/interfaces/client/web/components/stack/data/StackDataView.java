@@ -75,21 +75,12 @@ public class StackDataView extends AdvancedTable<Stack> {
         return columns;
     }
 
-    private static List<Integer> getColSizes() {
-        List<Integer> colSizes = new ArrayList<Integer>();
-        colSizes.add(10);
-        colSizes.add(75);
-        colSizes.add(10);
-        colSizes.add(5);
-        return colSizes;
-    }
-
     /**
      * @param id
      * @param searchFormModel
      */
     public StackDataView(String id, IModel<SearchForm> searchFormModel) {
-        super(id, getNewColumns(), getColSizes(), new StackDataProvider(searchFormModel), 20);
+        super(id, getNewColumns(), new StackDataProvider(searchFormModel), 20);
     }
 
 }

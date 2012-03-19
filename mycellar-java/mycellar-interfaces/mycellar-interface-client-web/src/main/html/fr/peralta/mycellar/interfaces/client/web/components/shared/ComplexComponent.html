@@ -1,18 +1,16 @@
 <!DOCTYPE html>
-<html lang="fr" xmlns:wicket="">
+<html lang="fr" xmlns:wicket="http://wicket.apache.org">
 <body>
 <wicket:panel>
   <wicket:child />
-  <div class="formDiv" wicket:id="container">
-    <label wicket:id="label">Label</label>
-    <a class="add" wicket:id="add"><img wicket:id="addImg" wicket:message="title:addLink" /></a>
+  <div class="control-group" wicket:id="container">
     <div class="value" wicket:id="value" />
     <div class="selector" wicket:id="selector" />
-    <form class="subForm" wicket:id="createForm">
+    <form class="form-horizontal sub-form" wicket:id="createForm">
       <div wicket:id="newObject" />
-      <div class="submits">
-        <input wicket:id="saveObject" type="submit" wicket:message="value:createButton" />
-        <input wicket:id="cancelObject" type="submit" wicket:message="value:cancelButton" />
+      <div class="form-actions">
+        <input wicket:id="saveObject" type="submit" class="btn btn-primary" wicket:message="value:createButton" />
+        <input wicket:id="cancelObject" type="submit" class="btn" wicket:message="value:cancelButton" />
       </div>
     </form>
   </div>

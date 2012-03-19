@@ -23,7 +23,6 @@ import java.util.List;
 import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.form.FormComponentPanel;
-import org.apache.wicket.markup.html.image.Image;
 import org.apache.wicket.markup.html.list.ListItem;
 import org.apache.wicket.markup.html.list.PropertyListView;
 import org.apache.wicket.model.IModel;
@@ -32,7 +31,6 @@ import fr.peralta.mycellar.domain.stock.ArrivalBottle;
 import fr.peralta.mycellar.interfaces.client.web.behaviors.NotEmptyCollectionValidator;
 import fr.peralta.mycellar.interfaces.client.web.components.shared.Action;
 import fr.peralta.mycellar.interfaces.client.web.components.shared.ActionLink;
-import fr.peralta.mycellar.interfaces.client.web.components.shared.img.ImageReferences;
 
 /**
  * @author speralta
@@ -83,10 +81,8 @@ public class ArrivalBottlesEditPanel extends FormComponentPanel<List<ArrivalBott
             item.add(new Label("bottle.wine.vintage"));
             item.add(new Label("bottle.format.name"));
             item.add(new Label("quantity"));
-            item.add(new WebMarkupContainer("remove").add(removeLink("removeBottle", item).add(
-                    new Image("removeBottleImg", ImageReferences.getRemoveImage()))));
+            item.add(new WebMarkupContainer("remove").add(removeLink("removeBottle", item)));
         }
-
     }
 
     private static final long serialVersionUID = 201202231626L;
@@ -99,8 +95,7 @@ public class ArrivalBottlesEditPanel extends FormComponentPanel<List<ArrivalBott
     public ArrivalBottlesEditPanel(String id) {
         super(id);
         add(new ArrivalBottlesView("arrivalBottles"));
-        add(new ActionLink("addBottle", Action.ADD).add(new Image("addBottleImg", ImageReferences
-                .getAddImage())));
+        add(new ActionLink("addBottle", Action.ADD));
         add(new WebMarkupContainer(NO_BOTTLES_COMPONENT_ID) {
             private static final long serialVersionUID = 201108082329L;
 

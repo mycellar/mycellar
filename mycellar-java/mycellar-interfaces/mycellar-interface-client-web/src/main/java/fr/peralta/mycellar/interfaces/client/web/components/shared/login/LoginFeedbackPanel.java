@@ -18,9 +18,9 @@
  */
 package fr.peralta.mycellar.interfaces.client.web.components.shared.login;
 
-import org.apache.wicket.markup.html.panel.FeedbackPanel;
+import org.apache.wicket.feedback.IFeedbackMessageFilter;
 
-import fr.peralta.mycellar.interfaces.client.web.security.UserKey;
+import fr.peralta.mycellar.interfaces.client.web.components.shared.feedback.FeedbackPanel;
 
 /**
  * @author speralta
@@ -31,17 +31,11 @@ class LoginFeedbackPanel extends FeedbackPanel {
 
     /**
      * @param id
+     * @param filter
      */
-    public LoginFeedbackPanel(String id) {
-        super(id);
+    public LoginFeedbackPanel(String id, IFeedbackMessageFilter filter) {
+        super(id, filter);
+        setRenderBodyOnly(true);
     }
 
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    protected void onConfigure() {
-        super.onConfigure();
-        setVisibilityAllowed(UserKey.getUserLoggedIn() == null);
-    }
 }

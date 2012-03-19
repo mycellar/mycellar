@@ -15,6 +15,7 @@
   <entry key="countryEdit">Nouveau pays</entry>
   <entry key="regionEdit">Nouvelle région</entry>
   <entry key="appellationEdit">Nouvelle appelation</entry>
+  <entry key="cellarEdit">Nouvelle cave</entry>
   <entry key="saveBottle">Enregistrer cette bouteille</entry>
   <entry key="cancelBottle">Annuler la saisie de cette bouteille</entry>
 </properties> 

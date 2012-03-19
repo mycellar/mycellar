@@ -43,15 +43,6 @@ class LogoutLink extends Link<Void> {
      * {@inheritDoc}
      */
     @Override
-    protected void onConfigure() {
-        super.onConfigure();
-        setVisibilityAllowed(UserKey.getUserLoggedIn() != null);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
     public void onClick() {
         WaspSession session = (WaspSession) Session.get();
         session.logoff(new MyCellarLoginContext(UserKey.getUserLoggedIn().getEmail(), UserKey

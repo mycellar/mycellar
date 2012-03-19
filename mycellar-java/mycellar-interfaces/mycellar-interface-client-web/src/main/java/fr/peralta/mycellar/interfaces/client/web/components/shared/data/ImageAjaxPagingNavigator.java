@@ -19,12 +19,8 @@
 package fr.peralta.mycellar.interfaces.client.web.components.shared.data;
 
 import org.apache.wicket.ajax.markup.html.navigation.paging.AjaxPagingNavigator;
-import org.apache.wicket.markup.html.image.Image;
-import org.apache.wicket.markup.html.link.Link;
 import org.apache.wicket.markup.html.navigation.paging.IPageable;
 import org.apache.wicket.markup.html.navigation.paging.IPagingLabelProvider;
-
-import fr.peralta.mycellar.interfaces.client.web.components.shared.img.ImageReferences;
 
 /**
  * @author speralta
@@ -49,34 +45,6 @@ public class ImageAjaxPagingNavigator extends AjaxPagingNavigator {
      */
     public ImageAjaxPagingNavigator(String id, IPageable pageable) {
         super(id, pageable);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    protected Link<?> newPagingNavigationIncrementLink(String id, IPageable pageable, int increment) {
-        Link<?> link = super.newPagingNavigationIncrementLink(id, pageable, increment);
-        if ("next".equals(id)) {
-            link.add(new Image("nextImg", ImageReferences.getPagingNextImage()));
-        } else if ("prev".equals(id)) {
-            link.add(new Image("prevImg", ImageReferences.getPagingPrevImage()));
-        }
-        return link;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    protected Link<?> newPagingNavigationLink(String id, IPageable pageable, int pageNumber) {
-        Link<?> link = super.newPagingNavigationLink(id, pageable, pageNumber);
-        if ("first".equals(id)) {
-            link.add(new Image("firstImg", ImageReferences.getPagingFirstImage()));
-        } else if ("last".equals(id)) {
-            link.add(new Image("lastImg", ImageReferences.getPagingLastImage()));
-        }
-        return link;
     }
 
 }

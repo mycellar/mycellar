@@ -106,30 +106,12 @@ public class MovementDataView extends AdvancedTable<Movement<?>> {
         return columns;
     }
 
-    private static List<Integer> getColSizes() {
-        List<Integer> colSizes = new ArrayList<Integer>();
-        colSizes.add(7);
-        colSizes.add(7);
-        colSizes.add(7);
-        colSizes.add(10);
-        colSizes.add(12);
-        colSizes.add(12);
-        colSizes.add(12);
-        colSizes.add(7);
-        colSizes.add(6);
-        colSizes.add(6);
-        colSizes.add(8);
-        colSizes.add(3);
-        colSizes.add(3);
-        return colSizes;
-    }
-
     /**
      * @param id
      * @param searchFormModel
      */
     public MovementDataView(String id, IModel<SearchForm> searchFormModel) {
-        super(id, getNewColumns(), getColSizes(), new MovementDataProvider(searchFormModel), 30);
+        super(id, getNewColumns(), new MovementDataProvider(searchFormModel), 30);
     }
 
 }

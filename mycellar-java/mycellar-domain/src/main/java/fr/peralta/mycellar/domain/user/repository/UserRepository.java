@@ -31,7 +31,7 @@ public interface UserRepository {
     /**
      * @param user
      */
-    void newUser(User user);
+    void saveUser(User user);
 
     /**
      * @param login
@@ -54,5 +54,11 @@ public interface UserRepository {
      * @return
      */
     List<User> getUsers(SearchForm searchForm, UserOrder orders, int first, int count);
+
+    /**
+     * @param userId
+     * @return
+     */
+    User getUserById(Integer userId);
 
 }

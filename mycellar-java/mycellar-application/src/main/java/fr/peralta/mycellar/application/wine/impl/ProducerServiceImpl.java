@@ -39,6 +39,14 @@ public class ProducerServiceImpl implements ProducerService {
      * {@inheritDoc}
      */
     @Override
+    public Producer getById(Integer id) {
+        return wineRepository.getProducerById(id);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
     public List<Producer> getAllLike(String term) {
         return wineRepository.getAllProducersLike(term);
     }

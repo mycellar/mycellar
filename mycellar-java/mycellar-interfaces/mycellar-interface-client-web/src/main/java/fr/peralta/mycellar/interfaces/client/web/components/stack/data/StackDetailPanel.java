@@ -18,11 +18,9 @@
  */
 package fr.peralta.mycellar.interfaces.client.web.components.stack.data;
 
-import org.apache.wicket.markup.html.image.Image;
 import org.apache.wicket.markup.html.link.BookmarkablePageLink;
 import org.apache.wicket.markup.html.panel.Panel;
 
-import fr.peralta.mycellar.interfaces.client.web.components.shared.img.ImageReferences;
 import fr.peralta.mycellar.interfaces.client.web.pages.admin.StackPage;
 
 /**
@@ -38,8 +36,7 @@ public class StackDetailPanel extends Panel {
     public StackDetailPanel(String id, Integer stackId) {
         super(id);
         add(new BookmarkablePageLink<Void>("detail", StackPage.class,
-                StackPage.getPageParameters(stackId)).add(new Image("detailImg", ImageReferences
-                .getEyeImage())));
+                StackPage.getPageParameters(stackId)));
     }
 
 }

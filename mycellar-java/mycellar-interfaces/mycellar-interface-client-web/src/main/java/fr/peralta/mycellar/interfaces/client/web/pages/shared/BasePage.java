@@ -20,13 +20,16 @@ package fr.peralta.mycellar.interfaces.client.web.pages.shared;
 
 import org.apache.wicket.devutils.debugbar.DebugBar;
 import org.apache.wicket.markup.html.IHeaderResponse;
+import org.apache.wicket.markup.html.link.BookmarkablePageLink;
+import org.apache.wicket.protocol.http.WebApplication;
 import org.apache.wicket.request.mapper.parameter.PageParameters;
-import org.apache.wicket.request.resource.PackageResourceReference;
 import org.wicketstuff.security.components.SecureWebPage;
 
 import fr.peralta.mycellar.interfaces.client.web.MyCellarWebApplicationDescriptor;
 import fr.peralta.mycellar.interfaces.client.web.components.shared.login.LoginPanel;
 import fr.peralta.mycellar.interfaces.client.web.components.shared.menu.MenuPanel;
+import fr.peralta.mycellar.interfaces.client.web.resources.css.CssReferences;
+import fr.peralta.mycellar.interfaces.client.web.resources.js.JavaScriptReferences;
 
 /**
  * @author speralta
@@ -40,6 +43,7 @@ public abstract class BasePage extends SecureWebPage {
      */
     public BasePage(PageParameters parameters) {
         super(parameters);
+        add(new BookmarkablePageLink<Void>("homeLink", WebApplication.get().getHomePage()));
         add(new MenuPanel("menu", getMenuClass(), getSubMenuClass(),
                 MyCellarWebApplicationDescriptor.get().getMenuablePageDescriptors()));
         add(new LoginPanel("login"));
@@ -51,7 +55,15 @@ public abstract class BasePage extends SecureWebPage {
      */
     @Override
     public void renderHead(IHeaderResponse response) {
-        response.renderCSSReference(new PackageResourceReference(BasePage.class, "master.css"));
+        response.renderCSSReference(CssReferences.getBootstrapCss());
+        response.renderCSSReference(CssReferences.getBootstrapDatePickerCss());
+        response.renderCSSReference(CssReferences.getMasterCss());
+        response.renderCSSReference(CssReferences.getBootstrapResponsiveCss());
+        response.renderCSSReference(CssReferences.getMasterResponsiveCss());
+        response.renderJavaScriptReference(JavaScriptReferences.getJqueryJs());
+        response.renderJavaScriptReference(JavaScriptReferences.getBootstrapJs());
+        response.renderJavaScriptReference(JavaScriptReferences.getBootstrapDatePickerJs());
+        response.renderJavaScriptReference(JavaScriptReferences.getMasterJs());
     }
 
     /**

@@ -80,27 +80,12 @@ public class StockDataView extends AdvancedTable<Stock> {
         return columns;
     }
 
-    private static List<Integer> getColSizes() {
-        List<Integer> colSizes = new ArrayList<Integer>();
-        colSizes.add(8);
-        colSizes.add(10);
-        colSizes.add(12);
-        colSizes.add(18);
-        colSizes.add(16);
-        colSizes.add(8);
-        colSizes.add(6);
-        colSizes.add(7);
-        colSizes.add(12);
-        colSizes.add(3);
-        return colSizes;
-    }
-
     /**
      * @param id
      * @param searchFormModel
      */
     public StockDataView(String id, IModel<SearchForm> searchFormModel) {
-        super(id, getNewColumns(), getColSizes(), new StockDataProvider(searchFormModel), 30);
+        super(id, getNewColumns(), new StockDataProvider(searchFormModel), 30);
     }
 
 }

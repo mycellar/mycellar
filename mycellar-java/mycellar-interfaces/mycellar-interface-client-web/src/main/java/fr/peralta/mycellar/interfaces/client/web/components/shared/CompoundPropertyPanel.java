@@ -29,6 +29,8 @@ public class CompoundPropertyPanel<O> extends FormComponentPanel<O> {
 
     private static final long serialVersionUID = 201111181310L;
 
+    private boolean valuedAtStart;
+
     /**
      * @param id
      */
@@ -62,10 +64,13 @@ public class CompoundPropertyPanel<O> extends FormComponentPanel<O> {
     protected void onInitialize() {
         super.onInitialize();
         if (getModelObject() == null) {
+            valuedAtStart = false;
             O defaultObject = createDefaultObject();
             if (defaultObject != null) {
                 setModelObject(defaultObject);
             }
+        } else {
+            valuedAtStart = true;
         }
     }
 
@@ -74,6 +79,13 @@ public class CompoundPropertyPanel<O> extends FormComponentPanel<O> {
      */
     protected O createDefaultObject() {
         return null;
+    }
+
+    /**
+     * @return the valuedAtStart
+     */
+    protected boolean isValuedAtStart() {
+        return valuedAtStart;
     }
 
 }

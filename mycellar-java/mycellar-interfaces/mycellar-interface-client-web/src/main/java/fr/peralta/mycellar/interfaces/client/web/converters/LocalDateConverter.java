@@ -36,7 +36,11 @@ public class LocalDateConverter extends AbstractConverter<LocalDate> {
      */
     @Override
     public LocalDate convertToObject(String value, Locale locale) {
-        return DateTimeFormat.shortDate().withLocale(locale).parseDateTime(value).toLocalDate();
+        try {
+            return DateTimeFormat.shortDate().withLocale(locale).parseDateTime(value).toLocalDate();
+        } catch (IllegalArgumentException e) {
+            return null;
+        }
     }
 
     /**

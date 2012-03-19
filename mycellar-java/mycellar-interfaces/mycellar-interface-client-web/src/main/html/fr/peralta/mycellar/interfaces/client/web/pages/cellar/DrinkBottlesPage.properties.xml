@@ -2,8 +2,7 @@
 <!DOCTYPE properties SYSTEM "http://java.sun.com/dtd/properties.dtd">
 <properties>
   <entry key="header">Cas d'utilisation : Consommation de bouteilles</entry>
-  <entry key="cellar">Cave</entry>
-  <entry key="package">Identification des bouteilles bues</entry>
+  <entry key="source">Informations</entry>
   <entry key="date">Date de consomation</entry>
   <entry key="drinkWith">Bues avec</entry>
   <entry key="drinkWithEx">Famille, amis, ...</entry>

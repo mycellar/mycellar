@@ -34,4 +34,10 @@ public interface ProducerService {
      */
     List<Producer> getAllLike(String term);
 
+    /**
+     * @param id
+     * @return
+     */
+    Producer getById(Integer id);
+
 }

@@ -11,4 +11,5 @@
   <entry key="type">Type</entry>
   <entry key="vintage">Millésime</entry>
   <entry key="clearFilters">Supprimer les filtres</entry>
+  <entry key="toggleFilters">Afficher / masquer les filtres</entry>
 </properties> 

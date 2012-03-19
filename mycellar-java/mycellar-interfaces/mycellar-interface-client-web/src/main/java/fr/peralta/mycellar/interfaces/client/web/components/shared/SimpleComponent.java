@@ -23,9 +23,7 @@ import org.apache.wicket.WicketRuntimeException;
 import org.apache.wicket.event.Broadcast;
 import org.apache.wicket.event.IEvent;
 import org.apache.wicket.event.IEventSource;
-import org.apache.wicket.markup.ComponentTag;
 import org.apache.wicket.markup.html.WebMarkupContainer;
-import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.Model;
 import org.apache.wicket.spring.injection.annot.SpringBean;
@@ -41,51 +39,12 @@ import fr.peralta.mycellar.interfaces.client.web.shared.LoggingUtils;
  */
 public abstract class SimpleComponent<O> extends CompoundPropertyPanel<O> {
 
-    /**
-     * @author speralta
-     */
-    private static class SimpleComponentLabel<O> extends Label {
-
-        private static final long serialVersionUID = 201202230714L;
-
-        private final SimpleComponent<O> component;
-
-        /**
-         * @param id
-         * @param model
-         */
-        private SimpleComponentLabel(String id, IModel<?> model, SimpleComponent<O> component) {
-            super(id, model);
-            this.component = component;
-        }
-
-        /**
-         * {@inheritDoc}
-         */
-        @Override
-        protected void onComponentTag(ComponentTag tag) {
-            super.onComponentTag(tag);
-
-            if (component.isRequired()) {
-                tag.append("class", "required", " ");
-            }
-            if (!component.isValid()) {
-                tag.append("class", "error", " ");
-            }
-
-            if (!component.isEnabledInHierarchy()) {
-                tag.append("class", "disabled", " ");
-            }
-        }
-    }
-
     private static final long serialVersionUID = 201107281247L;
     private static final Logger logger = LoggerFactory.getLogger(SimpleComponent.class);
 
     protected static final String CONTAINER_COMPONENT_ID = "container";
     protected static final String CONTAINER_BODY_COMPONENT_ID = CONTAINER_COMPONENT_ID + "_"
             + FormComponentFeedbackBorder.BODY;
-    protected static final String LABEL_COMPONENT_ID = "label";
     protected static final String SELECTOR_COMPONENT_ID = "selector";
     protected static final String VALUE_COMPONENT_ID = "value";
 
@@ -102,11 +61,19 @@ public abstract class SimpleComponent<O> extends CompoundPropertyPanel<O> {
         super(id);
         setOutputMarkupId(true);
         setRequired(true);
-        FormComponentFeedbackBorder container = new FormComponentFeedbackBorder(
-                CONTAINER_COMPONENT_ID, true, getFilteredIdsForFeedback());
-        container.add(new SimpleComponentLabel<O>(LABEL_COMPONENT_ID, label, this));
-        container.add(new ValueComponent(VALUE_COMPONENT_ID));
+        FormComponentFeedbackBorder container = createBorder(id, label);
+        container.add(new ValueComponent(VALUE_COMPONENT_ID, id));
         add(container);
+    }
+
+    /**
+     * @param id
+     * @param label
+     * @return
+     */
+    protected FormComponentFeedbackBorder createBorder(String id, IModel<String> label) {
+        return new FormComponentFeedbackBorder(CONTAINER_COMPONENT_ID, label, id, true,
+                getFilteredIdsForFeedback());
     }
 
     protected String[] getFilteredIdsForFeedback() {
@@ -125,6 +92,10 @@ public abstract class SimpleComponent<O> extends CompoundPropertyPanel<O> {
         super.onInitialize();
         ((WebMarkupContainer) get(CONTAINER_COMPONENT_ID))
                 .add(createSelectorComponent(SELECTOR_COMPONENT_ID));
+        if (isValuedAtStart()) {
+            valued = true;
+            onModelChanged();
+        }
     }
 
     /**

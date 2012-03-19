@@ -98,4 +98,10 @@ public interface WineRepository {
      */
     Map<Format, Long> getFormats(SearchForm searchForm, CountEnum countEnum);
 
+    /**
+     * @param producerId
+     * @return
+     */
+    Producer getProducerById(Integer producerId);
+
 }

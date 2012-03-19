@@ -39,7 +39,7 @@ public class CellarShareEditPanel extends Panel {
         super(id);
         add(new FormComponentFeedbackBorder("email").add(new EmailTextField("email")
                 .setRequired(true)));
-        add(new AccessRightEnumTagCloud("accessRight", new StringResourceModel("AccessRight", null)));
+        add(new AccessRightEnumTagCloud("accessRight", new StringResourceModel("accessRight", null)));
     }
 
 }

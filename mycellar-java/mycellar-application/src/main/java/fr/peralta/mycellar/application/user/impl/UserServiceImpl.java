@@ -41,8 +41,16 @@ public class UserServiceImpl implements UserService {
      * {@inheritDoc}
      */
     @Override
-    public void newUser(User user) {
-        userRepository.newUser(user);
+    public void saveUser(User user) {
+        userRepository.saveUser(user);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public User getById(Integer id) {
+        return userRepository.getUserById(id);
     }
 
     /**

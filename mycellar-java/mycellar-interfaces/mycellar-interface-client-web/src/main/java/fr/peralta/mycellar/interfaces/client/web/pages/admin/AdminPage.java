@@ -34,9 +34,9 @@ import org.apache.wicket.spring.injection.annot.SpringBean;
 
 import fr.peralta.mycellar.domain.shared.repository.SearchForm;
 import fr.peralta.mycellar.interfaces.client.web.components.shared.SearchFormModel;
-import fr.peralta.mycellar.interfaces.client.web.components.shared.img.ImageReferences;
 import fr.peralta.mycellar.interfaces.client.web.components.stack.data.StackDataView;
 import fr.peralta.mycellar.interfaces.client.web.pages.shared.AdminSuperPage;
+import fr.peralta.mycellar.interfaces.client.web.resources.img.ImageReferences;
 import fr.peralta.mycellar.interfaces.facades.stack.StackServiceFacade;
 import fr.peralta.mycellar.interfaces.facades.user.UserServiceFacade;
 import fr.peralta.mycellar.interfaces.facades.wine.WineServiceFacade;

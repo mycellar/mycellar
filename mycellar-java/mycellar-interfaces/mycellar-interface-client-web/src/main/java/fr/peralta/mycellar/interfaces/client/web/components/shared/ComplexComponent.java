@@ -20,12 +20,11 @@ package fr.peralta.mycellar.interfaces.client.web.components.shared;
 
 import org.apache.wicket.Component;
 import org.apache.wicket.event.IEventSource;
-import org.apache.wicket.markup.html.WebMarkupContainer;
-import org.apache.wicket.markup.html.image.Image;
 import org.apache.wicket.model.IModel;
 
+import fr.peralta.mycellar.interfaces.client.web.components.shared.feedback.ComplexComponentFeedbackBorder;
+import fr.peralta.mycellar.interfaces.client.web.components.shared.feedback.FormComponentFeedbackBorder;
 import fr.peralta.mycellar.interfaces.client.web.components.shared.form.ObjectForm;
-import fr.peralta.mycellar.interfaces.client.web.components.shared.img.ImageReferences;
 
 /**
  * @author speralta
@@ -43,12 +42,18 @@ public abstract class ComplexComponent<O> extends SimpleComponent<O> {
      */
     public ComplexComponent(String id, IModel<String> label) {
         super(id, label);
-        WebMarkupContainer container = (WebMarkupContainer) get(CONTAINER_COMPONENT_ID);
-        container.add(new ActionLink(ADD_COMPONENT_ID, Action.ADD).add(new Image("addImg",
-                ImageReferences.getAddImage())));
-        container.add(new ObjectForm<O>(CREATE_FORM_COMPONENT_ID).replace(
-                createComponentForCreation(ObjectForm.EDIT_PANEL_COMPONENT_ID))
-                .setVisibilityAllowed(false));
+        FormComponentFeedbackBorder container = (FormComponentFeedbackBorder) get(CONTAINER_COMPONENT_ID);
+        container.addToBorder(new ActionLink(ADD_COMPONENT_ID, Action.ADD));
+        container.add(new ObjectForm<O>(CREATE_FORM_COMPONENT_ID).setVisibilityAllowed(false));
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    protected FormComponentFeedbackBorder createBorder(String id, IModel<String> label) {
+        return new ComplexComponentFeedbackBorder(CONTAINER_COMPONENT_ID, label, id, true,
+                getFilteredIdsForFeedback());
     }
 
     /**
@@ -75,9 +80,7 @@ public abstract class ComplexComponent<O> extends SimpleComponent<O> {
                                 CONTAINER_COMPONENT_ID + PATH_SEPARATOR
                                         + CONTAINER_BODY_COMPONENT_ID + PATH_SEPARATOR
                                         + CREATE_FORM_COMPONENT_ID).isVisibilityAllowed());
-        get(
-                CONTAINER_COMPONENT_ID + PATH_SEPARATOR + CONTAINER_BODY_COMPONENT_ID
-                        + PATH_SEPARATOR + ADD_COMPONENT_ID).setVisibilityAllowed(
+        get(CONTAINER_COMPONENT_ID + PATH_SEPARATOR + ADD_COMPONENT_ID).setVisibilityAllowed(
                 !isValued()
                         && !get(
                                 CONTAINER_COMPONENT_ID + PATH_SEPARATOR
@@ -119,6 +122,7 @@ public abstract class ComplexComponent<O> extends SimpleComponent<O> {
     protected void onAdd(IEventSource source, Action action) {
         ((ObjectForm<O>) get(CONTAINER_COMPONENT_ID + PATH_SEPARATOR + CONTAINER_BODY_COMPONENT_ID
                 + PATH_SEPARATOR + CREATE_FORM_COMPONENT_ID)).setNewObject(createObject())
+                .replace(createComponentForCreation(ObjectForm.EDIT_PANEL_COMPONENT_ID))
                 .setVisibilityAllowed(true);
     }
 

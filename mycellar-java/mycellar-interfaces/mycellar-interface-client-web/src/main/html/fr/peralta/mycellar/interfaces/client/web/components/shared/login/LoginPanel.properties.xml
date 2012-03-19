@@ -5,5 +5,7 @@
   <entry key="username">Identifiant</entry>
   <entry key="password">Mot de passe</entry>
   <entry key="logout">Déconnexion</entry>
-  <entry key="submit">Identification</entry>
+  <entry key="submit">Connexion</entry>
+  <entry key="myAccount">Mon compte</entry>
+  <entry key="newUser">Nouvel utilisateur</entry>
 </properties> 

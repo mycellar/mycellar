@@ -32,7 +32,7 @@ public interface UserServiceFacade {
     /**
      * @param user
      */
-    void newUser(User user);
+    void saveUser(User user);
 
     /**
      * @param searchForm
@@ -55,5 +55,11 @@ public interface UserServiceFacade {
      * @return
      */
     User authenticateUser(String login, String password);
+
+    /**
+     * @param userId
+     * @return
+     */
+    User getUserById(Integer userId);
 
 }

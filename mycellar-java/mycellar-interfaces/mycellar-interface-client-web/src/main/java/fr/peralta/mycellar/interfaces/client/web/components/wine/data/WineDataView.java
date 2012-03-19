@@ -68,25 +68,12 @@ public class WineDataView extends AdvancedTable<Wine> {
         return columns;
     }
 
-    private static List<Integer> getColSizes() {
-        List<Integer> colSizes = new ArrayList<Integer>();
-        colSizes.add(10);
-        colSizes.add(12);
-        colSizes.add(14);
-        colSizes.add(20);
-        colSizes.add(20);
-        colSizes.add(7);
-        colSizes.add(5);
-        colSizes.add(6);
-        return colSizes;
-    }
-
     /**
      * @param id
      * @param searchFormModel
      */
     public WineDataView(String id, IModel<SearchForm> searchFormModel) {
-        super(id, getNewColumns(), getColSizes(), new WineDataProvider(searchFormModel), 30);
+        super(id, getNewColumns(), new WineDataProvider(searchFormModel), 30);
     }
 
 }

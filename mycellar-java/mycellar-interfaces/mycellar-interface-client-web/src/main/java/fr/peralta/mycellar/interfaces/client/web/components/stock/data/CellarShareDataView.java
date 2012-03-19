@@ -57,20 +57,12 @@ public class CellarShareDataView extends AdvancedTable<CellarShare> {
         return columns;
     }
 
-    private static List<Integer> getColSizes() {
-        List<Integer> colSizes = new ArrayList<Integer>();
-        colSizes.add(60);
-        colSizes.add(30);
-        colSizes.add(10);
-        return colSizes;
-    }
-
     /**
      * @param id
      * @param searchFormModel
      */
     public CellarShareDataView(String id, IModel<SearchForm> searchFormModel) {
-        super(id, getNewColumns(), getColSizes(), new CellarShareDataProvider(searchFormModel), 30);
+        super(id, getNewColumns(), new CellarShareDataProvider(searchFormModel), 30);
     }
 
 }

@@ -18,13 +18,11 @@
  */
 package fr.peralta.mycellar.interfaces.client.web.components.shared.data;
 
-import org.apache.wicket.markup.html.image.Image;
 import org.apache.wicket.markup.html.panel.Panel;
 import org.apache.wicket.model.IModel;
 
 import fr.peralta.mycellar.interfaces.client.web.components.shared.Action;
 import fr.peralta.mycellar.interfaces.client.web.components.shared.ActionLink;
-import fr.peralta.mycellar.interfaces.client.web.components.shared.img.ImageReferences;
 
 /**
  * @author speralta
@@ -38,10 +36,8 @@ public class EditRemovePanel extends Panel {
      */
     public EditRemovePanel(String id, IModel<?> model) {
         super(id, model);
-        add(new ActionLink("editLink", Action.SELECT).add(new Image("editImg", ImageReferences
-                .getPencilImage())));
-        add(new ActionLink("removeLink", Action.DELETE).add(new Image("removeImg", ImageReferences
-                .getRemoveImage())));
+        add(new ActionLink("editLink", Action.SELECT));
+        add(new ActionLink("removeLink", Action.DELETE));
     }
 
 }

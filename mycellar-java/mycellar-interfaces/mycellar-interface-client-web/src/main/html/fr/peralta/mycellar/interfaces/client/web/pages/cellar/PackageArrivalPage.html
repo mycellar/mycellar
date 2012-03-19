@@ -1,65 +1,69 @@
 <!DOCTYPE html>
-<html lang="fr" xmlns:wicket="">
+<html lang="fr" xmlns:wicket="http://wicket.apache.org">
   <head>
     <title>MyCellar</title>
     <meta charset="utf-8">
-    <link rel="stylesheet" href="../shared/master.css" type="text/css" media="screen" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="../../resources/css/bootstrap.min.css" type="text/css" media="screen" />
+    <link rel="stylesheet" href="../../resources/css/master.css" type="text/css" media="screen" />
+    <link rel="stylesheet" href="../../resources/css/bootstrap-responsive.min.css" type="text/css" media="screen" />
+    <link rel="stylesheet" href="../../resources/css/master-responsive.css" type="text/css" media="screen" />
   </head>
   <body>
-    <header role="main">
-      <h1>MyCellar</h1>
-    </header>
-    <nav role="main">
-      <ul>
-        <li><a>Nav 1</a></li>
-        <li><a>Nav 2</a></li>
-        <li><a>Nav 3</a></li>
-      </ul>
+    <nav class="navbar navbar-fixed-top" role="main">
+      <div class="navbar-inner">
+        <div class="container">
+          <div class="nav-collapse">
+            <ul>
+              <li><a>Nav 1</a></li>
+              <li><a>Nav 2</a></li>
+              <li><a>Nav 3</a></li>
+            </ul>
+          </div>
+        </div>
+      </div>
     </nav>
-    <header role="secondary"><h3>Header</h3></header>
-    <wicket:extend>
-      <section class="form">
-        <form wicket:id="form">
-          <fieldset class="step">
-            <legend><wicket:message key="package">Fieldset legend</wicket:message></legend>
-            <div class="formDiv" wicket:id="date">
-              <label wicket:for="date"><wicket:label key="date">Arrival</wicket:label></label>
-              <input id="date" wicket:id="date" type="text" size="10" maxlength="10" />
-            </div>
-            <div class="formDiv" wicket:id="source">
-              <label wicket:for="source"><wicket:label key="source">Source</wicket:label></label>
-              <input id="source" wicket:id="source" type="text" wicket:message="placeholder:sourceEx" size="20" maxlength="20" />
-            </div>
-            <div class="formDiv" wicket:id="otherCharges">
-              <label wicket:for="otherCharges"><wicket:label key="otherCharges">Other charges</wicket:label></label>
-              <input id="otherCharges" wicket:id="otherCharges" type="text" wicket:message="placeholder:otherChargesEx" size="8" maxlength="8" />
-            </div>
-          </fieldset>
-          <fieldset class="step">
-            <legend><wicket:message key="arrivalBottles">Bottles</wicket:message></legend>
-            <div class="formDiv" wicket:id="arrivalBottles">
-              <div wicket:id="arrivalBottles" />
-            </div>
-          </fieldset>
-          <form wicket:id="arrivalBottle" class="subForm">
-            <div wicket:id="newObject" />
+    <div class="container-fluid">
+      <header role="primary" class="page-header"><h1>Header</h1></header>
+      <wicket:extend>
+        <section>
+          <form wicket:id="form" class="form-horizontal">
+            <fieldset class="step">
+              <legend><wicket:message key="arrivalBottles">Bottles</wicket:message></legend>
+              <div wicket:id="arrivalBottles" class="control-group" />
+            </fieldset>
+            <form wicket:id="arrivalBottle" class="form-horizontal sub-form">
+              <div wicket:id="newObject" />
+              <div wicket:id="feedback" class="feedback" />
+              <div class="form-actions">
+                <input wicket:id="saveObject" type="submit" class="btn btn-primary" wicket:message="value:saveBottle" />
+                <input wicket:id="cancelObject" type="submit" class="btn" wicket:message="value:cancelBottle" />
+              </div>
+            </form>
+            <fieldset class="step">
+              <legend><wicket:message key="package">Fieldset legend</wicket:message></legend>
+              <div class="control-group" wicket:id="date">
+                <input id="date" wicket:id="date" type="date" size="10" maxlength="10" />
+              </div>
+              <div class="control-group" wicket:id="source">
+                <input id="source" wicket:id="source" type="text" wicket:message="placeholder:sourceEx" size="20" maxlength="20" />
+              </div>
+              <div class="control-group" wicket:id="otherCharges">  
+                <input id="otherCharges" wicket:id="otherCharges" type="text" wicket:message="placeholder:otherChargesEx" size="8" maxlength="8" />
+              </div>
+            </fieldset>
+            <fieldset class="step">
+              <legend><wicket:message key="cellarFieldset">Fieldset legend</wicket:message></legend>
+              <div wicket:id="cellar" />
+            </fieldset>
             <div wicket:id="feedback" class="feedback" />
-            <div class="submits">
-              <input wicket:id="saveObject" type="submit" wicket:message="value:saveBottle" />
-              <input wicket:id="cancelObject" type="submit" wicket:message="value:cancelBottle" />
+            <div class="form-actions">
+              <input type="submit" wicket:message="value:saveArrival" class="btn btn-primary" />
             </div>
           </form>
-          <fieldset class="step">
-            <legend><wicket:message key="cellarFieldset">Fieldset legend</wicket:message></legend>
-            <div wicket:id="cellar" />
-          </fieldset>
-          <div wicket:id="feedback" class="feedback" />
-          <div class="submits">
-            <input type="submit" wicket:message="value:saveArrival" />
-          </div>
-        </form>
-      </section>
-    </wicket:extend>
+        </section>
+      </wicket:extend>
+    </div>
     <footer>
       <div>
         <p>

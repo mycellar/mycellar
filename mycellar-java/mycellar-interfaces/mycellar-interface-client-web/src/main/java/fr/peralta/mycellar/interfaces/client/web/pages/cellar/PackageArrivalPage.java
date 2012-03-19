@@ -29,8 +29,6 @@ import org.apache.wicket.model.CompoundPropertyModel;
 import org.apache.wicket.model.StringResourceModel;
 import org.apache.wicket.request.mapper.parameter.PageParameters;
 import org.apache.wicket.spring.injection.annot.SpringBean;
-import org.joda.time.LocalDate;
-import org.odlabs.wiquery.ui.datepicker.DatePicker;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -42,6 +40,7 @@ import fr.peralta.mycellar.interfaces.client.web.components.shared.AjaxTool;
 import fr.peralta.mycellar.interfaces.client.web.components.shared.feedback.FeedbackPanel;
 import fr.peralta.mycellar.interfaces.client.web.components.shared.feedback.FilteredContainerVisibleFeedbackMessageFilter;
 import fr.peralta.mycellar.interfaces.client.web.components.shared.feedback.FormComponentFeedbackBorder;
+import fr.peralta.mycellar.interfaces.client.web.components.shared.form.LocalDateTextField;
 import fr.peralta.mycellar.interfaces.client.web.components.shared.form.ObjectForm;
 import fr.peralta.mycellar.interfaces.client.web.components.stock.cloud.CellarComplexTagCloud;
 import fr.peralta.mycellar.interfaces.client.web.components.stock.edit.ArrivalBottleEditPanel;
@@ -96,14 +95,13 @@ public class PackageArrivalPage extends CellarSuperPage {
         super(parameters);
         setOutputMarkupId(true);
         ArrivalForm form = new ArrivalForm(FORM_COMPONENT_ID);
-        form.add(new FormComponentFeedbackBorder("date").add(new DatePicker<LocalDate>("date")
+        form.add(new FormComponentFeedbackBorder("date").add(new LocalDateTextField("date")
                 .setRequired(true).add(new OnChangeDefaultAjaxBehavior())));
         form.add(new FormComponentFeedbackBorder("source").add(new TextField<String>("source")
                 .setRequired(true).add(new OnChangeDefaultAjaxBehavior())));
         form.add(new FormComponentFeedbackBorder("otherCharges").add(new TextField<Float>(
                 "otherCharges").setRequired(true).add(new OnChangeDefaultAjaxBehavior())));
-        form.add(new FormComponentFeedbackBorder(ARRIVAL_BOTTLES_COMPONENT_ID)
-                .add(new ArrivalBottlesEditPanel(ARRIVAL_BOTTLES_COMPONENT_ID)));
+        form.add(new ArrivalBottlesEditPanel(ARRIVAL_BOTTLES_COMPONENT_ID));
         form.add(new CellarComplexTagCloud("cellar", new StringResourceModel("cellar", this, null)));
         form.add(createHiddenBottleForm());
         add(form);

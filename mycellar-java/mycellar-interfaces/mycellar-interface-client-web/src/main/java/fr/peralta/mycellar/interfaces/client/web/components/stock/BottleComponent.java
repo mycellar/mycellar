@@ -117,4 +117,12 @@ public class BottleComponent extends CompoundPropertyPanel<Bottle> {
         return new Bottle();
     }
 
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    protected void convertInput() {
+        setConvertedInput(getModelObject());
+    }
+
 }

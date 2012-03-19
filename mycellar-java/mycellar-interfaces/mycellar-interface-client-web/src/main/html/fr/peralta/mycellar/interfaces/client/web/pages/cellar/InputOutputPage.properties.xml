@@ -3,18 +3,11 @@
 <properties>
   <entry key="header">Consultation du livre des entrées/sorties</entry>
   <entry key="date">Date</entry>
-  <entry key="cellar">Cave</entry>
-  <entry key="country">Pays</entry>
-  <entry key="region">Région</entry>
-  <entry key="appellation">Appellation</entry>
-  <entry key="producer">Producteur</entry>
   <entry key="wine">Cuvée</entry>
-  <entry key="color">Couleur</entry>
-  <entry key="type">Type</entry>
   <entry key="vintage">Millésime</entry>
-  <entry key="format">Format</entry>
   <entry key="numberAbrev">Q</entry>
   <entry key="number">Quantité</entry>
   <entry key="io">E/S</entry>
   <entry key="clearFilters">Supprimer les filtres</entry>
+  <entry key="toggleFilters">Afficher / masquer les filtres</entry>
 </properties> 

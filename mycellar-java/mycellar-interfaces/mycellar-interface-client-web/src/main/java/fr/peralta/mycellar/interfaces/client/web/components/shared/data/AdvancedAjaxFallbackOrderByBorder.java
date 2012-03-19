@@ -18,6 +18,7 @@
  */
 package fr.peralta.mycellar.interfaces.client.web.components.shared.data;
 
+import org.apache.wicket.AttributeModifier;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.IAjaxCallDecorator;
 import org.apache.wicket.extensions.ajax.markup.html.repeater.data.sort.AjaxFallbackOrderByLink;
@@ -25,11 +26,6 @@ import org.apache.wicket.extensions.markup.html.repeater.data.sort.ISortStateLoc
 import org.apache.wicket.extensions.markup.html.repeater.data.sort.SortOrder;
 import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.border.Border;
-import org.apache.wicket.markup.html.image.Image;
-import org.apache.wicket.model.Model;
-import org.apache.wicket.request.resource.ResourceReference;
-
-import fr.peralta.mycellar.interfaces.client.web.components.shared.img.ImageReferences;
 
 /**
  * @author speralta
@@ -103,7 +99,8 @@ public abstract class AdvancedAjaxFallbackOrderByBorder extends Border {
             @Override
             public void onInitialize() {
                 super.onInitialize();
-                add(new Image("sortImg", new Model<ResourceReference>(getImage())));
+                add(new WebMarkupContainer("icon")
+                        .add(new AttributeModifier("class", getIconCss())));
             }
 
             /**
@@ -112,18 +109,18 @@ public abstract class AdvancedAjaxFallbackOrderByBorder extends Border {
             @Override
             protected void onConfigure() {
                 super.onConfigure();
-                replace(new Image("sortImg", new Model<ResourceReference>(getImage())));
+                get("icon").add(new AttributeModifier("class", getIconCss()));
             }
 
-            protected ResourceReference getImage() {
+            protected String getIconCss() {
                 SortOrder sort = stateLocator.getSortState().getPropertySortOrder(property);
                 switch (sort) {
                 case ASCENDING:
-                    return ImageReferences.getBulletArrowDownImage();
+                    return "icon-chevron-down";
                 case DESCENDING:
-                    return ImageReferences.getBulletArrowUpImage();
+                    return "icon-chevron-up";
                 case NONE:
-                    return ImageReferences.getBulletArrowUpDownImage();
+                    return "icon-retweet";
                 default:
                     throw new IllegalStateException("Unknown " + SortOrder.class.getSimpleName()
                             + " value '" + sort + "'.");
@@ -167,7 +164,7 @@ public abstract class AdvancedAjaxFallbackOrderByBorder extends Border {
 
     /**
      * This method is a hook for subclasses to perform an action after sort has
-     * changed
+     * changed.
      */
     protected void onSortChanged() {
         // noop

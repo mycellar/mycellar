@@ -59,10 +59,12 @@ public class FilteredContainerVisibleFeedbackMessageFilter implements IFeedbackM
      */
     @Override
     public boolean accept(FeedbackMessage message) {
-        final Component reporter = message.getReporter();
-
+        if (message.isRendered()) {
+            return false;
+        }
         boolean result;
 
+        final Component reporter = message.getReporter();
         if (reporter instanceof SimpleComponent) {
             result = (reporter != null)
                     && ((SimpleComponent<?>) reporter).isContainerVisibleInHierarchy()
@@ -83,6 +85,7 @@ public class FilteredContainerVisibleFeedbackMessageFilter implements IFeedbackM
                 }
             }
         }
+
         return result;
     }
 
