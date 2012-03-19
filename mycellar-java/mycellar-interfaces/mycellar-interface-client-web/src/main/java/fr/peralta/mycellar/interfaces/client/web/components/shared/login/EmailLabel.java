@@ -46,7 +46,6 @@ class EmailLabel extends Label {
     protected void onConfigure() {
         super.onConfigure();
         User user = UserKey.getUserLoggedIn();
-        setVisibilityAllowed(user != null);
         setDefaultModel(new Model<String>(user != null ? user.getEmail() : ""));
     }
 

@@ -92,6 +92,14 @@ public class WineServiceFacadeImpl implements WineServiceFacade {
      * {@inheritDoc}
      */
     @Override
+    public Producer getProducerById(Integer producerId) {
+        return producerService.getById(producerId);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
     @Transactional(readOnly = true)
     public List<Producer> getProducersLike(String term) {
         return producerService.getAllLike(term);

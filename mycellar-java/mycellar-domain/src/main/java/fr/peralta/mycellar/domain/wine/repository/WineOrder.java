@@ -25,4 +25,14 @@ import fr.peralta.mycellar.domain.shared.repository.AbstractEntityOrder;
  */
 public class WineOrder extends AbstractEntityOrder<WineOrderEnum, WineOrder> {
 
+    private static final long serialVersionUID = 201111291552L;
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public WineOrderEnum getFrom(String property) {
+        return WineOrderEnum.valueOf(property);
+    }
+
 }

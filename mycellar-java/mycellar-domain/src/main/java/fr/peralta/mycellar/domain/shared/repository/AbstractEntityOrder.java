@@ -18,15 +18,21 @@
  */
 package fr.peralta.mycellar.domain.shared.repository;
 
+import java.io.Serializable;
 import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Set;
 
+import org.apache.commons.lang3.builder.ToStringBuilder;
+
 /**
  * @author speralta
  */
-public class AbstractEntityOrder<E, O extends AbstractEntityOrder<E, O>> {
+public abstract class AbstractEntityOrder<E, O extends AbstractEntityOrder<E, O>> implements
+        Serializable {
+
+    private static final long serialVersionUID = 201111232156L;
 
     private final Map<E, OrderWayEnum> orders = new LinkedHashMap<E, OrderWayEnum>();
 
@@ -48,6 +54,40 @@ public class AbstractEntityOrder<E, O extends AbstractEntityOrder<E, O>> {
      */
     public Set<Entry<E, OrderWayEnum>> entrySet() {
         return orders.entrySet();
+    }
+
+    /**
+     * @param order
+     * @return this for chaining
+     * @see java.util.Map#remove(java.lang.Object)
+     */
+    @SuppressWarnings("unchecked")
+    public O remove(E order) {
+        orders.remove(order);
+        return (O) this;
+    }
+
+    /**
+     * @param property
+     * @return
+     */
+    public abstract E getFrom(String property);
+
+    /**
+     * @param order
+     * @return
+     * @see java.util.Map#get(java.lang.Object)
+     */
+    public OrderWayEnum get(E order) {
+        return orders.get(order);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public String toString() {
+        return ToStringBuilder.reflectionToString(this);
     }
 
 }

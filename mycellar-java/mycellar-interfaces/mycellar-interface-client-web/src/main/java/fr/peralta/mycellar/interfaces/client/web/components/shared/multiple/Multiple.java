@@ -44,7 +44,7 @@ class Multiple<O> extends PropertyListView<MultipleData<O>> {
     protected void populateItem(ListItem<MultipleData<O>> item) {
         if (((MultiplePanel<O>) getParent()).getModelObject().contains(
                 item.getModelObject().getObject())) {
-            item.add(new AttributeModifier("class", "selected"));
+            item.add(new AttributeModifier("class", "active"));
         }
         item.add(new MultipleSelection<O>("object"));
     }

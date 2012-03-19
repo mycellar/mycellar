@@ -59,6 +59,14 @@ public class HibernateUserRepository extends HibernateRepository implements User
      * {@inheritDoc}
      */
     @Override
+    public User getUserById(Integer userId) {
+        return entityManager.find(User.class, userId);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
     public long countUsers(SearchForm searchForm) {
         CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();
         CriteriaQuery<Long> query = criteriaBuilder.createQuery(Long.class);
@@ -143,9 +151,9 @@ public class HibernateUserRepository extends HibernateRepository implements User
      * {@inheritDoc}
      */
     @Override
-    public void newUser(User user) {
-        entityManager.merge(user);
-        logger.debug("User persisted {}", user);
+    public void saveUser(User user) {
+        User result = entityManager.merge(user);
+        logger.debug("User merged {}", result);
     }
 
 }

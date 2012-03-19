@@ -23,6 +23,7 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
+import java.util.Set;
 
 import javax.persistence.EntityManager;
 import javax.persistence.NoResultException;
@@ -31,6 +32,7 @@ import javax.persistence.Tuple;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Expression;
+import javax.persistence.criteria.From;
 import javax.persistence.criteria.JoinType;
 import javax.persistence.criteria.Order;
 import javax.persistence.criteria.Predicate;
@@ -44,17 +46,22 @@ import fr.peralta.mycellar.domain.shared.repository.CountEnum;
 import fr.peralta.mycellar.domain.shared.repository.FilterEnum;
 import fr.peralta.mycellar.domain.shared.repository.OrderWayEnum;
 import fr.peralta.mycellar.domain.shared.repository.SearchForm;
+import fr.peralta.mycellar.domain.stock.AccessRightEnum;
 import fr.peralta.mycellar.domain.stock.Bottle;
 import fr.peralta.mycellar.domain.stock.Cellar;
+import fr.peralta.mycellar.domain.stock.CellarShare;
 import fr.peralta.mycellar.domain.stock.Input;
 import fr.peralta.mycellar.domain.stock.Movement;
 import fr.peralta.mycellar.domain.stock.Output;
 import fr.peralta.mycellar.domain.stock.Stock;
+import fr.peralta.mycellar.domain.stock.repository.CellarShareOrder;
+import fr.peralta.mycellar.domain.stock.repository.CellarShareOrderEnum;
 import fr.peralta.mycellar.domain.stock.repository.MovementOrder;
 import fr.peralta.mycellar.domain.stock.repository.MovementOrderEnum;
 import fr.peralta.mycellar.domain.stock.repository.StockOrder;
 import fr.peralta.mycellar.domain.stock.repository.StockOrderEnum;
 import fr.peralta.mycellar.domain.stock.repository.StockRepository;
+import fr.peralta.mycellar.domain.user.User;
 import fr.peralta.mycellar.domain.wine.Format;
 import fr.peralta.mycellar.domain.wine.Wine;
 import fr.peralta.mycellar.infrastructure.shared.repository.HibernateRepository;
@@ -81,8 +88,28 @@ public class HibernateStockRepository extends HibernateRepository implements Sto
         query = query.select(criteriaBuilder.count(root));
         List<Predicate> predicates = new ArrayList<Predicate>();
         in(predicates, searchForm.getSet(FilterEnum.CELLAR), root.get("cellar"), criteriaBuilder);
-        in(predicates, searchForm.getSet(FilterEnum.USER), root.get("cellar").get("owner"),
-                criteriaBuilder);
+        List<Predicate> userPredicates = new ArrayList<Predicate>();
+        Set<User> users = searchForm.<User> getSet(FilterEnum.USER);
+        in(userPredicates, users, root.get("cellar").get("owner"), criteriaBuilder);
+        if (users != null) {
+            From<Cellar, CellarShare> shares = root.<Stock, Cellar> join("cellar")
+                    .<Cellar, CellarShare> joinSet("shares", JoinType.LEFT);
+            for (User user : users) {
+                if (searchForm.isCellarModification()) {
+                    userPredicates.add(criteriaBuilder.and(criteriaBuilder.equal(
+                            shares.get("email"), user.getEmail()), criteriaBuilder.equal(
+                            shares.get("accessRight"), AccessRightEnum.MODIFY)));
+                } else {
+                    userPredicates.add(criteriaBuilder.equal(shares.get("email"), user.getEmail()));
+                }
+            }
+        }
+        if (userPredicates.size() > 1) {
+            predicates.add(criteriaBuilder.or(userPredicates.toArray(new Predicate[userPredicates
+                    .size()])));
+        } else if (userPredicates.size() == 1) {
+            predicates.add(userPredicates.get(0));
+        }
 
         query = where(query, criteriaBuilder, predicates);
         return entityManager.createQuery(query).getSingleResult();
@@ -100,8 +127,28 @@ public class HibernateStockRepository extends HibernateRepository implements Sto
         query = query.select(root);
         List<Predicate> predicates = new ArrayList<Predicate>();
         in(predicates, searchForm.getSet(FilterEnum.CELLAR), root.get("cellar"), criteriaBuilder);
-        in(predicates, searchForm.getSet(FilterEnum.USER), root.get("cellar").get("owner"),
-                criteriaBuilder);
+        List<Predicate> userPredicates = new ArrayList<Predicate>();
+        Set<User> users = searchForm.<User> getSet(FilterEnum.USER);
+        in(userPredicates, users, root.get("cellar").get("owner"), criteriaBuilder);
+        if (users != null) {
+            From<Cellar, CellarShare> shares = root.<Stock, Cellar> join("cellar")
+                    .<Cellar, CellarShare> joinSet("shares", JoinType.LEFT);
+            for (User user : users) {
+                if (searchForm.isCellarModification()) {
+                    userPredicates.add(criteriaBuilder.and(criteriaBuilder.equal(
+                            shares.get("email"), user.getEmail()), criteriaBuilder.equal(
+                            shares.get("accessRight"), AccessRightEnum.MODIFY)));
+                } else {
+                    userPredicates.add(criteriaBuilder.equal(shares.get("email"), user.getEmail()));
+                }
+            }
+        }
+        if (userPredicates.size() > 1) {
+            predicates.add(criteriaBuilder.or(userPredicates.toArray(new Predicate[userPredicates
+                    .size()])));
+        } else if (userPredicates.size() == 1) {
+            predicates.add(userPredicates.get(0));
+        }
         query = where(query, criteriaBuilder, predicates);
 
         List<Order> orderList = new ArrayList<Order>();
@@ -110,6 +157,40 @@ public class HibernateStockRepository extends HibernateRepository implements Sto
             switch (entry.getKey()) {
             case DATE:
                 path = root.get("date");
+                break;
+            case CELLAR_NAME:
+                path = root.get("cellar").get("name");
+                break;
+            case APPELLATION_NAME:
+                path = root.get("bottle").get("wine").get("appellation").get("name");
+                break;
+            case COUNTRY_NAME:
+                path = root.get("bottle").get("wine").get("appellation").get("region")
+                        .get("country").get("name");
+                break;
+            case WINE_NAME:
+                path = root.get("bottle").get("wine").get("name");
+                break;
+            case REGION_NAME:
+                path = root.get("bottle").get("wine").get("appellation").get("name");
+                break;
+            case WINE_VINTAGE:
+                path = root.get("bottle").get("wine").get("vintage");
+                break;
+            case FORMAT_NAME:
+                path = root.get("bottle").get("format").get("name");
+                break;
+            case PRODUCER_NAME:
+                path = root.get("bottle").get("wine").get("producer").get("name");
+                break;
+            case COLOR:
+                path = root.get("bottle").get("wine").get("color");
+                break;
+            case TYPE:
+                path = root.get("bottle").get("wine").get("type");
+                break;
+            case NUMBER:
+                path = root.get("number");
                 break;
             default:
                 throw new IllegalStateException("Unknwon "
@@ -150,7 +231,9 @@ public class HibernateStockRepository extends HibernateRepository implements Sto
         CriteriaQuery<Long> query = criteriaBuilder.createQuery(Long.class);
         Root<Stock> root = query.from(Stock.class);
         query = query.select(criteriaBuilder.count(root));
-        query = where(query, root, searchForm, criteriaBuilder);
+        query = where(query, root, root.<Stock, Cellar> join("cellar")
+                .<Cellar, CellarShare> joinSet("shares", JoinType.LEFT), searchForm,
+                criteriaBuilder);
         return entityManager.createQuery(query).getSingleResult();
     }
 
@@ -163,7 +246,9 @@ public class HibernateStockRepository extends HibernateRepository implements Sto
         CriteriaQuery<Stock> query = criteriaBuilder.createQuery(Stock.class);
         Root<Stock> root = query.from(Stock.class);
         query = query.select(root);
-        query = where(query, root, searchForm, criteriaBuilder);
+        query = where(query, root, root.<Stock, Cellar> join("cellar")
+                .<Cellar, CellarShare> joinSet("shares", JoinType.LEFT), searchForm,
+                criteriaBuilder);
 
         List<Order> orderList = new ArrayList<Order>();
         for (Entry<StockOrderEnum, OrderWayEnum> entry : orders.entrySet()) {
@@ -176,13 +261,13 @@ public class HibernateStockRepository extends HibernateRepository implements Sto
                 path = root.get("bottle").get("wine").get("appellation").get("region")
                         .get("country").get("name");
                 break;
-            case NAME:
+            case WINE_NAME:
                 path = root.get("bottle").get("wine").get("name");
                 break;
             case REGION_NAME:
                 path = root.get("bottle").get("wine").get("appellation").get("name");
                 break;
-            case VINTAGE:
+            case WINE_VINTAGE:
                 path = root.get("bottle").get("wine").get("vintage");
                 break;
             case FORMAT_NAME:
@@ -191,9 +276,85 @@ public class HibernateStockRepository extends HibernateRepository implements Sto
             case QUANTITY:
                 path = root.get("quantity");
                 break;
+            case PRODUCER_NAME:
+                path = root.get("bottle").get("wine").get("producer").get("name");
+                break;
+            case COLOR:
+                path = root.get("bottle").get("wine").get("color");
+                break;
+            case TYPE:
+                path = root.get("bottle").get("wine").get("type");
+                break;
             default:
                 throw new IllegalStateException("Unknwon " + StockOrderEnum.class.getSimpleName()
                         + " value [" + entry.getKey() + "].");
+            }
+            switch (entry.getValue()) {
+            case ASC:
+                orderList.add(criteriaBuilder.asc(path));
+                break;
+            case DESC:
+                orderList.add(criteriaBuilder.desc(path));
+                break;
+            default:
+                throw new IllegalStateException("Unknown " + OrderWayEnum.class.getSimpleName()
+                        + " value [" + entry.getValue() + "].");
+            }
+        }
+        if (orderList.size() > 0) {
+            query = query.orderBy(orderList);
+        }
+
+        return entityManager.createQuery(query).setFirstResult(first).setMaxResults(count)
+                .getResultList();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public long countCellarShares(SearchForm searchForm) {
+        CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();
+        CriteriaQuery<Long> query = criteriaBuilder.createQuery(Long.class);
+        Root<CellarShare> root = query.from(CellarShare.class);
+        query = query.select(criteriaBuilder.count(root));
+        List<Predicate> predicates = new ArrayList<Predicate>();
+        in(predicates, searchForm.getSet(FilterEnum.CELLAR), root.get("cellar"), criteriaBuilder);
+        in(predicates, searchForm.getSet(FilterEnum.USER), root.get("cellar").get("owner"),
+                criteriaBuilder);
+
+        query = where(query, criteriaBuilder, predicates);
+        return entityManager.createQuery(query).getSingleResult();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public List<CellarShare> getCellarShares(SearchForm searchForm, CellarShareOrder orders,
+            int first, int count) {
+        CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();
+        CriteriaQuery<CellarShare> query = criteriaBuilder.createQuery(CellarShare.class);
+        Root<CellarShare> root = query.from(CellarShare.class);
+        From<Cellar, Stock> stock = root.<CellarShare, Cellar> join("cellar")
+                .<Cellar, Stock> joinSet("stocks");
+        query = query.select(root);
+        query = where(query, stock, root, searchForm, criteriaBuilder);
+
+        List<Order> orderList = new ArrayList<Order>();
+        for (Entry<CellarShareOrderEnum, OrderWayEnum> entry : orders.entrySet()) {
+            Expression<?> path;
+            switch (entry.getKey()) {
+            case ACCESS_RIGHT:
+                path = root.get("accessRight");
+                break;
+            case EMAIL:
+                path = stock.get("email");
+                break;
+            default:
+                throw new IllegalStateException("Unknwon "
+                        + CellarShareOrderEnum.class.getSimpleName() + " value [" + entry.getKey()
+                        + "].");
             }
             switch (entry.getValue()) {
             case ASC:
@@ -272,7 +433,9 @@ public class HibernateStockRepository extends HibernateRepository implements Sto
         Expression<Long> count = getCount(countEnum, stock, criteriaBuilder);
 
         query = query.multiselect(root, count);
-        query = where(query, stock, searchForm, criteriaBuilder);
+        query = where(query, stock, stock.<Stock, Cellar> join("cellar")
+                .<Cellar, CellarShare> joinSet("shares", JoinType.LEFT), searchForm,
+                criteriaBuilder);
 
         List<Tuple> tuples = entityManager.createQuery(
                 query.groupBy(root).orderBy(criteriaBuilder.asc(root.get("name")))).getResultList();
@@ -281,7 +444,6 @@ public class HibernateStockRepository extends HibernateRepository implements Sto
             Long sum = tuple.get(count);
             result.put(tuple.get(root), sum != null ? sum : 0);
         }
-
         return result;
     }
 
@@ -289,8 +451,17 @@ public class HibernateStockRepository extends HibernateRepository implements Sto
      * {@inheritDoc}
      */
     @Override
-    public Cellar save(Cellar cellar) {
-        return entityManager.merge(cellar);
+    public CellarShare save(CellarShare cellarShare) {
+        return entityManager.merge(cellarShare);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void delete(CellarShare cellarShare) {
+        CellarShare toRemove = entityManager.find(CellarShare.class, cellarShare.getId());
+        entityManager.remove(toRemove);
     }
 
     /**

@@ -3,7 +3,6 @@
 <properties>
   <entry key="header">Cas d'utilisation : Entrée d'un colis dans la cave</entry>
   <entry key="cellarFieldset">Identification de la cave</entry>
-  <entry key="cellar">Cave</entry>
   <entry key="package">Identification du colis</entry>
   <entry key="date">Date d'arrivée</entry>
   <entry key="source">Source</entry>
@@ -12,18 +11,11 @@
   <entry key="otherChargesEx">Port, ...</entry>
   <entry key="arrivalBottles">Bouteilles du colis</entry>
   <entry key="saveArrival">Enregistrer l'entrée</entry>
-  <entry key="arrivalBottle">Nouvelle bouteille à ajouter au colis</entry>
-  <entry key="country">Pays</entry>
-  <entry key="region">Region</entry>
-  <entry key="appellation">Appellation</entry>
-  <entry key="producer">Producteur</entry>
-  <entry key="name">Nom</entry>
-  <entry key="vintage">Millésime</entry>
-  <entry key="format">Format</entry>
-  <entry key="quantity">Quantité</entry>
-  <entry key="addBottle">Ajouter une bouteille</entry>
-  <entry key="removeBottle">Supprimer</entry>
+  <entry key="arrivalBottleEdit">Nouvelle bouteille à ajouter au colis</entry>
+  <entry key="countryEdit">Nouveau pays</entry>
+  <entry key="regionEdit">Nouvelle région</entry>
+  <entry key="appellationEdit">Nouvelle appelation</entry>
+  <entry key="cellarEdit">Nouvelle cave</entry>
   <entry key="saveBottle">Enregistrer cette bouteille</entry>
   <entry key="cancelBottle">Annuler la saisie de cette bouteille</entry>
-  <entry key="noBottles">Pas de bouteilles</entry>
 </properties> 

@@ -23,6 +23,7 @@ import org.apache.wicket.markup.html.panel.Panel;
 
 import fr.peralta.mycellar.domain.wine.WineColorEnum;
 import fr.peralta.mycellar.domain.wine.WineTypeEnum;
+import fr.peralta.mycellar.interfaces.client.web.components.shared.feedback.FormComponentFeedbackBorder;
 
 /**
  * @author speralta
@@ -40,9 +41,9 @@ public class WineEditPanel extends Panel {
         add(new TextField<WineColorEnum>("color").setEnabled(false));
         add(new TextField<String>("producer.name").setEnabled(false));
         add(new TextField<String>("appellation.name").setEnabled(false));
-        add(new TextField<Integer>("vintage"));
-        add(new TextField<String>("name"));
-        add(new TextField<String>("ranking"));
+        add(new FormComponentFeedbackBorder("vintage").add(new TextField<Integer>("vintage")));
+        add(new FormComponentFeedbackBorder("name").add(new TextField<String>("name")));
+        add(new FormComponentFeedbackBorder("ranking").add(new TextField<String>("ranking")));
     }
 
 }

@@ -20,6 +20,9 @@ package fr.peralta.mycellar.interfaces.client.web.components.wine.edit;
 
 import org.apache.wicket.markup.html.form.TextField;
 import org.apache.wicket.markup.html.panel.Panel;
+import org.apache.wicket.validation.validator.MinimumValidator;
+
+import fr.peralta.mycellar.interfaces.client.web.components.shared.feedback.FormComponentFeedbackBorder;
 
 /**
  * @author speralta
@@ -33,7 +36,9 @@ public class FormatEditPanel extends Panel {
      */
     public FormatEditPanel(String id) {
         super(id);
-        add(new TextField<String>("name").setRequired(true));
-        add(new TextField<Float>("capacity").setRequired(true));
+        add(new FormComponentFeedbackBorder("name").add(new TextField<String>("name")
+                .setRequired(true)));
+        add(new FormComponentFeedbackBorder("capacity").add(new TextField<Float>("capacity")
+                .setRequired(true).add(new MinimumValidator<Float>(0.1f))));
     }
 }

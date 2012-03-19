@@ -25,4 +25,14 @@ import fr.peralta.mycellar.domain.shared.repository.AbstractEntityOrder;
  */
 public class StockOrder extends AbstractEntityOrder<StockOrderEnum, StockOrder> {
 
+    private static final long serialVersionUID = 201111232156L;
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public StockOrderEnum getFrom(String property) {
+        return StockOrderEnum.valueOf(property);
+    }
+
 }

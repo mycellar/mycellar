@@ -18,6 +18,7 @@
  */
 package fr.peralta.mycellar.application.stock.impl;
 
+import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,6 +29,8 @@ import fr.peralta.mycellar.application.stock.CellarService;
 import fr.peralta.mycellar.domain.shared.repository.CountEnum;
 import fr.peralta.mycellar.domain.shared.repository.SearchForm;
 import fr.peralta.mycellar.domain.stock.Cellar;
+import fr.peralta.mycellar.domain.stock.CellarShare;
+import fr.peralta.mycellar.domain.stock.repository.CellarShareOrder;
 import fr.peralta.mycellar.domain.stock.repository.StockRepository;
 
 /**
@@ -42,8 +45,16 @@ public class CellarServiceImpl implements CellarService {
      * {@inheritDoc}
      */
     @Override
-    public void newCellar(Cellar cellar) {
-        stockRepository.save(cellar);
+    public void saveCellarShare(CellarShare cellarShare) {
+        stockRepository.save(cellarShare);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void deleteCellarShare(CellarShare cellarShare) {
+        stockRepository.delete(cellarShare);
     }
 
     /**
@@ -52,6 +63,23 @@ public class CellarServiceImpl implements CellarService {
     @Override
     public Map<Cellar, Long> getAll(SearchForm searchForm, CountEnum count) {
         return stockRepository.getCellars(searchForm, count);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public List<CellarShare> getShares(SearchForm searchForm, CellarShareOrder orders, int first,
+            int count) {
+        return stockRepository.getCellarShares(searchForm, orders, first, count);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public long countShares(SearchForm searchForm) {
+        return stockRepository.countCellarShares(searchForm);
     }
 
     /**

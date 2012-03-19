@@ -21,7 +21,6 @@ package fr.peralta.mycellar.interfaces.client.web.components.stock.data;
 import java.util.Iterator;
 
 import org.apache.wicket.injection.Injector;
-import org.apache.wicket.markup.repeater.data.IDataProvider;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.Model;
 import org.apache.wicket.spring.injection.annot.SpringBean;
@@ -31,12 +30,14 @@ import fr.peralta.mycellar.domain.shared.repository.SearchForm;
 import fr.peralta.mycellar.domain.stock.Stock;
 import fr.peralta.mycellar.domain.stock.repository.StockOrder;
 import fr.peralta.mycellar.domain.stock.repository.StockOrderEnum;
+import fr.peralta.mycellar.interfaces.client.web.components.shared.data.MultipleSortableDataProvider;
 import fr.peralta.mycellar.interfaces.facades.stock.StockServiceFacade;
 
 /**
  * @author speralta
  */
-public class StockDataProvider implements IDataProvider<Stock> {
+public class StockDataProvider extends
+        MultipleSortableDataProvider<Stock, StockOrderEnum, StockOrder> {
 
     private static final long serialVersionUID = 201109192010L;
 
@@ -49,6 +50,9 @@ public class StockDataProvider implements IDataProvider<Stock> {
      * @param searchFormModel
      */
     public StockDataProvider(IModel<SearchForm> searchFormModel) {
+        super(new StockOrder().add(StockOrderEnum.COUNTRY_NAME, OrderWayEnum.ASC)
+                .add(StockOrderEnum.REGION_NAME, OrderWayEnum.ASC)
+                .add(StockOrderEnum.APPELLATION_NAME, OrderWayEnum.ASC));
         Injector.get().inject(this);
         this.searchFormModel = searchFormModel;
     }
@@ -66,12 +70,8 @@ public class StockDataProvider implements IDataProvider<Stock> {
      */
     @Override
     public Iterator<? extends Stock> iterator(int first, int count) {
-        return stockServiceFacade.getStocks(
-                searchFormModel.getObject(),
-                new StockOrder().add(StockOrderEnum.COUNTRY_NAME, OrderWayEnum.ASC)
-                        .add(StockOrderEnum.REGION_NAME, OrderWayEnum.ASC)
-                        .add(StockOrderEnum.APPELLATION_NAME, OrderWayEnum.ASC), first, count)
-                .iterator();
+        return stockServiceFacade.getStocks(searchFormModel.getObject(), getState().getOrders(),
+                first, count).iterator();
     }
 
     /**

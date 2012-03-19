@@ -42,8 +42,17 @@ public class UserServiceFacadeImpl implements UserServiceFacade {
      */
     @Override
     @Transactional
-    public void newUser(User user) {
-        userService.newUser(user);
+    public void saveUser(User user) {
+        userService.saveUser(user);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    @Transactional(readOnly = true)
+    public User getUserById(Integer userId) {
+        return userService.getById(userId);
     }
 
     /**

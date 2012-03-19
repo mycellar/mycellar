@@ -79,7 +79,8 @@ public abstract class SimpleTagCloud<O> extends SimpleComponent<O> {
     @SuppressWarnings("unchecked")
     protected void refreshTagCloud() {
         TagCloudPanel<O> tagCloudPanel = ((TagCloudPanel<O>) get(CONTAINER_COMPONENT_ID
-                + PATH_SEPARATOR + SELECTOR_COMPONENT_ID));
+                + PATH_SEPARATOR + CONTAINER_BODY_COMPONENT_ID + PATH_SEPARATOR
+                + SELECTOR_COMPONENT_ID));
         if (tagCloudPanel != null) {
             tagCloudPanel.changeList(getList());
         }

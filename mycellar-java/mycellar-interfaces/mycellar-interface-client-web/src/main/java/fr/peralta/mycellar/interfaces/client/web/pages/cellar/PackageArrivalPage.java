@@ -23,32 +23,28 @@ import java.util.List;
 import org.apache.wicket.Component;
 import org.apache.wicket.WicketRuntimeException;
 import org.apache.wicket.event.IEvent;
-import org.apache.wicket.markup.html.WebMarkupContainer;
-import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.form.Form;
 import org.apache.wicket.markup.html.form.TextField;
-import org.apache.wicket.markup.html.image.Image;
-import org.apache.wicket.markup.html.list.ListItem;
-import org.apache.wicket.markup.html.list.PropertyListView;
 import org.apache.wicket.model.CompoundPropertyModel;
-import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.StringResourceModel;
 import org.apache.wicket.request.mapper.parameter.PageParameters;
 import org.apache.wicket.spring.injection.annot.SpringBean;
-import org.joda.time.LocalDate;
-import org.odlabs.wiquery.ui.datepicker.DatePicker;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import fr.peralta.mycellar.domain.stock.Arrival;
 import fr.peralta.mycellar.domain.stock.ArrivalBottle;
+import fr.peralta.mycellar.interfaces.client.web.behaviors.OnChangeDefaultAjaxBehavior;
 import fr.peralta.mycellar.interfaces.client.web.components.shared.Action;
-import fr.peralta.mycellar.interfaces.client.web.components.shared.ActionLink;
 import fr.peralta.mycellar.interfaces.client.web.components.shared.AjaxTool;
+import fr.peralta.mycellar.interfaces.client.web.components.shared.feedback.FeedbackPanel;
+import fr.peralta.mycellar.interfaces.client.web.components.shared.feedback.FilteredContainerVisibleFeedbackMessageFilter;
+import fr.peralta.mycellar.interfaces.client.web.components.shared.feedback.FormComponentFeedbackBorder;
+import fr.peralta.mycellar.interfaces.client.web.components.shared.form.LocalDateTextField;
 import fr.peralta.mycellar.interfaces.client.web.components.shared.form.ObjectForm;
-import fr.peralta.mycellar.interfaces.client.web.components.shared.img.ImageReferences;
 import fr.peralta.mycellar.interfaces.client.web.components.stock.cloud.CellarComplexTagCloud;
 import fr.peralta.mycellar.interfaces.client.web.components.stock.edit.ArrivalBottleEditPanel;
+import fr.peralta.mycellar.interfaces.client.web.components.stock.edit.ArrivalBottlesEditPanel;
 import fr.peralta.mycellar.interfaces.client.web.pages.shared.CellarSuperPage;
 import fr.peralta.mycellar.interfaces.client.web.shared.LoggingUtils;
 import fr.peralta.mycellar.interfaces.facades.stock.StockServiceFacade;
@@ -57,86 +53,6 @@ import fr.peralta.mycellar.interfaces.facades.stock.StockServiceFacade;
  * @author speralta
  */
 public class PackageArrivalPage extends CellarSuperPage {
-
-    private static class ArrivalBottlesEditPanel extends WebMarkupContainer {
-
-        private static final long serialVersionUID = 201107252130L;
-
-        private static final String NO_BOTTLES_COMPONENT_ID = "noBottles";
-
-        /**
-         * @param id
-         */
-        public ArrivalBottlesEditPanel(String id) {
-            super(id);
-            add(new ArrivalBottlesView("arrivalBottles"));
-            add(new ActionLink("addBottle", Action.ADD).add(new Image("addBottleImg",
-                    ImageReferences.getAddImage())));
-            add(new WebMarkupContainer(NO_BOTTLES_COMPONENT_ID) {
-                private static final long serialVersionUID = 201108082329L;
-
-                /**
-                 * {@inheritDoc}
-                 */
-                @SuppressWarnings("unchecked")
-                @Override
-                public boolean isVisible() {
-                    return ((List<ArrivalBottle>) ArrivalBottlesEditPanel.this
-                            .getDefaultModelObject()).size() == 0;
-                }
-            });
-        }
-
-    }
-
-    private static class ArrivalBottlesView extends PropertyListView<ArrivalBottle> {
-
-        private static final long serialVersionUID = 201108082321L;
-
-        /**
-         * @param id
-         */
-        public ArrivalBottlesView(String id) {
-            super(id);
-            setReuseItems(true);
-        }
-
-        /**
-         * @param id
-         * @param model
-         */
-        public ArrivalBottlesView(String id, IModel<? extends List<? extends ArrivalBottle>> model) {
-            super(id, model);
-            setReuseItems(true);
-        }
-
-        /**
-         * @param id
-         * @param list
-         */
-        public ArrivalBottlesView(String id, List<? extends ArrivalBottle> list) {
-            super(id, list);
-            setReuseItems(true);
-        }
-
-        /**
-         * {@inheritDoc}
-         */
-        @Override
-        protected void populateItem(ListItem<ArrivalBottle> item) {
-            item.add(new Label("bottle.wine.appellation.region.country.name"));
-            item.add(new Label("bottle.wine.appellation.region.name"));
-            item.add(new Label("bottle.wine.appellation.name"));
-            item.add(new Label("bottle.wine.producer.name"));
-            item.add(new Label("bottle.wine.name"));
-            item.add(new Label("bottle.wine.vintage"));
-            item.add(new Label("bottle.format.name"));
-            item.add(new Label("quantity"));
-            item.add(new WebMarkupContainer("remove").add(removeLink("removeBottle", item).add(
-                    new Image("removeBottleImg", ImageReferences.getRemoveImage()))));
-        }
-
-    }
 
     private static class ArrivalForm extends Form<Arrival> {
 
@@ -150,6 +66,8 @@ public class PackageArrivalPage extends CellarSuperPage {
          */
         public ArrivalForm(String id) {
             super(id, new CompoundPropertyModel<Arrival>(new Arrival()));
+            add(new FeedbackPanel("feedback", new FilteredContainerVisibleFeedbackMessageFilter(
+                    this, ARRIVAL_BOTTLE_COMPONENT_ID)));
         }
 
         /**
@@ -177,9 +95,12 @@ public class PackageArrivalPage extends CellarSuperPage {
         super(parameters);
         setOutputMarkupId(true);
         ArrivalForm form = new ArrivalForm(FORM_COMPONENT_ID);
-        form.add(new DatePicker<LocalDate>("date"));
-        form.add(new TextField<String>("source"));
-        form.add(new TextField<Float>("otherCharges"));
+        form.add(new FormComponentFeedbackBorder("date").add(new LocalDateTextField("date")
+                .setRequired(true).add(new OnChangeDefaultAjaxBehavior())));
+        form.add(new FormComponentFeedbackBorder("source").add(new TextField<String>("source")
+                .setRequired(true).add(new OnChangeDefaultAjaxBehavior())));
+        form.add(new FormComponentFeedbackBorder("otherCharges").add(new TextField<Float>(
+                "otherCharges").setRequired(true).add(new OnChangeDefaultAjaxBehavior())));
         form.add(new ArrivalBottlesEditPanel(ARRIVAL_BOTTLES_COMPONENT_ID));
         form.add(new CellarComplexTagCloud("cellar", new StringResourceModel("cellar", this, null)));
         form.add(createHiddenBottleForm());
@@ -201,7 +122,8 @@ public class PackageArrivalPage extends CellarSuperPage {
                 break;
             case SAVE:
                 ((List<ArrivalBottle>) get(
-                        FORM_COMPONENT_ID + PATH_SEPARATOR + ARRIVAL_BOTTLES_COMPONENT_ID)
+                        FORM_COMPONENT_ID + PATH_SEPARATOR + ARRIVAL_BOTTLES_COMPONENT_ID
+                                + PATH_SEPARATOR + ARRIVAL_BOTTLES_COMPONENT_ID)
                         .getDefaultModelObject()).add((ArrivalBottle) get(
                         FORM_COMPONENT_ID + PATH_SEPARATOR + ARRIVAL_BOTTLE_COMPONENT_ID)
                         .getDefaultModelObject());
@@ -212,7 +134,8 @@ public class PackageArrivalPage extends CellarSuperPage {
 
                 break;
             case CANCEL:
-                replace(createHiddenBottleForm());
+                get(FORM_COMPONENT_ID + PATH_SEPARATOR + ARRIVAL_BOTTLE_COMPONENT_ID).replaceWith(
+                        createHiddenBottleForm());
                 break;
             default:
                 throw new WicketRuntimeException("Action " + action + " not managed.");

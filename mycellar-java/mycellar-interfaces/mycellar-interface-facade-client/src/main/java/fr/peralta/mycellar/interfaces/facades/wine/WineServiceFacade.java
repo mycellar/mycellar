@@ -97,4 +97,10 @@ public interface WineServiceFacade {
      */
     Map<Format, Long> getFormats(SearchForm searchForm, CountEnum count);
 
+    /**
+     * @param producerId
+     * @return
+     */
+    Producer getProducerById(Integer producerId);
+
 }

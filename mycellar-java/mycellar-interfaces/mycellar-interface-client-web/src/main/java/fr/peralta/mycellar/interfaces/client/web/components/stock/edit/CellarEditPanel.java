@@ -21,6 +21,8 @@ package fr.peralta.mycellar.interfaces.client.web.components.stock.edit;
 import org.apache.wicket.markup.html.form.TextField;
 import org.apache.wicket.markup.html.panel.Panel;
 
+import fr.peralta.mycellar.interfaces.client.web.components.shared.feedback.FormComponentFeedbackBorder;
+
 /**
  * @author speralta
  */
@@ -33,7 +35,8 @@ public class CellarEditPanel extends Panel {
      */
     public CellarEditPanel(String id) {
         super(id);
-        add(new TextField<String>("name"));
+        add(new FormComponentFeedbackBorder("name").add(new TextField<String>("name")
+                .setRequired(true)));
     }
 
 }

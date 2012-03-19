@@ -1,30 +1,26 @@
 <wicket:panel>
-  <p>
-    <label for="producer.name"><wicket:message key="producer.name">Name</wicket:message></label>
-    <input id="producer.name" wicket:id="producer.name" type="text" disabled="disabled" />
-  </p>
-  <p>
-    <label for="appellation.name"><wicket:message key="appellation.name">Name</wicket:message></label>
-    <input id="appellation.name" wicket:id="appellation.name" type="text" disabled="disabled" />
-  </p>
-  <p>
-    <label for="type"><wicket:message key="type">Type</wicket:message></label>
-    <input id="type" wicket:id="type" type="text" disabled="disabled" />
-  </p>
-  <p>
-    <label for="color"><wicket:message key="color">Color</wicket:message></label>
-    <input id="color" wicket:id="color" type="text" disabled="disabled" />
-  </p>
-  <p>
-    <label for="name"><wicket:message key="name">Name</wicket:message></label>
-    <input id="name" wicket:id="name" type="text" />
-  </p>
-  <p>
-    <label for="vintage"><wicket:message key="vintage">Vintage</wicket:message></label>
-    <input id="vintage" wicket:id="vintage" type="text" />
-  </p>
-  <p>
-    <label for="ranking"><wicket:message key="ranking">Ranking</wicket:message></label>
-    <input id="ranking" wicket:id="ranking" type="text" />
-  </p>
+  <fieldset>
+    <legend><wicket:message key="wineEdit">Vin</wicket:message></legend>
+    <div class="control-group" wicket:id="producer.name">
+      <input id="producer.name" wicket:id="producer.name" type="text" disabled="disabled" />
+    </div>
+    <div class="control-group" wicket:id="appellation.name">
+      <input id="appellation.name" wicket:id="appellation.name" type="text" disabled="disabled" />
+    </div>
+    <div class="control-group" wicket:id="type">
+      <input id="type" wicket:id="type" type="text" disabled="disabled" />
+    </div>
+    <div class="control-group" wicket:id="color">
+      <input id="color" wicket:id="color" type="text" disabled="disabled" />
+    </div>
+    <div class="control-group" wicket:id="name">
+      <input id="name" wicket:id="name" type="text" />
+    </div>
+    <div class="control-group" wicket:id="vintage">
+      <input id="vintage" wicket:id="vintage" type="text" />
+    </div>
+    <div class="control-group" wicket:id="ranking">
+      <input id="ranking" wicket:id="ranking" type="text" />
+    </div>
+  </fieldset>
 </wicket:panel>

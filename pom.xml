@@ -24,7 +24,7 @@
   <modelVersion>4.0.0</modelVersion>
 
   <groupId>fr.peralta.mycellar</groupId>
-  <version>0.2.1</version>
+  <version>0.3.0</version>
   <artifactId>mycellar-parent</artifactId>
   <packaging>pom</packaging>
   <name>MyCellar</name>
@@ -39,10 +39,10 @@
     
     <!-- Versions -->
     <slf4j.version>1.6.2</slf4j.version>
-    <wicket.version>1.5.3</wicket.version>
-    <wicketstuff.version>1.5.2</wicketstuff.version>
-    <spring.version>3.0.6.RELEASE</spring.version>
-    <hibernate.version>4.0.0.CR2</hibernate.version>
+    <wicket.version>1.5.5</wicket.version>
+    <wicketstuff.version>1.5.5</wicketstuff.version>
+    <spring.version>3.1.0.RELEASE</spring.version>
+    <hibernate.version>4.0.0.Final</hibernate.version>
     <hibernate-validator.version>4.2.0.Final</hibernate-validator.version>
   </properties>
 
@@ -290,9 +290,19 @@
         </exclusions>
       </dependency>
       <dependency>
-        <groupId>org.odlabs.wiquery</groupId>
-        <artifactId>wiquery-jquery-ui</artifactId>
-        <version>1.5.3</version>
+        <groupId>org.wicketstuff</groupId>
+        <artifactId>wicketstuff-objectautocomplete</artifactId>
+        <version>${wicketstuff.version}</version>
+        <exclusions>
+          <exclusion>
+            <groupId>org.apache.wicket</groupId>
+            <artifactId>wicket</artifactId>
+          </exclusion>
+          <exclusion>
+            <groupId>org.apache.wicket</groupId>
+            <artifactId>wicket-util</artifactId>
+          </exclusion>
+        </exclusions>
       </dependency>
       
       <!-- SLF4J -->

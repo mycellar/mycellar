@@ -23,6 +23,6 @@ package fr.peralta.mycellar.domain.wine;
  */
 public enum WineColorEnum {
 
-    OTHER, RED, ROSE, WHITE
+    OTHER, WHITE, ROSE, RED
 
 }

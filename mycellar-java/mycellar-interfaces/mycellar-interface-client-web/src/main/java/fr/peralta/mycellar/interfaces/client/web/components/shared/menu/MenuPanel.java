@@ -20,16 +20,12 @@ package fr.peralta.mycellar.interfaces.client.web.components.shared.menu;
 
 import java.util.List;
 
-import org.apache.wicket.AttributeModifier;
-import org.apache.wicket.markup.html.IHeaderResponse;
+import org.apache.wicket.behavior.AttributeAppender;
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.link.BookmarkablePageLink;
 import org.apache.wicket.markup.html.list.ListItem;
 import org.apache.wicket.markup.html.list.ListView;
 import org.apache.wicket.markup.html.panel.Panel;
-import org.odlabs.wiquery.core.IWiQueryPlugin;
-import org.odlabs.wiquery.core.javascript.JsQuery;
-import org.odlabs.wiquery.core.javascript.JsStatement;
 import org.wicketstuff.security.checks.LinkSecurityCheck;
 import org.wicketstuff.security.components.SecureComponentHelper;
 
@@ -38,7 +34,7 @@ import fr.peralta.mycellar.interfaces.client.web.pages.shared.BasePage;
 /**
  * @author speralta
  */
-public class MenuPanel extends Panel implements IWiQueryPlugin {
+public class MenuPanel extends Panel {
 
     private static final long serialVersionUID = 201011122248L;
 
@@ -61,34 +57,22 @@ public class MenuPanel extends Panel implements IWiQueryPlugin {
                 listItem.add(subMenu);
                 final BookmarkablePageLink<Void> link = new BookmarkablePageLink<Void>("link",
                         listItem.getModelObject().getPageClass());
-                if (subMenu.isVisibilityAllowed()) {
-                    link.add(new AttributeModifier("class", "dropdown-toggle"));
-                }
-                SecureComponentHelper.setSecurityCheck(link, new LinkSecurityCheck(link, listItem
-                        .getModelObject().getPageClass()));
-                if (current.equals(listItem.getModelObject().getSuperPageClass())) {
-                    listItem.add(new AttributeModifier("class", "selected"));
-                }
                 link.add(new Label("label", listItem.getModelObject().getPageTitle()));
+                Label caret = new Label("caret", "");
+                link.add(caret);
+                caret.setVisibilityAllowed(subMenu.isVisibilityAllowed());
+                if (subMenu.isVisibilityAllowed()) {
+                    link.add(new AttributeAppender("class", "dropdown-toggle").setSeparator(" "))
+                            .add(new AttributeAppender("data-toggle", "dropdown").setSeparator(" "));
+                    listItem.add(new AttributeAppender("class", "dropdown").setSeparator(" "));
+                }
                 listItem.add(link);
+                if (current.equals(listItem.getModelObject().getSuperPageClass())) {
+                    listItem.add(new AttributeAppender("class", "active").setSeparator(" "));
+                }
+                SecureComponentHelper.setSecurityCheck(listItem, new LinkSecurityCheck(link,
+                        listItem.getModelObject().getPageClass()));
             }
         });
     }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public JsStatement statement() {
-        return new JsQuery(this).$().chain("dropdown");
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public void renderHead(IHeaderResponse response) {
-        response.renderJavaScriptReference(MenuPanelJavaScriptResourceReference.get());
-    }
-
 }

@@ -21,6 +21,9 @@ package fr.peralta.mycellar.interfaces.client.web.components.wine.edit;
 import org.apache.wicket.markup.html.form.TextArea;
 import org.apache.wicket.markup.html.form.TextField;
 import org.apache.wicket.markup.html.panel.Panel;
+import org.apache.wicket.model.StringResourceModel;
+
+import fr.peralta.mycellar.interfaces.client.web.components.shared.feedback.FormComponentFeedbackBorder;
 
 /**
  * @author speralta
@@ -35,7 +38,9 @@ public class AppellationEditPanel extends Panel {
     public AppellationEditPanel(String id) {
         super(id);
         add(new TextField<String>("region.name").setEnabled(false));
-        add(new TextField<String>("name").setRequired(true));
-        add(new TextArea<String>("description"));
+        add(new FormComponentFeedbackBorder("name", new StringResourceModel("name", null), "name")
+                .add(new TextField<String>("name").setRequired(true)));
+        add(new FormComponentFeedbackBorder("description", new StringResourceModel("description",
+                null), "description").add(new TextArea<String>("description")));
     }
 }

@@ -3,10 +3,11 @@
 <properties>
   <entry key="header">Consultation du livre des entrées/sorties</entry>
   <entry key="date">Date</entry>
-  <entry key="cellar">Cave</entry>
-  <entry key="bottle">Référence</entry>
+  <entry key="wine">Cuvée</entry>
+  <entry key="vintage">Millésime</entry>
+  <entry key="numberAbrev">Q</entry>
   <entry key="number">Quantité</entry>
   <entry key="io">E/S</entry>
-  <entry key="noMatchingMovements">Aucune entrées/sorties ne correspond</entry>
   <entry key="clearFilters">Supprimer les filtres</entry>
+  <entry key="toggleFilters">Afficher / masquer les filtres</entry>
 </properties> 

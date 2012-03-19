@@ -18,39 +18,43 @@
  */
 package fr.peralta.mycellar.interfaces.client.web.components.user.data;
 
-import org.apache.wicket.markup.html.basic.Label;
-import org.apache.wicket.markup.repeater.Item;
-import org.apache.wicket.markup.repeater.data.DataViewBase;
-import org.apache.wicket.model.CompoundPropertyModel;
+import java.util.ArrayList;
+import java.util.List;
+
+import org.apache.wicket.extensions.markup.html.repeater.data.table.IColumn;
+import org.apache.wicket.extensions.markup.html.repeater.data.table.PropertyColumn;
 import org.apache.wicket.model.IModel;
+import org.apache.wicket.model.ResourceModel;
 
 import fr.peralta.mycellar.domain.shared.repository.SearchForm;
 import fr.peralta.mycellar.domain.user.User;
+import fr.peralta.mycellar.domain.user.repository.UserOrderEnum;
+import fr.peralta.mycellar.interfaces.client.web.components.shared.data.AdvancedTable;
 
 /**
  * @author speralta
  */
-public class UserDataView extends DataViewBase<User> {
+public class UserDataView extends AdvancedTable<User> {
 
     private static final long serialVersionUID = 201110110858L;
+
+    private static List<IColumn<User>> getNewColumns() {
+        List<IColumn<User>> columns = new ArrayList<IColumn<User>>();
+        columns.add(new PropertyColumn<User>(new ResourceModel("email"),
+                UserOrderEnum.EMAIL.name(), "email"));
+        columns.add(new PropertyColumn<User>(new ResourceModel("firstname"),
+                UserOrderEnum.FIRSTNAME.name(), "firstname"));
+        columns.add(new PropertyColumn<User>(new ResourceModel("lastname"), UserOrderEnum.LASTNAME
+                .name(), "lastname"));
+        return columns;
+    }
 
     /**
      * @param id
      * @param searchFormModel
      */
     public UserDataView(String id, IModel<SearchForm> searchFormModel) {
-        super(id, new UserDataProvider(searchFormModel));
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    protected void populateItem(Item<User> item) {
-        item.setModel(new CompoundPropertyModel<User>(item.getModel()));
-        item.add(new Label("email"));
-        item.add(new Label("lastname"));
-        item.add(new Label("firstname"));
+        super(id, getNewColumns(), new UserDataProvider(searchFormModel), 30);
     }
 
 }

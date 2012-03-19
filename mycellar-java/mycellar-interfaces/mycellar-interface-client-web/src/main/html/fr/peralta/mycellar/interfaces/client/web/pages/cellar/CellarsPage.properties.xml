@@ -2,17 +2,11 @@
 <!DOCTYPE properties SYSTEM "http://java.sun.com/dtd/properties.dtd">
 <properties>
   <entry key="header">Consultation des caves</entry>
-  <entry key="newCellarLink">Ajouter une nouvelle cave</entry>
-  <entry key="country">Pays</entry>
-  <entry key="region">Région</entry>
-  <entry key="appellation">Appellation</entry>
-  <entry key="producer">Producteur</entry>
-  <entry key="name">Nom</entry>
+  <entry key="wine">Cuvée</entry>
   <entry key="color">Couleur</entry>
-  <entry key="type">Type</entry>
   <entry key="vintage">Millésime</entry>
-  <entry key="format">Format</entry>
+  <entry key="quantityAbrev">Q</entry>
   <entry key="quantity">Quantité</entry>
-  <entry key="noMatchingStocks">Aucune bouteille en cave ne correspond</entry>
   <entry key="clearFilters">Supprimer les filtres</entry>
+  <entry key="toggleFilters">Afficher / masquer les filtres</entry>
 </properties> 

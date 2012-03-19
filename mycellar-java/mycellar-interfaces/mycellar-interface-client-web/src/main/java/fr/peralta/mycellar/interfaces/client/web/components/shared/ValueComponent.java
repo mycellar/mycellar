@@ -23,9 +23,6 @@ import org.apache.wicket.markup.html.form.TextField;
 import org.apache.wicket.markup.html.panel.Panel;
 import org.apache.wicket.model.Model;
 
-import fr.peralta.mycellar.interfaces.client.web.components.shared.form.ActionAjaxImageButton;
-import fr.peralta.mycellar.interfaces.client.web.components.shared.img.ImageReferences;
-
 /**
  * @author speralta
  */
@@ -39,11 +36,11 @@ public class ValueComponent extends Panel {
     /**
      * @param id
      */
-    public ValueComponent(String id) {
+    public ValueComponent(String id, String valueMarkupId) {
         super(id);
-        add(new TextField<String>(VALUE_COMPONENT_ID).setDefaultModel(new Model<String>()));
-        add(new ActionAjaxImageButton(CANCEL_COMPONENT_ID, Action.CANCEL,
-                ImageReferences.getCancelImage()));
+        add(new TextField<String>(VALUE_COMPONENT_ID).setDefaultModel(new Model<String>())
+                .setMarkupId(valueMarkupId));
+        add(new ActionLink(CANCEL_COMPONENT_ID, Action.CANCEL));
     }
 
     /**

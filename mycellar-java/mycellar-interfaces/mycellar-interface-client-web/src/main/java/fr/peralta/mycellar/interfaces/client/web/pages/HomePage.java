@@ -18,7 +18,6 @@
  */
 package fr.peralta.mycellar.interfaces.client.web.pages;
 
-import org.apache.wicket.markup.html.link.BookmarkablePageLink;
 import org.apache.wicket.request.mapper.parameter.PageParameters;
 
 import fr.peralta.mycellar.interfaces.client.web.pages.shared.HomeSuperPage;
@@ -35,7 +34,6 @@ public class HomePage extends HomeSuperPage {
      */
     public HomePage(PageParameters parameters) {
         super(parameters);
-        add(new BookmarkablePageLink<Void>("newUser", NewUserPage.class));
     }
 
 }

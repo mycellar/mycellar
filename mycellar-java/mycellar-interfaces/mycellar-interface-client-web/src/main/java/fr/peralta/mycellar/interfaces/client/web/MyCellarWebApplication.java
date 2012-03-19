@@ -27,13 +27,14 @@ import org.joda.time.LocalDate;
 import org.springframework.context.ApplicationContext;
 import org.wicketstuff.security.swarm.SwarmWebApplication;
 
+import fr.peralta.mycellar.domain.stock.AccessRightEnum;
 import fr.peralta.mycellar.domain.wine.WineColorEnum;
 import fr.peralta.mycellar.domain.wine.WineTypeEnum;
+import fr.peralta.mycellar.interfaces.client.web.converters.AccessRightEnumConverter;
 import fr.peralta.mycellar.interfaces.client.web.converters.LocalDateConverter;
 import fr.peralta.mycellar.interfaces.client.web.converters.WineColorEnumConverter;
 import fr.peralta.mycellar.interfaces.client.web.converters.WineTypeEnumConverter;
 import fr.peralta.mycellar.interfaces.client.web.pages.HomePage;
-import fr.peralta.mycellar.interfaces.client.web.pages.NewUserPage;
 import fr.peralta.mycellar.interfaces.client.web.pages.admin.AdminPage;
 import fr.peralta.mycellar.interfaces.client.web.pages.admin.ListUsersPage;
 import fr.peralta.mycellar.interfaces.client.web.pages.admin.StackPage;
@@ -41,7 +42,13 @@ import fr.peralta.mycellar.interfaces.client.web.pages.cellar.CellarsPage;
 import fr.peralta.mycellar.interfaces.client.web.pages.cellar.DrinkBottlesPage;
 import fr.peralta.mycellar.interfaces.client.web.pages.cellar.InputOutputPage;
 import fr.peralta.mycellar.interfaces.client.web.pages.cellar.PackageArrivalPage;
+import fr.peralta.mycellar.interfaces.client.web.pages.cellar.ShareCellarsPage;
 import fr.peralta.mycellar.interfaces.client.web.pages.pedia.PediaHomePage;
+import fr.peralta.mycellar.interfaces.client.web.pages.user.EditUserPage;
+import fr.peralta.mycellar.interfaces.client.web.pages.user.NewUserPage;
+import fr.peralta.mycellar.interfaces.client.web.resources.css.CssReferences;
+import fr.peralta.mycellar.interfaces.client.web.resources.img.ImageReferences;
+import fr.peralta.mycellar.interfaces.client.web.resources.js.JavaScriptReferences;
 import fr.peralta.mycellar.interfaces.client.web.shared.ExceptionListener;
 
 /**
@@ -55,9 +62,24 @@ public abstract class MyCellarWebApplication extends SwarmWebApplication {
     @Override
     protected void init() {
         super.init();
+        getMarkupSettings().setStripWicketTags(true);
         getComponentInstantiationListeners().add(
                 new SpringComponentInjector(this, getApplicationContext()));
         getRequestCycleListeners().add(new ExceptionListener());
+        mountResource("/img/glyphicons-halflings.png", ImageReferences.getGlyphiconsImage());
+        mountResource("/img/glyphicons-halflings-white.png",
+                ImageReferences.getGlyphiconsWhiteImage());
+        mountResource("/css/bootstrap.min.css", CssReferences.getBootstrapCss());
+        mountResource("/css/bootstrap-responsive.min.css",
+                CssReferences.getBootstrapResponsiveCss());
+        mountResource("/css/bootstrap-datepicker.css", CssReferences.getBootstrapDatePickerCss());
+        mountResource("/css/master.css", CssReferences.getMasterCss());
+        mountResource("/css/master-responsive.css", CssReferences.getMasterResponsiveCss());
+        mountResource("/js/jquery-1.7.1.min.js", JavaScriptReferences.getJqueryJs());
+        mountResource("/js/bootstrap.min.js", JavaScriptReferences.getBootstrapJs());
+        mountResource("/js/bootstrap-datepicker.js",
+                JavaScriptReferences.getBootstrapDatePickerJs());
+        mountResource("/js/master.js", JavaScriptReferences.getMasterJs());
         mountPage("/home", getHomePage());
         mountPage("/cellars", CellarsPage.class);
         mountPage("/io", InputOutputPage.class);
@@ -65,10 +87,12 @@ public abstract class MyCellarWebApplication extends SwarmWebApplication {
         mountPage("/drinkBottles", DrinkBottlesPage.class);
         mountPage("/pedia", PediaHomePage.class);
         mountPage("/newUser", NewUserPage.class);
+        mountPage("/editUser", EditUserPage.class);
         mountPage("/listUsers", ListUsersPage.class);
         mountPage("/admin", AdminPage.class);
         mountPage("/error", InternalErrorPage.class);
         mountPage("/stack", StackPage.class);
+        mountPage("/shares", ShareCellarsPage.class);
     }
 
     /**
@@ -96,6 +120,7 @@ public abstract class MyCellarWebApplication extends SwarmWebApplication {
         converterLocator.set(LocalDate.class, new LocalDateConverter());
         converterLocator.set(WineTypeEnum.class, new WineTypeEnumConverter());
         converterLocator.set(WineColorEnum.class, new WineColorEnumConverter());
+        converterLocator.set(AccessRightEnum.class, new AccessRightEnumConverter());
         return converterLocator;
     }
 

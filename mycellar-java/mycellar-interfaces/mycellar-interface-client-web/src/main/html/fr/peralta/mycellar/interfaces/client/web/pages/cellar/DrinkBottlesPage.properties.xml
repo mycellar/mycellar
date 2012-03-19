@@ -2,21 +2,15 @@
 <!DOCTYPE properties SYSTEM "http://java.sun.com/dtd/properties.dtd">
 <properties>
   <entry key="header">Cas d'utilisation : Consommation de bouteilles</entry>
-  <entry key="cellar">Cave</entry>
-  <entry key="package">Identification des bouteilles bues</entry>
+  <entry key="source">Informations</entry>
   <entry key="date">Date de consomation</entry>
   <entry key="drinkWith">Bues avec</entry>
   <entry key="drinkWithEx">Famille, amis, ...</entry>
   <entry key="drinkBottles">Bouteilles bues</entry>
   <entry key="saveDrink">Enregistrer les bouteilles bues</entry>
   <entry key="drinkBottle">Identification d'une bouteille bue</entry>
-  <entry key="country">Pays</entry>
-  <entry key="region">Region</entry>
-  <entry key="appellation">Appellation</entry>
-  <entry key="producer">Producteur</entry>
-  <entry key="name">Nom</entry>
-  <entry key="vintage">Millésime</entry>
-  <entry key="format">Format</entry>
+  <entry key="wineName">Nom</entry>
+  <entry key="wineVintage">Millésime</entry>
   <entry key="quantity">Quantité</entry>
   <entry key="addBottle">Ajouter une bouteille</entry>
   <entry key="removeBottle">Supprimer</entry>

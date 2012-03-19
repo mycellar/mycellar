@@ -25,6 +25,8 @@ import org.apache.wicket.markup.html.form.Form;
 import org.apache.wicket.model.CompoundPropertyModel;
 
 import fr.peralta.mycellar.interfaces.client.web.components.shared.Action;
+import fr.peralta.mycellar.interfaces.client.web.components.shared.feedback.ContainerVisibleFeedbackMessageFilter;
+import fr.peralta.mycellar.interfaces.client.web.components.shared.feedback.FeedbackPanel;
 
 /**
  * @author speralta
@@ -52,6 +54,7 @@ public class ObjectForm<O> extends Form<O> {
     public ObjectForm(String id, O newObject) {
         super(id, new CompoundPropertyModel<O>(newObject));
         add(new WebMarkupContainer(EDIT_PANEL_COMPONENT_ID).setOutputMarkupId(true));
+        add(new FeedbackPanel("feedback", new ContainerVisibleFeedbackMessageFilter(this)));
         add(new Button("saveObject"));
         add(new CancelButton("cancelObject"));
     }

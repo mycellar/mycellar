@@ -18,6 +18,7 @@
  */
 package fr.peralta.mycellar.domain.stock;
 
+import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -62,6 +63,9 @@ public class Cellar extends NamedEntity<Cellar> {
     @JoinColumn(name = "OWNER", nullable = false)
     private User owner;
 
+    @OneToMany(mappedBy = "cellar")
+    private final Set<CellarShare> shares = new HashSet<CellarShare>();
+
     /**
      * {@inheritDoc}
      */
@@ -83,6 +87,13 @@ public class Cellar extends NamedEntity<Cellar> {
      */
     public void setOwner(User owner) {
         this.owner = owner;
+    }
+
+    /**
+     * @return the shares
+     */
+    public Set<CellarShare> getShares() {
+        return Collections.unmodifiableSet(shares);
     }
 
     /**

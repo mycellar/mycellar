@@ -27,7 +27,6 @@ import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.form.Form;
 import org.apache.wicket.markup.html.form.TextField;
-import org.apache.wicket.markup.html.image.Image;
 import org.apache.wicket.markup.html.list.ListItem;
 import org.apache.wicket.markup.html.list.PropertyListView;
 import org.apache.wicket.model.CompoundPropertyModel;
@@ -36,8 +35,6 @@ import org.apache.wicket.model.Model;
 import org.apache.wicket.model.StringResourceModel;
 import org.apache.wicket.request.mapper.parameter.PageParameters;
 import org.apache.wicket.spring.injection.annot.SpringBean;
-import org.joda.time.LocalDate;
-import org.odlabs.wiquery.ui.datepicker.DatePicker;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -48,8 +45,11 @@ import fr.peralta.mycellar.domain.stock.DrinkBottle;
 import fr.peralta.mycellar.interfaces.client.web.components.shared.Action;
 import fr.peralta.mycellar.interfaces.client.web.components.shared.ActionLink;
 import fr.peralta.mycellar.interfaces.client.web.components.shared.AjaxTool;
+import fr.peralta.mycellar.interfaces.client.web.components.shared.feedback.FeedbackPanel;
+import fr.peralta.mycellar.interfaces.client.web.components.shared.feedback.FilteredContainerVisibleFeedbackMessageFilter;
+import fr.peralta.mycellar.interfaces.client.web.components.shared.feedback.FormComponentFeedbackBorder;
+import fr.peralta.mycellar.interfaces.client.web.components.shared.form.LocalDateTextField;
 import fr.peralta.mycellar.interfaces.client.web.components.shared.form.ObjectForm;
-import fr.peralta.mycellar.interfaces.client.web.components.shared.img.ImageReferences;
 import fr.peralta.mycellar.interfaces.client.web.components.stock.cloud.CellarComplexTagCloud;
 import fr.peralta.mycellar.interfaces.client.web.components.stock.cloud.CellarSimpleTagCloud;
 import fr.peralta.mycellar.interfaces.client.web.components.stock.edit.DrinkBottleEditPanel;
@@ -75,8 +75,7 @@ public class DrinkBottlesPage extends CellarSuperPage {
         public DrinkBottlesEditPanel(String id) {
             super(id);
             add(new DrinkBottlesView("drinkBottles"));
-            add(new ActionLink("addBottle", Action.ADD).add(new Image("addBottleImg",
-                    ImageReferences.getAddImage())));
+            add(new ActionLink("addBottle", Action.ADD));
             add(new WebMarkupContainer(NO_BOTTLES_COMPONENT_ID) {
                 private static final long serialVersionUID = 201108082329L;
 
@@ -136,8 +135,7 @@ public class DrinkBottlesPage extends CellarSuperPage {
             item.add(new Label("bottle.wine.vintage"));
             item.add(new Label("bottle.format.name"));
             item.add(new Label("quantity"));
-            item.add(new WebMarkupContainer("remove").add(removeLink("removeBottle", item).add(
-                    new Image("removeBottleImg", ImageReferences.getRemoveImage()))));
+            item.add(new WebMarkupContainer("remove").add(removeLink("removeBottle", item)));
         }
     }
 
@@ -153,6 +151,8 @@ public class DrinkBottlesPage extends CellarSuperPage {
          */
         public DrinkForm(String id) {
             super(id, new CompoundPropertyModel<Drink>(new Drink()));
+            add(new FeedbackPanel("feedback", new FilteredContainerVisibleFeedbackMessageFilter(
+                    this, DRINK_BOTTLE_COMPONENT_ID)));
         }
 
         /**
@@ -184,8 +184,10 @@ public class DrinkBottlesPage extends CellarSuperPage {
         setOutputMarkupId(true);
         searchFormModel = new Model<SearchForm>();
         DrinkForm form = new DrinkForm(FORM_COMPONENT_ID);
-        form.add(new DatePicker<LocalDate>("date"));
-        form.add(new TextField<String>("drinkWith"));
+        form.add(new FormComponentFeedbackBorder("date").add(new LocalDateTextField("date")
+                .setRequired(true)));
+        form.add(new FormComponentFeedbackBorder("drinkWith")
+                .add(new TextField<String>("drinkWith")));
         form.add(new DrinkBottlesEditPanel(DRINK_BOTTLES_COMPONENT_ID));
         form.add(new CellarSimpleTagCloud(CELLAR_COMPONENT_ID, new StringResourceModel("cellar",
                 this, null)));

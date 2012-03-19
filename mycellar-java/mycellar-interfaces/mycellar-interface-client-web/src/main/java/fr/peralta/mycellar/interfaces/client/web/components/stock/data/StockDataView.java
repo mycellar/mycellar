@@ -18,47 +18,74 @@
  */
 package fr.peralta.mycellar.interfaces.client.web.components.stock.data;
 
-import org.apache.wicket.markup.html.basic.Label;
-import org.apache.wicket.markup.repeater.Item;
-import org.apache.wicket.markup.repeater.data.DataViewBase;
-import org.apache.wicket.model.CompoundPropertyModel;
+import java.util.ArrayList;
+import java.util.List;
+
+import org.apache.wicket.extensions.markup.html.repeater.data.table.IColumn;
+import org.apache.wicket.extensions.markup.html.repeater.data.table.PropertyColumn;
 import org.apache.wicket.model.IModel;
+import org.apache.wicket.model.ResourceModel;
 
 import fr.peralta.mycellar.domain.shared.repository.SearchForm;
 import fr.peralta.mycellar.domain.stock.Stock;
+import fr.peralta.mycellar.domain.stock.repository.StockOrderEnum;
+import fr.peralta.mycellar.interfaces.client.web.components.shared.data.AdvancedTable;
 
 /**
  * @author speralta
  * 
  */
-public class StockDataView extends DataViewBase<Stock> {
+public class StockDataView extends AdvancedTable<Stock> {
 
     private static final long serialVersionUID = 201109192009L;
+
+    private static List<IColumn<Stock>> getNewColumns() {
+        List<IColumn<Stock>> columns = new ArrayList<IColumn<Stock>>();
+        columns.add(new PropertyColumn<Stock>(new ResourceModel("country"),
+                StockOrderEnum.COUNTRY_NAME.name(), "bottle.wine.appellation.region.country.name"));
+        columns.add(new PropertyColumn<Stock>(new ResourceModel("region"),
+                StockOrderEnum.REGION_NAME.name(), "bottle.wine.appellation.region.name"));
+        columns.add(new PropertyColumn<Stock>(new ResourceModel("appellation"),
+                StockOrderEnum.APPELLATION_NAME.name(), "bottle.wine.appellation.name"));
+        columns.add(new PropertyColumn<Stock>(new ResourceModel("producer"),
+                StockOrderEnum.PRODUCER_NAME.name(), "bottle.wine.producer.name"));
+        columns.add(new PropertyColumn<Stock>(new ResourceModel("wine"), StockOrderEnum.WINE_NAME
+                .name(), "bottle.wine.name"));
+        columns.add(new PropertyColumn<Stock>(new ResourceModel("type"),
+                StockOrderEnum.TYPE.name(), "bottle.wine.type"));
+        columns.add(new PropertyColumn<Stock>(new ResourceModel("color"), StockOrderEnum.COLOR
+                .name(), "bottle.wine.color"));
+        columns.add(new PropertyColumn<Stock>(new ResourceModel("vintage"),
+                StockOrderEnum.WINE_VINTAGE.name(), "bottle.wine.vintage") {
+            private static final long serialVersionUID = 201111301732L;
+
+            @Override
+            public String getCssClass() {
+                return "ca";
+            }
+
+        });
+        columns.add(new PropertyColumn<Stock>(new ResourceModel("format"),
+                StockOrderEnum.FORMAT_NAME.name(), "bottle.format.name"));
+        columns.add(new PropertyColumn<Stock>(new ResourceModel("quantityAbrev"),
+                StockOrderEnum.QUANTITY.name(), "quantity") {
+            private static final long serialVersionUID = 201111301732L;
+
+            @Override
+            public String getCssClass() {
+                return "ca";
+            }
+
+        });
+        return columns;
+    }
 
     /**
      * @param id
      * @param searchFormModel
      */
     public StockDataView(String id, IModel<SearchForm> searchFormModel) {
-        super(id, new StockDataProvider(searchFormModel));
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    protected void populateItem(Item<Stock> item) {
-        item.setModel(new CompoundPropertyModel<Stock>(item.getModel()));
-        item.add(new Label("bottle.wine.appellation.region.country.name"));
-        item.add(new Label("bottle.wine.appellation.region.name"));
-        item.add(new Label("bottle.wine.appellation.name"));
-        item.add(new Label("bottle.wine.producer.name"));
-        item.add(new Label("bottle.wine.name"));
-        item.add(new Label("bottle.wine.type"));
-        item.add(new Label("bottle.wine.color"));
-        item.add(new Label("bottle.wine.vintage"));
-        item.add(new Label("bottle.format.name"));
-        item.add(new Label("quantity"));
+        super(id, getNewColumns(), new StockDataProvider(searchFormModel), 30);
     }
 
 }

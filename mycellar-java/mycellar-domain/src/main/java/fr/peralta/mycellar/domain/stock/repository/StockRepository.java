@@ -25,6 +25,7 @@ import fr.peralta.mycellar.domain.shared.repository.CountEnum;
 import fr.peralta.mycellar.domain.shared.repository.SearchForm;
 import fr.peralta.mycellar.domain.stock.Bottle;
 import fr.peralta.mycellar.domain.stock.Cellar;
+import fr.peralta.mycellar.domain.stock.CellarShare;
 import fr.peralta.mycellar.domain.stock.Input;
 import fr.peralta.mycellar.domain.stock.Movement;
 import fr.peralta.mycellar.domain.stock.Output;
@@ -53,16 +54,32 @@ public interface StockRepository {
 
     /**
      * @param searchForm
+     * @return
+     */
+    long countCellarShares(SearchForm searchForm);
+
+    /**
+     * @param searchForm
+     * @param orders
+     * @param count
+     * @param first
+     * @return
+     */
+    List<CellarShare> getCellarShares(SearchForm searchForm, CellarShareOrder orders, int first,
+            int count);
+
+    /**
+     * @param searchForm
      * @param countEnum
      * @return
      */
     Map<Cellar, Long> getCellars(SearchForm searchForm, CountEnum countEnum);
 
     /**
-     * @param cellar
+     * @param cellarShare
      * @return
      */
-    Cellar save(Cellar cellar);
+    CellarShare save(CellarShare cellarShare);
 
     /**
      * @param input
@@ -111,5 +128,10 @@ public interface StockRepository {
      * @return
      */
     List<Stock> getStocks(SearchForm searchForm, StockOrder orders, int first, int count);
+
+    /**
+     * @param cellarShare
+     */
+    void delete(CellarShare cellarShare);
 
 }

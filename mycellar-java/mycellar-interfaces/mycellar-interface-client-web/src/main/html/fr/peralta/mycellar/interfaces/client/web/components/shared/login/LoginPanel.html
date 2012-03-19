@@ -2,16 +2,21 @@
 <html lang="fr" xmlns:wicket="">
 <body>
 <wicket:panel>
-  <form wicket:id="loginForm">
-    <label for="username"><wicket:message key="username">Username</wicket:message></label>
-    <input type="text" wicket:id="username" id="username" size="20" />
-    <label for="password"><wicket:message key="password">Password</wicket:message></label>
-    <input type="password" wicket:id="password" id="password" size="8" />
-    <input type="submit" wicket:message="value:submit" />
-  </form>
-  <div wicket:id="feedback" />
-  <span wicket:id="email">email</span>
-  <a wicket:id="logout"><img wicket:id="logoutImage" wicket:message="title:logout" /></a>
+  <div wicket:id="notLoggedIn">
+    <form wicket:id="loginForm" class="navbar-form form-inline">
+      <label for="username" style="display: none;"><wicket:message key="username">Username</wicket:message></label>
+      <input type="email" wicket:id="username" id="username" class="input-small" style="width: auto;" size="18" wicket:message="placeholder:username" />
+      <label for="password" style="display: none;"><wicket:message key="password">Password</wicket:message></label>
+      <input type="password" wicket:id="password" id="password" class="input-small" style="width: auto;" size="8" wicket:message="placeholder:password" />
+      <input type="submit" wicket:message="value:submit" class="btn btn-inverse btn-small" />
+      <a class="btn btn-inverse btn-small pull-right" wicket:id="newUserLink" wicket:message="title:newUser"><span><wicket:message key="newUser">New user</wicket:message></span><i class="icon-user icon-white"></i></a>
+    </form>
+    <div wicket:id="feedback" />
+  </div>
+  <div class="btn-group" wicket:id="loggedIn">
+    <a class="btn btn-inverse btn-small" wicket:id="emailLink" wicket:message="title:myAccount"><span wicket:id="email">email</span><i class="icon-user icon-white"></i></a>
+    <a class="btn btn-inverse btn-small" wicket:id="logout" wicket:message="title:logout"><i class="icon-off icon-white"></i></a>
+  </div>
 </wicket:panel>
 </body>
 </html>

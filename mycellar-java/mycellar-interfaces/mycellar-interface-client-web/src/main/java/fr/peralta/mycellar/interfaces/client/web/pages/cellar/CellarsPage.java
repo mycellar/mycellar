@@ -18,10 +18,7 @@
  */
 package fr.peralta.mycellar.interfaces.client.web.pages.cellar;
 
-import org.apache.wicket.ajax.markup.html.navigation.paging.AjaxPagingNavigator;
 import org.apache.wicket.event.IEvent;
-import org.apache.wicket.markup.html.WebMarkupContainer;
-import org.apache.wicket.markup.html.link.BookmarkablePageLink;
 import org.apache.wicket.request.mapper.parameter.PageParameters;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -71,7 +68,6 @@ public class CellarsPage extends CellarSuperPage {
                 FilterEnum.USER, UserKey.getUserLoggedIn()));
         setDefaultModel(searchFormModel);
 
-        add(new BookmarkablePageLink<NewCellarPage>("newCellar", NewCellarPage.class));
         add(new CellarMultiplePanel(CELLARS_COMPONENT_ID, searchFormModel, CountEnum.STOCK_QUANTITY));
         add(new CountryMultiplePanel(COUNTRIES_COMPONENT_ID, searchFormModel,
                 CountEnum.STOCK_QUANTITY));
@@ -85,12 +81,7 @@ public class CellarsPage extends CellarSuperPage {
         add(new FormatMultiplePanel(FORMATS_COMPONENT_ID, searchFormModel, CountEnum.STOCK_QUANTITY));
         add(new ActionLink("clearFilters", Action.CANCEL));
 
-        StockDataView stockDataView = new StockDataView("stocks", searchFormModel);
-        stockDataView.setItemsPerPage(25);
-        add(new WebMarkupContainer("noStocks").setVisible(stockDataView.getViewSize() == 0));
-        add(stockDataView);
-        add(new AjaxPagingNavigator("stocksTopNav", stockDataView));
-        add(new AjaxPagingNavigator("stocksBottomNav", stockDataView));
+        add(new StockDataView("stocks", searchFormModel));
     }
 
     /**
