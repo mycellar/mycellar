@@ -87,7 +87,11 @@ public class NavPanel extends Panel {
                                         .setSeparator(" "));
                         link.add(new Label("label", new StringResourceModel(descriptor
                                 .getHeaderKey(), this, null)));
-                        listItem.add(subNav);
+
+                        // add check on first page in list
+                        SecureComponentHelper.setSecurityCheck(link, new LinkSecurityCheck(link,
+                                descriptor.getPages().get(0).getPageClass()));
+
                         listItem.add(new AttributeAppender("class", "dropdown").setSeparator(" "));
                     } else {
                         link.setVisibilityAllowed(false);

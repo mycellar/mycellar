@@ -49,7 +49,7 @@ public abstract class BasePage extends SecureWebPage {
         super(parameters);
         add(new BookmarkablePageLink<Void>("homeLink", WebApplication.get().getHomePage()));
         add(new NavPanel("menu", getMenuClass(), getSubMenuClass(),
-                descriptorServiceFacade.getMenuPages()));
+                descriptorServiceFacade.getMenuPages(), true));
         add(new LoginPanel("login"));
         add(new DebugBar("debug"));
     }
