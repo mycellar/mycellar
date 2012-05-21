@@ -46,24 +46,21 @@ public class NavPanel extends Panel {
     /**
      * @param id
      * @param current
-     * @param subCurrent
      * @param descriptors
      */
     public NavPanel(String id, final Class<? extends BasePage> current,
-            final Class<? extends BasePage> subCurrent, List<NavDescriptor> descriptors) {
-        this(id, current, subCurrent, descriptors, false);
+            List<NavDescriptor> descriptors) {
+        this(id, current, descriptors, false);
     }
 
     /**
      * @param id
      * @param current
-     * @param subCurrent
      * @param descriptors
      * @param horizontal
      */
     public NavPanel(String id, final Class<? extends BasePage> current,
-            final Class<? extends BasePage> subCurrent, List<NavDescriptor> descriptors,
-            final boolean horizontal) {
+            List<NavDescriptor> descriptors, final boolean horizontal) {
         super(id);
         add(new ListView<NavDescriptor>("navEntry", descriptors) {
             private static final long serialVersionUID = 201011122248L;
@@ -78,7 +75,7 @@ public class NavPanel extends Panel {
                             .getModelObject();
                     link = new ExternalLink("link", "#");
                     if (horizontal) {
-                        subNav = new SubNavPanel("subNav", subCurrent, descriptor.getPages());
+                        subNav = new SubNavPanel("subNav", current, descriptor.getPages());
                         header = new Label("header");
                         header.setVisibilityAllowed(false);
                         link.add(
@@ -91,6 +88,13 @@ public class NavPanel extends Panel {
                         // add check on first page in list
                         SecureComponentHelper.setSecurityCheck(link, new LinkSecurityCheck(link,
                                 descriptor.getPages().get(0).getPageClass()));
+
+                        for (NavPageDescriptor page : descriptor.getPages()) {
+                            if (current.equals(page.getPageClass())) {
+                                listItem.add(new AttributeAppender("class", "active")
+                                        .setSeparator(" "));
+                            }
+                        }
 
                         listItem.add(new AttributeAppender("class", "dropdown").setSeparator(" "));
                     } else {
@@ -110,7 +114,7 @@ public class NavPanel extends Panel {
                     subNav.setVisibilityAllowed(false);
                     header = new Label("header");
                     header.setVisibilityAllowed(false);
-                    if (current.equals(descriptor.getSuperPageClass())) {
+                    if (current.equals(descriptor.getPageClass())) {
                         listItem.add(new AttributeAppender("class", "active").setSeparator(" "));
                     }
                     SecureComponentHelper.setSecurityCheck(listItem, new LinkSecurityCheck(link,

@@ -62,8 +62,7 @@ public abstract class AbstractListPage<E extends IdentifiedEntity, OE, O extends
     @Override
     protected void onInitialize() {
         super.onInitialize();
-        add(new NavPanel("listMenu", getClass(), getClass(), getDescriptorServiceFacade()
-                .getListPages()));
+        add(new NavPanel("listMenu", getClass(), getDescriptorServiceFacade().getListPages()));
     }
 
     /**

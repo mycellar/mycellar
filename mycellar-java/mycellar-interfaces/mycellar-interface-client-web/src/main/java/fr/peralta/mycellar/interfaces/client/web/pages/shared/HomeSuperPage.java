@@ -34,12 +34,4 @@ public abstract class HomeSuperPage extends BasePage {
         super(parameters);
     }
 
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    protected final Class<? extends BasePage> getMenuClass() {
-        return HomeSuperPage.class;
-    }
-
 }

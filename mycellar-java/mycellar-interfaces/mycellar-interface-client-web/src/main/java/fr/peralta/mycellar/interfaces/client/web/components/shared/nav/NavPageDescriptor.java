@@ -29,27 +29,15 @@ public class NavPageDescriptor implements NavDescriptor {
 
     private final Class<? extends BasePage> pageClass;
 
-    private final Class<? extends BasePage> superPageClass;
-
     private final String pageTitleKey;
 
     /**
      * @param pageClass
-     * @param superPageClass
      * @param pageTitleKey
      */
-    public NavPageDescriptor(Class<? extends BasePage> pageClass,
-            Class<? extends BasePage> superPageClass, String pageTitleKey) {
+    public NavPageDescriptor(Class<? extends BasePage> pageClass, String pageTitleKey) {
         this.pageClass = pageClass;
-        this.superPageClass = superPageClass;
         this.pageTitleKey = pageTitleKey;
-    }
-
-    /**
-     * @return the superPageClass
-     */
-    public Class<? extends BasePage> getSuperPageClass() {
-        return superPageClass;
     }
 
     /**
