@@ -24,6 +24,7 @@ import org.apache.wicket.model.IModel;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 
 import fr.peralta.mycellar.domain.shared.repository.CountEnum;
+import fr.peralta.mycellar.domain.shared.repository.FilterEnum;
 import fr.peralta.mycellar.domain.shared.repository.SearchForm;
 import fr.peralta.mycellar.domain.wine.Country;
 import fr.peralta.mycellar.interfaces.client.web.components.shared.cloud.SimpleTagCloud;
@@ -39,38 +40,25 @@ public class CountrySimpleTagCloud extends SimpleTagCloud<Country> {
     @SpringBean
     private WineServiceFacade wineServiceFacade;
 
-    private final IModel<SearchForm> searchFormModel;
-
-    private final CountEnum count;
-
     /**
      * @param id
      * @param label
      * @param searchFormModel
      * @param count
+     * @param filters
      */
     public CountrySimpleTagCloud(String id, IModel<String> label,
-            IModel<SearchForm> searchFormModel, CountEnum count) {
-        super(id, label);
-        this.count = count;
-        this.searchFormModel = searchFormModel;
+            IModel<SearchForm> searchFormModel, CountEnum count, FilterEnum... filters) {
+        super(id, label, searchFormModel, count, filters);
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    protected Map<Country, Long> getChoices() {
-        return wineServiceFacade.getCountries(searchFormModel.getObject(), count);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public void detachModels() {
-        searchFormModel.detach();
-        super.detachModels();
+    protected Map<Country, Long> getChoices(SearchForm searchForm, CountEnum count,
+            FilterEnum... filters) {
+        return wineServiceFacade.getCountries(searchForm, count, filters);
     }
 
 }

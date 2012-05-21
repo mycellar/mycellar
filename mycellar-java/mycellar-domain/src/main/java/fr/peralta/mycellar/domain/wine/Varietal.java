@@ -31,20 +31,19 @@ import javax.persistence.Table;
 import org.apache.commons.lang3.ObjectUtils;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 
+import fr.peralta.mycellar.domain.shared.IdentifiedEntity;
 import fr.peralta.mycellar.domain.shared.NamedEntity;
 
 /**
+ * Varietal (EN) = Cépage (FR)
+ * 
  * @author speralta
  */
-/*
- * Varietal (EN) = Cépage (FR)
- */
-
 @Entity
 @Table(name = "VARIETAL")
 @AttributeOverride(name = "name", column = @Column(name = "NAME", nullable = false, unique = true))
 @SequenceGenerator(name = "VARIETAL_ID_GENERATOR", allocationSize = 1)
-public class Varietal extends NamedEntity<Varietal> {
+public class Varietal extends NamedEntity {
 
     private static final long serialVersionUID = 201111181451L;
 
@@ -121,8 +120,9 @@ public class Varietal extends NamedEntity<Varietal> {
      * {@inheritDoc}
      */
     @Override
-    protected boolean dataEquals(Varietal other) {
-        return ObjectUtils.equals(getName(), other.getName());
+    protected boolean dataEquals(IdentifiedEntity other) {
+        Varietal varietal = (Varietal) other;
+        return ObjectUtils.equals(getName(), varietal.getName());
     }
 
     /**

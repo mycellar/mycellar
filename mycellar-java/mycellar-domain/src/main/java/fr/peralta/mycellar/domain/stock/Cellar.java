@@ -36,6 +36,7 @@ import javax.persistence.Table;
 import org.apache.commons.lang3.ObjectUtils;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 
+import fr.peralta.mycellar.domain.shared.IdentifiedEntity;
 import fr.peralta.mycellar.domain.shared.NamedEntity;
 import fr.peralta.mycellar.domain.user.User;
 
@@ -46,7 +47,7 @@ import fr.peralta.mycellar.domain.user.User;
 @Entity
 @Table(name = "CELLAR")
 @SequenceGenerator(name = "CELLAR_ID_GENERATOR", allocationSize = 1)
-public class Cellar extends NamedEntity<Cellar> {
+public class Cellar extends NamedEntity {
 
     private static final long serialVersionUID = 201111181451L;
 
@@ -100,9 +101,10 @@ public class Cellar extends NamedEntity<Cellar> {
      * {@inheritDoc}
      */
     @Override
-    protected boolean dataEquals(Cellar other) {
-        return ObjectUtils.equals(getName(), other.getName())
-                && ObjectUtils.equals(getOwner(), other.getOwner());
+    protected boolean dataEquals(IdentifiedEntity other) {
+        Cellar cellar = (Cellar) other;
+        return ObjectUtils.equals(getName(), cellar.getName())
+                && ObjectUtils.equals(getOwner(), cellar.getOwner());
     }
 
     /**

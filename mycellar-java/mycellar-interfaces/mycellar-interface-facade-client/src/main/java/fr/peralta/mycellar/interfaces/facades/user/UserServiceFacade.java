@@ -20,7 +20,7 @@ package fr.peralta.mycellar.interfaces.facades.user;
 
 import java.util.List;
 
-import fr.peralta.mycellar.domain.shared.repository.SearchForm;
+import fr.peralta.mycellar.domain.shared.exception.BusinessException;
 import fr.peralta.mycellar.domain.user.User;
 import fr.peralta.mycellar.domain.user.repository.UserOrder;
 
@@ -31,23 +31,22 @@ public interface UserServiceFacade {
 
     /**
      * @param user
+     * @throws BusinessException
      */
-    void saveUser(User user);
+    void saveUser(User user) throws BusinessException;
 
     /**
-     * @param searchForm
      * @return
      */
-    long countUsers(SearchForm searchForm);
+    long countUsers();
 
     /**
-     * @param searchForm
      * @param orders
      * @param first
      * @param count
      * @return
      */
-    List<User> getUsers(SearchForm searchForm, UserOrder orders, int first, int count);
+    List<User> getUsers(UserOrder orders, int first, int count);
 
     /**
      * @param login

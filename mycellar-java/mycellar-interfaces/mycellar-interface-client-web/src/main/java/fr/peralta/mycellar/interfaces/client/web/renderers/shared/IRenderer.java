@@ -23,8 +23,8 @@ package fr.peralta.mycellar.interfaces.client.web.renderers.shared;
  */
 public interface IRenderer<T> {
 
-    static final String NULL_OBJECT = "N/A";
-    static final String DEFAULT_SEP = " - ";
+    String NULL_OBJECT = "N/A";
+    String DEFAULT_SEP = " - ";
 
     String getLabel(T object);
 }

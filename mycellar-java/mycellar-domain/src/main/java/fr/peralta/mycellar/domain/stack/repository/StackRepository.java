@@ -18,15 +18,13 @@
  */
 package fr.peralta.mycellar.domain.stack.repository;
 
-import java.util.List;
-
-import fr.peralta.mycellar.domain.shared.repository.SearchForm;
+import fr.peralta.mycellar.domain.shared.repository.EntityRepository;
 import fr.peralta.mycellar.domain.stack.Stack;
 
 /**
  * @author speralta
  */
-public interface StackRepository {
+public interface StackRepository extends EntityRepository<Stack, StackOrderEnum, StackOrder> {
 
     /**
      * @param hashCode
@@ -35,35 +33,8 @@ public interface StackRepository {
     Stack getByHashCode(int hashCode);
 
     /**
-     * @param stack
-     * @return
-     */
-    Stack save(Stack stack);
-
-    /**
-     * @param searchForm
-     * @return
-     */
-    long countStacks(SearchForm searchForm);
-
-    /**
      * 
      */
     void deleteAllStacks();
-
-    /**
-     * @param searchForm
-     * @param orders
-     * @param first
-     * @param count
-     * @return
-     */
-    List<Stack> getStacks(SearchForm searchForm, StackOrder orders, int first, int count);
-
-    /**
-     * @param stackId
-     * @return
-     */
-    Stack getStackById(Integer stackId);
 
 }

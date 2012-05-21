@@ -46,7 +46,7 @@ import fr.peralta.mycellar.domain.wine.Wine;
 @Entity
 @Table(name = "BOTTLE", uniqueConstraints = @UniqueConstraint(columnNames = { "WINE", "FORMAT" }))
 @SequenceGenerator(name = "BOTTLE_ID_GENERATOR", allocationSize = 1)
-public class Bottle extends IdentifiedEntity<Bottle> {
+public class Bottle extends IdentifiedEntity {
 
     private static final long serialVersionUID = 201111181451L;
 
@@ -109,9 +109,10 @@ public class Bottle extends IdentifiedEntity<Bottle> {
      * {@inheritDoc}
      */
     @Override
-    protected boolean dataEquals(Bottle other) {
-        return ObjectUtils.equals(getFormat(), other.getFormat())
-                && ObjectUtils.equals(getWine(), other.getWine());
+    protected boolean dataEquals(IdentifiedEntity other) {
+        Bottle bottle = (Bottle) other;
+        return ObjectUtils.equals(getFormat(), bottle.getFormat())
+                && ObjectUtils.equals(getWine(), bottle.getWine());
     }
 
     /**

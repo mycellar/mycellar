@@ -20,10 +20,8 @@ package fr.peralta.mycellar.interfaces.client.web.components.shared.login;
 
 import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.link.BookmarkablePageLink;
-import org.apache.wicket.request.mapper.parameter.PageParameters;
 
-import fr.peralta.mycellar.domain.user.User;
-import fr.peralta.mycellar.interfaces.client.web.pages.user.EditUserPage;
+import fr.peralta.mycellar.interfaces.client.web.pages.MyAccountPage;
 import fr.peralta.mycellar.interfaces.client.web.security.UserKey;
 
 /**
@@ -38,18 +36,9 @@ public class LoggedInContainer extends WebMarkupContainer {
      */
     public LoggedInContainer(String id) {
         super(id);
-        add(new BookmarkablePageLink<Void>("emailLink", EditUserPage.class,
-                getEditUserPageParameters()).add(new EmailLabel("email")));
+        add(new BookmarkablePageLink<Void>("emailLink", MyAccountPage.class).add(new EmailLabel(
+                "email")));
         add(new LogoutLink("logout"));
-    }
-
-    private PageParameters getEditUserPageParameters() {
-        User user = UserKey.getUserLoggedIn();
-        if (user != null) {
-            return EditUserPage.getPageParameters(user);
-        } else {
-            return null;
-        }
     }
 
     /**

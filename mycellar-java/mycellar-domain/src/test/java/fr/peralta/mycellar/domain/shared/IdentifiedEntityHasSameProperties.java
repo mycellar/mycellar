@@ -25,7 +25,7 @@ import fr.peralta.mycellar.test.matchers.PropertiesMatcher;
 /**
  * @author speralta
  */
-public abstract class IdentifiedEntityHasSameProperties<E extends IdentifiedEntity<E>> extends
+public abstract class IdentifiedEntityHasSameProperties<E extends IdentifiedEntity> extends
         PropertiesMatcher<E> {
 
     /**

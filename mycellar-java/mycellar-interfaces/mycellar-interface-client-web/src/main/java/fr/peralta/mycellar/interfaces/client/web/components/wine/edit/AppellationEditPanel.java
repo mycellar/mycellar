@@ -21,9 +21,15 @@ package fr.peralta.mycellar.interfaces.client.web.components.wine.edit;
 import org.apache.wicket.markup.html.form.TextArea;
 import org.apache.wicket.markup.html.form.TextField;
 import org.apache.wicket.markup.html.panel.Panel;
+import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.StringResourceModel;
 
+import fr.peralta.mycellar.domain.shared.repository.CountEnum;
+import fr.peralta.mycellar.domain.shared.repository.FilterEnum;
+import fr.peralta.mycellar.domain.shared.repository.SearchForm;
 import fr.peralta.mycellar.interfaces.client.web.components.shared.feedback.FormComponentFeedbackBorder;
+import fr.peralta.mycellar.interfaces.client.web.components.wine.cloud.RegionComplexTagCloud;
+import fr.peralta.mycellar.interfaces.client.web.shared.FilterEnumHelper;
 
 /**
  * @author speralta
@@ -34,13 +40,19 @@ public class AppellationEditPanel extends Panel {
 
     /**
      * @param id
+     * @param searchFormModel
+     * @param count
+     * @param filters
      */
-    public AppellationEditPanel(String id) {
+    public AppellationEditPanel(String id, IModel<SearchForm> searchFormModel, CountEnum count,
+            FilterEnum... filters) {
         super(id);
-        add(new TextField<String>("region.name").setEnabled(false));
-        add(new FormComponentFeedbackBorder("name", new StringResourceModel("name", null), "name")
-                .add(new TextField<String>("name").setRequired(true)));
-        add(new FormComponentFeedbackBorder("description", new StringResourceModel("description",
-                null), "description").add(new TextArea<String>("description")));
+        add(new RegionComplexTagCloud("region", new StringResourceModel("region", this, null),
+                searchFormModel, count, FilterEnumHelper.removeFilter(filters,
+                        FilterEnum.APPELLATION)));
+        add(new FormComponentFeedbackBorder("name").add(new TextField<String>("name")
+                .setRequired(true)));
+        add(new FormComponentFeedbackBorder("description").add(new TextArea<String>("description")));
     }
+
 }

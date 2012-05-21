@@ -9,7 +9,6 @@
   <entry key="add">Ajouter un partage</entry>
   <entry key="remove">Supprimer un partage</entry>
   <entry key="edit">Modifier un partage</entry>
-  <entry key="cellarShare">Partage de cave</entry>
   <entry key="saveCellarShare">Enregistrer ce partage</entry>
   <entry key="cancelCellarShare">Annuler</entry>
 </properties> 

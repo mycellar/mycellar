@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE properties SYSTEM "http://java.sun.com/dtd/properties.dtd">
+<properties>
+  <!-- Menu headers -->
+  <entry key="cellarsHeader">Gestion de cave</entry>
+  <entry key="adminHeader">Administration</entry>
+
+  <!-- Menu title -->
+  <entry key="home">Accueil</entry>
+  <entry key="admin">Tableau de bord</entry>
+  <entry key="lists">Données</entry>
+  <entry key="myCellars">Mes caves</entry>
+  <entry key="cellarLeaves">Sortie de cave</entry>
+  <entry key="inputOutput">Entrées / Sorties</entry>
+  <entry key="packageArrival">Arrivée d'un colis</entry>
+  <entry key="shareCellars">Partage de cave</entry>
+  <entry key="vinopedia">Vinopedia</entry>
+  
+</properties> 

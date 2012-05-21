@@ -35,6 +35,7 @@ import org.apache.commons.lang3.ObjectUtils;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 
 import fr.peralta.mycellar.domain.position.Map;
+import fr.peralta.mycellar.domain.shared.IdentifiedEntity;
 import fr.peralta.mycellar.domain.shared.NamedEntity;
 
 /**
@@ -44,7 +45,7 @@ import fr.peralta.mycellar.domain.shared.NamedEntity;
 @Table(name = "COUNTRY")
 @AttributeOverride(name = "name", column = @Column(name = "NAME", nullable = false, unique = true))
 @SequenceGenerator(name = "COUNTRY_ID_GENERATOR", allocationSize = 1)
-public class Country extends NamedEntity<Country> {
+public class Country extends NamedEntity {
 
     private static final long serialVersionUID = 201111181451L;
 
@@ -105,8 +106,9 @@ public class Country extends NamedEntity<Country> {
      * {@inheritDoc}
      */
     @Override
-    protected boolean dataEquals(Country other) {
-        return ObjectUtils.equals(getName(), other.getName());
+    protected boolean dataEquals(IdentifiedEntity other) {
+        Country country = (Country) other;
+        return ObjectUtils.equals(getName(), country.getName());
     }
 
     /**

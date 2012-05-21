@@ -18,16 +18,15 @@
  */
 package fr.peralta.mycellar.application.stack;
 
-import java.util.List;
-
-import fr.peralta.mycellar.domain.shared.repository.SearchForm;
+import fr.peralta.mycellar.application.shared.EntityService;
 import fr.peralta.mycellar.domain.stack.Stack;
 import fr.peralta.mycellar.domain.stack.repository.StackOrder;
+import fr.peralta.mycellar.domain.stack.repository.StackOrderEnum;
 
 /**
  * @author speralta
  */
-public interface StackService {
+public interface StackService extends EntityService<Stack, StackOrderEnum, StackOrder> {
 
     /**
      * @param exception
@@ -35,29 +34,8 @@ public interface StackService {
     void onException(Exception exception);
 
     /**
-     * @param searchForm
-     * @return
-     */
-    long countStacks(SearchForm searchForm);
-
-    /**
      * 
      */
     void deleteAllStacks();
-
-    /**
-     * @param searchForm
-     * @param orders
-     * @param first
-     * @param count
-     * @return
-     */
-    List<Stack> getStacks(SearchForm searchForm, StackOrder orders, int first, int count);
-
-    /**
-     * @param stackId
-     * @return
-     */
-    Stack getStackById(Integer stackId);
 
 }

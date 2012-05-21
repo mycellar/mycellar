@@ -21,7 +21,6 @@ package fr.peralta.mycellar.interfaces.client.web.components.stock.edit;
 import org.apache.wicket.markup.html.form.TextField;
 import org.apache.wicket.markup.html.panel.Panel;
 import org.apache.wicket.model.IModel;
-import org.apache.wicket.model.Model;
 import org.apache.wicket.validation.validator.MinimumValidator;
 
 import fr.peralta.mycellar.domain.shared.repository.CountEnum;
@@ -38,10 +37,10 @@ public class ArrivalBottleEditPanel extends Panel {
 
     /**
      * @param id
+     * @param searchFormModel
      */
-    public ArrivalBottleEditPanel(String id) {
+    public ArrivalBottleEditPanel(String id, IModel<SearchForm> searchFormModel) {
         super(id);
-        IModel<SearchForm> searchFormModel = new Model<SearchForm>(new SearchForm());
         add(new BottleComponent("bottle", searchFormModel, CountEnum.STOCK_QUANTITY));
         add(new FormComponentFeedbackBorder("quantity").add(new TextField<Integer>("quantity")
                 .setRequired(true).add(new MinimumValidator<Integer>(1))));

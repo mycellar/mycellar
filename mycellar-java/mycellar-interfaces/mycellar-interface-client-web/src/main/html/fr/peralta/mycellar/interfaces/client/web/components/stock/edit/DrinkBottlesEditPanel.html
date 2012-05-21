@@ -1,0 +1,33 @@
+<wicket:panel xmlns:wicket="http://wicket.apache.org">
+  <table class="table table-striped table-condensed table-bordered">
+    <thead>
+      <tr>
+        <th><wicket:message key="country">Country</wicket:message></th>
+        <th><wicket:message key="region">Region</wicket:message></th>
+        <th><wicket:message key="appellation">Appellation</wicket:message></th>
+        <th><wicket:message key="producer">Producer</wicket:message></th>
+        <th><wicket:message key="wineName">Name</wicket:message></th>
+        <th><wicket:message key="wineVintage">Vintage</wicket:message></th>
+        <th><wicket:message key="format">Format</wicket:message></th>
+        <th><wicket:message key="quantity">Quantity</wicket:message></th>
+        <th class="ca actions"><a class="btn btn-mini" wicket:id="addBottle" wicket:message="title:addBottle"><i class="icon-plus-sign"></i></a></th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr wicket:id="drinkBottles">
+        <td wicket:id="bottle.wine.appellation.region.country.name">Country</td>
+        <td wicket:id="bottle.wine.appellation.region.name">Region</td>
+        <td wicket:id="bottle.wine.appellation.name">Appellation</td>
+        <td wicket:id="bottle.wine.producer.name">Producer</td>
+        <td wicket:id="bottle.wine.name">Name</td>
+        <td wicket:id="bottle.wine.vintage">Vintage</td>
+        <td wicket:id="bottle.format.name">Format</td>
+        <td wicket:id="quantity">Quantity</td>
+        <td wicket:id="remove" class="ca"><a class="btn btn-mini" wicket:id="removeBottle" wicket:message="title:removeBottle"><i class="icon-trash"></i></a></td>
+      </tr>
+      <tr wicket:id="noBottles">
+        <td colSpan="9" class="ca"><wicket:message key="noBottles">No bottles</wicket:message></td>
+      </tr>
+    </tbody>
+  </table>
+</wicket:panel>

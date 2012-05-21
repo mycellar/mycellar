@@ -18,16 +18,13 @@
  */
 package fr.peralta.mycellar.domain.wine.repository;
 
-import java.util.List;
 import java.util.Map;
 
 import fr.peralta.mycellar.domain.shared.repository.CountEnum;
+import fr.peralta.mycellar.domain.shared.repository.EntitySearchFormRepository;
 import fr.peralta.mycellar.domain.shared.repository.SearchForm;
 import fr.peralta.mycellar.domain.wine.Appellation;
-import fr.peralta.mycellar.domain.wine.Country;
-import fr.peralta.mycellar.domain.wine.Format;
 import fr.peralta.mycellar.domain.wine.Producer;
-import fr.peralta.mycellar.domain.wine.Region;
 import fr.peralta.mycellar.domain.wine.Wine;
 import fr.peralta.mycellar.domain.wine.WineColorEnum;
 import fr.peralta.mycellar.domain.wine.WineTypeEnum;
@@ -35,49 +32,7 @@ import fr.peralta.mycellar.domain.wine.WineTypeEnum;
 /**
  * @author speralta
  */
-public interface WineRepository {
-
-    /**
-     * @param searchForm
-     * @return
-     */
-    long countWines(SearchForm searchForm);
-
-    /**
-     * @param searchForm
-     * @param orders
-     * @param first
-     * @param count
-     * @return
-     */
-    List<Wine> getWines(SearchForm searchForm, WineOrder orders, int first, int count);
-
-    /**
-     * @param searchForm
-     * @param countEnum
-     * @return
-     */
-    Map<Country, Long> getCountries(SearchForm searchForm, CountEnum countEnum);
-
-    /**
-     * @param searchForm
-     * @param countEnum
-     * @return
-     */
-    Map<Region, Long> getRegions(SearchForm searchForm, CountEnum countEnum);
-
-    /**
-     * @param searchForm
-     * @param countEnum
-     * @return
-     */
-    Map<Appellation, Long> getAppellations(SearchForm searchForm, CountEnum countEnum);
-
-    /**
-     * @param term
-     * @return
-     */
-    List<Producer> getAllProducersLike(String term);
+public interface WineRepository extends EntitySearchFormRepository<Wine, WineOrderEnum, WineOrder> {
 
     /**
      * @param searchForm
@@ -94,14 +49,15 @@ public interface WineRepository {
     Map<WineColorEnum, Long> getColors(SearchForm searchForm, CountEnum countEnum);
 
     /**
+     * @param producer
+     * @param appellation
+     * @param type
+     * @param color
+     * @param name
+     * @param vintage
      * @return
      */
-    Map<Format, Long> getFormats(SearchForm searchForm, CountEnum countEnum);
-
-    /**
-     * @param producerId
-     * @return
-     */
-    Producer getProducerById(Integer producerId);
+    Wine find(Producer producer, Appellation appellation, WineTypeEnum type, WineColorEnum color,
+            String name, Integer vintage);
 
 }

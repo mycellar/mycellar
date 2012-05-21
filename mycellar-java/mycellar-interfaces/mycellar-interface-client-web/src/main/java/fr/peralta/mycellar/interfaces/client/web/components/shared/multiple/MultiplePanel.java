@@ -24,7 +24,6 @@ import java.util.List;
 import java.util.Map;
 
 import org.apache.wicket.Component;
-import org.apache.wicket.WicketRuntimeException;
 import org.apache.wicket.event.Broadcast;
 import org.apache.wicket.event.IEvent;
 import org.apache.wicket.markup.html.panel.Panel;
@@ -35,10 +34,12 @@ import org.slf4j.LoggerFactory;
 
 import fr.peralta.mycellar.interfaces.client.web.components.shared.Action;
 import fr.peralta.mycellar.interfaces.client.web.components.shared.AjaxTool;
-import fr.peralta.mycellar.interfaces.client.web.renderers.shared.RendererServiceFacade;
-import fr.peralta.mycellar.interfaces.client.web.shared.LoggingUtils;
+import fr.peralta.mycellar.interfaces.client.web.renderers.RendererServiceFacade;
+import fr.peralta.mycellar.interfaces.client.web.shared.LoggingHelper;
 
 /**
+ * TODO extends SimpleComponent ?
+ * 
  * @author speralta
  */
 public abstract class MultiplePanel<O> extends Panel {
@@ -138,7 +139,7 @@ public abstract class MultiplePanel<O> extends Panel {
     @SuppressWarnings("unchecked")
     @Override
     public void onEvent(IEvent<?> event) {
-        LoggingUtils.logEventReceived(logger, event);
+        LoggingHelper.logEventReceived(logger, event);
         if (event.getPayload() instanceof Action) {
             Action action = (Action) event.getPayload();
             switch (action) {
@@ -153,18 +154,15 @@ public abstract class MultiplePanel<O> extends Panel {
                         modelObject.add(object);
                     }
                     setModelObject(modelObject);
-                } else {
-                    throw new WicketRuntimeException("Event did not come from "
-                            + MultipleSelection.class.getSimpleName() + ".");
+                    AjaxTool.ajaxReRender(this);
+                    event.stop();
                 }
                 break;
             default:
-                throw new WicketRuntimeException("Action " + action + " not managed.");
+                break;
             }
-            event.stop();
-            AjaxTool.ajaxReRender(this);
         }
-        LoggingUtils.logEventProcessed(logger, event);
+        LoggingHelper.logEventProcessed(logger, event);
     }
 
     /**

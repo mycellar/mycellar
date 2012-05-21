@@ -10,7 +10,7 @@
         <th><wicket:message key="wineVintage">Vintage</wicket:message></th>
         <th><wicket:message key="format">Format</wicket:message></th>
         <th><wicket:message key="quantity">Quantity</wicket:message></th>
-        <th><a wicket:id="addBottle" wicket:message="title:addBottle"><i class="icon-plus-sign"></i></a></th>
+        <th class="ca actions"><a class="btn btn-mini" wicket:id="addBottle" wicket:message="title:addBottle"><i class="icon-plus-sign"></i></a></th>
       </tr>
     </thead>
     <tbody>
@@ -23,7 +23,7 @@
         <td wicket:id="bottle.wine.vintage">Vintage</td>
         <td wicket:id="bottle.format.name">Format</td>
         <td wicket:id="quantity">Quantity</td>
-        <td wicket:id="remove" class="ca"><a wicket:id="removeBottle" wicket:message="title:removeBottle"><i class="icon-trash"></i></a></td>
+        <td wicket:id="remove" class="ca"><a class="btn btn-mini" wicket:id="removeBottle" wicket:message="title:removeBottle"><i class="icon-trash"></i></a></td>
       </tr>
       <tr wicket:id="noBottles">
         <td colSpan="9" class="ca"><wicket:message key="noBottles">No bottles</wicket:message></td>

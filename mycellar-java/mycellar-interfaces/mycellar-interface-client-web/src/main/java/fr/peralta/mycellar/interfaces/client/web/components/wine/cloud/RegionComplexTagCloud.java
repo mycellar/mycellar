@@ -20,9 +20,8 @@ package fr.peralta.mycellar.interfaces.client.web.components.wine.cloud;
 
 import java.util.Map;
 
-import org.apache.wicket.Component;
 import org.apache.wicket.event.Broadcast;
-import org.apache.wicket.event.IEventSource;
+import org.apache.wicket.event.IEvent;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.StringResourceModel;
 import org.apache.wicket.spring.injection.annot.SpringBean;
@@ -33,8 +32,11 @@ import fr.peralta.mycellar.domain.shared.repository.SearchForm;
 import fr.peralta.mycellar.domain.wine.Country;
 import fr.peralta.mycellar.domain.wine.Region;
 import fr.peralta.mycellar.interfaces.client.web.components.shared.Action;
+import fr.peralta.mycellar.interfaces.client.web.components.shared.AjaxTool;
 import fr.peralta.mycellar.interfaces.client.web.components.shared.cloud.ComplexTagCloud;
-import fr.peralta.mycellar.interfaces.client.web.components.wine.edit.RegionEditPanel;
+import fr.peralta.mycellar.interfaces.client.web.components.shared.form.ObjectForm;
+import fr.peralta.mycellar.interfaces.client.web.components.wine.form.RegionForm;
+import fr.peralta.mycellar.interfaces.client.web.shared.FilterEnumHelper;
 import fr.peralta.mycellar.interfaces.facades.wine.WineServiceFacade;
 
 /**
@@ -46,40 +48,41 @@ public class RegionComplexTagCloud extends ComplexTagCloud<Region> {
 
     private static final String COUNTRY_COMPONENT_ID = "country";
 
-    private final IModel<SearchForm> searchFormModel;
-
-    private final CountEnum count;
-
     @SpringBean
     private WineServiceFacade wineServiceFacade;
+
+    private final CountryComplexTagCloud countryComplexTagCloud;
 
     /**
      * @param id
      * @param label
      * @param searchFormModel
      * @param count
+     * @param filters
      */
     public RegionComplexTagCloud(String id, IModel<String> label,
-            IModel<SearchForm> searchFormModel, CountEnum count) {
-        super(id, label);
-        this.searchFormModel = searchFormModel;
-        this.count = count;
-        add(new CountryComplexTagCloud(COUNTRY_COMPONENT_ID, new StringResourceModel("country",
-                this, null), searchFormModel, count));
-    }
-
-    private IModel<? extends Country> getCountryModel() {
-        return ((CountryComplexTagCloud) get(COUNTRY_COMPONENT_ID)).getModel();
+            IModel<SearchForm> searchFormModel, CountEnum count, FilterEnum... filters) {
+        super(id, label, searchFormModel, count, filters);
+        add(countryComplexTagCloud = new CountryComplexTagCloud(COUNTRY_COMPONENT_ID,
+                new StringResourceModel("country", this, null), searchFormModel, count,
+                FilterEnumHelper.removeFilter(filters, FilterEnum.REGION)));
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    protected Map<Region, Long> getChoices() {
-        SearchForm searchForm = searchFormModel.getObject();
-        searchForm.replaceSet(FilterEnum.COUNTRY, getCountryModel().getObject());
-        return wineServiceFacade.getRegions(searchForm, count);
+    protected void setOtherComponentsVisibilityAllowed(boolean allowed) {
+        countryComplexTagCloud.setVisibilityAllowed(allowed);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    protected Map<Region, Long> getChoices(SearchForm searchForm, CountEnum count,
+            FilterEnum[] filters) {
+        return wineServiceFacade.getRegions(searchForm, count, filters);
     }
 
     /**
@@ -87,7 +90,7 @@ public class RegionComplexTagCloud extends ComplexTagCloud<Region> {
      */
     @Override
     protected boolean isReadyToSelect() {
-        return ((CountryComplexTagCloud) get(COUNTRY_COMPONENT_ID)).isValued();
+        return countryComplexTagCloud.isValued();
     }
 
     /**
@@ -110,8 +113,8 @@ public class RegionComplexTagCloud extends ComplexTagCloud<Region> {
      * {@inheritDoc}
      */
     @Override
-    protected Component createComponentForCreation(String id) {
-        return new RegionEditPanel(id);
+    protected ObjectForm<Region> createForm(String id, IModel<SearchForm> searchFormModel) {
+        return new RegionForm(id, searchFormModel, getCount()).setCountryCancelAllowed(false);
     }
 
     /**
@@ -120,10 +123,7 @@ public class RegionComplexTagCloud extends ComplexTagCloud<Region> {
     @Override
     protected Region createObject() {
         Region region = new Region();
-        IModel<? extends Country> countryModel = getCountryModel();
-        if (countryModel != null) {
-            region.setCountry(countryModel.getObject());
-        }
+        region.setCountry(countryComplexTagCloud.getModelObject());
         return region;
     }
 
@@ -131,29 +131,21 @@ public class RegionComplexTagCloud extends ComplexTagCloud<Region> {
      * {@inheritDoc}
      */
     @Override
-    protected void detachModel() {
-        searchFormModel.detach();
-        super.detachModel();
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    protected void onModelChanged(IEventSource source, Action action) {
-        if (source instanceof CountryComplexTagCloud) {
-            refreshTagCloud();
-            CountryComplexTagCloud countryComplexTagCloud = (CountryComplexTagCloud) source;
-            IModel<? extends Country> countryModel = countryComplexTagCloud.getModel();
-            if (countryComplexTagCloud.isValued() && (countryModel != null)
-                    && (countryModel.getObject() != null)
-                    && (countryModel.getObject().getId() == null)) {
+    protected void onModelChanged(IEvent<?> event) {
+        getSearchFormModel().getObject().replaceSet(FilterEnum.COUNTRY,
+                countryComplexTagCloud.getModelObject());
+        if (!countryComplexTagCloud.isValued()) {
+            markAsNonValued();
+            send(this, Broadcast.EXACT, Action.CANCEL);
+        } else {
+            Country country = countryComplexTagCloud.getModelObject();
+            if ((country != null) && (country.getId() == null)) {
                 setDefaultModelObject(createObject());
                 send(this, Broadcast.EXACT, Action.ADD);
             }
-        } else {
-            super.onModelChanged(source, action);
         }
+        AjaxTool.ajaxReRender(this);
+        event.stop();
     }
 
 }

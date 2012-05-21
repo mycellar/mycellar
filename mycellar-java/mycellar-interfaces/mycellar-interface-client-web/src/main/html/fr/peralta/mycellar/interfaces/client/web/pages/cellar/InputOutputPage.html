@@ -27,18 +27,18 @@
       <header role="primary" class="page-header"><h1>Header</h1></header>
       <wicket:extend>
         <section>
-          <div class="filter-collapse">
+          <div class="filter-collapse" style="margin-bottom: 5px;">
             <div class="row-fluid">
               <div class="span3">
                 <div wicket:id="cellars" class="filter" />
               </div>
             </div>
           </div>
-          <div class="row-fluid">
-            <div class="span12" style="text-align: center;">
+          <div class="row-fluid" style="margin-bottom: 10px;">
+            <div class="span12 ca">
               <a wicket:id="clearFilters" class="btn"><wicket:message key="clearFilters">Clear filters</wicket:message></a>
               <a class="btn btn-filter" data-toggle="collapse" data-target=".filter-collapse" wicket:message="title:toggleFilters">
-                <i class="icon-search"></i>
+                <i class="icon-filter"></i>
               </a>
             </div>
           </div>

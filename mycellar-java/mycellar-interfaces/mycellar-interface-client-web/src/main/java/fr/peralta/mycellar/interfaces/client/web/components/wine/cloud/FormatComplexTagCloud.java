@@ -20,15 +20,16 @@ package fr.peralta.mycellar.interfaces.client.web.components.wine.cloud;
 
 import java.util.Map;
 
-import org.apache.wicket.Component;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 
 import fr.peralta.mycellar.domain.shared.repository.CountEnum;
+import fr.peralta.mycellar.domain.shared.repository.FilterEnum;
 import fr.peralta.mycellar.domain.shared.repository.SearchForm;
 import fr.peralta.mycellar.domain.wine.Format;
 import fr.peralta.mycellar.interfaces.client.web.components.shared.cloud.ComplexTagCloud;
-import fr.peralta.mycellar.interfaces.client.web.components.wine.edit.FormatEditPanel;
+import fr.peralta.mycellar.interfaces.client.web.components.shared.form.ObjectForm;
+import fr.peralta.mycellar.interfaces.client.web.components.wine.form.FormatForm;
 import fr.peralta.mycellar.interfaces.facades.wine.WineServiceFacade;
 
 /**
@@ -41,36 +42,33 @@ public class FormatComplexTagCloud extends ComplexTagCloud<Format> {
     @SpringBean
     private WineServiceFacade wineServiceFacade;
 
-    private final IModel<SearchForm> searchFormModel;
-    private final CountEnum count;
-
     /**
      * @param id
      * @param label
      * @param searchFormModel
      * @param count
+     * @param filters
      */
     public FormatComplexTagCloud(String id, IModel<String> label,
-            IModel<SearchForm> searchFormModel, CountEnum count) {
-        super(id, label);
-        this.searchFormModel = searchFormModel;
-        this.count = count;
+            IModel<SearchForm> searchFormModel, CountEnum count, FilterEnum... filters) {
+        super(id, label, searchFormModel, count, filters);
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    protected Map<Format, Long> getChoices() {
-        return wineServiceFacade.getFormats(searchFormModel.getObject(), count);
+    protected Map<Format, Long> getChoices(SearchForm searchForm, CountEnum count,
+            FilterEnum[] filters) {
+        return wineServiceFacade.getFormats(searchForm, count, filters);
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    protected Component createComponentForCreation(String id) {
-        return new FormatEditPanel(id);
+    protected ObjectForm<Format> createForm(String id, IModel<SearchForm> searchFormModel) {
+        return new FormatForm(id, searchFormModel);
     }
 
     /**
@@ -79,15 +77,6 @@ public class FormatComplexTagCloud extends ComplexTagCloud<Format> {
     @Override
     protected Format createObject() {
         return new Format();
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public void detachModels() {
-        searchFormModel.detach();
-        super.detachModels();
     }
 
 }

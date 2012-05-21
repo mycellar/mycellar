@@ -18,21 +18,12 @@
  */
 package fr.peralta.mycellar.interfaces.client.web.pages.cellar;
 
-import java.util.List;
-
 import org.apache.wicket.Component;
-import org.apache.wicket.WicketRuntimeException;
 import org.apache.wicket.event.IEvent;
-import org.apache.wicket.markup.html.WebMarkupContainer;
-import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.form.Form;
 import org.apache.wicket.markup.html.form.TextField;
-import org.apache.wicket.markup.html.list.ListItem;
-import org.apache.wicket.markup.html.list.PropertyListView;
 import org.apache.wicket.model.CompoundPropertyModel;
-import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.Model;
-import org.apache.wicket.model.StringResourceModel;
 import org.apache.wicket.request.mapper.parameter.PageParameters;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 import org.slf4j.Logger;
@@ -43,101 +34,22 @@ import fr.peralta.mycellar.domain.shared.repository.SearchForm;
 import fr.peralta.mycellar.domain.stock.Drink;
 import fr.peralta.mycellar.domain.stock.DrinkBottle;
 import fr.peralta.mycellar.interfaces.client.web.components.shared.Action;
-import fr.peralta.mycellar.interfaces.client.web.components.shared.ActionLink;
 import fr.peralta.mycellar.interfaces.client.web.components.shared.AjaxTool;
 import fr.peralta.mycellar.interfaces.client.web.components.shared.feedback.FeedbackPanel;
 import fr.peralta.mycellar.interfaces.client.web.components.shared.feedback.FilteredContainerVisibleFeedbackMessageFilter;
 import fr.peralta.mycellar.interfaces.client.web.components.shared.feedback.FormComponentFeedbackBorder;
 import fr.peralta.mycellar.interfaces.client.web.components.shared.form.LocalDateTextField;
-import fr.peralta.mycellar.interfaces.client.web.components.shared.form.ObjectForm;
-import fr.peralta.mycellar.interfaces.client.web.components.stock.cloud.CellarComplexTagCloud;
-import fr.peralta.mycellar.interfaces.client.web.components.stock.cloud.CellarSimpleTagCloud;
-import fr.peralta.mycellar.interfaces.client.web.components.stock.edit.DrinkBottleEditPanel;
+import fr.peralta.mycellar.interfaces.client.web.components.stock.edit.DrinkBottlesEditPanel;
+import fr.peralta.mycellar.interfaces.client.web.components.stock.form.DrinkBottleForm;
 import fr.peralta.mycellar.interfaces.client.web.pages.shared.CellarSuperPage;
 import fr.peralta.mycellar.interfaces.client.web.security.UserKey;
-import fr.peralta.mycellar.interfaces.client.web.shared.LoggingUtils;
+import fr.peralta.mycellar.interfaces.client.web.shared.LoggingHelper;
 import fr.peralta.mycellar.interfaces.facades.stock.StockServiceFacade;
 
 /**
  * @author speralta
  */
 public class DrinkBottlesPage extends CellarSuperPage {
-
-    private static class DrinkBottlesEditPanel extends WebMarkupContainer {
-
-        private static final long serialVersionUID = 201107252130L;
-
-        private static final String NO_BOTTLES_COMPONENT_ID = "noBottles";
-
-        /**
-         * @param id
-         */
-        public DrinkBottlesEditPanel(String id) {
-            super(id);
-            add(new DrinkBottlesView("drinkBottles"));
-            add(new ActionLink("addBottle", Action.ADD));
-            add(new WebMarkupContainer(NO_BOTTLES_COMPONENT_ID) {
-                private static final long serialVersionUID = 201108082329L;
-
-                /**
-                 * {@inheritDoc}
-                 */
-                @SuppressWarnings("unchecked")
-                @Override
-                public boolean isVisible() {
-                    return ((List<DrinkBottle>) DrinkBottlesEditPanel.this.getDefaultModelObject())
-                            .size() == 0;
-                }
-            });
-        }
-    }
-
-    private static class DrinkBottlesView extends PropertyListView<DrinkBottle> {
-
-        private static final long serialVersionUID = 201108082321L;
-
-        /**
-         * @param id
-         */
-        public DrinkBottlesView(String id) {
-            super(id);
-            setReuseItems(true);
-        }
-
-        /**
-         * @param id
-         * @param model
-         */
-        public DrinkBottlesView(String id, IModel<? extends List<? extends DrinkBottle>> model) {
-            super(id, model);
-            setReuseItems(true);
-        }
-
-        /**
-         * @param id
-         * @param list
-         */
-        public DrinkBottlesView(String id, List<? extends DrinkBottle> list) {
-            super(id, list);
-            setReuseItems(true);
-        }
-
-        /**
-         * {@inheritDoc}
-         */
-        @Override
-        protected void populateItem(ListItem<DrinkBottle> item) {
-            item.add(new Label("bottle.wine.appellation.region.country.name"));
-            item.add(new Label("bottle.wine.appellation.region.name"));
-            item.add(new Label("bottle.wine.appellation.name"));
-            item.add(new Label("bottle.wine.producer.name"));
-            item.add(new Label("bottle.wine.name"));
-            item.add(new Label("bottle.wine.vintage"));
-            item.add(new Label("bottle.format.name"));
-            item.add(new Label("quantity"));
-            item.add(new WebMarkupContainer("remove").add(removeLink("removeBottle", item)));
-        }
-    }
 
     private static class DrinkForm extends Form<Drink> {
 
@@ -172,9 +84,10 @@ public class DrinkBottlesPage extends CellarSuperPage {
     private static final String FORM_COMPONENT_ID = "form";
     private static final String DRINK_BOTTLES_COMPONENT_ID = "drinkBottles";
     private static final String DRINK_BOTTLE_COMPONENT_ID = "drinkBottle";
-    private static final String CELLAR_COMPONENT_ID = "cellar";
 
-    private final IModel<SearchForm> searchFormModel;
+    private DrinkBottleForm drinkBottleForm;
+    private final DrinkForm drinkForm;
+    private final DrinkBottlesEditPanel drinkBottlesEditPanel;
 
     /**
      * @param parameters
@@ -182,93 +95,62 @@ public class DrinkBottlesPage extends CellarSuperPage {
     public DrinkBottlesPage(PageParameters parameters) {
         super(parameters);
         setOutputMarkupId(true);
-        searchFormModel = new Model<SearchForm>();
-        DrinkForm form = new DrinkForm(FORM_COMPONENT_ID);
-        form.add(new FormComponentFeedbackBorder("date").add(new LocalDateTextField("date")
+        drinkForm = new DrinkForm(FORM_COMPONENT_ID);
+        drinkForm.add(new FormComponentFeedbackBorder("date").add(new LocalDateTextField("date")
                 .setRequired(true)));
-        form.add(new FormComponentFeedbackBorder("drinkWith")
-                .add(new TextField<String>("drinkWith")));
-        form.add(new DrinkBottlesEditPanel(DRINK_BOTTLES_COMPONENT_ID));
-        form.add(new CellarSimpleTagCloud(CELLAR_COMPONENT_ID, new StringResourceModel("cellar",
-                this, null)));
-        form.add(createHiddenBottleForm());
-        add(form);
+        drinkForm.add(new FormComponentFeedbackBorder("drinkWith").add(new TextField<String>(
+                "drinkWith")));
+        drinkForm
+                .add(drinkBottlesEditPanel = new DrinkBottlesEditPanel(DRINK_BOTTLES_COMPONENT_ID));
+        drinkForm.add(createHiddenBottleForm());
+        add(drinkForm);
     }
 
     /**
      * {@inheritDoc}
      */
-    @SuppressWarnings("unchecked")
     @Override
     public void onEvent(IEvent<?> event) {
-        LoggingUtils.logEventReceived(logger, event);
+        LoggingHelper.logEventReceived(logger, event);
         if (event.getPayload() instanceof Action) {
             Action action = (Action) event.getPayload();
             switch (action) {
             case ADD:
-                displayBottleForm();
+                if (drinkBottlesEditPanel.isAddBottle(event.getSource())) {
+                    drinkBottleForm.displayForm();
+                    AjaxTool.ajaxReRender(this);
+                    event.stop();
+                }
                 break;
             case SAVE:
-                ((List<DrinkBottle>) get(
-                        FORM_COMPONENT_ID + PATH_SEPARATOR + DRINK_BOTTLES_COMPONENT_ID)
-                        .getDefaultModelObject()).add((DrinkBottle) get(
-                        FORM_COMPONENT_ID + PATH_SEPARATOR + DRINK_BOTTLE_COMPONENT_ID)
-                        .getDefaultModelObject());
-                get(FORM_COMPONENT_ID + PATH_SEPARATOR + DRINK_BOTTLE_COMPONENT_ID).replaceWith(
-                        createHiddenBottleForm());
-                break;
-            case MODEL_CHANGED:
-                if (event.getSource() instanceof CellarComplexTagCloud) {
-                    searchFormModel.getObject().replaceSet(
-                            FilterEnum.CELLAR,
-                            get(FORM_COMPONENT_ID + PATH_SEPARATOR + CELLAR_COMPONENT_ID)
-                                    .getDefaultModelObject());
+                if (drinkBottleForm == event.getSource()) {
+                    drinkBottlesEditPanel.getModelObject().add(drinkBottleForm.getModelObject());
+                    drinkForm.replace(createHiddenBottleForm());
+                    AjaxTool.ajaxReRender(this);
+                    event.stop();
                 }
                 break;
             case CANCEL:
-                replace(createHiddenBottleForm());
+                if (drinkBottleForm.isCancelButton(event.getSource())) {
+                    drinkForm.replace(createHiddenBottleForm());
+                    AjaxTool.ajaxReRender(this);
+                    event.stop();
+                }
                 break;
             default:
-                throw new WicketRuntimeException("Action " + action + " not managed.");
+                break;
             }
-            event.stop();
-            AjaxTool.ajaxReRender(this);
         }
-        LoggingUtils.logEventProcessed(logger, event);
+        LoggingHelper.logEventProcessed(logger, event);
     }
 
     /**
      * @return
      */
     private Component createHiddenBottleForm() {
-        createNewSearchForm();
-        return new ObjectForm<DrinkBottle>(DRINK_BOTTLE_COMPONENT_ID, new DrinkBottle()).replace(
-                new DrinkBottleEditPanel(ObjectForm.EDIT_PANEL_COMPONENT_ID, searchFormModel))
-                .setVisibilityAllowed(false);
-    }
-
-    /**
-     * 
-     */
-    private void createNewSearchForm() {
-        SearchForm searchForm = new SearchForm().addToSet(FilterEnum.USER,
-                UserKey.getUserLoggedIn());
-        Component cellarComponent = get(FORM_COMPONENT_ID + PATH_SEPARATOR + CELLAR_COMPONENT_ID);
-        if (cellarComponent != null) {
-            Object cellar = cellarComponent.getDefaultModelObject();
-            if (cellar != null) {
-                searchForm.replaceSet(FilterEnum.CELLAR, cellar);
-            }
-        }
-        searchFormModel.setObject(searchForm);
-    }
-
-    /**
-     * @return
-     */
-    private Component displayBottleForm() {
-        return get(FORM_COMPONENT_ID + PATH_SEPARATOR + DRINK_BOTTLE_COMPONENT_ID)
-                .setVisibilityAllowed(true);
+        return (drinkBottleForm = new DrinkBottleForm(DRINK_BOTTLE_COMPONENT_ID,
+                new Model<SearchForm>(new SearchForm().addToSet(FilterEnum.USER,
+                        UserKey.getUserLoggedIn())), new DrinkBottle())).hideForm();
     }
 
 }

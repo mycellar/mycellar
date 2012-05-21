@@ -29,6 +29,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
+import javax.persistence.UniqueConstraint;
 
 import org.apache.commons.lang3.ObjectUtils;
 import org.hibernate.validator.constraints.Email;
@@ -39,9 +40,10 @@ import fr.peralta.mycellar.domain.shared.IdentifiedEntity;
  * @author speralta
  */
 @Entity
-@Table(name = "CELLAR_SHARE")
+@Table(name = "CELLAR_SHARE", uniqueConstraints = @UniqueConstraint(columnNames = { "EMAIL",
+        "CELLAR" }))
 @SequenceGenerator(name = "CELLAR_SHARE_ID_GENERATOR", allocationSize = 1)
-public class CellarShare extends IdentifiedEntity<CellarShare> {
+public class CellarShare extends IdentifiedEntity {
 
     private static final long serialVersionUID = 201201231020L;
 
@@ -127,10 +129,11 @@ public class CellarShare extends IdentifiedEntity<CellarShare> {
      * {@inheritDoc}
      */
     @Override
-    protected boolean dataEquals(CellarShare other) {
-        return ObjectUtils.equals(getEmail(), other.getEmail())
-                && ObjectUtils.equals(getAccessRight(), other.getAccessRight())
-                && ObjectUtils.equals(getCellar(), other.getCellar());
+    protected boolean dataEquals(IdentifiedEntity other) {
+        CellarShare cellarShare = (CellarShare) other;
+        return ObjectUtils.equals(getEmail(), cellarShare.getEmail())
+                && ObjectUtils.equals(getAccessRight(), cellarShare.getAccessRight())
+                && ObjectUtils.equals(getCellar(), cellarShare.getCellar());
     }
 
     /**

@@ -19,9 +19,10 @@
 package fr.peralta.mycellar.interfaces.client.web.components.shared;
 
 import org.apache.wicket.Component;
-import org.apache.wicket.event.IEventSource;
+import org.apache.wicket.event.IEvent;
 import org.apache.wicket.model.IModel;
 
+import fr.peralta.mycellar.domain.shared.repository.SearchForm;
 import fr.peralta.mycellar.interfaces.client.web.components.shared.feedback.ComplexComponentFeedbackBorder;
 import fr.peralta.mycellar.interfaces.client.web.components.shared.feedback.FormComponentFeedbackBorder;
 import fr.peralta.mycellar.interfaces.client.web.components.shared.form.ObjectForm;
@@ -29,38 +30,52 @@ import fr.peralta.mycellar.interfaces.client.web.components.shared.form.ObjectFo
 /**
  * @author speralta
  */
-public abstract class ComplexComponent<O> extends SimpleComponent<O> {
+public abstract class ComplexComponent<O, C extends Component> extends SimpleComponent<O, C> {
 
     private static final long serialVersionUID = 201107281247L;
 
     private static final String ADD_COMPONENT_ID = "add";
     private static final String CREATE_FORM_COMPONENT_ID = "createForm";
 
+    private final ActionLink addLink;
+    private ObjectForm<O> createForm;
+
     /**
      * @param id
      * @param label
+     * @param searchFormModel
      */
-    public ComplexComponent(String id, IModel<String> label) {
-        super(id, label);
-        FormComponentFeedbackBorder container = (FormComponentFeedbackBorder) get(CONTAINER_COMPONENT_ID);
-        container.addToBorder(new ActionLink(ADD_COMPONENT_ID, Action.ADD));
-        container.add(new ObjectForm<O>(CREATE_FORM_COMPONENT_ID).setVisibilityAllowed(false));
+    public ComplexComponent(String id, IModel<String> label, IModel<SearchForm> searchFormModel) {
+        super(id, label, searchFormModel);
+        getContainer().addToBorder(addLink = new ActionLink(ADD_COMPONENT_ID, Action.ADD));
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    protected FormComponentFeedbackBorder createBorder(String id, IModel<String> label) {
-        return new ComplexComponentFeedbackBorder(CONTAINER_COMPONENT_ID, label, id, true,
+    protected void onInitialize() {
+        super.onInitialize();
+        getContainer().add(
+                (createForm = createForm(CREATE_FORM_COMPONENT_ID, getSearchFormModel()))
+                        .hideForm());
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    protected FormComponentFeedbackBorder createBorder(String id, String forId, IModel<String> label) {
+        return new ComplexComponentFeedbackBorder(id, label, forId, true,
                 getFilteredIdsForFeedback());
     }
 
     /**
      * @param id
+     * @param searchFormModel
      * @return
      */
-    protected abstract Component createComponentForCreation(String id);
+    protected abstract ObjectForm<O> createForm(String id, IModel<SearchForm> searchFormModel);
 
     /**
      * @return
@@ -71,35 +86,17 @@ public abstract class ComplexComponent<O> extends SimpleComponent<O> {
      * {@inheritDoc}
      */
     @Override
-    protected void internalOnConfigure() {
-        get(
-                CONTAINER_COMPONENT_ID + PATH_SEPARATOR + CONTAINER_BODY_COMPONENT_ID
-                        + PATH_SEPARATOR + SELECTOR_COMPONENT_ID).setVisibilityAllowed(
-                !isValued()
-                        && !get(
-                                CONTAINER_COMPONENT_ID + PATH_SEPARATOR
-                                        + CONTAINER_BODY_COMPONENT_ID + PATH_SEPARATOR
-                                        + CREATE_FORM_COMPONENT_ID).isVisibilityAllowed());
-        get(CONTAINER_COMPONENT_ID + PATH_SEPARATOR + ADD_COMPONENT_ID).setVisibilityAllowed(
-                !isValued()
-                        && !get(
-                                CONTAINER_COMPONENT_ID + PATH_SEPARATOR
-                                        + CONTAINER_BODY_COMPONENT_ID + PATH_SEPARATOR
-                                        + CREATE_FORM_COMPONENT_ID).isVisibilityAllowed());
+    protected final void internalOnConfigure() {
+        boolean allowed = !isValued() && !createForm.isVisibilityAllowed();
+        getSelectorComponent().setVisibilityAllowed(allowed);
+        addLink.setVisibilityAllowed(allowed);
+        setOtherComponentsVisibilityAllowed(allowed);
     }
 
     /**
-     * {@inheritDoc}
+     * @param allowed
      */
-    @SuppressWarnings("unchecked")
-    @Override
-    protected void onSave(IEventSource source, Action action) {
-        ObjectForm<O> objectForm = ((ObjectForm<O>) get(CONTAINER_COMPONENT_ID + PATH_SEPARATOR
-                + CONTAINER_BODY_COMPONENT_ID + PATH_SEPARATOR + CREATE_FORM_COMPONENT_ID));
-        objectForm.setVisibilityAllowed(false);
-        markAsValued(((ObjectForm<O>) get(CONTAINER_COMPONENT_ID + PATH_SEPARATOR
-                + CONTAINER_BODY_COMPONENT_ID + PATH_SEPARATOR + CREATE_FORM_COMPONENT_ID))
-                .getModelObject());
+    protected void setOtherComponentsVisibilityAllowed(boolean allowed) {
 
     }
 
@@ -107,23 +104,30 @@ public abstract class ComplexComponent<O> extends SimpleComponent<O> {
      * {@inheritDoc}
      */
     @Override
-    protected void onCancel(IEventSource source, Action action) {
-        get(
-                CONTAINER_COMPONENT_ID + PATH_SEPARATOR + CONTAINER_BODY_COMPONENT_ID
-                        + PATH_SEPARATOR + CREATE_FORM_COMPONENT_ID).setVisibilityAllowed(false);
-        markAsNonValued();
+    protected void onSave(IEvent<?> event) {
+        markAsValued(createForm.getModelObject());
+        createForm.hideForm();
+        AjaxTool.ajaxReRender(this);
+        event.stop();
     }
 
     /**
      * {@inheritDoc}
      */
-    @SuppressWarnings("unchecked")
     @Override
-    protected void onAdd(IEventSource source, Action action) {
-        ((ObjectForm<O>) get(CONTAINER_COMPONENT_ID + PATH_SEPARATOR + CONTAINER_BODY_COMPONENT_ID
-                + PATH_SEPARATOR + CREATE_FORM_COMPONENT_ID)).setNewObject(createObject())
-                .replace(createComponentForCreation(ObjectForm.EDIT_PANEL_COMPONENT_ID))
-                .setVisibilityAllowed(true);
+    protected void onCancel(IEvent<?> event) {
+        createForm.hideForm();
+        super.onCancel(event);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    protected void onAdd(IEvent<?> event) {
+        createForm.setNewObject(createObject()).displayForm();
+        AjaxTool.ajaxReRender(this);
+        event.stop();
     }
 
     /**
@@ -132,6 +136,13 @@ public abstract class ComplexComponent<O> extends SimpleComponent<O> {
     @Override
     protected final O createDefaultObject() {
         return createObject();
+    }
+
+    /**
+     * @return the createForm
+     */
+    protected final ObjectForm<O> getCreateForm() {
+        return createForm;
     }
 
 }

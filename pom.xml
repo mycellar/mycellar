@@ -205,14 +205,9 @@
 
       <!-- DATABASE -->      
       <dependency>
-        <groupId>org.hsqldb</groupId>
-        <artifactId>hsqldb</artifactId>
-        <version>2.0.0</version>
-      </dependency>
-      <dependency>
         <groupId>mysql</groupId>
         <artifactId>mysql-connector-java</artifactId>
-        <version>5.1.17</version>
+        <version>5.1.19</version>
       </dependency>
       
       <!-- SPRING -->

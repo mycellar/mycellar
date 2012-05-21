@@ -20,12 +20,12 @@ package fr.peralta.mycellar.interfaces.client.web.components.stock.edit;
 
 import java.util.List;
 
+import org.apache.wicket.event.IEventSource;
 import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.form.FormComponentPanel;
 import org.apache.wicket.markup.html.list.ListItem;
 import org.apache.wicket.markup.html.list.PropertyListView;
-import org.apache.wicket.model.IModel;
 
 import fr.peralta.mycellar.domain.stock.ArrivalBottle;
 import fr.peralta.mycellar.interfaces.client.web.behaviors.NotEmptyCollectionValidator;
@@ -34,7 +34,6 @@ import fr.peralta.mycellar.interfaces.client.web.components.shared.ActionLink;
 
 /**
  * @author speralta
- * 
  */
 public class ArrivalBottlesEditPanel extends FormComponentPanel<List<ArrivalBottle>> {
 
@@ -47,24 +46,6 @@ public class ArrivalBottlesEditPanel extends FormComponentPanel<List<ArrivalBott
          */
         public ArrivalBottlesView(String id) {
             super(id);
-            setReuseItems(true);
-        }
-
-        /**
-         * @param id
-         * @param model
-         */
-        public ArrivalBottlesView(String id, IModel<? extends List<? extends ArrivalBottle>> model) {
-            super(id, model);
-            setReuseItems(true);
-        }
-
-        /**
-         * @param id
-         * @param list
-         */
-        public ArrivalBottlesView(String id, List<? extends ArrivalBottle> list) {
-            super(id, list);
             setReuseItems(true);
         }
 
@@ -89,24 +70,24 @@ public class ArrivalBottlesEditPanel extends FormComponentPanel<List<ArrivalBott
 
     private static final String NO_BOTTLES_COMPONENT_ID = "noBottles";
 
+    private final ActionLink addBottle;
+
     /**
      * @param id
      */
     public ArrivalBottlesEditPanel(String id) {
         super(id);
         add(new ArrivalBottlesView("arrivalBottles"));
-        add(new ActionLink("addBottle", Action.ADD));
+        add(addBottle = new ActionLink("addBottle", Action.ADD));
         add(new WebMarkupContainer(NO_BOTTLES_COMPONENT_ID) {
             private static final long serialVersionUID = 201108082329L;
 
             /**
              * {@inheritDoc}
              */
-            @SuppressWarnings("unchecked")
             @Override
             public boolean isVisible() {
-                return ((List<ArrivalBottle>) ArrivalBottlesEditPanel.this.getDefaultModelObject())
-                        .size() == 0;
+                return ArrivalBottlesEditPanel.this.getModelObject().size() == 0;
             }
         });
         add(new NotEmptyCollectionValidator());
@@ -118,6 +99,14 @@ public class ArrivalBottlesEditPanel extends FormComponentPanel<List<ArrivalBott
     @Override
     protected void convertInput() {
         setConvertedInput(getModelObject());
+    }
+
+    /**
+     * @param source
+     * @return
+     */
+    public boolean isAddBottle(IEventSource source) {
+        return addBottle == source;
     }
 
 }

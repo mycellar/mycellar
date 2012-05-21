@@ -18,40 +18,54 @@
  */
 package fr.peralta.mycellar.application.wine.impl;
 
-import java.util.Map;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import fr.peralta.mycellar.application.shared.AbstractEntitySearchFormService;
 import fr.peralta.mycellar.application.wine.RegionService;
-import fr.peralta.mycellar.domain.shared.repository.CountEnum;
-import fr.peralta.mycellar.domain.shared.repository.SearchForm;
+import fr.peralta.mycellar.domain.shared.exception.BusinessError;
+import fr.peralta.mycellar.domain.shared.exception.BusinessException;
 import fr.peralta.mycellar.domain.wine.Region;
-import fr.peralta.mycellar.domain.wine.repository.WineRepository;
+import fr.peralta.mycellar.domain.wine.repository.RegionOrder;
+import fr.peralta.mycellar.domain.wine.repository.RegionOrderEnum;
+import fr.peralta.mycellar.domain.wine.repository.RegionRepository;
 
 /**
  * @author speralta
  */
 @Service
-public class RegionServiceImpl implements RegionService {
+public class RegionServiceImpl extends
+        AbstractEntitySearchFormService<Region, RegionOrderEnum, RegionOrder, RegionRepository>
+        implements RegionService {
 
-    private WineRepository wineRepository;
+    private RegionRepository regionRepository;
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public Map<Region, Long> getAll(SearchForm searchForm, CountEnum count) {
-        return wineRepository.getRegions(searchForm, count);
+    public void validate(Region entity) throws BusinessException {
+        if ((entity.getId() == null)
+                && (regionRepository.find(entity.getCountry(), entity.getName()) != null)) {
+            throw new BusinessException(BusinessError.REGION_00001);
+        }
     }
 
     /**
-     * @param wineRepository
-     *            the wineRepository to set
+     * {@inheritDoc}
+     */
+    @Override
+    protected RegionRepository getRepository() {
+        return regionRepository;
+    }
+
+    /**
+     * @param regionRepository
+     *            the regionRepository to set
      */
     @Autowired
-    public void setWineRepository(WineRepository wineRepository) {
-        this.wineRepository = wineRepository;
+    public void setRegionRepository(RegionRepository regionRepository) {
+        this.regionRepository = regionRepository;
     }
 
 }

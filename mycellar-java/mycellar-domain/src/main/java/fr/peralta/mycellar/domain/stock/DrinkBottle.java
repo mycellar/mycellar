@@ -29,6 +29,22 @@ public class DrinkBottle implements Serializable {
 
     private Bottle bottle;
     private Integer quantity;
+    private Cellar cellar;
+
+    /**
+     * @return the cellar
+     */
+    public Cellar getCellar() {
+        return cellar;
+    }
+
+    /**
+     * @param cellar
+     *            the cellar to set
+     */
+    public void setCellar(Cellar cellar) {
+        this.cellar = cellar;
+    }
 
     /**
      * @return the bottle

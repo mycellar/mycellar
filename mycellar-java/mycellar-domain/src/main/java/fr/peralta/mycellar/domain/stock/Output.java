@@ -25,12 +25,14 @@ import javax.persistence.Entity;
 import org.apache.commons.lang3.ObjectUtils;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 
+import fr.peralta.mycellar.domain.shared.IdentifiedEntity;
+
 /**
  * @author bperalta
  */
 @Entity
 @DiscriminatorValue("O")
-public class Output extends Movement<Output> {
+public class Output extends Movement {
 
     private static final long serialVersionUID = 201111181451L;
 
@@ -74,13 +76,14 @@ public class Output extends Movement<Output> {
      * {@inheritDoc}
      */
     @Override
-    protected boolean dataEquals(Output other) {
-        return ObjectUtils.equals(getDate(), other.getDate())
-                && ObjectUtils.equals(getCellar(), other.getCellar())
-                && ObjectUtils.equals(getNumber(), other.getNumber())
-                && ObjectUtils.equals(getPrice(), other.getPrice())
-                && ObjectUtils.equals(getDestination(), other.getDestination())
-                && ObjectUtils.equals(getBottle(), other.getBottle());
+    protected boolean dataEquals(IdentifiedEntity other) {
+        Output output = (Output) other;
+        return ObjectUtils.equals(getDate(), output.getDate())
+                && ObjectUtils.equals(getCellar(), output.getCellar())
+                && ObjectUtils.equals(getNumber(), output.getNumber())
+                && ObjectUtils.equals(getPrice(), output.getPrice())
+                && ObjectUtils.equals(getDestination(), output.getDestination())
+                && ObjectUtils.equals(getBottle(), output.getBottle());
     }
 
     /**

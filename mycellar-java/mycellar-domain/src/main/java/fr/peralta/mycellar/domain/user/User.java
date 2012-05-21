@@ -43,7 +43,7 @@ import fr.peralta.mycellar.domain.stock.Cellar;
 @Entity
 @Table(name = "USER", uniqueConstraints = @UniqueConstraint(columnNames = { "EMAIL" }))
 @SequenceGenerator(name = "USER_ID_GENERATOR", allocationSize = 1)
-public class User extends IdentifiedEntity<User> {
+public class User extends IdentifiedEntity {
 
     private static final long serialVersionUID = 201111181451L;
 
@@ -146,8 +146,9 @@ public class User extends IdentifiedEntity<User> {
      * {@inheritDoc}
      */
     @Override
-    protected boolean dataEquals(User other) {
-        return ObjectUtils.equals(getEmail(), other.getEmail());
+    protected boolean dataEquals(IdentifiedEntity other) {
+        User user = (User) other;
+        return ObjectUtils.equals(getEmail(), user.getEmail());
     }
 
     /**

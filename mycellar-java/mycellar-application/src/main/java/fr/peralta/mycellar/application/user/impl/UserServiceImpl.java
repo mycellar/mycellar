@@ -18,22 +18,25 @@
  */
 package fr.peralta.mycellar.application.user.impl;
 
-import java.util.List;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import fr.peralta.mycellar.application.shared.AbstractEntityService;
 import fr.peralta.mycellar.application.user.UserService;
-import fr.peralta.mycellar.domain.shared.repository.SearchForm;
+import fr.peralta.mycellar.domain.shared.exception.BusinessError;
+import fr.peralta.mycellar.domain.shared.exception.BusinessException;
 import fr.peralta.mycellar.domain.user.User;
 import fr.peralta.mycellar.domain.user.repository.UserOrder;
+import fr.peralta.mycellar.domain.user.repository.UserOrderEnum;
 import fr.peralta.mycellar.domain.user.repository.UserRepository;
 
 /**
  * @author speralta
  */
 @Service
-public class UserServiceImpl implements UserService {
+public class UserServiceImpl extends
+        AbstractEntityService<User, UserOrderEnum, UserOrder, UserRepository> implements
+        UserService {
 
     private UserRepository userRepository;
 
@@ -41,32 +44,10 @@ public class UserServiceImpl implements UserService {
      * {@inheritDoc}
      */
     @Override
-    public void saveUser(User user) {
-        userRepository.saveUser(user);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public User getById(Integer id) {
-        return userRepository.getUserById(id);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public long countUsers(SearchForm searchForm) {
-        return userRepository.countUsers(searchForm);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public List<User> getUsers(SearchForm searchForm, UserOrder orders, int first, int count) {
-        return userRepository.getUsers(searchForm, orders, first, count);
+    public void validate(User entity) throws BusinessException {
+        if ((entity.getId() == null) && userRepository.isEmailAlreadyRegistered(entity.getEmail())) {
+            throw new BusinessException(BusinessError.USER_00001);
+        }
     }
 
     /**
@@ -75,6 +56,14 @@ public class UserServiceImpl implements UserService {
     @Override
     public User authenticate(String login, String password) {
         return userRepository.find(login, password);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    protected UserRepository getRepository() {
+        return userRepository;
     }
 
     /**

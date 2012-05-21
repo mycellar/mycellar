@@ -100,7 +100,8 @@ public class FormComponentFeedbackBorder extends Border implements IFeedback {
                 .messages(getMessagesFilter());
         FeedbackMessage messageToRender = null;
         for (FeedbackMessage message : messages) {
-            if ((messageToRender == null) || (message.getLevel() > messageToRender.getLevel())) {
+            if (((messageToRender == null) || (message.getLevel() > messageToRender.getLevel()))
+                    && !message.isRendered()) {
                 messageToRender = message;
             }
         }

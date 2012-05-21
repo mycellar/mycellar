@@ -37,7 +37,7 @@ import fr.peralta.mycellar.domain.shared.IdentifiedEntity;
 @Entity
 @Table(name = "STACK")
 @SequenceGenerator(name = "STACK_ID_GENERATOR", allocationSize = 1)
-public class Stack extends IdentifiedEntity<Stack> {
+public class Stack extends IdentifiedEntity {
 
     private static final long serialVersionUID = 201111181451L;
 
@@ -105,8 +105,9 @@ public class Stack extends IdentifiedEntity<Stack> {
      * {@inheritDoc}
      */
     @Override
-    protected boolean dataEquals(Stack other) {
-        return ObjectUtils.equals(getStack(), other.getStack());
+    protected boolean dataEquals(IdentifiedEntity other) {
+        Stack stack = (Stack) other;
+        return ObjectUtils.equals(getStack(), stack.getStack());
     }
 
     /**

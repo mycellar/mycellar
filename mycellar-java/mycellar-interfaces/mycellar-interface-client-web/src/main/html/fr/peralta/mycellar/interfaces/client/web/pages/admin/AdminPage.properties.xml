@@ -2,7 +2,7 @@
 <!DOCTYPE properties SYSTEM "http://java.sun.com/dtd/properties.dtd">
 <properties>
   <entry key="header">Administration</entry>
-  <entry key="listUsersLink">Lister tous les utilisateurs</entry>
+  <entry key="listsLink">Administrer les données</entry>
   <entry key="throwExceptionLink">Lancer une exception</entry>
   <entry key="cleanStacksLink">Purger les stacks</entry>
   <entry key="dashboard">Tableau de bord</entry>

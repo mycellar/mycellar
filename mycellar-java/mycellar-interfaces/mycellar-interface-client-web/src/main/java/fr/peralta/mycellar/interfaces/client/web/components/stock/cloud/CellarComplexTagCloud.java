@@ -20,7 +20,6 @@ package fr.peralta.mycellar.interfaces.client.web.components.stock.cloud;
 
 import java.util.Map;
 
-import org.apache.wicket.Component;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 
@@ -29,7 +28,8 @@ import fr.peralta.mycellar.domain.shared.repository.FilterEnum;
 import fr.peralta.mycellar.domain.shared.repository.SearchForm;
 import fr.peralta.mycellar.domain.stock.Cellar;
 import fr.peralta.mycellar.interfaces.client.web.components.shared.cloud.ComplexTagCloud;
-import fr.peralta.mycellar.interfaces.client.web.components.stock.edit.CellarEditPanel;
+import fr.peralta.mycellar.interfaces.client.web.components.shared.form.ObjectForm;
+import fr.peralta.mycellar.interfaces.client.web.components.stock.form.CellarForm;
 import fr.peralta.mycellar.interfaces.client.web.security.UserKey;
 import fr.peralta.mycellar.interfaces.facades.stock.StockServiceFacade;
 
@@ -46,17 +46,21 @@ public class CellarComplexTagCloud extends ComplexTagCloud<Cellar> {
     /**
      * @param id
      * @param label
+     * @param searchFormModel
+     * @param count
+     * @param filters
      */
-    public CellarComplexTagCloud(String id, IModel<String> label) {
-        super(id, label);
+    public CellarComplexTagCloud(String id, IModel<String> label,
+            IModel<SearchForm> searchFormModel, CountEnum count, FilterEnum... filters) {
+        super(id, label, searchFormModel, count, filters);
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    protected Component createComponentForCreation(String id) {
-        return new CellarEditPanel(id);
+    protected ObjectForm<Cellar> createForm(String id, IModel<SearchForm> searchFormModel) {
+        return new CellarForm(id, searchFormModel);
     }
 
     /**
@@ -73,10 +77,9 @@ public class CellarComplexTagCloud extends ComplexTagCloud<Cellar> {
      * {@inheritDoc}
      */
     @Override
-    protected Map<Cellar, Long> getChoices() {
-        return stockServiceFacade.getCellars(
-                new SearchForm().setCellarModification(true).addToSet(FilterEnum.USER,
-                        UserKey.getUserLoggedIn()), CountEnum.STOCK_QUANTITY);
+    protected Map<Cellar, Long> getChoices(SearchForm searchForm, CountEnum count,
+            FilterEnum[] filters) {
+        return stockServiceFacade.getCellars(searchForm, count, filters);
     }
 
     /**

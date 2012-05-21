@@ -32,7 +32,7 @@ import org.hibernate.Hibernate;
  * @author speralta
  */
 @MappedSuperclass
-public abstract class IdentifiedEntity<E extends IdentifiedEntity<E>> implements Serializable {
+public abstract class IdentifiedEntity implements Serializable {
 
     private static final long serialVersionUID = 201111181451L;
 
@@ -43,7 +43,6 @@ public abstract class IdentifiedEntity<E extends IdentifiedEntity<E>> implements
     /**
      * {@inheritDoc}
      */
-    @SuppressWarnings("unchecked")
     @Override
     public final boolean equals(final Object other) {
         if (this == other) {
@@ -58,18 +57,18 @@ public abstract class IdentifiedEntity<E extends IdentifiedEntity<E>> implements
         // if pks are both set, compare pk
         // if one pk is set, false
         if (getId() != null) {
-            Integer otherId = ((IdentifiedEntity<?>) other).getId();
+            Integer otherId = ((IdentifiedEntity) other).getId();
             if (otherId != null) {
                 return getId().equals(otherId);
             }
         } else {
-            Integer otherId = ((IdentifiedEntity<?>) other).getId();
+            Integer otherId = ((IdentifiedEntity) other).getId();
             if (otherId != null) {
                 return false;
             }
         }
 
-        return dataEquals((E) other);
+        return dataEquals((IdentifiedEntity) other);
     }
 
     public abstract Integer getId();
@@ -123,7 +122,7 @@ public abstract class IdentifiedEntity<E extends IdentifiedEntity<E>> implements
      *            the other instance
      * @return <code>true</code> if equal
      */
-    protected abstract boolean dataEquals(E other);
+    protected abstract boolean dataEquals(IdentifiedEntity other);
 
     /**
      * Get the data used to calculate hash code; use getters not fields in case

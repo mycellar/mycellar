@@ -44,9 +44,11 @@ public class WineRenderer extends AbstractRenderer<Wine> {
             if (StringUtils.isNotEmpty(object.getName())) {
                 result.append(object.getName()).append(DEFAULT_SEP);
             }
-            result.append(getRendererServiceFacade().render(object.getColor()));
+            result.append(getRendererServiceFacade().render(object.getColor())).append(DEFAULT_SEP);
             if (object.getVintage() != null) {
-                result.append(DEFAULT_SEP).append(object.getVintage());
+                result.append(object.getVintage());
+            } else {
+                result.append("Non millésimé");
             }
         } else {
             result.append(NULL_OBJECT);

@@ -20,10 +20,14 @@ package fr.peralta.mycellar.interfaces.client.web.components.stock.edit;
 
 import org.apache.wicket.markup.html.form.EmailTextField;
 import org.apache.wicket.markup.html.panel.Panel;
+import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.StringResourceModel;
 
+import fr.peralta.mycellar.domain.shared.repository.CountEnum;
+import fr.peralta.mycellar.domain.shared.repository.FilterEnum;
+import fr.peralta.mycellar.domain.shared.repository.SearchForm;
 import fr.peralta.mycellar.interfaces.client.web.components.shared.feedback.FormComponentFeedbackBorder;
-import fr.peralta.mycellar.interfaces.client.web.components.stock.cloud.AccessRightEnumTagCloud;
+import fr.peralta.mycellar.interfaces.client.web.components.stock.cloud.AccessRightEnumSimpleTagCloud;
 
 /**
  * @author speralta
@@ -34,12 +38,17 @@ public class CellarShareEditPanel extends Panel {
 
     /**
      * @param id
+     * @param searchFormModel
+     * @param count
+     * @param filters
      */
-    public CellarShareEditPanel(String id) {
+    public CellarShareEditPanel(String id, IModel<SearchForm> searchFormModel, CountEnum count,
+            FilterEnum... filters) {
         super(id);
         add(new FormComponentFeedbackBorder("email").add(new EmailTextField("email")
                 .setRequired(true)));
-        add(new AccessRightEnumTagCloud("accessRight", new StringResourceModel("accessRight", null)));
+        add(new AccessRightEnumSimpleTagCloud("accessRight", new StringResourceModel("accessRight",
+                null), searchFormModel, count, filters));
     }
 
 }

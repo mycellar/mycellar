@@ -27,8 +27,12 @@ import org.springframework.transaction.annotation.Transactional;
 
 import fr.peralta.mycellar.application.stock.BottleService;
 import fr.peralta.mycellar.application.stock.CellarService;
+import fr.peralta.mycellar.application.stock.CellarShareService;
+import fr.peralta.mycellar.application.stock.MovementService;
 import fr.peralta.mycellar.application.stock.StockService;
+import fr.peralta.mycellar.domain.shared.exception.BusinessException;
 import fr.peralta.mycellar.domain.shared.repository.CountEnum;
+import fr.peralta.mycellar.domain.shared.repository.FilterEnum;
 import fr.peralta.mycellar.domain.shared.repository.SearchForm;
 import fr.peralta.mycellar.domain.stock.Arrival;
 import fr.peralta.mycellar.domain.stock.Bottle;
@@ -37,6 +41,7 @@ import fr.peralta.mycellar.domain.stock.CellarShare;
 import fr.peralta.mycellar.domain.stock.Drink;
 import fr.peralta.mycellar.domain.stock.Movement;
 import fr.peralta.mycellar.domain.stock.Stock;
+import fr.peralta.mycellar.domain.stock.repository.CellarOrder;
 import fr.peralta.mycellar.domain.stock.repository.CellarShareOrder;
 import fr.peralta.mycellar.domain.stock.repository.MovementOrder;
 import fr.peralta.mycellar.domain.stock.repository.StockOrder;
@@ -49,11 +54,15 @@ import fr.peralta.mycellar.domain.wine.Wine;
 @Service
 public class StockServiceFacadeImpl implements StockServiceFacade {
 
-    private StockService stockService;
+    private BottleService bottleService;
 
     private CellarService cellarService;
 
-    private BottleService bottleService;
+    private CellarShareService cellarShareService;
+
+    private MovementService movementService;
+
+    private StockService stockService;
 
     /**
      * {@inheritDoc}
@@ -68,45 +77,9 @@ public class StockServiceFacadeImpl implements StockServiceFacade {
      * {@inheritDoc}
      */
     @Override
-    @Transactional
-    public void drink(Drink drink) {
-        stockService.drink(drink);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    @Transactional
-    public void saveCellarShare(CellarShare cellarShare) {
-        cellarService.saveCellarShare(cellarShare);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    @Transactional
-    public void deleteCellarShare(CellarShare cellarShare) {
-        cellarService.deleteCellarShare(cellarShare);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
     @Transactional(readOnly = true)
-    public Map<Cellar, Long> getCellars(SearchForm searchForm, CountEnum count) {
-        return cellarService.getAll(searchForm, count);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public List<CellarShare> getCellarShares(SearchForm searchForm, CellarShareOrder orders,
-            int first, int count) {
-        return cellarService.getShares(searchForm, orders, first, count);
+    public long countCellars(SearchForm searchForm) {
+        return cellarService.count(searchForm);
     }
 
     /**
@@ -115,17 +88,7 @@ public class StockServiceFacadeImpl implements StockServiceFacade {
     @Override
     @Transactional(readOnly = true)
     public long countCellarShares(SearchForm searchForm) {
-        return cellarService.countShares(searchForm);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    @Transactional(readOnly = true)
-    public List<Movement<?>> getMovements(SearchForm searchForm, MovementOrder orders, int first,
-            int count) {
-        return stockService.getMovements(searchForm, orders, first, count);
+        return cellarShareService.count(searchForm);
     }
 
     /**
@@ -134,16 +97,7 @@ public class StockServiceFacadeImpl implements StockServiceFacade {
     @Override
     @Transactional(readOnly = true)
     public long countMovements(SearchForm searchForm) {
-        return stockService.countMovements(searchForm);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    @Transactional(readOnly = true)
-    public List<Stock> getStocks(SearchForm searchForm, StockOrder orders, int first, int count) {
-        return stockService.getStocks(searchForm, orders, first, count);
+        return movementService.count(searchForm);
     }
 
     /**
@@ -159,18 +113,118 @@ public class StockServiceFacadeImpl implements StockServiceFacade {
      * {@inheritDoc}
      */
     @Override
-    @Transactional(readOnly = true)
-    public Bottle findBottle(Wine wine, Format format) {
-        return bottleService.findBottle(wine, format);
+    @Transactional
+    public void deleteCellarShare(CellarShare cellarShare) {
+        cellarShareService.delete(cellarShare);
     }
 
     /**
-     * @param stockService
-     *            the stockService to set
+     * {@inheritDoc}
+     */
+    @Override
+    @Transactional
+    public void drink(Drink drink) {
+        stockService.drink(drink);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    @Transactional(readOnly = true)
+    public Bottle findBottle(Wine wine, Format format) {
+        return bottleService.find(wine, format);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    @Transactional(readOnly = true)
+    public Cellar getCellarById(Integer cellarId) {
+        return cellarService.getById(cellarId);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public CellarShare getCellarShareById(Integer cellarShareId) {
+        return cellarShareService.getById(cellarShareId);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    @Transactional(readOnly = true)
+    public List<Cellar> getCellars(SearchForm searchForm, CellarOrder order, int first, int count) {
+        return cellarService.getAll(searchForm, order, first, count);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    @Transactional(readOnly = true)
+    public Map<Cellar, Long> getCellars(SearchForm searchForm, CountEnum count,
+            FilterEnum... filters) {
+        return cellarService.getAll(searchForm, count, filters);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public List<CellarShare> getCellarShares(SearchForm searchForm, CellarShareOrder order,
+            int first, int count) {
+        return cellarShareService.getAll(searchForm, order, first, count);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    @Transactional(readOnly = true)
+    public List<Movement> getMovements(SearchForm searchForm, MovementOrder orders, int first,
+            int count) {
+        return movementService.getAll(searchForm, orders, first, count);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    @Transactional(readOnly = true)
+    public List<Stock> getStocks(SearchForm searchForm, StockOrder orders, int first, int count) {
+        return stockService.getStocks(searchForm, orders, first, count);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    @Transactional
+    public void saveCellar(Cellar cellar) throws BusinessException {
+        cellarService.save(cellar);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    @Transactional
+    public void saveCellarShare(CellarShare cellarShare) throws BusinessException {
+        cellarShareService.save(cellarShare);
+    }
+
+    /**
+     * @param bottleService
+     *            the bottleService to set
      */
     @Autowired
-    public void setStockService(StockService stockService) {
-        this.stockService = stockService;
+    public void setBottleService(BottleService bottleService) {
+        this.bottleService = bottleService;
     }
 
     /**
@@ -183,12 +237,30 @@ public class StockServiceFacadeImpl implements StockServiceFacade {
     }
 
     /**
-     * @param bottleService
-     *            the bottleService to set
+     * @param cellarShareService
+     *            the cellarShareService to set
      */
     @Autowired
-    public void setBottleService(BottleService bottleService) {
-        this.bottleService = bottleService;
+    public void setCellarShareService(CellarShareService cellarShareService) {
+        this.cellarShareService = cellarShareService;
+    }
+
+    /**
+     * @param movementService
+     *            the movementService to set
+     */
+    @Autowired
+    public void setMovementService(MovementService movementService) {
+        this.movementService = movementService;
+    }
+
+    /**
+     * @param stockService
+     *            the stockService to set
+     */
+    @Autowired
+    public void setStockService(StockService stockService) {
+        this.stockService = stockService;
     }
 
 }

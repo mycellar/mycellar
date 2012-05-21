@@ -140,14 +140,9 @@
             <version>1.4</version>
           </dependency>
           <dependency>
-            <groupId>org.hsqldb</groupId>
-            <artifactId>hsqldb</artifactId>
-            <version>2.0.0</version>
-          </dependency>
-          <dependency>
             <groupId>mysql</groupId>
             <artifactId>mysql-connector-java</artifactId>
-            <version>5.1.17</version>
+            <version>5.1.19</version>
           </dependency>
         </dependencies>
       </plugin>
@@ -156,36 +151,21 @@
   
   <profiles>
     <profile>
-      <id>db-memory</id>
+      <id>db-maria</id>
       <activation>
         <property>
           <name>!db</name>
         </property>
       </activation>
       <properties>
-        <db.driver>org.hsqldb.jdbcDriver</db.driver>
-        <db.url>jdbc:hsqldb:mem:mycellar</db.url>
-        <db.user>sa</db.user>
-        <db.pass></db.pass>
+        <db.driver>com.mysql.jdbc.Driver</db.driver>
+        <db.url>jdbc:mysql://localhost:3306/mycellar?autoReconnect=true</db.url>
+        <db.user>mycellar</db.user>
+        <db.pass>pswcellar</db.pass>
       </properties>
     </profile>
     <profile>
-      <id>db-hd</id>
-      <activation>
-        <property>
-          <name>db</name>
-          <value>hd</value>
-        </property>
-      </activation>
-      <properties>
-        <db.driver>org.hsqldb.jdbcDriver</db.driver>
-        <db.url>jdbc:hsqldb:/work/mycellardb/mycellar.db</db.url>
-        <db.user>sa</db.user>
-        <db.pass></db.pass>
-      </properties>
-    </profile>
-    <profile>
-      <id>deploy</id>
+      <id>package</id>
       <properties>
         <wicket.configuration>deployment</wicket.configuration>
       </properties>

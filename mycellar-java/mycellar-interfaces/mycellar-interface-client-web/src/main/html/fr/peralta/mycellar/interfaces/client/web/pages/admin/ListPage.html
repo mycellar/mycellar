@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="fr" xmlns:wicket="http://wicket.apache.org">
+  <head>
+    <title>MyCellar</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="../../resources/css/bootstrap.min.css" type="text/css" media="screen" />
+    <link rel="stylesheet" href="../../resources/css/master.css" type="text/css" media="screen" />
+    <link rel="stylesheet" href="../../resources/css/bootstrap-responsive.min.css" type="text/css" media="screen" />
+    <link rel="stylesheet" href="../../resources/css/master-responsive.css" type="text/css" media="screen" />
+  </head>
+  <body>
+    <nav class="navbar navbar-fixed-top" role="main">
+      <div class="navbar-inner">
+        <div class="container">
+          <div class="nav-collapse">
+            <ul>
+              <li><a>Nav 1</a></li>
+              <li><a>Nav 2</a></li>
+              <li><a>Nav 3</a></li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </nav>
+    <div class="container-fluid">
+      <header role="primary" class="page-header"><h1>Header</h1></header>
+      <wicket:extend>
+        <div class="row-fluid">
+          <div class="span2">
+            <ul wicket:id="listMenu" class="nav nav-list" />
+          </div>
+        </div>
+      </wicket:extend>
+    </div>
+    <footer>
+      <div>
+        <p>
+          <a href="http://validator.w3.org/check?uri=referer">HTML 5</a>
+          |
+          <a href="http://jigsaw.w3.org/css-validator/check/referer">CSS</a>
+          |
+          Copyright
+        </p>
+      </div>
+    </footer>
+  </body>
+</html>

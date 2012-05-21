@@ -60,7 +60,7 @@ public class ContainerVisibleFeedbackMessageFilter implements IFeedbackMessageFi
         final Component reporter = message.getReporter();
         if (reporter instanceof SimpleComponent) {
             return (reporter != null)
-                    && ((SimpleComponent<?>) reporter).isContainerVisibleInHierarchy()
+                    && ((SimpleComponent<?, ?>) reporter).isContainerVisibleInHierarchy()
                     && (container.contains(reporter, true) || Objects.equal(container, reporter));
         } else {
             return (reporter != null) && reporter.isVisibleInHierarchy()

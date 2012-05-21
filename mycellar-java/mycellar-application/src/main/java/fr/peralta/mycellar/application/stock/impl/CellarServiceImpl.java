@@ -18,78 +18,54 @@
  */
 package fr.peralta.mycellar.application.stock.impl;
 
-import java.util.List;
-import java.util.Map;
-
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
+import fr.peralta.mycellar.application.shared.AbstractEntitySearchFormService;
 import fr.peralta.mycellar.application.stock.CellarService;
-import fr.peralta.mycellar.domain.shared.repository.CountEnum;
-import fr.peralta.mycellar.domain.shared.repository.SearchForm;
+import fr.peralta.mycellar.domain.shared.exception.BusinessError;
+import fr.peralta.mycellar.domain.shared.exception.BusinessException;
 import fr.peralta.mycellar.domain.stock.Cellar;
-import fr.peralta.mycellar.domain.stock.CellarShare;
-import fr.peralta.mycellar.domain.stock.repository.CellarShareOrder;
-import fr.peralta.mycellar.domain.stock.repository.StockRepository;
+import fr.peralta.mycellar.domain.stock.repository.CellarOrder;
+import fr.peralta.mycellar.domain.stock.repository.CellarOrderEnum;
+import fr.peralta.mycellar.domain.stock.repository.CellarRepository;
 
 /**
  * @author speralta
  */
 @Service
-public class CellarServiceImpl implements CellarService {
+public class CellarServiceImpl extends
+        AbstractEntitySearchFormService<Cellar, CellarOrderEnum, CellarOrder, CellarRepository>
+        implements CellarService {
 
-    private StockRepository stockRepository;
+    private CellarRepository cellarRepository;
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public void saveCellarShare(CellarShare cellarShare) {
-        stockRepository.save(cellarShare);
+    public void validate(Cellar entity) throws BusinessException {
+        if ((entity.getId() == null)
+                && (cellarRepository.find(entity.getOwner(), entity.getName()) != null)) {
+            throw new BusinessException(BusinessError.CELLAR_00001);
+        }
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public void deleteCellarShare(CellarShare cellarShare) {
-        stockRepository.delete(cellarShare);
+    protected CellarRepository getRepository() {
+        return cellarRepository;
     }
 
     /**
-     * {@inheritDoc}
-     */
-    @Override
-    public Map<Cellar, Long> getAll(SearchForm searchForm, CountEnum count) {
-        return stockRepository.getCellars(searchForm, count);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public List<CellarShare> getShares(SearchForm searchForm, CellarShareOrder orders, int first,
-            int count) {
-        return stockRepository.getCellarShares(searchForm, orders, first, count);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public long countShares(SearchForm searchForm) {
-        return stockRepository.countCellarShares(searchForm);
-    }
-
-    /**
-     * @param stockRepository
-     *            the stockRepository to set
+     * @param cellarRepository
+     *            the cellarRepository to set
      */
     @Autowired
-    @Qualifier("hibernate")
-    public void setStockRepository(StockRepository stockRepository) {
-        this.stockRepository = stockRepository;
+    public void setCellarRepository(CellarRepository cellarRepository) {
+        this.cellarRepository = cellarRepository;
     }
 
 }

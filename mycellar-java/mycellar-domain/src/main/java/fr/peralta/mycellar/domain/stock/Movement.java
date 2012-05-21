@@ -48,7 +48,7 @@ import fr.peralta.mycellar.domain.shared.IdentifiedEntity;
 @DiscriminatorColumn(name = "WAY", discriminatorType = DiscriminatorType.CHAR)
 @DiscriminatorValue("N")
 @SequenceGenerator(name = "MOVEMENT_ID_GENERATOR", allocationSize = 1)
-public abstract class Movement<E extends Movement<E>> extends IdentifiedEntity<E> {
+public abstract class Movement extends IdentifiedEntity {
 
     private static final long serialVersionUID = 201111181451L;
 

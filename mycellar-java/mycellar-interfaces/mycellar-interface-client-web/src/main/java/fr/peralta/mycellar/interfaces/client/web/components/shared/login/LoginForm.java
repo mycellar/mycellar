@@ -28,7 +28,7 @@ import org.wicketstuff.security.WaspSession;
 import org.wicketstuff.security.authentication.LoginException;
 import org.wicketstuff.security.hive.authentication.LoginContext;
 
-import fr.peralta.mycellar.interfaces.client.web.pages.user.NewUserPage;
+import fr.peralta.mycellar.interfaces.client.web.pages.NewUserPage;
 
 /**
  * @author speralta

@@ -37,7 +37,7 @@ import fr.peralta.mycellar.interfaces.facades.stock.StockServiceFacade;
  * @author speralta
  */
 public class MovementDataProvider extends
-        MultipleSortableDataProvider<Movement<?>, MovementOrderEnum, MovementOrder> {
+        MultipleSortableDataProvider<Movement, MovementOrderEnum, MovementOrder> {
 
     private static final long serialVersionUID = 201109192010L;
 
@@ -67,7 +67,7 @@ public class MovementDataProvider extends
      * {@inheritDoc}
      */
     @Override
-    public Iterator<? extends Movement<?>> iterator(int first, int count) {
+    public Iterator<? extends Movement> iterator(int first, int count) {
         return stockServiceFacade.getMovements(searchFormModel.getObject(), getState().getOrders(),
                 first, count).iterator();
     }
@@ -84,8 +84,8 @@ public class MovementDataProvider extends
      * {@inheritDoc}
      */
     @Override
-    public IModel<Movement<?>> model(Movement<?> object) {
-        return new Model<Movement<?>>(object);
+    public IModel<Movement> model(Movement object) {
+        return new Model<Movement>(object);
     }
 
 }

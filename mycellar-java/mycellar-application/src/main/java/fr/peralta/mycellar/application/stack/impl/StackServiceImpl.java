@@ -20,22 +20,25 @@ package fr.peralta.mycellar.application.stack.impl;
 
 import java.io.PrintWriter;
 import java.io.StringWriter;
-import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import fr.peralta.mycellar.application.shared.AbstractEntityService;
 import fr.peralta.mycellar.application.stack.StackService;
-import fr.peralta.mycellar.domain.shared.repository.SearchForm;
+import fr.peralta.mycellar.domain.shared.exception.BusinessException;
 import fr.peralta.mycellar.domain.stack.Stack;
 import fr.peralta.mycellar.domain.stack.repository.StackOrder;
+import fr.peralta.mycellar.domain.stack.repository.StackOrderEnum;
 import fr.peralta.mycellar.domain.stack.repository.StackRepository;
 
 /**
  * @author speralta
  */
 @Service
-public class StackServiceImpl implements StackService {
+public class StackServiceImpl extends
+        AbstractEntityService<Stack, StackOrderEnum, StackOrder, StackRepository> implements
+        StackService {
 
     private StackRepository stackRepository;
 
@@ -43,24 +46,8 @@ public class StackServiceImpl implements StackService {
      * {@inheritDoc}
      */
     @Override
-    public Stack getStackById(Integer stackId) {
-        return stackRepository.getStackById(stackId);
-    }
+    public void validate(Stack entity) throws BusinessException {
 
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public long countStacks(SearchForm searchForm) {
-        return stackRepository.countStacks(searchForm);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public List<Stack> getStacks(SearchForm searchForm, StackOrder orders, int first, int count) {
-        return stackRepository.getStacks(searchForm, orders, first, count);
     }
 
     /**
@@ -87,6 +74,14 @@ public class StackServiceImpl implements StackService {
             stack.increaseCount();
         }
         stackRepository.save(stack);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    protected StackRepository getRepository() {
+        return stackRepository;
     }
 
     /**

@@ -23,24 +23,34 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import fr.peralta.mycellar.application.shared.AbstractEntitySearchFormService;
 import fr.peralta.mycellar.application.wine.ProducerService;
+import fr.peralta.mycellar.domain.shared.exception.BusinessError;
+import fr.peralta.mycellar.domain.shared.exception.BusinessException;
 import fr.peralta.mycellar.domain.wine.Producer;
-import fr.peralta.mycellar.domain.wine.repository.WineRepository;
+import fr.peralta.mycellar.domain.wine.repository.ProducerOrder;
+import fr.peralta.mycellar.domain.wine.repository.ProducerOrderEnum;
+import fr.peralta.mycellar.domain.wine.repository.ProducerRepository;
 
 /**
  * @author speralta
  */
 @Service
-public class ProducerServiceImpl implements ProducerService {
+public class ProducerServiceImpl
+        extends
+        AbstractEntitySearchFormService<Producer, ProducerOrderEnum, ProducerOrder, ProducerRepository>
+        implements ProducerService {
 
-    private WineRepository wineRepository;
+    private ProducerRepository producerRepository;
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public Producer getById(Integer id) {
-        return wineRepository.getProducerById(id);
+    public void validate(Producer entity) throws BusinessException {
+        if ((entity.getId() == null) && (producerRepository.find(entity.getName()) != null)) {
+            throw new BusinessException(BusinessError.PRODUCER_00001);
+        }
     }
 
     /**
@@ -48,16 +58,24 @@ public class ProducerServiceImpl implements ProducerService {
      */
     @Override
     public List<Producer> getAllLike(String term) {
-        return wineRepository.getAllProducersLike(term);
+        return producerRepository.getAllProducersLike(term);
     }
 
     /**
-     * @param wineRepository
-     *            the wineRepository to set
+     * @return the producerRepository
+     */
+    @Override
+    public ProducerRepository getRepository() {
+        return producerRepository;
+    }
+
+    /**
+     * @param producerRepository
+     *            the producerRepository to set
      */
     @Autowired
-    public void setWineRepository(WineRepository wineRepository) {
-        this.wineRepository = wineRepository;
+    public void setProducerRepository(ProducerRepository producerRepository) {
+        this.producerRepository = producerRepository;
     }
 
 }

@@ -21,38 +21,43 @@ package fr.peralta.mycellar.interfaces.client.web.components.shared.list;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.apache.wicket.Component;
 import org.apache.wicket.WicketRuntimeException;
 import org.apache.wicket.event.IEventSource;
 import org.apache.wicket.model.IModel;
 
+import fr.peralta.mycellar.domain.shared.repository.SearchForm;
 import fr.peralta.mycellar.interfaces.client.web.components.shared.SimpleComponent;
 
 /**
  * @author speralta
  */
-public abstract class SimpleList<O> extends SimpleComponent<O> {
+public abstract class SimpleList<O> extends SimpleComponent<O, ListComponentPanel<O>> {
 
     private static final long serialVersionUID = 201109101934L;
 
     /**
      * @param id
      * @param label
+     * @param searchFormModel
      */
-    public SimpleList(String id, IModel<String> label) {
-        super(id, label);
+    public SimpleList(String id, IModel<String> label, IModel<SearchForm> searchFormModel) {
+        super(id, label, searchFormModel);
+        initializeIfUnique();
+    }
+
+    protected void initializeIfUnique() {
+        List<O> choices = getChoices(getSearchFormModel().getObject());
+        if (choices.size() == 1) {
+            markAsValued(choices.get(0));
+        }
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    protected final Component createSelectorComponent(String id) {
-        return createListComponentPanel(id);
-    }
-
-    protected ListComponentPanel<O> createListComponentPanel(String id) {
-        return new ListComponentPanel<O>(id, getList());
+    protected final ListComponentPanel<O> createSelectorComponent(String id) {
+        return new ListComponentPanel<O>(id, new ListDataModel<O>(this));
     }
 
     /**
@@ -77,25 +82,13 @@ public abstract class SimpleList<O> extends SimpleComponent<O> {
         return getRendererServiceFacade().render(object);
     }
 
-    @SuppressWarnings("unchecked")
-    protected void refreshList() {
-        ListComponentPanel<O> listComponentPanel = ((ListComponentPanel<O>) get(CONTAINER_COMPONENT_ID
-                + PATH_SEPARATOR
-                + CONTAINER_BODY_COMPONENT_ID
-                + PATH_SEPARATOR
-                + SELECTOR_COMPONENT_ID));
-        if (listComponentPanel != null) {
-            listComponentPanel.changeList(getList());
-        }
-    }
-
     /**
      * @return
      */
-    private final List<ListData<O>> getList() {
+    final List<ListData<O>> getList() {
         List<O> list;
         if (isReadyToSelect()) {
-            list = getChoicesInitializingIfUnique();
+            list = getChoices(getSearchFormModel().getObject());
         } else {
             list = new ArrayList<O>();
         }
@@ -107,19 +100,9 @@ public abstract class SimpleList<O> extends SimpleComponent<O> {
     }
 
     /**
+     * @param searchForm
      * @return
      */
-    protected abstract List<O> getChoices();
-
-    /**
-     * @return
-     */
-    private List<O> getChoicesInitializingIfUnique() {
-        List<O> values = getChoices();
-        if (values.size() == 1) {
-            markAsValued(values.iterator().next());
-        }
-        return values;
-    }
+    protected abstract List<O> getChoices(SearchForm searchForm);
 
 }

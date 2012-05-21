@@ -26,7 +26,6 @@ import org.apache.wicket.model.Model;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 
 import fr.peralta.mycellar.domain.shared.repository.OrderWayEnum;
-import fr.peralta.mycellar.domain.shared.repository.SearchForm;
 import fr.peralta.mycellar.domain.stack.Stack;
 import fr.peralta.mycellar.domain.stack.repository.StackOrder;
 import fr.peralta.mycellar.domain.stack.repository.StackOrderEnum;
@@ -44,23 +43,12 @@ public class StackDataProvider extends
     @SpringBean
     private StackServiceFacade stackServiceFacade;
 
-    private final IModel<SearchForm> searchFormModel;
-
     /**
-     * @param searchFormModel
+     * Default constructor.
      */
-    public StackDataProvider(IModel<SearchForm> searchFormModel) {
+    public StackDataProvider() {
         super(new StackOrder().add(StackOrderEnum.COUNT, OrderWayEnum.DESC));
         Injector.get().inject(this);
-        this.searchFormModel = searchFormModel;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public void detach() {
-        searchFormModel.detach();
     }
 
     /**
@@ -68,8 +56,7 @@ public class StackDataProvider extends
      */
     @Override
     public Iterator<? extends Stack> iterator(int first, int count) {
-        return stackServiceFacade.getStacks(searchFormModel.getObject(), getState().getOrders(),
-                first, count).iterator();
+        return stackServiceFacade.getStacks(getState().getOrders(), first, count).iterator();
     }
 
     /**
@@ -77,7 +64,7 @@ public class StackDataProvider extends
      */
     @Override
     public int size() {
-        return (int) stackServiceFacade.countStacks(searchFormModel.getObject());
+        return (int) stackServiceFacade.countStacks();
     }
 
     /**

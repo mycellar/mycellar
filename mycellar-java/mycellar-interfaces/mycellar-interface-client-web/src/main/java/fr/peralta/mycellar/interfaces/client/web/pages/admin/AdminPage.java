@@ -33,7 +33,6 @@ import org.apache.wicket.request.mapper.parameter.PageParameters;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 
 import fr.peralta.mycellar.domain.shared.repository.SearchForm;
-import fr.peralta.mycellar.interfaces.client.web.components.shared.SearchFormModel;
 import fr.peralta.mycellar.interfaces.client.web.components.stack.data.StackDataView;
 import fr.peralta.mycellar.interfaces.client.web.pages.shared.AdminSuperPage;
 import fr.peralta.mycellar.interfaces.client.web.resources.img.ImageReferences;
@@ -67,9 +66,9 @@ public class AdminPage extends AdminSuperPage {
         super(parameters);
         setOutputMarkupId(true);
         add(new Label("configType", WebApplication.get().getConfigurationType().name()));
-        add(new Label("userCount", Long.toString(userServiceFacade.countUsers(new SearchForm()))));
+        add(new Label("userCount", Long.toString(userServiceFacade.countUsers())));
         add(new Label("wineCount", Long.toString(wineServiceFacade.countWines(new SearchForm()))));
-        add(new Label("stackCount", Long.toString(stackServiceFacade.countStacks(new SearchForm()))));
+        add(new Label("stackCount", Long.toString(stackServiceFacade.countStacks())));
         add(new Image("db", ImageReferences.getDatabaseImage()));
         String dbUrl;
         String dbLogin;
@@ -88,9 +87,9 @@ public class AdminPage extends AdminSuperPage {
         add(new Label("dbUrl", dbUrl));
         add(new Label("dbLogin", dbLogin));
 
-        add(new StackDataView("stacks", new SearchFormModel(new SearchForm())));
+        add(new StackDataView("stacks"));
 
-        add(new BookmarkablePageLink<Void>("listUsers", ListUsersPage.class));
+        add(new BookmarkablePageLink<Void>("lists", ListPage.class));
         add(new Link<Void>("cleanStacks") {
             private static final long serialVersionUID = 201111071322L;
 

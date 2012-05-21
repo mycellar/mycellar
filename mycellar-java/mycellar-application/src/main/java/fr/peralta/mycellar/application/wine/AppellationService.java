@@ -18,22 +18,15 @@
  */
 package fr.peralta.mycellar.application.wine;
 
-import java.util.Map;
-
-import fr.peralta.mycellar.domain.shared.repository.CountEnum;
-import fr.peralta.mycellar.domain.shared.repository.SearchForm;
+import fr.peralta.mycellar.application.shared.EntitySearchFormService;
 import fr.peralta.mycellar.domain.wine.Appellation;
+import fr.peralta.mycellar.domain.wine.repository.AppellationOrder;
+import fr.peralta.mycellar.domain.wine.repository.AppellationOrderEnum;
 
 /**
  * @author speralta
  */
-public interface AppellationService {
-
-    /**
-     * @param searchForm
-     * @param count
-     * @return
-     */
-    Map<Appellation, Long> getAll(SearchForm searchForm, CountEnum count);
+public interface AppellationService extends
+        EntitySearchFormService<Appellation, AppellationOrderEnum, AppellationOrder> {
 
 }

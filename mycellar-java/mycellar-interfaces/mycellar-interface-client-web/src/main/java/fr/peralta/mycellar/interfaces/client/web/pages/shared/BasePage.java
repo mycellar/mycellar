@@ -23,11 +23,12 @@ import org.apache.wicket.markup.html.IHeaderResponse;
 import org.apache.wicket.markup.html.link.BookmarkablePageLink;
 import org.apache.wicket.protocol.http.WebApplication;
 import org.apache.wicket.request.mapper.parameter.PageParameters;
+import org.apache.wicket.spring.injection.annot.SpringBean;
 import org.wicketstuff.security.components.SecureWebPage;
 
-import fr.peralta.mycellar.interfaces.client.web.MyCellarWebApplicationDescriptor;
 import fr.peralta.mycellar.interfaces.client.web.components.shared.login.LoginPanel;
-import fr.peralta.mycellar.interfaces.client.web.components.shared.menu.MenuPanel;
+import fr.peralta.mycellar.interfaces.client.web.components.shared.nav.NavPanel;
+import fr.peralta.mycellar.interfaces.client.web.descriptors.DescriptorServiceFacade;
 import fr.peralta.mycellar.interfaces.client.web.resources.css.CssReferences;
 import fr.peralta.mycellar.interfaces.client.web.resources.js.JavaScriptReferences;
 
@@ -38,14 +39,17 @@ public abstract class BasePage extends SecureWebPage {
 
     private static final long serialVersionUID = 201117181723L;
 
+    @SpringBean
+    private DescriptorServiceFacade descriptorServiceFacade;
+
     /**
      * @param parameters
      */
     public BasePage(PageParameters parameters) {
         super(parameters);
         add(new BookmarkablePageLink<Void>("homeLink", WebApplication.get().getHomePage()));
-        add(new MenuPanel("menu", getMenuClass(), getSubMenuClass(),
-                MyCellarWebApplicationDescriptor.get().getMenuablePageDescriptors()));
+        add(new NavPanel("menu", getMenuClass(), getSubMenuClass(),
+                descriptorServiceFacade.getMenuPages()));
         add(new LoginPanel("login"));
         add(new DebugBar("debug"));
     }
@@ -67,12 +71,19 @@ public abstract class BasePage extends SecureWebPage {
     }
 
     /**
-     * @return the class of the menu page (for selecting it in {@link MenuPanel}
+     * @return the class of the menu page (for selecting it in {@link NavPanel}
      */
     protected abstract Class<? extends BasePage> getMenuClass();
 
     protected Class<? extends BasePage> getSubMenuClass() {
         return this.getClass();
+    }
+
+    /**
+     * @return the descriptorServiceFacade
+     */
+    protected final DescriptorServiceFacade getDescriptorServiceFacade() {
+        return descriptorServiceFacade;
     }
 
 }

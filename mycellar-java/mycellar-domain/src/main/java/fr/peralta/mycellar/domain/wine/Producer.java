@@ -18,19 +18,25 @@
  */
 package fr.peralta.mycellar.domain.wine;
 
+import java.util.HashSet;
+import java.util.Set;
+
 import javax.persistence.AttributeOverride;
 import javax.persistence.Column;
 import javax.persistence.Embedded;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.OneToMany;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 import javax.validation.constraints.Pattern;
 
+import org.apache.commons.lang3.ObjectUtils;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 
 import fr.peralta.mycellar.domain.position.Address;
+import fr.peralta.mycellar.domain.shared.IdentifiedEntity;
 import fr.peralta.mycellar.domain.shared.NamedEntity;
 import fr.peralta.mycellar.domain.shared.ValidationPattern;
 
@@ -41,7 +47,7 @@ import fr.peralta.mycellar.domain.shared.ValidationPattern;
 @Table(name = "PRODUCER")
 @AttributeOverride(name = "name", column = @Column(name = "NAME", nullable = false))
 @SequenceGenerator(name = "PRODUCER_ID_GENERATOR", allocationSize = 1)
-public class Producer extends NamedEntity<Producer> {
+public class Producer extends NamedEntity {
 
     private static final long serialVersionUID = 201111181451L;
 
@@ -59,6 +65,10 @@ public class Producer extends NamedEntity<Producer> {
     @Pattern(regexp = ValidationPattern.URL_PATTERN)
     @Column(name = "WEBSITE_URL")
     private String websiteUrl;
+
+    @SuppressWarnings("unused")
+    @OneToMany(mappedBy = "producer")
+    private final Set<Wine> wines = new HashSet<Wine>();
 
     /**
      * @return the address
@@ -117,8 +127,9 @@ public class Producer extends NamedEntity<Producer> {
      * {@inheritDoc}
      */
     @Override
-    protected boolean dataEquals(Producer other) {
-        return false;
+    protected boolean dataEquals(IdentifiedEntity other) {
+        Producer producer = (Producer) other;
+        return ObjectUtils.equals(getName(), producer.getName());
     }
 
     /**

@@ -40,7 +40,7 @@ import fr.peralta.mycellar.interfaces.client.web.components.wine.multiple.WineCo
 import fr.peralta.mycellar.interfaces.client.web.components.wine.multiple.WineTypeEnumMultiplePanel;
 import fr.peralta.mycellar.interfaces.client.web.pages.shared.CellarSuperPage;
 import fr.peralta.mycellar.interfaces.client.web.security.UserKey;
-import fr.peralta.mycellar.interfaces.client.web.shared.LoggingUtils;
+import fr.peralta.mycellar.interfaces.client.web.shared.LoggingHelper;
 
 /**
  * @author speralta
@@ -48,7 +48,7 @@ import fr.peralta.mycellar.interfaces.client.web.shared.LoggingUtils;
 public class CellarsPage extends CellarSuperPage {
 
     private static final long serialVersionUID = 201108170919L;
-    private static Logger logger = LoggerFactory.getLogger(CellarsPage.class);
+    private static final Logger logger = LoggerFactory.getLogger(CellarsPage.class);
 
     private static final String CELLARS_COMPONENT_ID = "cellars";
     private static final String COUNTRIES_COMPONENT_ID = "countries";
@@ -57,6 +57,8 @@ public class CellarsPage extends CellarSuperPage {
     private static final String TYPES_COMPONENT_ID = "types";
     private static final String COLORS_COMPONENT_ID = "colors";
     private static final String FORMATS_COMPONENT_ID = "formats";
+
+    private final ActionLink clearFilters;
 
     /**
      * @param parameters
@@ -79,8 +81,7 @@ public class CellarsPage extends CellarSuperPage {
         add(new WineColorEnumMultiplePanel(COLORS_COMPONENT_ID, searchFormModel,
                 CountEnum.STOCK_QUANTITY));
         add(new FormatMultiplePanel(FORMATS_COMPONENT_ID, searchFormModel, CountEnum.STOCK_QUANTITY));
-        add(new ActionLink("clearFilters", Action.CANCEL));
-
+        add(clearFilters = new ActionLink("clearFilters", Action.CANCEL));
         add(new StockDataView("stocks", searchFormModel));
     }
 
@@ -89,20 +90,27 @@ public class CellarsPage extends CellarSuperPage {
      */
     @Override
     public void onEvent(IEvent<?> event) {
-        LoggingUtils.logEventReceived(logger, event);
+        LoggingHelper.logEventReceived(logger, event);
         if (event.getPayload() instanceof Action) {
             Action action = (Action) event.getPayload();
             switch (action) {
-            case MODEL_CHANGED:
-                break;
             case CANCEL:
-                setDefaultModelObject(new SearchForm().addToSet(FilterEnum.USER,
-                        UserKey.getUserLoggedIn()));
+                if (clearFilters == event.getSource()) {
+                    setDefaultModelObject(new SearchForm().addToSet(FilterEnum.USER,
+                            UserKey.getUserLoggedIn()));
+                    AjaxTool.ajaxReRender(this);
+                    event.stop();
+                }
+                break;
+            case MODEL_CHANGED:
+                AjaxTool.ajaxReRender(this);
+                event.stop();
+                break;
+            default:
                 break;
             }
-            AjaxTool.ajaxReRender(this);
         }
-        LoggingUtils.logEventProcessed(logger, event);
+        LoggingHelper.logEventProcessed(logger, event);
     }
 
 }

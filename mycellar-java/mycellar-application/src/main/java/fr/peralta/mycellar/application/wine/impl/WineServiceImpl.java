@@ -18,26 +18,33 @@
  */
 package fr.peralta.mycellar.application.wine.impl;
 
-import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import fr.peralta.mycellar.application.shared.AbstractEntitySearchFormService;
 import fr.peralta.mycellar.application.wine.WineService;
+import fr.peralta.mycellar.domain.shared.exception.BusinessError;
+import fr.peralta.mycellar.domain.shared.exception.BusinessException;
 import fr.peralta.mycellar.domain.shared.repository.CountEnum;
 import fr.peralta.mycellar.domain.shared.repository.SearchForm;
+import fr.peralta.mycellar.domain.wine.Appellation;
+import fr.peralta.mycellar.domain.wine.Producer;
 import fr.peralta.mycellar.domain.wine.Wine;
 import fr.peralta.mycellar.domain.wine.WineColorEnum;
 import fr.peralta.mycellar.domain.wine.WineTypeEnum;
 import fr.peralta.mycellar.domain.wine.repository.WineOrder;
+import fr.peralta.mycellar.domain.wine.repository.WineOrderEnum;
 import fr.peralta.mycellar.domain.wine.repository.WineRepository;
 
 /**
  * @author speralta
  */
 @Service
-public class WineServiceImpl implements WineService {
+public class WineServiceImpl extends
+        AbstractEntitySearchFormService<Wine, WineOrderEnum, WineOrder, WineRepository> implements
+        WineService {
 
     private WineRepository wineRepository;
 
@@ -45,16 +52,21 @@ public class WineServiceImpl implements WineService {
      * {@inheritDoc}
      */
     @Override
-    public long countWines(SearchForm searchForm) {
-        return wineRepository.countWines(searchForm);
+    public Wine find(Producer producer, Appellation appellation, WineTypeEnum type,
+            WineColorEnum color, String name, Integer vintage) {
+        return wineRepository.find(producer, appellation, type, color, name, vintage);
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public List<Wine> getWines(SearchForm searchForm, WineOrder orders, int first, int count) {
-        return wineRepository.getWines(searchForm, orders, first, count);
+    public void validate(Wine entity) throws BusinessException {
+        if ((entity.getId() == null)
+                && (find(entity.getProducer(), entity.getAppellation(), entity.getType(),
+                        entity.getColor(), entity.getName(), entity.getVintage()) != null)) {
+            throw new BusinessException(BusinessError.WINE_00001);
+        }
     }
 
     /**
@@ -83,6 +95,14 @@ public class WineServiceImpl implements WineService {
             }
         }
         return colors;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    protected WineRepository getRepository() {
+        return wineRepository;
     }
 
     /**

@@ -27,7 +27,7 @@ import org.apache.commons.lang3.builder.ToStringBuilder;
  * @author speralta
  */
 @MappedSuperclass
-public abstract class NamedEntity<E extends NamedEntity<E>> extends IdentifiedEntity<E> {
+public abstract class NamedEntity extends IdentifiedEntity {
 
     private static final long serialVersionUID = 201111181451L;
 

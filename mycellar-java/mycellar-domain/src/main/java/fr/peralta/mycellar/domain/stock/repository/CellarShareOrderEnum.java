@@ -22,5 +22,5 @@ package fr.peralta.mycellar.domain.stock.repository;
  * @author speralta
  */
 public enum CellarShareOrderEnum {
-    EMAIL, ACCESS_RIGHT
+    EMAIL, ACCESS_RIGHT, OWNER_EMAIL, CELLAR_NAME
 }

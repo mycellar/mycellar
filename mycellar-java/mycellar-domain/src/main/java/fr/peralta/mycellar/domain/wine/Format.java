@@ -33,6 +33,7 @@ import javax.persistence.Table;
 import org.apache.commons.lang3.ObjectUtils;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 
+import fr.peralta.mycellar.domain.shared.IdentifiedEntity;
 import fr.peralta.mycellar.domain.shared.NamedEntity;
 import fr.peralta.mycellar.domain.stock.Bottle;
 
@@ -43,7 +44,7 @@ import fr.peralta.mycellar.domain.stock.Bottle;
 @Table(name = "FORMAT")
 @AttributeOverride(name = "name", column = @Column(name = "NAME", nullable = false, unique = true))
 @SequenceGenerator(name = "FORMAT_ID_GENERATOR", allocationSize = 1)
-public class Format extends NamedEntity<Format> {
+public class Format extends NamedEntity {
 
     private static final long serialVersionUID = 201111181451L;
 
@@ -86,8 +87,9 @@ public class Format extends NamedEntity<Format> {
      * {@inheritDoc}
      */
     @Override
-    protected boolean dataEquals(Format other) {
-        return ObjectUtils.equals(getName(), other.getName());
+    protected boolean dataEquals(IdentifiedEntity other) {
+        Format format = (Format) other;
+        return ObjectUtils.equals(getName(), format.getName());
     }
 
     /**

@@ -46,6 +46,7 @@ import javax.validation.constraints.Pattern;
 import org.apache.commons.lang3.ObjectUtils;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 
+import fr.peralta.mycellar.domain.shared.IdentifiedEntity;
 import fr.peralta.mycellar.domain.shared.NamedEntity;
 import fr.peralta.mycellar.domain.shared.ValidationPattern;
 import fr.peralta.mycellar.domain.stock.Bottle;
@@ -57,7 +58,7 @@ import fr.peralta.mycellar.domain.stock.Bottle;
 @Table(name = "WINE")
 @AttributeOverride(name = "name", column = @Column(name = "NAME", nullable = true))
 @SequenceGenerator(name = "WINE_ID_GENERATOR", allocationSize = 1)
-public class Wine extends NamedEntity<Wine> {
+public class Wine extends NamedEntity {
 
     private static final long serialVersionUID = 201111181451L;
 
@@ -246,13 +247,14 @@ public class Wine extends NamedEntity<Wine> {
      * {@inheritDoc}
      */
     @Override
-    protected boolean dataEquals(Wine other) {
-        return ObjectUtils.equals(getName(), other.getName())
-                && ObjectUtils.equals(getType(), other.getType())
-                && ObjectUtils.equals(getVintage(), other.getVintage())
-                && ObjectUtils.equals(getColor(), other.getColor())
-                && ObjectUtils.equals(getAppellation(), other.getAppellation())
-                && ObjectUtils.equals(getProducer(), other.getProducer());
+    protected boolean dataEquals(IdentifiedEntity other) {
+        Wine wine = (Wine) other;
+        return ObjectUtils.equals(getName(), wine.getName())
+                && ObjectUtils.equals(getType(), wine.getType())
+                && ObjectUtils.equals(getVintage(), wine.getVintage())
+                && ObjectUtils.equals(getColor(), wine.getColor())
+                && ObjectUtils.equals(getAppellation(), wine.getAppellation())
+                && ObjectUtils.equals(getProducer(), wine.getProducer());
     }
 
     /**

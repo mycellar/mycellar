@@ -22,6 +22,7 @@ import java.util.List;
 
 import org.apache.wicket.markup.html.list.ListItem;
 import org.apache.wicket.markup.html.list.PropertyListView;
+import org.apache.wicket.model.IModel;
 
 /**
  * @author speralta
@@ -34,7 +35,7 @@ class ListComponent<O> extends PropertyListView<ListData<O>> {
      * @param id
      * @param list
      */
-    public ListComponent(String id, List<? extends ListData<O>> list) {
+    public ListComponent(String id, IModel<? extends List<? extends ListData<O>>> list) {
         super(id, list);
     }
 

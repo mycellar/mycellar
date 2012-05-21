@@ -18,8 +18,6 @@
  */
 package fr.peralta.mycellar.interfaces.client.web.components.stock.tab;
 
-import org.apache.wicket.Component;
-import org.apache.wicket.WicketRuntimeException;
 import org.apache.wicket.event.IEvent;
 import org.apache.wicket.event.IEventSource;
 import org.apache.wicket.model.IModel;
@@ -27,6 +25,8 @@ import org.apache.wicket.spring.injection.annot.SpringBean;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import fr.peralta.mycellar.domain.shared.exception.BusinessException;
+import fr.peralta.mycellar.domain.shared.repository.CountEnum;
 import fr.peralta.mycellar.domain.shared.repository.FilterEnum;
 import fr.peralta.mycellar.domain.shared.repository.SearchForm;
 import fr.peralta.mycellar.domain.stock.Cellar;
@@ -36,11 +36,11 @@ import fr.peralta.mycellar.interfaces.client.web.components.shared.ActionLink;
 import fr.peralta.mycellar.interfaces.client.web.components.shared.AjaxTool;
 import fr.peralta.mycellar.interfaces.client.web.components.shared.SearchFormModel;
 import fr.peralta.mycellar.interfaces.client.web.components.shared.data.AdvancedTable;
-import fr.peralta.mycellar.interfaces.client.web.components.shared.form.ObjectForm;
 import fr.peralta.mycellar.interfaces.client.web.components.shared.tab.TabAdvancedTablePanel;
 import fr.peralta.mycellar.interfaces.client.web.components.stock.data.CellarShareDataView;
-import fr.peralta.mycellar.interfaces.client.web.components.stock.edit.CellarShareEditPanel;
-import fr.peralta.mycellar.interfaces.client.web.shared.LoggingUtils;
+import fr.peralta.mycellar.interfaces.client.web.components.stock.form.CellarShareForm;
+import fr.peralta.mycellar.interfaces.client.web.shared.FormValidationHelper;
+import fr.peralta.mycellar.interfaces.client.web.shared.LoggingHelper;
 import fr.peralta.mycellar.interfaces.facades.stock.StockServiceFacade;
 
 /**
@@ -55,14 +55,20 @@ public class CellarShareTabPanel extends TabAdvancedTablePanel<CellarShare> {
     @SpringBean
     private StockServiceFacade stockServiceFacade;
 
+    private CellarShareForm cellarShareForm;
+
+    private final SearchFormModel searchFormModel;
+
     /**
      * @param id
      * @param cellarModel
      */
     public CellarShareTabPanel(String id, IModel<Cellar> cellarModel) {
         super(id, cellarModel);
+        searchFormModel = new SearchFormModel(new SearchForm());
         setOutputMarkupId(true);
-        add(createHiddenCellarShareForm());
+        add(cellarShareForm = new CellarShareForm(CELLAR_SHARE_COMPONENT_ID, searchFormModel,
+                CountEnum.WINE));
     }
 
     @SuppressWarnings("unchecked")
@@ -88,75 +94,69 @@ public class CellarShareTabPanel extends TabAdvancedTablePanel<CellarShare> {
      */
     @Override
     public void onEvent(IEvent<?> event) {
-        LoggingUtils.logEventReceived(logger, event);
+        LoggingHelper.logEventReceived(logger, event);
         if (event.getPayload() instanceof Action) {
             Action action = (Action) event.getPayload();
             IEventSource source = event.getSource();
             switch (action) {
             case ADD:
-                displayCellarShareForm();
+                if (source instanceof ActionLink) {
+                    cellarShareForm.displayForm();
+                    AjaxTool.ajaxReRender(this);
+                    event.stop();
+                }
                 break;
             case DELETE:
                 if (source instanceof ActionLink) {
                     CellarShare cellarShare = (CellarShare) ((ActionLink) source).getParent()
                             .getDefaultModelObject();
                     stockServiceFacade.deleteCellarShare(cellarShare);
-                } else {
-                    throw new WicketRuntimeException("Wrong source.");
+                    AjaxTool.ajaxReRender(this);
+                    event.stop();
                 }
                 break;
             case SAVE:
-                CellarShare cellarShareToSave = (CellarShare) get(CELLAR_SHARE_COMPONENT_ID)
-                        .getDefaultModelObject();
-                cellarShareToSave.setCellar(getModelObject());
-                stockServiceFacade.saveCellarShare(cellarShareToSave);
-                replace(createHiddenCellarShareForm());
+                if (cellarShareForm == source) {
+                    CellarShare cellarShareToSave = cellarShareForm.getModelObject();
+                    cellarShareToSave.setCellar(getModelObject());
+                    try {
+                        stockServiceFacade.saveCellarShare(cellarShareToSave);
+                        cellarShareForm = new CellarShareForm(CELLAR_SHARE_COMPONENT_ID,
+                                searchFormModel, CountEnum.WINE);
+                        replace(cellarShareForm);
+                    } catch (BusinessException e) {
+                        FormValidationHelper.error(cellarShareForm, e);
+                    }
+                    AjaxTool.ajaxReRender(this);
+                    event.stop();
+                }
                 break;
             case SELECT:
                 if (source instanceof ActionLink) {
                     CellarShare cellarShare = (CellarShare) ((ActionLink) source).getParent()
                             .getDefaultModelObject();
-                    replace(createHiddenCellarShareForm(cellarShare));
-                    displayCellarShareForm();
-                } else {
-                    throw new WicketRuntimeException("Wrong source.");
+                    cellarShareForm = new CellarShareForm(CELLAR_SHARE_COMPONENT_ID,
+                            searchFormModel, cellarShare, CountEnum.WINE);
+                    cellarShareForm.displayForm();
+                    replace(cellarShareForm);
+                    AjaxTool.ajaxReRender(this);
+                    event.stop();
                 }
                 break;
             case CANCEL:
-                replace(createHiddenCellarShareForm());
-                break;
-            case MODEL_CHANGED:
+                if (cellarShareForm.isCancelButton(source)) {
+                    cellarShareForm = new CellarShareForm(CELLAR_SHARE_COMPONENT_ID,
+                            searchFormModel, CountEnum.WINE);
+                    replace(cellarShareForm);
+                    AjaxTool.ajaxReRender(this);
+                    event.stop();
+                }
                 break;
             default:
-                throw new WicketRuntimeException("Action " + action + " not managed.");
+                break;
             }
-            event.stop();
-            AjaxTool.ajaxReRender(this);
         }
-        LoggingUtils.logEventProcessed(logger, event);
-    }
-
-    /**
-     * @return
-     */
-    private Component createHiddenCellarShareForm() {
-        return createHiddenCellarShareForm(new CellarShare());
-    }
-
-    /**
-     * @return
-     */
-    private Component createHiddenCellarShareForm(CellarShare cellarShare) {
-        return new ObjectForm<CellarShare>(CELLAR_SHARE_COMPONENT_ID, cellarShare).replace(
-                new CellarShareEditPanel(ObjectForm.EDIT_PANEL_COMPONENT_ID)).setVisibilityAllowed(
-                false);
-    }
-
-    /**
-     * @return
-     */
-    private Component displayCellarShareForm() {
-        return get(CELLAR_SHARE_COMPONENT_ID).setVisibilityAllowed(true);
+        LoggingHelper.logEventProcessed(logger, event);
     }
 
 }

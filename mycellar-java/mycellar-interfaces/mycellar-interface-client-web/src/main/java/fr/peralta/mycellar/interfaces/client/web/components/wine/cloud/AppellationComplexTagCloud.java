@@ -20,9 +20,8 @@ package fr.peralta.mycellar.interfaces.client.web.components.wine.cloud;
 
 import java.util.Map;
 
-import org.apache.wicket.Component;
 import org.apache.wicket.event.Broadcast;
-import org.apache.wicket.event.IEventSource;
+import org.apache.wicket.event.IEvent;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.StringResourceModel;
 import org.apache.wicket.spring.injection.annot.SpringBean;
@@ -33,8 +32,11 @@ import fr.peralta.mycellar.domain.shared.repository.SearchForm;
 import fr.peralta.mycellar.domain.wine.Appellation;
 import fr.peralta.mycellar.domain.wine.Region;
 import fr.peralta.mycellar.interfaces.client.web.components.shared.Action;
+import fr.peralta.mycellar.interfaces.client.web.components.shared.AjaxTool;
 import fr.peralta.mycellar.interfaces.client.web.components.shared.cloud.ComplexTagCloud;
-import fr.peralta.mycellar.interfaces.client.web.components.wine.edit.AppellationEditPanel;
+import fr.peralta.mycellar.interfaces.client.web.components.shared.form.ObjectForm;
+import fr.peralta.mycellar.interfaces.client.web.components.wine.form.AppellationForm;
+import fr.peralta.mycellar.interfaces.client.web.shared.FilterEnumHelper;
 import fr.peralta.mycellar.interfaces.facades.wine.WineServiceFacade;
 
 /**
@@ -46,38 +48,40 @@ public class AppellationComplexTagCloud extends ComplexTagCloud<Appellation> {
 
     private static final String REGION_COMPONENT_ID = "region";
 
-    private final IModel<SearchForm> searchFormModel;
-
-    private final CountEnum count;
-
     @SpringBean
     private WineServiceFacade wineServiceFacade;
+
+    private final RegionComplexTagCloud regionComplexTagCloud;
 
     /**
      * @param id
      * @param label
      * @param searchFormModel
      * @param count
+     * @param filters
      */
     public AppellationComplexTagCloud(String id, IModel<String> label,
-            IModel<SearchForm> searchFormModel, CountEnum count) {
-        super(id, label);
-        this.searchFormModel = searchFormModel;
-        this.count = count;
-        add(new RegionComplexTagCloud(REGION_COMPONENT_ID, new StringResourceModel("region", this,
-                null), searchFormModel, count));
-    }
-
-    private IModel<? extends Region> getRegionModel() {
-        return ((RegionComplexTagCloud) get(REGION_COMPONENT_ID)).getModel();
+            IModel<SearchForm> searchFormModel, CountEnum count, FilterEnum... filters) {
+        super(id, label, searchFormModel, count, filters);
+        add(regionComplexTagCloud = new RegionComplexTagCloud(REGION_COMPONENT_ID,
+                new StringResourceModel("region", this, null), searchFormModel, count,
+                FilterEnumHelper.removeFilter(filters, FilterEnum.APPELLATION)));
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    protected Component createComponentForCreation(String id) {
-        return new AppellationEditPanel(id);
+    protected void setOtherComponentsVisibilityAllowed(boolean allowed) {
+        regionComplexTagCloud.setVisibilityAllowed(allowed);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    protected ObjectForm<Appellation> createForm(String id, IModel<SearchForm> searchFormModel) {
+        return new AppellationForm(id, searchFormModel, getCount(), getFilters());
     }
 
     /**
@@ -86,10 +90,7 @@ public class AppellationComplexTagCloud extends ComplexTagCloud<Appellation> {
     @Override
     protected Appellation createObject() {
         Appellation appellation = new Appellation();
-        IModel<? extends Region> regionModel = getRegionModel();
-        if (regionModel != null) {
-            appellation.setRegion(regionModel.getObject());
-        }
+        appellation.setRegion(regionComplexTagCloud.getModelObject());
         return appellation;
     }
 
@@ -97,10 +98,9 @@ public class AppellationComplexTagCloud extends ComplexTagCloud<Appellation> {
      * {@inheritDoc}
      */
     @Override
-    protected Map<Appellation, Long> getChoices() {
-        SearchForm searchForm = searchFormModel.getObject();
-        searchForm.replaceSet(FilterEnum.REGION, getRegionModel().getObject());
-        return wineServiceFacade.getAppellations(searchForm, count);
+    protected Map<Appellation, Long> getChoices(SearchForm searchForm, CountEnum count,
+            FilterEnum[] filters) {
+        return wineServiceFacade.getAppellations(searchForm, count, filters);
     }
 
     /**
@@ -108,7 +108,7 @@ public class AppellationComplexTagCloud extends ComplexTagCloud<Appellation> {
      */
     @Override
     protected boolean isReadyToSelect() {
-        return ((RegionComplexTagCloud) get(REGION_COMPONENT_ID)).isValued();
+        return regionComplexTagCloud.isValued();
     }
 
     /**
@@ -131,29 +131,20 @@ public class AppellationComplexTagCloud extends ComplexTagCloud<Appellation> {
      * {@inheritDoc}
      */
     @Override
-    protected void detachModel() {
-        searchFormModel.detach();
-        super.detachModel();
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    protected void onModelChanged(IEventSource source, Action action) {
-        if (source instanceof RegionComplexTagCloud) {
-            refreshTagCloud();
-            RegionComplexTagCloud regionComplexTagCloud = (RegionComplexTagCloud) source;
-            IModel<? extends Region> regionModel = regionComplexTagCloud.getModel();
-            if (regionComplexTagCloud.isValued() && (regionModel != null)
-                    && (regionModel.getObject() != null)
-                    && (regionModel.getObject().getId() == null)) {
+    protected void onModelChanged(IEvent<?> event) {
+        getSearchFormModel().getObject().replaceSet(FilterEnum.REGION,
+                regionComplexTagCloud.getModelObject());
+        if (!regionComplexTagCloud.isValued()) {
+            markAsNonValued();
+        } else {
+            Region region = regionComplexTagCloud.getModelObject();
+            if ((region != null) && (region.getId() == null)) {
                 setDefaultModelObject(createObject());
                 send(this, Broadcast.EXACT, Action.ADD);
             }
-        } else {
-            super.onModelChanged(source, action);
         }
+        AjaxTool.ajaxReRender(this);
+        event.stop();
     }
 
 }

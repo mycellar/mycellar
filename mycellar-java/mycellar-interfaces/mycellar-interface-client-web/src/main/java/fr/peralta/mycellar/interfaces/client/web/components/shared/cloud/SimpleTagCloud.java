@@ -23,11 +23,13 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.apache.wicket.Component;
 import org.apache.wicket.WicketRuntimeException;
 import org.apache.wicket.event.IEventSource;
 import org.apache.wicket.model.IModel;
 
+import fr.peralta.mycellar.domain.shared.repository.CountEnum;
+import fr.peralta.mycellar.domain.shared.repository.FilterEnum;
+import fr.peralta.mycellar.domain.shared.repository.SearchForm;
 import fr.peralta.mycellar.interfaces.client.web.components.shared.SimpleComponent;
 
 /**
@@ -35,16 +37,33 @@ import fr.peralta.mycellar.interfaces.client.web.components.shared.SimpleCompone
  * 
  * @param <O>
  */
-public abstract class SimpleTagCloud<O> extends SimpleComponent<O> {
+public abstract class SimpleTagCloud<O> extends SimpleComponent<O, TagCloudPanel<O>> {
 
     private static final long serialVersionUID = 201111161904L;
+
+    private final CountEnum count;
+    private final FilterEnum[] filters;
 
     /**
      * @param id
      * @param label
+     * @param searchFormModel
+     * @param count
+     * @param filters
      */
-    public SimpleTagCloud(String id, IModel<String> label) {
-        super(id, label);
+    public SimpleTagCloud(String id, IModel<String> label, IModel<SearchForm> searchFormModel,
+            CountEnum count, FilterEnum... filters) {
+        super(id, label, searchFormModel);
+        this.count = count;
+        this.filters = filters;
+        initializeIfUnique();
+    }
+
+    protected void initializeIfUnique() {
+        Map<O, Long> choices = getChoices(getSearchFormModel().getObject(), count, filters);
+        if (choices.size() == 1) {
+            markAsValued(choices.keySet().iterator().next());
+        }
     }
 
     /**
@@ -72,35 +91,25 @@ public abstract class SimpleTagCloud<O> extends SimpleComponent<O> {
      * {@inheritDoc}
      */
     @Override
-    protected final Component createSelectorComponent(String id) {
-        return new TagCloudPanel<O>(id, getList());
-    }
-
-    @SuppressWarnings("unchecked")
-    protected void refreshTagCloud() {
-        TagCloudPanel<O> tagCloudPanel = ((TagCloudPanel<O>) get(CONTAINER_COMPONENT_ID
-                + PATH_SEPARATOR + CONTAINER_BODY_COMPONENT_ID + PATH_SEPARATOR
-                + SELECTOR_COMPONENT_ID));
-        if (tagCloudPanel != null) {
-            tagCloudPanel.changeList(getList());
-        }
+    protected final TagCloudPanel<O> createSelectorComponent(String id) {
+        return new TagCloudPanel<O>(id, new TagDataModel<O>(this));
     }
 
     /**
      * @return
      */
-    private final List<TagData<O>> getList() {
+    final List<TagData<O>> getList() {
         Map<O, Long> choices;
         if (isReadyToSelect()) {
-            choices = getChoicesInitializingIfUnique();
+            choices = getChoices(getSearchFormModel().getObject(), count, filters);
         } else {
             choices = new HashMap<O, Long>();
         }
         List<TagData<O>> list = new ArrayList<TagData<O>>();
-        long min = 0;
+        long min = -1;
         long max = 0;
         for (long value : choices.values()) {
-            if (min == 0) {
+            if (min == -1) {
                 min = value;
             } else {
                 min = Math.min(min, value);
@@ -117,17 +126,7 @@ public abstract class SimpleTagCloud<O> extends SimpleComponent<O> {
     /**
      * @return
      */
-    protected abstract Map<O, Long> getChoices();
-
-    /**
-     * @return
-     */
-    private Map<O, Long> getChoicesInitializingIfUnique() {
-        Map<O, Long> values = getChoices();
-        if (values.size() == 1) {
-            markAsValued(values.keySet().iterator().next());
-        }
-        return values;
-    }
+    protected abstract Map<O, Long> getChoices(SearchForm searchForm, CountEnum count,
+            FilterEnum... filters);
 
 }

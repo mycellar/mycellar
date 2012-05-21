@@ -21,42 +21,35 @@ package fr.peralta.mycellar.interfaces.client.web.components.shared.list;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.apache.wicket.Component;
 import org.apache.wicket.WicketRuntimeException;
 import org.apache.wicket.event.IEventSource;
 import org.apache.wicket.model.IModel;
 
+import fr.peralta.mycellar.domain.shared.repository.SearchForm;
 import fr.peralta.mycellar.interfaces.client.web.components.shared.ComplexComponent;
 
 /**
  * @author speralta
  */
-public abstract class ComplexList<O> extends ComplexComponent<O> {
+public abstract class ComplexList<O> extends ComplexComponent<O, ListComponentPanel<O>> {
 
     private static final long serialVersionUID = 201109101934L;
 
     /**
      * @param id
      * @param label
+     * @param searchFormModel
      */
-    public ComplexList(String id, IModel<String> label) {
-        super(id, label);
+    public ComplexList(String id, IModel<String> label, IModel<SearchForm> searchFormModel) {
+        super(id, label, searchFormModel);
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    protected final Component createSelectorComponent(String id) {
-        return createListComponentPanel(id);
-    }
-
-    /**
-     * @param id
-     * @return
-     */
-    protected ListComponentPanel<O> createListComponentPanel(String id) {
-        return new ListComponentPanel<O>(id, getList());
+    protected final ListComponentPanel<O> createSelectorComponent(String id) {
+        return new ListComponentPanel<O>(id, new ListDataModel<O>(this));
     }
 
     /**
@@ -81,22 +74,10 @@ public abstract class ComplexList<O> extends ComplexComponent<O> {
         return getRendererServiceFacade().render(object);
     }
 
-    @SuppressWarnings("unchecked")
-    protected void refreshList() {
-        ListComponentPanel<O> listComponentPanel = ((ListComponentPanel<O>) get(CONTAINER_COMPONENT_ID
-                + PATH_SEPARATOR
-                + CONTAINER_BODY_COMPONENT_ID
-                + PATH_SEPARATOR
-                + SELECTOR_COMPONENT_ID));
-        if (listComponentPanel != null) {
-            listComponentPanel.changeList(getList());
-        }
-    }
-
     /**
      * @return
      */
-    private final List<ListData<O>> getList() {
+    final List<ListData<O>> getList() {
         List<O> list;
         if (isReadyToSelect()) {
             list = getChoices();

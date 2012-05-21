@@ -19,61 +19,84 @@
 package fr.peralta.mycellar.interfaces.client.web.components.shared;
 
 import org.apache.wicket.Component;
-import org.apache.wicket.WicketRuntimeException;
 import org.apache.wicket.event.Broadcast;
 import org.apache.wicket.event.IEvent;
 import org.apache.wicket.event.IEventSource;
-import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.Model;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import fr.peralta.mycellar.domain.shared.repository.SearchForm;
 import fr.peralta.mycellar.interfaces.client.web.components.shared.feedback.FormComponentFeedbackBorder;
-import fr.peralta.mycellar.interfaces.client.web.renderers.shared.RendererServiceFacade;
-import fr.peralta.mycellar.interfaces.client.web.shared.LoggingUtils;
+import fr.peralta.mycellar.interfaces.client.web.renderers.RendererServiceFacade;
+import fr.peralta.mycellar.interfaces.client.web.shared.LoggingHelper;
 
 /**
  * @author speralta
  */
-public abstract class SimpleComponent<O> extends CompoundPropertyPanel<O> {
+public abstract class SimpleComponent<O, C extends Component> extends CompoundPropertyPanel<O> {
 
     private static final long serialVersionUID = 201107281247L;
     private static final Logger logger = LoggerFactory.getLogger(SimpleComponent.class);
 
-    protected static final String CONTAINER_COMPONENT_ID = "container";
-    protected static final String CONTAINER_BODY_COMPONENT_ID = CONTAINER_COMPONENT_ID + "_"
-            + FormComponentFeedbackBorder.BODY;
-    protected static final String SELECTOR_COMPONENT_ID = "selector";
-    protected static final String VALUE_COMPONENT_ID = "value";
+    private static final String CONTAINER_COMPONENT_ID = "container";
+    private static final String SELECTOR_COMPONENT_ID = "selector";
+    private static final String VALUE_COMPONENT_ID = "value";
 
     @SpringBean
     private RendererServiceFacade rendererServiceFacade;
 
+    private final FormComponentFeedbackBorder container;
+    private final ValueComponent valueComponent;
+    private C selectorComponent;
+
+    private final IModel<SearchForm> searchFormModel;
     private boolean valued = false;
 
     /**
      * @param id
      * @param label
+     * @param searchFormModel
      */
-    public SimpleComponent(String id, IModel<String> label) {
+    public SimpleComponent(String id, IModel<String> label, IModel<SearchForm> searchFormModel) {
         super(id);
+        this.searchFormModel = searchFormModel;
         setOutputMarkupId(true);
         setRequired(true);
-        FormComponentFeedbackBorder container = createBorder(id, label);
-        container.add(new ValueComponent(VALUE_COMPONENT_ID, id));
+        container = createBorder(CONTAINER_COMPONENT_ID, id, label);
+        container.add(valueComponent = new ValueComponent(VALUE_COMPONENT_ID, id));
         add(container);
     }
 
     /**
+     * @param allowed
+     */
+    public SimpleComponent<O, C> setCancelAllowed(boolean allowed) {
+        valueComponent.setCancelAllowed(allowed);
+        return this;
+    }
+
+    /**
+     * @param value
+     */
+    public void setValue(O value) {
+        if (value != null) {
+            markAsValued(value);
+        } else {
+            markAsNonValued();
+        }
+    }
+
+    /**
      * @param id
+     * @param forId
      * @param label
      * @return
      */
-    protected FormComponentFeedbackBorder createBorder(String id, IModel<String> label) {
-        return new FormComponentFeedbackBorder(CONTAINER_COMPONENT_ID, label, id, true,
-                getFilteredIdsForFeedback());
+    protected FormComponentFeedbackBorder createBorder(String id, String forId, IModel<String> label) {
+        return new FormComponentFeedbackBorder(id, label, forId, true, getFilteredIdsForFeedback());
     }
 
     protected String[] getFilteredIdsForFeedback() {
@@ -81,7 +104,7 @@ public abstract class SimpleComponent<O> extends CompoundPropertyPanel<O> {
     }
 
     public boolean isContainerVisibleInHierarchy() {
-        return get(CONTAINER_COMPONENT_ID).isVisibleInHierarchy();
+        return container.isVisibleInHierarchy();
     }
 
     /**
@@ -90,11 +113,9 @@ public abstract class SimpleComponent<O> extends CompoundPropertyPanel<O> {
     @Override
     protected void onInitialize() {
         super.onInitialize();
-        ((WebMarkupContainer) get(CONTAINER_COMPONENT_ID))
-                .add(createSelectorComponent(SELECTOR_COMPONENT_ID));
+        container.add(selectorComponent = createSelectorComponent(SELECTOR_COMPONENT_ID));
         if (isValuedAtStart()) {
             valued = true;
-            onModelChanged();
         }
     }
 
@@ -102,7 +123,7 @@ public abstract class SimpleComponent<O> extends CompoundPropertyPanel<O> {
      * @param id
      * @return
      */
-    protected abstract Component createSelectorComponent(String id);
+    protected abstract C createSelectorComponent(String id);
 
     /**
      * @return
@@ -125,20 +146,21 @@ public abstract class SimpleComponent<O> extends CompoundPropertyPanel<O> {
     @Override
     protected final void onConfigure() {
         super.onConfigure();
-        get(CONTAINER_COMPONENT_ID).setVisibilityAllowed(isReadyToSelect());
+        container.setVisibilityAllowed(isReadyToSelect());
         internalOnConfigure();
-        get(
-                CONTAINER_COMPONENT_ID + PATH_SEPARATOR + CONTAINER_BODY_COMPONENT_ID
-                        + PATH_SEPARATOR + VALUE_COMPONENT_ID).setVisibilityAllowed(valued);
+        valueComponent.setVisibilityAllowed(valued);
+        if (valued) {
+            valueComponent.setDefaultModel(new Model<String>(getValueLabelFor(getModelObject())));
+        } else {
+            valueComponent.setDefaultModel(new Model<String>());
+        }
     }
 
     /**
      * 
      */
     protected void internalOnConfigure() {
-        get(
-                CONTAINER_COMPONENT_ID + PATH_SEPARATOR + CONTAINER_BODY_COMPONENT_ID
-                        + PATH_SEPARATOR + SELECTOR_COMPONENT_ID).setVisibilityAllowed(!valued);
+        selectorComponent.setVisibilityAllowed(!valued);
     }
 
     /**
@@ -195,14 +217,6 @@ public abstract class SimpleComponent<O> extends CompoundPropertyPanel<O> {
     @Override
     protected void onModelChanged() {
         send(getParent(), Broadcast.BUBBLE, Action.MODEL_CHANGED);
-        Component valueComponent = get(CONTAINER_COMPONENT_ID + PATH_SEPARATOR
-                + CONTAINER_BODY_COMPONENT_ID + PATH_SEPARATOR + VALUE_COMPONENT_ID);
-        if (valued) {
-            String value = getValueLabelFor(getModelObject());
-            valueComponent.setDefaultModel(new Model<String>(value));
-        } else {
-            valueComponent.setDefaultModel(new Model<String>());
-        }
     }
 
     /**
@@ -210,61 +224,63 @@ public abstract class SimpleComponent<O> extends CompoundPropertyPanel<O> {
      */
     @Override
     public final void onEvent(IEvent<?> event) {
-        LoggingUtils.logEventReceived(logger, event);
+        LoggingHelper.logEventReceived(logger, event);
         if (event.getPayload() instanceof Action) {
             Action action = (Action) event.getPayload();
             switch (action) {
             case SELECT:
-                onSelect(event.getSource(), action);
+                onSelect(event);
                 break;
             case CANCEL:
-                onCancel(event.getSource(), action);
+                onCancel(event);
                 break;
             case ADD:
-                onAdd(event.getSource(), action);
+                onAdd(event);
                 break;
             case SAVE:
-                onSave(event.getSource(), action);
+                onSave(event);
                 break;
             case MODEL_CHANGED:
-                onModelChanged(event.getSource(), action);
+                onModelChanged(event);
                 break;
+            case DELETE:
+                onDelete(event);
             default:
-                throw new WicketRuntimeException("Action " + action + " not managed.");
+                throw new IllegalStateException("Unknown " + ActionEnum.class.getSimpleName()
+                        + " value " + action + ".");
             }
-            event.stop();
-            AjaxTool.ajaxReRender(this);
         } else {
             onOtherEvent(event);
         }
-        LoggingUtils.logEventProcessed(logger, event);
+        LoggingHelper.logEventProcessed(logger, event);
     }
 
     protected void onOtherEvent(IEvent<?> event) {
 
     }
 
-    protected void onSelect(IEventSource source, Action action) {
-        markAsValued(getModelObjectFromEvent(source));
+    protected void onSelect(IEvent<?> event) {
+        markAsValued(getModelObjectFromEvent(event.getSource()));
+        AjaxTool.ajaxReRender(this);
+        event.stop();
     }
 
-    protected void onCancel(IEventSource source, Action action) {
+    protected void onCancel(IEvent<?> event) {
         markAsNonValued();
+        AjaxTool.ajaxReRender(this);
+        event.stop();
     }
 
-    protected void onModelChanged(IEventSource source, Action action) {
-        throw new WicketRuntimeException("Action " + action + " not managed from source " + source
-                + ".");
+    protected void onModelChanged(IEvent<?> event) {
     }
 
-    protected void onSave(IEventSource source, Action action) {
-        throw new WicketRuntimeException("Action " + action + " not managed from source " + source
-                + ".");
+    protected void onSave(IEvent<?> event) {
     }
 
-    protected void onAdd(IEventSource source, Action action) {
-        throw new WicketRuntimeException("Action " + action + " not managed from source " + source
-                + ".");
+    protected void onAdd(IEvent<?> event) {
+    }
+
+    protected void onDelete(IEvent<?> event) {
     }
 
     /**
@@ -272,6 +288,34 @@ public abstract class SimpleComponent<O> extends CompoundPropertyPanel<O> {
      * @return
      */
     protected abstract O getModelObjectFromEvent(IEventSource source);
+
+    /**
+     * @return the container
+     */
+    protected final FormComponentFeedbackBorder getContainer() {
+        return container;
+    }
+
+    /**
+     * @return the valueComponent
+     */
+    protected final ValueComponent getValueComponent() {
+        return valueComponent;
+    }
+
+    /**
+     * @return the selectorComponent
+     */
+    protected final C getSelectorComponent() {
+        return selectorComponent;
+    }
+
+    /**
+     * @return the searchFormModel
+     */
+    protected final IModel<SearchForm> getSearchFormModel() {
+        return searchFormModel;
+    }
 
     protected final RendererServiceFacade getRendererServiceFacade() {
         return rendererServiceFacade;

@@ -18,40 +18,54 @@
  */
 package fr.peralta.mycellar.application.wine.impl;
 
-import java.util.Map;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import fr.peralta.mycellar.application.shared.AbstractEntitySearchFormService;
 import fr.peralta.mycellar.application.wine.FormatService;
-import fr.peralta.mycellar.domain.shared.repository.CountEnum;
-import fr.peralta.mycellar.domain.shared.repository.SearchForm;
+import fr.peralta.mycellar.domain.shared.exception.BusinessError;
+import fr.peralta.mycellar.domain.shared.exception.BusinessException;
 import fr.peralta.mycellar.domain.wine.Format;
-import fr.peralta.mycellar.domain.wine.repository.WineRepository;
+import fr.peralta.mycellar.domain.wine.repository.FormatOrder;
+import fr.peralta.mycellar.domain.wine.repository.FormatOrderEnum;
+import fr.peralta.mycellar.domain.wine.repository.FormatRepository;
 
 /**
  * @author speralta
  */
 @Service
-public class FormatServiceImpl implements FormatService {
+public class FormatServiceImpl extends
+        AbstractEntitySearchFormService<Format, FormatOrderEnum, FormatOrder, FormatRepository>
+        implements FormatService {
 
-    private WineRepository wineRepository;
+    private FormatRepository formatRepository;
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public Map<Format, Long> getAll(SearchForm searchForm, CountEnum count) {
-        return wineRepository.getFormats(searchForm, count);
+    public void validate(Format entity) throws BusinessException {
+        if ((entity.getId() == null)
+                && (formatRepository.find(entity.getName(), entity.getCapacity()) != null)) {
+            throw new BusinessException(BusinessError.FORMAT_00001);
+        }
     }
 
     /**
-     * @param wineRepository
-     *            the wineRepository to set
+     * {@inheritDoc}
+     */
+    @Override
+    protected FormatRepository getRepository() {
+        return formatRepository;
+    }
+
+    /**
+     * @param formatRepository
+     *            the formatRepository to set
      */
     @Autowired
-    public void setWineRepository(WineRepository wineRepository) {
-        this.wineRepository = wineRepository;
+    public void setFormatRepository(FormatRepository formatRepository) {
+        this.formatRepository = formatRepository;
     }
 
 }

@@ -8,15 +8,19 @@ footer[role="main"] {
   padding: 30px;
 }
 
-.la {
+table th.actions {
+  width: 60px;
+}
+
+.la, .table th.la, .table td.la  {
   text-align: left;
 }
 
-.ca {
+.ca, .table th.ca, .table td.ca {
   text-align: center;
 }
 
-.ra {
+.ra, .table th.ra, .table td.ra {
   text-align: right;
 }
 
@@ -28,8 +32,8 @@ footer[role="main"] {
   box-shadow: 0 1px 1px rgba(0, 0, 0, 0.05) inset;
 }
 
-.sub-form legend, .sub-form .control-group {
-  padding-left: 10px;
+.sub-form legend:before {
+  content: '\a0 ';
 }
 
 .sub-form .form-actions {
@@ -97,12 +101,40 @@ div.wicket-aa ul li:hover {
   color: #FFFFFF;
 }
 
+/** CLOUD **/
+.cloud:nth-child(3n) a {
+  color: blue;
+  text-decoration: none;
+}
+
+.cloud:nth-child(3n+1) a {
+  color: red;
+  text-decoration: none;
+}
+
+.cloud:nth-child(3n+2) a {
+  color: green;
+  text-decoration: none;
+}
+
+.cloud:nth-child(3n) a:hover {
+  color: darkBlue;
+}
+
+.cloud:nth-child(3n+1) a:hover {
+  color: darkRed;
+}
+
+.cloud:nth-child(3n+2) a:hover {
+  color: darkGreen;
+}
+
 /** List **/
 .listComponent {
   background-clip: padding-box;
   background-color: #FFFFFF;
   border-color: rgba(0, 0, 0, 0.2);
-  border-radius: 0 0 5px 5px;
+  border-radius: 5px;
   border-style: solid;
   border-width: 1px;
   box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2);
@@ -151,8 +183,8 @@ div.wicket-aa ul li:hover {
 
 /** DEBUG **/
 .wicketDebugBar {
-  top: 40px;
-  position: fixed;
+  top: 40px !important;
+  position: fixed !important;
 }
 
 .wicketDebugBar img {
@@ -195,6 +227,11 @@ fieldset.step > legend:before {
 /** OVERRIDE TEXT COLOR IN NAVBAR **/
 .navbar,.navbar label {
   color: #999999;
+}
+
+/** OVERRIDE MARGIN TOP IN NAVBAR FOR INPUTS **/
+.navbar-form input, .navbar-form select, .navbar-form .radio, .navbar-form .checkbox {
+    margin-top: 0px;
 }
 
 /** OVERRIDE PADDING-BOTTOM FOR LEGEND **/

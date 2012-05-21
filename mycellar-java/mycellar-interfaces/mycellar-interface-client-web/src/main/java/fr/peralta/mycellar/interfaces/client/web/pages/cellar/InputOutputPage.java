@@ -34,7 +34,7 @@ import fr.peralta.mycellar.interfaces.client.web.components.stock.data.MovementD
 import fr.peralta.mycellar.interfaces.client.web.components.stock.multiple.CellarMultiplePanel;
 import fr.peralta.mycellar.interfaces.client.web.pages.shared.CellarSuperPage;
 import fr.peralta.mycellar.interfaces.client.web.security.UserKey;
-import fr.peralta.mycellar.interfaces.client.web.shared.LoggingUtils;
+import fr.peralta.mycellar.interfaces.client.web.shared.LoggingHelper;
 
 /**
  * @author speralta
@@ -42,9 +42,11 @@ import fr.peralta.mycellar.interfaces.client.web.shared.LoggingUtils;
 public class InputOutputPage extends CellarSuperPage {
 
     private static final long serialVersionUID = 201108170920L;
-    private static Logger logger = LoggerFactory.getLogger(InputOutputPage.class);
+    private static final Logger logger = LoggerFactory.getLogger(InputOutputPage.class);
 
     private static final String CELLARS_COMPONENT_ID = "cellars";
+
+    private final ActionLink clearFilters;
 
     /**
      * @param parameters
@@ -56,7 +58,7 @@ public class InputOutputPage extends CellarSuperPage {
                 FilterEnum.USER, UserKey.getUserLoggedIn()));
         setDefaultModel(searchFormModel);
         add(new CellarMultiplePanel(CELLARS_COMPONENT_ID, searchFormModel, CountEnum.STOCK_QUANTITY));
-        add(new ActionLink("clearFilters", Action.CANCEL));
+        add(clearFilters = new ActionLink("clearFilters", Action.CANCEL));
 
         add(new MovementDataView("movements", searchFormModel));
     }
@@ -66,17 +68,27 @@ public class InputOutputPage extends CellarSuperPage {
      */
     @Override
     public void onEvent(IEvent<?> event) {
-        LoggingUtils.logEventReceived(logger, event);
+        LoggingHelper.logEventReceived(logger, event);
         if (event.getPayload() instanceof Action) {
             Action action = (Action) event.getPayload();
             switch (action) {
-            case MODEL_CHANGED:
-                break;
             case CANCEL:
+                if (clearFilters == event.getSource()) {
+                    setDefaultModelObject(new SearchForm().addToSet(FilterEnum.USER,
+                            UserKey.getUserLoggedIn()));
+                    AjaxTool.ajaxReRender(this);
+                    event.stop();
+                }
+                break;
+            case MODEL_CHANGED:
+                AjaxTool.ajaxReRender(this);
+                event.stop();
+                break;
+            default:
                 break;
             }
-            AjaxTool.ajaxReRender(this);
         }
-        LoggingUtils.logEventProcessed(logger, event);
+        LoggingHelper.logEventProcessed(logger, event);
     }
+
 }

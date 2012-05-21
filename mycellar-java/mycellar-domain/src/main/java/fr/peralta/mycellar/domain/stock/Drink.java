@@ -33,8 +33,6 @@ public class Drink implements Serializable {
 
     private final List<DrinkBottle> drinkBottles = new ArrayList<DrinkBottle>();
 
-    private Cellar cellar;
-
     private LocalDate date;
 
     private String drinkWith;
@@ -59,21 +57,6 @@ public class Drink implements Serializable {
      */
     public void setDrinkWith(String drinkWith) {
         this.drinkWith = drinkWith;
-    }
-
-    /**
-     * @return the cellar
-     */
-    public Cellar getCellar() {
-        return cellar;
-    }
-
-    /**
-     * @param cellar
-     *            the cellar to set
-     */
-    public void setCellar(Cellar cellar) {
-        this.cellar = cellar;
     }
 
     /**

@@ -39,7 +39,7 @@ public class SearchForm implements Serializable {
     /**
      * @return the cellarModification
      */
-    public boolean isCellarModification() {
+    public final boolean isCellarModification() {
         return cellarModification;
     }
 
@@ -48,7 +48,7 @@ public class SearchForm implements Serializable {
      *            the cellarModification to set
      * @return this for chaining
      */
-    public SearchForm setCellarModification(boolean cellarModification) {
+    public final SearchForm setCellarModification(boolean cellarModification) {
         this.cellarModification = cellarModification;
         return this;
     }

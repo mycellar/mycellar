@@ -21,7 +21,9 @@ package fr.peralta.mycellar.interfaces.facades.stock;
 import java.util.List;
 import java.util.Map;
 
+import fr.peralta.mycellar.domain.shared.exception.BusinessException;
 import fr.peralta.mycellar.domain.shared.repository.CountEnum;
+import fr.peralta.mycellar.domain.shared.repository.FilterEnum;
 import fr.peralta.mycellar.domain.shared.repository.SearchForm;
 import fr.peralta.mycellar.domain.stock.Arrival;
 import fr.peralta.mycellar.domain.stock.Bottle;
@@ -30,6 +32,7 @@ import fr.peralta.mycellar.domain.stock.CellarShare;
 import fr.peralta.mycellar.domain.stock.Drink;
 import fr.peralta.mycellar.domain.stock.Movement;
 import fr.peralta.mycellar.domain.stock.Stock;
+import fr.peralta.mycellar.domain.stock.repository.CellarOrder;
 import fr.peralta.mycellar.domain.stock.repository.CellarShareOrder;
 import fr.peralta.mycellar.domain.stock.repository.MovementOrder;
 import fr.peralta.mycellar.domain.stock.repository.StockOrder;
@@ -47,21 +50,38 @@ public interface StockServiceFacade {
     void arrival(Arrival arrival);
 
     /**
-     * @param drink
+     * @param searchForm
+     * @return
      */
-    void drink(Drink drink);
+    long countCellars(SearchForm searchForm);
+
+    /**
+     * @param searchForm
+     * @return
+     */
+    long countCellarShares(SearchForm searchForm);
+
+    /**
+     * @param searchForm
+     * @return
+     */
+    long countMovements(SearchForm searchForm);
+
+    /**
+     * @param searchForm
+     * @return
+     */
+    long countStocks(SearchForm searchForm);
 
     /**
      * @param cellarShare
      */
-    void saveCellarShare(CellarShare cellarShare);
+    void deleteCellarShare(CellarShare cellarShare);
 
     /**
-     * @param searchForm
-     * @param count
-     * @return
+     * @param drink
      */
-    Map<Cellar, Long> getCellars(SearchForm searchForm, CountEnum count);
+    void drink(Drink drink);
 
     /**
      * @param wine
@@ -71,19 +91,52 @@ public interface StockServiceFacade {
     Bottle findBottle(Wine wine, Format format);
 
     /**
+     * @param cellarId
+     * @return
+     */
+    Cellar getCellarById(Integer cellarId);
+
+    /**
+     * @param cellarShareId
+     * @return
+     */
+    CellarShare getCellarShareById(Integer cellarShareId);
+
+    /**
+     * @param searchForm
+     * @param order
+     * @param count
+     * @param first
+     * @return
+     */
+    List<Cellar> getCellars(SearchForm searchForm, CellarOrder order, int first, int count);
+
+    /**
+     * @param searchForm
+     * @param count
+     * @param filters
+     * @return
+     */
+    Map<Cellar, Long> getCellars(SearchForm searchForm, CountEnum count, FilterEnum... filters);
+
+    /**
+     * @param searchForm
+     * @param order
+     * @param count
+     * @param first
+     * @return
+     */
+    List<CellarShare> getCellarShares(SearchForm searchForm, CellarShareOrder order, int first,
+            int count);
+
+    /**
      * @param searchForm
      * @param orders
      * @param first
      * @param count
      * @return
      */
-    List<Movement<?>> getMovements(SearchForm searchForm, MovementOrder orders, int first, int count);
-
-    /**
-     * @param searchForm
-     * @return
-     */
-    long countMovements(SearchForm searchForm);
+    List<Movement> getMovements(SearchForm searchForm, MovementOrder orders, int first, int count);
 
     /**
      * @param searchForm
@@ -95,30 +148,15 @@ public interface StockServiceFacade {
     List<Stock> getStocks(SearchForm searchForm, StockOrder orders, int first, int count);
 
     /**
-     * @param searchForm
-     * @return
+     * @param cellar
+     * @throws BusinessException
      */
-    long countStocks(SearchForm searchForm);
-
-    /**
-     * @param searchForm
-     * @param orders
-     * @param count
-     * @param first
-     * @return
-     */
-    List<CellarShare> getCellarShares(SearchForm searchForm, CellarShareOrder orders, int first,
-            int count);
-
-    /**
-     * @param searchForm
-     * @return
-     */
-    long countCellarShares(SearchForm searchForm);
+    void saveCellar(Cellar cellar) throws BusinessException;
 
     /**
      * @param cellarShare
+     * @throws BusinessException
      */
-    void deleteCellarShare(CellarShare cellarShare);
+    void saveCellarShare(CellarShare cellarShare) throws BusinessException;
 
 }

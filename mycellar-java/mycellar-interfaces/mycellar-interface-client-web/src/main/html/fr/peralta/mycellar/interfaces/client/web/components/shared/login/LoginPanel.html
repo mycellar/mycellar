@@ -8,8 +8,8 @@
       <input type="email" wicket:id="username" id="username" class="input-small" style="width: auto;" size="18" wicket:message="placeholder:username" />
       <label for="password" style="display: none;"><wicket:message key="password">Password</wicket:message></label>
       <input type="password" wicket:id="password" id="password" class="input-small" style="width: auto;" size="8" wicket:message="placeholder:password" />
-      <input type="submit" wicket:message="value:submit" class="btn btn-inverse btn-small" />
-      <a class="btn btn-inverse btn-small pull-right" wicket:id="newUserLink" wicket:message="title:newUser"><span><wicket:message key="newUser">New user</wicket:message></span><i class="icon-user icon-white"></i></a>
+      <button class="btn btn-inverse btn-small"><wicket:message key="login">Log-in</wicket:message></button>
+      <a class="btn btn-inverse btn-small" wicket:id="newUserLink" wicket:message="title:newUser"><span><wicket:message key="newUser">New user</wicket:message></span><i class="icon-user icon-white"></i></a>
     </form>
     <div wicket:id="feedback" />
   </div>

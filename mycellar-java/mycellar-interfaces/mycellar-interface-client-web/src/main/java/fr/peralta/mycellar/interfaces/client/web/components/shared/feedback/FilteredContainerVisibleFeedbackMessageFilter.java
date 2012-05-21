@@ -20,6 +20,7 @@ package fr.peralta.mycellar.interfaces.client.web.components.shared.feedback;
 
 import org.apache.wicket.Component;
 import org.apache.wicket.MarkupContainer;
+import org.apache.wicket.WicketRuntimeException;
 import org.apache.wicket.feedback.FeedbackMessage;
 import org.apache.wicket.feedback.IFeedbackMessageFilter;
 import org.apache.wicket.util.lang.Objects;
@@ -67,7 +68,7 @@ public class FilteredContainerVisibleFeedbackMessageFilter implements IFeedbackM
         final Component reporter = message.getReporter();
         if (reporter instanceof SimpleComponent) {
             result = (reporter != null)
-                    && ((SimpleComponent<?>) reporter).isContainerVisibleInHierarchy()
+                    && ((SimpleComponent<?, ?>) reporter).isContainerVisibleInHierarchy()
                     && (container.contains(reporter, true) || Objects.equal(container, reporter));
         } else {
             result = (reporter != null) && reporter.isVisibleInHierarchy()
@@ -77,6 +78,10 @@ public class FilteredContainerVisibleFeedbackMessageFilter implements IFeedbackM
         if (result) {
             for (String filteredId : filteredIds) {
                 final MarkupContainer filtered = (MarkupContainer) container.get(filteredId);
+                if (filtered == null) {
+                    throw new WicketRuntimeException("Cannot find " + filteredId + " in "
+                            + container.getId());
+                }
                 result = result
                         && !((filtered.contains(reporter, true) || Objects
                                 .equal(filtered, reporter)));

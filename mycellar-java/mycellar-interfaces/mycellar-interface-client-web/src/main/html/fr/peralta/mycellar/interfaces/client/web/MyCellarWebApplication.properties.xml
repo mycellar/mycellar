@@ -11,16 +11,40 @@
 
   <!-- DOMAIN MESSAGES -->
   <entry key="accessRight">Autorisation</entry>
+  <entry key="accessRights">Autorisations</entry>
   <entry key="appellation">Appellation</entry>
+  <entry key="appellations">Appellations</entry>
   <entry key="cellar">Cave</entry>
+  <entry key="cellars">Caves</entry>
+  <entry key="cellarShare">Partage de cave</entry>
+  <entry key="cellarShares">Partages de cave</entry>
   <entry key="color">Couleur</entry>
+  <entry key="colors">Couleurs</entry>
   <entry key="country">Pays</entry>
+  <entry key="countries">Pays</entry>
   <entry key="format">Format</entry>
+  <entry key="formats">Formats</entry>
   <entry key="producer">Producteur</entry>
+  <entry key="producers">Producteurs</entry>
   <entry key="region">Région</entry>
+  <entry key="regions">Régions</entry>
   <entry key="type">Type</entry>
+  <entry key="types">Types</entry>
   <entry key="user">Utilisateur</entry>
+  <entry key="users">Utilisateurs</entry>
   <entry key="varietal">Cépage</entry>
+  <entry key="varietals">Cépages</entry>
   <entry key="wine">Vin</entry>
+  <entry key="wines">Vins</entry>
+  
+  <!-- ENTITIES HEADERS DESCRIPTORS -->
+  <entry key="wineHeader">wine</entry>
+  <entry key="userHeader">user</entry>
+  <entry key="stockHeader">stock</entry>
+  
+  <!-- BUSINESS ERROR MESSAGES -->
+  <entry key="BusinessError.CELLAR_SHARE_00001">Cette cave est déjà partagée avec cet email.</entry>
+  <entry key="BusinessError.COUNTRY_00001">Ce pays existe déjà.</entry>
+  <entry key="BusinessError.USER_00001">Cet email est déjà enregistré.</entry>
 
 </properties> 

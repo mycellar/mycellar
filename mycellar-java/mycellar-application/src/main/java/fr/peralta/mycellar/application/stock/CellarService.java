@@ -18,50 +18,14 @@
  */
 package fr.peralta.mycellar.application.stock;
 
-import java.util.List;
-import java.util.Map;
-
-import fr.peralta.mycellar.domain.shared.repository.CountEnum;
-import fr.peralta.mycellar.domain.shared.repository.SearchForm;
+import fr.peralta.mycellar.application.shared.EntitySearchFormService;
 import fr.peralta.mycellar.domain.stock.Cellar;
-import fr.peralta.mycellar.domain.stock.CellarShare;
-import fr.peralta.mycellar.domain.stock.repository.CellarShareOrder;
+import fr.peralta.mycellar.domain.stock.repository.CellarOrder;
+import fr.peralta.mycellar.domain.stock.repository.CellarOrderEnum;
 
 /**
  * @author speralta
  */
-public interface CellarService {
-
-    /**
-     * @param cellarShare
-     */
-    void saveCellarShare(CellarShare cellarShare);
-
-    /**
-     * @param searchForm
-     * @param count
-     * @return
-     */
-    Map<Cellar, Long> getAll(SearchForm searchForm, CountEnum count);
-
-    /**
-     * @param searchForm
-     * @param orders
-     * @param count
-     * @param first
-     * @return
-     */
-    List<CellarShare> getShares(SearchForm searchForm, CellarShareOrder orders, int first, int count);
-
-    /**
-     * @param searchForm
-     * @return
-     */
-    long countShares(SearchForm searchForm);
-
-    /**
-     * @param cellarShare
-     */
-    void deleteCellarShare(CellarShare cellarShare);
+public interface CellarService extends EntitySearchFormService<Cellar, CellarOrderEnum, CellarOrder> {
 
 }

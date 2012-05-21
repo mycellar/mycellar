@@ -22,6 +22,7 @@ import org.apache.wicket.ConverterLocator;
 import org.apache.wicket.IConverterLocator;
 import org.apache.wicket.Page;
 import org.apache.wicket.markup.html.pages.InternalErrorPage;
+import org.apache.wicket.resource.loader.ClassStringResourceLoader;
 import org.apache.wicket.spring.injection.annot.SpringComponentInjector;
 import org.joda.time.LocalDate;
 import org.springframework.context.ApplicationContext;
@@ -34,18 +35,35 @@ import fr.peralta.mycellar.interfaces.client.web.converters.AccessRightEnumConve
 import fr.peralta.mycellar.interfaces.client.web.converters.LocalDateConverter;
 import fr.peralta.mycellar.interfaces.client.web.converters.WineColorEnumConverter;
 import fr.peralta.mycellar.interfaces.client.web.converters.WineTypeEnumConverter;
+import fr.peralta.mycellar.interfaces.client.web.descriptors.menu.HomePageDescriptor;
 import fr.peralta.mycellar.interfaces.client.web.pages.HomePage;
+import fr.peralta.mycellar.interfaces.client.web.pages.MyAccountPage;
+import fr.peralta.mycellar.interfaces.client.web.pages.NewUserPage;
 import fr.peralta.mycellar.interfaces.client.web.pages.admin.AdminPage;
-import fr.peralta.mycellar.interfaces.client.web.pages.admin.ListUsersPage;
+import fr.peralta.mycellar.interfaces.client.web.pages.admin.ListPage;
 import fr.peralta.mycellar.interfaces.client.web.pages.admin.StackPage;
+import fr.peralta.mycellar.interfaces.client.web.pages.admin.stock.CellarPage;
+import fr.peralta.mycellar.interfaces.client.web.pages.admin.stock.CellarSharePage;
+import fr.peralta.mycellar.interfaces.client.web.pages.admin.stock.CellarSharesPage;
+import fr.peralta.mycellar.interfaces.client.web.pages.admin.user.UserPage;
+import fr.peralta.mycellar.interfaces.client.web.pages.admin.user.UsersPage;
+import fr.peralta.mycellar.interfaces.client.web.pages.admin.wine.AppellationPage;
+import fr.peralta.mycellar.interfaces.client.web.pages.admin.wine.AppellationsPage;
+import fr.peralta.mycellar.interfaces.client.web.pages.admin.wine.CountriesPage;
+import fr.peralta.mycellar.interfaces.client.web.pages.admin.wine.CountryPage;
+import fr.peralta.mycellar.interfaces.client.web.pages.admin.wine.FormatPage;
+import fr.peralta.mycellar.interfaces.client.web.pages.admin.wine.FormatsPage;
+import fr.peralta.mycellar.interfaces.client.web.pages.admin.wine.ProducersPage;
+import fr.peralta.mycellar.interfaces.client.web.pages.admin.wine.RegionPage;
+import fr.peralta.mycellar.interfaces.client.web.pages.admin.wine.RegionsPage;
+import fr.peralta.mycellar.interfaces.client.web.pages.admin.wine.WinePage;
+import fr.peralta.mycellar.interfaces.client.web.pages.admin.wine.WinesPage;
 import fr.peralta.mycellar.interfaces.client.web.pages.cellar.CellarsPage;
 import fr.peralta.mycellar.interfaces.client.web.pages.cellar.DrinkBottlesPage;
 import fr.peralta.mycellar.interfaces.client.web.pages.cellar.InputOutputPage;
 import fr.peralta.mycellar.interfaces.client.web.pages.cellar.PackageArrivalPage;
 import fr.peralta.mycellar.interfaces.client.web.pages.cellar.ShareCellarsPage;
 import fr.peralta.mycellar.interfaces.client.web.pages.pedia.PediaHomePage;
-import fr.peralta.mycellar.interfaces.client.web.pages.user.EditUserPage;
-import fr.peralta.mycellar.interfaces.client.web.pages.user.NewUserPage;
 import fr.peralta.mycellar.interfaces.client.web.resources.css.CssReferences;
 import fr.peralta.mycellar.interfaces.client.web.resources.img.ImageReferences;
 import fr.peralta.mycellar.interfaces.client.web.resources.js.JavaScriptReferences;
@@ -62,34 +80,62 @@ public abstract class MyCellarWebApplication extends SwarmWebApplication {
     @Override
     protected void init() {
         super.init();
+        // Strip wicket tags
         getMarkupSettings().setStripWicketTags(true);
+        // Add spring injector for @SpringBean
         getComponentInstantiationListeners().add(
                 new SpringComponentInjector(this, getApplicationContext()));
+        // Add exception listener for saving stack trace in database
         getRequestCycleListeners().add(new ExceptionListener());
+        // Add resource loader for menu
+        getResourceSettings().getStringResourceLoaders().add(
+                new ClassStringResourceLoader(HomePageDescriptor.class));
+        // Add mounts for img
         mountResource("/img/glyphicons-halflings.png", ImageReferences.getGlyphiconsImage());
         mountResource("/img/glyphicons-halflings-white.png",
                 ImageReferences.getGlyphiconsWhiteImage());
+        // Add mounts for css
         mountResource("/css/bootstrap.min.css", CssReferences.getBootstrapCss());
         mountResource("/css/bootstrap-responsive.min.css",
                 CssReferences.getBootstrapResponsiveCss());
         mountResource("/css/bootstrap-datepicker.css", CssReferences.getBootstrapDatePickerCss());
         mountResource("/css/master.css", CssReferences.getMasterCss());
         mountResource("/css/master-responsive.css", CssReferences.getMasterResponsiveCss());
+        // Add mounts for js
         mountResource("/js/jquery-1.7.1.min.js", JavaScriptReferences.getJqueryJs());
         mountResource("/js/bootstrap.min.js", JavaScriptReferences.getBootstrapJs());
         mountResource("/js/bootstrap-datepicker.js",
                 JavaScriptReferences.getBootstrapDatePickerJs());
         mountResource("/js/master.js", JavaScriptReferences.getMasterJs());
+        // Add mounts for pages
         mountPage("/home", getHomePage());
         mountPage("/cellars", CellarsPage.class);
         mountPage("/io", InputOutputPage.class);
         mountPage("/packageArrival", PackageArrivalPage.class);
         mountPage("/drinkBottles", DrinkBottlesPage.class);
         mountPage("/pedia", PediaHomePage.class);
-        mountPage("/newUser", NewUserPage.class);
-        mountPage("/editUser", EditUserPage.class);
-        mountPage("/listUsers", ListUsersPage.class);
+        mountPage("/myaccount", MyAccountPage.class);
+        mountPage("/register", NewUserPage.class);
         mountPage("/admin", AdminPage.class);
+        mountPage("/admin/lists", ListPage.class);
+        mountPage("/admin/lists/users", UsersPage.class);
+        mountPage("/admin/lists/appellations", AppellationsPage.class);
+        mountPage("/admin/lists/countries", CountriesPage.class);
+        mountPage("/admin/lists/formats", FormatsPage.class);
+        mountPage("/admin/lists/regions", RegionsPage.class);
+        mountPage("/admin/lists/producers", ProducersPage.class);
+        mountPage("/admin/lists/wines", WinesPage.class);
+        mountPage("/admin/lists/cellars",
+                fr.peralta.mycellar.interfaces.client.web.pages.admin.stock.CellarsPage.class);
+        mountPage("/admin/lists/cellarShares", CellarSharesPage.class);
+        mountPage("/admin/edit/user", UserPage.class);
+        mountPage("/admin/edit/appellation", AppellationPage.class);
+        mountPage("/admin/edit/country", CountryPage.class);
+        mountPage("/admin/edit/format", FormatPage.class);
+        mountPage("/admin/edit/region", RegionPage.class);
+        mountPage("/admin/edit/wine", WinePage.class);
+        mountPage("/admin/edit/cellar", CellarPage.class);
+        mountPage("/admin/edit/cellarShare", CellarSharePage.class);
         mountPage("/error", InternalErrorPage.class);
         mountPage("/stack", StackPage.class);
         mountPage("/shares", ShareCellarsPage.class);

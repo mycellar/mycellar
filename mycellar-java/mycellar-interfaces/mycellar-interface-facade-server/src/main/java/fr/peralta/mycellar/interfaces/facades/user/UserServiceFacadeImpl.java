@@ -25,7 +25,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import fr.peralta.mycellar.application.user.UserService;
-import fr.peralta.mycellar.domain.shared.repository.SearchForm;
+import fr.peralta.mycellar.domain.shared.exception.BusinessException;
 import fr.peralta.mycellar.domain.user.User;
 import fr.peralta.mycellar.domain.user.repository.UserOrder;
 
@@ -42,8 +42,8 @@ public class UserServiceFacadeImpl implements UserServiceFacade {
      */
     @Override
     @Transactional
-    public void saveUser(User user) {
-        userService.saveUser(user);
+    public void saveUser(User user) throws BusinessException {
+        userService.save(user);
     }
 
     /**
@@ -69,8 +69,8 @@ public class UserServiceFacadeImpl implements UserServiceFacade {
      */
     @Override
     @Transactional(readOnly = true)
-    public long countUsers(SearchForm searchForm) {
-        return userService.countUsers(searchForm);
+    public long countUsers() {
+        return userService.count();
     }
 
     /**
@@ -78,8 +78,8 @@ public class UserServiceFacadeImpl implements UserServiceFacade {
      */
     @Override
     @Transactional(readOnly = true)
-    public List<User> getUsers(SearchForm searchForm, UserOrder orders, int first, int count) {
-        return userService.getUsers(searchForm, orders, first, count);
+    public List<User> getUsers(UserOrder orders, int first, int count) {
+        return userService.getAll(orders, first, count);
     }
 
     /**

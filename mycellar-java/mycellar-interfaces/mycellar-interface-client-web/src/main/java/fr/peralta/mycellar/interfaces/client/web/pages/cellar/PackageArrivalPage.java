@@ -18,10 +18,7 @@
  */
 package fr.peralta.mycellar.interfaces.client.web.pages.cellar;
 
-import java.util.List;
-
 import org.apache.wicket.Component;
-import org.apache.wicket.WicketRuntimeException;
 import org.apache.wicket.event.IEvent;
 import org.apache.wicket.markup.html.form.Form;
 import org.apache.wicket.markup.html.form.TextField;
@@ -32,21 +29,25 @@ import org.apache.wicket.spring.injection.annot.SpringBean;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import fr.peralta.mycellar.domain.shared.repository.CountEnum;
+import fr.peralta.mycellar.domain.shared.repository.FilterEnum;
+import fr.peralta.mycellar.domain.shared.repository.SearchForm;
 import fr.peralta.mycellar.domain.stock.Arrival;
 import fr.peralta.mycellar.domain.stock.ArrivalBottle;
 import fr.peralta.mycellar.interfaces.client.web.behaviors.OnChangeDefaultAjaxBehavior;
 import fr.peralta.mycellar.interfaces.client.web.components.shared.Action;
 import fr.peralta.mycellar.interfaces.client.web.components.shared.AjaxTool;
+import fr.peralta.mycellar.interfaces.client.web.components.shared.SearchFormModel;
 import fr.peralta.mycellar.interfaces.client.web.components.shared.feedback.FeedbackPanel;
 import fr.peralta.mycellar.interfaces.client.web.components.shared.feedback.FilteredContainerVisibleFeedbackMessageFilter;
 import fr.peralta.mycellar.interfaces.client.web.components.shared.feedback.FormComponentFeedbackBorder;
 import fr.peralta.mycellar.interfaces.client.web.components.shared.form.LocalDateTextField;
-import fr.peralta.mycellar.interfaces.client.web.components.shared.form.ObjectForm;
 import fr.peralta.mycellar.interfaces.client.web.components.stock.cloud.CellarComplexTagCloud;
-import fr.peralta.mycellar.interfaces.client.web.components.stock.edit.ArrivalBottleEditPanel;
 import fr.peralta.mycellar.interfaces.client.web.components.stock.edit.ArrivalBottlesEditPanel;
+import fr.peralta.mycellar.interfaces.client.web.components.stock.form.ArrivalBottleForm;
 import fr.peralta.mycellar.interfaces.client.web.pages.shared.CellarSuperPage;
-import fr.peralta.mycellar.interfaces.client.web.shared.LoggingUtils;
+import fr.peralta.mycellar.interfaces.client.web.security.UserKey;
+import fr.peralta.mycellar.interfaces.client.web.shared.LoggingHelper;
 import fr.peralta.mycellar.interfaces.facades.stock.StockServiceFacade;
 
 /**
@@ -66,8 +67,6 @@ public class PackageArrivalPage extends CellarSuperPage {
          */
         public ArrivalForm(String id) {
             super(id, new CompoundPropertyModel<Arrival>(new Arrival()));
-            add(new FeedbackPanel("feedback", new FilteredContainerVisibleFeedbackMessageFilter(
-                    this, ARRIVAL_BOTTLE_COMPONENT_ID)));
         }
 
         /**
@@ -88,79 +87,82 @@ public class PackageArrivalPage extends CellarSuperPage {
     private static final String ARRIVAL_BOTTLES_COMPONENT_ID = "arrivalBottles";
     private static final String ARRIVAL_BOTTLE_COMPONENT_ID = "arrivalBottle";
 
+    private ArrivalBottleForm arrivalBottleForm;
+    private final ArrivalForm arrivalForm;
+    private final ArrivalBottlesEditPanel arrivalBottlesEditPanel;
+
     /**
      * @param parameters
      */
     public PackageArrivalPage(PageParameters parameters) {
         super(parameters);
         setOutputMarkupId(true);
-        ArrivalForm form = new ArrivalForm(FORM_COMPONENT_ID);
-        form.add(new FormComponentFeedbackBorder("date").add(new LocalDateTextField("date")
+        arrivalForm = new ArrivalForm(FORM_COMPONENT_ID);
+        arrivalForm.add(new FormComponentFeedbackBorder("date").add(new LocalDateTextField("date")
                 .setRequired(true).add(new OnChangeDefaultAjaxBehavior())));
-        form.add(new FormComponentFeedbackBorder("source").add(new TextField<String>("source")
-                .setRequired(true).add(new OnChangeDefaultAjaxBehavior())));
-        form.add(new FormComponentFeedbackBorder("otherCharges").add(new TextField<Float>(
+        arrivalForm.add(new FormComponentFeedbackBorder("source").add(new TextField<String>(
+                "source").setRequired(true).add(new OnChangeDefaultAjaxBehavior())));
+        arrivalForm.add(new FormComponentFeedbackBorder("otherCharges").add(new TextField<Float>(
                 "otherCharges").setRequired(true).add(new OnChangeDefaultAjaxBehavior())));
-        form.add(new ArrivalBottlesEditPanel(ARRIVAL_BOTTLES_COMPONENT_ID));
-        form.add(new CellarComplexTagCloud("cellar", new StringResourceModel("cellar", this, null)));
-        form.add(createHiddenBottleForm());
-        add(form);
+        arrivalForm.add(arrivalBottlesEditPanel = new ArrivalBottlesEditPanel(
+                ARRIVAL_BOTTLES_COMPONENT_ID));
+        arrivalForm.add(new CellarComplexTagCloud("cellar", new StringResourceModel("cellar", this,
+                null), new SearchFormModel(new SearchForm().setCellarModification(true).addToSet(
+                FilterEnum.USER, UserKey.getUserLoggedIn())), CountEnum.STOCK_QUANTITY,
+                FilterEnum.USER));
+        arrivalForm.add(createHiddenBottleForm());
+        arrivalForm.add(new FeedbackPanel("feedback",
+                new FilteredContainerVisibleFeedbackMessageFilter(arrivalForm,
+                        ARRIVAL_BOTTLE_COMPONENT_ID)));
+        add(arrivalForm);
     }
 
     /**
      * {@inheritDoc}
      */
-    @SuppressWarnings("unchecked")
     @Override
     public void onEvent(IEvent<?> event) {
-        LoggingUtils.logEventReceived(logger, event);
+        LoggingHelper.logEventReceived(logger, event);
         if (event.getPayload() instanceof Action) {
             Action action = (Action) event.getPayload();
             switch (action) {
             case ADD:
-                displayBottleForm();
+                if (arrivalBottlesEditPanel.isAddBottle(event.getSource())) {
+                    arrivalBottleForm.displayForm();
+                    AjaxTool.ajaxReRender(this);
+                    event.stop();
+                }
                 break;
             case SAVE:
-                ((List<ArrivalBottle>) get(
-                        FORM_COMPONENT_ID + PATH_SEPARATOR + ARRIVAL_BOTTLES_COMPONENT_ID
-                                + PATH_SEPARATOR + ARRIVAL_BOTTLES_COMPONENT_ID)
-                        .getDefaultModelObject()).add((ArrivalBottle) get(
-                        FORM_COMPONENT_ID + PATH_SEPARATOR + ARRIVAL_BOTTLE_COMPONENT_ID)
-                        .getDefaultModelObject());
-                get(FORM_COMPONENT_ID + PATH_SEPARATOR + ARRIVAL_BOTTLE_COMPONENT_ID).replaceWith(
-                        createHiddenBottleForm());
-                break;
-            case MODEL_CHANGED:
-
+                if (arrivalBottleForm == event.getSource()) {
+                    arrivalBottlesEditPanel.getModelObject()
+                            .add(arrivalBottleForm.getModelObject());
+                    arrivalForm.replace(createHiddenBottleForm());
+                    AjaxTool.ajaxReRender(this);
+                    event.stop();
+                }
                 break;
             case CANCEL:
-                get(FORM_COMPONENT_ID + PATH_SEPARATOR + ARRIVAL_BOTTLE_COMPONENT_ID).replaceWith(
-                        createHiddenBottleForm());
+                if (arrivalBottleForm.isCancelButton(event.getSource())) {
+                    arrivalForm.replace(createHiddenBottleForm());
+                    AjaxTool.ajaxReRender(this);
+                    event.stop();
+                }
                 break;
             default:
-                throw new WicketRuntimeException("Action " + action + " not managed.");
+                break;
             }
-            event.stop();
-            AjaxTool.ajaxReRender(this);
         }
-        LoggingUtils.logEventProcessed(logger, event);
+        LoggingHelper.logEventProcessed(logger, event);
     }
 
     /**
      * @return
      */
     private Component createHiddenBottleForm() {
-        return new ObjectForm<ArrivalBottle>(ARRIVAL_BOTTLE_COMPONENT_ID, new ArrivalBottle())
-                .replace(new ArrivalBottleEditPanel(ObjectForm.EDIT_PANEL_COMPONENT_ID))
-                .setVisibilityAllowed(false);
+        return (arrivalBottleForm = new ArrivalBottleForm(ARRIVAL_BOTTLE_COMPONENT_ID,
+                new SearchFormModel(new SearchForm().setCellarModification(true).addToSet(
+                        FilterEnum.USER, UserKey.getUserLoggedIn())), new ArrivalBottle()))
+                .hideForm();
     }
-
-    /**
-     * @return
-     */
-    private Component displayBottleForm() {
-        return get(FORM_COMPONENT_ID + PATH_SEPARATOR + ARRIVAL_BOTTLE_COMPONENT_ID)
-                .setVisibilityAllowed(true);
-    }
-
 }

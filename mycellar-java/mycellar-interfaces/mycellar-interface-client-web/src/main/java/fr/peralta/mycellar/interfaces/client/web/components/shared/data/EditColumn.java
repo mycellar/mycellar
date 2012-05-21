@@ -45,7 +45,7 @@ public class EditColumn<T> implements IStyledColumn<T> {
      */
     @Override
     public String getCssClass() {
-        return "ca";
+        return "ca actions";
     }
 
     /**

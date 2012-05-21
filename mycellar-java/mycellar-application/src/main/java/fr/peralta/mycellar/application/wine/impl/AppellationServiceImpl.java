@@ -18,40 +18,56 @@
  */
 package fr.peralta.mycellar.application.wine.impl;
 
-import java.util.Map;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import fr.peralta.mycellar.application.shared.AbstractEntitySearchFormService;
 import fr.peralta.mycellar.application.wine.AppellationService;
-import fr.peralta.mycellar.domain.shared.repository.CountEnum;
-import fr.peralta.mycellar.domain.shared.repository.SearchForm;
+import fr.peralta.mycellar.domain.shared.exception.BusinessError;
+import fr.peralta.mycellar.domain.shared.exception.BusinessException;
 import fr.peralta.mycellar.domain.wine.Appellation;
-import fr.peralta.mycellar.domain.wine.repository.WineRepository;
+import fr.peralta.mycellar.domain.wine.repository.AppellationOrder;
+import fr.peralta.mycellar.domain.wine.repository.AppellationOrderEnum;
+import fr.peralta.mycellar.domain.wine.repository.AppellationRepository;
 
 /**
  * @author speralta
  */
 @Service
-public class AppellationServiceImpl implements AppellationService {
+public class AppellationServiceImpl
+        extends
+        AbstractEntitySearchFormService<Appellation, AppellationOrderEnum, AppellationOrder, AppellationRepository>
+        implements AppellationService {
 
-    private WineRepository wineRepository;
+    private AppellationRepository appellationRepository;
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public Map<Appellation, Long> getAll(SearchForm searchForm, CountEnum count) {
-        return wineRepository.getAppellations(searchForm, count);
+    public void validate(Appellation entity) throws BusinessException {
+        if ((entity.getId() != null)
+                && (appellationRepository.findAppellation(entity.getRegion(),
+                        entity.getName()) != null)) {
+            throw new BusinessException(BusinessError.APPELLATION_00001);
+        }
     }
 
     /**
-     * @param wineRepository
-     *            the wineRepository to set
+     * {@inheritDoc}
+     */
+    @Override
+    protected AppellationRepository getRepository() {
+        return appellationRepository;
+    }
+
+    /**
+     * @param appellationRepository
+     *            the appellationRepository to set
      */
     @Autowired
-    public void setWineRepository(WineRepository wineRepository) {
-        this.wineRepository = wineRepository;
+    public void setAppellationRepository(AppellationRepository appellationRepository) {
+        this.appellationRepository = appellationRepository;
     }
 
 }

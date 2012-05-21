@@ -23,11 +23,13 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.apache.wicket.Component;
 import org.apache.wicket.WicketRuntimeException;
 import org.apache.wicket.event.IEventSource;
 import org.apache.wicket.model.IModel;
 
+import fr.peralta.mycellar.domain.shared.repository.CountEnum;
+import fr.peralta.mycellar.domain.shared.repository.FilterEnum;
+import fr.peralta.mycellar.domain.shared.repository.SearchForm;
 import fr.peralta.mycellar.interfaces.client.web.components.shared.ComplexComponent;
 
 /**
@@ -35,16 +37,25 @@ import fr.peralta.mycellar.interfaces.client.web.components.shared.ComplexCompon
  * 
  * @param <O>
  */
-public abstract class ComplexTagCloud<O> extends ComplexComponent<O> {
+public abstract class ComplexTagCloud<O> extends ComplexComponent<O, TagCloudPanel<O>> {
 
     private static final long serialVersionUID = 201111161904L;
+
+    private final CountEnum count;
+    private final FilterEnum[] filters;
 
     /**
      * @param id
      * @param label
+     * @param searchFormModel
+     * @param count
+     * @param filters
      */
-    public ComplexTagCloud(String id, IModel<String> label) {
-        super(id, label);
+    public ComplexTagCloud(String id, IModel<String> label, IModel<SearchForm> searchFormModel,
+            CountEnum count, FilterEnum... filters) {
+        super(id, label, searchFormModel);
+        this.count = count;
+        this.filters = filters;
     }
 
     /**
@@ -73,36 +84,26 @@ public abstract class ComplexTagCloud<O> extends ComplexComponent<O> {
      * {@inheritDoc}
      */
     @Override
-    protected final Component createSelectorComponent(String id) {
-        return new TagCloudPanel<O>(id, getList());
-    }
-
-    @SuppressWarnings("unchecked")
-    protected void refreshTagCloud() {
-        TagCloudPanel<O> tagCloudPanel = ((TagCloudPanel<O>) get(CONTAINER_COMPONENT_ID
-                + PATH_SEPARATOR + CONTAINER_BODY_COMPONENT_ID + PATH_SEPARATOR
-                + SELECTOR_COMPONENT_ID));
-        if (tagCloudPanel != null) {
-            tagCloudPanel.changeList(getList());
-        }
+    protected final TagCloudPanel<O> createSelectorComponent(String id) {
+        return new TagCloudPanel<O>(id, new TagDataModel<O>(this));
     }
 
     /**
      * @param objects
      * @return
      */
-    private List<TagData<O>> getList() {
+    List<TagData<O>> getList() {
         Map<O, Long> choices;
         if (isReadyToSelect()) {
-            choices = getChoices();
+            choices = getChoices(getSearchFormModel().getObject(), getCount(), getFilters());
         } else {
             choices = new HashMap<O, Long>();
         }
         List<TagData<O>> list = new ArrayList<TagData<O>>();
-        long min = 0;
+        long min = -1;
         long max = 0;
         for (long value : choices.values()) {
-            if (min == 0) {
+            if (min == -1) {
                 min = value;
             } else {
                 min = Math.min(min, value);
@@ -117,8 +118,26 @@ public abstract class ComplexTagCloud<O> extends ComplexComponent<O> {
     }
 
     /**
+     * @param searchForm
+     * @param count
+     * @param filters
      * @return
      */
-    protected abstract Map<O, Long> getChoices();
+    protected abstract Map<O, Long> getChoices(SearchForm searchForm, CountEnum count,
+            FilterEnum[] filters);
+
+    /**
+     * @return the count
+     */
+    protected final CountEnum getCount() {
+        return count;
+    }
+
+    /**
+     * @return the filters
+     */
+    protected final FilterEnum[] getFilters() {
+        return filters;
+    }
 
 }

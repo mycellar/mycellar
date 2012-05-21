@@ -18,14 +18,25 @@
  */
 package fr.peralta.mycellar.interfaces.client.web.components.stock.edit;
 
+import org.apache.wicket.ajax.AjaxRequestTarget;
+import org.apache.wicket.event.IEvent;
 import org.apache.wicket.markup.html.form.TextField;
 import org.apache.wicket.markup.html.panel.Panel;
 import org.apache.wicket.model.IModel;
+import org.apache.wicket.model.StringResourceModel;
 import org.apache.wicket.validation.validator.MinimumValidator;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
+import fr.peralta.mycellar.domain.shared.repository.CountEnum;
+import fr.peralta.mycellar.domain.shared.repository.FilterEnum;
 import fr.peralta.mycellar.domain.shared.repository.SearchForm;
+import fr.peralta.mycellar.interfaces.client.web.components.shared.Action;
+import fr.peralta.mycellar.interfaces.client.web.components.shared.AjaxTool;
 import fr.peralta.mycellar.interfaces.client.web.components.shared.feedback.FormComponentFeedbackBorder;
 import fr.peralta.mycellar.interfaces.client.web.components.stock.BottleSelectComponent;
+import fr.peralta.mycellar.interfaces.client.web.components.stock.cloud.CellarSimpleTagCloud;
+import fr.peralta.mycellar.interfaces.client.web.shared.LoggingHelper;
 
 /**
  * @author speralta
@@ -33,6 +44,11 @@ import fr.peralta.mycellar.interfaces.client.web.components.stock.BottleSelectCo
 public class DrinkBottleEditPanel extends Panel {
 
     private static final long serialVersionUID = 201107252130L;
+    private static final Logger logger = LoggerFactory.getLogger(DrinkBottleEditPanel.class);
+
+    private final CellarSimpleTagCloud cellarSimpleTagCloud;
+
+    private final IModel<SearchForm> searchFormModel;
 
     /**
      * @param id
@@ -40,9 +56,49 @@ public class DrinkBottleEditPanel extends Panel {
      */
     public DrinkBottleEditPanel(String id, IModel<SearchForm> searchFormModel) {
         super(id);
+        this.searchFormModel = searchFormModel;
         add(new BottleSelectComponent("bottle", searchFormModel));
         add(new FormComponentFeedbackBorder("quantity").add(new TextField<Integer>("quantity")
                 .setRequired(true).add(new MinimumValidator<Integer>(1))));
+        add(cellarSimpleTagCloud = new CellarSimpleTagCloud("cellar", new StringResourceModel(
+                "cellar", this, null), searchFormModel, CountEnum.STOCK_QUANTITY));
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void detachModels() {
+        searchFormModel.detach();
+        super.detachModels();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void onEvent(IEvent<?> event) {
+        LoggingHelper.logEventReceived(logger, event);
+        if (event.getPayload() instanceof Action) {
+            Action action = (Action) event.getPayload();
+            switch (action) {
+            case MODEL_CHANGED:
+                if (event.getSource() == cellarSimpleTagCloud) {
+                    searchFormModel.getObject().replaceSet(FilterEnum.CELLAR,
+                            cellarSimpleTagCloud.getModelObject());
+                    AjaxTool.ajaxReRender(this);
+                    event.stop();
+                }
+                break;
+            default:
+                break;
+            }
+        } else if (event.getPayload() instanceof AjaxRequestTarget) {
+            // FIXME reRender needed when searchForm is changed by some other
+            // component
+            AjaxTool.ajaxReRender(cellarSimpleTagCloud);
+        }
+        LoggingHelper.logEventProcessed(logger, event);
     }
 
 }

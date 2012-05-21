@@ -45,14 +45,7 @@ public class CellarShareDataView extends AdvancedTable<CellarShare> {
         columns.add(new PropertyColumn<CellarShare>(new ResourceModel("email"),
                 CellarShareOrderEnum.EMAIL.name(), "email"));
         columns.add(new PropertyColumn<CellarShare>(new ResourceModel("accessRight"),
-                CellarShareOrderEnum.ACCESS_RIGHT.name(), "accessRight") {
-            private static final long serialVersionUID = 201201301841L;
-
-            @Override
-            public String getCssClass() {
-                return "ca";
-            }
-        });
+                CellarShareOrderEnum.ACCESS_RIGHT.name(), "accessRight"));
         columns.add(new EditColumn<CellarShare>());
         return columns;
     }

@@ -18,35 +18,35 @@
  */
 package fr.peralta.mycellar.application.wine;
 
-import java.util.List;
 import java.util.Map;
 
+import fr.peralta.mycellar.application.shared.EntitySearchFormService;
 import fr.peralta.mycellar.domain.shared.repository.CountEnum;
 import fr.peralta.mycellar.domain.shared.repository.SearchForm;
+import fr.peralta.mycellar.domain.wine.Appellation;
+import fr.peralta.mycellar.domain.wine.Producer;
 import fr.peralta.mycellar.domain.wine.Wine;
 import fr.peralta.mycellar.domain.wine.WineColorEnum;
 import fr.peralta.mycellar.domain.wine.WineTypeEnum;
 import fr.peralta.mycellar.domain.wine.repository.WineOrder;
+import fr.peralta.mycellar.domain.wine.repository.WineOrderEnum;
 
 /**
  * @author speralta
  */
-public interface WineService {
+public interface WineService extends EntitySearchFormService<Wine, WineOrderEnum, WineOrder> {
 
     /**
-     * @param searchForm
+     * @param producer
+     * @param appellation
+     * @param type
+     * @param color
+     * @param name
+     * @param vintage
      * @return
      */
-    long countWines(SearchForm searchForm);
-
-    /**
-     * @param searchForm
-     * @param orders
-     * @param first
-     * @param count
-     * @return
-     */
-    List<Wine> getWines(SearchForm searchForm, WineOrder orders, int first, int count);
+    Wine find(Producer producer, Appellation appellation, WineTypeEnum type, WineColorEnum color,
+            String name, Integer vintage);
 
     /**
      * @param searchForm

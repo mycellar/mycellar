@@ -39,6 +39,7 @@ import org.apache.commons.lang3.ObjectUtils;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 
 import fr.peralta.mycellar.domain.position.Map;
+import fr.peralta.mycellar.domain.shared.IdentifiedEntity;
 import fr.peralta.mycellar.domain.shared.NamedEntity;
 
 /**
@@ -48,7 +49,7 @@ import fr.peralta.mycellar.domain.shared.NamedEntity;
 @Table(name = "APPELLATION", uniqueConstraints = @UniqueConstraint(columnNames = { "NAME", "REGION" }))
 @AttributeOverride(name = "name", column = @Column(name = "NAME", nullable = false))
 @SequenceGenerator(name = "APPELLATION_ID_GENERATOR", allocationSize = 1)
-public class Appellation extends NamedEntity<Appellation> {
+public class Appellation extends NamedEntity {
 
     private static final long serialVersionUID = 201111181451L;
 
@@ -128,9 +129,10 @@ public class Appellation extends NamedEntity<Appellation> {
      * {@inheritDoc}
      */
     @Override
-    protected boolean dataEquals(Appellation other) {
-        return ObjectUtils.equals(getName(), other.getName())
-                && ObjectUtils.equals(getRegion(), other.getRegion());
+    protected boolean dataEquals(IdentifiedEntity other) {
+        Appellation appellation = (Appellation) other;
+        return ObjectUtils.equals(getName(), appellation.getName())
+                && ObjectUtils.equals(getRegion(), appellation.getRegion());
     }
 
     /**

@@ -19,12 +19,16 @@
 package fr.peralta.mycellar.application.stock.impl;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
+import fr.peralta.mycellar.application.shared.AbstractEntityService;
 import fr.peralta.mycellar.application.stock.BottleService;
+import fr.peralta.mycellar.domain.shared.exception.BusinessError;
+import fr.peralta.mycellar.domain.shared.exception.BusinessException;
 import fr.peralta.mycellar.domain.stock.Bottle;
-import fr.peralta.mycellar.domain.stock.repository.StockRepository;
+import fr.peralta.mycellar.domain.stock.repository.BottleOrder;
+import fr.peralta.mycellar.domain.stock.repository.BottleOrderEnum;
+import fr.peralta.mycellar.domain.stock.repository.BottleRepository;
 import fr.peralta.mycellar.domain.wine.Format;
 import fr.peralta.mycellar.domain.wine.Wine;
 
@@ -32,26 +36,45 @@ import fr.peralta.mycellar.domain.wine.Wine;
  * @author speralta
  */
 @Service
-public class BottleServiceImpl implements BottleService {
+public class BottleServiceImpl extends
+        AbstractEntityService<Bottle, BottleOrderEnum, BottleOrder, BottleRepository> implements
+        BottleService {
 
-    private StockRepository stockRepository;
+    private BottleRepository bottleRepository;
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public Bottle findBottle(Wine wine, Format format) {
-        return stockRepository.findBottle(wine, format);
+    public void validate(Bottle entity) throws BusinessException {
+        if ((entity.getId() == null) && (find(entity.getWine(), entity.getFormat()) != null)) {
+            throw new BusinessException(BusinessError.BOTTLE_00001);
+        }
     }
 
     /**
-     * @param stockRepository
-     *            the stockRepository to set
+     * {@inheritDoc}
+     */
+    @Override
+    public Bottle find(Wine wine, Format format) {
+        return bottleRepository.find(wine, format);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    protected BottleRepository getRepository() {
+        return bottleRepository;
+    }
+
+    /**
+     * @param bottleRepository
+     *            the bottleRepository to set
      */
     @Autowired
-    @Qualifier("hibernate")
-    public void setStockRepository(StockRepository stockRepository) {
-        this.stockRepository = stockRepository;
+    public void setBottleRepository(BottleRepository bottleRepository) {
+        this.bottleRepository = bottleRepository;
     }
 
 }

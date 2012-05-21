@@ -18,7 +18,6 @@
  */
 package fr.peralta.mycellar.interfaces.client.web.components.stock;
 
-import org.apache.wicket.WicketRuntimeException;
 import org.apache.wicket.event.IEvent;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.StringResourceModel;
@@ -27,6 +26,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import fr.peralta.mycellar.domain.shared.repository.CountEnum;
+import fr.peralta.mycellar.domain.shared.repository.FilterEnum;
 import fr.peralta.mycellar.domain.shared.repository.SearchForm;
 import fr.peralta.mycellar.domain.stock.Bottle;
 import fr.peralta.mycellar.domain.wine.Format;
@@ -34,9 +34,9 @@ import fr.peralta.mycellar.domain.wine.Wine;
 import fr.peralta.mycellar.interfaces.client.web.components.shared.Action;
 import fr.peralta.mycellar.interfaces.client.web.components.shared.AjaxTool;
 import fr.peralta.mycellar.interfaces.client.web.components.shared.CompoundPropertyPanel;
-import fr.peralta.mycellar.interfaces.client.web.components.wine.cloud.FormatFromWineTagCloud;
+import fr.peralta.mycellar.interfaces.client.web.components.wine.cloud.FormatSimpleTagCloud;
 import fr.peralta.mycellar.interfaces.client.web.components.wine.list.WineSimpleList;
-import fr.peralta.mycellar.interfaces.client.web.shared.LoggingUtils;
+import fr.peralta.mycellar.interfaces.client.web.shared.LoggingHelper;
 import fr.peralta.mycellar.interfaces.facades.stock.StockServiceFacade;
 
 /**
@@ -50,10 +50,13 @@ public class BottleSelectComponent extends CompoundPropertyPanel<Bottle> {
     private static final String WINE_COMPONENT_ID = "wine";
     private static final String FORMAT_COMPONENT_ID = "format";
 
-    private final IModel<SearchForm> searchFormModel;
-
     @SpringBean
     private StockServiceFacade stockServiceFacade;
+
+    private final WineSimpleList wineSimpleList;
+    private final FormatSimpleTagCloud formatSimpleTagCloud;
+
+    private final IModel<SearchForm> searchFormModel;
 
     /**
      * @param id
@@ -63,10 +66,11 @@ public class BottleSelectComponent extends CompoundPropertyPanel<Bottle> {
         super(id);
         setOutputMarkupId(true);
         this.searchFormModel = searchFormModel;
-        add(new WineSimpleList(WINE_COMPONENT_ID, new StringResourceModel("wine", this, null),
-                searchFormModel));
-        add(new FormatFromWineTagCloud(FORMAT_COMPONENT_ID, new StringResourceModel("format", this,
-                null), CountEnum.STOCK_QUANTITY));
+        add(wineSimpleList = new WineSimpleList(WINE_COMPONENT_ID, new StringResourceModel("wine",
+                this, null), searchFormModel));
+        add(formatSimpleTagCloud = new FormatSimpleTagCloud(FORMAT_COMPONENT_ID,
+                new StringResourceModel("format", this, null), searchFormModel,
+                CountEnum.STOCK_QUANTITY));
     }
 
     /**
@@ -83,31 +87,36 @@ public class BottleSelectComponent extends CompoundPropertyPanel<Bottle> {
      */
     @Override
     public void onEvent(IEvent<?> event) {
-        LoggingUtils.logEventReceived(logger, event);
+        LoggingHelper.logEventReceived(logger, event);
         if (event.getPayload() instanceof Action) {
             Action action = (Action) event.getPayload();
             switch (action) {
             case MODEL_CHANGED:
-                Wine wine = (Wine) get(WINE_COMPONENT_ID).getDefaultModelObject();
-                if (event.getSource() instanceof WineSimpleList) {
-                    ((FormatFromWineTagCloud) get(FORMAT_COMPONENT_ID)).setWine(wine);
-                } else if (event.getSource() instanceof FormatFromWineTagCloud) {
-                    Format format = (Format) get(FORMAT_COMPONENT_ID).getDefaultModelObject();
+                if ((event.getSource() == wineSimpleList)
+                        || (event.getSource() == formatSimpleTagCloud)) {
+                    Wine wine = wineSimpleList.getModelObject();
+                    Format format = formatSimpleTagCloud.getModelObject();
+                    if (event.getSource() == wineSimpleList) {
+                        searchFormModel.getObject().replaceSet(FilterEnum.WINE, wine);
+                    } else if (event.getSource() == formatSimpleTagCloud) {
+                        searchFormModel.getObject().replaceSet(FilterEnum.FORMAT, format);
+                    }
+
                     if ((wine != null) && (format != null)) {
                         Bottle bottle = stockServiceFacade.findBottle(wine, format);
                         if (bottle != null) {
-                            setDefaultModelObject(bottle);
+                            setModelObject(bottle);
                         }
                     }
+                    AjaxTool.ajaxReRender(this);
+                    event.stop();
                 }
                 break;
             default:
-                throw new WicketRuntimeException("Action " + action + " not managed.");
+                break;
             }
-            event.stop();
-            AjaxTool.ajaxReRender(this);
         }
-        LoggingUtils.logEventProcessed(logger, event);
+        LoggingHelper.logEventProcessed(logger, event);
     }
 
     /**
@@ -115,7 +124,10 @@ public class BottleSelectComponent extends CompoundPropertyPanel<Bottle> {
      */
     @Override
     protected Bottle createDefaultObject() {
-        return new Bottle();
+        Bottle bottle = new Bottle();
+        bottle.setFormat(formatSimpleTagCloud.getModelObject());
+        bottle.setWine(wineSimpleList.getModelObject());
+        return bottle;
     }
 
     /**

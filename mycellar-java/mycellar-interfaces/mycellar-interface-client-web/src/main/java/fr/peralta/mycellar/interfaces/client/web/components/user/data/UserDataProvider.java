@@ -26,7 +26,6 @@ import org.apache.wicket.model.Model;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 
 import fr.peralta.mycellar.domain.shared.repository.OrderWayEnum;
-import fr.peralta.mycellar.domain.shared.repository.SearchForm;
 import fr.peralta.mycellar.domain.user.User;
 import fr.peralta.mycellar.domain.user.repository.UserOrder;
 import fr.peralta.mycellar.domain.user.repository.UserOrderEnum;
@@ -44,24 +43,13 @@ public class UserDataProvider extends MultipleSortableDataProvider<User, UserOrd
     @SpringBean
     private UserServiceFacade userServiceFacade;
 
-    private final IModel<SearchForm> searchFormModel;
-
     /**
-     * @param searchFormModel
+     * Default constructor.
      */
-    public UserDataProvider(IModel<SearchForm> searchFormModel) {
+    public UserDataProvider() {
         super(new UserOrder().add(UserOrderEnum.LASTNAME, OrderWayEnum.ASC).add(
                 UserOrderEnum.FIRSTNAME, OrderWayEnum.ASC));
         Injector.get().inject(this);
-        this.searchFormModel = searchFormModel;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public void detach() {
-        searchFormModel.detach();
     }
 
     /**
@@ -69,8 +57,7 @@ public class UserDataProvider extends MultipleSortableDataProvider<User, UserOrd
      */
     @Override
     public Iterator<? extends User> iterator(int first, int count) {
-        return userServiceFacade.getUsers(searchFormModel.getObject(), getState().getOrders(),
-                first, count).iterator();
+        return userServiceFacade.getUsers(getState().getOrders(), first, count).iterator();
     }
 
     /**
@@ -78,7 +65,7 @@ public class UserDataProvider extends MultipleSortableDataProvider<User, UserOrd
      */
     @Override
     public int size() {
-        return (int) userServiceFacade.countUsers(searchFormModel.getObject());
+        return (int) userServiceFacade.countUsers();
     }
 
     /**

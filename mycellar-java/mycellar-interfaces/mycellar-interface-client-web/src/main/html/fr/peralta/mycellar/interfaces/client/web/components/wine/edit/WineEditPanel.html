@@ -1,23 +1,15 @@
 <wicket:panel>
   <fieldset>
     <legend><wicket:message key="wineEdit">Vin</wicket:message></legend>
-    <div class="control-group" wicket:id="producer.name">
-      <input id="producer.name" wicket:id="producer.name" type="text" disabled="disabled" />
-    </div>
-    <div class="control-group" wicket:id="appellation.name">
-      <input id="appellation.name" wicket:id="appellation.name" type="text" disabled="disabled" />
-    </div>
-    <div class="control-group" wicket:id="type">
-      <input id="type" wicket:id="type" type="text" disabled="disabled" />
-    </div>
-    <div class="control-group" wicket:id="color">
-      <input id="color" wicket:id="color" type="text" disabled="disabled" />
-    </div>
+    <div wicket:id="producer" />
+    <div wicket:id="appellation" />
+    <div wicket:id="type" />
+    <div wicket:id="color" />
     <div class="control-group" wicket:id="name">
       <input id="name" wicket:id="name" type="text" />
     </div>
     <div class="control-group" wicket:id="vintage">
-      <input id="vintage" wicket:id="vintage" type="text" />
+      <input id="vintage" wicket:id="vintage" type="number" />
     </div>
     <div class="control-group" wicket:id="ranking">
       <input id="ranking" wicket:id="ranking" type="text" />

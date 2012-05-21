@@ -40,7 +40,7 @@ import fr.peralta.mycellar.domain.shared.IdentifiedEntity;
 @Entity
 @Table(name = "STOCK", uniqueConstraints = @UniqueConstraint(columnNames = { "BOTTLE", "CELLAR" }))
 @SequenceGenerator(name = "STOCK_ID_GENERATOR", allocationSize = 1)
-public class Stock extends IdentifiedEntity<Stock> {
+public class Stock extends IdentifiedEntity {
 
     private static final long serialVersionUID = 201111181451L;
 
@@ -117,8 +117,9 @@ public class Stock extends IdentifiedEntity<Stock> {
      * {@inheritDoc}
      */
     @Override
-    protected boolean dataEquals(Stock other) {
-        return ObjectUtils.equals(getBottle(), other.getBottle());
+    protected boolean dataEquals(IdentifiedEntity other) {
+        Stock stock = (Stock) other;
+        return ObjectUtils.equals(getBottle(), stock.getBottle());
     }
 
     /**

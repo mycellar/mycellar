@@ -22,9 +22,9 @@ import java.util.List;
 
 import org.joda.time.LocalDate;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
+import fr.peralta.mycellar.application.stock.MovementService;
 import fr.peralta.mycellar.application.stock.StockService;
 import fr.peralta.mycellar.domain.shared.repository.SearchForm;
 import fr.peralta.mycellar.domain.stock.Arrival;
@@ -33,11 +33,7 @@ import fr.peralta.mycellar.domain.stock.Bottle;
 import fr.peralta.mycellar.domain.stock.Cellar;
 import fr.peralta.mycellar.domain.stock.Drink;
 import fr.peralta.mycellar.domain.stock.DrinkBottle;
-import fr.peralta.mycellar.domain.stock.Input;
-import fr.peralta.mycellar.domain.stock.Movement;
-import fr.peralta.mycellar.domain.stock.Output;
 import fr.peralta.mycellar.domain.stock.Stock;
-import fr.peralta.mycellar.domain.stock.repository.MovementOrder;
 import fr.peralta.mycellar.domain.stock.repository.StockOrder;
 import fr.peralta.mycellar.domain.stock.repository.StockRepository;
 
@@ -49,16 +45,16 @@ public class StockServiceImpl implements StockService {
 
     private StockRepository stockRepository;
 
+    private MovementService movementService;
+
     /**
      * {@inheritDoc}
      */
     @Override
     public void drink(Drink drink) {
-        Cellar cellar = drink.getCellar();
         for (DrinkBottle drinkBottle : drink.getDrinkBottles()) {
-            Bottle bottle = drinkBottle.getBottle();
-            removeFromStock(cellar, bottle, drinkBottle.getQuantity(), drink.getDate(),
-                    drink.getDrinkWith(), 0);
+            removeFromStock(drinkBottle.getCellar(), drinkBottle.getBottle(),
+                    drinkBottle.getQuantity(), drink.getDate(), drink.getDrinkWith(), 0);
         }
     }
 
@@ -84,7 +80,8 @@ public class StockServiceImpl implements StockService {
             float charges, float price, String source) {
         Stock stock = updateStock(cellar, bottle, quantity);
         // Use cellar and bottle from stock, they could have been merged.
-        createInput(stock.getCellar(), stock.getBottle(), quantity, date, charges, price, source);
+        movementService.createInput(stock.getCellar(), stock.getBottle(), quantity, date, charges,
+                price, source);
     }
 
     /**
@@ -95,49 +92,8 @@ public class StockServiceImpl implements StockService {
             String destination, float price) {
         Stock stock = updateStock(cellar, bottle, -quantity);
         // Use cellar and bottle from stock, they could have been merged.
-        createOutput(stock.getCellar(), stock.getBottle(), quantity, date, destination, price);
-    }
-
-    /**
-     * @param cellar
-     * @param bottle
-     * @param quantity
-     * @param date
-     * @param destination
-     * @param price
-     */
-    private void createOutput(Cellar cellar, Bottle bottle, Integer quantity, LocalDate date,
-            String destination, float price) {
-        Output output = new Output();
-        output.setBottle(bottle);
-        output.setCellar(cellar);
-        output.setDate(date);
-        output.setDestination(destination);
-        output.setNumber(quantity);
-        output.setPrice(price);
-        stockRepository.save(output);
-    }
-
-    /**
-     * @param cellar
-     * @param bottle
-     * @param quantity
-     * @param date
-     * @param charges
-     * @param price
-     * @param source
-     */
-    private void createInput(Cellar cellar, Bottle bottle, Integer quantity, LocalDate date,
-            float charges, float price, String source) {
-        Input input = new Input();
-        input.setDate(date);
-        input.setBottle(bottle);
-        input.setCellar(cellar);
-        input.setCharges(charges);
-        input.setNumber(quantity);
-        input.setPrice(price);
-        input.setSource(source);
-        stockRepository.save(input);
+        movementService.createOutput(stock.getCellar(), stock.getBottle(), quantity, date,
+                destination, price);
     }
 
     /**
@@ -163,24 +119,7 @@ public class StockServiceImpl implements StockService {
      */
     @Override
     public Stock findStock(Bottle bottle, Cellar cellar) {
-        return stockRepository.findStock(bottle, cellar);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public long countMovements(SearchForm searchForm) {
-        return stockRepository.countMovements(searchForm);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public List<Movement<?>> getMovements(SearchForm searchForm, MovementOrder orders, int first,
-            int count) {
-        return stockRepository.getMovements(searchForm, orders, first, count);
+        return stockRepository.find(bottle, cellar);
     }
 
     /**
@@ -188,7 +127,7 @@ public class StockServiceImpl implements StockService {
      */
     @Override
     public List<Stock> getStocks(SearchForm searchForm, StockOrder orders, int first, int count) {
-        return stockRepository.getStocks(searchForm, orders, first, count);
+        return stockRepository.getAll(searchForm, orders, first, count);
     }
 
     /**
@@ -196,7 +135,7 @@ public class StockServiceImpl implements StockService {
      */
     @Override
     public long countStocks(SearchForm searchForm) {
-        return stockRepository.countStocks(searchForm);
+        return stockRepository.count(searchForm);
     }
 
     /**
@@ -204,9 +143,17 @@ public class StockServiceImpl implements StockService {
      *            the stockRepository to set
      */
     @Autowired
-    @Qualifier("hibernate")
     public void setStockRepository(StockRepository stockRepository) {
         this.stockRepository = stockRepository;
+    }
+
+    /**
+     * @param movementService
+     *            the movementService to set
+     */
+    @Autowired
+    public void setMovementService(MovementService movementService) {
+        this.movementService = movementService;
     }
 
 }

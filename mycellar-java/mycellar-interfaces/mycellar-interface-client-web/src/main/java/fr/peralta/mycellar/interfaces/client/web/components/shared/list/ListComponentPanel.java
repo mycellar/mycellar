@@ -21,6 +21,7 @@ package fr.peralta.mycellar.interfaces.client.web.components.shared.list;
 import java.util.List;
 
 import org.apache.wicket.markup.html.panel.Panel;
+import org.apache.wicket.model.IModel;
 
 /**
  * @author speralta
@@ -35,13 +36,9 @@ public class ListComponentPanel<O> extends Panel {
      * @param id
      * @param list
      */
-    public ListComponentPanel(String id, List<ListData<O>> list) {
+    public ListComponentPanel(String id, IModel<? extends List<? extends ListData<O>>> list) {
         super(id);
         add(new ListComponent<O>(LIST_COMPONENT_ID, list));
     }
 
-    @SuppressWarnings("unchecked")
-    public void changeList(List<ListData<O>> list) {
-        ((ListComponent<O>) get(LIST_COMPONENT_ID)).setList(list);
-    }
 }

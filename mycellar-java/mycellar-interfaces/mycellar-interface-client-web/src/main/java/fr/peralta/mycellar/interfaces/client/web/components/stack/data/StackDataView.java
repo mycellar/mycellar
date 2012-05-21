@@ -30,7 +30,6 @@ import org.apache.wicket.markup.repeater.Item;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.ResourceModel;
 
-import fr.peralta.mycellar.domain.shared.repository.SearchForm;
 import fr.peralta.mycellar.domain.stack.Stack;
 import fr.peralta.mycellar.domain.stack.repository.StackOrderEnum;
 import fr.peralta.mycellar.interfaces.client.web.components.shared.data.AdvancedTable;
@@ -77,10 +76,9 @@ public class StackDataView extends AdvancedTable<Stack> {
 
     /**
      * @param id
-     * @param searchFormModel
      */
-    public StackDataView(String id, IModel<SearchForm> searchFormModel) {
-        super(id, getNewColumns(), new StackDataProvider(searchFormModel), 20);
+    public StackDataView(String id) {
+        super(id, getNewColumns(), new StackDataProvider(), 20);
     }
 
 }

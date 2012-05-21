@@ -18,12 +18,19 @@
  */
 package fr.peralta.mycellar.interfaces.client.web.components.wine.edit;
 
+import org.apache.wicket.markup.html.form.NumberTextField;
 import org.apache.wicket.markup.html.form.TextField;
 import org.apache.wicket.markup.html.panel.Panel;
+import org.apache.wicket.model.StringResourceModel;
 
-import fr.peralta.mycellar.domain.wine.WineColorEnum;
-import fr.peralta.mycellar.domain.wine.WineTypeEnum;
+import fr.peralta.mycellar.domain.shared.repository.CountEnum;
+import fr.peralta.mycellar.domain.shared.repository.SearchForm;
+import fr.peralta.mycellar.interfaces.client.web.components.shared.SearchFormModel;
 import fr.peralta.mycellar.interfaces.client.web.components.shared.feedback.FormComponentFeedbackBorder;
+import fr.peralta.mycellar.interfaces.client.web.components.wine.autocomplete.ProducerComplexAutoComplete;
+import fr.peralta.mycellar.interfaces.client.web.components.wine.cloud.AppellationComplexTagCloud;
+import fr.peralta.mycellar.interfaces.client.web.components.wine.cloud.WineColorEnumSimpleTagCloud;
+import fr.peralta.mycellar.interfaces.client.web.components.wine.cloud.WineTypeEnumSimpleTagCloud;
 
 /**
  * @author speralta
@@ -34,14 +41,20 @@ public class WineEditPanel extends Panel {
 
     /**
      * @param id
+     * @param count
      */
-    public WineEditPanel(String id) {
+    public WineEditPanel(String id, CountEnum count) {
         super(id);
-        add(new TextField<WineTypeEnum>("type").setEnabled(false));
-        add(new TextField<WineColorEnum>("color").setEnabled(false));
-        add(new TextField<String>("producer.name").setEnabled(false));
-        add(new TextField<String>("appellation.name").setEnabled(false));
-        add(new FormComponentFeedbackBorder("vintage").add(new TextField<Integer>("vintage")));
+        SearchFormModel searchFormModel = new SearchFormModel(new SearchForm());
+        add(new ProducerComplexAutoComplete("producer", new StringResourceModel("producer", this,
+                null), searchFormModel));
+        add(new AppellationComplexTagCloud("appellation", new StringResourceModel("appellation",
+                this, null), searchFormModel, count));
+        add(new WineColorEnumSimpleTagCloud("color", new StringResourceModel("color", this, null),
+                searchFormModel, count));
+        add(new WineTypeEnumSimpleTagCloud("type", new StringResourceModel("type", this, null),
+                searchFormModel, count));
+        add(new FormComponentFeedbackBorder("vintage").add(new NumberTextField<Integer>("vintage")));
         add(new FormComponentFeedbackBorder("name").add(new TextField<String>("name")));
         add(new FormComponentFeedbackBorder("ranking").add(new TextField<String>("ranking")));
     }

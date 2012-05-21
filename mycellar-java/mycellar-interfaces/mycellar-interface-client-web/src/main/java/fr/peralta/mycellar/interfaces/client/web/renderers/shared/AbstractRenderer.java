@@ -21,6 +21,8 @@ package fr.peralta.mycellar.interfaces.client.web.renderers.shared;
 import javax.annotation.PostConstruct;
 import javax.annotation.Resource;
 
+import fr.peralta.mycellar.interfaces.client.web.renderers.RendererServiceFacade;
+
 /**
  * @author speralta
  */

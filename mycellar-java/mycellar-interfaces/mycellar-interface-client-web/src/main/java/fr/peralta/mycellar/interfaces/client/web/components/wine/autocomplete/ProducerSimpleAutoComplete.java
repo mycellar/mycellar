@@ -22,6 +22,7 @@ import org.apache.wicket.model.IModel;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 import org.wicketstuff.objectautocomplete.ObjectAutoCompleteBuilder;
 
+import fr.peralta.mycellar.domain.shared.repository.SearchForm;
 import fr.peralta.mycellar.domain.wine.Producer;
 import fr.peralta.mycellar.interfaces.client.web.components.shared.autocomplete.SimpleAutoComplete;
 import fr.peralta.mycellar.interfaces.facades.wine.WineServiceFacade;
@@ -39,9 +40,11 @@ public class ProducerSimpleAutoComplete extends SimpleAutoComplete<Producer> {
     /**
      * @param id
      * @param label
+     * @param searchFormModel
      */
-    public ProducerSimpleAutoComplete(String id, IModel<String> label) {
-        super(id, label);
+    public ProducerSimpleAutoComplete(String id, IModel<String> label,
+            IModel<SearchForm> searchFormModel) {
+        super(id, label, searchFormModel);
     }
 
     /**

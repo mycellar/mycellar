@@ -18,36 +18,15 @@
  */
 package fr.peralta.mycellar.application.user;
 
-import java.util.List;
-
-import fr.peralta.mycellar.domain.shared.repository.SearchForm;
+import fr.peralta.mycellar.application.shared.EntityService;
 import fr.peralta.mycellar.domain.user.User;
 import fr.peralta.mycellar.domain.user.repository.UserOrder;
+import fr.peralta.mycellar.domain.user.repository.UserOrderEnum;
 
 /**
  * @author speralta
  */
-public interface UserService {
-
-    /**
-     * @param user
-     */
-    void saveUser(User user);
-
-    /**
-     * @param searchForm
-     * @return
-     */
-    long countUsers(SearchForm searchForm);
-
-    /**
-     * @param searchForm
-     * @param orders
-     * @param first
-     * @param count
-     * @return
-     */
-    List<User> getUsers(SearchForm searchForm, UserOrder orders, int first, int count);
+public interface UserService extends EntityService<User, UserOrderEnum, UserOrder> {
 
     /**
      * @param login
@@ -55,11 +34,5 @@ public interface UserService {
      * @return
      */
     User authenticate(String login, String password);
-
-    /**
-     * @param id
-     * @return
-     */
-    User getById(Integer id);
 
 }

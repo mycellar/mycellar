@@ -20,15 +20,16 @@ package fr.peralta.mycellar.interfaces.client.web.components.wine.cloud;
 
 import java.util.Map;
 
-import org.apache.wicket.Component;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 
 import fr.peralta.mycellar.domain.shared.repository.CountEnum;
+import fr.peralta.mycellar.domain.shared.repository.FilterEnum;
 import fr.peralta.mycellar.domain.shared.repository.SearchForm;
 import fr.peralta.mycellar.domain.wine.Country;
 import fr.peralta.mycellar.interfaces.client.web.components.shared.cloud.ComplexTagCloud;
-import fr.peralta.mycellar.interfaces.client.web.components.wine.edit.CountryEditPanel;
+import fr.peralta.mycellar.interfaces.client.web.components.shared.form.ObjectForm;
+import fr.peralta.mycellar.interfaces.client.web.components.wine.form.CountryForm;
 import fr.peralta.mycellar.interfaces.facades.wine.WineServiceFacade;
 
 /**
@@ -41,28 +42,24 @@ public class CountryComplexTagCloud extends ComplexTagCloud<Country> {
     @SpringBean
     private WineServiceFacade wineServiceFacade;
 
-    private final IModel<SearchForm> searchFormModel;
-    private final CountEnum count;
-
     /**
      * @param id
      * @param label
      * @param searchFormModel
      * @param count
+     * @param filters
      */
     public CountryComplexTagCloud(String id, IModel<String> label,
-            IModel<SearchForm> searchFormModel, CountEnum count) {
-        super(id, label);
-        this.searchFormModel = searchFormModel;
-        this.count = count;
+            IModel<SearchForm> searchFormModel, CountEnum count, FilterEnum... filters) {
+        super(id, label, searchFormModel, count, filters);
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    protected Component createComponentForCreation(String id) {
-        return new CountryEditPanel(id);
+    protected ObjectForm<Country> createForm(String id, IModel<SearchForm> searchFormModel) {
+        return new CountryForm(id, searchFormModel);
     }
 
     /**
@@ -77,17 +74,9 @@ public class CountryComplexTagCloud extends ComplexTagCloud<Country> {
      * {@inheritDoc}
      */
     @Override
-    protected Map<Country, Long> getChoices() {
-        return wineServiceFacade.getCountries(searchFormModel.getObject(), count);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public void detachModels() {
-        searchFormModel.detach();
-        super.detachModels();
+    protected Map<Country, Long> getChoices(SearchForm searchForm, CountEnum count,
+            FilterEnum[] filters) {
+        return wineServiceFacade.getCountries(searchForm, count, filters);
     }
 
 }

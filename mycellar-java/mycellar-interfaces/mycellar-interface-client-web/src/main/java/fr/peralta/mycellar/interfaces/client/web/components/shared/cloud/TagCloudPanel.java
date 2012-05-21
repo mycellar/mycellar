@@ -21,6 +21,7 @@ package fr.peralta.mycellar.interfaces.client.web.components.shared.cloud;
 import java.util.List;
 
 import org.apache.wicket.markup.html.panel.Panel;
+import org.apache.wicket.model.IModel;
 
 /**
  * @author speralta
@@ -35,16 +36,9 @@ public class TagCloudPanel<O> extends Panel {
      * @param id
      * @param list
      */
-    public TagCloudPanel(String id, List<TagData<O>> list) {
+    public TagCloudPanel(String id, IModel<? extends List<? extends TagData<O>>> list) {
         super(id);
         add(new TagCloud<O>(CLOUD_COMPONENT_ID, list));
     }
 
-    /**
-     * @param list
-     */
-    @SuppressWarnings("unchecked")
-    public void changeList(List<TagData<O>> list) {
-        ((TagCloud<O>) get(CLOUD_COMPONENT_ID)).setList(list);
-    }
 }

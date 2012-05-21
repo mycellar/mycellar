@@ -23,14 +23,13 @@ import org.apache.wicket.spring.injection.annot.SpringBean;
 import org.wicketstuff.objectautocomplete.ObjectAutoCompleteRenderer;
 
 import fr.peralta.mycellar.domain.shared.IdentifiedEntity;
-import fr.peralta.mycellar.interfaces.client.web.renderers.shared.RendererServiceFacade;
+import fr.peralta.mycellar.interfaces.client.web.renderers.RendererServiceFacade;
 
 /**
  * @author speralta
  * 
  */
-public class AutoCompleteRenderer<E extends IdentifiedEntity<E>> extends
-        ObjectAutoCompleteRenderer<E> {
+public class AutoCompleteRenderer<E extends IdentifiedEntity> extends ObjectAutoCompleteRenderer<E> {
 
     private static final long serialVersionUID = 201203161917L;
 

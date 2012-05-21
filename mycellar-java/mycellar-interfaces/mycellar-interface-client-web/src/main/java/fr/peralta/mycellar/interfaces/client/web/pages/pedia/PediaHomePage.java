@@ -36,7 +36,7 @@ import fr.peralta.mycellar.interfaces.client.web.components.wine.multiple.Region
 import fr.peralta.mycellar.interfaces.client.web.components.wine.multiple.WineColorEnumMultiplePanel;
 import fr.peralta.mycellar.interfaces.client.web.components.wine.multiple.WineTypeEnumMultiplePanel;
 import fr.peralta.mycellar.interfaces.client.web.pages.shared.PediaSuperPage;
-import fr.peralta.mycellar.interfaces.client.web.shared.LoggingUtils;
+import fr.peralta.mycellar.interfaces.client.web.shared.LoggingHelper;
 
 /**
  * @author speralta
@@ -44,13 +44,15 @@ import fr.peralta.mycellar.interfaces.client.web.shared.LoggingUtils;
 public class PediaHomePage extends PediaSuperPage {
 
     private static final long serialVersionUID = 201108102315L;
-    private static Logger logger = LoggerFactory.getLogger(PediaHomePage.class);
+    private static final Logger logger = LoggerFactory.getLogger(PediaHomePage.class);
 
     private static final String COUNTRIES_COMPONENT_ID = "countries";
     private static final String REGIONS_COMPONENT_ID = "regions";
     private static final String APPELLATIONS_COMPONENT_ID = "appellations";
     private static final String TYPES_COMPONENT_ID = "types";
     private static final String COLORS_COMPONENT_ID = "colors";
+
+    private final ActionLink clearFilters;
 
     /**
      * @param parameters
@@ -65,7 +67,7 @@ public class PediaHomePage extends PediaSuperPage {
         add(new AppellationMultiplePanel(APPELLATIONS_COMPONENT_ID, searchFormModel, CountEnum.WINE));
         add(new WineTypeEnumMultiplePanel(TYPES_COMPONENT_ID, searchFormModel, CountEnum.WINE));
         add(new WineColorEnumMultiplePanel(COLORS_COMPONENT_ID, searchFormModel, CountEnum.WINE));
-        add(new ActionLink("clearFilters", Action.CANCEL));
+        add(clearFilters = new ActionLink("clearFilters", Action.CANCEL));
 
         add(new WineDataView("wines", searchFormModel));
     }
@@ -75,18 +77,25 @@ public class PediaHomePage extends PediaSuperPage {
      */
     @Override
     public void onEvent(IEvent<?> event) {
-        LoggingUtils.logEventReceived(logger, event);
+        LoggingHelper.logEventReceived(logger, event);
         if (event.getPayload() instanceof Action) {
             Action action = (Action) event.getPayload();
             switch (action) {
-            case MODEL_CHANGED:
-                break;
             case CANCEL:
-                setDefaultModelObject(new SearchForm());
+                if (clearFilters == event.getSource()) {
+                    setDefaultModelObject(new SearchForm());
+                    AjaxTool.ajaxReRender(this);
+                    event.stop();
+                }
+                break;
+            case MODEL_CHANGED:
+                AjaxTool.ajaxReRender(this);
+                event.stop();
+                break;
+            default:
                 break;
             }
-            AjaxTool.ajaxReRender(this);
         }
-        LoggingUtils.logEventProcessed(logger, event);
+        LoggingHelper.logEventProcessed(logger, event);
     }
 }

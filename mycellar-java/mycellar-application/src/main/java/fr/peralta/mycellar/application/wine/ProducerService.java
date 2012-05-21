@@ -20,24 +20,21 @@ package fr.peralta.mycellar.application.wine;
 
 import java.util.List;
 
+import fr.peralta.mycellar.application.shared.EntitySearchFormService;
 import fr.peralta.mycellar.domain.wine.Producer;
+import fr.peralta.mycellar.domain.wine.repository.ProducerOrder;
+import fr.peralta.mycellar.domain.wine.repository.ProducerOrderEnum;
 
 /**
  * @author speralta
  * 
  */
-public interface ProducerService {
+public interface ProducerService extends EntitySearchFormService<Producer, ProducerOrderEnum, ProducerOrder> {
 
     /**
      * @param term
      * @return
      */
     List<Producer> getAllLike(String term);
-
-    /**
-     * @param id
-     * @return
-     */
-    Producer getById(Integer id);
 
 }

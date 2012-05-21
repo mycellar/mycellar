@@ -27,7 +27,7 @@ import fr.peralta.mycellar.domain.shared.IdentifiedEntity;
  */
 public final class FieldUtils {
 
-    public static void setId(IdentifiedEntity<?> entity, int id) {
+    public static void setId(IdentifiedEntity entity, int id) {
         try {
             org.apache.commons.lang3.reflect.FieldUtils.writeDeclaredField(entity, "id", id, true);
         } catch (IllegalAccessException e) {
@@ -35,7 +35,7 @@ public final class FieldUtils {
         }
     }
 
-    public static void setVersion(IdentifiedEntity<?> entity, int version) {
+    public static void setVersion(IdentifiedEntity entity, int version) {
         try {
             Field field = org.apache.commons.lang3.reflect.FieldUtils.getDeclaredField(
                     IdentifiedEntity.class, "version", true);

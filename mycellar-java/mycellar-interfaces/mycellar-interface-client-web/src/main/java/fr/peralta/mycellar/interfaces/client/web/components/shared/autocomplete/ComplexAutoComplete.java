@@ -18,10 +18,9 @@
  */
 package fr.peralta.mycellar.interfaces.client.web.components.shared.autocomplete;
 
-import org.apache.wicket.Component;
-import org.apache.wicket.WicketRuntimeException;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.event.Broadcast;
+import org.apache.wicket.event.IEvent;
 import org.apache.wicket.event.IEventSource;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.Model;
@@ -30,6 +29,7 @@ import org.wicketstuff.objectautocomplete.ObjectAutoCompleteField;
 import org.wicketstuff.objectautocomplete.ObjectAutoCompleteSelectionChangeListener;
 
 import fr.peralta.mycellar.domain.shared.IdentifiedEntity;
+import fr.peralta.mycellar.domain.shared.repository.SearchForm;
 import fr.peralta.mycellar.interfaces.client.web.components.shared.Action;
 import fr.peralta.mycellar.interfaces.client.web.components.shared.ComplexComponent;
 
@@ -38,17 +38,19 @@ import fr.peralta.mycellar.interfaces.client.web.components.shared.ComplexCompon
  * 
  * @param <O>
  */
-public abstract class ComplexAutoComplete<O extends IdentifiedEntity<O>> extends
-        ComplexComponent<O> implements ObjectAutoCompleteSelectionChangeListener<Integer> {
+public abstract class ComplexAutoComplete<O extends IdentifiedEntity> extends
+        ComplexComponent<O, ObjectAutoCompleteField<O, Integer>> implements
+        ObjectAutoCompleteSelectionChangeListener<Integer> {
 
     private static final long serialVersionUID = 201108082348L;
 
     /**
      * @param id
      * @param label
+     * @param searchFormModel
      */
-    public ComplexAutoComplete(String id, IModel<String> label) {
-        super(id, label);
+    public ComplexAutoComplete(String id, IModel<String> label, IModel<SearchForm> searchFormModel) {
+        super(id, label, searchFormModel);
     }
 
     /**
@@ -62,7 +64,7 @@ public abstract class ComplexAutoComplete<O extends IdentifiedEntity<O>> extends
      */
     @SuppressWarnings("unchecked")
     @Override
-    protected final Component createSelectorComponent(String id) {
+    protected final ObjectAutoCompleteField<O, Integer> createSelectorComponent(String id) {
         return createAutocomplete().idType(Integer.class).clearInputOnSelection()
                 .updateOnSelectionChange(this).autoCompleteRenderer(new AutoCompleteRenderer<O>())
                 .build(id, new Model<Integer>());
@@ -71,28 +73,20 @@ public abstract class ComplexAutoComplete<O extends IdentifiedEntity<O>> extends
     /**
      * {@inheritDoc}
      */
-    @SuppressWarnings("unchecked")
     @Override
     public void selectionChanged(AjaxRequestTarget pTarget, IModel<Integer> pModel) {
         if (pModel.getObject() != null) {
-            ((ObjectAutoCompleteField<O, Integer>) get(CONTAINER_COMPONENT_ID + PATH_SEPARATOR
-                    + CONTAINER_BODY_COMPONENT_ID + PATH_SEPARATOR + SELECTOR_COMPONENT_ID))
-                    .setDefaultModelObject(pModel.getObject()).send(this, Broadcast.BUBBLE,
-                            Action.SELECT);
+            getSelectorComponent().setDefaultModelObject(pModel.getObject()).send(this,
+                    Broadcast.BUBBLE, Action.SELECT);
         }
     }
 
     /**
      * {@inheritDoc}
      */
-    @SuppressWarnings("unchecked")
     @Override
     protected O getModelObjectFromEvent(IEventSource source) {
-        if (source instanceof ObjectAutoCompleteField) {
-            return getObject(((ObjectAutoCompleteField<O, Integer>) source).getModelObject());
-        } else {
-            throw new WicketRuntimeException("Event did not come from ObjectAutoCompleteField.");
-        }
+        return getObject(getSelectorComponent().getModelObject());
     }
 
     /**
@@ -105,12 +99,9 @@ public abstract class ComplexAutoComplete<O extends IdentifiedEntity<O>> extends
      * {@inheritDoc}
      */
     @Override
-    protected void onCancel(IEventSource source, Action action) {
-        get(
-                CONTAINER_COMPONENT_ID + PATH_SEPARATOR + CONTAINER_BODY_COMPONENT_ID
-                        + PATH_SEPARATOR + SELECTOR_COMPONENT_ID).setDefaultModel(
-                new Model<Integer>());
-        super.onCancel(source, action);
+    protected void onCancel(IEvent<?> event) {
+        getSelectorComponent().setDefaultModel(new Model<Integer>());
+        super.onCancel(event);
     }
 
 }

@@ -28,7 +28,6 @@ import fr.peralta.mycellar.domain.shared.repository.FilterEnum;
 import fr.peralta.mycellar.domain.shared.repository.SearchForm;
 import fr.peralta.mycellar.domain.stock.Cellar;
 import fr.peralta.mycellar.interfaces.client.web.components.shared.cloud.SimpleTagCloud;
-import fr.peralta.mycellar.interfaces.client.web.security.UserKey;
 import fr.peralta.mycellar.interfaces.facades.stock.StockServiceFacade;
 
 /**
@@ -44,19 +43,22 @@ public class CellarSimpleTagCloud extends SimpleTagCloud<Cellar> {
     /**
      * @param id
      * @param label
+     * @param searchFormModel
+     * @param count
+     * @param filters
      */
-    public CellarSimpleTagCloud(String id, IModel<String> label) {
-        super(id, label);
+    public CellarSimpleTagCloud(String id, IModel<String> label,
+            IModel<SearchForm> searchFormModel, CountEnum count, FilterEnum... filters) {
+        super(id, label, searchFormModel, count, filters);
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    protected Map<Cellar, Long> getChoices() {
-        return stockServiceFacade.getCellars(
-                new SearchForm().setCellarModification(true).addToSet(FilterEnum.USER,
-                        UserKey.getUserLoggedIn()), CountEnum.STOCK_QUANTITY);
+    protected Map<Cellar, Long> getChoices(SearchForm searchForm, CountEnum count,
+            FilterEnum... filters) {
+        return stockServiceFacade.getCellars(searchForm, count, filters);
     }
 
 }

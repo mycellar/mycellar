@@ -24,7 +24,7 @@ import static org.hamcrest.CoreMatchers.is;
 /**
  * @author speralta
  */
-public abstract class NamedEntityHasSameProperties<E extends NamedEntity<E>> extends
+public abstract class NamedEntityHasSameProperties<E extends NamedEntity> extends
         IdentifiedEntityHasSameProperties<E> {
 
     /**

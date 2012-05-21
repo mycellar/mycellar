@@ -22,6 +22,7 @@ import java.util.List;
 
 import org.apache.wicket.markup.html.list.ListItem;
 import org.apache.wicket.markup.html.list.PropertyListView;
+import org.apache.wicket.model.IModel;
 
 /**
  * @author speralta
@@ -34,7 +35,7 @@ class TagCloud<O> extends PropertyListView<TagData<O>> {
      * @param id
      * @param list
      */
-    public TagCloud(String id, List<? extends TagData<O>> list) {
+    public TagCloud(String id, IModel<? extends List<? extends TagData<O>>> list) {
         super(id, list);
     }
 

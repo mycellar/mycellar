@@ -18,20 +18,13 @@
  */
 package fr.peralta.mycellar.domain.user.repository;
 
-import java.util.List;
-
-import fr.peralta.mycellar.domain.shared.repository.SearchForm;
+import fr.peralta.mycellar.domain.shared.repository.EntityRepository;
 import fr.peralta.mycellar.domain.user.User;
 
 /**
  * @author speralta
  */
-public interface UserRepository {
-
-    /**
-     * @param user
-     */
-    void saveUser(User user);
+public interface UserRepository extends EntityRepository<User, UserOrderEnum, UserOrder> {
 
     /**
      * @param login
@@ -41,24 +34,9 @@ public interface UserRepository {
     User find(String login, String password);
 
     /**
-     * @param searchForm
+     * @param email
      * @return
      */
-    long countUsers(SearchForm searchForm);
-
-    /**
-     * @param searchForm
-     * @param orders
-     * @param first
-     * @param count
-     * @return
-     */
-    List<User> getUsers(SearchForm searchForm, UserOrder orders, int first, int count);
-
-    /**
-     * @param userId
-     * @return
-     */
-    User getUserById(Integer userId);
+    boolean isEmailAlreadyRegistered(String email);
 
 }

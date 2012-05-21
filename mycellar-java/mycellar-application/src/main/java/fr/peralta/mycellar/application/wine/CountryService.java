@@ -18,22 +18,17 @@
  */
 package fr.peralta.mycellar.application.wine;
 
-import java.util.Map;
-
-import fr.peralta.mycellar.domain.shared.repository.CountEnum;
-import fr.peralta.mycellar.domain.shared.repository.SearchForm;
+import fr.peralta.mycellar.application.shared.EntitySearchFormService;
 import fr.peralta.mycellar.domain.wine.Country;
+import fr.peralta.mycellar.domain.wine.repository.CountryOrder;
+import fr.peralta.mycellar.domain.wine.repository.CountryOrderEnum;
 
 /**
  * @author speralta
  */
-public interface CountryService {
+public interface CountryService extends
+        EntitySearchFormService<Country, CountryOrderEnum, CountryOrder> {
 
-    /**
-     * @param searchForm
-     * @param count
-     * @return
-     */
-    Map<Country, Long> getAll(SearchForm searchForm, CountEnum count);
+    Country find(String name);
 
 }

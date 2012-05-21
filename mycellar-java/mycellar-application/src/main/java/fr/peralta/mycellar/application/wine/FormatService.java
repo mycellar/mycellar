@@ -18,20 +18,14 @@
  */
 package fr.peralta.mycellar.application.wine;
 
-import java.util.Map;
-
-import fr.peralta.mycellar.domain.shared.repository.CountEnum;
-import fr.peralta.mycellar.domain.shared.repository.SearchForm;
+import fr.peralta.mycellar.application.shared.EntitySearchFormService;
 import fr.peralta.mycellar.domain.wine.Format;
+import fr.peralta.mycellar.domain.wine.repository.FormatOrder;
+import fr.peralta.mycellar.domain.wine.repository.FormatOrderEnum;
 
 /**
  * @author speralta
  */
-public interface FormatService {
-
-    /**
-     * @return
-     */
-    Map<Format, Long> getAll(SearchForm searchForm, CountEnum count);
+public interface FormatService extends EntitySearchFormService<Format, FormatOrderEnum, FormatOrder> {
 
 }

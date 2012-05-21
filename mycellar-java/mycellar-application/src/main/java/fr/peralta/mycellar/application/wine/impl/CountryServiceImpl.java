@@ -18,40 +18,61 @@
  */
 package fr.peralta.mycellar.application.wine.impl;
 
-import java.util.Map;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import fr.peralta.mycellar.application.shared.AbstractEntitySearchFormService;
 import fr.peralta.mycellar.application.wine.CountryService;
-import fr.peralta.mycellar.domain.shared.repository.CountEnum;
-import fr.peralta.mycellar.domain.shared.repository.SearchForm;
+import fr.peralta.mycellar.domain.shared.exception.BusinessError;
+import fr.peralta.mycellar.domain.shared.exception.BusinessException;
 import fr.peralta.mycellar.domain.wine.Country;
-import fr.peralta.mycellar.domain.wine.repository.WineRepository;
+import fr.peralta.mycellar.domain.wine.repository.CountryOrder;
+import fr.peralta.mycellar.domain.wine.repository.CountryOrderEnum;
+import fr.peralta.mycellar.domain.wine.repository.CountryRepository;
 
 /**
  * @author speralta
  */
 @Service
-public class CountryServiceImpl implements CountryService {
+public class CountryServiceImpl extends
+        AbstractEntitySearchFormService<Country, CountryOrderEnum, CountryOrder, CountryRepository>
+        implements CountryService {
 
-    private WineRepository wineRepository;
+    private CountryRepository countryRepository;
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public Map<Country, Long> getAll(SearchForm searchForm, CountEnum count) {
-        return wineRepository.getCountries(searchForm, count);
+    public Country find(String name) {
+        return countryRepository.find(name);
     }
 
     /**
-     * @param wineRepository
-     *            the wineRepository to set
+     * {@inheritDoc}
+     */
+    @Override
+    public void validate(Country entity) throws BusinessException {
+        if ((entity.getId() == null) && (find(entity.getName()) != null)) {
+            throw new BusinessException(BusinessError.COUNTRY_00001);
+        }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    protected CountryRepository getRepository() {
+        return countryRepository;
+    }
+
+    /**
+     * @param countryRepository
+     *            the countryRepository to set
      */
     @Autowired
-    public void setWineRepository(WineRepository wineRepository) {
-        this.wineRepository = wineRepository;
+    public void setCountryRepository(CountryRepository countryRepository) {
+        this.countryRepository = countryRepository;
     }
 
 }

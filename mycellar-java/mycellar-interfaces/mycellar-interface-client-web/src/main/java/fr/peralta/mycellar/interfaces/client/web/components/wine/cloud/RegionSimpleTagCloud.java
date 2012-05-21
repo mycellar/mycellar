@@ -20,7 +20,7 @@ package fr.peralta.mycellar.interfaces.client.web.components.wine.cloud;
 
 import java.util.Map;
 
-import org.apache.wicket.event.IEventSource;
+import org.apache.wicket.event.IEvent;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.StringResourceModel;
 import org.apache.wicket.spring.injection.annot.SpringBean;
@@ -28,10 +28,10 @@ import org.apache.wicket.spring.injection.annot.SpringBean;
 import fr.peralta.mycellar.domain.shared.repository.CountEnum;
 import fr.peralta.mycellar.domain.shared.repository.FilterEnum;
 import fr.peralta.mycellar.domain.shared.repository.SearchForm;
-import fr.peralta.mycellar.domain.wine.Country;
 import fr.peralta.mycellar.domain.wine.Region;
-import fr.peralta.mycellar.interfaces.client.web.components.shared.Action;
+import fr.peralta.mycellar.interfaces.client.web.components.shared.AjaxTool;
 import fr.peralta.mycellar.interfaces.client.web.components.shared.cloud.SimpleTagCloud;
+import fr.peralta.mycellar.interfaces.client.web.shared.FilterEnumHelper;
 import fr.peralta.mycellar.interfaces.facades.wine.WineServiceFacade;
 
 /**
@@ -43,41 +43,33 @@ public class RegionSimpleTagCloud extends SimpleTagCloud<Region> {
 
     private static final String COUNTRY_COMPONENT_ID = "country";
 
-    private final CountEnum count;
-
-    private final IModel<SearchForm> searchFormModel;
-
     @SpringBean
     private WineServiceFacade wineServiceFacade;
+
+    private final CountrySimpleTagCloud countrySimpleTagCloud;
 
     /**
      * @param id
      * @param label
      * @param searchFormModel
      * @param count
+     * @param filters
      */
     public RegionSimpleTagCloud(String id, IModel<String> label,
-            IModel<SearchForm> searchFormModel, CountEnum count) {
-        super(id, label);
-        this.count = count;
-        this.searchFormModel = searchFormModel;
-        add(new CountrySimpleTagCloud(COUNTRY_COMPONENT_ID, new StringResourceModel("country",
-                this, null), searchFormModel, count));
-    }
-
-    @SuppressWarnings("unchecked")
-    private IModel<Country> getCountryModel() {
-        return (IModel<Country>) get(COUNTRY_COMPONENT_ID).getDefaultModel();
+            IModel<SearchForm> searchFormModel, CountEnum count, FilterEnum... filters) {
+        super(id, label, searchFormModel, count, filters);
+        add(countrySimpleTagCloud = new CountrySimpleTagCloud(COUNTRY_COMPONENT_ID,
+                new StringResourceModel("country", this, null), searchFormModel, count,
+                FilterEnumHelper.removeFilter(filters, FilterEnum.REGION)));
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    protected Map<Region, Long> getChoices() {
-        SearchForm searchForm = searchFormModel.getObject();
-        searchForm.replaceSet(FilterEnum.COUNTRY, getCountryModel().getObject());
-        return wineServiceFacade.getRegions(searchForm, count);
+    protected Map<Region, Long> getChoices(SearchForm searchForm, CountEnum count,
+            FilterEnum... filters) {
+        return wineServiceFacade.getRegions(searchForm, count, filters);
     }
 
     /**
@@ -85,7 +77,7 @@ public class RegionSimpleTagCloud extends SimpleTagCloud<Region> {
      */
     @Override
     protected boolean isReadyToSelect() {
-        return ((CountrySimpleTagCloud) get(COUNTRY_COMPONENT_ID)).isValued();
+        return countrySimpleTagCloud.isValued();
     }
 
     /**
@@ -108,17 +100,15 @@ public class RegionSimpleTagCloud extends SimpleTagCloud<Region> {
      * {@inheritDoc}
      */
     @Override
-    protected void detachModel() {
-        searchFormModel.detach();
-        super.detachModel();
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    protected void onModelChanged(IEventSource source, Action action) {
-        refreshTagCloud();
+    protected void onModelChanged(IEvent<?> event) {
+        getSearchFormModel().getObject().replaceSet(FilterEnum.COUNTRY,
+                countrySimpleTagCloud.getModelObject());
+        if (!countrySimpleTagCloud.isValued()) {
+            markAsNonValued();
+        }
+        initializeIfUnique();
+        AjaxTool.ajaxReRender(this);
+        event.stop();
     }
 
     /**
@@ -126,7 +116,9 @@ public class RegionSimpleTagCloud extends SimpleTagCloud<Region> {
      */
     @Override
     protected Region createDefaultObject() {
-        return new Region();
+        Region region = new Region();
+        region.setCountry(countrySimpleTagCloud.getModelObject());
+        return region;
     }
 
 }
