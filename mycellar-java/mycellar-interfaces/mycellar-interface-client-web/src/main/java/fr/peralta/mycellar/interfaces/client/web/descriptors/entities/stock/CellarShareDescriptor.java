@@ -18,7 +18,7 @@
  */
 package fr.peralta.mycellar.interfaces.client.web.descriptors.entities.stock;
 
-import org.springframework.stereotype.Service;
+import org.springframework.stereotype.Component;
 
 import fr.peralta.mycellar.domain.stock.CellarShare;
 import fr.peralta.mycellar.interfaces.client.web.descriptors.entities.shared.IEntityDescriptor;
@@ -28,7 +28,7 @@ import fr.peralta.mycellar.interfaces.client.web.pages.admin.stock.CellarSharesP
 /**
  * @author speralta
  */
-@Service
+@Component
 public class CellarShareDescriptor extends AbstractDescriptor implements
         IEntityDescriptor<CellarShare, CellarSharesPage> {
 

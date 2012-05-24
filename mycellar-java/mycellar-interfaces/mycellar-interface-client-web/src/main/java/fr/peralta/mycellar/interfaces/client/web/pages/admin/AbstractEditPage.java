@@ -66,8 +66,7 @@ public abstract class AbstractEditPage<E extends IdentifiedEntity> extends Admin
      */
     @Override
     protected void onInitialize() {
-        add(new NavPanel("listMenu", getClass(), getClass(), getDescriptorServiceFacade()
-                .getListPages()));
+        add(new NavPanel("listMenu", getClass(), getDescriptorServiceFacade().getListPages()));
         super.onInitialize();
     }
 

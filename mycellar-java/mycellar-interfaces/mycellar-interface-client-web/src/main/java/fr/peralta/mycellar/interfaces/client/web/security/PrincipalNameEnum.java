@@ -23,7 +23,7 @@ package fr.peralta.mycellar.interfaces.client.web.security;
  */
 public enum PrincipalNameEnum {
 
-    BASIC("basic"), ADMIN("admin");
+    BASIC("basic"), CELLAR("cellar"), BOOKING("booking"), ADMIN("admin");
 
     /**
      * @param name

@@ -18,7 +18,7 @@
  */
 package fr.peralta.mycellar.interfaces.client.web.descriptors.entities.wine;
 
-import org.springframework.stereotype.Service;
+import org.springframework.stereotype.Component;
 
 import fr.peralta.mycellar.domain.wine.Format;
 import fr.peralta.mycellar.interfaces.client.web.descriptors.entities.shared.IEntityDescriptor;
@@ -28,7 +28,7 @@ import fr.peralta.mycellar.interfaces.client.web.pages.admin.wine.FormatsPage;
 /**
  * @author speralta
  */
-@Service
+@Component
 public class FormatDescriptor extends AbstractDescriptor implements
         IEntityDescriptor<Format, FormatsPage> {
 

@@ -10,7 +10,7 @@
   <logger name="fr.peralta.mycellar" level="trace" />
   
   <!-- HIBERNATE QUERIES -->
-  <logger name="org.hibernate.SQL" level="debug" />
+  <!-- <logger name="org.hibernate.SQL" level="debug" /> -->
   <!-- <logger name="org.hibernate.type" level="trace" /> -->
 
   <root level="warn">

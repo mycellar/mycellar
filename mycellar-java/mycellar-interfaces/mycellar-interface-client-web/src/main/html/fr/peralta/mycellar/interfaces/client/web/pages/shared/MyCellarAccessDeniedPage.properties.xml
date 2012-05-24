@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE properties SYSTEM "http://java.sun.com/dtd/properties.dtd">
+<properties>
+  <entry key="accessDenied">Accès refusé</entry>
+  <entry key="accessDeniedText">Votre compte ne vous permet pas d'accéder à cette partie du site. Si vous pensez que c'est une erreur, contactez-nous.</entry>
+</properties> 

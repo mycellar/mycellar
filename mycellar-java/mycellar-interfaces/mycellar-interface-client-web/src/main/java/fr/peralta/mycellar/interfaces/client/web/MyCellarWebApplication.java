@@ -42,6 +42,8 @@ import fr.peralta.mycellar.interfaces.client.web.pages.NewUserPage;
 import fr.peralta.mycellar.interfaces.client.web.pages.admin.AdminPage;
 import fr.peralta.mycellar.interfaces.client.web.pages.admin.ListPage;
 import fr.peralta.mycellar.interfaces.client.web.pages.admin.StackPage;
+import fr.peralta.mycellar.interfaces.client.web.pages.admin.booking.BookingEventPage;
+import fr.peralta.mycellar.interfaces.client.web.pages.admin.booking.BookingPage;
 import fr.peralta.mycellar.interfaces.client.web.pages.admin.stock.CellarPage;
 import fr.peralta.mycellar.interfaces.client.web.pages.admin.stock.CellarSharePage;
 import fr.peralta.mycellar.interfaces.client.web.pages.admin.stock.CellarSharesPage;
@@ -58,12 +60,15 @@ import fr.peralta.mycellar.interfaces.client.web.pages.admin.wine.RegionPage;
 import fr.peralta.mycellar.interfaces.client.web.pages.admin.wine.RegionsPage;
 import fr.peralta.mycellar.interfaces.client.web.pages.admin.wine.WinePage;
 import fr.peralta.mycellar.interfaces.client.web.pages.admin.wine.WinesPage;
+import fr.peralta.mycellar.interfaces.client.web.pages.booking.BookingEventsPage;
+import fr.peralta.mycellar.interfaces.client.web.pages.booking.BookingsPage;
 import fr.peralta.mycellar.interfaces.client.web.pages.cellar.CellarsPage;
 import fr.peralta.mycellar.interfaces.client.web.pages.cellar.DrinkBottlesPage;
 import fr.peralta.mycellar.interfaces.client.web.pages.cellar.InputOutputPage;
 import fr.peralta.mycellar.interfaces.client.web.pages.cellar.PackageArrivalPage;
 import fr.peralta.mycellar.interfaces.client.web.pages.cellar.ShareCellarsPage;
 import fr.peralta.mycellar.interfaces.client.web.pages.pedia.PediaHomePage;
+import fr.peralta.mycellar.interfaces.client.web.pages.shared.MyCellarAccessDeniedPage;
 import fr.peralta.mycellar.interfaces.client.web.resources.css.CssReferences;
 import fr.peralta.mycellar.interfaces.client.web.resources.img.ImageReferences;
 import fr.peralta.mycellar.interfaces.client.web.resources.js.JavaScriptReferences;
@@ -87,6 +92,8 @@ public abstract class MyCellarWebApplication extends SwarmWebApplication {
                 new SpringComponentInjector(this, getApplicationContext()));
         // Add exception listener for saving stack trace in database
         getRequestCycleListeners().add(new ExceptionListener());
+        // Set custom access denied page
+        getApplicationSettings().setAccessDeniedPage(MyCellarAccessDeniedPage.class);
         // Add resource loader for menu
         getResourceSettings().getStringResourceLoaders().add(
                 new ClassStringResourceLoader(HomePageDescriptor.class));
@@ -109,6 +116,8 @@ public abstract class MyCellarWebApplication extends SwarmWebApplication {
         mountResource("/js/master.js", JavaScriptReferences.getMasterJs());
         // Add mounts for pages
         mountPage("/home", getHomePage());
+        mountPage("/bookingEvents", BookingEventsPage.class);
+        mountPage("/bookings", BookingsPage.class);
         mountPage("/cellars", CellarsPage.class);
         mountPage("/io", InputOutputPage.class);
         mountPage("/packageArrival", PackageArrivalPage.class);
@@ -128,6 +137,11 @@ public abstract class MyCellarWebApplication extends SwarmWebApplication {
         mountPage("/admin/lists/cellars",
                 fr.peralta.mycellar.interfaces.client.web.pages.admin.stock.CellarsPage.class);
         mountPage("/admin/lists/cellarShares", CellarSharesPage.class);
+        mountPage(
+                "/admin/lists/bookingEvents",
+                fr.peralta.mycellar.interfaces.client.web.pages.admin.booking.BookingEventsPage.class);
+        mountPage("/admin/lists/bookings",
+                fr.peralta.mycellar.interfaces.client.web.pages.admin.booking.BookingsPage.class);
         mountPage("/admin/edit/user", UserPage.class);
         mountPage("/admin/edit/appellation", AppellationPage.class);
         mountPage("/admin/edit/country", CountryPage.class);
@@ -136,9 +150,12 @@ public abstract class MyCellarWebApplication extends SwarmWebApplication {
         mountPage("/admin/edit/wine", WinePage.class);
         mountPage("/admin/edit/cellar", CellarPage.class);
         mountPage("/admin/edit/cellarShare", CellarSharePage.class);
+        mountPage("/admin/edit/bookingEvent", BookingEventPage.class);
+        mountPage("/admin/edit/booking", BookingPage.class);
         mountPage("/error", InternalErrorPage.class);
         mountPage("/stack", StackPage.class);
         mountPage("/shares", ShareCellarsPage.class);
+        mountPage("/accessDenied", MyCellarAccessDeniedPage.class);
     }
 
     /**

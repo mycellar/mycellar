@@ -56,7 +56,7 @@ public class SubNavPanel extends Panel {
                         listItem.getModelObject().getPageClass());
                 SecureComponentHelper.setSecurityCheck(link, new LinkSecurityCheck(link, listItem
                         .getModelObject().getPageClass()));
-                if (current.equals(listItem.getModelObject().getSuperPageClass())) {
+                if (current.equals(listItem.getModelObject().getPageClass())) {
                     listItem.add(new AttributeAppender("class", "active").setSeparator(" "));
                 }
                 link.add(new Label("label", new StringResourceModel(listItem.getModelObject()

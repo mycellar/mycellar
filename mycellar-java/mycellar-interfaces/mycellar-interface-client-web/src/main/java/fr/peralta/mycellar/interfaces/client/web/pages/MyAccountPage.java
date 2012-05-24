@@ -18,9 +18,13 @@
  */
 package fr.peralta.mycellar.interfaces.client.web.pages;
 
+import org.apache.wicket.markup.html.basic.Label;
+import org.apache.wicket.model.StringResourceModel;
 import org.apache.wicket.request.mapper.parameter.PageParameters;
 
+import fr.peralta.mycellar.domain.user.User;
 import fr.peralta.mycellar.interfaces.client.web.pages.shared.HomeSuperPage;
+import fr.peralta.mycellar.interfaces.client.web.security.UserKey;
 
 /**
  * @author speralta
@@ -34,6 +38,11 @@ public class MyAccountPage extends HomeSuperPage {
      */
     public MyAccountPage(PageParameters parameters) {
         super(parameters);
+        User user = UserKey.getUserLoggedIn();
+        add(new Label("noProfile", new StringResourceModel("noProfile", null))
+                .setVisibilityAllowed(user.getProfile() == null));
+        add(new Label("name", user.getLastname() + " " + user.getFirstname()));
+        add(new Label("email", user.getEmail()));
     }
 
 }

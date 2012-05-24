@@ -96,10 +96,10 @@ public class DescriptorServiceFacade {
                 pages.put(
                         Localizer.get().getString(entityDescriptor.getTitleKey(), null),
                         new NavPageDescriptor(entityDescriptor.getListPageClass(), entityDescriptor
-                                .getListPageClass(), entityDescriptor.getTitleKey()));
+                                .getTitleKey()));
             }
             if (descriptor instanceof IMenuDescriptor) {
-                IMenuDescriptor<?, ?> menuDescriptor = ((IMenuDescriptor<?, ?>) descriptor);
+                IMenuDescriptor<?> menuDescriptor = ((IMenuDescriptor<?>) descriptor);
                 if (menuDescriptor.getParentKey() != null) {
                     NavHeaderDescriptor header = getHeader(menuDescriptor.getParentKey());
                     if (header == null) {
@@ -107,12 +107,12 @@ public class DescriptorServiceFacade {
                         menuPages.put(menuDescriptor.getWeight(), header);
                     }
                     header.addPage(new NavPageDescriptor(menuDescriptor.getMenuableClass(),
-                            menuDescriptor.getSuperClass(), menuDescriptor.getTitleKey()));
+                            menuDescriptor.getTitleKey()));
                 } else {
                     menuPages.put(
                             menuDescriptor.getWeight(),
                             new NavPageDescriptor(menuDescriptor.getMenuableClass(), menuDescriptor
-                                    .getSuperClass(), menuDescriptor.getTitleKey()));
+                                    .getTitleKey()));
                 }
             }
         }

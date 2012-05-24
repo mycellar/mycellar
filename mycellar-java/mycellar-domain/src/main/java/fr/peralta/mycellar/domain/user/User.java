@@ -24,6 +24,8 @@ import java.util.Set;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
@@ -34,6 +36,7 @@ import javax.persistence.UniqueConstraint;
 import org.apache.commons.lang3.ObjectUtils;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 
+import fr.peralta.mycellar.domain.booking.Booking;
 import fr.peralta.mycellar.domain.shared.IdentifiedEntity;
 import fr.peralta.mycellar.domain.stock.Cellar;
 
@@ -49,6 +52,9 @@ public class User extends IdentifiedEntity {
 
     @OneToMany(mappedBy = "owner")
     private final Set<Cellar> cellars = new HashSet<Cellar>();
+
+    @OneToMany(mappedBy = "customer")
+    private final Set<Booking> bookings = new HashSet<Booking>();
 
     @Column(name = "EMAIL", nullable = false)
     private String email;
@@ -67,11 +73,37 @@ public class User extends IdentifiedEntity {
     @Column(name = "PASSWORD", nullable = false, length = 40)
     private String password;
 
+    @Column(name = "PROFILE")
+    @Enumerated(EnumType.STRING)
+    private ProfileEnum profile;
+
+    /**
+     * @return the profile
+     */
+    public ProfileEnum getProfile() {
+        return profile;
+    }
+
+    /**
+     * @param profile
+     *            the profile to set
+     */
+    public void setProfile(ProfileEnum profile) {
+        this.profile = profile;
+    }
+
     /**
      * @return the cellars
      */
     public Set<Cellar> getCellars() {
         return Collections.unmodifiableSet(cellars);
+    }
+
+    /**
+     * @return the bookings
+     */
+    public Set<Booking> getBookings() {
+        return Collections.unmodifiableSet(bookings);
     }
 
     /**
@@ -165,7 +197,7 @@ public class User extends IdentifiedEntity {
     @Override
     protected ToStringBuilder toStringBuilder() {
         return super.toStringBuilder().append("email", email).append("firstname", firstname)
-                .append("lastname", lastname).append("password", password);
+                .append("lastname", lastname).append("profile", profile);
     }
 
 }

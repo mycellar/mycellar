@@ -27,10 +27,12 @@
       <header role="primary" class="page-header"><h1>Header</h1></header>
       <wicket:extend>
         <div class="row-fluid">
-          <div class="span1">
-            <ul wicket:id="listMenu" class="nav" />
+          <div class="span2">
+            <nav role="secondary">
+              <ul wicket:id="listMenu" class="nav nav-list" />
+            </nav>
           </div>
-          <div class="span11">
+          <div class="span10">
             <section>
               <form wicket:id="form" class="form-horizontal">
                 <div wicket:id="newObject" />

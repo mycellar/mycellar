@@ -33,7 +33,7 @@ import fr.peralta.mycellar.domain.shared.repository.FilterEnum;
 import fr.peralta.mycellar.domain.shared.repository.SearchForm;
 import fr.peralta.mycellar.domain.wine.Wine;
 import fr.peralta.mycellar.domain.wine.repository.WineOrder;
-import fr.peralta.mycellar.interfaces.client.web.behaviors.OnBlurModelChangedAjaxBehavior;
+import fr.peralta.mycellar.interfaces.client.web.behaviors.OnEventModelChangedAjaxBehavior;
 import fr.peralta.mycellar.interfaces.client.web.components.shared.AjaxTool;
 import fr.peralta.mycellar.interfaces.client.web.components.shared.feedback.FormComponentFeedbackBorder;
 import fr.peralta.mycellar.interfaces.client.web.components.shared.list.SimpleList;
@@ -86,7 +86,7 @@ public class WineSimpleList extends SimpleList<Wine> {
         add((vintageBorder = new FormComponentFeedbackBorder(VINTAGE_COMPONENT_ID))
                 .add((vintageTextField = new NumberTextField<Integer>(VINTAGE_COMPONENT_ID))
                         .setMinimum(1800).setMaximum(new LocalDate().getYear())
-                        .add(new OnBlurModelChangedAjaxBehavior())));
+                        .add(new OnEventModelChangedAjaxBehavior("onblur"))));
     }
 
     /**

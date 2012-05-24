@@ -18,19 +18,18 @@
  */
 package fr.peralta.mycellar.interfaces.client.web.descriptors.menu.cellar;
 
-import org.springframework.stereotype.Service;
+import org.springframework.stereotype.Component;
 
 import fr.peralta.mycellar.interfaces.client.web.descriptors.menu.shared.IMenuDescriptor;
 import fr.peralta.mycellar.interfaces.client.web.descriptors.shared.AbstractDescriptor;
 import fr.peralta.mycellar.interfaces.client.web.pages.cellar.ShareCellarsPage;
-import fr.peralta.mycellar.interfaces.client.web.pages.shared.CellarSuperPage;
 
 /**
  * @author speralta
  */
-@Service
+@Component
 public class ShareCellarsPageDescriptor extends AbstractDescriptor implements
-        IMenuDescriptor<CellarSuperPage, ShareCellarsPage> {
+        IMenuDescriptor<ShareCellarsPage> {
 
     /**
      * {@inheritDoc}
@@ -38,14 +37,6 @@ public class ShareCellarsPageDescriptor extends AbstractDescriptor implements
     @Override
     public Class<ShareCellarsPage> getMenuableClass() {
         return ShareCellarsPage.class;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public Class<CellarSuperPage> getSuperClass() {
-        return CellarSuperPage.class;
     }
 
     /**

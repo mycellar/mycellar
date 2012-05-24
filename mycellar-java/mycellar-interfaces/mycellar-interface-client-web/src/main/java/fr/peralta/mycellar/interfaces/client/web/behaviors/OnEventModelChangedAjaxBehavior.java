@@ -28,15 +28,15 @@ import fr.peralta.mycellar.interfaces.client.web.components.shared.Action;
  * @author speralta
  * 
  */
-public class OnBlurModelChangedAjaxBehavior extends AjaxFormComponentUpdatingBehavior {
+public class OnEventModelChangedAjaxBehavior extends AjaxFormComponentUpdatingBehavior {
 
     private static final long serialVersionUID = 201109131625L;
 
     /**
      * Default constructor.
      */
-    public OnBlurModelChangedAjaxBehavior() {
-        super("onblur");
+    public OnEventModelChangedAjaxBehavior(String event) {
+        super(event);
     }
 
     /**

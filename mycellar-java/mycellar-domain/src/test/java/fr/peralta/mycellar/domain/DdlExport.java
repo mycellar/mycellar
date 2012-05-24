@@ -22,6 +22,9 @@ package fr.peralta.mycellar.domain;
 import org.hibernate.cfg.Configuration;
 import org.hibernate.tool.hbm2ddl.SchemaExport;
 
+import fr.peralta.mycellar.domain.booking.Booking;
+import fr.peralta.mycellar.domain.booking.BookingBottle;
+import fr.peralta.mycellar.domain.booking.BookingEvent;
 import fr.peralta.mycellar.domain.image.Image;
 import fr.peralta.mycellar.domain.position.Address;
 import fr.peralta.mycellar.domain.position.Map;
@@ -50,7 +53,7 @@ import fr.peralta.mycellar.domain.wine.Wine;
 public class DdlExport {
     public static void main(String... args) {
         Configuration cfg = new Configuration();
-        cfg.setProperty("hibernate.dialect", "org.hibernate.dialect.HSQLDialect");
+        cfg.setProperty("hibernate.dialect", "org.hibernate.dialect.MySQLDialect");
         cfg.addAnnotatedClass(Image.class);
         cfg.addAnnotatedClass(Address.class);
         cfg.addAnnotatedClass(Map.class);
@@ -72,6 +75,9 @@ public class DdlExport {
         cfg.addAnnotatedClass(Wine.class);
         cfg.addAnnotatedClass(Stack.class);
         cfg.addAnnotatedClass(CellarShare.class);
+        cfg.addAnnotatedClass(Booking.class);
+        cfg.addAnnotatedClass(BookingEvent.class);
+        cfg.addAnnotatedClass(BookingBottle.class);
         SchemaExport schemaExport = new SchemaExport(cfg);
         schemaExport.setDelimiter(";");
         schemaExport.execute(true, false, false, true);

@@ -42,11 +42,11 @@ public class CellarPage extends AbstractEditPage<Cellar> {
     private static final String CELLAR_ID_PARAMETER = "cellar";
 
     /**
-     * @param country
+     * @param cellar
      * @return
      */
-    public static PageParameters getPageParameters(Cellar country) {
-        return new PageParameters().add(CELLAR_ID_PARAMETER, country.getId());
+    public static PageParameters getPageParameters(Cellar cellar) {
+        return new PageParameters().add(CELLAR_ID_PARAMETER, cellar.getId());
     }
 
     /**

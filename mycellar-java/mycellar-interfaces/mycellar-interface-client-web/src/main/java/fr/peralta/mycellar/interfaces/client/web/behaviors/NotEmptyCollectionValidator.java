@@ -18,7 +18,7 @@
  */
 package fr.peralta.mycellar.interfaces.client.web.behaviors;
 
-import java.util.List;
+import java.util.Collection;
 
 import org.apache.wicket.validation.IValidatable;
 import org.apache.wicket.validation.validator.AbstractValidator;
@@ -26,7 +26,7 @@ import org.apache.wicket.validation.validator.AbstractValidator;
 /**
  * @author speralta
  */
-public class NotEmptyCollectionValidator extends AbstractValidator<List<?>> {
+public class NotEmptyCollectionValidator extends AbstractValidator<Collection<?>> {
 
     private static final long serialVersionUID = 201202231614L;
 
@@ -34,7 +34,7 @@ public class NotEmptyCollectionValidator extends AbstractValidator<List<?>> {
      * {@inheritDoc}
      */
     @Override
-    protected void onValidate(IValidatable<List<?>> validatable) {
+    protected void onValidate(IValidatable<Collection<?>> validatable) {
         if (validatable.getValue().size() == 0) {
             error(validatable);
         }

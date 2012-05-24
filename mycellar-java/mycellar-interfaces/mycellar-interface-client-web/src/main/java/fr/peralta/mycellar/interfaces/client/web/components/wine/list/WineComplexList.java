@@ -35,7 +35,7 @@ import fr.peralta.mycellar.domain.shared.repository.SearchForm;
 import fr.peralta.mycellar.domain.wine.Wine;
 import fr.peralta.mycellar.domain.wine.repository.WineOrder;
 import fr.peralta.mycellar.domain.wine.repository.WineOrderEnum;
-import fr.peralta.mycellar.interfaces.client.web.behaviors.OnBlurModelChangedAjaxBehavior;
+import fr.peralta.mycellar.interfaces.client.web.behaviors.OnEventModelChangedAjaxBehavior;
 import fr.peralta.mycellar.interfaces.client.web.components.shared.AjaxTool;
 import fr.peralta.mycellar.interfaces.client.web.components.shared.feedback.FormComponentFeedbackBorder;
 import fr.peralta.mycellar.interfaces.client.web.components.shared.form.ObjectForm;
@@ -84,7 +84,7 @@ public class WineComplexList extends ComplexList<Wine> {
         this.count = count;
         add(appellationComplexTagCloud = new AppellationComplexTagCloud(APPELLATION_COMPONENT_ID,
                 new StringResourceModel("appellation", this, null), searchFormModel, count,
-                FilterEnum.COUNTRY, FilterEnum.REGION));
+                FilterEnum.COUNTRY, FilterEnum.REGION, FilterEnum.APPELLATION));
         add(producerComplexAutoComplete = new ProducerComplexAutoComplete(PRODUCER_COMPONENT_ID,
                 new StringResourceModel("producer", this, null), searchFormModel));
         add(wineTypeEnumSimpleTagCloud = new WineTypeEnumSimpleTagCloud(TYPE_COMPONENT_ID,
@@ -94,7 +94,7 @@ public class WineComplexList extends ComplexList<Wine> {
         add((vintageBorder = new FormComponentFeedbackBorder(VINTAGE_COMPONENT_ID))
                 .add((vintageTextField = new NumberTextField<Integer>(VINTAGE_COMPONENT_ID))
                         .setMinimum(1800).setMaximum(new LocalDate().getYear())
-                        .add(new OnBlurModelChangedAjaxBehavior())));
+                        .add(new OnEventModelChangedAjaxBehavior("onblur"))));
     }
 
     /**

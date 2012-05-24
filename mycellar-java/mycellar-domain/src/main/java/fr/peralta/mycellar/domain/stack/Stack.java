@@ -123,8 +123,7 @@ public class Stack extends IdentifiedEntity {
      */
     @Override
     protected ToStringBuilder toStringBuilder() {
-        return super.toStringBuilder().append("count", count).append("hashCode", hashCode)
-                .append("stack", stack);
+        return super.toStringBuilder().append("count", count).append("hashCode", hashCode);
     }
 
 }

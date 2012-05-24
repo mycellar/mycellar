@@ -34,12 +34,4 @@ public abstract class PediaSuperPage extends BasePage {
         super(parameters);
     }
 
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    protected Class<? extends BasePage> getMenuClass() {
-        return PediaSuperPage.class;
-    }
-
 }

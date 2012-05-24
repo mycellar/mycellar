@@ -48,8 +48,7 @@ public abstract class BasePage extends SecureWebPage {
     public BasePage(PageParameters parameters) {
         super(parameters);
         add(new BookmarkablePageLink<Void>("homeLink", WebApplication.get().getHomePage()));
-        add(new NavPanel("menu", getMenuClass(), getSubMenuClass(),
-                descriptorServiceFacade.getMenuPages(), true));
+        add(new NavPanel("menu", getMenuClass(), descriptorServiceFacade.getMenuPages(), true));
         add(new LoginPanel("login"));
         add(new DebugBar("debug"));
     }
@@ -70,12 +69,7 @@ public abstract class BasePage extends SecureWebPage {
         response.renderJavaScriptReference(JavaScriptReferences.getMasterJs());
     }
 
-    /**
-     * @return the class of the menu page (for selecting it in {@link NavPanel}
-     */
-    protected abstract Class<? extends BasePage> getMenuClass();
-
-    protected Class<? extends BasePage> getSubMenuClass() {
+    protected Class<? extends BasePage> getMenuClass() {
         return this.getClass();
     }
 

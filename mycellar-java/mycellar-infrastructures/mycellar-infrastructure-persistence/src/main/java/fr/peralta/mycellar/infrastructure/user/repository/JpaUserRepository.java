@@ -18,6 +18,8 @@
  */
 package fr.peralta.mycellar.infrastructure.user.repository;
 
+import java.util.List;
+
 import javax.persistence.NoResultException;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
@@ -39,6 +41,28 @@ import fr.peralta.mycellar.infrastructure.shared.repository.JpaEntityRepository;
 @Repository
 public class JpaUserRepository extends JpaEntityRepository<User, UserOrderEnum, UserOrder>
         implements UserRepository {
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public List<User> getAllLike(String term) {
+        CriteriaBuilder criteriaBuilder = getEntityManager().getCriteriaBuilder();
+        CriteriaQuery<User> query = criteriaBuilder.createQuery(User.class);
+        Root<User> root = query.from(User.class);
+        return getEntityManager().createQuery(
+                query.select(root).where(
+                        criteriaBuilder.or(
+                                criteriaBuilder.like(
+                                        criteriaBuilder.lower(root.<String> get("firstname")), "%"
+                                                + term.toLowerCase() + "%"),
+                                criteriaBuilder.like(
+                                        criteriaBuilder.lower(root.<String> get("lastname")), "%"
+                                                + term.toLowerCase() + "%"),
+                                criteriaBuilder.like(
+                                        criteriaBuilder.lower(root.<String> get("email")), "%"
+                                                + term.toLowerCase() + "%")))).getResultList();
+    }
 
     /**
      * {@inheritDoc}

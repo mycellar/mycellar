@@ -18,7 +18,7 @@
  */
 package fr.peralta.mycellar.interfaces.client.web.renderers.stock;
 
-import org.springframework.stereotype.Service;
+import org.springframework.stereotype.Component;
 
 import fr.peralta.mycellar.domain.stock.Bottle;
 import fr.peralta.mycellar.domain.wine.Format;
@@ -28,7 +28,7 @@ import fr.peralta.mycellar.interfaces.client.web.renderers.shared.AbstractRender
 /**
  * @author bperalta
  */
-@Service
+@Component
 public class BottleRenderer extends AbstractRenderer<Bottle> {
 
     /**

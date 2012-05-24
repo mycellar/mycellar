@@ -18,19 +18,17 @@
  */
 package fr.peralta.mycellar.interfaces.client.web.descriptors.menu.admin;
 
-import org.springframework.stereotype.Service;
+import org.springframework.stereotype.Component;
 
 import fr.peralta.mycellar.interfaces.client.web.descriptors.menu.shared.IMenuDescriptor;
 import fr.peralta.mycellar.interfaces.client.web.descriptors.shared.AbstractDescriptor;
 import fr.peralta.mycellar.interfaces.client.web.pages.admin.ListPage;
-import fr.peralta.mycellar.interfaces.client.web.pages.shared.AdminSuperPage;
 
 /**
  * @author speralta
  */
-@Service
-public class ListPageDescriptor extends AbstractDescriptor implements
-        IMenuDescriptor<AdminSuperPage, ListPage> {
+@Component
+public class ListPageDescriptor extends AbstractDescriptor implements IMenuDescriptor<ListPage> {
 
     /**
      * {@inheritDoc}
@@ -38,14 +36,6 @@ public class ListPageDescriptor extends AbstractDescriptor implements
     @Override
     public Class<ListPage> getMenuableClass() {
         return ListPage.class;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public Class<AdminSuperPage> getSuperClass() {
-        return AdminSuperPage.class;
     }
 
     /**

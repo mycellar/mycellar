@@ -18,20 +18,32 @@
  */
 package fr.peralta.mycellar.interfaces.client.web.components.user.edit;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+
+import org.apache.wicket.extensions.markup.html.form.select.Select;
+import org.apache.wicket.extensions.markup.html.form.select.SelectOptions;
 import org.apache.wicket.markup.html.form.EmailTextField;
-import org.apache.wicket.markup.html.form.PasswordTextField;
 import org.apache.wicket.markup.html.form.TextField;
 import org.apache.wicket.markup.html.panel.Panel;
 
+import fr.peralta.mycellar.domain.user.ProfileEnum;
 import fr.peralta.mycellar.interfaces.client.web.components.shared.feedback.FormComponentFeedbackBorder;
+import fr.peralta.mycellar.interfaces.client.web.components.shared.select.SelectRenderer;
 
 /**
  * @author speralta
- * 
  */
 public class UserEditPanel extends Panel {
 
     private static final long serialVersionUID = 201203091757L;
+
+    private static List<ProfileEnum> values = new ArrayList<ProfileEnum>();
+    static {
+        values.add(null);
+        values.addAll(Arrays.asList(ProfileEnum.values()));
+    }
 
     /**
      * @param id
@@ -44,7 +56,8 @@ public class UserEditPanel extends Panel {
                 .setRequired(true)));
         add(new FormComponentFeedbackBorder("email").add(new EmailTextField("email")
                 .setRequired(true)));
-        add(new FormComponentFeedbackBorder("password").add(new PasswordTextField("password")
-                .setRequired(true)));
+        add(new FormComponentFeedbackBorder("profile").add(new Select<ProfileEnum>("profile")
+                .add(new SelectOptions<ProfileEnum>("options", values,
+                        new SelectRenderer<ProfileEnum>()))));
     }
 }

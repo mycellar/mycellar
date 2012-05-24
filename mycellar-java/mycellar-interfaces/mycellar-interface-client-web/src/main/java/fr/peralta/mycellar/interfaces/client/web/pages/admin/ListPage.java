@@ -49,8 +49,7 @@ public class ListPage extends AdminSuperPage {
     @Override
     protected void onInitialize() {
         super.onInitialize();
-        add(new NavPanel("listMenu", getClass(), getClass(),
-                descriptorServiceFacade.getListPages()));
+        add(new NavPanel("listMenu", getClass(), descriptorServiceFacade.getListPages()));
     }
 
 }

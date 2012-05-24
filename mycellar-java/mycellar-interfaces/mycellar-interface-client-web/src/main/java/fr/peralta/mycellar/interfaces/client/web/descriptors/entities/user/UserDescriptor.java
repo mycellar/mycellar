@@ -18,7 +18,7 @@
  */
 package fr.peralta.mycellar.interfaces.client.web.descriptors.entities.user;
 
-import org.springframework.stereotype.Service;
+import org.springframework.stereotype.Component;
 
 import fr.peralta.mycellar.domain.user.User;
 import fr.peralta.mycellar.interfaces.client.web.descriptors.entities.shared.IEntityDescriptor;
@@ -28,7 +28,7 @@ import fr.peralta.mycellar.interfaces.client.web.pages.admin.user.UsersPage;
 /**
  * @author speralta
  */
-@Service
+@Component
 public class UserDescriptor extends AbstractDescriptor implements
         IEntityDescriptor<User, UsersPage> {
 
