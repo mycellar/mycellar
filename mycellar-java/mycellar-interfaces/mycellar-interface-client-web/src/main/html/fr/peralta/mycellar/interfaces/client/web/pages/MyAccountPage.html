@@ -28,29 +28,14 @@
       <wicket:extend>
         <section>
           <div class="row-fluid">
-            <div class="span2">
-              <ul class="nav nav-list">
-                <wicket:container wicket:id="bookings">
-                  <li class="nav-header" wicket:id="date">date</li>
-                  <li wicket:id="li"><a wicket:id="link"><span wicket:id="name">Event 1</span></a></li>
-                </wicket:container>
-              </ul>
+            <div class="span12">
+              <span class="alert alert-info" wicket:id="noProfile">No profile</span>
             </div>
-            <div class="span10">
-              <div class="row-fluid">
-                <div class="span12">
-                  <span class="alert alert-info" wicket:id="noBooking">No booking</span>
-                  <h2>
-                    <span wicket:id="bookingEvent.name">Name</span>
-                    <small wicket:id="period"period></small>
-                  </h2>
-                  <div wicket:id="booking" />
-                </div>
-              </div>
-              <div class="row-fluid">
-                <div class="span8" />
-                <div class="span4" wicket:id="totalPanel" />
-              </div>
+          </div>
+          <div class="row-fluid">
+            <div class="span12">
+              <p wicket:id="name">Name</p>
+              <p wicket:id="email">Email</p>
             </div>
           </div>
         </section>

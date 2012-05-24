@@ -39,6 +39,9 @@ public class RendererServiceFacade {
 
     @SuppressWarnings("unchecked")
     public <T> String render(T toRender) {
+        if (toRender == null) {
+            return IRenderer.NULL_OBJECT;
+        }
         IRenderer<T> renderer = ((IRenderer<T>) map.get(toRender.getClass()));
         if (renderer != null) {
             return renderer.getLabel(toRender);

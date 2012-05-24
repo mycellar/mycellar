@@ -24,6 +24,8 @@ import java.util.Set;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
@@ -70,6 +72,25 @@ public class User extends IdentifiedEntity {
 
     @Column(name = "PASSWORD", nullable = false, length = 40)
     private String password;
+
+    @Column(name = "PROFILE")
+    @Enumerated(EnumType.STRING)
+    private ProfileEnum profile;
+
+    /**
+     * @return the profile
+     */
+    public ProfileEnum getProfile() {
+        return profile;
+    }
+
+    /**
+     * @param profile
+     *            the profile to set
+     */
+    public void setProfile(ProfileEnum profile) {
+        this.profile = profile;
+    }
 
     /**
      * @return the cellars
@@ -176,7 +197,7 @@ public class User extends IdentifiedEntity {
     @Override
     protected ToStringBuilder toStringBuilder() {
         return super.toStringBuilder().append("email", email).append("firstname", firstname)
-                .append("lastname", lastname).append("password", password);
+                .append("lastname", lastname).append("profile", profile);
     }
 
 }

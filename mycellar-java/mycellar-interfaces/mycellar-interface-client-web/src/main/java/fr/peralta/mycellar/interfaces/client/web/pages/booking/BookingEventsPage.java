@@ -51,6 +51,7 @@ import fr.peralta.mycellar.interfaces.client.web.components.shared.AjaxTool;
 import fr.peralta.mycellar.interfaces.client.web.components.shared.ParentComponentModel;
 import fr.peralta.mycellar.interfaces.client.web.pages.shared.BookingSuperPage;
 import fr.peralta.mycellar.interfaces.client.web.security.UserKey;
+import fr.peralta.mycellar.interfaces.client.web.shared.FormValidationHelper;
 import fr.peralta.mycellar.interfaces.client.web.shared.LoggingHelper;
 import fr.peralta.mycellar.interfaces.facades.booking.BookingServiceFacade;
 
@@ -192,7 +193,7 @@ public class BookingEventsPage extends BookingSuperPage {
                     try {
                         bookingServiceFacade.saveBooking(form.getModelObject());
                     } catch (BusinessException e) {
-                        logger.error(e.getMessage(), e);
+                        FormValidationHelper.error(form, e);
                     }
                     setResponsePage(BookingsPage.class);
                 }

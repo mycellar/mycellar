@@ -27,6 +27,7 @@ import org.wicketstuff.security.hive.authentication.DefaultSubject;
 import org.wicketstuff.security.hive.authentication.Subject;
 import org.wicketstuff.security.hive.authentication.UsernamePasswordContext;
 
+import fr.peralta.mycellar.domain.user.ProfileEnum;
 import fr.peralta.mycellar.domain.user.User;
 import fr.peralta.mycellar.interfaces.client.web.security.MyCellarPrincipal;
 import fr.peralta.mycellar.interfaces.client.web.security.PrincipalNameEnum;
@@ -63,8 +64,29 @@ class MyCellarLoginContext extends UsernamePasswordContext {
             logger.info("{} logs in.", user.getEmail());
             UserKey.userLogsIn(user);
             DefaultSubject subject = new DefaultSubject();
-            if (user.getLastname().equals("Péralta")) {
-                subject.addPrincipal(new MyCellarPrincipal(PrincipalNameEnum.ADMIN));
+            if (user.getProfile() != null) {
+                switch (user.getProfile()) {
+                case ADMIN:
+                    subject.addPrincipal(new MyCellarPrincipal(PrincipalNameEnum.ADMIN));
+                    subject.addPrincipal(new MyCellarPrincipal(PrincipalNameEnum.CELLAR));
+                    subject.addPrincipal(new MyCellarPrincipal(PrincipalNameEnum.BOOKING));
+                    break;
+                case MYCELLAR:
+                    subject.addPrincipal(new MyCellarPrincipal(PrincipalNameEnum.CELLAR));
+                    subject.addPrincipal(new MyCellarPrincipal(PrincipalNameEnum.BOOKING));
+                    break;
+                case BOOKING:
+                    subject.addPrincipal(new MyCellarPrincipal(PrincipalNameEnum.BOOKING));
+                    break;
+                case CELLAR:
+                    subject.addPrincipal(new MyCellarPrincipal(PrincipalNameEnum.CELLAR));
+                    break;
+                case BASIC:
+                    break;
+                default:
+                    throw new IllegalStateException("Unknown " + ProfileEnum.class.getSimpleName()
+                            + " value " + user.getProfile() + ".");
+                }
             }
             subject.addPrincipal(new MyCellarPrincipal(PrincipalNameEnum.BASIC));
             return subject;

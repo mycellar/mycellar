@@ -3,5 +3,5 @@
 <properties>
   <entry key="header">Réservations effectuées</entry>
   <entry key="period">Du {0} au {1}</entry>
-  <entry key="noBooking">Aucune réservation</entry>
+  <entry key="noBooking">Aucune réservation effectuée</entry>
 </properties> 

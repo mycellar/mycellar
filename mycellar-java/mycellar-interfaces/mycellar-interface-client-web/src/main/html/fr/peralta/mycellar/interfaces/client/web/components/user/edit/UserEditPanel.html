@@ -10,8 +10,12 @@
     <div class="control-group" wicket:id="email">
       <input id="email" wicket:id="email" type="email" value="" />
     </div>
-    <div class="control-group" wicket:id="password">
-      <input id="password" wicket:id="password" type="password" value="" />
+    <div class="control-group" wicket:id="profile">
+      <select id="profile" wicket:id="profile">
+        <wicket:container wicket:id="options">
+          <option wicket:id="option"></option>
+        </wicket:container>
+      </select>
     </div>
   </fieldset>
 </wicket:panel>

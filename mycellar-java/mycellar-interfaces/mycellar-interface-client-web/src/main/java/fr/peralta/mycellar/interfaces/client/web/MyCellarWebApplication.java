@@ -68,6 +68,7 @@ import fr.peralta.mycellar.interfaces.client.web.pages.cellar.InputOutputPage;
 import fr.peralta.mycellar.interfaces.client.web.pages.cellar.PackageArrivalPage;
 import fr.peralta.mycellar.interfaces.client.web.pages.cellar.ShareCellarsPage;
 import fr.peralta.mycellar.interfaces.client.web.pages.pedia.PediaHomePage;
+import fr.peralta.mycellar.interfaces.client.web.pages.shared.MyCellarAccessDeniedPage;
 import fr.peralta.mycellar.interfaces.client.web.resources.css.CssReferences;
 import fr.peralta.mycellar.interfaces.client.web.resources.img.ImageReferences;
 import fr.peralta.mycellar.interfaces.client.web.resources.js.JavaScriptReferences;
@@ -91,6 +92,8 @@ public abstract class MyCellarWebApplication extends SwarmWebApplication {
                 new SpringComponentInjector(this, getApplicationContext()));
         // Add exception listener for saving stack trace in database
         getRequestCycleListeners().add(new ExceptionListener());
+        // Set custom access denied page
+        getApplicationSettings().setAccessDeniedPage(MyCellarAccessDeniedPage.class);
         // Add resource loader for menu
         getResourceSettings().getStringResourceLoaders().add(
                 new ClassStringResourceLoader(HomePageDescriptor.class));
@@ -152,6 +155,7 @@ public abstract class MyCellarWebApplication extends SwarmWebApplication {
         mountPage("/error", InternalErrorPage.class);
         mountPage("/stack", StackPage.class);
         mountPage("/shares", ShareCellarsPage.class);
+        mountPage("/accessDenied", MyCellarAccessDeniedPage.class);
     }
 
     /**

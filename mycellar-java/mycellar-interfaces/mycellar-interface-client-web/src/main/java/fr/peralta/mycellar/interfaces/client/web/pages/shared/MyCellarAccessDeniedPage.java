@@ -16,35 +16,22 @@
  * You should have received a copy of the GNU General Public License
  * along with MyCellar. If not, see <http://www.gnu.org/licenses/>.
  */
-package fr.peralta.mycellar.interfaces.client.web.behaviors;
+package fr.peralta.mycellar.interfaces.client.web.pages.shared;
 
-import org.apache.wicket.ajax.AjaxRequestTarget;
-import org.apache.wicket.ajax.form.AjaxFormComponentUpdatingBehavior;
-import org.apache.wicket.event.Broadcast;
-
-import fr.peralta.mycellar.interfaces.client.web.components.shared.Action;
+import org.apache.wicket.request.mapper.parameter.PageParameters;
 
 /**
  * @author speralta
- * 
  */
-public class OnBlurModelChangedAjaxBehavior extends AjaxFormComponentUpdatingBehavior {
+public class MyCellarAccessDeniedPage extends BasePage {
 
-    private static final long serialVersionUID = 201109131625L;
-
-    /**
-     * Default constructor.
-     */
-    public OnBlurModelChangedAjaxBehavior() {
-        super("onblur");
-    }
+    private static final long serialVersionUID = 201205241802L;
 
     /**
-     * {@inheritDoc}
+     * @param parameters
      */
-    @Override
-    protected void onUpdate(AjaxRequestTarget target) {
-        getComponent().send(getComponent().getParent(), Broadcast.BUBBLE, Action.MODEL_CHANGED);
+    public MyCellarAccessDeniedPage(PageParameters parameters) {
+        super(parameters);
     }
 
 }

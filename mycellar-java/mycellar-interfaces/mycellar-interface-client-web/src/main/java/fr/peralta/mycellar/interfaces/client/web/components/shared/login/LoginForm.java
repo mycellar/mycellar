@@ -28,7 +28,9 @@ import org.wicketstuff.security.WaspSession;
 import org.wicketstuff.security.authentication.LoginException;
 import org.wicketstuff.security.hive.authentication.LoginContext;
 
+import fr.peralta.mycellar.interfaces.client.web.pages.MyAccountPage;
 import fr.peralta.mycellar.interfaces.client.web.pages.NewUserPage;
+import fr.peralta.mycellar.interfaces.client.web.security.UserKey;
 
 /**
  * @author speralta
@@ -59,7 +61,9 @@ class LoginForm extends StatelessForm<ValueMap> {
         LoginContext ctx = new MyCellarLoginContext(username, password);
         try {
             ((WaspSession) getSession()).login(ctx);
-            if (!getPage().continueToOriginalDestination()) {
+            if (UserKey.getUserLoggedIn().getProfile() == null) {
+                setResponsePage(MyAccountPage.class);
+            } else if (!getPage().continueToOriginalDestination()) {
                 setResponsePage(getPage().getClass());
             }
         } catch (LoginException e) {
