@@ -14,6 +14,10 @@
   <entry key="accessRights">Autorisations</entry>
   <entry key="appellation">Appellation</entry>
   <entry key="appellations">Appellations</entry>
+  <entry key="booking">Réservation</entry>
+  <entry key="bookings">Réservations</entry>
+  <entry key="bookingEvent">Campagne de réservation</entry>
+  <entry key="bookingEvents">Campagnes de réservation</entry>
   <entry key="cellar">Cave</entry>
   <entry key="cellars">Caves</entry>
   <entry key="cellarShare">Partage de cave</entry>
@@ -38,6 +42,7 @@
   <entry key="wines">Vins</entry>
   
   <!-- ENTITIES HEADERS DESCRIPTORS -->
+  <entry key="bookingHeader">booking</entry>
   <entry key="wineHeader">wine</entry>
   <entry key="userHeader">user</entry>
   <entry key="stockHeader">stock</entry>

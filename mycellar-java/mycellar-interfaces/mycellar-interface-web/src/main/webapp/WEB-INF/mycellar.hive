@@ -11,6 +11,10 @@ grant principal fr.peralta.mycellar.interfaces.client.web.security.MyCellarPrinc
 {
     permission ${ComponentPermission} "fr.peralta.mycellar.interfaces.client.web.pages.MyAccountPage", "inherit, render";
     permission ${ComponentPermission} "fr.peralta.mycellar.interfaces.client.web.pages.MyAccountPage", "enable";
+    permission ${ComponentPermission} "fr.peralta.mycellar.interfaces.client.web.pages.booking.BookingEventsPage", "inherit, render";
+    permission ${ComponentPermission} "fr.peralta.mycellar.interfaces.client.web.pages.booking.BookingEventsPage", "enable";
+    permission ${ComponentPermission} "fr.peralta.mycellar.interfaces.client.web.pages.booking.BookingsPage", "inherit, render";
+    permission ${ComponentPermission} "fr.peralta.mycellar.interfaces.client.web.pages.booking.BookingsPage", "enable";
 	permission ${ComponentPermission} "fr.peralta.mycellar.interfaces.client.web.pages.cellar.CellarsPage", "inherit, render";
 	permission ${ComponentPermission} "fr.peralta.mycellar.interfaces.client.web.pages.cellar.CellarsPage", "enable";
 	permission ${ComponentPermission} "fr.peralta.mycellar.interfaces.client.web.pages.cellar.ShareCellarsPage", "inherit, render";
@@ -30,6 +34,14 @@ grant principal fr.peralta.mycellar.interfaces.client.web.security.MyCellarPrinc
     permission ${ComponentPermission} "fr.peralta.mycellar.interfaces.client.web.pages.admin.StackPage", "enable";
     permission ${ComponentPermission} "fr.peralta.mycellar.interfaces.client.web.pages.admin.ListPage", "inherit, render";
     permission ${ComponentPermission} "fr.peralta.mycellar.interfaces.client.web.pages.admin.ListPage", "enable";
+    permission ${ComponentPermission} "fr.peralta.mycellar.interfaces.client.web.pages.admin.booking.BookingsPage", "inherit, render";
+    permission ${ComponentPermission} "fr.peralta.mycellar.interfaces.client.web.pages.admin.booking.BookingsPage", "enable";
+    permission ${ComponentPermission} "fr.peralta.mycellar.interfaces.client.web.pages.admin.booking.BookingPage", "inherit, render";
+    permission ${ComponentPermission} "fr.peralta.mycellar.interfaces.client.web.pages.admin.booking.BookingPage", "enable";
+    permission ${ComponentPermission} "fr.peralta.mycellar.interfaces.client.web.pages.admin.booking.BookingEventsPage", "inherit, render";
+    permission ${ComponentPermission} "fr.peralta.mycellar.interfaces.client.web.pages.admin.booking.BookingEventsPage", "enable";
+    permission ${ComponentPermission} "fr.peralta.mycellar.interfaces.client.web.pages.admin.booking.BookingEventPage", "inherit, render";
+    permission ${ComponentPermission} "fr.peralta.mycellar.interfaces.client.web.pages.admin.booking.BookingEventPage", "enable";
     permission ${ComponentPermission} "fr.peralta.mycellar.interfaces.client.web.pages.admin.stock.CellarsPage", "inherit, render";
     permission ${ComponentPermission} "fr.peralta.mycellar.interfaces.client.web.pages.admin.stock.CellarsPage", "enable";
     permission ${ComponentPermission} "fr.peralta.mycellar.interfaces.client.web.pages.admin.stock.CellarPage", "inherit, render";

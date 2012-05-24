@@ -34,6 +34,7 @@ import javax.persistence.UniqueConstraint;
 import org.apache.commons.lang3.ObjectUtils;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 
+import fr.peralta.mycellar.domain.booking.Booking;
 import fr.peralta.mycellar.domain.shared.IdentifiedEntity;
 import fr.peralta.mycellar.domain.stock.Cellar;
 
@@ -49,6 +50,9 @@ public class User extends IdentifiedEntity {
 
     @OneToMany(mappedBy = "owner")
     private final Set<Cellar> cellars = new HashSet<Cellar>();
+
+    @OneToMany(mappedBy = "customer")
+    private final Set<Booking> bookings = new HashSet<Booking>();
 
     @Column(name = "EMAIL", nullable = false)
     private String email;
@@ -72,6 +76,13 @@ public class User extends IdentifiedEntity {
      */
     public Set<Cellar> getCellars() {
         return Collections.unmodifiableSet(cellars);
+    }
+
+    /**
+     * @return the bookings
+     */
+    public Set<Booking> getBookings() {
+        return Collections.unmodifiableSet(bookings);
     }
 
     /**

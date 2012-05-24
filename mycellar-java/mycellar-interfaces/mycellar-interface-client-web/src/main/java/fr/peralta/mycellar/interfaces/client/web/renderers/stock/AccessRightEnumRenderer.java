@@ -19,7 +19,7 @@
 package fr.peralta.mycellar.interfaces.client.web.renderers.stock;
 
 import org.apache.wicket.WicketRuntimeException;
-import org.springframework.stereotype.Service;
+import org.springframework.stereotype.Component;
 
 import fr.peralta.mycellar.domain.stock.AccessRightEnum;
 import fr.peralta.mycellar.interfaces.client.web.renderers.shared.AbstractRenderer;
@@ -27,7 +27,7 @@ import fr.peralta.mycellar.interfaces.client.web.renderers.shared.AbstractRender
 /**
  * @author speralta
  */
-@Service
+@Component
 public class AccessRightEnumRenderer extends AbstractRenderer<AccessRightEnum> {
 
     /**

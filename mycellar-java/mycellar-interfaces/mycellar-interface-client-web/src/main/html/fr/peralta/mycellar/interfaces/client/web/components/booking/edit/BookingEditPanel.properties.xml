@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE properties SYSTEM "http://java.sun.com/dtd/properties.dtd">
+<properties>
+  <entry key="bookingEdit">Réservation</entry>
+  <entry key="customer">Client</entry>
+  <entry key="bottle">Référence</entry>
+  <entry key="price">Prix</entry>
+  <entry key="quantity">Quantité</entry>
+  <entry key="linePrice">Prix total</entry>
+  <entry key="noBottles">Pas de bouteilles à réserver</entry>
+</properties> 

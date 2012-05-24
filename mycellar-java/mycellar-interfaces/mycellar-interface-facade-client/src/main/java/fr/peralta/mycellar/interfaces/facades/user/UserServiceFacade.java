@@ -30,15 +30,22 @@ import fr.peralta.mycellar.domain.user.repository.UserOrder;
 public interface UserServiceFacade {
 
     /**
-     * @param user
-     * @throws BusinessException
+     * @param login
+     * @param password
+     * @return
      */
-    void saveUser(User user) throws BusinessException;
+    User authenticateUser(String login, String password);
 
     /**
      * @return
      */
     long countUsers();
+
+    /**
+     * @param userId
+     * @return
+     */
+    User getUserById(Integer userId);
 
     /**
      * @param orders
@@ -49,16 +56,15 @@ public interface UserServiceFacade {
     List<User> getUsers(UserOrder orders, int first, int count);
 
     /**
-     * @param login
-     * @param password
+     * @param term
      * @return
      */
-    User authenticateUser(String login, String password);
+    List<User> getUsersLike(String term);
 
     /**
-     * @param userId
-     * @return
+     * @param user
+     * @throws BusinessException
      */
-    User getUserById(Integer userId);
+    void saveUser(User user) throws BusinessException;
 
 }

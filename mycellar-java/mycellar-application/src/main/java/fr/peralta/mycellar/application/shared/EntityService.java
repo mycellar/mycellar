@@ -62,4 +62,5 @@ public interface EntityService<E extends IdentifiedEntity, OE, O extends Abstrac
      * @return
      */
     List<E> getAll(O orders, int first, int count);
+
 }

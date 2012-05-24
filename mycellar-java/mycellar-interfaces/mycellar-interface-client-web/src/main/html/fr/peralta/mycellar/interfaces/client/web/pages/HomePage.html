@@ -28,14 +28,33 @@
       <wicket:extend>
         <section>
           <div class="row-fluid">
+            <div class="span12">
+              <div class="hero-unit">
+                <h1><wicket:message key="bookingOpened">Booking is open !</wicket:message></h1>
+                <p><wicket:message key="bookingOpenedText">text</wicket:message></p>
+                <p><a class="btn btn-primary" wicket:id="bookingEvents"><wicket:message key="goToBookingEvents">Go to booking events</wicket:message></a></p>
+                <p><span class="alert alert-info" wicket:id="connect">Connect</span></p>
+              </div>
+            </div>
+          </div>
+          <div class="row-fluid">
             <div class="span4">
-              <wicket:message key="welcome1">Welcome on MyCellar !</wicket:message>
+              <div class="well">
+                <p><a href="http://www.cave-et-terroirs.fr/">Cave et Terroirs</a></p>
+                <p><wicket:message key="access">Access</wicket:message></p>
+                <p><a wicket:id="newUser" class="btn"><wicket:message key="askAccess">Ask access</wicket:message></a></p>
+              </div>
             </div>
             <div class="span4">
-              <wicket:message key="welcome2">Welcome on MyCellar !</wicket:message>
+              <div class="well">
+                <p wicket:id="vinopediaWithCount">Vinopedia</p>
+                <p><a wicket:id="vinopedia" class="btn"><wicket:message key="goToVinopedia">Go to vinopedia</wicket:message></a></p>
+              </div>
             </div>
             <div class="span4">
-              <wicket:message key="welcome3">Welcome on MyCellar !</wicket:message>
+              <div class="well">
+                <p><wicket:message key="cellarManagementSoon">Soon cellar management !</wicket:message></p>
+              </div>
             </div>
           </div>
         </section>

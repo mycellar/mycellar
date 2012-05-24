@@ -18,7 +18,7 @@
  */
 package fr.peralta.mycellar.interfaces.client.web.renderers.wine;
 
-import org.springframework.stereotype.Service;
+import org.springframework.stereotype.Component;
 
 import fr.peralta.mycellar.domain.wine.Format;
 import fr.peralta.mycellar.interfaces.client.web.renderers.shared.AbstractRenderer;
@@ -26,7 +26,7 @@ import fr.peralta.mycellar.interfaces.client.web.renderers.shared.AbstractRender
 /**
  * @author bperalta
  */
-@Service
+@Component
 public class FormatRenderer extends AbstractRenderer<Format> {
 
     /**

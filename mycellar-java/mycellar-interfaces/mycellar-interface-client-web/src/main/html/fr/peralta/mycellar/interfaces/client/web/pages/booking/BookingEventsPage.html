@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="fr" xmlns:wicket="http://wicket.apache.org">
+  <head>
+    <title>MyCellar</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="../resources/css/bootstrap.min.css" type="text/css" media="screen" />
+    <link rel="stylesheet" href="../resources/css/master.css" type="text/css" media="screen" />
+    <link rel="stylesheet" href="../resources/css/bootstrap-responsive.min.css" type="text/css" media="screen" />
+    <link rel="stylesheet" href="../resources/css/master-responsive.css" type="text/css" media="screen" />
+  </head>
+  <body>
+    <nav class="navbar navbar-fixed-top" role="main">
+      <div class="navbar-inner">
+        <div class="container">
+          <div class="nav-collapse">
+            <ul>
+              <li><a>Nav 1</a></li>
+              <li><a>Nav 2</a></li>
+              <li><a>Nav 3</a></li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </nav>
+    <div class="container-fluid">
+      <header role="primary" class="page-header"><h1>Header</h1></header>
+      <wicket:extend>
+        <section>
+          <div class="row-fluid">
+            <div class="span2">
+              <ul class="nav nav-list">
+                <wicket:container wicket:id="bookingEvents">
+                  <li class="nav-header" wicket:id="date">date</li>
+                  <li wicket:id="li"><a wicket:id="link"><span wicket:id="name">Event 1</span></a></li>
+                </wicket:container>
+              </ul>
+            </div>
+            <div class="span10">
+              <form wicket:id="form">
+                <div class="row-fluid">
+                  <div class="row-fluid">
+                    <div class="span12">
+                      <h2>
+                        <span wicket:id="bookingEvent.name">Name</span>
+                        <small wicket:id="period"period></small>
+                      </h2>
+                      <div wicket:id="booking" />
+                    </div>
+                  </div>
+                </div>
+                <div class="row-fluid">
+                  <div class="span8">
+                    <div style="text-align: right;">
+                      <input type="submit" class="btn btn-primary" wicket:message="value:validateBooking" />
+                    </div>
+                  </div>
+                  <div class="span4" wicket:id="totalPanel" />
+                </div>
+              </form>
+              <span wicket:id="noBooking" />
+            </div>
+          </div>
+        </section>
+      </wicket:extend>
+    </div>
+    <footer>
+      <div>
+        <p>
+          <a href="http://validator.w3.org/check?uri=referer">HTML 5</a>
+          |
+          <a href="http://jigsaw.w3.org/css-validator/check/referer">CSS</a>
+          |
+          Copyright
+        </p>
+      </div>
+    </footer>
+  </body>
+</html>

@@ -41,6 +41,15 @@ public class UserServiceFacadeImpl implements UserServiceFacade {
      * {@inheritDoc}
      */
     @Override
+    @Transactional(readOnly = true)
+    public List<User> getUsersLike(String term) {
+        return userService.getAllLike(term);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
     @Transactional
     public void saveUser(User user) throws BusinessException {
         userService.save(user);

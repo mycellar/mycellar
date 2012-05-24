@@ -99,7 +99,7 @@ public class DescriptorServiceFacade {
                                 .getTitleKey()));
             }
             if (descriptor instanceof IMenuDescriptor) {
-                IMenuDescriptor<?, ?> menuDescriptor = ((IMenuDescriptor<?, ?>) descriptor);
+                IMenuDescriptor<?> menuDescriptor = ((IMenuDescriptor<?>) descriptor);
                 if (menuDescriptor.getParentKey() != null) {
                     NavHeaderDescriptor header = getHeader(menuDescriptor.getParentKey());
                     if (header == null) {

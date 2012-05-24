@@ -18,19 +18,17 @@
  */
 package fr.peralta.mycellar.interfaces.client.web.descriptors.menu;
 
-import org.springframework.stereotype.Service;
+import org.springframework.stereotype.Component;
 
 import fr.peralta.mycellar.interfaces.client.web.descriptors.menu.shared.IMenuDescriptor;
 import fr.peralta.mycellar.interfaces.client.web.descriptors.shared.AbstractDescriptor;
 import fr.peralta.mycellar.interfaces.client.web.pages.HomePage;
-import fr.peralta.mycellar.interfaces.client.web.pages.shared.HomeSuperPage;
 
 /**
  * @author speralta
  */
-@Service
-public class HomePageDescriptor extends AbstractDescriptor implements
-        IMenuDescriptor<HomeSuperPage, HomePage> {
+@Component
+public class HomePageDescriptor extends AbstractDescriptor implements IMenuDescriptor<HomePage> {
 
     /**
      * {@inheritDoc}
@@ -38,14 +36,6 @@ public class HomePageDescriptor extends AbstractDescriptor implements
     @Override
     public Class<HomePage> getMenuableClass() {
         return HomePage.class;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public Class<HomeSuperPage> getSuperClass() {
-        return HomeSuperPage.class;
     }
 
     /**

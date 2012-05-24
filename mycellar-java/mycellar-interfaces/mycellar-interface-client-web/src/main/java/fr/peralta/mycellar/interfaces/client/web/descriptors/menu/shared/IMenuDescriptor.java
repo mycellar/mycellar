@@ -24,11 +24,9 @@ import fr.peralta.mycellar.interfaces.client.web.pages.shared.BasePage;
 /**
  * @author speralta
  */
-public interface IMenuDescriptor<S extends BasePage, P extends S> extends IDescriptor {
+public interface IMenuDescriptor<P extends BasePage> extends IDescriptor {
 
     Class<P> getMenuableClass();
-
-    Class<S> getSuperClass();
 
     String getTitleKey();
 

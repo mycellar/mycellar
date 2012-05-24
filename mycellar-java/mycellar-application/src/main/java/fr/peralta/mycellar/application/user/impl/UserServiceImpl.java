@@ -18,6 +18,8 @@
  */
 package fr.peralta.mycellar.application.user.impl;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -39,6 +41,14 @@ public class UserServiceImpl extends
         UserService {
 
     private UserRepository userRepository;
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public List<User> getAllLike(String term) {
+        return userRepository.getAllLike(term);
+    }
 
     /**
      * {@inheritDoc}

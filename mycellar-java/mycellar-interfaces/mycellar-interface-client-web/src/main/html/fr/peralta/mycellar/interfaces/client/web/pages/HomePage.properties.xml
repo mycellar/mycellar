@@ -1,8 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE properties SYSTEM "http://java.sun.com/dtd/properties.dtd">
 <properties>
-  <entry key="header">Page d'accueil</entry>
-  <entry key="welcome1">Bienvenue sur MyCellar !</entry>
-  <entry key="welcome2">Essayez le sur votre téléphone portable !</entry>
-  <entry key="welcome3">Bientôt CAVE ET TERROIRS !</entry>
+  <entry key="header">Actualités du site</entry>
+  <entry key="bookingOpened">Réservations disponibles</entry>
+  <entry key="bookingOpenedText">L'outil de réservation pour les campagnes de Cave et Terroirs est en ligne. Utilisez-le pour effectuer vos réservations !</entry>
+  <entry key="goToBookingEvents">Voir les campagnes en cours</entry>
+  <entry key="connect">Veuillez vous connecter pour accéder à l'outil de réservation.</entry>
+  <entry key="vinopediaText">Une bibliothèque des vins contenant plus de {0} références !</entry>
+  <entry key="goToVinopedia">Accéder à Vinopedia</entry>
+  <entry key="access">Pour pouvoir accéder aux réservations, votre inscription doit être validée. Inscrivez-vous en cliquant sur le bouton ci-dessous, nous vous tiendrons informé dans les plus brefs délais.</entry>
+  <entry key="askAccess">Créer un nouveau compte</entry>
+  <entry key="cellarManagementSoon">Bientôt en ligne : un outil de gestion cave couplé à vos réservations.</entry>
 </properties> 

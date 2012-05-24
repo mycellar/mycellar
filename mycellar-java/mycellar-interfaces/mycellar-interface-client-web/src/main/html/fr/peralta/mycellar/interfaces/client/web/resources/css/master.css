@@ -8,6 +8,7 @@ footer[role="main"] {
   padding: 30px;
 }
 
+/** tables **/
 table th.actions {
   width: 60px;
 }
@@ -22,6 +23,15 @@ table th.actions {
 
 .ra, .table th.ra, .table td.ra {
   text-align: right;
+}
+
+/** table-middle **/
+.table.table-middled td, .table.table-middled th {
+  vertical-align: middle;
+}
+
+.table.table-middled select, .table.table-middled input {
+  margin: 0;
 }
 
 /** subform **/
