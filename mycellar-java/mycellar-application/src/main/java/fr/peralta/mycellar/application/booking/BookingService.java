@@ -19,9 +19,11 @@
 package fr.peralta.mycellar.application.booking;
 
 import java.util.List;
+import java.util.Map;
 
 import fr.peralta.mycellar.application.shared.EntityService;
 import fr.peralta.mycellar.domain.booking.Booking;
+import fr.peralta.mycellar.domain.booking.BookingBottle;
 import fr.peralta.mycellar.domain.booking.BookingEvent;
 import fr.peralta.mycellar.domain.booking.repository.BookingOrder;
 import fr.peralta.mycellar.domain.booking.repository.BookingOrderEnum;
@@ -51,5 +53,11 @@ public interface BookingService extends EntityService<Booking, BookingOrderEnum,
      * @throws BusinessException
      */
     void saveOrDelete(Booking booking) throws BusinessException;
+
+    /**
+     * @param bookingEvent
+     * @return
+     */
+    Map<BookingBottle, Long> getQuantities(BookingEvent bookingEvent);
 
 }

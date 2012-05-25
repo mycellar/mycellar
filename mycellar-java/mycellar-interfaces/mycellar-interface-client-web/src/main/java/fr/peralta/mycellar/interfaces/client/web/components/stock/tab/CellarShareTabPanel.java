@@ -68,7 +68,8 @@ public class CellarShareTabPanel extends TabAdvancedTablePanel<CellarShare> {
         searchFormModel = new SearchFormModel(new SearchForm());
         setOutputMarkupId(true);
         add(cellarShareForm = new CellarShareForm(CELLAR_SHARE_COMPONENT_ID, searchFormModel,
-                CountEnum.WINE));
+                new CellarShare(), CountEnum.WINE));
+        cellarShareForm.hideForm();
     }
 
     @SuppressWarnings("unchecked")
@@ -122,7 +123,8 @@ public class CellarShareTabPanel extends TabAdvancedTablePanel<CellarShare> {
                     try {
                         stockServiceFacade.saveCellarShare(cellarShareToSave);
                         cellarShareForm = new CellarShareForm(CELLAR_SHARE_COMPONENT_ID,
-                                searchFormModel, CountEnum.WINE);
+                                searchFormModel, new CellarShare(), CountEnum.WINE);
+                        cellarShareForm.hideForm();
                         replace(cellarShareForm);
                     } catch (BusinessException e) {
                         FormValidationHelper.error(cellarShareForm, e);
@@ -146,7 +148,8 @@ public class CellarShareTabPanel extends TabAdvancedTablePanel<CellarShare> {
             case CANCEL:
                 if (cellarShareForm.isCancelButton(source)) {
                     cellarShareForm = new CellarShareForm(CELLAR_SHARE_COMPONENT_ID,
-                            searchFormModel, CountEnum.WINE);
+                            searchFormModel, new CellarShare(), CountEnum.WINE);
+                    cellarShareForm.hideForm();
                     replace(cellarShareForm);
                     AjaxTool.ajaxReRender(this);
                     event.stop();

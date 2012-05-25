@@ -34,6 +34,16 @@ table th.actions {
   margin: 0;
 }
 
+/** pagination-condensed **/
+.pagination-condensed {
+  height: 20px;
+}
+
+.pagination-condensed a {
+  padding: 0 5px;
+  line-height: 20px;
+}
+
 /** subform **/
 .sub-form {
   margin: 0 20px 20px 20px;

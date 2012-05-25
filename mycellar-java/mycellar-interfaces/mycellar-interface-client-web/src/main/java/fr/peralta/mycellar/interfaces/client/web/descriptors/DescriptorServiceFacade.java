@@ -106,8 +106,10 @@ public class DescriptorServiceFacade {
                         header = new NavHeaderDescriptor(menuDescriptor.getParentKey());
                         menuPages.put(menuDescriptor.getWeight(), header);
                     }
-                    header.addPage(new NavPageDescriptor(menuDescriptor.getMenuableClass(),
-                            menuDescriptor.getTitleKey()));
+                    header.addPage(
+                            menuDescriptor.getWeight(),
+                            new NavPageDescriptor(menuDescriptor.getMenuableClass(), menuDescriptor
+                                    .getTitleKey()));
                 } else {
                     menuPages.put(
                             menuDescriptor.getWeight(),

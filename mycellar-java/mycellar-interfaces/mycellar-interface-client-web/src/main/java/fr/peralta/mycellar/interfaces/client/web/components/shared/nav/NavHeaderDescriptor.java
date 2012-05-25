@@ -20,6 +20,8 @@ package fr.peralta.mycellar.interfaces.client.web.components.shared.nav;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.SortedMap;
+import java.util.TreeMap;
 
 /**
  * @author speralta
@@ -28,7 +30,7 @@ public class NavHeaderDescriptor implements NavDescriptor {
 
     private static final long serialVersionUID = 201011122248L;
 
-    private final List<NavPageDescriptor> pages = new ArrayList<NavPageDescriptor>();
+    private final SortedMap<Integer, NavPageDescriptor> pages = new TreeMap<Integer, NavPageDescriptor>();
 
     private final String headerKey;
 
@@ -50,16 +52,21 @@ public class NavHeaderDescriptor implements NavDescriptor {
      * @return the pages
      */
     public List<NavPageDescriptor> getPages() {
-        return pages;
+        return new ArrayList<NavPageDescriptor>(pages.values());
     }
 
     /**
-     * @param e
-     * @return this
-     * @see java.util.List#add(java.lang.Object)
+     * @param key
+     * @param value
+     * @return
+     * @see java.util.Map#put(java.lang.Object, java.lang.Object)
      */
-    public NavHeaderDescriptor addPage(NavPageDescriptor e) {
-        pages.add(e);
+    public NavHeaderDescriptor addPage(Integer key, NavPageDescriptor value) {
+        Integer finalKey = key;
+        while (pages.get(finalKey) != null) {
+            finalKey++;
+        }
+        pages.put(finalKey, value);
         return this;
     }
 

@@ -16,27 +16,27 @@
  * You should have received a copy of the GNU General Public License
  * along with MyCellar. If not, see <http://www.gnu.org/licenses/>.
  */
-package fr.peralta.mycellar.interfaces.client.web.descriptors.menu.cellar;
+package fr.peralta.mycellar.interfaces.client.web.descriptors.menu.admin;
 
 import org.springframework.stereotype.Component;
 
 import fr.peralta.mycellar.interfaces.client.web.descriptors.menu.shared.IMenuDescriptor;
 import fr.peralta.mycellar.interfaces.client.web.descriptors.shared.AbstractDescriptor;
-import fr.peralta.mycellar.interfaces.client.web.pages.cellar.ShareCellarsPage;
+import fr.peralta.mycellar.interfaces.client.web.pages.admin.BookingReportsPage;
 
 /**
  * @author speralta
  */
 @Component
-public class ShareCellarsPageDescriptor extends AbstractDescriptor implements
-        IMenuDescriptor<ShareCellarsPage> {
+public class BookingReportsPageDescriptor extends AbstractDescriptor implements
+        IMenuDescriptor<BookingReportsPage> {
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public Class<ShareCellarsPage> getMenuableClass() {
-        return ShareCellarsPage.class;
+    public Class<BookingReportsPage> getMenuableClass() {
+        return BookingReportsPage.class;
     }
 
     /**
@@ -44,7 +44,7 @@ public class ShareCellarsPageDescriptor extends AbstractDescriptor implements
      */
     @Override
     public String getTitleKey() {
-        return "shareCellars";
+        return "bookingReports";
     }
 
     /**
@@ -52,7 +52,7 @@ public class ShareCellarsPageDescriptor extends AbstractDescriptor implements
      */
     @Override
     public String getParentKey() {
-        return "cellarsHeader";
+        return "adminHeader";
     }
 
     /**
@@ -60,7 +60,7 @@ public class ShareCellarsPageDescriptor extends AbstractDescriptor implements
      */
     @Override
     public int getWeight() {
-        return 3500;
+        return 10400;
     }
 
 }

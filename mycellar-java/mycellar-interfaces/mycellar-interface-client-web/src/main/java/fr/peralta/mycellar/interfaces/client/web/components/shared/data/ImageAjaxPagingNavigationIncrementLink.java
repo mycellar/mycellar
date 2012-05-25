@@ -16,36 +16,26 @@
  * You should have received a copy of the GNU General Public License
  * along with MyCellar. If not, see <http://www.gnu.org/licenses/>.
  */
-package fr.peralta.mycellar.interfaces.client.web.components.shared.map;
+package fr.peralta.mycellar.interfaces.client.web.components.shared.data;
 
-import java.util.Iterator;
-import java.util.Map.Entry;
-
-import org.apache.wicket.markup.repeater.util.ModelIteratorAdapter;
-import org.apache.wicket.model.IModel;
+import org.apache.wicket.ajax.markup.html.navigation.paging.AjaxPagingNavigationIncrementLink;
+import org.apache.wicket.markup.html.navigation.paging.IPageable;
 
 /**
  * @author speralta
- * 
- * @param <K>
- * @param <V>
  */
-public class EntryIteratorModel<K, V> extends ModelIteratorAdapter<Entry<K, V>> {
+public class ImageAjaxPagingNavigationIncrementLink extends AjaxPagingNavigationIncrementLink {
+
+    private static final long serialVersionUID = 201205251154L;
 
     /**
-     * @param delegate
+     * @param id
+     * @param pageable
+     * @param increment
      */
-    public EntryIteratorModel(Iterator<Entry<K, V>> delegate) {
-        super(delegate);
+    public ImageAjaxPagingNavigationIncrementLink(String id, IPageable pageable, int increment) {
+        super(id, pageable, increment);
+        setAutoEnable(false);
     }
 
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    protected IModel<Entry<K, V>> model(Entry<K, V> object) {
-        IModel<Entry<K, V>> model = new EntryModel<K, V>();
-        model.setObject(object);
-        return model;
-    }
 }

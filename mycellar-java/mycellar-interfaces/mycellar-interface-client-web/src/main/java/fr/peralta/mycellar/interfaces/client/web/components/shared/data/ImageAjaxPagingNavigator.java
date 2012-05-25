@@ -19,8 +19,10 @@
 package fr.peralta.mycellar.interfaces.client.web.components.shared.data;
 
 import org.apache.wicket.ajax.markup.html.navigation.paging.AjaxPagingNavigator;
+import org.apache.wicket.markup.html.link.Link;
 import org.apache.wicket.markup.html.navigation.paging.IPageable;
 import org.apache.wicket.markup.html.navigation.paging.IPagingLabelProvider;
+import org.apache.wicket.markup.html.navigation.paging.PagingNavigation;
 
 /**
  * @author speralta
@@ -29,22 +31,56 @@ public class ImageAjaxPagingNavigator extends AjaxPagingNavigator {
 
     private static final long serialVersionUID = 201111222012L;
 
+    private final int viewSize;
+
     /**
      * @param id
      * @param pageable
      * @param labelProvider
+     * @param viewSize
      */
     public ImageAjaxPagingNavigator(String id, IPageable pageable,
-            IPagingLabelProvider labelProvider) {
+            IPagingLabelProvider labelProvider, int viewSize) {
         super(id, pageable, labelProvider);
+        this.viewSize = viewSize;
     }
 
     /**
      * @param id
      * @param pageable
+     * @param viewSize
      */
-    public ImageAjaxPagingNavigator(String id, IPageable pageable) {
+    public ImageAjaxPagingNavigator(String id, IPageable pageable, int viewSize) {
         super(id, pageable);
+        this.viewSize = viewSize;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    protected Link<?> newPagingNavigationIncrementLink(String id, IPageable pageable, int increment) {
+        return new ImageAjaxPagingNavigationIncrementLink(id, pageable, increment);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    protected Link<?> newPagingNavigationLink(String id, IPageable pageable, int pageNumber) {
+        return new ImageAjaxPagingNavigationLink(id, pageable, pageNumber);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    protected PagingNavigation newNavigation(String id, IPageable pageable,
+            IPagingLabelProvider labelProvider) {
+        ImageAjaxPagingNavigation navigation = new ImageAjaxPagingNavigation(id, pageable,
+                labelProvider);
+        navigation.setViewSize(viewSize);
+        return navigation;
     }
 
 }

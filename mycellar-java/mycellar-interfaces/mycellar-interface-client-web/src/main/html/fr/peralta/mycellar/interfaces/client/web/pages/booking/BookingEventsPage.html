@@ -26,24 +26,26 @@
     <div class="container-fluid">
       <header role="primary" class="page-header"><h1>Header</h1></header>
       <wicket:extend>
-        <section>
-          <div class="row-fluid">
-            <div class="span2">
+        <div class="row-fluid">
+          <div class="span2">
+            <nav role="secondary">
               <ul class="nav nav-list">
                 <wicket:container wicket:id="bookingEvents">
                   <li class="nav-header" wicket:id="date">date</li>
                   <li wicket:id="li"><a wicket:id="link"><span wicket:id="name">Event 1</span></a></li>
                 </wicket:container>
               </ul>
-            </div>
-            <div class="span10">
+            </nav>
+          </div>
+          <div class="span10">
+            <section>
               <form wicket:id="form">
                 <div class="row-fluid">
                   <div class="row-fluid">
                     <div class="span12">
                       <h2>
                         <span wicket:id="bookingEvent.name">Name</span>
-                        <small wicket:id="period"period></small>
+                        <small wicket:id="period">Period</small>
                       </h2>
                       <div wicket:id="booking" />
                     </div>
@@ -58,10 +60,10 @@
                   <div class="span4" wicket:id="totalPanel" />
                 </div>
               </form>
-              <span wicket:id="noBooking" />
-            </div>
+              <span class="alert alert-info" wicket:id="noBooking">No booking</span>
+            </section>
           </div>
-        </section>
+        </div>
       </wicket:extend>
     </div>
     <footer>

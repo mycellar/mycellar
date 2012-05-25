@@ -52,6 +52,10 @@ public class BookingEvent extends NamedEntity {
 
     private static final long serialVersionUID = 201205220734L;
 
+    @SuppressWarnings("unused")
+    @OneToMany(mappedBy = "bookingEvent")
+    private final Set<Booking> bookings = new HashSet<Booking>();
+
     @Id
     @GeneratedValue(generator = "BOOKING_EVENT_ID_GENERATOR")
     @Column(name = "ID", nullable = false, unique = true)

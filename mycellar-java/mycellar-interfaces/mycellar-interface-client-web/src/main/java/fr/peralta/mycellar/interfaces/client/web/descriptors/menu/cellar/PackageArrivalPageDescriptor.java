@@ -60,7 +60,7 @@ public class PackageArrivalPageDescriptor extends AbstractDescriptor implements
      */
     @Override
     public int getWeight() {
-        return 3100;
+        return 3300;
     }
 
 }

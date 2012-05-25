@@ -19,6 +19,7 @@
 package fr.peralta.mycellar.interfaces.facades.booking;
 
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -43,6 +44,15 @@ public class BookingServiceFacadeImpl implements BookingServiceFacade {
     private BookingEventService bookingEventService;
 
     private BookingService bookingService;
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    @Transactional(readOnly = true)
+    public Map<BookingBottle, Long> getBookingsQuantities(BookingEvent bookingEvent) {
+        return bookingService.getQuantities(bookingEvent);
+    }
 
     /**
      * {@inheritDoc}
