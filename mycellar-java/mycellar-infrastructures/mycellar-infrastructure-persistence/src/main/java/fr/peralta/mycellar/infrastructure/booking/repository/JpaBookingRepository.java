@@ -18,7 +18,10 @@
  */
 package fr.peralta.mycellar.infrastructure.booking.repository;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.Map.Entry;
 
 import javax.persistence.NoResultException;
 import javax.persistence.criteria.CriteriaBuilder;
@@ -30,6 +33,7 @@ import javax.persistence.criteria.Root;
 import org.springframework.stereotype.Repository;
 
 import fr.peralta.mycellar.domain.booking.Booking;
+import fr.peralta.mycellar.domain.booking.BookingBottle;
 import fr.peralta.mycellar.domain.booking.BookingEvent;
 import fr.peralta.mycellar.domain.booking.repository.BookingOrder;
 import fr.peralta.mycellar.domain.booking.repository.BookingOrderEnum;
@@ -44,6 +48,30 @@ import fr.peralta.mycellar.infrastructure.shared.repository.JpaEntityRepository;
 @Repository
 public class JpaBookingRepository extends
         JpaEntityRepository<Booking, BookingOrderEnum, BookingOrder> implements BookingRepository {
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public Map<BookingBottle, Long> getQuantities(BookingEvent bookingEvent) {
+        CriteriaBuilder criteriaBuilder = getEntityManager().getCriteriaBuilder();
+        CriteriaQuery<Booking> query = criteriaBuilder.createQuery(Booking.class);
+        Root<Booking> root = query.from(Booking.class);
+        List<Booking> bookings = getEntityManager().createQuery(
+                query.where(criteriaBuilder.equal(root.get("bookingEvent"), bookingEvent)))
+                .getResultList();
+        Map<BookingBottle, Long> result = new HashMap<BookingBottle, Long>();
+        for (BookingBottle bottle : bookingEvent.getBottles()) {
+            result.put(bottle, 0l);
+        }
+        for (Booking booking : bookings) {
+            for (Entry<BookingBottle, Integer> quantities : booking.getQuantities().entrySet()) {
+                result.put(quantities.getKey(),
+                        result.get(quantities.getKey()) + quantities.getValue());
+            }
+        }
+        return result;
+    }
 
     /**
      * {@inheritDoc}

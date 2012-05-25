@@ -19,8 +19,10 @@
 package fr.peralta.mycellar.domain.booking.repository;
 
 import java.util.List;
+import java.util.Map;
 
 import fr.peralta.mycellar.domain.booking.Booking;
+import fr.peralta.mycellar.domain.booking.BookingBottle;
 import fr.peralta.mycellar.domain.booking.BookingEvent;
 import fr.peralta.mycellar.domain.shared.repository.EntityRepository;
 import fr.peralta.mycellar.domain.user.User;
@@ -43,5 +45,11 @@ public interface BookingRepository extends
      * @return
      */
     List<Booking> getBookings(User customer);
+
+    /**
+     * @param bookingEvent
+     * @return
+     */
+    Map<BookingBottle, Long> getQuantities(BookingEvent bookingEvent);
 
 }

@@ -41,7 +41,7 @@ public class ImageAjaxNavigationToolbar extends AjaxNavigationToolbar {
      */
     @Override
     protected PagingNavigator newPagingNavigator(String navigatorId, DataTable<?> table) {
-        return new ImageAjaxPagingNavigator(navigatorId, table);
+        return new ImageAjaxPagingNavigator(navigatorId, table, 10);
     }
 
 }

@@ -19,8 +19,10 @@
 package fr.peralta.mycellar.interfaces.facades.booking;
 
 import java.util.List;
+import java.util.Map;
 
 import fr.peralta.mycellar.domain.booking.Booking;
+import fr.peralta.mycellar.domain.booking.BookingBottle;
 import fr.peralta.mycellar.domain.booking.BookingEvent;
 import fr.peralta.mycellar.domain.booking.repository.BookingEventOrder;
 import fr.peralta.mycellar.domain.booking.repository.BookingOrder;
@@ -104,5 +106,11 @@ public interface BookingServiceFacade {
      * @return
      */
     Booking getBooking(BookingEvent bookingEvent, User customer);
+
+    /**
+     * @param bookingEvent
+     * @return
+     */
+    Map<BookingBottle, Long> getBookingsQuantities(BookingEvent bookingEvent);
 
 }

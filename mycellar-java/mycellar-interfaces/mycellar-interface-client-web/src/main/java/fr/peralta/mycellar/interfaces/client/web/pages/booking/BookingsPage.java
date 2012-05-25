@@ -57,7 +57,6 @@ public class BookingsPage extends BookingSuperPage {
 
     /**
      * @author speralta
-     *
      */
     private final class PeriodLabel extends AbstractReadOnlyModel<String> {
         private static final long serialVersionUID = 201205221511L;
@@ -67,7 +66,7 @@ public class BookingsPage extends BookingSuperPage {
          */
         @Override
         public String getObject() {
-            Booking booking = ((Booking) BookingsPage.this.getDefaultModelObject());
+            Booking booking = ((Booking) getDefaultModelObject());
             DateTimeFormatter dateTimeFormatter = DateTimeFormat.longDate().withLocale(
                     Locale.getDefault());
             return new StringResourceModel("period", BookingsPage.this, null, new Object[] {
@@ -78,7 +77,6 @@ public class BookingsPage extends BookingSuperPage {
 
     /**
      * @author speralta
-     *
      */
     private final class BookingsView extends ListView<Booking> {
         private static final long serialVersionUID = 201205231418L;
@@ -101,12 +99,9 @@ public class BookingsPage extends BookingSuperPage {
             WebMarkupContainer li = new WebMarkupContainer("li");
             li.add(new ActionLink("link", Action.SELECT).add(new Label("name", item
                     .getModelObject().getBookingEvent().getName())));
-            item.add(new Label("date", new StringResourceModel("period", null,
-                    new Object[] {
-                            dateTimeFormatter.print(item.getModelObject().getBookingEvent()
-                                    .getStart()),
-                            dateTimeFormatter.print(item.getModelObject().getBookingEvent()
-                                    .getEnd()) })));
+            item.add(new Label("date", new StringResourceModel("period", null, new Object[] {
+                    dateTimeFormatter.print(item.getModelObject().getBookingEvent().getStart()),
+                    dateTimeFormatter.print(item.getModelObject().getBookingEvent().getEnd()) })));
             if ((BookingsPage.this.getDefaultModelObject() != null)
                     && item.getModelObject().equals(BookingsPage.this.getDefaultModelObject())) {
                 li.add(new AttributeModifier("class", "active"));

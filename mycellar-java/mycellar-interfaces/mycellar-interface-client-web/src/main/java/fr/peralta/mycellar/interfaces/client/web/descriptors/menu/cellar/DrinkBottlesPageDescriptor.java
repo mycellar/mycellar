@@ -60,7 +60,7 @@ public class DrinkBottlesPageDescriptor extends AbstractDescriptor implements
      */
     @Override
     public int getWeight() {
-        return 3200;
+        return 3400;
     }
 
 }

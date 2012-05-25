@@ -47,7 +47,7 @@ public class BookingEventDataProvider extends
      * Default constructor.
      */
     public BookingEventDataProvider() {
-        super(new BookingEventOrder().add(BookingEventOrderEnum.END, OrderWayEnum.ASC).add(
+        super(new BookingEventOrder().add(BookingEventOrderEnum.END, OrderWayEnum.DESC).add(
                 BookingEventOrderEnum.NAME, OrderWayEnum.ASC));
         Injector.get().inject(this);
     }

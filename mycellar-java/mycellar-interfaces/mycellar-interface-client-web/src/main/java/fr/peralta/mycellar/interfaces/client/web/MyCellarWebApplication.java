@@ -40,6 +40,7 @@ import fr.peralta.mycellar.interfaces.client.web.pages.HomePage;
 import fr.peralta.mycellar.interfaces.client.web.pages.MyAccountPage;
 import fr.peralta.mycellar.interfaces.client.web.pages.NewUserPage;
 import fr.peralta.mycellar.interfaces.client.web.pages.admin.AdminPage;
+import fr.peralta.mycellar.interfaces.client.web.pages.admin.BookingReportsPage;
 import fr.peralta.mycellar.interfaces.client.web.pages.admin.ListPage;
 import fr.peralta.mycellar.interfaces.client.web.pages.admin.StackPage;
 import fr.peralta.mycellar.interfaces.client.web.pages.admin.booking.BookingEventPage;
@@ -152,6 +153,7 @@ public abstract class MyCellarWebApplication extends SwarmWebApplication {
         mountPage("/admin/edit/cellarShare", CellarSharePage.class);
         mountPage("/admin/edit/bookingEvent", BookingEventPage.class);
         mountPage("/admin/edit/booking", BookingPage.class);
+        mountPage("/admin/bookings", BookingReportsPage.class);
         mountPage("/error", InternalErrorPage.class);
         mountPage("/stack", StackPage.class);
         mountPage("/shares", ShareCellarsPage.class);

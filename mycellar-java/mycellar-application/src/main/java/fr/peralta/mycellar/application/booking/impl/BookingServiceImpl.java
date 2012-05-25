@@ -19,6 +19,7 @@
 package fr.peralta.mycellar.application.booking.impl;
 
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -43,6 +44,14 @@ public class BookingServiceImpl extends
         BookingService {
 
     private BookingRepository bookingRepository;
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public Map<BookingBottle, Long> getQuantities(BookingEvent bookingEvent) {
+        return bookingRepository.getQuantities(bookingEvent);
+    }
 
     /**
      * {@inheritDoc}
