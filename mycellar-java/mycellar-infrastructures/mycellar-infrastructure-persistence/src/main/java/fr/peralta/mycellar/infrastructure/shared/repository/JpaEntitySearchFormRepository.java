@@ -336,13 +336,13 @@ public abstract class JpaEntitySearchFormRepository<E extends IdentifiedEntity, 
                 for (User user : users) {
                     if (searchForm.isCellarModification()) {
                         userPredicates.add(criteriaBuilder.and(criteriaBuilder.equal(
-                                getSharesJoin(root, joinType).get("email"), user.getEmail()),
+                                getSharesJoin(root, JoinType.LEFT).get("email"), user.getEmail()),
                                 criteriaBuilder.equal(
-                                        getSharesJoin(root, joinType).get("accessRight"),
+                                        getSharesJoin(root, JoinType.LEFT).get("accessRight"),
                                         AccessRightEnum.MODIFY)));
                     } else {
-                        userPredicates.add(criteriaBuilder.equal(
-                                getSharesJoin(root, joinType).get("email"), user.getEmail()));
+                        userPredicates.add(criteriaBuilder.equal(getSharesJoin(root, JoinType.LEFT)
+                                .get("email"), user.getEmail()));
                     }
                 }
             }
