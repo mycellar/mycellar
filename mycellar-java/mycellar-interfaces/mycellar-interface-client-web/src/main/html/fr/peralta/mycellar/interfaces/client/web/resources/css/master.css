@@ -48,6 +48,20 @@ table th.actions {
   line-height: 20px;
 }
 
+/** pagination in navigator **/
+
+.navigatorLabel {
+  float: left;
+}
+
+.navigator {
+  text-align: right;
+}
+
+.navigator.pagination {
+  margin: 0;
+}
+
 /** subform **/
 .sub-form {
   margin: 0 20px 20px 20px;
