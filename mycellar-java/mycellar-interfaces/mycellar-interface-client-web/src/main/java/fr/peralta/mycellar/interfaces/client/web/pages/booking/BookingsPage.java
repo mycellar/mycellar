@@ -156,10 +156,6 @@ public class BookingsPage extends BookingSuperPage {
                     event.stop();
                 }
                 break;
-            case MODEL_CHANGED:
-                AjaxTool.ajaxReRender(this);
-                event.stop();
-                break;
             default:
                 break;
             }

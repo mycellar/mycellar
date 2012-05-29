@@ -25,6 +25,10 @@ table th.actions {
   text-align: right;
 }
 
+.table th.pre, .table td.pre {
+  white-space: pre;
+}
+
 /** table-middle **/
 .table.table-middled td, .table.table-middled th {
   vertical-align: middle;

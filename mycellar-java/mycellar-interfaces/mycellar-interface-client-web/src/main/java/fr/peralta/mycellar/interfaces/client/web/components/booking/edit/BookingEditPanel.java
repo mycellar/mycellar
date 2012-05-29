@@ -23,6 +23,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 
+import org.apache.wicket.Component;
 import org.apache.wicket.event.IEvent;
 import org.apache.wicket.extensions.markup.html.form.select.Select;
 import org.apache.wicket.extensions.markup.html.form.select.SelectOptions;
@@ -32,6 +33,7 @@ import org.apache.wicket.markup.html.form.NumberTextField;
 import org.apache.wicket.markup.html.link.ExternalLink;
 import org.apache.wicket.markup.html.panel.Panel;
 import org.apache.wicket.markup.repeater.Item;
+import org.apache.wicket.model.AbstractReadOnlyModel;
 import org.apache.wicket.model.StringResourceModel;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 import org.slf4j.Logger;
@@ -56,6 +58,7 @@ public class BookingEditPanel extends Panel {
     private static class QuantitiesView extends AbstractMapView<BookingBottle, Integer> {
 
         private static final long serialVersionUID = 201108082321L;
+        private static final Logger logger = LoggerFactory.getLogger(QuantitiesView.class);
 
         @SpringBean
         private RendererServiceFacade rendererServiceFacade;
@@ -83,7 +86,7 @@ public class BookingEditPanel extends Panel {
             boolean maxSet = item.getModelObject().getKey().getMax() > 0;
             item.add(new NumberTextField<Integer>("valueInput", newValueModel(item))
                     .setType(Integer.class).setVisibilityAllowed(!readonly && !maxSet)
-                    .add(new OnEventModelChangedAjaxBehavior("onblur")));
+                    .add(new OnEventModelChangedAjaxBehavior("onkeyup")));
             Select<Integer> select = new Select<Integer>("valueSelect", newValueModel(item));
             List<Integer> numbers = new ArrayList<Integer>();
             for (int i = 0; i <= item.getModelObject().getKey().getMax(); i++) {
@@ -91,13 +94,49 @@ public class BookingEditPanel extends Panel {
             }
             select.add(new SelectOptions<Integer>("options", numbers,
                     new ToStringRenderer<Integer>()));
-            select.add(new OnEventModelChangedAjaxBehavior("onchange"));
+            select.add(new OnEventModelChangedAjaxBehavior("onclick"));
             item.add(select.setType(Integer.class).setVisibilityAllowed(!readonly && maxSet));
             item.add(new Label("value", newValueModel(item)).setVisibilityAllowed(readonly));
-            item.add(new Label("linePrice", rendererServiceFacade.render(item.getModelObject()
-                    .getKey().getPrice()
-                    * item.getModelObject().getValue())));
+            item.add(new Label("linePrice", new AbstractReadOnlyModel<String>() {
+                private static final long serialVersionUID = 201205291631L;
+
+                /**
+                 * {@inheritDoc}
+                 */
+                @Override
+                public String getObject() {
+                    return rendererServiceFacade.render(item.getModelObject().getKey().getPrice()
+                            * item.getModelObject().getValue());
+                }
+
+            }).setOutputMarkupId(true));
         }
+
+        /**
+         * {@inheritDoc}
+         */
+        @Override
+        public void onEvent(IEvent<?> event) {
+            LoggingHelper.logEventReceived(logger, event);
+            if (event.getPayload() instanceof Action) {
+                Action action = (Action) event.getPayload();
+                switch (action) {
+                case MODEL_CHANGED:
+                    if (event.getSource() instanceof Component) {
+                        Component source = (Component) event.getSource();
+                        if ("valueInput".equals(source.getId())
+                                || "valueSelect".equals(source.getId())) {
+                            AjaxTool.ajaxReRender(source.getParent().get("linePrice"));
+                        }
+                    }
+                    break;
+                default:
+                    break;
+                }
+            }
+            LoggingHelper.logEventProcessed(logger, event);
+        }
+
     }
 
     private static final long serialVersionUID = 201107252130L;
