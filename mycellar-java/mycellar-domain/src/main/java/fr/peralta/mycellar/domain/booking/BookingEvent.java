@@ -20,6 +20,8 @@ package fr.peralta.mycellar.domain.booking;
 
 import java.util.HashSet;
 import java.util.Set;
+import java.util.SortedSet;
+import java.util.TreeSet;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -28,6 +30,7 @@ import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
+import javax.persistence.OrderBy;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 import javax.persistence.UniqueConstraint;
@@ -35,9 +38,12 @@ import javax.validation.Valid;
 
 import org.apache.commons.lang3.ObjectUtils;
 import org.apache.commons.lang3.builder.ToStringBuilder;
+import org.hibernate.annotations.Sort;
+import org.hibernate.annotations.SortType;
 import org.hibernate.annotations.Type;
 import org.joda.time.LocalDate;
 
+import fr.peralta.mycellar.domain.booking.comparator.BookingBottlePositionComparator;
 import fr.peralta.mycellar.domain.shared.IdentifiedEntity;
 import fr.peralta.mycellar.domain.shared.NamedEntity;
 
@@ -63,7 +69,10 @@ public class BookingEvent extends NamedEntity {
 
     @Valid
     @OneToMany(mappedBy = "bookingEvent", cascade = { CascadeType.MERGE, CascadeType.PERSIST }, fetch = FetchType.EAGER, orphanRemoval = true)
-    private final Set<BookingBottle> bottles = new HashSet<BookingBottle>();
+    @OrderBy("position")
+    @Sort(comparator = BookingBottlePositionComparator.class, type = SortType.COMPARATOR)
+    private final SortedSet<BookingBottle> bottles = new TreeSet<BookingBottle>(
+            new BookingBottlePositionComparator());
 
     @Column(name = "START", nullable = false)
     @Type(type = "org.jadira.usertype.dateandtime.joda.PersistentLocalDate")

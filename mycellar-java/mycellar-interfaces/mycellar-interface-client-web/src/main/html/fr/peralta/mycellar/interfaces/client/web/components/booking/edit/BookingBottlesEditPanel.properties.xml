@@ -8,6 +8,8 @@
   <entry key="addBottle">Ajouter une bouteille</entry>
   <entry key="editBottle">Editer</entry>
   <entry key="removeBottle">Supprimer</entry>
+  <entry key="moveUpBottle">Monter</entry>
+  <entry key="moveDownBottle">Descendre</entry>
   <entry key="noBottles">Pas de bouteilles</entry>
   <entry key="saveBottle">Ajouter la bouteille</entry>
   <entry key="cancelBottle">Annuler la saisie</entry>

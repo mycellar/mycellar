@@ -18,22 +18,13 @@
  */
 package fr.peralta.mycellar.interfaces.client.web.components.booking.edit;
 
-import java.util.Collection;
-import java.util.Iterator;
 import java.util.Set;
 
 import org.apache.wicket.Component;
 import org.apache.wicket.event.IEvent;
 import org.apache.wicket.markup.html.WebMarkupContainer;
-import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.form.FormComponentPanel;
-import org.apache.wicket.markup.html.link.Link;
 import org.apache.wicket.markup.repeater.Item;
-import org.apache.wicket.markup.repeater.RefreshingView;
-import org.apache.wicket.markup.repeater.util.ModelIteratorAdapter;
-import org.apache.wicket.model.CompoundPropertyModel;
-import org.apache.wicket.model.IModel;
-import org.apache.wicket.model.Model;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -51,76 +42,6 @@ import fr.peralta.mycellar.interfaces.client.web.shared.LoggingHelper;
  * @author speralta
  */
 public class BookingBottlesEditPanel extends FormComponentPanel<Set<BookingBottle>> {
-
-    @SuppressWarnings("unchecked")
-    private static class BookingBottlesView extends RefreshingView<BookingBottle> {
-
-        private static final long serialVersionUID = 201108082321L;
-
-        /**
-         * @param id
-         */
-        public BookingBottlesView(String id) {
-            super(id);
-        }
-
-        /**
-         * {@inheritDoc}
-         */
-
-        @Override
-        protected Iterator<IModel<BookingBottle>> getItemModels() {
-            return new ModelIteratorAdapter<BookingBottle>(
-                    ((Collection<BookingBottle>) getDefaultModelObject()).iterator()) {
-                @Override
-                protected IModel<BookingBottle> model(BookingBottle object) {
-                    return new Model<BookingBottle>(object);
-                }
-
-            };
-        }
-
-        /**
-         * {@inheritDoc}
-         */
-        @Override
-        protected void populateItem(final Item<BookingBottle> item) {
-            item.setDefaultModel(new CompoundPropertyModel<BookingBottle>(item.getModelObject()));
-            item.add(new Label("bottle.wine.appellation.region.country.name"));
-            item.add(new Label("bottle.wine.appellation.region.name"));
-            item.add(new Label("bottle.wine.appellation.name"));
-            item.add(new Label("bottle.wine.producer.name"));
-            item.add(new Label("bottle.wine.name"));
-            item.add(new Label("bottle.wine.color"));
-            item.add(new Label("bottle.wine.vintage"));
-            item.add(new Label("bottle.format.name"));
-            item.add(new Label("max"));
-            item.add(new Label("price"));
-            item.add(new WebMarkupContainer("remove").add(
-                    new ActionLink("editBottle", Action.SELECT)).add(
-                    new Link<Void>("removeBottle") {
-                        private static final long serialVersionUID = 201205221145L;
-
-                        /**
-                         * {@inheritDoc}
-                         */
-                        @Override
-                        public void onClick() {
-                            addStateChange();
-
-                            item.modelChanging();
-
-                            // Remove item and invalidate listView
-                            ((Collection<BookingBottle>) BookingBottlesView.this
-                                    .getDefaultModelObject()).remove(item.getModelObject());
-                            item.getModelObject().setBookingEvent(null);
-
-                            BookingBottlesView.this.modelChanged();
-                            BookingBottlesView.this.removeAll();
-                        }
-                    }));
-        }
-    }
 
     private static final Logger logger = LoggerFactory.getLogger(BookingBottlesEditPanel.class);
     private static final long serialVersionUID = 201202231626L;
@@ -190,7 +111,11 @@ public class BookingBottlesEditPanel extends FormComponentPanel<Set<BookingBottl
                 break;
             case SAVE:
                 if (bookingBottleForm == event.getSource()) {
-                    getModelObject().add(bookingBottleForm.getModelObject());
+                    BookingBottle bottle = bookingBottleForm.getModelObject();
+                    if (!getModelObject().contains(bottle)) {
+                        bottle.setPosition(getModelObject().size());
+                        getModelObject().add(bottle);
+                    }
                     replace(createHiddenBottleForm());
                     AjaxTool.ajaxReRender(this);
                     event.stop();

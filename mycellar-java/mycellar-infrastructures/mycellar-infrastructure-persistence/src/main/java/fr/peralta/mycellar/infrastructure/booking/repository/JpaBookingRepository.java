@@ -18,7 +18,7 @@
  */
 package fr.peralta.mycellar.infrastructure.booking.repository;
 
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
@@ -60,7 +60,7 @@ public class JpaBookingRepository extends
         List<Booking> bookings = getEntityManager().createQuery(
                 query.where(criteriaBuilder.equal(root.get("bookingEvent"), bookingEvent)))
                 .getResultList();
-        Map<BookingBottle, Long> result = new HashMap<BookingBottle, Long>();
+        Map<BookingBottle, Long> result = new LinkedHashMap<BookingBottle, Long>();
         for (BookingBottle bottle : bookingEvent.getBottles()) {
             result.put(bottle, 0l);
         }
