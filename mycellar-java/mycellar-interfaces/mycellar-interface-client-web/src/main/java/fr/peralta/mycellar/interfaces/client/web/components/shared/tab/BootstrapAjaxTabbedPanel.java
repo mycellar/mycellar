@@ -28,7 +28,7 @@ import org.apache.wicket.markup.html.list.LoopItem;
 /**
  * @author speralta
  */
-public class BootstrapAjaxTabbedPanel extends AjaxTabbedPanel {
+public class BootstrapAjaxTabbedPanel<T extends ITab> extends AjaxTabbedPanel<T> {
 
     private static final long serialVersionUID = 201203021702L;
 
@@ -36,7 +36,7 @@ public class BootstrapAjaxTabbedPanel extends AjaxTabbedPanel {
      * @param id
      * @param tabs
      */
-    public BootstrapAjaxTabbedPanel(String id, List<ITab> tabs) {
+    public BootstrapAjaxTabbedPanel(String id, List<T> tabs) {
         super(id, tabs);
     }
 
