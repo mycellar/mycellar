@@ -18,8 +18,6 @@
  */
 package fr.peralta.mycellar.interfaces.client.web.pages;
 
-import org.apache.wicket.ajax.AjaxRequestTarget;
-import org.apache.wicket.ajax.markup.html.AjaxLink;
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.link.BookmarkablePageLink;
 import org.apache.wicket.model.StringResourceModel;
@@ -30,7 +28,7 @@ import fr.peralta.mycellar.domain.shared.repository.SearchForm;
 import fr.peralta.mycellar.interfaces.client.web.pages.booking.BookingEventsPage;
 import fr.peralta.mycellar.interfaces.client.web.pages.pedia.PediaHomePage;
 import fr.peralta.mycellar.interfaces.client.web.pages.shared.HomeSuperPage;
-import fr.peralta.mycellar.interfaces.client.web.security.UserKey;
+import fr.peralta.mycellar.interfaces.client.web.pages.user.NewUserPage;
 import fr.peralta.mycellar.interfaces.facades.wine.WineServiceFacade;
 
 /**
@@ -43,32 +41,13 @@ public class HomePage extends HomeSuperPage {
     @SpringBean
     private WineServiceFacade wineServiceFacade;
 
-    private Label connect;
-
     /**
      * @param parameters
      */
     public HomePage(PageParameters parameters) {
         super(parameters);
-        add((connect = new Label("connect", new StringResourceModel("connect", null)))
-                .setOutputMarkupId(true).setVisibilityAllowed(false));
-        add(new AjaxLink<Void>("bookingEvents") {
-            private static final long serialVersionUID = 201205240902L;
-
-            /**
-             * {@inheritDoc}
-             */
-            @Override
-            public void onClick(AjaxRequestTarget target) {
-                if (UserKey.getUserLoggedIn() != null) {
-                    setResponsePage(BookingEventsPage.class);
-                } else {
-                    connect.setVisibilityAllowed(true);
-                    target.add(HomePage.this);
-                }
-            }
-
-        });
+        setStatelessHint(true);
+        add(new BookmarkablePageLink<Void>("bookingEvents", BookingEventsPage.class));
         add(new BookmarkablePageLink<Void>("newUser", NewUserPage.class));
         add(new BookmarkablePageLink<Void>("vinopedia", PediaHomePage.class));
         add(new Label("vinopediaWithCount", new StringResourceModel("vinopediaText", null,

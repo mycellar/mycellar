@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="fr">
+<html lang="fr" xmlns:wicket="http://wicket.apache.org">
   <head>
     <title>MyCellar</title>
     <meta charset="utf-8">
@@ -16,10 +16,13 @@
             <span class="icon-bar"></span>
             <span class="icon-bar"></span>
           </a>
-          <div id="login" wicket:id="login" class="pull-right" />
+          <a wicket:id="loginCollapseButton" class="btn btn-navbar btn-navbar-normal" data-toggle="collapse" data-target=".login-collapse"><i class="icon-user icon-white"></i></a>
           <header role="main">
             <a class="brand" wicket:id="homeLink"><wicket:message key="myCellarHeader">MyCellar</wicket:message></a>
           </header>
+          <div class="login-collapse">
+            <div id="login" wicket:id="loginBarPanel" />
+          </div>
           <div class="nav-collapse">
             <ul class="nav">
               <li class="divider-vertical"></li>

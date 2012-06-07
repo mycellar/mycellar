@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE properties SYSTEM "http://java.sun.com/dtd/properties.dtd">
+<properties>
+  <entry key="username">Identifiant</entry>
+  <entry key="password">Mot de passe</entry>
+  <entry key="logout">Déconnexion</entry>
+  <entry key="login">Connexion</entry>
+  <entry key="myAccount">Mon compte</entry>
+  <entry key="newUser">Créer un compte</entry>
+</properties> 

@@ -26,7 +26,7 @@
   <parent>
     <groupId>fr.peralta.mycellar</groupId>
     <artifactId>mycellar-java</artifactId>
-    <version>0.4.1</version>
+    <version>0.4.2</version>
     <relativePath>../pom.xml</relativePath>
   </parent>
   <artifactId>mycellar-application</artifactId>
@@ -41,6 +41,19 @@
     <dependency>
       <groupId>org.springframework</groupId>
       <artifactId>spring-context</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>org.springframework</groupId>
+      <artifactId>spring-context-support</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>org.jasypt</groupId>
+      <artifactId>jasypt</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>javax.mail</groupId>
+      <artifactId>mail</artifactId>
+      <scope>provided</scope>
     </dependency>
     <dependency>
       <groupId>${project.groupId}</groupId>

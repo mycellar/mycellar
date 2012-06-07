@@ -145,6 +145,7 @@ public class BookingEventsPage extends BookingSuperPage {
     private BookingServiceFacade bookingServiceFacade;
 
     private final Form<Booking> form;
+    private final TotalPanel totalPanel;
 
     /**
      * @param parameters
@@ -158,7 +159,8 @@ public class BookingEventsPage extends BookingSuperPage {
         form.add(new Label("bookingEvent.name").setVisibilityAllowed(bookingEvents.size() != 0));
         form.add(new Label("period", new PeriodModel()).setVisibilityAllowed(bookingEvents.size() != 0));
         form.add(new BookingEditPanel("booking").setCustomerView());
-        form.add(new TotalPanel("totalPanel", new ParentComponentModel<Booking>()));
+        form.add((totalPanel = new TotalPanel("totalPanel", new ParentComponentModel<Booking>()))
+                .setOutputMarkupId(true));
         add(form.setVisibilityAllowed(bookingEvents.size() != 0));
         if (form.isVisibilityAllowed()) {
             form.setModel(new CompoundPropertyModel<Booking>(bookingServiceFacade.getBooking(
@@ -198,7 +200,7 @@ public class BookingEventsPage extends BookingSuperPage {
                     setResponsePage(BookingsPage.class);
                 }
             case MODEL_CHANGED:
-                AjaxTool.ajaxReRender(this);
+                AjaxTool.ajaxReRender(totalPanel);
                 event.stop();
                 break;
             default:

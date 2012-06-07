@@ -16,33 +16,27 @@
  * You should have received a copy of the GNU General Public License
  * along with MyCellar. If not, see <http://www.gnu.org/licenses/>.
  */
-package fr.peralta.mycellar.interfaces.client.web.pages;
+package fr.peralta.mycellar.interfaces.client.web.pages.user;
 
-import org.apache.wicket.markup.html.basic.Label;
-import org.apache.wicket.model.StringResourceModel;
 import org.apache.wicket.request.mapper.parameter.PageParameters;
 
-import fr.peralta.mycellar.domain.user.User;
+import fr.peralta.mycellar.interfaces.client.web.components.user.edit.NewUserPanel;
 import fr.peralta.mycellar.interfaces.client.web.pages.shared.HomeSuperPage;
-import fr.peralta.mycellar.interfaces.client.web.security.UserKey;
 
 /**
  * @author speralta
  */
-public class MyAccountPage extends HomeSuperPage {
+public class NewUserPage extends HomeSuperPage {
 
-    private static final long serialVersionUID = 201203262223L;
+    private static final long serialVersionUID = 201203262225L;
 
     /**
      * @param parameters
      */
-    public MyAccountPage(PageParameters parameters) {
+    public NewUserPage(PageParameters parameters) {
         super(parameters);
-        User user = UserKey.getUserLoggedIn();
-        add(new Label("noProfile", new StringResourceModel("noProfile", null))
-                .setVisibilityAllowed(user.getProfile() == null));
-        add(new Label("name", user.getLastname() + " " + user.getFirstname()));
-        add(new Label("email", user.getEmail()));
+        setStatelessHint(true);
+        add(new NewUserPanel("newUserPanel"));
     }
 
 }

@@ -25,15 +25,14 @@ import org.apache.wicket.markup.html.panel.Panel;
  */
 public class LoginPanel extends Panel {
 
-    private static final long serialVersionUID = 201108221835L;
+    private static final long serialVersionUID = 201206011313L;
 
     /**
      * @param id
      */
     public LoginPanel(String id) {
         super(id);
-        add(new NotLoggedInContainer("notLoggedIn"));
-        add(new LoggedInContainer("loggedIn"));
-
+        add(new LoginForm("loginForm"));
     }
+
 }

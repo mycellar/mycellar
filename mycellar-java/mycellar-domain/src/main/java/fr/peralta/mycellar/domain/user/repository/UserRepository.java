@@ -29,11 +29,10 @@ import fr.peralta.mycellar.domain.user.User;
 public interface UserRepository extends EntityRepository<User, UserOrderEnum, UserOrder> {
 
     /**
-     * @param login
-     * @param password
+     * @param email
      * @return
      */
-    User find(String login, String password);
+    User getByEmail(String email);
 
     /**
      * @param email

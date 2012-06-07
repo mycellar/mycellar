@@ -37,7 +37,7 @@ import fr.peralta.mycellar.interfaces.facades.user.UserServiceFacade;
 /**
  * @author speralta
  */
-class MyCellarLoginContext extends UsernamePasswordContext {
+public class MyCellarLoginContext extends UsernamePasswordContext {
 
     private static final Logger logger = LoggerFactory.getLogger(MyCellarLoginContext.class);
 

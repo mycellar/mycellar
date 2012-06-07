@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 <!DOCTYPE Configure PUBLIC "-//Mort Bay Consulting//DTD Configure//EN" "http://jetty.mortbay.org/configure.dtd">
 <Configure id="Server" class="org.mortbay.jetty.Server">
-  <New id="evdevdb" class="org.mortbay.jetty.plus.naming.Resource">
+  <New id="db" class="org.mortbay.jetty.plus.naming.Resource">
     <Arg>jdbc/MyCellar_DS</Arg>
     <Arg>
       <New class="org.apache.commons.dbcp.BasicDataSource">
@@ -11,6 +11,20 @@
         <Set name="password">${db.pass}</Set>
         <Set name="maxActive">50</Set>
         <Set name="maxIdle">20</Set>
+        <Set name="validationQuery">/* ping */</Set>
+      </New>
+    </Arg>
+  </New>
+  <New id="mail" class="org.mortbay.jetty.plus.naming.Resource">
+    <Arg>mail/Session</Arg>
+    <Arg>
+      <New class="org.mortbay.naming.factories.MailSessionReference">
+        <Set name="properties">
+          <New class="java.util.Properties">
+            <Put name="mail.smtp.host">smtp.peralta.fr</Put>
+            <Put name="mail.smtp.port">10025</Put>
+          </New>
+        </Set>
       </New>
     </Arg>
   </New>

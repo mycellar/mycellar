@@ -68,16 +68,14 @@ public class JpaUserRepository extends JpaEntityRepository<User, UserOrderEnum, 
      * {@inheritDoc}
      */
     @Override
-    public User find(String login, String password) {
+    public User getByEmail(String email) {
         CriteriaBuilder criteriaBuilder = getEntityManager().getCriteriaBuilder();
         CriteriaQuery<User> query = criteriaBuilder.createQuery(User.class);
         Root<User> root = query.from(User.class);
 
         try {
             return getEntityManager().createQuery(
-                    query.select(root).where(
-                            criteriaBuilder.and(criteriaBuilder.equal(root.get("email"), login),
-                                    criteriaBuilder.equal(root.get("password"), password))))
+                    query.select(root).where(criteriaBuilder.equal(root.get("email"), email)))
                     .getSingleResult();
         } catch (NoResultException e) {
             return null;

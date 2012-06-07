@@ -20,7 +20,6 @@ package fr.peralta.mycellar.interfaces.client.web.components.shared.login;
 
 import org.apache.wicket.markup.html.WebMarkupContainer;
 
-import fr.peralta.mycellar.interfaces.client.web.components.shared.feedback.ContainerVisibleFeedbackMessageFilter;
 import fr.peralta.mycellar.interfaces.client.web.security.UserKey;
 
 /**
@@ -35,8 +34,7 @@ public class NotLoggedInContainer extends WebMarkupContainer {
      */
     public NotLoggedInContainer(String id) {
         super(id);
-        add(new LoginFeedbackPanel("feedback", new ContainerVisibleFeedbackMessageFilter(this)));
-        add(new LoginForm("loginForm"));
+        add(new LoginBarForm("loginForm"));
     }
 
     /**

@@ -20,13 +20,14 @@ package fr.peralta.mycellar.interfaces.client.web.pages.shared;
 
 import org.apache.wicket.devutils.debugbar.DebugBar;
 import org.apache.wicket.markup.html.IHeaderResponse;
+import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.link.BookmarkablePageLink;
 import org.apache.wicket.protocol.http.WebApplication;
 import org.apache.wicket.request.mapper.parameter.PageParameters;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 import org.wicketstuff.security.components.SecureWebPage;
 
-import fr.peralta.mycellar.interfaces.client.web.components.shared.login.LoginPanel;
+import fr.peralta.mycellar.interfaces.client.web.components.shared.login.LoginBarPanel;
 import fr.peralta.mycellar.interfaces.client.web.components.shared.nav.NavPanel;
 import fr.peralta.mycellar.interfaces.client.web.descriptors.DescriptorServiceFacade;
 import fr.peralta.mycellar.interfaces.client.web.resources.css.CssReferences;
@@ -42,6 +43,9 @@ public abstract class BasePage extends SecureWebPage {
     @SpringBean
     private DescriptorServiceFacade descriptorServiceFacade;
 
+    private final LoginBarPanel loginBarPanel;
+    private final WebMarkupContainer loginCollapseButton;
+
     /**
      * @param parameters
      */
@@ -49,8 +53,15 @@ public abstract class BasePage extends SecureWebPage {
         super(parameters);
         add(new BookmarkablePageLink<Void>("homeLink", WebApplication.get().getHomePage()));
         add(new NavPanel("menu", getMenuClass(), descriptorServiceFacade.getMenuPages(), true));
-        add(new LoginPanel("login"));
+        add(loginBarPanel = new LoginBarPanel("loginBarPanel"));
+        add(loginCollapseButton = new WebMarkupContainer("loginCollapseButton"));
         add(new DebugBar("debug"));
+    }
+
+    public BasePage hideLoginBarPanel() {
+        loginBarPanel.setVisibilityAllowed(false);
+        loginCollapseButton.setVisibilityAllowed(false);
+        return this;
     }
 
     /**

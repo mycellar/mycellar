@@ -21,7 +21,6 @@ package fr.peralta.mycellar.application.shared;
 import java.util.List;
 
 import fr.peralta.mycellar.domain.shared.IdentifiedEntity;
-import fr.peralta.mycellar.domain.shared.exception.BusinessException;
 import fr.peralta.mycellar.domain.shared.repository.AbstractEntityOrder;
 import fr.peralta.mycellar.domain.shared.repository.EntityRepository;
 
@@ -29,7 +28,7 @@ import fr.peralta.mycellar.domain.shared.repository.EntityRepository;
  * @author speralta
  */
 public abstract class AbstractEntityService<E extends IdentifiedEntity, OE, O extends AbstractEntityOrder<OE, O>, R extends EntityRepository<E, OE, O>>
-        implements EntityService<E, OE, O> {
+        extends AbstractSimpleService<E, R> implements EntityService<E, OE, O> {
 
     /**
      * {@inheritDoc}
@@ -47,30 +46,4 @@ public abstract class AbstractEntityService<E extends IdentifiedEntity, OE, O ex
         return getRepository().getAll(orders, first, count);
     }
 
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public final E getById(Integer id) {
-        return getRepository().getById(id);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public final void delete(E entity) {
-        getRepository().delete(entity);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public final void save(E entity) throws BusinessException {
-        validate(entity);
-        getRepository().save(entity);
-    }
-
-    protected abstract R getRepository();
 }

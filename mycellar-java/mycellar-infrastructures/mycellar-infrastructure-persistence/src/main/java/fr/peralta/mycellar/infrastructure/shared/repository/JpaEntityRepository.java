@@ -22,17 +22,12 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map.Entry;
 
-import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Expression;
 import javax.persistence.criteria.JoinType;
 import javax.persistence.criteria.Order;
 import javax.persistence.criteria.Root;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import fr.peralta.mycellar.domain.shared.IdentifiedEntity;
 import fr.peralta.mycellar.domain.shared.repository.AbstractEntityOrder;
@@ -43,11 +38,7 @@ import fr.peralta.mycellar.domain.shared.repository.OrderWayEnum;
  * @author speralta
  */
 public abstract class JpaEntityRepository<E extends IdentifiedEntity, OE, O extends AbstractEntityOrder<OE, O>>
-        implements EntityRepository<E, OE, O> {
-
-    private static final Logger logger = LoggerFactory.getLogger(JpaEntityRepository.class);
-
-    private EntityManager entityManager;
+        extends JpaSimpleRepository<E> implements EntityRepository<E, OE, O> {
 
     /**
      * {@inheritDoc}
@@ -75,40 +66,7 @@ public abstract class JpaEntityRepository<E extends IdentifiedEntity, OE, O exte
                 .setFirstResult(first).setMaxResults(count).getResultList();
     }
 
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public final E getById(Integer id) {
-        return entityManager.find(getEntityClass(), id);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public final E save(E entity) {
-        E result = entityManager.merge(entity);
-        logger.debug("Entity merged {}.", result);
-        return result;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public final void delete(E entity) {
-        E toRemove = entityManager.find(getEntityClass(), entity.getId());
-        logger.debug("Entity removed {}.", toRemove);
-        entityManager.remove(toRemove);
-    }
-
     // To override
-
-    /**
-     * @return
-     */
-    protected abstract Class<E> getEntityClass();
 
     /**
      * @param root
@@ -150,21 +108,4 @@ public abstract class JpaEntityRepository<E extends IdentifiedEntity, OE, O exte
         return query;
     }
 
-    // Beans methods
-
-    /**
-     * @return the entityManager
-     */
-    protected final EntityManager getEntityManager() {
-        return entityManager;
-    }
-
-    /**
-     * @param entityManager
-     *            the entityManager to set
-     */
-    @PersistenceContext
-    public final void setEntityManager(EntityManager entityManager) {
-        this.entityManager = entityManager;
-    }
 }

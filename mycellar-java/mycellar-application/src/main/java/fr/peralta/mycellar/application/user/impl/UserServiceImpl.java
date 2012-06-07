@@ -20,10 +20,12 @@ package fr.peralta.mycellar.application.user.impl;
 
 import java.util.List;
 
+import org.jasypt.util.password.PasswordEncryptor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import fr.peralta.mycellar.application.shared.AbstractEntityService;
+import fr.peralta.mycellar.application.user.ResetPasswordRequestService;
 import fr.peralta.mycellar.application.user.UserService;
 import fr.peralta.mycellar.domain.shared.exception.BusinessError;
 import fr.peralta.mycellar.domain.shared.exception.BusinessException;
@@ -40,7 +42,32 @@ public class UserServiceImpl extends
         AbstractEntityService<User, UserOrderEnum, UserOrder, UserRepository> implements
         UserService {
 
+    private ResetPasswordRequestService resetPasswordRequestService;
+
     private UserRepository userRepository;
+
+    private PasswordEncryptor passwordEncryptor;
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void saveUserPassword(User user, String password) throws BusinessException {
+        user.setPassword(passwordEncryptor.encryptPassword(password));
+        save(user);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void resetPasswordRequest(String email) {
+        User user = userRepository.getByEmail(email);
+        if (user != null) {
+            resetPasswordRequestService.createAndSendEmail(user);
+        }
+
+    }
 
     /**
      * {@inheritDoc}
@@ -65,7 +92,11 @@ public class UserServiceImpl extends
      */
     @Override
     public User authenticate(String login, String password) {
-        return userRepository.find(login, password);
+        User user = userRepository.getByEmail(login);
+        if ((user != null) && !passwordEncryptor.checkPassword(password, user.getPassword())) {
+            user = null;
+        }
+        return user;
     }
 
     /**
@@ -83,6 +114,25 @@ public class UserServiceImpl extends
     @Autowired
     public void setUserRepository(UserRepository userRepository) {
         this.userRepository = userRepository;
+    }
+
+    /**
+     * @param passwordEncryptor
+     *            the passwordEncryptor to set
+     */
+    @Autowired
+    public void setPasswordEncryptor(PasswordEncryptor passwordEncryptor) {
+        this.passwordEncryptor = passwordEncryptor;
+    }
+
+    /**
+     * @param resetPasswordRequestService
+     *            the resetPasswordRequestService to set
+     */
+    @Autowired
+    public void setResetPasswordRequestService(
+            ResetPasswordRequestService resetPasswordRequestService) {
+        this.resetPasswordRequestService = resetPasswordRequestService;
     }
 
 }

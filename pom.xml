@@ -24,7 +24,7 @@
   <modelVersion>4.0.0</modelVersion>
 
   <groupId>fr.peralta.mycellar</groupId>
-  <version>0.4.1</version>
+  <version>0.4.2</version>
   <artifactId>mycellar-parent</artifactId>
   <packaging>pom</packaging>
   <name>MyCellar</name>
@@ -41,9 +41,10 @@
     <slf4j.version>1.6.2</slf4j.version>
     <wicket.version>1.5.5</wicket.version>
     <wicketstuff.version>1.5.5</wicketstuff.version>
-    <spring.version>3.1.0.RELEASE</spring.version>
+    <spring.version>3.1.1.RELEASE</spring.version>
     <hibernate.version>4.0.0.Final</hibernate.version>
     <hibernate-validator.version>4.2.0.Final</hibernate-validator.version>
+    <jasypt.version>1.9.0</jasypt.version>
   </properties>
 
   <developers>
@@ -224,6 +225,22 @@
       </dependency>
       <dependency>
         <groupId>org.springframework</groupId>
+        <artifactId>spring-context-support</artifactId>
+        <version>${spring.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>org.springframework</groupId>
+        <artifactId>spring-core</artifactId>
+        <version>${spring.version}</version>
+        <exclusions>
+          <exclusion>
+            <groupId>commons-logging</groupId>
+            <artifactId>commons-logging</artifactId>
+          </exclusion>
+        </exclusions>
+      </dependency>
+      <dependency>
+        <groupId>org.springframework</groupId>
         <artifactId>spring-tx</artifactId>
         <version>${spring.version}</version>
         <exclusions>
@@ -330,6 +347,18 @@
         <scope>provided</scope>
       </dependency>
       <dependency>
+        <groupId>javax.mail</groupId>
+        <artifactId>mail</artifactId>
+        <version>1.4.5</version>
+        <scope>provided</scope>
+        <exclusions>
+          <exclusion>
+            <groupId>javax.activation</groupId>
+            <artifactId>activation</artifactId>
+          </exclusion>
+        </exclusions>
+      </dependency>
+      <dependency>
         <groupId>javax.validation</groupId>
         <artifactId>validation-api</artifactId>
         <version>1.0.0.GA</version>
@@ -338,6 +367,13 @@
         <groupId>org.hibernate.javax.persistence</groupId>
         <artifactId>hibernate-jpa-2.0-api</artifactId>
         <version>1.0.0.Final</version>
+      </dependency>
+      
+      <!-- Jasypt -->
+      <dependency>
+        <groupId>org.jasypt</groupId>
+        <artifactId>jasypt</artifactId>
+        <version>${jasypt.version}</version>
       </dependency>
 
       <dependency>

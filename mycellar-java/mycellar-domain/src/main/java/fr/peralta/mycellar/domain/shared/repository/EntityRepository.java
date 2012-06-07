@@ -25,7 +25,8 @@ import fr.peralta.mycellar.domain.shared.IdentifiedEntity;
 /**
  * @author speralta
  */
-public interface EntityRepository<E extends IdentifiedEntity, OE, O extends AbstractEntityOrder<OE, O>> {
+public interface EntityRepository<E extends IdentifiedEntity, OE, O extends AbstractEntityOrder<OE, O>>
+        extends SimpleRepository<E> {
 
     /**
      * @return
@@ -39,22 +40,5 @@ public interface EntityRepository<E extends IdentifiedEntity, OE, O extends Abst
      * @return
      */
     List<E> getAll(O orders, int first, int count);
-
-    /**
-     * @param id
-     * @return
-     */
-    E getById(Integer id);
-
-    /**
-     * @param entity
-     * @return
-     */
-    E save(E entity);
-
-    /**
-     * @param entity
-     */
-    void delete(E entity);
 
 }

@@ -41,8 +41,9 @@ import fr.peralta.mycellar.domain.stock.Bottle;
  * @author speralta
  */
 @Entity
-@Table(name = "BOOKING_BOTTLE", uniqueConstraints = @UniqueConstraint(columnNames = { "BOTTLE",
-        "BOOKING_EVENT" }))
+@Table(name = "BOOKING_BOTTLE", uniqueConstraints = {
+        @UniqueConstraint(columnNames = { "BOTTLE", "BOOKING_EVENT" }),
+        @UniqueConstraint(columnNames = { "BOOKING_EVENT", "POSITION" }) })
 @SequenceGenerator(name = "BOOKING_BOTTLE_ID_GENERATOR", allocationSize = 1)
 public class BookingBottle extends IdentifiedEntity {
 
@@ -73,12 +74,30 @@ public class BookingBottle extends IdentifiedEntity {
     @Column(name = "MAX", nullable = false)
     private Integer max;
 
+    @Column(name = "POSITION", nullable = false)
+    private Integer position;
+
     /**
      * {@inheritDoc}
      */
     @Override
     public Integer getId() {
         return id;
+    }
+
+    /**
+     * @return the position
+     */
+    public Integer getPosition() {
+        return position;
+    }
+
+    /**
+     * @param position
+     *            the position to set
+     */
+    public void setPosition(Integer position) {
+        this.position = position;
     }
 
     /**

@@ -29,10 +29,10 @@ public final class AjaxTool {
     /**
      * @param component
      */
-    public static void ajaxReRender(Component component) {
+    public static void ajaxReRender(Component... components) {
         AjaxRequestTarget target = AjaxRequestTarget.get();
         if (target != null) {
-            target.add(component);
+            target.add(components);
         }
     }
 

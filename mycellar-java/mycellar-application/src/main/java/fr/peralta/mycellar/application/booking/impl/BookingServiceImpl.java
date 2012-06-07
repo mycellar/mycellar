@@ -87,9 +87,6 @@ public class BookingServiceImpl extends
             booking = new Booking();
             booking.setCustomer(customer);
             booking.setBookingEvent(bookingEvent);
-            for (BookingBottle bottle : booking.getBookingEvent().getBottles()) {
-                booking.getQuantities().put(bottle, 0);
-            }
         }
         return booking;
     }

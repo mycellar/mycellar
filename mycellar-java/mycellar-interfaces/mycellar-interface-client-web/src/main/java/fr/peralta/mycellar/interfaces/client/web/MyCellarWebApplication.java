@@ -37,8 +37,6 @@ import fr.peralta.mycellar.interfaces.client.web.converters.WineColorEnumConvert
 import fr.peralta.mycellar.interfaces.client.web.converters.WineTypeEnumConverter;
 import fr.peralta.mycellar.interfaces.client.web.descriptors.menu.HomePageDescriptor;
 import fr.peralta.mycellar.interfaces.client.web.pages.HomePage;
-import fr.peralta.mycellar.interfaces.client.web.pages.MyAccountPage;
-import fr.peralta.mycellar.interfaces.client.web.pages.NewUserPage;
 import fr.peralta.mycellar.interfaces.client.web.pages.admin.AdminPage;
 import fr.peralta.mycellar.interfaces.client.web.pages.admin.BookingReportsPage;
 import fr.peralta.mycellar.interfaces.client.web.pages.admin.ListPage;
@@ -70,6 +68,11 @@ import fr.peralta.mycellar.interfaces.client.web.pages.cellar.PackageArrivalPage
 import fr.peralta.mycellar.interfaces.client.web.pages.cellar.ShareCellarsPage;
 import fr.peralta.mycellar.interfaces.client.web.pages.pedia.PediaHomePage;
 import fr.peralta.mycellar.interfaces.client.web.pages.shared.MyCellarAccessDeniedPage;
+import fr.peralta.mycellar.interfaces.client.web.pages.user.LoginPage;
+import fr.peralta.mycellar.interfaces.client.web.pages.user.MyAccountPage;
+import fr.peralta.mycellar.interfaces.client.web.pages.user.NewUserPage;
+import fr.peralta.mycellar.interfaces.client.web.pages.user.ResetPasswordPage;
+import fr.peralta.mycellar.interfaces.client.web.pages.user.ResetPasswordRequestPage;
 import fr.peralta.mycellar.interfaces.client.web.resources.css.CssReferences;
 import fr.peralta.mycellar.interfaces.client.web.resources.img.ImageReferences;
 import fr.peralta.mycellar.interfaces.client.web.resources.js.JavaScriptReferences;
@@ -117,15 +120,22 @@ public abstract class MyCellarWebApplication extends SwarmWebApplication {
         mountResource("/js/master.js", JavaScriptReferences.getMasterJs());
         // Add mounts for pages
         mountPage("/home", getHomePage());
+        mountPage("/accessDenied", MyCellarAccessDeniedPage.class);
         mountPage("/bookingEvents", BookingEventsPage.class);
         mountPage("/bookings", BookingsPage.class);
         mountPage("/cellars", CellarsPage.class);
-        mountPage("/io", InputOutputPage.class);
-        mountPage("/packageArrival", PackageArrivalPage.class);
         mountPage("/drinkBottles", DrinkBottlesPage.class);
-        mountPage("/pedia", PediaHomePage.class);
+        mountPage("/error", InternalErrorPage.class);
+        mountPage("/io", InputOutputPage.class);
+        mountPage("/login", LoginPage.class);
         mountPage("/myaccount", MyAccountPage.class);
+        mountPage("/packageArrival", PackageArrivalPage.class);
+        mountPage("/passwordForgotten", ResetPasswordRequestPage.class);
+        mountPage("/passwordReset", ResetPasswordPage.class);
+        mountPage("/pedia", PediaHomePage.class);
         mountPage("/register", NewUserPage.class);
+        mountPage("/stack", StackPage.class);
+        mountPage("/shares", ShareCellarsPage.class);
         mountPage("/admin", AdminPage.class);
         mountPage("/admin/lists", ListPage.class);
         mountPage("/admin/lists/users", UsersPage.class);
@@ -154,10 +164,6 @@ public abstract class MyCellarWebApplication extends SwarmWebApplication {
         mountPage("/admin/edit/bookingEvent", BookingEventPage.class);
         mountPage("/admin/edit/booking", BookingPage.class);
         mountPage("/admin/bookings", BookingReportsPage.class);
-        mountPage("/error", InternalErrorPage.class);
-        mountPage("/stack", StackPage.class);
-        mountPage("/shares", ShareCellarsPage.class);
-        mountPage("/accessDenied", MyCellarAccessDeniedPage.class);
     }
 
     /**
@@ -165,7 +171,7 @@ public abstract class MyCellarWebApplication extends SwarmWebApplication {
      */
     @Override
     public Class<? extends Page> getLoginPage() {
-        return HomePage.class;
+        return LoginPage.class;
     }
 
     /**
