@@ -16,32 +16,37 @@
  * You should have received a copy of the GNU General Public License
  * along with MyCellar. If not, see <http://www.gnu.org/licenses/>.
  */
-package fr.peralta.mycellar.interfaces.client.web.pages;
+package fr.peralta.mycellar.interfaces.client.web.components.user.edit;
 
 import org.apache.wicket.markup.html.form.EmailTextField;
 import org.apache.wicket.markup.html.form.Form;
 import org.apache.wicket.markup.html.form.PasswordTextField;
 import org.apache.wicket.markup.html.form.TextField;
 import org.apache.wicket.markup.html.form.validation.EqualPasswordInputValidator;
+import org.apache.wicket.markup.html.panel.Panel;
 import org.apache.wicket.model.CompoundPropertyModel;
 import org.apache.wicket.model.Model;
-import org.apache.wicket.request.mapper.parameter.PageParameters;
 import org.apache.wicket.spring.injection.annot.SpringBean;
+import org.wicketstuff.security.WaspSession;
+import org.wicketstuff.security.authentication.LoginException;
+import org.wicketstuff.security.hive.authentication.LoginContext;
 
 import fr.peralta.mycellar.domain.shared.exception.BusinessException;
 import fr.peralta.mycellar.domain.user.User;
 import fr.peralta.mycellar.interfaces.client.web.components.shared.feedback.ContainerVisibleFeedbackMessageFilter;
 import fr.peralta.mycellar.interfaces.client.web.components.shared.feedback.FeedbackPanel;
 import fr.peralta.mycellar.interfaces.client.web.components.shared.feedback.FormComponentFeedbackBorder;
-import fr.peralta.mycellar.interfaces.client.web.pages.shared.HomeSuperPage;
+import fr.peralta.mycellar.interfaces.client.web.components.shared.login.MyCellarLoginContext;
+import fr.peralta.mycellar.interfaces.client.web.pages.HomePage;
+import fr.peralta.mycellar.interfaces.client.web.pages.user.MyAccountPage;
+import fr.peralta.mycellar.interfaces.client.web.security.UserKey;
 import fr.peralta.mycellar.interfaces.client.web.shared.FormValidationHelper;
 import fr.peralta.mycellar.interfaces.facades.user.UserServiceFacade;
 
 /**
  * @author speralta
  */
-public class NewUserPage extends HomeSuperPage {
-
+public class NewUserPanel extends Panel {
     private static class UserForm extends Form<User> {
 
         private static final long serialVersionUID = 201203291653L;
@@ -64,7 +69,7 @@ public class NewUserPage extends HomeSuperPage {
             add(new FormComponentFeedbackBorder("email").add(new EmailTextField("email")
                     .setRequired(true)));
             add(new FormComponentFeedbackBorder("password").add((password = new PasswordTextField(
-                    "password")).setRequired(true)));
+                    "password", new Model<String>())).setRequired(true)));
             add(new FormComponentFeedbackBorder("password2")
                     .add((password2 = new PasswordTextField("password2", new Model<String>()))
                             .setRequired(true)));
@@ -78,8 +83,20 @@ public class NewUserPage extends HomeSuperPage {
         @Override
         protected void onSubmit() {
             try {
-                userServiceFacade.saveUser(getModelObject());
-                setResponsePage(HomePage.class);
+                userServiceFacade.saveUserPassword(getModelObject(), password.getModelObject());
+                LoginContext ctx = new MyCellarLoginContext(getModelObject().getEmail(),
+                        password.getModelObject());
+                try {
+                    ((WaspSession) getSession()).login(ctx);
+                    if (UserKey.getUserLoggedIn().getProfile() == null) {
+                        setResponsePage(MyAccountPage.class);
+                    } else if (!getPage().continueToOriginalDestination()) {
+                        setResponsePage(getPage().getClass());
+                    }
+                } catch (LoginException e) {
+                    // cannot happen
+                    setResponsePage(HomePage.class);
+                }
             } catch (BusinessException e) {
                 FormValidationHelper.error(this, e);
             }
@@ -87,13 +104,13 @@ public class NewUserPage extends HomeSuperPage {
 
     }
 
-    private static final long serialVersionUID = 201203262225L;
+    private static final long serialVersionUID = 201206011108L;
 
     /**
-     * @param parameters
+     * @param id
      */
-    public NewUserPage(PageParameters parameters) {
-        super(parameters);
+    public NewUserPanel(String id) {
+        super(id);
         add(new UserForm("form"));
     }
 

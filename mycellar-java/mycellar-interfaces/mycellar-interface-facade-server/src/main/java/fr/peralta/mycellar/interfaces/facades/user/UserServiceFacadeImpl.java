@@ -24,8 +24,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import fr.peralta.mycellar.application.user.ResetPasswordRequestService;
 import fr.peralta.mycellar.application.user.UserService;
 import fr.peralta.mycellar.domain.shared.exception.BusinessException;
+import fr.peralta.mycellar.domain.user.ResetPasswordRequest;
 import fr.peralta.mycellar.domain.user.User;
 import fr.peralta.mycellar.domain.user.repository.UserOrder;
 
@@ -36,6 +38,8 @@ import fr.peralta.mycellar.domain.user.repository.UserOrder;
 public class UserServiceFacadeImpl implements UserServiceFacade {
 
     private UserService userService;
+
+    private ResetPasswordRequestService resetPasswordRequestService;
 
     /**
      * {@inheritDoc}
@@ -53,6 +57,15 @@ public class UserServiceFacadeImpl implements UserServiceFacade {
     @Transactional
     public void saveUser(User user) throws BusinessException {
         userService.save(user);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    @Transactional
+    public void saveUserPassword(User user, String password) throws BusinessException {
+        userService.saveUserPassword(user, password);
     }
 
     /**
@@ -92,12 +105,49 @@ public class UserServiceFacadeImpl implements UserServiceFacade {
     }
 
     /**
+     * {@inheritDoc}
+     */
+    @Override
+    @Transactional(readOnly = false)
+    public void resetPasswordRequest(String email) {
+        userService.resetPasswordRequest(email);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    @Transactional(readOnly = true)
+    public ResetPasswordRequest getResetPasswordRequestByKey(String key) {
+        return resetPasswordRequestService.getByKey(key);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    @Transactional(readOnly = false)
+    public void deleteAllResetPasswordRequestsForUser(User user) {
+        resetPasswordRequestService.deleteAllForUser(user);
+    }
+
+    /**
      * @param userService
      *            the userService to set
      */
     @Autowired
     public void setUserService(UserService userService) {
         this.userService = userService;
+    }
+
+    /**
+     * @param resetPasswordRequestService
+     *            the resetPasswordRequestService to set
+     */
+    @Autowired
+    public void setResetPasswordRequestService(
+            ResetPasswordRequestService resetPasswordRequestService) {
+        this.resetPasswordRequestService = resetPasswordRequestService;
     }
 
 }

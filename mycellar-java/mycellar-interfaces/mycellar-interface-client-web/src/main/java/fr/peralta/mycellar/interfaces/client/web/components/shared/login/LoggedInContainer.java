@@ -21,7 +21,7 @@ package fr.peralta.mycellar.interfaces.client.web.components.shared.login;
 import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.link.BookmarkablePageLink;
 
-import fr.peralta.mycellar.interfaces.client.web.pages.MyAccountPage;
+import fr.peralta.mycellar.interfaces.client.web.pages.user.MyAccountPage;
 import fr.peralta.mycellar.interfaces.client.web.security.UserKey;
 
 /**

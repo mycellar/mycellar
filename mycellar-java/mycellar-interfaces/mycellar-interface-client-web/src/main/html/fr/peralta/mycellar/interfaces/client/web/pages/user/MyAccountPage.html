@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="fr" xmlns:wicket="http://wicket.apache.org">
+  <head>
+    <title>MyCellar</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="../resources/css/bootstrap.min.css" type="text/css" media="screen" />
+    <link rel="stylesheet" href="../resources/css/master.css" type="text/css" media="screen" />
+    <link rel="stylesheet" href="../resources/css/bootstrap-responsive.min.css" type="text/css" media="screen" />
+    <link rel="stylesheet" href="../resources/css/master-responsive.css" type="text/css" media="screen" />
+  </head>
+  <body>
+    <nav class="navbar navbar-fixed-top" role="main">
+      <div class="navbar-inner">
+        <div class="container">
+          <div class="nav-collapse">
+            <ul>
+              <li><a>Nav 1</a></li>
+              <li><a>Nav 2</a></li>
+              <li><a>Nav 3</a></li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </nav>
+    <div class="container-fluid">
+      <header role="primary" class="page-header"><h1>Header</h1></header>
+      <wicket:extend>
+        <section>
+          <div class="row-fluid" wicket:enclosure="noProfile">
+            <div class="span12">
+              <span class="alert alert-info" wicket:id="noProfile">No profile</span>
+            </div>
+          </div>
+          <div class="row-fluid">
+            <div class="span2">
+              <header role="secondary" class="page-header">
+                <h4><wicket:message key="badges">Badges</wicket:message></h4>
+              </header>
+              <span class="badge badge-important" wicket:id="notValidBadge" wicket:message="title:notValidBadge"><i class="icon-remove"></i></span>
+              <span class="badge badge-success" wicket:id="simpleBadge" wicket:message="title:simpleBadge"><i class="icon-ok"></i></span>
+              <span class="badge badge-info" wicket:id="shoppingBadge" wicket:message="title:shoppingBadge"><i class="icon-shopping-cart"></i></span>
+              <span class="badge badge-info" wicket:id="cellarBadge" wicket:message="title:cellarBadge"><i class="icon-th"></i></span>
+              <span class="badge badge-important" wicket:id="adminBadge" wicket:message="title:adminBadge"><i class="icon-wrench"></i></span>
+            </div>
+            <div class="span8">
+              <section>
+                <header role="secondary" class="page-header">
+                  <h4>
+                    <wicket:message key="accountManagement">Account Management</wicket:message>
+                    <small>
+                      <wicket:message key="accountManagementText">Account Management Text</wicket:message>
+                    </small>
+                  </h4>
+                </header>
+                <a wicket:id="changePasswordLink"><wicket:message key="changePassword">Change password</wicket:message></a>
+                <form wicket:id="changePasswordForm" class="form-horizontal">
+                  <fieldset>
+                    <legend><wicket:message key="changePasswordDetails">Password details</wicket:message></legend>
+                    <div class="control-group" wicket:id="password">
+                      <input id="password" wicket:id="password" type="password" value="" />
+                    </div>
+                    <div class="control-group" wicket:id="password2">
+                      <input id="password2" wicket:id="password2" type="password" value="" />
+                    </div>
+                  </fieldset>
+                  <div wicket:id="feedback" class="feedback" />
+                  <div class="form-actions">
+                    <input type="submit" class="btn btn-primary" wicket:message="value:savePassword" />
+                  </div>
+                </form>
+                <span class="alert alert-info" wicket:id="passwordChanged">Password changed</span>
+              </section>
+            </div>
+            <div class="span2">
+              <header role="secondary" class="page-header">
+                <h4><wicket:message key="contact">Contact</wicket:message></h4>
+              </header>
+              <address>
+                <strong wicket:id="name">Name</strong><br>
+                <span wicket:id="email">Email</span>
+              </address>
+            </div>
+          </div>
+        </section>
+      </wicket:extend>
+    </div>
+    <footer>
+      <div>
+        <p>
+          <a href="http://validator.w3.org/check?uri=referer">HTML 5</a>
+          |
+          <a href="http://jigsaw.w3.org/css-validator/check/referer">CSS</a>
+          |
+          Copyright
+        </p>
+      </div>
+    </footer>
+  </body>
+</html>

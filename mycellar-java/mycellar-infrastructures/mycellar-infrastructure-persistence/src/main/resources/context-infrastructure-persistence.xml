@@ -18,10 +18,8 @@
   <bean id="transactionManager" class="org.springframework.orm.jpa.JpaTransactionManager"
     p:entityManagerFactory-ref="entityManagerFactory" />
 
-  <bean id="dataSource" class="org.springframework.jndi.JndiObjectFactoryBean">
-    <property name="jndiName" value="jdbc/MyCellar_DS" />
-    <property name="resourceRef" value="true" />
-  </bean>
+  <bean id="dataSource" class="org.springframework.jndi.JndiObjectFactoryBean"
+    p:jndiName="jdbc/MyCellar_DS" p:resourceRef="true" />
 
   <bean id="jpaVendorAdapter"
     class="org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter"
@@ -29,7 +27,8 @@
 
   <bean id="entityManagerFactory"
     class="org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean"
-    p:dataSource-ref="dataSource" p:jpaVendorAdapter-ref="jpaVendorAdapter" p:persistenceUnitName="pu" />
+    p:dataSource-ref="dataSource" p:jpaVendorAdapter-ref="jpaVendorAdapter"
+    p:persistenceUnitName="pu" />
 
   <bean
     class="org.springframework.orm.jpa.support.PersistenceAnnotationBeanPostProcessor" />

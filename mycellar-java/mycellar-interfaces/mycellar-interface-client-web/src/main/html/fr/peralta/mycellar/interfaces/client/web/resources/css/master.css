@@ -8,6 +8,11 @@ footer[role="main"] {
   padding: 30px;
 }
 
+/** feedback **/
+ul.feedbackPanel {
+  list-style: none;
+}
+
 /** tables **/
 table th.actions {
   width: 60px;
@@ -260,7 +265,18 @@ fieldset.step > legend:before {
   counter-increment: fieldsets;
 }
 
+/** ADDS TO BOOTSTRAP **/
+
+/** NORMAL BUTTON (.btn-navbar-normal) **/
+.navbar .btn-navbar.btn-navbar-normal {
+  padding: 4px 10px;
+}
+
 /** OVERRIDE BOOTSTRAP **/
+
+.nav-collapse.collapse {
+  height:auto;
+}
 
 /** OVERRIDE TEXT COLOR IN NAVBAR **/
 .navbar,.navbar label {

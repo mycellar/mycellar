@@ -18,6 +18,7 @@
  */
 package fr.peralta.mycellar.interfaces.client.web.components.shared.feedback;
 
+import org.apache.wicket.feedback.FeedbackMessage;
 import org.apache.wicket.feedback.IFeedbackMessageFilter;
 
 /**
@@ -48,6 +49,20 @@ public class FeedbackPanel extends org.apache.wicket.markup.html.panel.FeedbackP
     @Override
     public boolean isVisible() {
         return anyMessage();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    protected String getCSSClass(FeedbackMessage message) {
+        if (message.getLevel() >= FeedbackMessage.ERROR) {
+            return "alert alert-error";
+        } else if (message.getLevel() >= FeedbackMessage.WARNING) {
+            return "alert alert-warning";
+        } else {
+            return "alert";
+        }
     }
 
 }

@@ -65,7 +65,7 @@ public enum BusinessError {
     /*
      * User
      */
-    USER_00001("email"),
+    USER_00001("email"), USER_00002("email"),
 
     /*
      * Wine

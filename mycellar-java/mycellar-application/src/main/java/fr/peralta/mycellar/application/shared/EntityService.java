@@ -21,34 +21,13 @@ package fr.peralta.mycellar.application.shared;
 import java.util.List;
 
 import fr.peralta.mycellar.domain.shared.IdentifiedEntity;
-import fr.peralta.mycellar.domain.shared.exception.BusinessException;
 import fr.peralta.mycellar.domain.shared.repository.AbstractEntityOrder;
 
 /**
  * @author speralta
  */
-public interface EntityService<E extends IdentifiedEntity, OE, O extends AbstractEntityOrder<OE, O>> {
-    /**
-     * @param entity
-     */
-    void delete(E entity);
-
-    /**
-     * @param id
-     * @return
-     */
-    E getById(Integer id);
-
-    /**
-     * @param entity
-     */
-    void save(E entity) throws BusinessException;
-
-    /**
-     * @param entity
-     * @throws BusinessException
-     */
-    void validate(E entity) throws BusinessException;
+public interface EntityService<E extends IdentifiedEntity, OE, O extends AbstractEntityOrder<OE, O>>
+        extends SimpleService<E> {
 
     /**
      * @return

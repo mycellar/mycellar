@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE properties SYSTEM "http://java.sun.com/dtd/properties.dtd">
+<properties>
+  <entry key="header">Mon compte</entry>
+  <entry key="noProfile">Votre inscription n'est pas encore validée. Nous vous tiendrons informé dans les plus brefs délais.</entry>
+  <entry key="accountManagement">Gestion de votre compte</entry>
+  <entry key="accountManagementText">Changement d'adresse email, de mot de passe...</entry>
+  <entry key="changePassword">Changer votre mot de passe</entry>
+  <entry key="changePasswordDetails">Changement de votre mot de passe</entry>
+  <entry key="password">Mot de passe</entry>
+  <entry key="password2">Confirmation du mot de passe</entry>
+  <entry key="savePassword">Modifier votre mot de passe</entry>
+  <entry key="passwordChanged">Votre mot de passe a bien été modifié.</entry>
+  <entry key="badges">Badges</entry>
+  <entry key="notValidBadge">Utilisateur non validé</entry>
+  <entry key="simpleBadge">Utilisateur validé</entry>
+  <entry key="shoppingBadge">Accès à la réservation</entry>
+  <entry key="cellarBadge">Accès à la gestion de cave</entry>
+  <entry key="adminBadge">Accès à l'administration</entry>
+  <entry key="contact">Coordonnées</entry>
+</properties>

@@ -21,6 +21,7 @@ package fr.peralta.mycellar.interfaces.facades.user;
 import java.util.List;
 
 import fr.peralta.mycellar.domain.shared.exception.BusinessException;
+import fr.peralta.mycellar.domain.user.ResetPasswordRequest;
 import fr.peralta.mycellar.domain.user.User;
 import fr.peralta.mycellar.domain.user.repository.UserOrder;
 
@@ -67,4 +68,27 @@ public interface UserServiceFacade {
      */
     void saveUser(User user) throws BusinessException;
 
+    /**
+     * @param user
+     * @param password
+     * @throws BusinessException
+     */
+    void saveUserPassword(User user, String password) throws BusinessException;
+
+    /**
+     * @param email
+     * @throws BusinessException
+     */
+    void resetPasswordRequest(String email);
+
+    /**
+     * @param key
+     * @return
+     */
+    ResetPasswordRequest getResetPasswordRequestByKey(String key);
+
+    /**
+     * @param user
+     */
+    void deleteAllResetPasswordRequestsForUser(User user);
 }

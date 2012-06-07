@@ -21,6 +21,7 @@ package fr.peralta.mycellar.application.user;
 import java.util.List;
 
 import fr.peralta.mycellar.application.shared.EntityService;
+import fr.peralta.mycellar.domain.shared.exception.BusinessException;
 import fr.peralta.mycellar.domain.user.User;
 import fr.peralta.mycellar.domain.user.repository.UserOrder;
 import fr.peralta.mycellar.domain.user.repository.UserOrderEnum;
@@ -42,5 +43,18 @@ public interface UserService extends EntityService<User, UserOrderEnum, UserOrde
      * @return
      */
     List<User> getAllLike(String input);
+
+    /**
+     * @param user
+     * @param password
+     * @throws BusinessException
+     */
+    void saveUserPassword(User user, String password) throws BusinessException;
+
+    /**
+     * @param email
+     * @throws BusinessException
+     */
+    void resetPasswordRequest(String email);
 
 }

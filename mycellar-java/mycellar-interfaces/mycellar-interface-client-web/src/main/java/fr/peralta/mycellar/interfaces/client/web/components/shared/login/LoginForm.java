@@ -20,22 +20,17 @@ package fr.peralta.mycellar.interfaces.client.web.components.shared.login;
 
 import org.apache.wicket.markup.html.form.EmailTextField;
 import org.apache.wicket.markup.html.form.PasswordTextField;
-import org.apache.wicket.markup.html.form.StatelessForm;
 import org.apache.wicket.markup.html.link.BookmarkablePageLink;
-import org.apache.wicket.model.CompoundPropertyModel;
-import org.apache.wicket.util.value.ValueMap;
-import org.wicketstuff.security.WaspSession;
-import org.wicketstuff.security.authentication.LoginException;
-import org.wicketstuff.security.hive.authentication.LoginContext;
 
-import fr.peralta.mycellar.interfaces.client.web.pages.MyAccountPage;
-import fr.peralta.mycellar.interfaces.client.web.pages.NewUserPage;
-import fr.peralta.mycellar.interfaces.client.web.security.UserKey;
+import fr.peralta.mycellar.interfaces.client.web.components.shared.feedback.ContainerVisibleFeedbackMessageFilter;
+import fr.peralta.mycellar.interfaces.client.web.components.shared.feedback.FeedbackPanel;
+import fr.peralta.mycellar.interfaces.client.web.components.shared.feedback.FormComponentFeedbackBorder;
+import fr.peralta.mycellar.interfaces.client.web.pages.user.ResetPasswordRequestPage;
 
 /**
  * @author speralta
  */
-class LoginForm extends StatelessForm<ValueMap> {
+class LoginForm extends AbstractLoginForm {
 
     private static final long serialVersionUID = 201108221836L;
 
@@ -43,32 +38,13 @@ class LoginForm extends StatelessForm<ValueMap> {
      * @param id
      */
     public LoginForm(String id) {
-        super(id, new CompoundPropertyModel<ValueMap>(new ValueMap()));
-        add(new EmailTextField("username").setType(String.class).setRequired(true));
-        add(new PasswordTextField("password").setType(String.class).setRequired(true));
-        add(new BookmarkablePageLink<Void>("newUserLink", NewUserPage.class));
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    protected void onSubmit() {
-        ValueMap values = getModelObject();
-        String username = values.getString("username");
-        String password = values.getString("password");
-
-        LoginContext ctx = new MyCellarLoginContext(username, password);
-        try {
-            ((WaspSession) getSession()).login(ctx);
-            if (UserKey.getUserLoggedIn().getProfile() == null) {
-                setResponsePage(MyAccountPage.class);
-            } else if (!getPage().continueToOriginalDestination()) {
-                setResponsePage(getPage().getClass());
-            }
-        } catch (LoginException e) {
-            error(getLocalizer().getString("exception.login", this));
-        }
+        super(id);
+        add(new FormComponentFeedbackBorder("username").add(new EmailTextField("username").setType(
+                String.class).setRequired(true)));
+        add(new FormComponentFeedbackBorder("password").add(new PasswordTextField("password")
+                .setType(String.class).setRequired(true)));
+        add(new FeedbackPanel("feedback", new ContainerVisibleFeedbackMessageFilter(this)));
+        add(new BookmarkablePageLink<Void>("reset", ResetPasswordRequestPage.class));
     }
 
 }

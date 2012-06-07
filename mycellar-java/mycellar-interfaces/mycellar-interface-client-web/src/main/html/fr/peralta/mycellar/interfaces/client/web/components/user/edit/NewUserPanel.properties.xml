@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE properties SYSTEM "http://java.sun.com/dtd/properties.dtd">
 <properties>
-  <entry key="header">Nouvel utilisateur</entry>
-  <entry key="registerText">L'inscription au site doit être validée. Vous recevrez un email lorsque nous aurons traité votre demande de création de compte.</entry>
+  <entry key="registerAlertHeader">L'inscription au site doit être validée.</entry>
+  <entry key="registerAlertText">Vous recevrez un email lorsque nous aurons traité votre demande de création de compte.</entry>
   <entry key="details">Détails</entry>
   <entry key="email">Adresse mail</entry>
   <entry key="firstname">Prénom</entry>
@@ -10,4 +10,4 @@
   <entry key="password">Mot de passe</entry>
   <entry key="password2">Confirmation du mot de passe</entry>
   <entry key="save">S'enregistrer</entry>
-</properties>
+</properties> 

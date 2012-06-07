@@ -2,15 +2,21 @@ grant
 {
 	permission ${ComponentPermission} "fr.peralta.mycellar.interfaces.client.web.pages.HomePage", "inherit, render";
 	permission ${ComponentPermission} "fr.peralta.mycellar.interfaces.client.web.pages.HomePage", "enable";
-	permission ${ComponentPermission} "fr.peralta.mycellar.interfaces.client.web.pages.NewUserPage", "inherit, render";
-    permission ${ComponentPermission} "fr.peralta.mycellar.interfaces.client.web.pages.NewUserPage", "enable";
+	permission ${ComponentPermission} "fr.peralta.mycellar.interfaces.client.web.pages.user.NewUserPage", "inherit, render";
+    permission ${ComponentPermission} "fr.peralta.mycellar.interfaces.client.web.pages.user.NewUserPage", "enable";
+    permission ${ComponentPermission} "fr.peralta.mycellar.interfaces.client.web.pages.user.LoginPage", "inherit, render";
+    permission ${ComponentPermission} "fr.peralta.mycellar.interfaces.client.web.pages.user.LoginPage", "enable";
+    permission ${ComponentPermission} "fr.peralta.mycellar.interfaces.client.web.pages.user.ResetPasswordRequestPage", "inherit, render";
+    permission ${ComponentPermission} "fr.peralta.mycellar.interfaces.client.web.pages.user.ResetPasswordRequestPage", "enable";
+    permission ${ComponentPermission} "fr.peralta.mycellar.interfaces.client.web.pages.user.ResetPasswordPage", "inherit, render";
+    permission ${ComponentPermission} "fr.peralta.mycellar.interfaces.client.web.pages.user.ResetPasswordPage", "enable";
     permission ${ComponentPermission} "fr.peralta.mycellar.interfaces.client.web.pages.shared.MyCellarAccessDeniedPage", "inherit, render";
     permission ${ComponentPermission} "fr.peralta.mycellar.interfaces.client.web.pages.shared.MyCellarAccessDeniedPage", "enable";
 };
 grant principal fr.peralta.mycellar.interfaces.client.web.security.MyCellarPrincipal "basic"
 {
-    permission ${ComponentPermission} "fr.peralta.mycellar.interfaces.client.web.pages.MyAccountPage", "inherit, render";
-    permission ${ComponentPermission} "fr.peralta.mycellar.interfaces.client.web.pages.MyAccountPage", "enable";
+    permission ${ComponentPermission} "fr.peralta.mycellar.interfaces.client.web.pages.user.MyAccountPage", "inherit, render";
+    permission ${ComponentPermission} "fr.peralta.mycellar.interfaces.client.web.pages.user.MyAccountPage", "enable";
     permission ${ComponentPermission} "fr.peralta.mycellar.interfaces.client.web.pages.pedia.PediaHomePage", "inherit, render";
     permission ${ComponentPermission} "fr.peralta.mycellar.interfaces.client.web.pages.pedia.PediaHomePage", "enable";
 };

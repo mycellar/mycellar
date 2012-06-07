@@ -1,22 +1,20 @@
 <!DOCTYPE html>
-<html lang="fr" xmlns:wicket="">
+<html lang="fr" xmlns:wicket="http://wicket.apache.org">
 <body>
 <wicket:panel>
-  <div wicket:id="notLoggedIn">
-    <form wicket:id="loginForm" class="navbar-form form-inline">
-      <label for="username" style="display: none;"><wicket:message key="username">Username</wicket:message></label>
-      <input type="email" wicket:id="username" id="username" class="input-small" style="width: auto;" size="18" wicket:message="placeholder:username" />
-      <label for="password" style="display: none;"><wicket:message key="password">Password</wicket:message></label>
-      <input type="password" wicket:id="password" id="password" class="input-small" style="width: auto;" size="8" wicket:message="placeholder:password" />
-      <button class="btn btn-inverse btn-small"><wicket:message key="login">Log-in</wicket:message></button>
-      <a class="btn btn-inverse btn-small" wicket:id="newUserLink" wicket:message="title:newUser"><span><wicket:message key="newUser">New user</wicket:message></span><i class="icon-user icon-white"></i></a>
-    </form>
-    <div wicket:id="feedback" />
-  </div>
-  <div class="btn-group" wicket:id="loggedIn">
-    <a class="btn btn-inverse btn-small" wicket:id="emailLink" wicket:message="title:myAccount"><span wicket:id="email">email</span><i class="icon-user icon-white"></i></a>
-    <a class="btn btn-inverse btn-small" wicket:id="logout" wicket:message="title:logout"><i class="icon-off icon-white"></i></a>
-  </div>
+  <form wicket:id="loginForm" class="form-horizontal">
+    <div class="control-group" wicket:id="username">
+      <input type="email" wicket:id="username" id="username" class="input-small" style="width: auto;" size="18" />
+    </div>
+    <div class="control-group" wicket:id="password">
+      <input type="password" wicket:id="password" id="password" class="input-small" style="width: auto;" size="8"  />
+    </div>
+    <div wicket:id="feedback" class="feedback" />
+    <div class="form-actions">
+      <input type="submit" class="btn btn-primary" wicket:message="value:login" />
+      <a wicket:id="reset" class="btn btn-warning"><wicket:message key="resetPassword">Reset password</wicket:message></a>
+    </div>
+  </form>
 </wicket:panel>
 </body>
 </html>
