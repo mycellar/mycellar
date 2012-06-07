@@ -11,6 +11,7 @@
         <Set name="password">${db.pass}</Set>
         <Set name="maxActive">50</Set>
         <Set name="maxIdle">20</Set>
+        <Set name="validationQuery">/* ping */</Set>
       </New>
     </Arg>
   </New>
