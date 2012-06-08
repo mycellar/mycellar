@@ -64,7 +64,7 @@ public class BookingServiceImpl extends
         }
         if (sum > 0) {
             save(booking);
-        } else if (booking.getId() > 0) {
+        } else if ((booking.getId() != null) && (booking.getId() > 0)) {
             delete(booking);
         }
     }
@@ -112,8 +112,8 @@ public class BookingServiceImpl extends
      *            the bookingRepository to set
      */
     @Autowired
-    public void setBookingRepository(BookingRepository bookingEventRepository) {
-        bookingRepository = bookingEventRepository;
+    public void setBookingRepository(BookingRepository bookingRepository) {
+        this.bookingRepository = bookingRepository;
     }
 
 }
