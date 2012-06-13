@@ -44,6 +44,15 @@ public class BookingBottlePositionComparator implements Comparator<BookingBottle
         if ((o1 == null) && (o2 != null)) {
             return 1;
         }
+        if (o1 == o2) {
+            return 0;
+        }
+        if (o1.getPosition() == null) {
+            return 1;
+        }
+        if (o2.getPosition() == null) {
+            return -1;
+        }
         return o1.getPosition().compareTo(o2.getPosition());
     }
 
