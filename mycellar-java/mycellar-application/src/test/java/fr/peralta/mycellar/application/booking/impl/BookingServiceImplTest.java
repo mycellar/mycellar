@@ -25,7 +25,7 @@ import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mock;
 
-import fr.peralta.mycellar.domain.FieldUtils;
+import fr.peralta.mycellar.application.FieldUtils;
 import fr.peralta.mycellar.domain.booking.Booking;
 import fr.peralta.mycellar.domain.booking.BookingBottle;
 import fr.peralta.mycellar.domain.booking.repository.BookingRepository;
