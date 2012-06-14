@@ -42,7 +42,7 @@
     <wicket.version>1.5.7</wicket.version>
     <wicketstuff.version>1.5.5</wicketstuff.version>
     <spring.version>3.1.1.RELEASE</spring.version>
-    <hibernate.version>4.1.4.Final</hibernate.version>
+    <hibernate.version>4.0.0.Final</hibernate.version>
   </properties>
 
   <developers>
