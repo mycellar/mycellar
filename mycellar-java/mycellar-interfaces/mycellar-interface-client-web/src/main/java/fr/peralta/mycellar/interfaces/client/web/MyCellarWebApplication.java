@@ -43,6 +43,8 @@ import fr.peralta.mycellar.interfaces.client.web.pages.admin.ListPage;
 import fr.peralta.mycellar.interfaces.client.web.pages.admin.StackPage;
 import fr.peralta.mycellar.interfaces.client.web.pages.admin.booking.BookingEventPage;
 import fr.peralta.mycellar.interfaces.client.web.pages.admin.booking.BookingPage;
+import fr.peralta.mycellar.interfaces.client.web.pages.admin.contact.ContactPage;
+import fr.peralta.mycellar.interfaces.client.web.pages.admin.contact.ContactsPage;
 import fr.peralta.mycellar.interfaces.client.web.pages.admin.stock.CellarPage;
 import fr.peralta.mycellar.interfaces.client.web.pages.admin.stock.CellarSharePage;
 import fr.peralta.mycellar.interfaces.client.web.pages.admin.stock.CellarSharesPage;
@@ -153,6 +155,7 @@ public abstract class MyCellarWebApplication extends SwarmWebApplication {
                 fr.peralta.mycellar.interfaces.client.web.pages.admin.booking.BookingEventsPage.class);
         mountPage("/admin/lists/bookings",
                 fr.peralta.mycellar.interfaces.client.web.pages.admin.booking.BookingsPage.class);
+        mountPage("/admin/lists/contacts", ContactsPage.class);
         mountPage("/admin/edit/user", UserPage.class);
         mountPage("/admin/edit/appellation", AppellationPage.class);
         mountPage("/admin/edit/country", CountryPage.class);
@@ -163,6 +166,7 @@ public abstract class MyCellarWebApplication extends SwarmWebApplication {
         mountPage("/admin/edit/cellarShare", CellarSharePage.class);
         mountPage("/admin/edit/bookingEvent", BookingEventPage.class);
         mountPage("/admin/edit/booking", BookingPage.class);
+        mountPage("/admin/edit/contact", ContactPage.class);
         mountPage("/admin/bookings", BookingReportsPage.class);
     }
 

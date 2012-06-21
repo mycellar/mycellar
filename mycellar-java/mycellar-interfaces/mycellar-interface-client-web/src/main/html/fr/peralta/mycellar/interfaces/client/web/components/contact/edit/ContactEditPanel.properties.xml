@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE properties SYSTEM "http://java.sun.com/dtd/properties.dtd">
+<properties>
+  <entry key="contactEdit">Contact</entry>
+  <entry key="producer">Producteur</entry>
+  <entry key="current">Date de contact</entry>
+  <entry key="next">Prochain contact</entry>
+  <entry key="text">Commentaires</entry>
+</properties> 
