@@ -18,14 +18,21 @@
  */
 package fr.peralta.mycellar.interfaces.client.web;
 
+import java.io.IOException;
+
 import org.apache.wicket.ConverterLocator;
 import org.apache.wicket.IConverterLocator;
 import org.apache.wicket.Page;
+import org.apache.wicket.WicketRuntimeException;
 import org.apache.wicket.markup.html.pages.InternalErrorPage;
 import org.apache.wicket.resource.loader.ClassStringResourceLoader;
 import org.apache.wicket.spring.injection.annot.SpringComponentInjector;
 import org.joda.time.LocalDate;
 import org.springframework.context.ApplicationContext;
+import org.springframework.core.io.ClassPathResource;
+import org.wicketstuff.security.hive.HiveMind;
+import org.wicketstuff.security.hive.config.PolicyFileHiveFactory;
+import org.wicketstuff.security.hive.config.SwarmPolicyFileHiveFactory;
 import org.wicketstuff.security.swarm.SwarmWebApplication;
 
 import fr.peralta.mycellar.domain.stock.AccessRightEnum;
@@ -43,6 +50,8 @@ import fr.peralta.mycellar.interfaces.client.web.pages.admin.ListPage;
 import fr.peralta.mycellar.interfaces.client.web.pages.admin.StackPage;
 import fr.peralta.mycellar.interfaces.client.web.pages.admin.booking.BookingEventPage;
 import fr.peralta.mycellar.interfaces.client.web.pages.admin.booking.BookingPage;
+import fr.peralta.mycellar.interfaces.client.web.pages.admin.contact.ContactPage;
+import fr.peralta.mycellar.interfaces.client.web.pages.admin.contact.ContactsPage;
 import fr.peralta.mycellar.interfaces.client.web.pages.admin.stock.CellarPage;
 import fr.peralta.mycellar.interfaces.client.web.pages.admin.stock.CellarSharePage;
 import fr.peralta.mycellar.interfaces.client.web.pages.admin.stock.CellarSharesPage;
@@ -153,6 +162,7 @@ public abstract class MyCellarWebApplication extends SwarmWebApplication {
                 fr.peralta.mycellar.interfaces.client.web.pages.admin.booking.BookingEventsPage.class);
         mountPage("/admin/lists/bookings",
                 fr.peralta.mycellar.interfaces.client.web.pages.admin.booking.BookingsPage.class);
+        mountPage("/admin/lists/contacts", ContactsPage.class);
         mountPage("/admin/edit/user", UserPage.class);
         mountPage("/admin/edit/appellation", AppellationPage.class);
         mountPage("/admin/edit/country", CountryPage.class);
@@ -163,6 +173,7 @@ public abstract class MyCellarWebApplication extends SwarmWebApplication {
         mountPage("/admin/edit/cellarShare", CellarSharePage.class);
         mountPage("/admin/edit/bookingEvent", BookingEventPage.class);
         mountPage("/admin/edit/booking", BookingPage.class);
+        mountPage("/admin/edit/contact", ContactPage.class);
         mountPage("/admin/bookings", BookingReportsPage.class);
     }
 
@@ -203,6 +214,20 @@ public abstract class MyCellarWebApplication extends SwarmWebApplication {
     @Override
     public Class<? extends Page> getHomePage() {
         return HomePage.class;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    protected void setUpHive() {
+        PolicyFileHiveFactory factory = new SwarmPolicyFileHiveFactory(getActionFactory());
+        try {
+            factory.addPolicyFile(new ClassPathResource("mycellar.hive").getURL());
+        } catch (IOException e) {
+            throw new WicketRuntimeException(e);
+        }
+        HiveMind.registerHive(getHiveKey(), factory);
     }
 
 }

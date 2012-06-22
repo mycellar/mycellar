@@ -22,7 +22,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.wicket.extensions.markup.html.tabs.AbstractTab;
-import org.apache.wicket.extensions.markup.html.tabs.ITab;
 import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.model.IModel;
@@ -92,7 +91,7 @@ public class ShareCellarsPage extends CellarSuperPage {
     @Override
     protected void onInitialize() {
         super.onInitialize();
-        List<ITab> tabs = new ArrayList<ITab>();
+        List<CellarShareTab> tabs = new ArrayList<CellarShareTab>();
         for (Cellar cellar : stockServiceFacade.getCellars(
                 new SearchForm().setCellarModification(true).addToSet(FilterEnum.USER,
                         UserKey.getUserLoggedIn()), CountEnum.STOCK_QUANTITY).keySet()) {
@@ -101,7 +100,7 @@ public class ShareCellarsPage extends CellarSuperPage {
         if (tabs.size() == 0) {
             add(new Label("cellars", new StringResourceModel("noCellar", null)));
         } else {
-            add(new BootstrapAjaxTabbedPanel("cellars", tabs));
+            add(new BootstrapAjaxTabbedPanel<CellarShareTab>("cellars", tabs));
         }
     }
 

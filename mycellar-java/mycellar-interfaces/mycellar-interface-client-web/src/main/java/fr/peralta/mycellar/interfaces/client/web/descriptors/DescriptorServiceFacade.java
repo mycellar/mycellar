@@ -25,7 +25,6 @@ import java.util.Map;
 import java.util.SortedMap;
 import java.util.TreeMap;
 
-import org.apache.wicket.Localizer;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
@@ -81,12 +80,11 @@ public class DescriptorServiceFacade {
             descriptors.add(descriptor);
             if (descriptor instanceof IEntityDescriptor) {
                 IEntityDescriptor<?, ?> entityDescriptor = ((IEntityDescriptor<?, ?>) descriptor);
-                NavHeaderDescriptor header = listHeaders.get(Localizer.get().getString(
-                        entityDescriptor.getHeaderKey(), null));
+                NavHeaderDescriptor header = listHeaders.get(entityDescriptor.getHeaderKey());
                 SortedMap<String, NavPageDescriptor> pages;
                 if (header == null) {
                     header = new NavHeaderDescriptor(entityDescriptor.getHeaderKey());
-                    listHeaders.put(Localizer.get().getString(header.getHeaderKey(), null), header);
+                    listHeaders.put(header.getHeaderKey(), header);
                     pages = new TreeMap<String, NavPageDescriptor>();
                     listPages.put(header, pages);
                 } else {
@@ -94,7 +92,7 @@ public class DescriptorServiceFacade {
                 }
 
                 pages.put(
-                        Localizer.get().getString(entityDescriptor.getTitleKey(), null),
+                        entityDescriptor.getTitleKey(),
                         new NavPageDescriptor(entityDescriptor.getListPageClass(), entityDescriptor
                                 .getTitleKey()));
             }

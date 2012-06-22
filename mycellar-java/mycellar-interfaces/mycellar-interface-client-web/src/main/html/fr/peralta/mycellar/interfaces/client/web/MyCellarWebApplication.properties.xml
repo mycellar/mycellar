@@ -24,6 +24,8 @@
   <entry key="cellarShares">Partages de cave</entry>
   <entry key="color">Couleur</entry>
   <entry key="colors">Couleurs</entry>
+  <entry key="contact">Contact</entry>
+  <entry key="contacts">Contacts</entry>
   <entry key="country">Pays</entry>
   <entry key="countries">Pays</entry>
   <entry key="format">Format</entry>
@@ -46,6 +48,7 @@
   <entry key="wineHeader">wine</entry>
   <entry key="userHeader">user</entry>
   <entry key="stockHeader">stock</entry>
+  <entry key="contactHeader">contact</entry>
   
   <!-- BUSINESS ERROR MESSAGES -->
   <entry key="BusinessError.CELLAR_SHARE_00001">Cette cave est déjà partagée avec cet email.</entry>
