@@ -16,16 +16,12 @@
  * You should have received a copy of the GNU General Public License
  * along with MyCellar. If not, see <http://www.gnu.org/licenses/>.
  */
-package fr.peralta.mycellar.interfaces.client.web;
+package fr.peralta.mycellar.interfaces.web;
 
-import java.net.MalformedURLException;
-
-import org.apache.wicket.WicketRuntimeException;
 import org.springframework.context.ApplicationContext;
-import org.springframework.context.support.ClassPathXmlApplicationContext;
-import org.wicketstuff.security.hive.HiveMind;
-import org.wicketstuff.security.hive.config.PolicyFileHiveFactory;
-import org.wicketstuff.security.hive.config.SwarmPolicyFileHiveFactory;
+import org.springframework.web.context.support.WebApplicationContextUtils;
+
+import fr.peralta.mycellar.interfaces.client.web.MyCellarWebApplication;
 
 /**
  * @author speralta
@@ -37,21 +33,7 @@ public class MyCellarSpringWebApplication extends MyCellarWebApplication {
      */
     @Override
     protected ApplicationContext getApplicationContext() {
-        return new ClassPathXmlApplicationContext("context-interface-web.xml");
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    protected void setUpHive() {
-        PolicyFileHiveFactory factory = new SwarmPolicyFileHiveFactory(getActionFactory());
-        try {
-            factory.addPolicyFile(getServletContext().getResource("/WEB-INF/mycellar.hive"));
-        } catch (MalformedURLException e) {
-            throw new WicketRuntimeException(e);
-        }
-        HiveMind.registerHive(getHiveKey(), factory);
+        return WebApplicationContextUtils.getRequiredWebApplicationContext(getServletContext());
     }
 
 }

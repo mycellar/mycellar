@@ -18,14 +18,21 @@
  */
 package fr.peralta.mycellar.interfaces.client.web;
 
+import java.io.IOException;
+
 import org.apache.wicket.ConverterLocator;
 import org.apache.wicket.IConverterLocator;
 import org.apache.wicket.Page;
+import org.apache.wicket.WicketRuntimeException;
 import org.apache.wicket.markup.html.pages.InternalErrorPage;
 import org.apache.wicket.resource.loader.ClassStringResourceLoader;
 import org.apache.wicket.spring.injection.annot.SpringComponentInjector;
 import org.joda.time.LocalDate;
 import org.springframework.context.ApplicationContext;
+import org.springframework.core.io.ClassPathResource;
+import org.wicketstuff.security.hive.HiveMind;
+import org.wicketstuff.security.hive.config.PolicyFileHiveFactory;
+import org.wicketstuff.security.hive.config.SwarmPolicyFileHiveFactory;
 import org.wicketstuff.security.swarm.SwarmWebApplication;
 
 import fr.peralta.mycellar.domain.stock.AccessRightEnum;
@@ -207,6 +214,20 @@ public abstract class MyCellarWebApplication extends SwarmWebApplication {
     @Override
     public Class<? extends Page> getHomePage() {
         return HomePage.class;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    protected void setUpHive() {
+        PolicyFileHiveFactory factory = new SwarmPolicyFileHiveFactory(getActionFactory());
+        try {
+            factory.addPolicyFile(new ClassPathResource("mycellar.hive").getURL());
+        } catch (IOException e) {
+            throw new WicketRuntimeException(e);
+        }
+        HiveMind.registerHive(getHiveKey(), factory);
     }
 
 }
