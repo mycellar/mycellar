@@ -38,4 +38,9 @@ public interface ResetPasswordRequestRepository extends SimpleRepository<ResetPa
      */
     void deleteAllForUser(User user);
 
+    /**
+     * 
+     */
+    void deleteOldRequests();
+
 }

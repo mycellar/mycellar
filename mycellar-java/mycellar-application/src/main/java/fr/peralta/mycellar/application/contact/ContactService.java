@@ -28,4 +28,6 @@ import fr.peralta.mycellar.domain.contact.repository.ContactOrderEnum;
  */
 public interface ContactService extends EntityService<Contact, ContactOrderEnum, ContactOrder> {
 
+    void sendReminders();
+
 }

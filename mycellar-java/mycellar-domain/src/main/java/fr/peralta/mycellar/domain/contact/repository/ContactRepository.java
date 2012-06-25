@@ -18,6 +18,8 @@
  */
 package fr.peralta.mycellar.domain.contact.repository;
 
+import java.util.List;
+
 import fr.peralta.mycellar.domain.contact.Contact;
 import fr.peralta.mycellar.domain.shared.repository.EntityRepository;
 
@@ -26,5 +28,10 @@ import fr.peralta.mycellar.domain.shared.repository.EntityRepository;
  */
 public interface ContactRepository extends
         EntityRepository<Contact, ContactOrderEnum, ContactOrder> {
+
+    /**
+     * @return
+     */
+    List<Contact> getAllToContact();
 
 }

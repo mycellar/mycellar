@@ -30,6 +30,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.mail.javamail.MimeMessagePreparator;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
 import fr.peralta.mycellar.application.shared.AbstractSimpleService;
@@ -51,6 +52,15 @@ public class ResetPasswordRequestServiceImpl extends
 
     private ResetPasswordRequestRepository resetPasswordRequestRepository;
     private JavaMailSender javaMailSender;
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    @Scheduled(cron = "0 0 0 * * *")
+    public void cleanOldRequests() {
+        resetPasswordRequestRepository.deleteOldRequests();
+    }
 
     /**
      * {@inheritDoc}

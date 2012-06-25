@@ -18,7 +18,15 @@
  */
 package fr.peralta.mycellar.application.contact.impl;
 
+import java.util.List;
+
+import javax.mail.internet.MimeMessage;
+
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.mail.javamail.JavaMailSender;
+import org.springframework.mail.javamail.MimeMessageHelper;
+import org.springframework.mail.javamail.MimeMessagePreparator;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
 import fr.peralta.mycellar.application.contact.ContactService;
@@ -38,6 +46,40 @@ public class ContactServiceImpl extends
         ContactService {
 
     private ContactRepository contactRepository;
+
+    private JavaMailSender javaMailSender;
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    @Scheduled(cron = "0 0 0 * * *")
+    public void sendReminders() {
+        final StringBuilder content = new StringBuilder();
+        List<Contact> contacts = contactRepository.getAllToContact();
+        for (Contact contact : contacts) {
+            content.append("Domaine ").append(contact.getProducer().getName())
+                    .append(" à recontacter le ").append(contact.getNext()).append("\r\n");
+            content.append("Dernier contact le ").append(contact.getCurrent()).append(" :")
+                    .append("\r\n").append(contact.getText()).append("\r\n");
+        }
+        MimeMessagePreparator mimeMessagePreparator = new MimeMessagePreparator() {
+            @Override
+            public void prepare(MimeMessage mimeMessage) throws Exception {
+                MimeMessageHelper helper = new MimeMessageHelper(mimeMessage);
+                helper.setTo("sebastien@cave-et-terroirs.fr");
+                helper.setFrom("contact@mycellar.peralta.fr");
+                helper.setSubject("Contacts à recontacter");
+                helper.setText(content.toString());
+            }
+        };
+        try {
+            javaMailSender.send(mimeMessagePreparator);
+        } catch (Exception e) {
+            throw new RuntimeException("Cannot send email.", e);
+        }
+
+    }
 
     /**
      * {@inheritDoc}
@@ -62,6 +104,15 @@ public class ContactServiceImpl extends
     @Autowired
     public void setContactRepository(ContactRepository contactRepository) {
         this.contactRepository = contactRepository;
+    }
+
+    /**
+     * @param javaMailSender
+     *            the javaMailSender to set
+     */
+    @Autowired
+    public void setJavaMailSender(JavaMailSender javaMailSender) {
+        this.javaMailSender = javaMailSender;
     }
 
 }

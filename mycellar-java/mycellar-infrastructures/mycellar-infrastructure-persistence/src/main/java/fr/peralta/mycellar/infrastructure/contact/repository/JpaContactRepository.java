@@ -18,10 +18,16 @@
  */
 package fr.peralta.mycellar.infrastructure.contact.repository;
 
+import java.util.List;
+
+import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Expression;
 import javax.persistence.criteria.JoinType;
 import javax.persistence.criteria.Root;
+import javax.persistence.criteria.Subquery;
 
+import org.joda.time.LocalDate;
 import org.springframework.stereotype.Repository;
 
 import fr.peralta.mycellar.domain.contact.Contact;
@@ -36,6 +42,29 @@ import fr.peralta.mycellar.infrastructure.shared.repository.JpaEntityRepository;
 @Repository
 public class JpaContactRepository extends
         JpaEntityRepository<Contact, ContactOrderEnum, ContactOrder> implements ContactRepository {
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public List<Contact> getAllToContact() {
+        CriteriaBuilder criteriaBuilder = getEntityManager().getCriteriaBuilder();
+        CriteriaQuery<Contact> query = criteriaBuilder.createQuery(Contact.class);
+        Root<Contact> root = query.from(Contact.class);
+
+        Subquery<Contact> subquery = query.subquery(Contact.class);
+        Root<Contact> subroot = subquery.from(Contact.class);
+        subquery.select(subroot).where(
+                criteriaBuilder.equal(root.get("producer"), subroot.get("producer")),
+                criteriaBuilder.greaterThan(subroot.<LocalDate> get("current"),
+                        root.<LocalDate> get("current")));
+
+        return getEntityManager().createQuery(
+                query.select(root).where(
+                        criteriaBuilder.not(criteriaBuilder.exists(subquery)),
+                        criteriaBuilder.lessThanOrEqualTo(root.<LocalDate> get("next"),
+                                new LocalDate()))).getResultList();
+    }
 
     /**
      * {@inheritDoc}
