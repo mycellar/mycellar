@@ -22,6 +22,7 @@ import java.util.List;
 
 import javax.mail.internet.MimeMessage;
 
+import org.joda.time.LocalDate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
@@ -35,7 +36,9 @@ import fr.peralta.mycellar.domain.contact.Contact;
 import fr.peralta.mycellar.domain.contact.repository.ContactOrder;
 import fr.peralta.mycellar.domain.contact.repository.ContactOrderEnum;
 import fr.peralta.mycellar.domain.contact.repository.ContactRepository;
+import fr.peralta.mycellar.domain.shared.exception.BusinessError;
 import fr.peralta.mycellar.domain.shared.exception.BusinessException;
+import fr.peralta.mycellar.domain.wine.Producer;
 
 /**
  * @author speralta
@@ -48,6 +51,39 @@ public class ContactServiceImpl extends
     private ContactRepository contactRepository;
 
     private JavaMailSender javaMailSender;
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public long countLastContacts() {
+        return contactRepository.countLastContacts();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public List<Contact> getLastContacts(ContactOrder orders, int first, int count) {
+        return contactRepository.getLastContacts(orders, first, count);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public List<Contact> getAllForProducer(Producer producer, ContactOrder orders, int first,
+            int count) {
+        return contactRepository.getAllForProducer(producer, orders, first, count);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public long countForProducer(Producer producer) {
+        return contactRepository.countForProducer(producer);
+    }
 
     /**
      * {@inheritDoc}
@@ -86,7 +122,19 @@ public class ContactServiceImpl extends
      */
     @Override
     public void validate(Contact entity) throws BusinessException {
+        if ((entity.getId() == null) && (find(entity.getProducer(), entity.getCurrent()) != null)) {
+            throw new BusinessException(BusinessError.CONTACT_00001);
+        }
+    }
 
+    /**
+     * @param producer
+     * @param current
+     * @return
+     */
+    @Override
+    public Contact find(Producer producer, LocalDate current) {
+        return contactRepository.find(producer, current);
     }
 
     /**

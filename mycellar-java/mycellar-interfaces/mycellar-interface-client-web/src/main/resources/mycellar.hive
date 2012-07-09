@@ -42,10 +42,14 @@ grant principal fr.peralta.mycellar.interfaces.client.web.security.MyCellarPrinc
 };
 grant principal fr.peralta.mycellar.interfaces.client.web.security.MyCellarPrincipal "admin"
 {
+    permission ${ComponentPermission} "fr.peralta.mycellar.interfaces.client.web.pages.booking.BookingReportsPage", "inherit, render";
+    permission ${ComponentPermission} "fr.peralta.mycellar.interfaces.client.web.pages.booking.BookingReportsPage", "enable";
+    permission ${ComponentPermission} "fr.peralta.mycellar.interfaces.client.web.pages.contact.ContactsPage", "inherit, render";
+    permission ${ComponentPermission} "fr.peralta.mycellar.interfaces.client.web.pages.contact.ContactsPage", "enable";
+    permission ${ComponentPermission} "fr.peralta.mycellar.interfaces.client.web.pages.contact.ContactPage", "inherit, render";
+    permission ${ComponentPermission} "fr.peralta.mycellar.interfaces.client.web.pages.contact.ContactPage", "enable";
     permission ${ComponentPermission} "fr.peralta.mycellar.interfaces.client.web.pages.admin.AdminPage", "inherit, render";
     permission ${ComponentPermission} "fr.peralta.mycellar.interfaces.client.web.pages.admin.AdminPage", "enable";
-    permission ${ComponentPermission} "fr.peralta.mycellar.interfaces.client.web.pages.admin.BookingReportsPage", "inherit, render";
-    permission ${ComponentPermission} "fr.peralta.mycellar.interfaces.client.web.pages.admin.BookingReportsPage", "enable";
     permission ${ComponentPermission} "fr.peralta.mycellar.interfaces.client.web.pages.admin.StackPage", "inherit, render";
     permission ${ComponentPermission} "fr.peralta.mycellar.interfaces.client.web.pages.admin.StackPage", "enable";
     permission ${ComponentPermission} "fr.peralta.mycellar.interfaces.client.web.pages.admin.ListPage", "inherit, render";

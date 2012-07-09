@@ -46,6 +46,18 @@ public class FormComponentFeedbackBorder extends Border implements IFeedback {
     private final String[] filteredIds;
 
     /**
+     * @param id
+     * @param parent
+     * @param filteredIds
+     */
+    protected FormComponentFeedbackBorder(final String id, boolean parent, String... filteredIds) {
+        super(id);
+        this.parent = parent;
+        this.filteredIds = filteredIds;
+        addToBorder(new Label("errorMsg"));
+    }
+
+    /**
      * Use id for label and form component id.
      * 
      * @param id

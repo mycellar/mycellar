@@ -81,6 +81,11 @@
   .hero-unit .h1 {
     word-wrap: break-workd;
   }
+  
+  .input-large, .input-xlarge, .input-xxlarge, 
+  input[class *="span"], select[class *="span"], textarea[class *="span"] {
+    width: 100% !important;
+  }
 }
 
 /** Portrait tablet to landscape and desktop **/

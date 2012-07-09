@@ -28,6 +28,7 @@ import fr.peralta.mycellar.application.contact.ContactService;
 import fr.peralta.mycellar.domain.contact.Contact;
 import fr.peralta.mycellar.domain.contact.repository.ContactOrder;
 import fr.peralta.mycellar.domain.shared.exception.BusinessException;
+import fr.peralta.mycellar.domain.wine.Producer;
 
 /**
  * @author speralta
@@ -51,6 +52,24 @@ public class ContactServiceFacadeImpl implements ContactServiceFacade {
      */
     @Override
     @Transactional(readOnly = true)
+    public long countLastContacts() {
+        return contactService.countLastContacts();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    @Transactional(readOnly = true)
+    public long countContactsForProducer(Producer producer) {
+        return contactService.countForProducer(producer);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    @Transactional(readOnly = true)
     public Contact getContactById(Integer objectId) {
         return contactService.getById(objectId);
     }
@@ -62,6 +81,25 @@ public class ContactServiceFacadeImpl implements ContactServiceFacade {
     @Transactional(readOnly = true)
     public List<Contact> getContacts(ContactOrder orders, int first, int count) {
         return contactService.getAll(orders, first, count);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    @Transactional(readOnly = true)
+    public List<Contact> getLastContacts(ContactOrder orders, int first, int count) {
+        return contactService.getLastContacts(orders, first, count);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    @Transactional(readOnly = true)
+    public List<Contact> getContactsForProducer(Producer producer, ContactOrder orders, int first,
+            int count) {
+        return contactService.getAllForProducer(producer, orders, first, count);
     }
 
     /**

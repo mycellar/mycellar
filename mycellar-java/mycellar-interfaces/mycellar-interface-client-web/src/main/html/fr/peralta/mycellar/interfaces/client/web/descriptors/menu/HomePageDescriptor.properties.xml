@@ -19,5 +19,6 @@
   <entry key="myBookingEvents">Réservations en cours</entry>
   <entry key="myBookings">Mes réservations</entry>
   <entry key="bookingReports">Suivi des réservations</entry>
+  <entry key="manageContacts">Suivi des contacts</entry>
   
 </properties> 

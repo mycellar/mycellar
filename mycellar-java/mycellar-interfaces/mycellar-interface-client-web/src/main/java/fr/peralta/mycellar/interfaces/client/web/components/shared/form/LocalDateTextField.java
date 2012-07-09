@@ -18,13 +18,11 @@
  */
 package fr.peralta.mycellar.interfaces.client.web.components.shared.form;
 
-import org.apache.wicket.Session;
 import org.apache.wicket.markup.html.form.AbstractTextComponent.ITextFormatProvider;
 import org.apache.wicket.markup.html.form.TextField;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.util.convert.IConverter;
 import org.joda.time.LocalDate;
-import org.joda.time.format.DateTimeFormat;
 
 import fr.peralta.mycellar.interfaces.client.web.converters.LocalDateConverter;
 
@@ -99,7 +97,7 @@ public class LocalDateTextField extends TextField<LocalDate> implements ITextFor
      */
     @Override
     public String getTextFormat() {
-        return DateTimeFormat.patternForStyle("S-", Session.get().getLocale());
+        return "dd/MM/YYYY";
     }
 
     /**

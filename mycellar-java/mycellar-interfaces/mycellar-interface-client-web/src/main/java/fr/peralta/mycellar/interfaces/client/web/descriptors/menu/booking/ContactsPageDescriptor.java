@@ -16,48 +16,51 @@
  * You should have received a copy of the GNU General Public License
  * along with MyCellar. If not, see <http://www.gnu.org/licenses/>.
  */
-package fr.peralta.mycellar.interfaces.client.web.converters;
+package fr.peralta.mycellar.interfaces.client.web.descriptors.menu.booking;
 
-import java.util.Locale;
+import org.springframework.stereotype.Component;
 
-import org.apache.wicket.util.convert.converter.AbstractConverter;
-import org.joda.time.LocalDate;
-import org.joda.time.format.DateTimeFormat;
+import fr.peralta.mycellar.interfaces.client.web.descriptors.menu.shared.IMenuDescriptor;
+import fr.peralta.mycellar.interfaces.client.web.descriptors.shared.AbstractDescriptor;
+import fr.peralta.mycellar.interfaces.client.web.pages.contact.ContactsPage;
 
 /**
  * @author speralta
  */
-public class LocalDateConverter extends AbstractConverter<LocalDate> {
-
-    private static final long serialVersionUID = 201107191952L;
+@Component
+public class ContactsPageDescriptor extends AbstractDescriptor implements
+        IMenuDescriptor<ContactsPage> {
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public LocalDate convertToObject(String value, Locale locale) {
-        try {
-            return DateTimeFormat.forPattern("dd/MM/YYYY").withLocale(locale).parseDateTime(value)
-                    .toLocalDate();
-        } catch (IllegalArgumentException e) {
-            return null;
-        }
+    public Class<ContactsPage> getMenuableClass() {
+        return ContactsPage.class;
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public String convertToString(LocalDate value, Locale locale) {
-        return DateTimeFormat.forPattern("dd/MM/YYYY").withLocale(locale).print(value);
+    public String getTitleKey() {
+        return "manageContacts";
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    protected Class<LocalDate> getTargetType() {
-        return LocalDate.class;
+    public String getParentKey() {
+        return "bookingMenuHeader";
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public int getWeight() {
+        return 6600;
     }
 
 }

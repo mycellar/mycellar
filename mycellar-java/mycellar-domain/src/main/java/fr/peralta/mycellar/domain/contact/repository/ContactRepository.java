@@ -20,8 +20,11 @@ package fr.peralta.mycellar.domain.contact.repository;
 
 import java.util.List;
 
+import org.joda.time.LocalDate;
+
 import fr.peralta.mycellar.domain.contact.Contact;
 import fr.peralta.mycellar.domain.shared.repository.EntityRepository;
+import fr.peralta.mycellar.domain.wine.Producer;
 
 /**
  * @author speralta
@@ -33,5 +36,40 @@ public interface ContactRepository extends
      * @return
      */
     List<Contact> getAllToContact();
+
+    /**
+     * @return
+     */
+    long countLastContacts();
+
+    /**
+     * @param orders
+     * @param first
+     * @param count
+     * @return
+     */
+    List<Contact> getLastContacts(ContactOrder orders, int first, int count);
+
+    /**
+     * @param producer
+     * @param current
+     * @return
+     */
+    Contact find(Producer producer, LocalDate current);
+
+    /**
+     * @param producer
+     * @param orders
+     * @param first
+     * @param count
+     * @return
+     */
+    List<Contact> getAllForProducer(Producer producer, ContactOrder orders, int first, int count);
+
+    /**
+     * @param producer
+     * @return
+     */
+    long countForProducer(Producer producer);
 
 }

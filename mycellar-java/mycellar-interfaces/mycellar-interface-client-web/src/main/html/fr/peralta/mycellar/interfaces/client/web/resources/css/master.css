@@ -8,6 +8,16 @@ footer[role="main"] {
   padding: 30px;
 }
 
+/** dl **/
+dl {
+  margin: 8px;
+}
+
+/** input size **/
+input[size] {
+  width: auto;
+}
+
 /** feedback **/
 ul.feedbackPanel {
   list-style: none;

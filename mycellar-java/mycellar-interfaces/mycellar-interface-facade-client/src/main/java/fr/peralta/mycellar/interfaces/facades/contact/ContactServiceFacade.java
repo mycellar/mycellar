@@ -23,6 +23,7 @@ import java.util.List;
 import fr.peralta.mycellar.domain.contact.Contact;
 import fr.peralta.mycellar.domain.contact.repository.ContactOrder;
 import fr.peralta.mycellar.domain.shared.exception.BusinessException;
+import fr.peralta.mycellar.domain.wine.Producer;
 
 /**
  * @author speralta
@@ -33,6 +34,17 @@ public interface ContactServiceFacade {
      * @return
      */
     long countContacts();
+
+    /**
+     * @return
+     */
+    long countLastContacts();
+
+    /**
+     * @param object
+     * @return
+     */
+    long countContactsForProducer(Producer producer);
 
     /**
      * @param objectId
@@ -47,6 +59,23 @@ public interface ContactServiceFacade {
      * @return
      */
     List<Contact> getContacts(ContactOrder orders, int first, int count);
+
+    /**
+     * @param orders
+     * @param first
+     * @param count
+     * @return
+     */
+    List<Contact> getLastContacts(ContactOrder orders, int first, int count);
+
+    /**
+     * @param producer
+     * @param orders
+     * @param first
+     * @param count
+     * @return
+     */
+    List<Contact> getContactsForProducer(Producer producer, ContactOrder orders, int first, int count);
 
     /**
      * @param object

@@ -45,13 +45,10 @@ import fr.peralta.mycellar.interfaces.client.web.converters.WineTypeEnumConverte
 import fr.peralta.mycellar.interfaces.client.web.descriptors.menu.HomePageDescriptor;
 import fr.peralta.mycellar.interfaces.client.web.pages.HomePage;
 import fr.peralta.mycellar.interfaces.client.web.pages.admin.AdminPage;
-import fr.peralta.mycellar.interfaces.client.web.pages.admin.BookingReportsPage;
 import fr.peralta.mycellar.interfaces.client.web.pages.admin.ListPage;
 import fr.peralta.mycellar.interfaces.client.web.pages.admin.StackPage;
 import fr.peralta.mycellar.interfaces.client.web.pages.admin.booking.BookingEventPage;
 import fr.peralta.mycellar.interfaces.client.web.pages.admin.booking.BookingPage;
-import fr.peralta.mycellar.interfaces.client.web.pages.admin.contact.ContactPage;
-import fr.peralta.mycellar.interfaces.client.web.pages.admin.contact.ContactsPage;
 import fr.peralta.mycellar.interfaces.client.web.pages.admin.stock.CellarPage;
 import fr.peralta.mycellar.interfaces.client.web.pages.admin.stock.CellarSharePage;
 import fr.peralta.mycellar.interfaces.client.web.pages.admin.stock.CellarSharesPage;
@@ -69,12 +66,15 @@ import fr.peralta.mycellar.interfaces.client.web.pages.admin.wine.RegionsPage;
 import fr.peralta.mycellar.interfaces.client.web.pages.admin.wine.WinePage;
 import fr.peralta.mycellar.interfaces.client.web.pages.admin.wine.WinesPage;
 import fr.peralta.mycellar.interfaces.client.web.pages.booking.BookingEventsPage;
+import fr.peralta.mycellar.interfaces.client.web.pages.booking.BookingReportsPage;
 import fr.peralta.mycellar.interfaces.client.web.pages.booking.BookingsPage;
 import fr.peralta.mycellar.interfaces.client.web.pages.cellar.CellarsPage;
 import fr.peralta.mycellar.interfaces.client.web.pages.cellar.DrinkBottlesPage;
 import fr.peralta.mycellar.interfaces.client.web.pages.cellar.InputOutputPage;
 import fr.peralta.mycellar.interfaces.client.web.pages.cellar.PackageArrivalPage;
 import fr.peralta.mycellar.interfaces.client.web.pages.cellar.ShareCellarsPage;
+import fr.peralta.mycellar.interfaces.client.web.pages.contact.ContactPage;
+import fr.peralta.mycellar.interfaces.client.web.pages.contact.ContactsPage;
 import fr.peralta.mycellar.interfaces.client.web.pages.pedia.PediaHomePage;
 import fr.peralta.mycellar.interfaces.client.web.pages.shared.MyCellarAccessDeniedPage;
 import fr.peralta.mycellar.interfaces.client.web.pages.user.LoginPage;
@@ -127,54 +127,74 @@ public abstract class MyCellarWebApplication extends SwarmWebApplication {
         mountResource("/js/bootstrap-datepicker.js",
                 JavaScriptReferences.getBootstrapDatePickerJs());
         mountResource("/js/master.js", JavaScriptReferences.getMasterJs());
+
         // Add mounts for pages
         mountPage("/home", getHomePage());
+
+        // ** utils pages
         mountPage("/accessDenied", MyCellarAccessDeniedPage.class);
-        mountPage("/bookingEvents", BookingEventsPage.class);
-        mountPage("/bookings", BookingsPage.class);
-        mountPage("/cellars", CellarsPage.class);
-        mountPage("/drinkBottles", DrinkBottlesPage.class);
         mountPage("/error", InternalErrorPage.class);
-        mountPage("/io", InputOutputPage.class);
         mountPage("/login", LoginPage.class);
         mountPage("/myaccount", MyAccountPage.class);
-        mountPage("/packageArrival", PackageArrivalPage.class);
-        mountPage("/passwordForgotten", ResetPasswordRequestPage.class);
-        mountPage("/passwordReset", ResetPasswordPage.class);
-        mountPage("/pedia", PediaHomePage.class);
         mountPage("/register", NewUserPage.class);
         mountPage("/stack", StackPage.class);
+        mountPage("/passwordForgotten", ResetPasswordRequestPage.class);
+        mountPage("/passwordReset", ResetPasswordPage.class);
+
+        // ** booking pages
+        mountPage("/booking", BookingEventsPage.class);
+        mountPage("/booking/mybookings", BookingsPage.class);
+        mountPage("/booking/reports", BookingReportsPage.class);
+        mountPage("/booking/contacts", ContactsPage.class);
+        mountPage("/booking/contact", ContactPage.class);
+
+        // ** cellar pages
+        mountPage("/cellars", CellarsPage.class);
+        mountPage("/drinkBottles", DrinkBottlesPage.class);
+        mountPage("/io", InputOutputPage.class);
+        mountPage("/packageArrival", PackageArrivalPage.class);
         mountPage("/shares", ShareCellarsPage.class);
+
+        // ** pedia pages
+        mountPage("/pedia", PediaHomePage.class);
+
+        // ** admin
         mountPage("/admin", AdminPage.class);
+
+        // ** admin lists
         mountPage("/admin/lists", ListPage.class);
-        mountPage("/admin/lists/users", UsersPage.class);
         mountPage("/admin/lists/appellations", AppellationsPage.class);
-        mountPage("/admin/lists/countries", CountriesPage.class);
-        mountPage("/admin/lists/formats", FormatsPage.class);
-        mountPage("/admin/lists/regions", RegionsPage.class);
-        mountPage("/admin/lists/producers", ProducersPage.class);
-        mountPage("/admin/lists/wines", WinesPage.class);
-        mountPage("/admin/lists/cellars",
-                fr.peralta.mycellar.interfaces.client.web.pages.admin.stock.CellarsPage.class);
-        mountPage("/admin/lists/cellarShares", CellarSharesPage.class);
+        mountPage("/admin/lists/bookings",
+                fr.peralta.mycellar.interfaces.client.web.pages.admin.booking.BookingsPage.class);
         mountPage(
                 "/admin/lists/bookingEvents",
                 fr.peralta.mycellar.interfaces.client.web.pages.admin.booking.BookingEventsPage.class);
-        mountPage("/admin/lists/bookings",
-                fr.peralta.mycellar.interfaces.client.web.pages.admin.booking.BookingsPage.class);
-        mountPage("/admin/lists/contacts", ContactsPage.class);
-        mountPage("/admin/edit/user", UserPage.class);
+        mountPage("/admin/lists/cellars",
+                fr.peralta.mycellar.interfaces.client.web.pages.admin.stock.CellarsPage.class);
+        mountPage("/admin/lists/cellarShares", CellarSharesPage.class);
+        mountPage("/admin/lists/contacts",
+                fr.peralta.mycellar.interfaces.client.web.pages.admin.contact.ContactsPage.class);
+        mountPage("/admin/lists/countries", CountriesPage.class);
+        mountPage("/admin/lists/formats", FormatsPage.class);
+        mountPage("/admin/lists/producers", ProducersPage.class);
+        mountPage("/admin/lists/regions", RegionsPage.class);
+        mountPage("/admin/lists/users", UsersPage.class);
+        mountPage("/admin/lists/wines", WinesPage.class);
+
+        // ** admin edit
         mountPage("/admin/edit/appellation", AppellationPage.class);
+        mountPage("/admin/edit/booking", BookingPage.class);
+        mountPage("/admin/edit/bookingEvent", BookingEventPage.class);
+        mountPage("/admin/edit/cellar", CellarPage.class);
+        mountPage("/admin/edit/cellarShare", CellarSharePage.class);
+        mountPage("/admin/edit/contact",
+                fr.peralta.mycellar.interfaces.client.web.pages.admin.contact.ContactPage.class);
         mountPage("/admin/edit/country", CountryPage.class);
         mountPage("/admin/edit/format", FormatPage.class);
         mountPage("/admin/edit/region", RegionPage.class);
+        mountPage("/admin/edit/user", UserPage.class);
         mountPage("/admin/edit/wine", WinePage.class);
-        mountPage("/admin/edit/cellar", CellarPage.class);
-        mountPage("/admin/edit/cellarShare", CellarSharePage.class);
-        mountPage("/admin/edit/bookingEvent", BookingEventPage.class);
-        mountPage("/admin/edit/booking", BookingPage.class);
-        mountPage("/admin/edit/contact", ContactPage.class);
-        mountPage("/admin/bookings", BookingReportsPage.class);
+
     }
 
     /**

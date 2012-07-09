@@ -57,10 +57,22 @@ public class Producer extends NamedEntity {
     @Column(name = "DESCRIPTION")
     private String description;
 
+    @Column(name = "CONTACT_INFORMATION")
+    private String contactInformation;
+
     @Id
     @GeneratedValue(generator = "PRODUCER_ID_GENERATOR")
     @Column(name = "ID", nullable = false, unique = true)
     private Integer id;
+
+    @Column(name = "PHONE")
+    private String phone;
+
+    @Column(name = "FAX")
+    private String fax;
+
+    @Column(name = "EMAIL")
+    private String email;
 
     @Pattern(regexp = ValidationPattern.URL_PATTERN)
     @Column(name = "WEBSITE_URL")
@@ -69,6 +81,66 @@ public class Producer extends NamedEntity {
     @SuppressWarnings("unused")
     @OneToMany(mappedBy = "producer")
     private final Set<Wine> wines = new HashSet<Wine>();
+
+    /**
+     * @return the contactInformation
+     */
+    public String getContactInformation() {
+        return contactInformation;
+    }
+
+    /**
+     * @param contactInformation
+     *            the contactInformation to set
+     */
+    public void setContactInformation(String contactInformation) {
+        this.contactInformation = contactInformation;
+    }
+
+    /**
+     * @return the phone
+     */
+    public String getPhone() {
+        return phone;
+    }
+
+    /**
+     * @param phone
+     *            the phone to set
+     */
+    public void setPhone(String phone) {
+        this.phone = phone;
+    }
+
+    /**
+     * @return the fax
+     */
+    public String getFax() {
+        return fax;
+    }
+
+    /**
+     * @param fax
+     *            the fax to set
+     */
+    public void setFax(String fax) {
+        this.fax = fax;
+    }
+
+    /**
+     * @return the email
+     */
+    public String getEmail() {
+        return email;
+    }
+
+    /**
+     * @param email
+     *            the email to set
+     */
+    public void setEmail(String email) {
+        this.email = email;
+    }
 
     /**
      * @return the address
