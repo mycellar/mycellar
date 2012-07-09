@@ -52,6 +52,7 @@
   
   <!-- BUSINESS ERROR MESSAGES -->
   <entry key="BusinessError.CELLAR_SHARE_00001">Cette cave est déjà partagée avec cet email.</entry>
+  <entry key="BusinessError.CONTACT_00001">Un contact existe déjà pour ce producteur et cette date.</entry>
   <entry key="BusinessError.COUNTRY_00001">Ce pays existe déjà.</entry>
   <entry key="BusinessError.USER_00001">Cet email est déjà enregistré.</entry>
 

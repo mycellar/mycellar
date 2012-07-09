@@ -16,7 +16,7 @@
  * You should have received a copy of the GNU General Public License
  * along with MyCellar. If not, see <http://www.gnu.org/licenses/>.
  */
-package fr.peralta.mycellar.interfaces.client.web.pages.admin;
+package fr.peralta.mycellar.interfaces.client.web.pages.booking;
 
 import java.util.Iterator;
 import java.util.Locale;
@@ -50,7 +50,7 @@ import fr.peralta.mycellar.interfaces.client.web.components.shared.ActionLink;
 import fr.peralta.mycellar.interfaces.client.web.components.shared.AjaxTool;
 import fr.peralta.mycellar.interfaces.client.web.components.shared.data.ImageAjaxPagingNavigator;
 import fr.peralta.mycellar.interfaces.client.web.components.shared.map.EntryIteratorModel;
-import fr.peralta.mycellar.interfaces.client.web.pages.shared.AdminSuperPage;
+import fr.peralta.mycellar.interfaces.client.web.pages.shared.BookingSuperPage;
 import fr.peralta.mycellar.interfaces.client.web.renderers.RendererServiceFacade;
 import fr.peralta.mycellar.interfaces.client.web.shared.LoggingHelper;
 import fr.peralta.mycellar.interfaces.facades.booking.BookingServiceFacade;
@@ -58,7 +58,7 @@ import fr.peralta.mycellar.interfaces.facades.booking.BookingServiceFacade;
 /**
  * @author speralta
  */
-public class BookingReportsPage extends AdminSuperPage {
+public class BookingReportsPage extends BookingSuperPage {
 
     /**
      * @author speralta

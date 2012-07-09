@@ -28,6 +28,11 @@ import fr.peralta.mycellar.domain.user.User;
 public interface ResetPasswordRequestService extends SimpleService<ResetPasswordRequest> {
 
     /**
+     * 
+     */
+    void cleanOldRequests();
+
+    /**
      * @param user
      */
     void createAndSendEmail(User user);

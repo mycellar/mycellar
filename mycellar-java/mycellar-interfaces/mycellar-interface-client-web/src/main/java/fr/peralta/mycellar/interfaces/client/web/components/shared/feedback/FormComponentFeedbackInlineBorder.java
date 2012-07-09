@@ -16,31 +16,30 @@
  * You should have received a copy of the GNU General Public License
  * along with MyCellar. If not, see <http://www.gnu.org/licenses/>.
  */
-package fr.peralta.mycellar.domain.user.repository;
-
-import fr.peralta.mycellar.domain.shared.repository.SimpleRepository;
-import fr.peralta.mycellar.domain.user.ResetPasswordRequest;
-import fr.peralta.mycellar.domain.user.User;
+package fr.peralta.mycellar.interfaces.client.web.components.shared.feedback;
 
 /**
  * @author speralta
  */
-public interface ResetPasswordRequestRepository extends SimpleRepository<ResetPasswordRequest> {
+public class FormComponentFeedbackInlineBorder extends FormComponentFeedbackBorder {
+
+    private static final long serialVersionUID = 201202220848L;
 
     /**
-     * @param key
-     * @return
+     * @param id
+     * @param filteredIds
      */
-    ResetPasswordRequest getByKey(String key);
+    public FormComponentFeedbackInlineBorder(String id, String... filteredIds) {
+        this(id, false, filteredIds);
+    }
 
     /**
-     * @param user
+     * @param id
+     * @param parent
+     * @param filteredIds
      */
-    void deleteAllForUser(User user);
-
-    /**
-     * 
-     */
-    void deleteOldRequests();
+    public FormComponentFeedbackInlineBorder(String id, boolean parent, String... filteredIds) {
+        super(id, parent, filteredIds);
+    }
 
 }

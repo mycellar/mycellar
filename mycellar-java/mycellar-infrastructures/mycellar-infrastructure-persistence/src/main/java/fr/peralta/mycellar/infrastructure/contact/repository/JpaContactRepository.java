@@ -18,16 +18,24 @@
  */
 package fr.peralta.mycellar.infrastructure.contact.repository;
 
+import java.util.List;
+
+import javax.persistence.NoResultException;
+import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Expression;
 import javax.persistence.criteria.JoinType;
 import javax.persistence.criteria.Root;
+import javax.persistence.criteria.Subquery;
 
+import org.joda.time.LocalDate;
 import org.springframework.stereotype.Repository;
 
 import fr.peralta.mycellar.domain.contact.Contact;
 import fr.peralta.mycellar.domain.contact.repository.ContactOrder;
 import fr.peralta.mycellar.domain.contact.repository.ContactOrderEnum;
 import fr.peralta.mycellar.domain.contact.repository.ContactRepository;
+import fr.peralta.mycellar.domain.wine.Producer;
 import fr.peralta.mycellar.infrastructure.shared.repository.JpaEntityRepository;
 
 /**
@@ -36,6 +44,122 @@ import fr.peralta.mycellar.infrastructure.shared.repository.JpaEntityRepository;
 @Repository
 public class JpaContactRepository extends
         JpaEntityRepository<Contact, ContactOrderEnum, ContactOrder> implements ContactRepository {
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public Contact find(Producer producer, LocalDate current) {
+        CriteriaBuilder criteriaBuilder = getEntityManager().getCriteriaBuilder();
+        CriteriaQuery<Contact> query = criteriaBuilder.createQuery(Contact.class);
+        Root<Contact> root = query.from(Contact.class);
+
+        try {
+            return getEntityManager().createQuery(
+                    query.select(root).where(criteriaBuilder.equal(root.get("producer"), producer),
+                            criteriaBuilder.equal(root.get("current"), current))).getSingleResult();
+        } catch (NoResultException e) {
+            return null;
+        }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public long countLastContacts() {
+        CriteriaBuilder criteriaBuilder = getEntityManager().getCriteriaBuilder();
+        CriteriaQuery<Long> query = criteriaBuilder.createQuery(Long.class);
+        Root<Contact> root = query.from(Contact.class);
+
+        Subquery<Contact> subquery = query.subquery(Contact.class);
+        Root<Contact> subroot = subquery.from(Contact.class);
+        subquery.select(subroot).where(
+                criteriaBuilder.equal(root.get("producer"), subroot.get("producer")),
+                criteriaBuilder.greaterThan(subroot.<LocalDate> get("current"),
+                        root.<LocalDate> get("current")));
+
+        return getEntityManager().createQuery(
+                query.select(criteriaBuilder.count(root)).where(
+                        criteriaBuilder.not(criteriaBuilder.exists(subquery)))).getSingleResult();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public List<Contact> getLastContacts(ContactOrder orders, int first, int count) {
+        CriteriaBuilder criteriaBuilder = getEntityManager().getCriteriaBuilder();
+        CriteriaQuery<Contact> query = criteriaBuilder.createQuery(Contact.class);
+        Root<Contact> root = query.from(Contact.class);
+
+        Subquery<Contact> subquery = query.subquery(Contact.class);
+        Root<Contact> subroot = subquery.from(Contact.class);
+        subquery.select(subroot).where(
+                criteriaBuilder.equal(root.get("producer"), subroot.get("producer")),
+                criteriaBuilder.greaterThan(subroot.<LocalDate> get("current"),
+                        root.<LocalDate> get("current")));
+
+        return getEntityManager()
+                .createQuery(
+                        orderBy(query.select(root).where(
+                                criteriaBuilder.not(criteriaBuilder.exists(subquery))), root,
+                                orders, criteriaBuilder, JoinType.LEFT)).setFirstResult(first)
+                .setMaxResults(count).getResultList();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public List<Contact> getAllForProducer(Producer producer, ContactOrder orders, int first,
+            int count) {
+        CriteriaBuilder criteriaBuilder = getEntityManager().getCriteriaBuilder();
+        CriteriaQuery<Contact> query = criteriaBuilder.createQuery(Contact.class);
+        Root<Contact> root = query.from(Contact.class);
+
+        return getEntityManager().createQuery(
+                orderBy(query.select(root).where(
+                        criteriaBuilder.equal(root.get("producer"), producer)), root, orders,
+                        criteriaBuilder, JoinType.LEFT)).getResultList();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public long countForProducer(Producer producer) {
+        CriteriaBuilder criteriaBuilder = getEntityManager().getCriteriaBuilder();
+        CriteriaQuery<Long> query = criteriaBuilder.createQuery(Long.class);
+        Root<Contact> root = query.from(Contact.class);
+
+        return getEntityManager().createQuery(
+                query.select(criteriaBuilder.count(root)).where(
+                        criteriaBuilder.equal(root.get("producer"), producer))).getSingleResult();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public List<Contact> getAllToContact() {
+        CriteriaBuilder criteriaBuilder = getEntityManager().getCriteriaBuilder();
+        CriteriaQuery<Contact> query = criteriaBuilder.createQuery(Contact.class);
+        Root<Contact> root = query.from(Contact.class);
+
+        Subquery<Contact> subquery = query.subquery(Contact.class);
+        Root<Contact> subroot = subquery.from(Contact.class);
+        subquery.select(subroot).where(
+                criteriaBuilder.equal(root.get("producer"), subroot.get("producer")),
+                criteriaBuilder.greaterThan(subroot.<LocalDate> get("current"),
+                        root.<LocalDate> get("current")));
+
+        return getEntityManager().createQuery(
+                query.select(root).where(
+                        criteriaBuilder.not(criteriaBuilder.exists(subquery)),
+                        criteriaBuilder.lessThanOrEqualTo(root.<LocalDate> get("next"),
+                                new LocalDate()))).getResultList();
+    }
 
     /**
      * {@inheritDoc}

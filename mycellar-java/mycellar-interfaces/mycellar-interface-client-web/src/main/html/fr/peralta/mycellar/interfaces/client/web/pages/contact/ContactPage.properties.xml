@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE properties SYSTEM "http://java.sun.com/dtd/properties.dtd">
+<properties>
+  <entry key="header">Contact avec un producteur</entry>
+  <entry key="newProducer">Choisir un producteur</entry>
+  <entry key="producer.name">Producteur</entry>
+  <entry key="saveProducer">Enregistrer les modifications</entry>
+  <entry key="addContact">Ajouter un nouveau contact</entry>
+  <entry key="editContact">Modifier ce contact</entry>
+  <entry key="saveContact">Enregistrer ce contact</entry>
+  <entry key="cancelContact">Annuler</entry>
+  <entry key="currentDate">Date du contact</entry>
+  <entry key="nextDate">Prochain contact</entry>
+  <entry key="description">Description</entry>
+  <entry key="contactInformation">Informations</entry>
+  <entry key="phoneStart">Tél</entry>
+  <entry key="phoneEnd">éphone</entry>
+  <entry key="fax">Fax</entry>
+  <entry key="email">Email</entry>
+</properties> 

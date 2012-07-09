@@ -33,6 +33,11 @@ public enum BusinessError {
     BOTTLE_00001("name"),
 
     /*
+     * Contact
+     */
+    CONTACT_00001("producer"),
+
+    /*
      * Cellar
      */
     CELLAR_00001("name"),

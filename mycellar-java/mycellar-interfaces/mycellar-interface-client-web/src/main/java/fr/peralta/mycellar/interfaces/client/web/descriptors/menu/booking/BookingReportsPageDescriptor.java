@@ -16,13 +16,13 @@
  * You should have received a copy of the GNU General Public License
  * along with MyCellar. If not, see <http://www.gnu.org/licenses/>.
  */
-package fr.peralta.mycellar.interfaces.client.web.descriptors.menu.admin;
+package fr.peralta.mycellar.interfaces.client.web.descriptors.menu.booking;
 
 import org.springframework.stereotype.Component;
 
 import fr.peralta.mycellar.interfaces.client.web.descriptors.menu.shared.IMenuDescriptor;
 import fr.peralta.mycellar.interfaces.client.web.descriptors.shared.AbstractDescriptor;
-import fr.peralta.mycellar.interfaces.client.web.pages.admin.BookingReportsPage;
+import fr.peralta.mycellar.interfaces.client.web.pages.booking.BookingReportsPage;
 
 /**
  * @author speralta
@@ -52,7 +52,7 @@ public class BookingReportsPageDescriptor extends AbstractDescriptor implements
      */
     @Override
     public String getParentKey() {
-        return "adminHeader";
+        return "bookingMenuHeader";
     }
 
     /**
@@ -60,7 +60,7 @@ public class BookingReportsPageDescriptor extends AbstractDescriptor implements
      */
     @Override
     public int getWeight() {
-        return 10400;
+        return 6400;
     }
 
 }

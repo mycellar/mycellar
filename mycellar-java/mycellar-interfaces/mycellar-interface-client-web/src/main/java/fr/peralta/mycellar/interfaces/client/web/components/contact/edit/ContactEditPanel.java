@@ -44,8 +44,7 @@ public class ContactEditPanel extends Panel {
                 new SearchFormModel(new SearchForm())));
         add(new FormComponentFeedbackBorder("current").add(new LocalDateTextField("current")
                 .setRequired(true)));
-        add(new FormComponentFeedbackBorder("next").add(new LocalDateTextField("next")
-                .setRequired(true)));
+        add(new FormComponentFeedbackBorder("next").add(new LocalDateTextField("next")));
         add(new FormComponentFeedbackBorder("text").add(new TextArea<String>("text")
                 .setRequired(true)));
     }

@@ -25,6 +25,7 @@ import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Root;
 
+import org.joda.time.LocalDate;
 import org.springframework.stereotype.Repository;
 
 import fr.peralta.mycellar.domain.user.ResetPasswordRequest;
@@ -38,6 +39,25 @@ import fr.peralta.mycellar.infrastructure.shared.repository.JpaSimpleRepository;
 @Repository
 public class JpaResetPasswordRequestRepository extends JpaSimpleRepository<ResetPasswordRequest>
         implements ResetPasswordRequestRepository {
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void deleteOldRequests() {
+        CriteriaBuilder criteriaBuilder = getEntityManager().getCriteriaBuilder();
+        CriteriaQuery<ResetPasswordRequest> query = criteriaBuilder
+                .createQuery(ResetPasswordRequest.class);
+        Root<ResetPasswordRequest> root = query.from(ResetPasswordRequest.class);
+        query.select(root).where(
+                criteriaBuilder.lessThanOrEqualTo(root.<LocalDate> get("dateTime"),
+                        new LocalDate().minusDays(1)));
+
+        List<ResetPasswordRequest> requests = getEntityManager().createQuery(query).getResultList();
+        for (ResetPasswordRequest request : requests) {
+            getEntityManager().remove(request);
+        }
+    }
 
     /**
      * {@inheritDoc}

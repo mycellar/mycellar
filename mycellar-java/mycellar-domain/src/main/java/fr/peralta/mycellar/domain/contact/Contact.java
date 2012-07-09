@@ -27,6 +27,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
+import javax.persistence.UniqueConstraint;
 import javax.validation.Valid;
 
 import org.apache.commons.lang3.ObjectUtils;
@@ -40,7 +41,8 @@ import fr.peralta.mycellar.domain.wine.Producer;
  * @author speralta
  */
 @Entity
-@Table(name = "CONTACT")
+@Table(name = "CONTACT", uniqueConstraints = @UniqueConstraint(columnNames = { "PRODUCER",
+        "CURRENT" }))
 @SequenceGenerator(name = "CONTACT_ID_GENERATOR", allocationSize = 1)
 public class Contact extends IdentifiedEntity {
 
@@ -56,7 +58,7 @@ public class Contact extends IdentifiedEntity {
     @JoinColumn(name = "PRODUCER")
     private Producer producer;
 
-    @Column(name = "TEXT")
+    @Column(name = "TEXT", length = 10000)
     private String text;
 
     @Column(name = "CURRENT", nullable = false)

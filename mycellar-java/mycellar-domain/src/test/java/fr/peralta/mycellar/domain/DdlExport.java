@@ -25,6 +25,7 @@ import org.hibernate.tool.hbm2ddl.SchemaExport;
 import fr.peralta.mycellar.domain.booking.Booking;
 import fr.peralta.mycellar.domain.booking.BookingBottle;
 import fr.peralta.mycellar.domain.booking.BookingEvent;
+import fr.peralta.mycellar.domain.contact.Contact;
 import fr.peralta.mycellar.domain.image.Image;
 import fr.peralta.mycellar.domain.position.Address;
 import fr.peralta.mycellar.domain.position.Map;
@@ -78,6 +79,7 @@ public class DdlExport {
         cfg.addAnnotatedClass(Booking.class);
         cfg.addAnnotatedClass(BookingEvent.class);
         cfg.addAnnotatedClass(BookingBottle.class);
+        cfg.addAnnotatedClass(Contact.class);
         SchemaExport schemaExport = new SchemaExport(cfg);
         schemaExport.setDelimiter(";");
         schemaExport.execute(true, false, false, true);
