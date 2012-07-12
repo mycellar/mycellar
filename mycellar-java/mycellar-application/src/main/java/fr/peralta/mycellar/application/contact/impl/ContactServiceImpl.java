@@ -103,7 +103,7 @@ public class ContactServiceImpl extends
             @Override
             public void prepare(MimeMessage mimeMessage) throws Exception {
                 MimeMessageHelper helper = new MimeMessageHelper(mimeMessage);
-                helper.setTo("sebastien@cave-et-terroirs.fr");
+                helper.setTo("stephanie@cave-et-terroirs.fr");
                 helper.setFrom("contact@mycellar.peralta.fr");
                 helper.setSubject("Contacts à recontacter");
                 helper.setText(content.toString());
