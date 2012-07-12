@@ -18,6 +18,7 @@
  */
 package fr.peralta.mycellar.interfaces.client.web.components.shared.set;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Iterator;
 
@@ -54,7 +55,9 @@ public abstract class SetView<E extends IdentifiedEntity> extends RefreshingView
     @SuppressWarnings("unchecked")
     @Override
     protected Iterator<IModel<E>> getItemModels() {
-        return new SetModel<E>(((Collection<E>) getDefaultModelObject()).iterator());
+        return getDefaultModelObject() != null ? new SetModel<E>(
+                ((Collection<E>) getDefaultModelObject()).iterator()) : new ArrayList<IModel<E>>()
+                .iterator();
     }
 
 }

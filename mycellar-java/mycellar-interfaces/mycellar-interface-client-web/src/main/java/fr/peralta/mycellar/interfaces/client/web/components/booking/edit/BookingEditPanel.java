@@ -113,8 +113,8 @@ public class BookingEditPanel extends Panel {
             switch (action) {
             case MODEL_CHANGED:
                 if (event.getSource() == bookingEventSimpleAutoComplete) {
-                    Map<BookingBottle, Integer> quantities = ((Booking) getDefaultModelObject())
-                            .getQuantities();
+                    Map<BookingBottle, Integer> quantities = ((Booking) getParent()
+                            .getDefaultModelObject()).getQuantities();
                     quantities.clear();
                     AjaxTool.ajaxReRender(this);
                     event.stop();
