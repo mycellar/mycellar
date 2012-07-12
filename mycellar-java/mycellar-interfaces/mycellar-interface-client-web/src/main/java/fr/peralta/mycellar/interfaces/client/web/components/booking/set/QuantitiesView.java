@@ -91,10 +91,13 @@ public class QuantitiesView extends SetView<BookingBottle> {
          */
         @Override
         public String getObject() {
-            return rendererServiceFacade.render(bookingBottleModel.getObject().getPrice()
-                    * mapModel.getObject().get(bookingBottleModel.getObject()));
+            Integer nb = mapModel.getObject().get(bookingBottleModel.getObject());
+            if (nb != null) {
+                return rendererServiceFacade.render(bookingBottleModel.getObject().getPrice() * nb);
+            } else {
+                return rendererServiceFacade.render(0f);
+            }
         }
-
     }
 
     /**
