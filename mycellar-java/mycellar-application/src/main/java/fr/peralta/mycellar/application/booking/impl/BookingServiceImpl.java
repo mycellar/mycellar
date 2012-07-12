@@ -20,6 +20,7 @@ package fr.peralta.mycellar.application.booking.impl;
 
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -59,8 +60,12 @@ public class BookingServiceImpl extends
     @Override
     public void saveOrDelete(Booking booking) throws BusinessException {
         int sum = 0;
-        for (Integer quantity : booking.getQuantities().values()) {
-            sum += quantity;
+        for (Entry<BookingBottle, Integer> bottle : booking.getQuantities().entrySet()) {
+            if (bottle.getValue() != null) {
+                sum += bottle.getValue();
+            } else {
+                bottle.setValue(0);
+            }
         }
         if (sum > 0) {
             save(booking);

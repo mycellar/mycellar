@@ -58,7 +58,9 @@ public class TotalPanel extends GenericPanel<Booking> {
                 if (TotalPanel.this.getModelObject() != null) {
                     for (Integer quantity : TotalPanel.this.getModelObject().getQuantities()
                             .values()) {
-                        sum += quantity;
+                        if (quantity != null) {
+                            sum += quantity;
+                        }
                     }
                 }
                 return sum;
@@ -78,7 +80,9 @@ public class TotalPanel extends GenericPanel<Booking> {
                 if (TotalPanel.this.getModelObject() != null) {
                     for (Entry<BookingBottle, Integer> entry : TotalPanel.this.getModelObject()
                             .getQuantities().entrySet()) {
-                        sum += entry.getKey().getPrice() * entry.getValue();
+                        if (entry.getValue() != null) {
+                            sum += entry.getKey().getPrice() * entry.getValue();
+                        }
                     }
                 }
                 return rendererServiceFacade.render(sum);
@@ -98,7 +102,9 @@ public class TotalPanel extends GenericPanel<Booking> {
                 if (TotalPanel.this.getModelObject() != null) {
                     for (Entry<BookingBottle, Integer> entry : TotalPanel.this.getModelObject()
                             .getQuantities().entrySet()) {
-                        sum += entry.getKey().getPrice() * entry.getValue();
+                        if (entry.getValue() != null) {
+                            sum += entry.getKey().getPrice() * entry.getValue();
+                        }
                     }
                 }
                 return rendererServiceFacade.render(sum * 0.196f);
