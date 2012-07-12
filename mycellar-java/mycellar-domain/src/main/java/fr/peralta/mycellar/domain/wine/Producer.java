@@ -54,10 +54,10 @@ public class Producer extends NamedEntity {
     @Embedded
     private Address address;
 
-    @Column(name = "DESCRIPTION")
+    @Column(name = "DESCRIPTION", length = 10000)
     private String description;
 
-    @Column(name = "CONTACT_INFORMATION")
+    @Column(name = "CONTACT_INFORMATION", length = 10000)
     private String contactInformation;
 
     @Id
