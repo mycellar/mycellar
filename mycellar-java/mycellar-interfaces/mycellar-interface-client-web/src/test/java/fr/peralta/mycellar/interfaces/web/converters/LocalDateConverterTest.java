@@ -18,8 +18,8 @@
  */
 package fr.peralta.mycellar.interfaces.web.converters;
 
-import static org.hamcrest.CoreMatchers.equalTo;
-import static org.junit.Assert.assertThat;
+import static org.hamcrest.CoreMatchers.*;
+import static org.junit.Assert.*;
 
 import java.util.Locale;
 
@@ -50,7 +50,7 @@ public class LocalDateConverterTest {
     public void testConvertToObject() {
         assertThat(localDateConverter.convertToObject("08/05/2010", Locale.FRENCH),
                 equalTo(new LocalDate(2010, 5, 8)));
-        assertThat(localDateConverter.convertToObject("05/08/2010", Locale.ENGLISH),
+        assertThat(localDateConverter.convertToObject("08/05/2010", Locale.ENGLISH),
                 equalTo(new LocalDate(2010, 5, 8)));
     }
 
@@ -62,9 +62,9 @@ public class LocalDateConverterTest {
     @Test
     public void testConvertToString() {
         assertThat(localDateConverter.convertToString(new LocalDate(2010, 5, 8), Locale.FRENCH),
-                equalTo("08/05/10"));
+                equalTo("08/05/2010"));
         assertThat(localDateConverter.convertToString(new LocalDate(2010, 5, 8), Locale.ENGLISH),
-                equalTo("5/8/10"));
+                equalTo("08/05/2010"));
     }
 
 }
