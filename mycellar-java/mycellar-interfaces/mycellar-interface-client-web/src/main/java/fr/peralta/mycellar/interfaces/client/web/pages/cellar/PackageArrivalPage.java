@@ -161,8 +161,6 @@ public class PackageArrivalPage extends CellarSuperPage {
      */
     private Component createHiddenBottleForm() {
         return (arrivalBottleForm = new ArrivalBottleForm(ARRIVAL_BOTTLE_COMPONENT_ID,
-                new SearchFormModel(new SearchForm().setCellarModification(true).addToSet(
-                        FilterEnum.USER, UserKey.getUserLoggedIn())), new ArrivalBottle()))
-                .hideForm();
+                new SearchFormModel(new SearchForm()), new ArrivalBottle())).hideForm();
     }
 }
