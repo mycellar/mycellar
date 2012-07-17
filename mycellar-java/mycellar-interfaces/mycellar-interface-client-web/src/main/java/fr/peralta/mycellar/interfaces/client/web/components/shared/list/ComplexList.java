@@ -19,6 +19,7 @@
 package fr.peralta.mycellar.interfaces.client.web.components.shared.list;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import org.apache.wicket.WicketRuntimeException;
@@ -88,6 +89,7 @@ public abstract class ComplexList<O> extends ComplexComponent<O, ListComponentPa
         for (O object : list) {
             result.add(new ListData<O>(object, getSelectorLabelFor(object)));
         }
+        Collections.sort(result, new ListComparator());
         return result;
     }
 
