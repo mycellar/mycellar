@@ -19,6 +19,7 @@
 package fr.peralta.mycellar.interfaces.client.web.components.shared.multiple;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
@@ -174,6 +175,7 @@ public abstract class MultiplePanel<O> extends Panel {
         for (O object : objects.keySet()) {
             list.add(new MultipleData<O>(object, objects.get(object), getValueLabelFor(object)));
         }
+        Collections.sort(list, new MultipleComparator());
         return list;
     }
 

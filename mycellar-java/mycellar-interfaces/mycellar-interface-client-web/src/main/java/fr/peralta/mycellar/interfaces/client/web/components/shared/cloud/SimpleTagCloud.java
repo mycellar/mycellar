@@ -19,6 +19,7 @@
 package fr.peralta.mycellar.interfaces.client.web.components.shared.cloud;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -120,6 +121,7 @@ public abstract class SimpleTagCloud<O> extends SimpleComponent<O, TagCloudPanel
             list.add(new TagData<O>(object, ((float) (choices.get(object) - min) / (float) Math
                     .max(1, max - min)) + 1, getSelectorLabelFor(object)));
         }
+        Collections.sort(list, new TagDataComparator());
         return list;
     }
 
