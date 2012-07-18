@@ -32,6 +32,7 @@ public class MyCellarAccessDeniedPage extends BasePage {
      */
     public MyCellarAccessDeniedPage(PageParameters parameters) {
         super(parameters);
+        setStatelessHint(true);
     }
 
 }

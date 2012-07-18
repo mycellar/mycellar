@@ -25,7 +25,9 @@ import org.apache.wicket.extensions.markup.html.repeater.data.table.IColumn;
 import org.apache.wicket.extensions.markup.html.repeater.data.table.PropertyColumn;
 import org.apache.wicket.model.ResourceModel;
 import org.apache.wicket.request.mapper.parameter.PageParameters;
+import org.apache.wicket.spring.injection.annot.SpringBean;
 
+import fr.peralta.mycellar.domain.shared.exception.BusinessException;
 import fr.peralta.mycellar.domain.user.User;
 import fr.peralta.mycellar.domain.user.repository.UserOrder;
 import fr.peralta.mycellar.domain.user.repository.UserOrderEnum;
@@ -33,6 +35,7 @@ import fr.peralta.mycellar.interfaces.client.web.components.shared.data.Multiple
 import fr.peralta.mycellar.interfaces.client.web.components.user.data.UserDataProvider;
 import fr.peralta.mycellar.interfaces.client.web.pages.admin.AbstractEditPage;
 import fr.peralta.mycellar.interfaces.client.web.pages.admin.AbstractListPage;
+import fr.peralta.mycellar.interfaces.facades.user.UserServiceFacade;
 
 /**
  * @author speralta
@@ -40,6 +43,9 @@ import fr.peralta.mycellar.interfaces.client.web.pages.admin.AbstractListPage;
 public class UsersPage extends AbstractListPage<User, UserOrderEnum, UserOrder> {
 
     private static final long serialVersionUID = 201111101705L;
+
+    @SpringBean
+    private UserServiceFacade userServiceFacade;
 
     /**
      * @param parameters
@@ -89,6 +95,14 @@ public class UsersPage extends AbstractListPage<User, UserOrderEnum, UserOrder> 
     @Override
     protected Class<? extends AbstractEditPage<User>> getEditPageClass() {
         return UserPage.class;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    protected void deleteObject(User object) throws BusinessException {
+        userServiceFacade.deleteUser(object);
     }
 
 }

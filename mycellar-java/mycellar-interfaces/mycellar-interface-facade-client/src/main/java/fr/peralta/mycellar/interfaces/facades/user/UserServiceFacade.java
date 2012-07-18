@@ -91,4 +91,10 @@ public interface UserServiceFacade {
      * @param user
      */
     void deleteAllResetPasswordRequestsForUser(User user);
+
+    /**
+     * @param user
+     * @throws BusinessException
+     */
+    void deleteUser(User user) throws BusinessException;
 }

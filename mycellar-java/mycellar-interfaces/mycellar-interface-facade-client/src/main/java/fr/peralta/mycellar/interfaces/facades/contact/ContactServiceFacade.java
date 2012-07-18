@@ -75,11 +75,19 @@ public interface ContactServiceFacade {
      * @param count
      * @return
      */
-    List<Contact> getContactsForProducer(Producer producer, ContactOrder orders, int first, int count);
+    List<Contact> getContactsForProducer(Producer producer, ContactOrder orders, int first,
+            int count);
+
+    /**
+     * @param contact
+     * @throws BusinessException
+     */
+    void saveContact(Contact contact) throws BusinessException;
 
     /**
      * @param object
+     * @throws BusinessException
      */
-    void saveContact(Contact object) throws BusinessException;
+    void deleteContact(Contact contact) throws BusinessException;
 
 }

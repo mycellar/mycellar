@@ -64,6 +64,15 @@ public class UserServiceFacadeImpl implements UserServiceFacade {
      */
     @Override
     @Transactional
+    public void deleteUser(User user) throws BusinessException {
+        userService.delete(user);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    @Transactional
     public void saveUserPassword(User user, String password) throws BusinessException {
         userService.saveUserPassword(user, password);
     }

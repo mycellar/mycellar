@@ -25,14 +25,17 @@ import org.apache.wicket.extensions.markup.html.repeater.data.table.IColumn;
 import org.apache.wicket.extensions.markup.html.repeater.data.table.PropertyColumn;
 import org.apache.wicket.model.ResourceModel;
 import org.apache.wicket.request.mapper.parameter.PageParameters;
+import org.apache.wicket.spring.injection.annot.SpringBean;
 
 import fr.peralta.mycellar.domain.contact.Contact;
 import fr.peralta.mycellar.domain.contact.repository.ContactOrder;
 import fr.peralta.mycellar.domain.contact.repository.ContactOrderEnum;
+import fr.peralta.mycellar.domain.shared.exception.BusinessException;
 import fr.peralta.mycellar.interfaces.client.web.components.contact.data.ContactDataProvider;
 import fr.peralta.mycellar.interfaces.client.web.components.shared.data.MultipleSortableDataProvider;
 import fr.peralta.mycellar.interfaces.client.web.pages.admin.AbstractEditPage;
 import fr.peralta.mycellar.interfaces.client.web.pages.admin.AbstractListPage;
+import fr.peralta.mycellar.interfaces.facades.contact.ContactServiceFacade;
 
 /**
  * @author speralta
@@ -40,6 +43,9 @@ import fr.peralta.mycellar.interfaces.client.web.pages.admin.AbstractListPage;
 public class ContactsPage extends AbstractListPage<Contact, ContactOrderEnum, ContactOrder> {
 
     private static final long serialVersionUID = 201203262250L;
+
+    @SpringBean
+    private ContactServiceFacade contactServiceFacade;
 
     /**
      * @param parameters
@@ -89,6 +95,14 @@ public class ContactsPage extends AbstractListPage<Contact, ContactOrderEnum, Co
     @Override
     protected Class<? extends AbstractEditPage<Contact>> getEditPageClass() {
         return ContactPage.class;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    protected void deleteObject(Contact object) throws BusinessException {
+        contactServiceFacade.deleteContact(object);
     }
 
 }

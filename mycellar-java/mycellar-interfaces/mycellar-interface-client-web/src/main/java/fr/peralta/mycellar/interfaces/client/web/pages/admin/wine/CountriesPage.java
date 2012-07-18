@@ -25,7 +25,9 @@ import org.apache.wicket.extensions.markup.html.repeater.data.table.IColumn;
 import org.apache.wicket.extensions.markup.html.repeater.data.table.PropertyColumn;
 import org.apache.wicket.model.ResourceModel;
 import org.apache.wicket.request.mapper.parameter.PageParameters;
+import org.apache.wicket.spring.injection.annot.SpringBean;
 
+import fr.peralta.mycellar.domain.shared.exception.BusinessException;
 import fr.peralta.mycellar.domain.shared.repository.SearchForm;
 import fr.peralta.mycellar.domain.wine.Country;
 import fr.peralta.mycellar.domain.wine.repository.CountryOrder;
@@ -35,6 +37,7 @@ import fr.peralta.mycellar.interfaces.client.web.components.shared.data.Multiple
 import fr.peralta.mycellar.interfaces.client.web.components.wine.data.CountryDataProvider;
 import fr.peralta.mycellar.interfaces.client.web.pages.admin.AbstractEditPage;
 import fr.peralta.mycellar.interfaces.client.web.pages.admin.AbstractListPage;
+import fr.peralta.mycellar.interfaces.facades.wine.WineServiceFacade;
 
 /**
  * @author speralta
@@ -42,6 +45,9 @@ import fr.peralta.mycellar.interfaces.client.web.pages.admin.AbstractListPage;
 public class CountriesPage extends AbstractListPage<Country, CountryOrderEnum, CountryOrder> {
 
     private static final long serialVersionUID = 201203262250L;
+
+    @SpringBean
+    private WineServiceFacade wineServiceFacade;
 
     /**
      * @param parameters
@@ -87,6 +93,14 @@ public class CountriesPage extends AbstractListPage<Country, CountryOrderEnum, C
     @Override
     protected Class<? extends AbstractEditPage<Country>> getEditPageClass() {
         return CountryPage.class;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    protected void deleteObject(Country object) throws BusinessException {
+        wineServiceFacade.deleteCountry(object);
     }
 
 }

@@ -82,6 +82,42 @@ public interface WineServiceFacade {
     long countWines(SearchForm searchForm);
 
     /**
+     * @param appellation
+     * @throws BusinessException
+     */
+    void deleteAppellation(Appellation appellation) throws BusinessException;
+
+    /**
+     * @param country
+     * @throws BusinessException
+     */
+    void deleteCountry(Country country) throws BusinessException;
+
+    /**
+     * @param format
+     * @throws BusinessException
+     */
+    void deleteFormat(Format format) throws BusinessException;
+
+    /**
+     * @param producer
+     * @throws BusinessException
+     */
+    void deleteProducer(Producer producer) throws BusinessException;
+
+    /**
+     * @param region
+     * @throws BusinessException
+     */
+    void deleteRegion(Region region) throws BusinessException;
+
+    /**
+     * @param wine
+     * @throws BusinessException
+     */
+    void deleteWine(Wine wine) throws BusinessException;
+
+    /**
      * @param name
      * @return
      */
@@ -106,13 +142,6 @@ public interface WineServiceFacade {
     Appellation getAppellationById(Integer appellationId);
 
     /**
-     * @param regions
-     * @return
-     */
-    Map<Appellation, Long> getAppellations(SearchForm searchForm, CountEnum count,
-            FilterEnum... filters);
-
-    /**
      * @param searchForm
      * @param order
      * @param first
@@ -121,6 +150,13 @@ public interface WineServiceFacade {
      */
     List<Appellation> getAppellations(SearchForm searchForm, AppellationOrder order, int first,
             int count);
+
+    /**
+     * @param regions
+     * @return
+     */
+    Map<Appellation, Long> getAppellations(SearchForm searchForm, CountEnum count,
+            FilterEnum... filters);
 
     /**
      * @param searchForm

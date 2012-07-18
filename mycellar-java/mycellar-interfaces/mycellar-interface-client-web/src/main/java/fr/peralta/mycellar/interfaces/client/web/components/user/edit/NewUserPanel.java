@@ -19,8 +19,8 @@
 package fr.peralta.mycellar.interfaces.client.web.components.user.edit;
 
 import org.apache.wicket.markup.html.form.EmailTextField;
-import org.apache.wicket.markup.html.form.Form;
 import org.apache.wicket.markup.html.form.PasswordTextField;
+import org.apache.wicket.markup.html.form.StatelessForm;
 import org.apache.wicket.markup.html.form.TextField;
 import org.apache.wicket.markup.html.form.validation.EqualPasswordInputValidator;
 import org.apache.wicket.markup.html.panel.Panel;
@@ -47,7 +47,7 @@ import fr.peralta.mycellar.interfaces.facades.user.UserServiceFacade;
  * @author speralta
  */
 public class NewUserPanel extends Panel {
-    private static class UserForm extends Form<User> {
+    private static class UserForm extends StatelessForm<User> {
 
         private static final long serialVersionUID = 201203291653L;
 

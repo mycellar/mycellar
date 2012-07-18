@@ -85,6 +85,18 @@ public interface BookingServiceFacade {
     void saveBookingEvent(BookingEvent bookingEvent) throws BusinessException;
 
     /**
+     * @param booking
+     * @throws BusinessException
+     */
+    void deleteBooking(Booking booking) throws BusinessException;
+
+    /**
+     * @param bookingEvent
+     * @throws BusinessException
+     */
+    void deleteBookingEvent(BookingEvent bookingEvent) throws BusinessException;
+
+    /**
      * @param term
      * @return
      */
