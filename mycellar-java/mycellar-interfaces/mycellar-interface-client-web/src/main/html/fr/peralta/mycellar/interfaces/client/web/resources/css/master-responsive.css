@@ -127,10 +127,6 @@
     overflow: visible !important;
   }
   
-  .login-collapse {
-    float: right;
-  }
-  
   .filter-collapse {
     height: auto !important;
   }

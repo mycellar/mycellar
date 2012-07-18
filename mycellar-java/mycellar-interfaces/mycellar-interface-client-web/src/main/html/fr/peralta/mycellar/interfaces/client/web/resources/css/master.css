@@ -246,6 +246,10 @@ div.wicket-aa ul li:hover {
 
 /** MYCELLAR **/
 
+.login-collapse {
+  float: right;
+}
+
 /** Filters **/
 .btn-filter {
   display: none;
