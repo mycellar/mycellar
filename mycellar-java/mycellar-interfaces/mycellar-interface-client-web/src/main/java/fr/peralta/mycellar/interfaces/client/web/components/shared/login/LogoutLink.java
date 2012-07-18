@@ -19,7 +19,7 @@
 package fr.peralta.mycellar.interfaces.client.web.components.shared.login;
 
 import org.apache.wicket.Session;
-import org.apache.wicket.markup.html.link.Link;
+import org.apache.wicket.markup.html.link.StatelessLink;
 import org.apache.wicket.protocol.http.WebApplication;
 import org.wicketstuff.security.WaspSession;
 
@@ -28,7 +28,7 @@ import fr.peralta.mycellar.interfaces.client.web.security.UserKey;
 /**
  * @author speralta
  */
-class LogoutLink extends Link<Void> {
+class LogoutLink extends StatelessLink<Void> {
 
     private static final long serialVersionUID = 201108261718L;
 
