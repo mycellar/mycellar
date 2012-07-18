@@ -12,4 +12,5 @@ $(function() {
 	  autoclose: true,
 	  weekstart: 2
   });
+  $('.confirm').mousedown(function() { if (confirm('Merci de confirmer l\'action.')) { $(this).mouseup(); $(this).click();  } });
 });

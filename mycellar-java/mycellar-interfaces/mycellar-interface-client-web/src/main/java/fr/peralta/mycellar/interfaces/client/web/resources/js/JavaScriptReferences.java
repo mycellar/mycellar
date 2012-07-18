@@ -34,7 +34,7 @@ public class JavaScriptReferences {
     }
 
     public static JavaScriptResourceReference getJqueryJs() {
-        return getJavaScript("jquery-1.7.1.min.js");
+        return getJavaScript("jquery.min.js");
     }
 
     public static JavaScriptResourceReference getMasterJs() {

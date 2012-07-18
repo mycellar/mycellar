@@ -170,6 +170,24 @@ public class BookingServiceFacadeImpl implements BookingServiceFacade {
         bookingEventService.save(bookingEvent);
     }
 
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    @Transactional
+    public void deleteBooking(Booking booking) throws BusinessException {
+        bookingService.delete(booking);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    @Transactional
+    public void deleteBookingEvent(BookingEvent bookingEvent) throws BusinessException {
+        bookingEventService.delete(bookingEvent);
+    }
+
     private void updateBooking(Booking booking) {
         // LAZY-INIT
         booking.getQuantities().hashCode();

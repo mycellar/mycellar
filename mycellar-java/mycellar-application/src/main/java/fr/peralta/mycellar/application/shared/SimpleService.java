@@ -29,7 +29,7 @@ public interface SimpleService<E extends IdentifiedEntity> {
     /**
      * @param entity
      */
-    void delete(E entity);
+    void delete(E entity) throws BusinessException;
 
     /**
      * @param id

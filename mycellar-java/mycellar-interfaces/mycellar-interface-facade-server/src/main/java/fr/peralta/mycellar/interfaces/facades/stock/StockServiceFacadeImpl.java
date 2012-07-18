@@ -114,7 +114,16 @@ public class StockServiceFacadeImpl implements StockServiceFacade {
      */
     @Override
     @Transactional
-    public void deleteCellarShare(CellarShare cellarShare) {
+    public void deleteCellar(Cellar cellar) throws BusinessException {
+        cellarService.delete(cellar);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    @Transactional
+    public void deleteCellarShare(CellarShare cellarShare) throws BusinessException {
         cellarShareService.delete(cellarShare);
     }
 

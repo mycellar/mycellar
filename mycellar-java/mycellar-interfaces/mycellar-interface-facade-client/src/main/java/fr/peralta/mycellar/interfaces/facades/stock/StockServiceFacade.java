@@ -74,9 +74,16 @@ public interface StockServiceFacade {
     long countStocks(SearchForm searchForm);
 
     /**
-     * @param cellarShare
+     * @param cellar
+     * @throws BusinessException
      */
-    void deleteCellarShare(CellarShare cellarShare);
+    void deleteCellar(Cellar cellar) throws BusinessException;
+
+    /**
+     * @param cellarShare
+     * @throws BusinessException
+     */
+    void deleteCellarShare(CellarShare cellarShare) throws BusinessException;
 
     /**
      * @param drink

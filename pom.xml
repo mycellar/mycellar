@@ -40,7 +40,7 @@
     <!-- Versions -->
     <slf4j.version>1.6.5</slf4j.version>
     <wicket.version>1.5.7</wicket.version>
-    <wicketstuff.version>1.5.5</wicketstuff.version>
+    <wicketstuff.version>1.5.7</wicketstuff.version>
     <spring.version>3.1.1.RELEASE</spring.version>
     <hibernate.version>4.0.0.Final</hibernate.version>
   </properties>
@@ -445,11 +445,6 @@
       <releases>
         <enabled>false</enabled>
       </releases>
-    </repository>
-    <repository>
-      <id>wiquery</id>
-      <name>wiquery wicket components</name>
-      <url>http://wiquery.googlecode.com/svn/repo/</url>
     </repository>
     <repository>
       <id>wicketstuff-core-releases</id>

@@ -107,8 +107,17 @@ public class ContactServiceFacadeImpl implements ContactServiceFacade {
      */
     @Override
     @Transactional(readOnly = false)
-    public void saveContact(Contact object) throws BusinessException {
-        contactService.save(object);
+    public void saveContact(Contact contact) throws BusinessException {
+        contactService.save(contact);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    @Transactional(readOnly = false)
+    public void deleteContact(Contact contact) throws BusinessException {
+        contactService.delete(contact);
     }
 
     /**

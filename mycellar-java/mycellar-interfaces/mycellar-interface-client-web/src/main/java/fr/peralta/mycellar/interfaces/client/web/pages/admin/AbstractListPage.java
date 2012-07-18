@@ -28,9 +28,11 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import fr.peralta.mycellar.domain.shared.IdentifiedEntity;
+import fr.peralta.mycellar.domain.shared.exception.BusinessException;
 import fr.peralta.mycellar.domain.shared.repository.AbstractEntityOrder;
 import fr.peralta.mycellar.interfaces.client.web.components.shared.Action;
 import fr.peralta.mycellar.interfaces.client.web.components.shared.ActionLink;
+import fr.peralta.mycellar.interfaces.client.web.components.shared.AjaxTool;
 import fr.peralta.mycellar.interfaces.client.web.components.shared.data.AdvancedTable;
 import fr.peralta.mycellar.interfaces.client.web.components.shared.data.EditColumn;
 import fr.peralta.mycellar.interfaces.client.web.components.shared.data.MultipleSortableDataProvider;
@@ -112,8 +114,13 @@ public abstract class AbstractListPage<E extends IdentifiedEntity, OE, O extends
                 if (event.getSource() instanceof ActionLink) {
                     E object = ((E) ((ActionLink) event.getSource()).getParent()
                             .getDefaultModelObject());
-                    // TODO delete object
-                    event.stop();
+                    try {
+                        deleteObject(object);
+                        AjaxTool.ajaxReRender(this);
+                        event.stop();
+                    } catch (BusinessException e) {
+                        error(e.getMessage());
+                    }
                 }
             default:
                 break;
@@ -121,6 +128,11 @@ public abstract class AbstractListPage<E extends IdentifiedEntity, OE, O extends
         }
         LoggingHelper.logEventProcessed(logger, event);
     }
+
+    /**
+     * @param object
+     */
+    protected abstract void deleteObject(E object) throws BusinessException;
 
     /**
      * @param object

@@ -124,6 +124,60 @@ public class WineServiceFacadeImpl implements WineServiceFacade {
      * {@inheritDoc}
      */
     @Override
+    @Transactional
+    public void deleteAppellation(Appellation appellation) throws BusinessException {
+        appellationService.delete(appellation);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    @Transactional
+    public void deleteCountry(Country country) throws BusinessException {
+        countryService.delete(country);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    @Transactional
+    public void deleteFormat(Format format) throws BusinessException {
+        formatService.delete(format);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    @Transactional
+    public void deleteProducer(Producer producer) throws BusinessException {
+        producerService.delete(producer);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    @Transactional
+    public void deleteRegion(Region region) throws BusinessException {
+        regionService.delete(region);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    @Transactional
+    public void deleteWine(Wine wine) throws BusinessException {
+        wineService.delete(wine);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
     @Transactional(readOnly = true)
     public Country findCountry(String name) {
         return countryService.find(name);

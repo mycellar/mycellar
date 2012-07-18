@@ -25,7 +25,9 @@ import org.apache.wicket.extensions.markup.html.repeater.data.table.IColumn;
 import org.apache.wicket.extensions.markup.html.repeater.data.table.PropertyColumn;
 import org.apache.wicket.model.ResourceModel;
 import org.apache.wicket.request.mapper.parameter.PageParameters;
+import org.apache.wicket.spring.injection.annot.SpringBean;
 
+import fr.peralta.mycellar.domain.shared.exception.BusinessException;
 import fr.peralta.mycellar.domain.shared.repository.SearchForm;
 import fr.peralta.mycellar.domain.stock.Cellar;
 import fr.peralta.mycellar.domain.stock.repository.CellarOrder;
@@ -35,6 +37,7 @@ import fr.peralta.mycellar.interfaces.client.web.components.shared.data.Multiple
 import fr.peralta.mycellar.interfaces.client.web.components.stock.data.CellarDataProvider;
 import fr.peralta.mycellar.interfaces.client.web.pages.admin.AbstractEditPage;
 import fr.peralta.mycellar.interfaces.client.web.pages.admin.AbstractListPage;
+import fr.peralta.mycellar.interfaces.facades.stock.StockServiceFacade;
 
 /**
  * @author speralta
@@ -42,6 +45,9 @@ import fr.peralta.mycellar.interfaces.client.web.pages.admin.AbstractListPage;
 public class CellarsPage extends AbstractListPage<Cellar, CellarOrderEnum, CellarOrder> {
 
     private static final long serialVersionUID = 201203262250L;
+
+    @SpringBean
+    private StockServiceFacade stockServiceFacade;
 
     /**
      * @param parameters
@@ -93,6 +99,14 @@ public class CellarsPage extends AbstractListPage<Cellar, CellarOrderEnum, Cella
     @Override
     protected Class<? extends AbstractEditPage<Cellar>> getEditPageClass() {
         return CellarPage.class;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    protected void deleteObject(Cellar object) throws BusinessException {
+        stockServiceFacade.deleteCellar(object);
     }
 
 }

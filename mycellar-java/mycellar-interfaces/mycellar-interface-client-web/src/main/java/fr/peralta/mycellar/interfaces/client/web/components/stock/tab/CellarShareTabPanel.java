@@ -111,7 +111,11 @@ public class CellarShareTabPanel extends TabAdvancedTablePanel<CellarShare> {
                 if (source instanceof ActionLink) {
                     CellarShare cellarShare = (CellarShare) ((ActionLink) source).getParent()
                             .getDefaultModelObject();
-                    stockServiceFacade.deleteCellarShare(cellarShare);
+                    try {
+                        stockServiceFacade.deleteCellarShare(cellarShare);
+                    } catch (BusinessException e) {
+                        error(e.getMessage());
+                    }
                     AjaxTool.ajaxReRender(this);
                     event.stop();
                 }
