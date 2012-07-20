@@ -21,7 +21,6 @@ package fr.peralta.mycellar.interfaces.client.web.pages.admin.stock;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.request.mapper.parameter.PageParameters;
 import org.apache.wicket.spring.injection.annot.SpringBean;
-import org.apache.wicket.validation.ValidationError;
 
 import fr.peralta.mycellar.domain.shared.exception.BusinessException;
 import fr.peralta.mycellar.domain.shared.repository.CountEnum;
@@ -95,21 +94,16 @@ public class CellarSharePage extends AbstractEditPage<CellarShare> {
      * {@inheritDoc}
      */
     @Override
-    protected void saveObject(CellarShare object) {
-        try {
-            stockServiceFacade.saveCellarShare(object);
-        } catch (BusinessException e) {
-            get(e.getBusinessError().getProperty()).get(e.getBusinessError().getProperty()).error(
-                    new ValidationError().addMessageKey(e.getBusinessError().getKey()));
-        }
+    protected void saveObject(CellarShare object) throws BusinessException {
+        stockServiceFacade.saveCellarShare(object);
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    protected ObjectForm<CellarShare> getObjectForm(String id, IModel<SearchForm> searchFormModel,
-            CellarShare cellarShare) {
+    protected ObjectForm<CellarShare> createObjectForm(String id,
+            IModel<SearchForm> searchFormModel, CellarShare cellarShare) {
         return new CellarShareForm(id, searchFormModel, cellarShare, CountEnum.WINE);
     }
 

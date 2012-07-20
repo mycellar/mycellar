@@ -45,8 +45,9 @@ public class RegionServiceImpl extends
      */
     @Override
     public void validate(Region entity) throws BusinessException {
-        if ((entity.getId() == null)
-                && (regionRepository.find(entity.getCountry(), entity.getName()) != null)) {
+        Region existing = regionRepository.find(entity.getCountry(), entity.getName());
+        if ((existing != null)
+                && ((entity.getId() == null) || !existing.getId().equals(entity.getId()))) {
             throw new BusinessException(BusinessError.REGION_00001);
         }
     }

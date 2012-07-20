@@ -27,6 +27,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import fr.peralta.mycellar.domain.shared.IdentifiedEntity;
+import fr.peralta.mycellar.domain.shared.exception.BusinessException;
 import fr.peralta.mycellar.domain.shared.repository.SearchForm;
 import fr.peralta.mycellar.interfaces.client.web.components.shared.Action;
 import fr.peralta.mycellar.interfaces.client.web.components.shared.AjaxTool;
@@ -34,6 +35,7 @@ import fr.peralta.mycellar.interfaces.client.web.components.shared.SearchFormMod
 import fr.peralta.mycellar.interfaces.client.web.components.shared.form.ObjectForm;
 import fr.peralta.mycellar.interfaces.client.web.components.shared.nav.NavPanel;
 import fr.peralta.mycellar.interfaces.client.web.pages.shared.AdminSuperPage;
+import fr.peralta.mycellar.interfaces.client.web.shared.FormValidationHelper;
 import fr.peralta.mycellar.interfaces.client.web.shared.LoggingHelper;
 
 /**
@@ -57,7 +59,7 @@ public abstract class AbstractEditPage<E extends IdentifiedEntity> extends Admin
     public AbstractEditPage(PageParameters parameters) {
         super(parameters);
         searchFormModel = new SearchFormModel(new SearchForm());
-        objectForm = getObjectForm("form", searchFormModel, getObject(parameters));
+        objectForm = createObjectForm("form", searchFormModel, getObject(parameters));
         add(objectForm.displayForm());
     }
 
@@ -89,11 +91,12 @@ public abstract class AbstractEditPage<E extends IdentifiedEntity> extends Admin
             case SAVE:
                 if (objectForm == event.getSource()) {
                     E object = objectForm.getModelObject();
-                    saveObject(object);
-                    if (getFeedbackMessages().size() > 0) {
-                        AjaxTool.ajaxReRender(this);
-                    } else {
+                    try {
+                        saveObject(object);
                         setResponsePage(getListPageClass());
+                    } catch (BusinessException e) {
+                        FormValidationHelper.error(objectForm, e);
+                        AjaxTool.ajaxReRender(this);
                     }
                     event.stop();
                 }
@@ -145,7 +148,7 @@ public abstract class AbstractEditPage<E extends IdentifiedEntity> extends Admin
      * @param object
      * @return true if ok
      */
-    protected abstract void saveObject(E object);
+    protected abstract void saveObject(E object) throws BusinessException;
 
     /**
      * @param id
@@ -153,8 +156,8 @@ public abstract class AbstractEditPage<E extends IdentifiedEntity> extends Admin
      * @param object
      * @return
      */
-    protected abstract ObjectForm<E> getObjectForm(String id, IModel<SearchForm> searchFormModel,
-            E object);
+    protected abstract ObjectForm<E> createObjectForm(String id,
+            IModel<SearchForm> searchFormModel, E object);
 
     /**
      * @return

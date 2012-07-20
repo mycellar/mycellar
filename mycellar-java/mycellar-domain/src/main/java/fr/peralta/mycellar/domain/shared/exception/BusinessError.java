@@ -30,12 +30,7 @@ public enum BusinessError {
     /*
      * Bottle
      */
-    BOTTLE_00001("name"),
-
-    /*
-     * Contact
-     */
-    CONTACT_00001("producer"),
+    BOTTLE_00001("wine"),
 
     /*
      * Cellar
@@ -46,6 +41,11 @@ public enum BusinessError {
      * CellarShare
      */
     CELLAR_SHARE_00001("email"),
+
+    /*
+     * Contact
+     */
+    CONTACT_00001("producer"),
 
     /*
      * Country
@@ -70,7 +70,7 @@ public enum BusinessError {
     /*
      * User
      */
-    USER_00001("email"), USER_00002("email"),
+    USER_00001("email"),
 
     /*
      * Wine

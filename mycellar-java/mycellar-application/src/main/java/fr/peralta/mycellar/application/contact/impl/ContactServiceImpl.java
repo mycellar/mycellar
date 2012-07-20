@@ -124,7 +124,9 @@ public class ContactServiceImpl extends
      */
     @Override
     public void validate(Contact entity) throws BusinessException {
-        if ((entity.getId() == null) && (find(entity.getProducer(), entity.getCurrent()) != null)) {
+        Contact existing = find(entity.getProducer(), entity.getCurrent());
+        if ((existing != null)
+                && ((entity.getId() == null) || !existing.getId().equals(entity.getId()))) {
             throw new BusinessException(BusinessError.CONTACT_00001);
         }
     }

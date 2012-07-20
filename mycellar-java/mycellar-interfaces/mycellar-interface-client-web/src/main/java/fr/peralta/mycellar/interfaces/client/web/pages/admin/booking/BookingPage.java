@@ -21,7 +21,6 @@ package fr.peralta.mycellar.interfaces.client.web.pages.admin.booking;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.request.mapper.parameter.PageParameters;
 import org.apache.wicket.spring.injection.annot.SpringBean;
-import org.apache.wicket.validation.ValidationError;
 
 import fr.peralta.mycellar.domain.booking.Booking;
 import fr.peralta.mycellar.domain.shared.exception.BusinessException;
@@ -94,20 +93,15 @@ public class BookingPage extends AbstractEditPage<Booking> {
      * {@inheritDoc}
      */
     @Override
-    protected void saveObject(Booking object) {
-        try {
-            bookingServiceFacade.saveBooking(object);
-        } catch (BusinessException e) {
-            get(e.getBusinessError().getProperty()).get(e.getBusinessError().getProperty()).error(
-                    new ValidationError().addMessageKey(e.getBusinessError().getKey()));
-        }
+    protected void saveObject(Booking object) throws BusinessException {
+        bookingServiceFacade.saveBooking(object);
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    protected ObjectForm<Booking> getObjectForm(String id, IModel<SearchForm> searchFormModel,
+    protected ObjectForm<Booking> createObjectForm(String id, IModel<SearchForm> searchFormModel,
             Booking object) {
         return new BookingForm(id, searchFormModel, object);
     }

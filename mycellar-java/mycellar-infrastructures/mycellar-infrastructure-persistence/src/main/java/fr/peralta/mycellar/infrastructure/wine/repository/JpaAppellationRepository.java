@@ -58,7 +58,7 @@ public class JpaAppellationRepository extends
      * {@inheritDoc}
      */
     @Override
-    public Appellation findAppellation(Region region, String name) {
+    public Appellation find(Region region, String name) {
         if (region.getId() == null) {
             return null;
         }

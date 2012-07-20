@@ -62,9 +62,10 @@ public class WineServiceImpl extends
      */
     @Override
     public void validate(Wine entity) throws BusinessException {
-        if ((entity.getId() == null)
-                && (find(entity.getProducer(), entity.getAppellation(), entity.getType(),
-                        entity.getColor(), entity.getName(), entity.getVintage()) != null)) {
+        Wine existing = find(entity.getProducer(), entity.getAppellation(), entity.getType(),
+                entity.getColor(), entity.getName(), entity.getVintage());
+        if ((existing != null)
+                && ((entity.getId() == null) || !existing.getId().equals(entity.getId()))) {
             throw new BusinessException(BusinessError.WINE_00001);
         }
     }

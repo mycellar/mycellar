@@ -21,7 +21,6 @@ package fr.peralta.mycellar.interfaces.client.web.pages.admin.contact;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.request.mapper.parameter.PageParameters;
 import org.apache.wicket.spring.injection.annot.SpringBean;
-import org.apache.wicket.validation.ValidationError;
 
 import fr.peralta.mycellar.domain.contact.Contact;
 import fr.peralta.mycellar.domain.shared.exception.BusinessException;
@@ -94,20 +93,15 @@ public class ContactPage extends AbstractEditPage<Contact> {
      * {@inheritDoc}
      */
     @Override
-    protected void saveObject(Contact object) {
-        try {
-            contactServiceFacade.saveContact(object);
-        } catch (BusinessException e) {
-            get(e.getBusinessError().getProperty()).get(e.getBusinessError().getProperty()).error(
-                    new ValidationError().addMessageKey(e.getBusinessError().getKey()));
-        }
+    protected void saveObject(Contact object) throws BusinessException {
+        contactServiceFacade.saveContact(object);
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    protected ObjectForm<Contact> getObjectForm(String id, IModel<SearchForm> searchFormModel,
+    protected ObjectForm<Contact> createObjectForm(String id, IModel<SearchForm> searchFormModel,
             Contact object) {
         return new ContactForm(id, searchFormModel, object);
     }

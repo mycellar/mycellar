@@ -45,8 +45,9 @@ public class CellarServiceImpl extends
      */
     @Override
     public void validate(Cellar entity) throws BusinessException {
-        if ((entity.getId() == null)
-                && (cellarRepository.find(entity.getOwner(), entity.getName()) != null)) {
+        Cellar existing = cellarRepository.find(entity.getOwner(), entity.getName());
+        if ((existing != null)
+                && ((entity.getId() == null) || !existing.getId().equals(entity.getId()))) {
             throw new BusinessException(BusinessError.CELLAR_00001);
         }
     }

@@ -21,7 +21,6 @@ package fr.peralta.mycellar.interfaces.client.web.pages.admin.user;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.request.mapper.parameter.PageParameters;
 import org.apache.wicket.spring.injection.annot.SpringBean;
-import org.apache.wicket.validation.ValidationError;
 
 import fr.peralta.mycellar.domain.shared.exception.BusinessException;
 import fr.peralta.mycellar.domain.shared.repository.SearchForm;
@@ -94,20 +93,15 @@ public class UserPage extends AbstractEditPage<User> {
      * {@inheritDoc}
      */
     @Override
-    protected void saveObject(User object) {
-        try {
-            userServiceFacade.saveUser(object);
-        } catch (BusinessException e) {
-            get(e.getBusinessError().getProperty()).get(e.getBusinessError().getProperty()).error(
-                    new ValidationError().addMessageKey(e.getBusinessError().getKey()));
-        }
+    protected void saveObject(User object) throws BusinessException {
+        userServiceFacade.saveUser(object);
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    protected ObjectForm<User> getObjectForm(String id, IModel<SearchForm> searchFormModel,
+    protected ObjectForm<User> createObjectForm(String id, IModel<SearchForm> searchFormModel,
             User object) {
         return new UserForm(id, searchFormModel, object);
     }
