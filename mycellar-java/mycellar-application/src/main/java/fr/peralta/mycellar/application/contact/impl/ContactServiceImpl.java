@@ -93,28 +93,30 @@ public class ContactServiceImpl extends
     public void sendReminders() {
         final StringBuilder content = new StringBuilder();
         List<Contact> contacts = contactRepository.getAllToContact();
-        for (Contact contact : contacts) {
-            content.append("Domaine ").append(contact.getProducer().getName())
-                    .append(" à recontacter le ").append(contact.getNext()).append("\r\n");
-            content.append("Dernier contact le ").append(contact.getCurrent()).append(" :")
-                    .append("\r\n").append(contact.getText()).append("\r\n");
-        }
-        MimeMessagePreparator mimeMessagePreparator = new MimeMessagePreparator() {
-            @Override
-            public void prepare(MimeMessage mimeMessage) throws Exception {
-                MimeMessageHelper helper = new MimeMessageHelper(mimeMessage);
-                helper.setTo("stephanie@cave-et-terroirs.fr");
-                helper.setFrom("contact@mycellar.peralta.fr");
-                helper.setSubject("Contacts à recontacter");
-                helper.setText(content.toString());
+        if ((contacts != null) && (contacts.size() > 0)) {
+            for (Contact contact : contacts) {
+                content.append("Domaine ").append(contact.getProducer().getName())
+                        .append(" à recontacter le ").append(contact.getNext()).append("\r\n");
+                content.append("Dernier contact le ").append(contact.getCurrent()).append(" :")
+                        .append("\r\n").append(contact.getText()).append("\r\n");
+                content.append("------------------------------------------------").append("\r\n");
             }
-        };
-        try {
-            javaMailSender.send(mimeMessagePreparator);
-        } catch (Exception e) {
-            throw new RuntimeException("Cannot send email.", e);
+            MimeMessagePreparator mimeMessagePreparator = new MimeMessagePreparator() {
+                @Override
+                public void prepare(MimeMessage mimeMessage) throws Exception {
+                    MimeMessageHelper helper = new MimeMessageHelper(mimeMessage);
+                    helper.setTo("stephanie@cave-et-terroirs.fr");
+                    helper.setFrom("contact@mycellar.peralta.fr");
+                    helper.setSubject("Contacts à recontacter");
+                    helper.setText(content.toString());
+                }
+            };
+            try {
+                javaMailSender.send(mimeMessagePreparator);
+            } catch (Exception e) {
+                throw new RuntimeException("Cannot send email.", e);
+            }
         }
-
     }
 
     /**
