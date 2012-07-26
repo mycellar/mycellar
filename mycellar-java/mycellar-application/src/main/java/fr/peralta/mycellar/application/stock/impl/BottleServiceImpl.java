@@ -47,7 +47,9 @@ public class BottleServiceImpl extends
      */
     @Override
     public void validate(Bottle entity) throws BusinessException {
-        if ((entity.getId() == null) && (find(entity.getWine(), entity.getFormat()) != null)) {
+        Bottle existing = find(entity.getWine(), entity.getFormat());
+        if ((existing != null)
+                && ((entity.getId() == null) || !existing.getId().equals(entity.getId()))) {
             throw new BusinessException(BusinessError.BOTTLE_00001);
         }
     }

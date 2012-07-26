@@ -61,4 +61,11 @@ public class WineColorEnumSimpleTagCloud extends SimpleTagCloud<WineColorEnum> {
         return wineServiceFacade.getColors(searchForm, count);
     }
 
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    protected FilterEnum getFilterToReplace() {
+        return FilterEnum.COLOR;
+    }
 }

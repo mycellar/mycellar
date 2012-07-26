@@ -46,9 +46,9 @@ public class CellarShareServiceImpl
      */
     @Override
     public void validate(CellarShare entity) throws BusinessException {
-        if ((entity.getId() == null)
-                && cellarShareRepository.isCellarAlreaySharedWith(entity.getCellar(),
-                        entity.getEmail())) {
+        CellarShare existing = cellarShareRepository.find(entity.getCellar(), entity.getEmail());
+        if ((existing != null)
+                && ((entity.getId() == null) || !existing.getId().equals(entity.getId()))) {
             throw new BusinessException(BusinessError.CELLAR_SHARE_00001);
         }
     }

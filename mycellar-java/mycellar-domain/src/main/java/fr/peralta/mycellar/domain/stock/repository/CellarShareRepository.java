@@ -33,6 +33,6 @@ public interface CellarShareRepository extends
      * @param email
      * @return
      */
-    boolean isCellarAlreaySharedWith(Cellar cellar, String email);
+    CellarShare find(Cellar cellar, String email);
 
 }

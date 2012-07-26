@@ -23,6 +23,7 @@ import org.apache.wicket.spring.injection.annot.SpringBean;
 import org.wicketstuff.objectautocomplete.ObjectAutoCompleteBuilder;
 
 import fr.peralta.mycellar.domain.booking.BookingEvent;
+import fr.peralta.mycellar.domain.shared.repository.FilterEnum;
 import fr.peralta.mycellar.interfaces.client.web.components.shared.autocomplete.SimpleAutoComplete;
 import fr.peralta.mycellar.interfaces.facades.booking.BookingServiceFacade;
 
@@ -61,4 +62,13 @@ public class BookingEventSimpleAutoComplete extends SimpleAutoComplete<BookingEv
     protected BookingEvent getObject(Integer id) {
         return bookingServiceFacade.getBookingEventById(id);
     }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    protected FilterEnum getFilterToReplace() {
+        return null;
+    }
+
 }

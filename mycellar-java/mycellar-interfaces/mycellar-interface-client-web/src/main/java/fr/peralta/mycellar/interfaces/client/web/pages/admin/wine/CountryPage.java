@@ -21,7 +21,6 @@ package fr.peralta.mycellar.interfaces.client.web.pages.admin.wine;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.request.mapper.parameter.PageParameters;
 import org.apache.wicket.spring.injection.annot.SpringBean;
-import org.apache.wicket.validation.ValidationError;
 
 import fr.peralta.mycellar.domain.shared.exception.BusinessException;
 import fr.peralta.mycellar.domain.shared.repository.SearchForm;
@@ -94,20 +93,15 @@ public class CountryPage extends AbstractEditPage<Country> {
      * {@inheritDoc}
      */
     @Override
-    protected void saveObject(Country object) {
-        try {
-            wineServiceFacade.saveCountry(object);
-        } catch (BusinessException e) {
-            get(e.getBusinessError().getProperty()).get(e.getBusinessError().getProperty()).error(
-                    new ValidationError().addMessageKey(e.getBusinessError().getKey()));
-        }
+    protected void saveObject(Country object) throws BusinessException {
+        wineServiceFacade.saveCountry(object);
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    protected ObjectForm<Country> getObjectForm(String id, IModel<SearchForm> searchFormModel,
+    protected ObjectForm<Country> createObjectForm(String id, IModel<SearchForm> searchFormModel,
             Country country) {
         return new CountryForm(id, searchFormModel, country);
     }

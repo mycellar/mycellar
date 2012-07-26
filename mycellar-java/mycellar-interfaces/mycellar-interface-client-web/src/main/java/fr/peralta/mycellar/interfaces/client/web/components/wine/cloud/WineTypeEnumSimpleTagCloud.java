@@ -59,4 +59,12 @@ public class WineTypeEnumSimpleTagCloud extends SimpleTagCloud<WineTypeEnum> {
             FilterEnum... filters) {
         return wineServiceFacade.getTypes(searchForm, count);
     }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    protected FilterEnum getFilterToReplace() {
+        return FilterEnum.TYPE;
+    }
 }

@@ -60,4 +60,12 @@ public class AccessRightEnumSimpleTagCloud extends SimpleTagCloud<AccessRightEnu
         return accessRightEnums;
     }
 
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    protected FilterEnum getFilterToReplace() {
+        return null;
+    }
+
 }

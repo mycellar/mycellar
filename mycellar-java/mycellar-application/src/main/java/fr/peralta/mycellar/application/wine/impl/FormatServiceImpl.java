@@ -45,8 +45,9 @@ public class FormatServiceImpl extends
      */
     @Override
     public void validate(Format entity) throws BusinessException {
-        if ((entity.getId() == null)
-                && (formatRepository.find(entity.getName(), entity.getCapacity()) != null)) {
+        Format existing = formatRepository.find(entity.getName(), entity.getCapacity());
+        if ((existing != null)
+                && ((entity.getId() == null) || !existing.getId().equals(entity.getId()))) {
             throw new BusinessException(BusinessError.FORMAT_00001);
         }
     }

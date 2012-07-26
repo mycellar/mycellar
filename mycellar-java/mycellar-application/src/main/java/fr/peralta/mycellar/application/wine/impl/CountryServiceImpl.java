@@ -53,7 +53,9 @@ public class CountryServiceImpl extends
      */
     @Override
     public void validate(Country entity) throws BusinessException {
-        if ((entity.getId() == null) && (find(entity.getName()) != null)) {
+        Country existing = find(entity.getName());
+        if ((existing != null)
+                && ((entity.getId() == null) || !existing.getId().equals(entity.getId()))) {
             throw new BusinessException(BusinessError.COUNTRY_00001);
         }
     }

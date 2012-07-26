@@ -82,7 +82,9 @@ public class UserServiceImpl extends
      */
     @Override
     public void validate(User entity) throws BusinessException {
-        if ((entity.getId() == null) && userRepository.isEmailAlreadyRegistered(entity.getEmail())) {
+        User existing = userRepository.getByEmail(entity.getEmail());
+        if ((existing != null)
+                && ((entity.getId() == null) || !existing.getId().equals(entity.getId()))) {
             throw new BusinessException(BusinessError.USER_00001);
         }
     }

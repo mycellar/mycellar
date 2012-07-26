@@ -21,7 +21,6 @@ package fr.peralta.mycellar.interfaces.client.web.pages.admin.wine;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.request.mapper.parameter.PageParameters;
 import org.apache.wicket.spring.injection.annot.SpringBean;
-import org.apache.wicket.validation.ValidationError;
 
 import fr.peralta.mycellar.domain.shared.exception.BusinessException;
 import fr.peralta.mycellar.domain.shared.repository.CountEnum;
@@ -95,21 +94,16 @@ public class AppellationPage extends AbstractEditPage<Appellation> {
      * {@inheritDoc}
      */
     @Override
-    protected void saveObject(Appellation object) {
-        try {
-            wineServiceFacade.saveAppellation(object);
-        } catch (BusinessException e) {
-            get(e.getBusinessError().getProperty()).get(e.getBusinessError().getProperty()).error(
-                    new ValidationError().addMessageKey(e.getBusinessError().getKey()));
-        }
+    protected void saveObject(Appellation object) throws BusinessException {
+        wineServiceFacade.saveAppellation(object);
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    protected ObjectForm<Appellation> getObjectForm(String id, IModel<SearchForm> searchFormModel,
-            Appellation appellation) {
+    protected ObjectForm<Appellation> createObjectForm(String id,
+            IModel<SearchForm> searchFormModel, Appellation appellation) {
         return new AppellationForm(id, searchFormModel, appellation, CountEnum.WINE);
     }
 

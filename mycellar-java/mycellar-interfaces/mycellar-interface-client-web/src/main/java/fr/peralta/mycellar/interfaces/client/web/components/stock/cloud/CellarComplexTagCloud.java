@@ -90,4 +90,12 @@ public class CellarComplexTagCloud extends ComplexTagCloud<Cellar> {
         return true;
     }
 
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    protected FilterEnum getFilterToReplace() {
+        return FilterEnum.CELLAR;
+    }
+
 }

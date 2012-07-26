@@ -86,21 +86,6 @@ public class JpaUserRepository extends JpaEntityRepository<User, UserOrderEnum, 
      * {@inheritDoc}
      */
     @Override
-    public boolean isEmailAlreadyRegistered(String email) {
-        CriteriaBuilder criteriaBuilder = getEntityManager().getCriteriaBuilder();
-        CriteriaQuery<Integer> query = criteriaBuilder.createQuery(Integer.class);
-        Root<User> root = query.from(User.class);
-        return getEntityManager()
-                .createQuery(
-                        query.select(root.<Integer> get("id")).where(
-                                criteriaBuilder.equal(root.get("email"), email))).getResultList()
-                .size() > 0;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
     protected Expression<?> getOrderByPath(Root<User> root, UserOrderEnum order, JoinType joinType) {
         switch (order) {
         case EMAIL:

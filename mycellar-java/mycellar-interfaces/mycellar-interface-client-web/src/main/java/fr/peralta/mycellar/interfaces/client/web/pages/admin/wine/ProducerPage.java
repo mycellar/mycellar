@@ -21,7 +21,6 @@ package fr.peralta.mycellar.interfaces.client.web.pages.admin.wine;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.request.mapper.parameter.PageParameters;
 import org.apache.wicket.spring.injection.annot.SpringBean;
-import org.apache.wicket.validation.ValidationError;
 
 import fr.peralta.mycellar.domain.shared.exception.BusinessException;
 import fr.peralta.mycellar.domain.shared.repository.SearchForm;
@@ -94,20 +93,15 @@ public class ProducerPage extends AbstractEditPage<Producer> {
      * {@inheritDoc}
      */
     @Override
-    protected void saveObject(Producer object) {
-        try {
-            wineServiceFacade.saveProducer(object);
-        } catch (BusinessException e) {
-            get(e.getBusinessError().getProperty()).get(e.getBusinessError().getProperty()).error(
-                    new ValidationError().addMessageKey(e.getBusinessError().getKey()));
-        }
+    protected void saveObject(Producer object) throws BusinessException {
+        wineServiceFacade.saveProducer(object);
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    protected ObjectForm<Producer> getObjectForm(String id, IModel<SearchForm> searchFormModel,
+    protected ObjectForm<Producer> createObjectForm(String id, IModel<SearchForm> searchFormModel,
             Producer object) {
         return new ProducerForm(id, searchFormModel, object);
     }

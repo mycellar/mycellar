@@ -33,6 +33,6 @@ public interface AppellationRepository extends
      * @param name
      * @return
      */
-    Appellation findAppellation(Region region, String name);
+    Appellation find(Region region, String name);
 
 }

@@ -21,7 +21,6 @@ package fr.peralta.mycellar.interfaces.client.web.pages.admin.stock;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.request.mapper.parameter.PageParameters;
 import org.apache.wicket.spring.injection.annot.SpringBean;
-import org.apache.wicket.validation.ValidationError;
 
 import fr.peralta.mycellar.domain.shared.exception.BusinessException;
 import fr.peralta.mycellar.domain.shared.repository.SearchForm;
@@ -94,20 +93,15 @@ public class CellarPage extends AbstractEditPage<Cellar> {
      * {@inheritDoc}
      */
     @Override
-    protected void saveObject(Cellar object) {
-        try {
-            stockServiceFacade.saveCellar(object);
-        } catch (BusinessException e) {
-            get(e.getBusinessError().getProperty()).get(e.getBusinessError().getProperty()).error(
-                    new ValidationError().addMessageKey(e.getBusinessError().getKey()));
-        }
+    protected void saveObject(Cellar object) throws BusinessException {
+        stockServiceFacade.saveCellar(object);
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    protected ObjectForm<Cellar> getObjectForm(String id, IModel<SearchForm> searchFormModel,
+    protected ObjectForm<Cellar> createObjectForm(String id, IModel<SearchForm> searchFormModel,
             Cellar cellar) {
         return new CellarForm(id, searchFormModel, cellar);
     }

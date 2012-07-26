@@ -21,7 +21,6 @@ package fr.peralta.mycellar.interfaces.client.web.pages.admin.wine;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.request.mapper.parameter.PageParameters;
 import org.apache.wicket.spring.injection.annot.SpringBean;
-import org.apache.wicket.validation.ValidationError;
 
 import fr.peralta.mycellar.domain.shared.exception.BusinessException;
 import fr.peralta.mycellar.domain.shared.repository.CountEnum;
@@ -95,20 +94,15 @@ public class RegionPage extends AbstractEditPage<Region> {
      * {@inheritDoc}
      */
     @Override
-    protected void saveObject(Region object) {
-        try {
-            wineServiceFacade.saveRegion(object);
-        } catch (BusinessException e) {
-            get(e.getBusinessError().getProperty()).get(e.getBusinessError().getProperty()).error(
-                    new ValidationError().addMessageKey(e.getBusinessError().getKey()));
-        }
+    protected void saveObject(Region object) throws BusinessException {
+        wineServiceFacade.saveRegion(object);
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    protected ObjectForm<Region> getObjectForm(String id, IModel<SearchForm> searchFormModel,
+    protected ObjectForm<Region> createObjectForm(String id, IModel<SearchForm> searchFormModel,
             Region object) {
         return new RegionForm(id, searchFormModel, object, CountEnum.WINE);
     }

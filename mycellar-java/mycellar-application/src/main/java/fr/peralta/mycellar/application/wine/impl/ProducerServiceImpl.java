@@ -48,7 +48,9 @@ public class ProducerServiceImpl
      */
     @Override
     public void validate(Producer entity) throws BusinessException {
-        if ((entity.getId() == null) && (producerRepository.find(entity.getName()) != null)) {
+        Producer existing = producerRepository.find(entity.getName());
+        if ((existing != null)
+                && ((entity.getId() == null) || !existing.getId().equals(entity.getId()))) {
             throw new BusinessException(BusinessError.PRODUCER_00001);
         }
     }

@@ -18,6 +18,7 @@
  */
 package fr.peralta.mycellar.infrastructure.stock.repository;
 
+import javax.persistence.NoResultException;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Expression;
@@ -58,16 +59,17 @@ public class JpaCellarShareRepository extends
      * {@inheritDoc}
      */
     @Override
-    public boolean isCellarAlreaySharedWith(Cellar cellar, String email) {
+    public CellarShare find(Cellar cellar, String email) {
         CriteriaBuilder criteriaBuilder = getEntityManager().getCriteriaBuilder();
-        CriteriaQuery<Integer> query = criteriaBuilder.createQuery(Integer.class);
+        CriteriaQuery<CellarShare> query = criteriaBuilder.createQuery(CellarShare.class);
         Root<CellarShare> root = query.from(CellarShare.class);
-        return getEntityManager()
-                .createQuery(
-                        query.select(root.<Integer> get("id")).where(
-                                criteriaBuilder.equal(root.get("email"), email),
-                                criteriaBuilder.equal(root.get("cellar"), cellar))).getResultList()
-                .size() > 0;
+        try {
+            return getEntityManager().createQuery(
+                    query.select(root).where(criteriaBuilder.equal(root.get("email"), email),
+                            criteriaBuilder.equal(root.get("cellar"), cellar))).getSingleResult();
+        } catch (NoResultException e) {
+            return null;
+        }
     }
 
     /**

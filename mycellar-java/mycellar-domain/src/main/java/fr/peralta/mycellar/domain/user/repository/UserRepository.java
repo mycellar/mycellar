@@ -35,12 +35,6 @@ public interface UserRepository extends EntityRepository<User, UserOrderEnum, Us
     User getByEmail(String email);
 
     /**
-     * @param email
-     * @return
-     */
-    boolean isEmailAlreadyRegistered(String email);
-
-    /**
      * @param input
      * @return
      */

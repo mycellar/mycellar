@@ -61,4 +61,12 @@ public class CellarSimpleTagCloud extends SimpleTagCloud<Cellar> {
         return stockServiceFacade.getCellars(searchForm, count, filters);
     }
 
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    protected FilterEnum getFilterToReplace() {
+        return FilterEnum.CELLAR;
+    }
+
 }

@@ -46,9 +46,9 @@ public class AppellationServiceImpl
      */
     @Override
     public void validate(Appellation entity) throws BusinessException {
-        if ((entity.getId() != null)
-                && (appellationRepository.findAppellation(entity.getRegion(),
-                        entity.getName()) != null)) {
+        Appellation existing = appellationRepository.find(entity.getRegion(), entity.getName());
+        if ((existing != null)
+                && ((entity.getId() == null) || !existing.getId().equals(entity.getId()))) {
             throw new BusinessException(BusinessError.APPELLATION_00001);
         }
     }

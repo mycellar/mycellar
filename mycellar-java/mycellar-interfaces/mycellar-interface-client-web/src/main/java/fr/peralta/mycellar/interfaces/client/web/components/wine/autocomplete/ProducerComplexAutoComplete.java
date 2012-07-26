@@ -22,6 +22,7 @@ import org.apache.wicket.model.IModel;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 import org.wicketstuff.objectautocomplete.ObjectAutoCompleteBuilder;
 
+import fr.peralta.mycellar.domain.shared.repository.FilterEnum;
 import fr.peralta.mycellar.domain.shared.repository.SearchForm;
 import fr.peralta.mycellar.domain.wine.Producer;
 import fr.peralta.mycellar.interfaces.client.web.components.shared.autocomplete.ComplexAutoComplete;
@@ -85,8 +86,7 @@ public class ProducerComplexAutoComplete extends ComplexAutoComplete<Producer> {
      * {@inheritDoc}
      */
     @Override
-    protected boolean isReadyToSelect() {
-        return true;
+    protected FilterEnum getFilterToReplace() {
+        return FilterEnum.PRODUCER;
     }
-
 }

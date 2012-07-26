@@ -182,4 +182,11 @@ public class WineComplexList extends ComplexList<Wine> {
         event.stop();
     }
 
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    protected FilterEnum getFilterToReplace() {
+        return FilterEnum.WINE;
+    }
 }
