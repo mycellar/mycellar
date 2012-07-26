@@ -118,7 +118,8 @@ public abstract class SimpleComponent<O, C extends Component> extends CompoundPr
         if (isValuedAtStart()) {
             valued = true;
             FilterEnum filterToReplace = getFilterToReplace();
-            if (filterToReplace != null) {
+            if ((filterToReplace != null) && (getSearchFormModel() != null)
+                    && (getSearchFormModel().getObject() != null)) {
                 getSearchFormModel().getObject().replaceSet(filterToReplace, getModelObject());
             }
         }
