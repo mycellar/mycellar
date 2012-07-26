@@ -22,6 +22,7 @@ import org.apache.wicket.model.IModel;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 import org.wicketstuff.objectautocomplete.ObjectAutoCompleteBuilder;
 
+import fr.peralta.mycellar.domain.shared.repository.FilterEnum;
 import fr.peralta.mycellar.domain.shared.repository.SearchForm;
 import fr.peralta.mycellar.domain.user.User;
 import fr.peralta.mycellar.interfaces.client.web.components.shared.autocomplete.SimpleAutoComplete;
@@ -62,5 +63,13 @@ public class UserSimpleAutoComplete extends SimpleAutoComplete<User> {
     @Override
     protected User getObject(Integer id) {
         return userServiceFacade.getUserById(id);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    protected FilterEnum getFilterToReplace() {
+        return FilterEnum.USER;
     }
 }

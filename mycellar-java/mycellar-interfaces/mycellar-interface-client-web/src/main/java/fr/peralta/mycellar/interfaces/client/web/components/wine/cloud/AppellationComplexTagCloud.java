@@ -147,4 +147,12 @@ public class AppellationComplexTagCloud extends ComplexTagCloud<Appellation> {
         event.stop();
     }
 
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    protected FilterEnum getFilterToReplace() {
+        return FilterEnum.APPELLATION;
+    }
+
 }

@@ -28,6 +28,7 @@ import org.apache.wicket.spring.injection.annot.SpringBean;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import fr.peralta.mycellar.domain.shared.repository.FilterEnum;
 import fr.peralta.mycellar.domain.shared.repository.SearchForm;
 import fr.peralta.mycellar.interfaces.client.web.components.shared.feedback.FormComponentFeedbackBorder;
 import fr.peralta.mycellar.interfaces.client.web.renderers.RendererServiceFacade;
@@ -116,8 +117,18 @@ public abstract class SimpleComponent<O, C extends Component> extends CompoundPr
         container.add(selectorComponent = createSelectorComponent(SELECTOR_COMPONENT_ID));
         if (isValuedAtStart()) {
             valued = true;
+            FilterEnum filterToReplace = getFilterToReplace();
+            if (filterToReplace != null) {
+                getSearchFormModel().getObject().replaceSet(filterToReplace, getModelObject());
+            }
         }
     }
+
+    /**
+     * @return the filter to replace at start (could be null if no filter to
+     *         replace)
+     */
+    protected abstract FilterEnum getFilterToReplace();
 
     /**
      * @param id

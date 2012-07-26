@@ -79,4 +79,12 @@ public class FormatComplexTagCloud extends ComplexTagCloud<Format> {
         return new Format();
     }
 
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    protected FilterEnum getFilterToReplace() {
+        return FilterEnum.FORMAT;
+    }
+
 }

@@ -160,4 +160,12 @@ public class WineSimpleList extends SimpleList<Wine> {
         return wine;
     }
 
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    protected FilterEnum getFilterToReplace() {
+        return FilterEnum.WINE;
+    }
+
 }

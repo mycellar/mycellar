@@ -61,4 +61,12 @@ public class CountrySimpleTagCloud extends SimpleTagCloud<Country> {
         return wineServiceFacade.getCountries(searchForm, count, filters);
     }
 
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    protected FilterEnum getFilterToReplace() {
+        return FilterEnum.COUNTRY;
+    }
+
 }

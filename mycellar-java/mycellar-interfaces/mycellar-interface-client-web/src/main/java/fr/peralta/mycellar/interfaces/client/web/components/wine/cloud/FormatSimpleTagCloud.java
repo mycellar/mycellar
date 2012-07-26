@@ -61,4 +61,11 @@ public class FormatSimpleTagCloud extends SimpleTagCloud<Format> {
         return wineServiceFacade.getFormats(searchForm, count, filters);
     }
 
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    protected FilterEnum getFilterToReplace() {
+        return FilterEnum.FORMAT;
+    }
 }

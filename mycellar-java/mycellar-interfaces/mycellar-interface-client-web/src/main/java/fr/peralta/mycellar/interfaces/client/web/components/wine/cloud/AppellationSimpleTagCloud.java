@@ -121,4 +121,12 @@ public class AppellationSimpleTagCloud extends SimpleTagCloud<Appellation> {
         return appellation;
     }
 
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    protected FilterEnum getFilterToReplace() {
+        return FilterEnum.APPELLATION;
+    }
+
 }

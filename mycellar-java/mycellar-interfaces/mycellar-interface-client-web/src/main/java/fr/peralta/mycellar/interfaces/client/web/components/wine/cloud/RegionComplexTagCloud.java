@@ -97,6 +97,17 @@ public class RegionComplexTagCloud extends ComplexTagCloud<Region> {
      * {@inheritDoc}
      */
     @Override
+    protected void onInitialize() {
+        super.onInitialize();
+        if (isValuedAtStart()) {
+            getSearchFormModel().getObject().replaceSet(FilterEnum.REGION, getModelObject());
+        }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
     protected String getSelectorLabelFor(Region object) {
         return object.getName();
     }
@@ -148,4 +159,11 @@ public class RegionComplexTagCloud extends ComplexTagCloud<Region> {
         event.stop();
     }
 
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    protected FilterEnum getFilterToReplace() {
+        return FilterEnum.REGION;
+    }
 }

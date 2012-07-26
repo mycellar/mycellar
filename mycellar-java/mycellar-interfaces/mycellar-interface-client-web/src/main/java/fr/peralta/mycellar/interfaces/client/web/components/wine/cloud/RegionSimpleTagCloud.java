@@ -121,4 +121,11 @@ public class RegionSimpleTagCloud extends SimpleTagCloud<Region> {
         return region;
     }
 
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    protected FilterEnum getFilterToReplace() {
+        return FilterEnum.REGION;
+    }
 }
