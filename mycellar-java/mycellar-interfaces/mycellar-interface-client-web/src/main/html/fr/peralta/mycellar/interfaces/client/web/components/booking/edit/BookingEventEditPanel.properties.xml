@@ -5,4 +5,5 @@
   <entry key="name">Nom</entry>
   <entry key="start">Début</entry>
   <entry key="end">Fin</entry>
+  <entry key="bottles">Bouteilles à réserver</entry>
 </properties> 
