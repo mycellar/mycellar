@@ -30,7 +30,7 @@ import fr.peralta.mycellar.domain.shared.repository.SearchForm;
 import fr.peralta.mycellar.domain.stock.CellarShare;
 import fr.peralta.mycellar.domain.stock.repository.CellarShareOrderEnum;
 import fr.peralta.mycellar.interfaces.client.web.components.shared.data.AdvancedTable;
-import fr.peralta.mycellar.interfaces.client.web.components.shared.data.EditColumn;
+import fr.peralta.mycellar.interfaces.client.web.components.shared.data.ActionsColumn;
 
 /**
  * @author speralta
@@ -46,7 +46,7 @@ public class CellarShareDataView extends AdvancedTable<CellarShare> {
                 CellarShareOrderEnum.EMAIL.name(), "email"));
         columns.add(new PropertyColumn<CellarShare>(new ResourceModel("accessRight"),
                 CellarShareOrderEnum.ACCESS_RIGHT.name(), "accessRight"));
-        columns.add(new EditColumn<CellarShare>());
+        columns.add(new ActionsColumn<CellarShare>());
         return columns;
     }
 

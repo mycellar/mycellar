@@ -29,7 +29,6 @@ import fr.peralta.mycellar.domain.contact.Contact;
 import fr.peralta.mycellar.domain.contact.repository.ContactOrder;
 import fr.peralta.mycellar.domain.contact.repository.ContactOrderEnum;
 import fr.peralta.mycellar.domain.shared.repository.OrderWayEnum;
-import fr.peralta.mycellar.domain.wine.Producer;
 import fr.peralta.mycellar.interfaces.client.web.components.shared.data.MultipleSortableDataProvider;
 import fr.peralta.mycellar.interfaces.facades.contact.ContactServiceFacade;
 
@@ -45,16 +44,13 @@ public class LastContactsDataProvider extends
     @SpringBean
     private ContactServiceFacade contactServiceFacade;
 
-    private final IModel<Producer> producerModel;
-
     /**
      * @param producerModel
      */
-    public LastContactsDataProvider(IModel<Producer> producerModel) {
+    public LastContactsDataProvider() {
         super(new ContactOrder().add(ContactOrderEnum.PRODUCER_NAME, OrderWayEnum.ASC).add(
                 ContactOrderEnum.CURRENT_DATE, OrderWayEnum.ASC));
         Injector.get().inject(this);
-        this.producerModel = producerModel;
     }
 
     /**
@@ -62,13 +58,8 @@ public class LastContactsDataProvider extends
      */
     @Override
     public Iterator<? extends Contact> iterator(int first, int count) {
-        if ((producerModel.getObject() != null) && (producerModel.getObject().getId() != null)) {
-            return contactServiceFacade.getContactsForProducer(producerModel.getObject(),
-                    getState().getOrders(), first, count).iterator();
-        } else {
-            return contactServiceFacade.getLastContacts(getState().getOrders(), first, count)
-                    .iterator();
-        }
+        return contactServiceFacade.getLastContacts(getState().getOrders(), first, count)
+                .iterator();
     }
 
     /**
@@ -76,9 +67,6 @@ public class LastContactsDataProvider extends
      */
     @Override
     public int size() {
-        if ((producerModel.getObject() != null) && (producerModel.getObject().getId() != null)) {
-            return 1;
-        }
         return (int) contactServiceFacade.countLastContacts();
     }
 
