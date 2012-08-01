@@ -88,9 +88,9 @@ public class WineComplexList extends ComplexList<Wine> {
         add(producerComplexAutoComplete = new ProducerComplexAutoComplete(PRODUCER_COMPONENT_ID,
                 new StringResourceModel("producer", this, null), searchFormModel));
         add(wineTypeEnumSimpleTagCloud = new WineTypeEnumSimpleTagCloud(TYPE_COMPONENT_ID,
-                new StringResourceModel("type", this, null), searchFormModel, CountEnum.WINE));
+                new StringResourceModel("type", this, null), searchFormModel, count));
         add(wineColorEnumSimpleTagCloud = new WineColorEnumSimpleTagCloud(COLOR_COMPONENT_ID,
-                new StringResourceModel("color", this, null), searchFormModel, CountEnum.WINE));
+                new StringResourceModel("color", this, null), searchFormModel, count));
         add((vintageBorder = new FormComponentFeedbackBorder(VINTAGE_COMPONENT_ID))
                 .add((vintageTextField = new NumberTextField<Integer>(VINTAGE_COMPONENT_ID))
                         .setMinimum(1800).setMaximum(new LocalDate().getYear())
