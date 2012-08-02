@@ -190,6 +190,8 @@ public abstract class SimpleComponent<O, C extends Component> extends CompoundPr
     }
 
     protected final void markAsValued(O object) {
+        // MYCELLAR-53 : reset value else object could be "equals" to data
+        setModelObject(null);
         valued = true;
         setModelObject(object);
     }
