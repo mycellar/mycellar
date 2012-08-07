@@ -24,8 +24,6 @@ import java.util.List;
 import org.apache.wicket.event.IEvent;
 import org.apache.wicket.extensions.markup.html.repeater.data.table.IColumn;
 import org.apache.wicket.extensions.markup.html.repeater.data.table.PropertyColumn;
-import org.apache.wicket.model.IModel;
-import org.apache.wicket.model.Model;
 import org.apache.wicket.model.StringResourceModel;
 import org.apache.wicket.request.mapper.parameter.PageParameters;
 import org.slf4j.Logger;
@@ -37,10 +35,9 @@ import fr.peralta.mycellar.domain.wine.Producer;
 import fr.peralta.mycellar.interfaces.client.web.components.contact.data.LastContactsDataProvider;
 import fr.peralta.mycellar.interfaces.client.web.components.shared.Action;
 import fr.peralta.mycellar.interfaces.client.web.components.shared.ActionLink;
-import fr.peralta.mycellar.interfaces.client.web.components.shared.AjaxTool;
 import fr.peralta.mycellar.interfaces.client.web.components.shared.SearchFormModel;
+import fr.peralta.mycellar.interfaces.client.web.components.shared.data.ActionsColumn;
 import fr.peralta.mycellar.interfaces.client.web.components.shared.data.AdvancedTable;
-import fr.peralta.mycellar.interfaces.client.web.components.shared.data.EditColumn;
 import fr.peralta.mycellar.interfaces.client.web.components.wine.autocomplete.ProducerSimpleAutoComplete;
 import fr.peralta.mycellar.interfaces.client.web.pages.shared.BookingSuperPage;
 import fr.peralta.mycellar.interfaces.client.web.shared.LoggingHelper;
@@ -63,13 +60,11 @@ public class ContactsPage extends BookingSuperPage {
         columns.add(new PropertyColumn<Contact>(new StringResourceModel("currentDate", null),
                 "current"));
         columns.add(new PropertyColumn<Contact>(new StringResourceModel("nextDate", null), "next"));
-        columns.add(new EditColumn<Contact>());
+        columns.add(new ActionsColumn<Contact>(true, false, true));
         return columns;
     }
 
     private ProducerSimpleAutoComplete producerSimpleAutoComplete;
-
-    private final IModel<Producer> producerModel;
 
     /**
      * @param parameters
@@ -77,11 +72,9 @@ public class ContactsPage extends BookingSuperPage {
     public ContactsPage(PageParameters parameters) {
         super(parameters);
         setOutputMarkupId(true);
-        producerModel = new Model<Producer>();
         add(producerSimpleAutoComplete = new ProducerSimpleAutoComplete("producer",
                 new StringResourceModel("producer", null), new SearchFormModel(new SearchForm())));
-        add(new AdvancedTable<Contact>("contacts", getColumns(), new LastContactsDataProvider(
-                producerModel), 30));
+        add(new AdvancedTable<Contact>("contacts", getColumns(), new LastContactsDataProvider(), 30));
     }
 
     /**
@@ -111,8 +104,9 @@ public class ContactsPage extends BookingSuperPage {
                 break;
             case MODEL_CHANGED:
                 if (event.getSource() == producerSimpleAutoComplete) {
-                    producerModel.setObject(producerSimpleAutoComplete.getModelObject());
-                    AjaxTool.ajaxReRender(this);
+                    setResponsePage(ContactPage.class,
+                            ContactPage.getPageParameters(producerSimpleAutoComplete
+                                    .getModelObject()));
                     event.stop();
                 }
             default:

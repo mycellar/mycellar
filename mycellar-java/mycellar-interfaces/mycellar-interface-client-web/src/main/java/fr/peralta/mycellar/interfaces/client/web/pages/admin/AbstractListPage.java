@@ -34,7 +34,7 @@ import fr.peralta.mycellar.interfaces.client.web.components.shared.Action;
 import fr.peralta.mycellar.interfaces.client.web.components.shared.ActionLink;
 import fr.peralta.mycellar.interfaces.client.web.components.shared.AjaxTool;
 import fr.peralta.mycellar.interfaces.client.web.components.shared.data.AdvancedTable;
-import fr.peralta.mycellar.interfaces.client.web.components.shared.data.EditColumn;
+import fr.peralta.mycellar.interfaces.client.web.components.shared.data.ActionsColumn;
 import fr.peralta.mycellar.interfaces.client.web.components.shared.data.MultipleSortableDataProvider;
 import fr.peralta.mycellar.interfaces.client.web.components.shared.nav.NavPanel;
 import fr.peralta.mycellar.interfaces.client.web.pages.shared.AdminSuperPage;
@@ -72,7 +72,7 @@ public abstract class AbstractListPage<E extends IdentifiedEntity, OE, O extends
      */
     private List<IColumn<E>> getColumnsPlusEdit() {
         List<IColumn<E>> columns = new ArrayList<IColumn<E>>(getColumns());
-        columns.add(new EditColumn<E>());
+        columns.add(new ActionsColumn<E>());
         return columns;
     }
 

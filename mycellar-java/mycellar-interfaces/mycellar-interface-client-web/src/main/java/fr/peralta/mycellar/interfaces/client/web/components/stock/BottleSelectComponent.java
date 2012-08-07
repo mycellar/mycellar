@@ -61,13 +61,14 @@ public class BottleSelectComponent extends CompoundPropertyPanel<Bottle> {
     /**
      * @param id
      * @param searchFormModel
+     * @param count
      */
-    public BottleSelectComponent(String id, IModel<SearchForm> searchFormModel) {
+    public BottleSelectComponent(String id, IModel<SearchForm> searchFormModel, CountEnum count) {
         super(id);
         setOutputMarkupId(true);
         this.searchFormModel = searchFormModel;
         add(wineSimpleList = new WineSimpleList(WINE_COMPONENT_ID, new StringResourceModel("wine",
-                this, null), searchFormModel));
+                this, null), searchFormModel, count));
         add(formatSimpleTagCloud = new FormatSimpleTagCloud(FORMAT_COMPONENT_ID,
                 new StringResourceModel("format", this, null), searchFormModel,
                 CountEnum.STOCK_QUANTITY));

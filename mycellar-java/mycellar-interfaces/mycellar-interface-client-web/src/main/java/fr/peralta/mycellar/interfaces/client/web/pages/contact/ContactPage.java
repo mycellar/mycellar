@@ -130,6 +130,7 @@ public class ContactPage extends BookingSuperPage {
         protected void onSubmit() {
             try {
                 wineServiceFacade.saveProducer(getModelObject());
+                setResponsePage(ContactPage.class, ContactPage.getPageParameters(getModelObject()));
             } catch (BusinessException e) {
                 FormValidationHelper.error(this, e);
             }

@@ -70,19 +70,20 @@ public class WineSimpleList extends SimpleList<Wine> {
      * @param id
      * @param label
      * @param searchFormModel
+     * @param count
      */
-    public WineSimpleList(String id, IModel<String> label, IModel<SearchForm> searchFormModel) {
+    public WineSimpleList(String id, IModel<String> label, IModel<SearchForm> searchFormModel,
+            CountEnum count) {
         super(id, label, searchFormModel);
         setOutputMarkupId(true);
         add(appellationSimpleTagCloud = new AppellationSimpleTagCloud(APPELLATION_COMPONENT_ID,
-                new StringResourceModel("appellation", this, null), searchFormModel,
-                CountEnum.STOCK_QUANTITY));
+                new StringResourceModel("appellation", this, null), searchFormModel, count));
         add(producerSimpleAutoComplete = new ProducerSimpleAutoComplete(PRODUCER_COMPONENT_ID,
                 new StringResourceModel("producer", this, null), searchFormModel));
         add(wineTypeEnumSimpleTagCloud = new WineTypeEnumSimpleTagCloud(TYPE_COMPONENT_ID,
-                new StringResourceModel("type", this, null), searchFormModel, CountEnum.WINE));
+                new StringResourceModel("type", this, null), searchFormModel, count));
         add(wineColorEnumSimpleTagCloud = new WineColorEnumSimpleTagCloud(COLOR_COMPONENT_ID,
-                new StringResourceModel("color", this, null), searchFormModel, CountEnum.WINE));
+                new StringResourceModel("color", this, null), searchFormModel, count));
         add((vintageBorder = new FormComponentFeedbackBorder(VINTAGE_COMPONENT_ID))
                 .add((vintageTextField = new NumberTextField<Integer>(VINTAGE_COMPONENT_ID))
                         .setMinimum(1800).setMaximum(new LocalDate().getYear())

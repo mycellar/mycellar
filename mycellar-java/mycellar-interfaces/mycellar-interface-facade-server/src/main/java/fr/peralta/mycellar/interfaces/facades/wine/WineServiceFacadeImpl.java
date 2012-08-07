@@ -435,6 +435,19 @@ public class WineServiceFacadeImpl implements WineServiceFacade {
     }
 
     /**
+     * {@inheritDoc}
+     */
+    @Override
+    @Transactional(readOnly = false)
+    public List<Wine> createVintages(Wine toCopy, int from, int to) throws BusinessException {
+        List<Wine> wines = wineService.createVintages(toCopy, from, to);
+        for (Wine wine : wines) {
+            saveWine(wine);
+        }
+        return wines;
+    }
+
+    /**
      * @param appellationService
      *            the appellationService to set
      */

@@ -33,11 +33,22 @@ public class EditRemovePanel extends Panel {
 
     /**
      * @param id
+     * @param model
      */
     public EditRemovePanel(String id, IModel<?> model) {
+        this(id, model, true, true);
+    }
+
+    /**
+     * @param id
+     * @param model
+     * @param edit
+     * @param delete
+     */
+    public EditRemovePanel(String id, IModel<?> model, boolean edit, boolean delete) {
         super(id, model);
-        add(new ActionLink("editLink", Action.SELECT));
-        add(new ActionLink("removeLink", Action.DELETE));
+        add(new ActionLink("editLink", Action.SELECT).setVisibilityAllowed(edit));
+        add(new ActionLink("removeLink", Action.DELETE).setVisibilityAllowed(delete));
     }
 
 }
