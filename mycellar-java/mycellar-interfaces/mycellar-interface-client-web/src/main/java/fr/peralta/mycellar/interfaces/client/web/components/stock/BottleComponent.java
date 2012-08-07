@@ -61,6 +61,7 @@ public class BottleComponent extends CompoundPropertyPanel<Bottle> {
     /**
      * @param id
      * @param searchFormModel
+     * @param count
      */
     public BottleComponent(String id, IModel<SearchForm> searchFormModel, CountEnum count) {
         super(id);

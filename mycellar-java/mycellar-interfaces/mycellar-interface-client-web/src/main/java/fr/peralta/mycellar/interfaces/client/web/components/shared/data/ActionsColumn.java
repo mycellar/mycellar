@@ -27,9 +27,33 @@ import org.apache.wicket.model.IModel;
 /**
  * @author speralta
  */
-public class EditColumn<T> implements IStyledColumn<T> {
+public class ActionsColumn<T> implements IStyledColumn<T> {
 
     private static final long serialVersionUID = 201201251241L;
+
+    private boolean edit;
+
+    private boolean delete;
+
+    private boolean add;
+
+    /**
+     * Default constructor.
+     */
+    public ActionsColumn() {
+        this(true, true, true);
+    }
+
+    /**
+     * @param edit
+     * @param delete
+     * @param add
+     */
+    public ActionsColumn(boolean edit, boolean delete, boolean add) {
+        this.edit = edit;
+        this.delete = delete;
+        this.add = add;
+    }
 
     /**
      * {@inheritDoc}
@@ -37,7 +61,7 @@ public class EditColumn<T> implements IStyledColumn<T> {
     @Override
     public void populateItem(Item<ICellPopulator<T>> cellItem, String componentId,
             IModel<T> rowModel) {
-        cellItem.add(new EditRemovePanel(componentId, rowModel));
+        cellItem.add(new EditRemovePanel(componentId, rowModel, edit, delete));
     }
 
     /**
@@ -61,7 +85,7 @@ public class EditColumn<T> implements IStyledColumn<T> {
      */
     @Override
     public Component getHeader(String componentId) {
-        return new AddPanel(componentId);
+        return new AddPanel(componentId).setVisibilityAllowed(add);
     }
 
     /**

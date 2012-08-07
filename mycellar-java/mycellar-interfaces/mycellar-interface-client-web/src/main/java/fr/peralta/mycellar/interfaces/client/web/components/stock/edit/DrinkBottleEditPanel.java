@@ -57,7 +57,7 @@ public class DrinkBottleEditPanel extends Panel {
     public DrinkBottleEditPanel(String id, IModel<SearchForm> searchFormModel) {
         super(id);
         this.searchFormModel = searchFormModel;
-        add(new BottleSelectComponent("bottle", searchFormModel));
+        add(new BottleSelectComponent("bottle", searchFormModel, CountEnum.STOCK_QUANTITY));
         add(new FormComponentFeedbackBorder("quantity").add(new TextField<Integer>("quantity")
                 .setRequired(true).add(new MinimumValidator<Integer>(1))));
         add(cellarSimpleTagCloud = new CellarSimpleTagCloud("cellar", new StringResourceModel(

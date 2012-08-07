@@ -41,7 +41,7 @@ public class BookingBottleEditPanel extends Panel {
      */
     public BookingBottleEditPanel(String id, IModel<SearchForm> searchFormModel) {
         super(id);
-        add(new BottleComponent("bottle", searchFormModel, CountEnum.STOCK_QUANTITY));
+        add(new BottleComponent("bottle", searchFormModel, CountEnum.WINE));
         add(new FormComponentFeedbackBorder("max").add(new TextField<Integer>("max")
                 .setRequired(true)));
         add(new FormComponentFeedbackBorder("price").add(new TextField<Float>("price").setRequired(

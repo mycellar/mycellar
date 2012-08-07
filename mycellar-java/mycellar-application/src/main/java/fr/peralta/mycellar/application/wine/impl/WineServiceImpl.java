@@ -18,6 +18,8 @@
  */
 package fr.peralta.mycellar.application.wine.impl;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -96,6 +98,39 @@ public class WineServiceImpl extends
             }
         }
         return colors;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public List<Wine> createVintages(Wine wine, int from, int to) {
+        if (from > to) {
+            throw new IllegalArgumentException("From (" + from + ") must be before to (" + to
+                    + ").");
+        }
+        List<Wine> copies = new ArrayList<Wine>();
+        for (int i = from; i <= to; i++) {
+            copies.add(createVintage(wine, i));
+        }
+        return copies;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public Wine createVintage(Wine wine, int year) {
+        Wine copy = new Wine();
+        copy.setAppellation(wine.getAppellation());
+        copy.setColor(wine.getColor());
+        copy.setDescription(wine.getDescription());
+        copy.setName(wine.getName());
+        copy.setProducer(wine.getProducer());
+        copy.setRanking(wine.getRanking());
+        copy.setType(wine.getType());
+        copy.setVintage(year);
+        return copy;
     }
 
     /**
