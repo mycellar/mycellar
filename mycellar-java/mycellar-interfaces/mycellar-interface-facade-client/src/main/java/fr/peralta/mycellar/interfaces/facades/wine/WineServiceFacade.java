@@ -313,4 +313,12 @@ public interface WineServiceFacade {
      */
     void validateCountry(Country country) throws BusinessException;
 
+    /**
+     * @param toCopy
+     * @param from
+     * @param to
+     * @throws BusinessException
+     */
+    List<Wine> createVintages(Wine toCopy, int from, int to) throws BusinessException;
+
 }

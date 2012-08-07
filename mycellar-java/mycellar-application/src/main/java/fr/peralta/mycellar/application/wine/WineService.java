@@ -18,6 +18,7 @@
  */
 package fr.peralta.mycellar.application.wine;
 
+import java.util.List;
 import java.util.Map;
 
 import fr.peralta.mycellar.application.shared.EntitySearchFormService;
@@ -61,5 +62,9 @@ public interface WineService extends EntitySearchFormService<Wine, WineOrderEnum
      * @return
      */
     Map<WineColorEnum, Long> getColors(SearchForm searchForm, CountEnum count);
+
+    List<Wine> createVintages(Wine wine, int from, int to);
+
+    Wine createVintage(Wine wine, int year);
 
 }
