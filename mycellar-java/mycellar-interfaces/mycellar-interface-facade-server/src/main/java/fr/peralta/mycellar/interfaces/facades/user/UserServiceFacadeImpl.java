@@ -109,7 +109,7 @@ public class UserServiceFacadeImpl implements UserServiceFacade {
      */
     @Override
     @Transactional(readOnly = true)
-    public List<User> getUsers(UserOrder orders, int first, int count) {
+    public List<User> getUsers(UserOrder orders, long first, long count) {
         return userService.getAll(orders, first, count);
     }
 

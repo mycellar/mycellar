@@ -33,7 +33,7 @@ public class ImageAjaxPagingNavigationLink extends AjaxPagingNavigationLink {
      * @param pageable
      * @param pageNumber
      */
-    public ImageAjaxPagingNavigationLink(String id, final IPageable pageable, final int pageNumber) {
+    public ImageAjaxPagingNavigationLink(String id, final IPageable pageable, final long pageNumber) {
         super(id, pageable, pageNumber);
         setAutoEnable(false);
     }

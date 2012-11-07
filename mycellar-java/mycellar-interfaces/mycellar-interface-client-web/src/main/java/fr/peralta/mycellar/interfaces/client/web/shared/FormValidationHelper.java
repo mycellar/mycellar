@@ -50,7 +50,7 @@ public class FormValidationHelper {
                     }
                 });
         if (formComponent != null) {
-            formComponent.error(new ValidationError().addMessageKey(e.getBusinessError().getKey()));
+            formComponent.error(new ValidationError().addKey(e.getBusinessError().getKey()));
         } else {
             Map<String, Object> map = new HashMap<String, Object>();
             map.put("label", form.getString(e.getBusinessError().getProperty()));

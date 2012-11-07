@@ -35,7 +35,7 @@ public class NoRecordsRow extends Panel {
     private static final IModel<String> DEFAULT_MESSAGE_MODEL = new ResourceModel(
             "datatable.no-records-found");
 
-    private final AdvancedTable<?> table;
+    private final AdvancedTable<?, ?> table;
 
     /**
      * Constructor
@@ -43,7 +43,7 @@ public class NoRecordsRow extends Panel {
      * @param table
      *            data table this toolbar will be attached to
      */
-    public NoRecordsRow(final AdvancedTable<?> table) {
+    public NoRecordsRow(final AdvancedTable<?, ?> table) {
         this(table, DEFAULT_MESSAGE_MODEL);
     }
 
@@ -54,7 +54,7 @@ public class NoRecordsRow extends Panel {
      *            model that will be used to display the "no records found"
      *            message
      */
-    public NoRecordsRow(final AdvancedTable<?> table, final IModel<String> messageModel) {
+    public NoRecordsRow(final AdvancedTable<?, ?> table, final IModel<String> messageModel) {
         super("noRows");
         this.table = table;
 

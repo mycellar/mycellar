@@ -54,6 +54,6 @@ public interface EntitySearchFormService<E extends IdentifiedEntity, OE, O exten
      * @param count
      * @return
      */
-    List<E> getAll(SearchForm searchForm, O order, int first, int count);
+    List<E> getAll(SearchForm searchForm, O order, long first, long count);
 
 }

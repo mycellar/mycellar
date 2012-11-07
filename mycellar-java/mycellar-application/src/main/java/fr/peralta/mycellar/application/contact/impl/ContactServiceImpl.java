@@ -64,7 +64,7 @@ public class ContactServiceImpl extends
      * {@inheritDoc}
      */
     @Override
-    public List<Contact> getLastContacts(ContactOrder orders, int first, int count) {
+    public List<Contact> getLastContacts(ContactOrder orders, long first, long count) {
         return contactRepository.getLastContacts(orders, first, count);
     }
 
@@ -72,8 +72,8 @@ public class ContactServiceImpl extends
      * {@inheritDoc}
      */
     @Override
-    public List<Contact> getAllForProducer(Producer producer, ContactOrder orders, int first,
-            int count) {
+    public List<Contact> getAllForProducer(Producer producer, ContactOrder orders, long first,
+            long count) {
         return contactRepository.getAllForProducer(producer, orders, first, count);
     }
 

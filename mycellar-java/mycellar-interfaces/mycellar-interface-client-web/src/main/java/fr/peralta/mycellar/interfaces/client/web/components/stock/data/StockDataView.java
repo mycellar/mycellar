@@ -35,28 +35,28 @@ import fr.peralta.mycellar.interfaces.client.web.components.shared.data.Advanced
  * @author speralta
  * 
  */
-public class StockDataView extends AdvancedTable<Stock> {
+public class StockDataView extends AdvancedTable<Stock, StockOrderEnum> {
 
     private static final long serialVersionUID = 201109192009L;
 
-    private static List<IColumn<Stock>> getNewColumns() {
-        List<IColumn<Stock>> columns = new ArrayList<IColumn<Stock>>();
-        columns.add(new PropertyColumn<Stock>(new ResourceModel("country"),
-                StockOrderEnum.COUNTRY_NAME.name(), "bottle.wine.appellation.region.country.name"));
-        columns.add(new PropertyColumn<Stock>(new ResourceModel("region"),
-                StockOrderEnum.REGION_NAME.name(), "bottle.wine.appellation.region.name"));
-        columns.add(new PropertyColumn<Stock>(new ResourceModel("appellation"),
-                StockOrderEnum.APPELLATION_NAME.name(), "bottle.wine.appellation.name"));
-        columns.add(new PropertyColumn<Stock>(new ResourceModel("producer"),
-                StockOrderEnum.PRODUCER_NAME.name(), "bottle.wine.producer.name"));
-        columns.add(new PropertyColumn<Stock>(new ResourceModel("wine"), StockOrderEnum.WINE_NAME
-                .name(), "bottle.wine.name"));
-        columns.add(new PropertyColumn<Stock>(new ResourceModel("type"),
-                StockOrderEnum.TYPE.name(), "bottle.wine.type"));
-        columns.add(new PropertyColumn<Stock>(new ResourceModel("color"), StockOrderEnum.COLOR
-                .name(), "bottle.wine.color"));
-        columns.add(new PropertyColumn<Stock>(new ResourceModel("vintage"),
-                StockOrderEnum.WINE_VINTAGE.name(), "bottle.wine.vintage") {
+    private static List<IColumn<Stock, StockOrderEnum>> getNewColumns() {
+        List<IColumn<Stock, StockOrderEnum>> columns = new ArrayList<IColumn<Stock, StockOrderEnum>>();
+        columns.add(new PropertyColumn<Stock, StockOrderEnum>(new ResourceModel("country"),
+                StockOrderEnum.COUNTRY_NAME, "bottle.wine.appellation.region.country.name"));
+        columns.add(new PropertyColumn<Stock, StockOrderEnum>(new ResourceModel("region"),
+                StockOrderEnum.REGION_NAME, "bottle.wine.appellation.region.name"));
+        columns.add(new PropertyColumn<Stock, StockOrderEnum>(new ResourceModel("appellation"),
+                StockOrderEnum.APPELLATION_NAME, "bottle.wine.appellation.name"));
+        columns.add(new PropertyColumn<Stock, StockOrderEnum>(new ResourceModel("producer"),
+                StockOrderEnum.PRODUCER_NAME, "bottle.wine.producer.name"));
+        columns.add(new PropertyColumn<Stock, StockOrderEnum>(new ResourceModel("wine"),
+                StockOrderEnum.WINE_NAME, "bottle.wine.name"));
+        columns.add(new PropertyColumn<Stock, StockOrderEnum>(new ResourceModel("type"),
+                StockOrderEnum.TYPE, "bottle.wine.type"));
+        columns.add(new PropertyColumn<Stock, StockOrderEnum>(new ResourceModel("color"),
+                StockOrderEnum.COLOR, "bottle.wine.color"));
+        columns.add(new PropertyColumn<Stock, StockOrderEnum>(new ResourceModel("vintage"),
+                StockOrderEnum.WINE_VINTAGE, "bottle.wine.vintage") {
             private static final long serialVersionUID = 201111301732L;
 
             @Override
@@ -65,10 +65,10 @@ public class StockDataView extends AdvancedTable<Stock> {
             }
 
         });
-        columns.add(new PropertyColumn<Stock>(new ResourceModel("format"),
-                StockOrderEnum.FORMAT_NAME.name(), "bottle.format.name"));
-        columns.add(new PropertyColumn<Stock>(new ResourceModel("quantityAbrev"),
-                StockOrderEnum.QUANTITY.name(), "quantity") {
+        columns.add(new PropertyColumn<Stock, StockOrderEnum>(new ResourceModel("format"),
+                StockOrderEnum.FORMAT_NAME, "bottle.format.name"));
+        columns.add(new PropertyColumn<Stock, StockOrderEnum>(new ResourceModel("quantityAbrev"),
+                StockOrderEnum.QUANTITY, "quantity") {
             private static final long serialVersionUID = 201111301732L;
 
             @Override

@@ -29,24 +29,24 @@ import org.apache.wicket.model.ResourceModel;
 import fr.peralta.mycellar.domain.shared.repository.SearchForm;
 import fr.peralta.mycellar.domain.stock.CellarShare;
 import fr.peralta.mycellar.domain.stock.repository.CellarShareOrderEnum;
-import fr.peralta.mycellar.interfaces.client.web.components.shared.data.AdvancedTable;
 import fr.peralta.mycellar.interfaces.client.web.components.shared.data.ActionsColumn;
+import fr.peralta.mycellar.interfaces.client.web.components.shared.data.AdvancedTable;
 
 /**
  * @author speralta
  * 
  */
-public class CellarShareDataView extends AdvancedTable<CellarShare> {
+public class CellarShareDataView extends AdvancedTable<CellarShare, CellarShareOrderEnum> {
 
     private static final long serialVersionUID = 201109192009L;
 
-    private static List<IColumn<CellarShare>> getNewColumns() {
-        List<IColumn<CellarShare>> columns = new ArrayList<IColumn<CellarShare>>();
-        columns.add(new PropertyColumn<CellarShare>(new ResourceModel("email"),
-                CellarShareOrderEnum.EMAIL.name(), "email"));
-        columns.add(new PropertyColumn<CellarShare>(new ResourceModel("accessRight"),
-                CellarShareOrderEnum.ACCESS_RIGHT.name(), "accessRight"));
-        columns.add(new ActionsColumn<CellarShare>());
+    private static List<IColumn<CellarShare, CellarShareOrderEnum>> getNewColumns() {
+        List<IColumn<CellarShare, CellarShareOrderEnum>> columns = new ArrayList<IColumn<CellarShare, CellarShareOrderEnum>>();
+        columns.add(new PropertyColumn<CellarShare, CellarShareOrderEnum>(
+                new ResourceModel("email"), CellarShareOrderEnum.EMAIL, "email"));
+        columns.add(new PropertyColumn<CellarShare, CellarShareOrderEnum>(new ResourceModel(
+                "accessRight"), CellarShareOrderEnum.ACCESS_RIGHT, "accessRight"));
+        columns.add(new ActionsColumn<CellarShare, CellarShareOrderEnum>());
         return columns;
     }
 

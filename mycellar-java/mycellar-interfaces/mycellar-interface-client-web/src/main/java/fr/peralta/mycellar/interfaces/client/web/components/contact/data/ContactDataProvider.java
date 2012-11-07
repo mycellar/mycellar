@@ -57,7 +57,7 @@ public class ContactDataProvider extends
      * {@inheritDoc}
      */
     @Override
-    public Iterator<? extends Contact> iterator(int first, int count) {
+    public Iterator<? extends Contact> iterator(long first, long count) {
         return contactServiceFacade.getContacts(getState().getOrders(), first, count).iterator();
     }
 
@@ -65,8 +65,8 @@ public class ContactDataProvider extends
      * {@inheritDoc}
      */
     @Override
-    public int size() {
-        return (int) contactServiceFacade.countContacts();
+    public long size() {
+        return contactServiceFacade.countContacts();
     }
 
     /**

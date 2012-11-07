@@ -56,14 +56,14 @@ public abstract class JpaEntityRepository<E extends IdentifiedEntity, OE, O exte
      * {@inheritDoc}
      */
     @Override
-    public final List<E> getAll(O orders, int first, int count) {
+    public final List<E> getAll(O orders, long first, long count) {
         CriteriaBuilder criteriaBuilder = getEntityManager().getCriteriaBuilder();
         CriteriaQuery<E> query = criteriaBuilder.createQuery(getEntityClass());
         Root<E> root = query.from(getEntityClass());
         query = query.select(root);
         return getEntityManager()
                 .createQuery(orderBy(query, root, orders, criteriaBuilder, JoinType.INNER))
-                .setFirstResult(first).setMaxResults(count).getResultList();
+                .setFirstResult((int) first).setMaxResults((int) count).getResultList();
     }
 
     // To override

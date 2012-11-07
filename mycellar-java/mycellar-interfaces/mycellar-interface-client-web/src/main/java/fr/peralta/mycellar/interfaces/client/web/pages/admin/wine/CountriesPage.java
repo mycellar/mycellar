@@ -68,10 +68,10 @@ public class CountriesPage extends AbstractListPage<Country, CountryOrderEnum, C
      * {@inheritDoc}
      */
     @Override
-    protected List<IColumn<Country>> getColumns() {
-        List<IColumn<Country>> columns = new ArrayList<IColumn<Country>>();
-        columns.add(new PropertyColumn<Country>(new ResourceModel("name"), CountryOrderEnum.NAME
-                .name(), "name"));
+    protected List<IColumn<Country, CountryOrderEnum>> getColumns() {
+        List<IColumn<Country, CountryOrderEnum>> columns = new ArrayList<IColumn<Country, CountryOrderEnum>>();
+        columns.add(new PropertyColumn<Country, CountryOrderEnum>(new ResourceModel("name"),
+                CountryOrderEnum.NAME, "name"));
         return columns;
     }
 

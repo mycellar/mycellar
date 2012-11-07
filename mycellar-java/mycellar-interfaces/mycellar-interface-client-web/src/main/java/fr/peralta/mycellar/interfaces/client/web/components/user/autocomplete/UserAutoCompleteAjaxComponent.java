@@ -16,40 +16,39 @@
  * You should have received a copy of the GNU General Public License
  * along with MyCellar. If not, see <http://www.gnu.org/licenses/>.
  */
-package fr.peralta.mycellar.interfaces.client.web.components.wine.autocomplete;
+package fr.peralta.mycellar.interfaces.client.web.components.user.autocomplete;
 
-import java.util.Iterator;
+import java.util.List;
 
-import org.apache.wicket.injection.Injector;
 import org.apache.wicket.spring.injection.annot.SpringBean;
-import org.wicketstuff.objectautocomplete.AutoCompletionChoicesProvider;
 
-import fr.peralta.mycellar.domain.wine.Producer;
-import fr.peralta.mycellar.interfaces.facades.wine.WineServiceFacade;
+import fr.peralta.mycellar.domain.user.User;
+import fr.peralta.mycellar.interfaces.client.web.components.shared.autocomplete.AbstractAutoCompleteAjaxComponent;
+import fr.peralta.mycellar.interfaces.facades.user.UserServiceFacade;
 
 /**
  * @author speralta
  */
-public class ProducerAutoCompleteProvider implements AutoCompletionChoicesProvider<Producer> {
+public class UserAutoCompleteAjaxComponent extends AbstractAutoCompleteAjaxComponent<User> {
 
-    private static final long serialVersionUID = 201203161859L;
+    private static final long serialVersionUID = 201107252130L;
 
     @SpringBean
-    private WineServiceFacade wineServiceFacade;
+    private UserServiceFacade userServiceFacade;
 
     /**
-     * Default constructor.
+     * @param id
      */
-    public ProducerAutoCompleteProvider() {
-        Injector.get().inject(this);
+    public UserAutoCompleteAjaxComponent(String id) {
+        super(id);
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public Iterator<Producer> getChoices(String input) {
-        return wineServiceFacade.getProducersLike(input).iterator();
+    public List<User> getValues(String term) {
+        return userServiceFacade.getUsersLike(term);
     }
 
 }

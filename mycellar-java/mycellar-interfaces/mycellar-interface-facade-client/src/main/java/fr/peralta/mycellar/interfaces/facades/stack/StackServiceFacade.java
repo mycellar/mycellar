@@ -49,7 +49,7 @@ public interface StackServiceFacade {
      * @param count
      * @return
      */
-    List<Stack> getStacks(StackOrder orders, int first, int count);
+    List<Stack> getStacks(StackOrder orders, long first, long count);
 
     /**
      * @param stackId

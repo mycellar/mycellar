@@ -40,33 +40,33 @@ import fr.peralta.mycellar.interfaces.client.web.components.shared.data.Advanced
  * @author speralta
  * 
  */
-public class MovementDataView extends AdvancedTable<Movement> {
+public class MovementDataView extends AdvancedTable<Movement, MovementOrderEnum> {
 
     private static final long serialVersionUID = 201109192009L;
 
-    private static List<IColumn<Movement>> getNewColumns() {
-        List<IColumn<Movement>> columns = new ArrayList<IColumn<Movement>>();
-        columns.add(new PropertyColumn<Movement>(new ResourceModel("date"), MovementOrderEnum.DATE
-                .name(), "date"));
-        columns.add(new PropertyColumn<Movement>(new ResourceModel("cellar"),
-                MovementOrderEnum.CELLAR_NAME.name(), "cellar.name"));
-        columns.add(new PropertyColumn<Movement>(new ResourceModel("country"),
-                MovementOrderEnum.COUNTRY_NAME.name(),
-                "bottle.wine.appellation.region.country.name"));
-        columns.add(new PropertyColumn<Movement>(new ResourceModel("region"),
-                MovementOrderEnum.REGION_NAME.name(), "bottle.wine.appellation.region.name"));
-        columns.add(new PropertyColumn<Movement>(new ResourceModel("appellation"),
-                MovementOrderEnum.APPELLATION_NAME.name(), "bottle.wine.appellation.name"));
-        columns.add(new PropertyColumn<Movement>(new ResourceModel("producer"),
-                MovementOrderEnum.PRODUCER_NAME.name(), "bottle.wine.producer.name"));
-        columns.add(new PropertyColumn<Movement>(new ResourceModel("wine"),
-                MovementOrderEnum.WINE_NAME.name(), "bottle.wine.name"));
-        columns.add(new PropertyColumn<Movement>(new ResourceModel("type"), MovementOrderEnum.TYPE
-                .name(), "bottle.wine.type"));
-        columns.add(new PropertyColumn<Movement>(new ResourceModel("color"),
-                MovementOrderEnum.COLOR.name(), "bottle.wine.color"));
-        columns.add(new PropertyColumn<Movement>(new ResourceModel("vintage"),
-                MovementOrderEnum.WINE_VINTAGE.name(), "bottle.wine.vintage") {
+    private static List<IColumn<Movement, MovementOrderEnum>> getNewColumns() {
+        List<IColumn<Movement, MovementOrderEnum>> columns = new ArrayList<IColumn<Movement, MovementOrderEnum>>();
+        columns.add(new PropertyColumn<Movement, MovementOrderEnum>(new ResourceModel("date"),
+                MovementOrderEnum.DATE, "date"));
+        columns.add(new PropertyColumn<Movement, MovementOrderEnum>(new ResourceModel("cellar"),
+                MovementOrderEnum.CELLAR_NAME, "cellar.name"));
+        columns.add(new PropertyColumn<Movement, MovementOrderEnum>(new ResourceModel("country"),
+                MovementOrderEnum.COUNTRY_NAME, "bottle.wine.appellation.region.country.name"));
+        columns.add(new PropertyColumn<Movement, MovementOrderEnum>(new ResourceModel("region"),
+                MovementOrderEnum.REGION_NAME, "bottle.wine.appellation.region.name"));
+        columns.add(new PropertyColumn<Movement, MovementOrderEnum>(
+                new ResourceModel("appellation"), MovementOrderEnum.APPELLATION_NAME,
+                "bottle.wine.appellation.name"));
+        columns.add(new PropertyColumn<Movement, MovementOrderEnum>(new ResourceModel("producer"),
+                MovementOrderEnum.PRODUCER_NAME, "bottle.wine.producer.name"));
+        columns.add(new PropertyColumn<Movement, MovementOrderEnum>(new ResourceModel("wine"),
+                MovementOrderEnum.WINE_NAME, "bottle.wine.name"));
+        columns.add(new PropertyColumn<Movement, MovementOrderEnum>(new ResourceModel("type"),
+                MovementOrderEnum.TYPE, "bottle.wine.type"));
+        columns.add(new PropertyColumn<Movement, MovementOrderEnum>(new ResourceModel("color"),
+                MovementOrderEnum.COLOR, "bottle.wine.color"));
+        columns.add(new PropertyColumn<Movement, MovementOrderEnum>(new ResourceModel("vintage"),
+                MovementOrderEnum.WINE_VINTAGE, "bottle.wine.vintage") {
             private static final long serialVersionUID = 201111301732L;
 
             @Override
@@ -75,10 +75,10 @@ public class MovementDataView extends AdvancedTable<Movement> {
             }
 
         });
-        columns.add(new PropertyColumn<Movement>(new ResourceModel("format"),
-                MovementOrderEnum.FORMAT_NAME.name(), "bottle.format.name"));
-        columns.add(new PropertyColumn<Movement>(new ResourceModel("numberAbrev"),
-                MovementOrderEnum.NUMBER.name(), "number") {
+        columns.add(new PropertyColumn<Movement, MovementOrderEnum>(new ResourceModel("format"),
+                MovementOrderEnum.FORMAT_NAME, "bottle.format.name"));
+        columns.add(new PropertyColumn<Movement, MovementOrderEnum>(
+                new ResourceModel("numberAbrev"), MovementOrderEnum.NUMBER, "number") {
             private static final long serialVersionUID = 201111301732L;
 
             @Override
@@ -87,7 +87,7 @@ public class MovementDataView extends AdvancedTable<Movement> {
             }
 
         });
-        columns.add(new AbstractColumn<Movement>(new ResourceModel("io")) {
+        columns.add(new AbstractColumn<Movement, MovementOrderEnum>(new ResourceModel("io")) {
             private static final long serialVersionUID = 201111290925L;
 
             @Override

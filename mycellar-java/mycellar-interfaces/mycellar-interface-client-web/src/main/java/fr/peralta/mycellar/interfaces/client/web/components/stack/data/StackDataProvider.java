@@ -55,7 +55,7 @@ public class StackDataProvider extends
      * {@inheritDoc}
      */
     @Override
-    public Iterator<? extends Stack> iterator(int first, int count) {
+    public Iterator<? extends Stack> iterator(long first, long count) {
         return stackServiceFacade.getStacks(getState().getOrders(), first, count).iterator();
     }
 
@@ -63,8 +63,8 @@ public class StackDataProvider extends
      * {@inheritDoc}
      */
     @Override
-    public int size() {
-        return (int) stackServiceFacade.countStacks();
+    public long size() {
+        return stackServiceFacade.countStacks();
     }
 
     /**

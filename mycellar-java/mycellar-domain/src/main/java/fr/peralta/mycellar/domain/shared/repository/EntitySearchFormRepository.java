@@ -42,7 +42,7 @@ public interface EntitySearchFormRepository<E extends IdentifiedEntity, OE, O ex
      * @param count
      * @return
      */
-    List<E> getAll(SearchForm searchForm, O orders, int first, int count);
+    List<E> getAll(SearchForm searchForm, O orders, long first, long count);
 
     /**
      * @param searchForm

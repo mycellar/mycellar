@@ -67,14 +67,14 @@ public class BookingEventsPage extends
      * {@inheritDoc}
      */
     @Override
-    protected List<IColumn<BookingEvent>> getColumns() {
-        List<IColumn<BookingEvent>> columns = new ArrayList<IColumn<BookingEvent>>();
-        columns.add(new PropertyColumn<BookingEvent>(new ResourceModel("name"),
-                BookingEventOrderEnum.NAME.name(), "name"));
-        columns.add(new PropertyColumn<BookingEvent>(new ResourceModel("start"),
-                BookingEventOrderEnum.START.name(), "start"));
-        columns.add(new PropertyColumn<BookingEvent>(new ResourceModel("end"),
-                BookingEventOrderEnum.END.name(), "end"));
+    protected List<IColumn<BookingEvent, BookingEventOrderEnum>> getColumns() {
+        List<IColumn<BookingEvent, BookingEventOrderEnum>> columns = new ArrayList<IColumn<BookingEvent, BookingEventOrderEnum>>();
+        columns.add(new PropertyColumn<BookingEvent, BookingEventOrderEnum>(new ResourceModel(
+                "name"), BookingEventOrderEnum.NAME, "name"));
+        columns.add(new PropertyColumn<BookingEvent, BookingEventOrderEnum>(new ResourceModel(
+                "start"), BookingEventOrderEnum.START, "start"));
+        columns.add(new PropertyColumn<BookingEvent, BookingEventOrderEnum>(
+                new ResourceModel("end"), BookingEventOrderEnum.END, "end"));
         return columns;
     }
 

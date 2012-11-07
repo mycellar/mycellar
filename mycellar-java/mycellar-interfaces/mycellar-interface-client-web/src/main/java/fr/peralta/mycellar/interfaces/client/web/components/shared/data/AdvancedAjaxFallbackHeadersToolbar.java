@@ -27,7 +27,7 @@ import org.apache.wicket.markup.html.WebMarkupContainer;
 /**
  * @author speralta
  */
-public class AdvancedAjaxFallbackHeadersToolbar extends AjaxFallbackHeadersToolbar {
+public class AdvancedAjaxFallbackHeadersToolbar<S> extends AjaxFallbackHeadersToolbar<S> {
 
     private static final long serialVersionUID = 201111280845L;
 
@@ -35,7 +35,8 @@ public class AdvancedAjaxFallbackHeadersToolbar extends AjaxFallbackHeadersToolb
      * @param table
      * @param stateLocator
      */
-    public AdvancedAjaxFallbackHeadersToolbar(DataTable<?> table, ISortStateLocator stateLocator) {
+    public AdvancedAjaxFallbackHeadersToolbar(DataTable<?, S> table,
+            ISortStateLocator<S> stateLocator) {
         super(table, stateLocator);
     }
 
@@ -43,10 +44,10 @@ public class AdvancedAjaxFallbackHeadersToolbar extends AjaxFallbackHeadersToolb
      * {@inheritDoc}
      */
     @Override
-    protected WebMarkupContainer newSortableHeader(String borderId, String property,
-            ISortStateLocator locator) {
-        return new AdvancedAjaxFallbackOrderByBorder(borderId, property, locator,
-                getAjaxCallDecorator()) {
+    protected WebMarkupContainer newSortableHeader(String borderId, S property,
+            ISortStateLocator<S> locator) {
+        return new AdvancedAjaxFallbackOrderByBorder<S>(borderId, property, locator,
+                getAjaxCallListener()) {
             private static final long serialVersionUID = 201111280847L;
 
             @Override

@@ -88,7 +88,7 @@ public class JpaContactRepository extends
      * {@inheritDoc}
      */
     @Override
-    public List<Contact> getLastContacts(ContactOrder orders, int first, int count) {
+    public List<Contact> getLastContacts(ContactOrder orders, long first, long count) {
         CriteriaBuilder criteriaBuilder = getEntityManager().getCriteriaBuilder();
         CriteriaQuery<Contact> query = criteriaBuilder.createQuery(Contact.class);
         Root<Contact> root = query.from(Contact.class);
@@ -104,24 +104,26 @@ public class JpaContactRepository extends
                 .createQuery(
                         orderBy(query.select(root).where(
                                 criteriaBuilder.not(criteriaBuilder.exists(subquery))), root,
-                                orders, criteriaBuilder, JoinType.LEFT)).setFirstResult(first)
-                .setMaxResults(count).getResultList();
+                                orders, criteriaBuilder, JoinType.LEFT))
+                .setFirstResult((int) first).setMaxResults((int) count).getResultList();
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public List<Contact> getAllForProducer(Producer producer, ContactOrder orders, int first,
-            int count) {
+    public List<Contact> getAllForProducer(Producer producer, ContactOrder orders, long first,
+            long count) {
         CriteriaBuilder criteriaBuilder = getEntityManager().getCriteriaBuilder();
         CriteriaQuery<Contact> query = criteriaBuilder.createQuery(Contact.class);
         Root<Contact> root = query.from(Contact.class);
 
-        return getEntityManager().createQuery(
-                orderBy(query.select(root).where(
-                        criteriaBuilder.equal(root.get("producer"), producer)), root, orders,
-                        criteriaBuilder, JoinType.LEFT)).getResultList();
+        return getEntityManager()
+                .createQuery(
+                        orderBy(query.select(root).where(
+                                criteriaBuilder.equal(root.get("producer"), producer)), root,
+                                orders, criteriaBuilder, JoinType.LEFT))
+                .setFirstResult((int) first).setMaxResults((int) count).getResultList();
     }
 
     /**

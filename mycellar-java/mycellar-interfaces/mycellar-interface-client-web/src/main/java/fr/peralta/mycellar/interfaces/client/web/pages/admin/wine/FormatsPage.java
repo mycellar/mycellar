@@ -68,12 +68,12 @@ public class FormatsPage extends AbstractListPage<Format, FormatOrderEnum, Forma
      * {@inheritDoc}
      */
     @Override
-    protected List<IColumn<Format>> getColumns() {
-        List<IColumn<Format>> columns = new ArrayList<IColumn<Format>>();
-        columns.add(new PropertyColumn<Format>(new ResourceModel("name"), FormatOrderEnum.NAME
-                .name(), "name"));
-        columns.add(new PropertyColumn<Format>(new ResourceModel("capacity"),
-                FormatOrderEnum.CAPACITY.name(), "capacity"));
+    protected List<IColumn<Format, FormatOrderEnum>> getColumns() {
+        List<IColumn<Format, FormatOrderEnum>> columns = new ArrayList<IColumn<Format, FormatOrderEnum>>();
+        columns.add(new PropertyColumn<Format, FormatOrderEnum>(new ResourceModel("name"),
+                FormatOrderEnum.NAME, "name"));
+        columns.add(new PropertyColumn<Format, FormatOrderEnum>(new ResourceModel("capacity"),
+                FormatOrderEnum.CAPACITY, "capacity"));
         return columns;
     }
 

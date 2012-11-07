@@ -82,7 +82,7 @@ public interface StockService {
      * @param count
      * @return
      */
-    List<Stock> getStocks(SearchForm searchForm, StockOrder orders, int first, int count);
+    List<Stock> getStocks(SearchForm searchForm, StockOrder orders, long first, long count);
 
     /**
      * @param searchForm

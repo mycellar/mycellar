@@ -20,7 +20,7 @@ package fr.peralta.mycellar.interfaces.client.web.components.shared.data;
 
 import org.apache.wicket.AttributeModifier;
 import org.apache.wicket.ajax.AjaxRequestTarget;
-import org.apache.wicket.ajax.IAjaxCallDecorator;
+import org.apache.wicket.ajax.attributes.IAjaxCallListener;
 import org.apache.wicket.extensions.ajax.markup.html.repeater.data.sort.AjaxFallbackOrderByLink;
 import org.apache.wicket.extensions.markup.html.repeater.data.sort.ISortStateLocator;
 import org.apache.wicket.extensions.markup.html.repeater.data.sort.SortOrder;
@@ -30,7 +30,7 @@ import org.apache.wicket.markup.html.border.Border;
 /**
  * @author speralta
  */
-public abstract class AdvancedAjaxFallbackOrderByBorder extends Border {
+public abstract class AdvancedAjaxFallbackOrderByBorder<S> extends Border {
 
     private static final long serialVersionUID = 201111280846L;
 
@@ -41,10 +41,9 @@ public abstract class AdvancedAjaxFallbackOrderByBorder extends Border {
      * @param property
      * @param stateLocator
      */
-    public AdvancedAjaxFallbackOrderByBorder(final String id, final String property,
-            final ISortStateLocator stateLocator) {
-        this(id, property, stateLocator, AjaxFallbackOrderByLink.DefaultCssProvider.getInstance(),
-                null);
+    public AdvancedAjaxFallbackOrderByBorder(final String id, final S property,
+            final ISortStateLocator<S> stateLocator) {
+        this(id, property, stateLocator, new AjaxFallbackOrderByLink.DefaultCssProvider<S>(), null);
     }
 
     /**
@@ -55,9 +54,9 @@ public abstract class AdvancedAjaxFallbackOrderByBorder extends Border {
      * @param stateLocator
      * @param cssProvider
      */
-    public AdvancedAjaxFallbackOrderByBorder(final String id, final String property,
-            final ISortStateLocator stateLocator,
-            final AjaxFallbackOrderByLink.ICssProvider cssProvider) {
+    public AdvancedAjaxFallbackOrderByBorder(final String id, final S property,
+            final ISortStateLocator<S> stateLocator,
+            final AjaxFallbackOrderByLink.ICssProvider<S> cssProvider) {
         this(id, property, stateLocator, cssProvider, null);
     }
 
@@ -69,9 +68,9 @@ public abstract class AdvancedAjaxFallbackOrderByBorder extends Border {
      * @param stateLocator
      * @param decorator
      */
-    public AdvancedAjaxFallbackOrderByBorder(final String id, final String property,
-            final ISortStateLocator stateLocator, final IAjaxCallDecorator decorator) {
-        this(id, property, stateLocator, AjaxFallbackOrderByLink.DefaultCssProvider.getInstance(),
+    public AdvancedAjaxFallbackOrderByBorder(final String id, final S property,
+            final ISortStateLocator<S> stateLocator, final IAjaxCallListener decorator) {
+        this(id, property, stateLocator, new AjaxFallbackOrderByLink.DefaultCssProvider<S>(),
                 decorator);
     }
 
@@ -84,12 +83,12 @@ public abstract class AdvancedAjaxFallbackOrderByBorder extends Border {
      * @param cssProvider
      * @param decorator
      */
-    public AdvancedAjaxFallbackOrderByBorder(final String id, final String property,
-            final ISortStateLocator stateLocator,
-            final AjaxFallbackOrderByLink.ICssProvider cssProvider,
-            final IAjaxCallDecorator decorator) {
+    public AdvancedAjaxFallbackOrderByBorder(final String id, final S property,
+            final ISortStateLocator<S> stateLocator,
+            final AjaxFallbackOrderByLink.ICssProvider<S> cssProvider,
+            final IAjaxCallListener decorator) {
         super(id);
-        AjaxFallbackOrderByLink link = new AjaxFallbackOrderByLink("orderByLink", property,
+        AjaxFallbackOrderByLink<S> link = new AjaxFallbackOrderByLink<S>("orderByLink", property,
                 stateLocator, cssProvider, decorator) {
             private static final long serialVersionUID = 201111280930L;
 

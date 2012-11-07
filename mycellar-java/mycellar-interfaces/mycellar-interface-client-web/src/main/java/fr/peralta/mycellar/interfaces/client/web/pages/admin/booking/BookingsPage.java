@@ -66,16 +66,16 @@ public class BookingsPage extends AbstractListPage<Booking, BookingOrderEnum, Bo
      * {@inheritDoc}
      */
     @Override
-    protected List<IColumn<Booking>> getColumns() {
-        List<IColumn<Booking>> columns = new ArrayList<IColumn<Booking>>();
-        columns.add(new PropertyColumn<Booking>(new ResourceModel("customer.email"),
-                BookingOrderEnum.CUSTOMER_EMAIL.name(), "customer.email"));
-        columns.add(new PropertyColumn<Booking>(new ResourceModel("bookingEvent.name"),
-                BookingOrderEnum.EVENT_NAME.name(), "bookingEvent.name"));
-        columns.add(new PropertyColumn<Booking>(new ResourceModel("bookingEvent.start"),
-                BookingOrderEnum.EVENT_START.name(), "bookingEvent.start"));
-        columns.add(new PropertyColumn<Booking>(new ResourceModel("bookingEvent.end"),
-                BookingOrderEnum.EVENT_END.name(), "bookingEvent.end"));
+    protected List<IColumn<Booking, BookingOrderEnum>> getColumns() {
+        List<IColumn<Booking, BookingOrderEnum>> columns = new ArrayList<IColumn<Booking, BookingOrderEnum>>();
+        columns.add(new PropertyColumn<Booking, BookingOrderEnum>(new ResourceModel(
+                "customer.email"), BookingOrderEnum.CUSTOMER_EMAIL, "customer.email"));
+        columns.add(new PropertyColumn<Booking, BookingOrderEnum>(new ResourceModel(
+                "bookingEvent.name"), BookingOrderEnum.EVENT_NAME, "bookingEvent.name"));
+        columns.add(new PropertyColumn<Booking, BookingOrderEnum>(new ResourceModel(
+                "bookingEvent.start"), BookingOrderEnum.EVENT_START, "bookingEvent.start"));
+        columns.add(new PropertyColumn<Booking, BookingOrderEnum>(new ResourceModel(
+                "bookingEvent.end"), BookingOrderEnum.EVENT_END, "bookingEvent.end"));
         return columns;
     }
 

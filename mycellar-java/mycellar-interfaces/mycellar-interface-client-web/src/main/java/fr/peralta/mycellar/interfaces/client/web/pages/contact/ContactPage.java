@@ -177,7 +177,7 @@ public class ContactPage extends BookingSuperPage {
          * {@inheritDoc}
          */
         @Override
-        public Iterator<? extends Contact> iterator(int first, int count) {
+        public Iterator<? extends Contact> iterator(long first, long count) {
             return contactServiceFacade.getContactsForProducer(producerModel.getObject(),
                     new ContactOrder().add(ContactOrderEnum.CURRENT_DATE, OrderWayEnum.DESC),
                     first, count).iterator();
@@ -187,10 +187,9 @@ public class ContactPage extends BookingSuperPage {
          * {@inheritDoc}
          */
         @Override
-        public int size() {
+        public long size() {
             if ((producerModel != null) && (producerModel.getObject() != null)) {
-                return (int) contactServiceFacade.countContactsForProducer(producerModel
-                        .getObject());
+                return contactServiceFacade.countContactsForProducer(producerModel.getObject());
             } else {
                 return 0;
             }
@@ -248,7 +247,7 @@ public class ContactPage extends BookingSuperPage {
         producerForm.add((addContactLink = new ActionLink("addContact", Action.ADD)));
         add((producerSimpleAutoComplete = new ProducerSimpleAutoComplete("newProducer",
                 new StringResourceModel("newProducer", null), new SearchFormModel(new SearchForm())))
-                .setVisibilityAllowed(producer == null));
+                .setVisibilityAllowed(producer == null).setDefaultModel(new Model<Producer>()));
         add((contactDataView = new ContactDataView("contact",
                 (contactDataProvider = new ContactDataProvider()).setProducer(producer)))
                 .setVisibilityAllowed(producer != null));

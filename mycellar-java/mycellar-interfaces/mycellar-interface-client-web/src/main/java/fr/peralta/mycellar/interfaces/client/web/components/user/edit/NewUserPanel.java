@@ -90,7 +90,8 @@ public class NewUserPanel extends Panel {
                     ((WaspSession) getSession()).login(ctx);
                     if (UserKey.getUserLoggedIn().getProfile() == null) {
                         setResponsePage(MyAccountPage.class);
-                    } else if (!getPage().continueToOriginalDestination()) {
+                    } else {
+                        getPage().continueToOriginalDestination();
                         setResponsePage(getPage().getClass());
                     }
                 } catch (LoginException e) {

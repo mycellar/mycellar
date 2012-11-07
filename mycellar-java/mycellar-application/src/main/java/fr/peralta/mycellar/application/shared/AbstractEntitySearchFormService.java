@@ -46,7 +46,7 @@ public abstract class AbstractEntitySearchFormService<E extends IdentifiedEntity
      * {@inheritDoc}
      */
     @Override
-    public final List<E> getAll(SearchForm searchForm, O orders, int first, int count) {
+    public final List<E> getAll(SearchForm searchForm, O orders, long first, long count) {
         return getRepository().getAll(searchForm, orders, first, count);
     }
 

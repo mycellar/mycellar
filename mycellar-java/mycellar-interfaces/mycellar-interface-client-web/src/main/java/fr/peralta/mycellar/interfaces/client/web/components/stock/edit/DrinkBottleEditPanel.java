@@ -24,7 +24,7 @@ import org.apache.wicket.markup.html.form.TextField;
 import org.apache.wicket.markup.html.panel.Panel;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.StringResourceModel;
-import org.apache.wicket.validation.validator.MinimumValidator;
+import org.apache.wicket.validation.validator.RangeValidator;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -59,7 +59,7 @@ public class DrinkBottleEditPanel extends Panel {
         this.searchFormModel = searchFormModel;
         add(new BottleSelectComponent("bottle", searchFormModel, CountEnum.STOCK_QUANTITY));
         add(new FormComponentFeedbackBorder("quantity").add(new TextField<Integer>("quantity")
-                .setRequired(true).add(new MinimumValidator<Integer>(1))));
+                .setRequired(true).add(RangeValidator.minimum(1))));
         add(cellarSimpleTagCloud = new CellarSimpleTagCloud("cellar", new StringResourceModel(
                 "cellar", this, null), searchFormModel, CountEnum.STOCK_QUANTITY));
     }

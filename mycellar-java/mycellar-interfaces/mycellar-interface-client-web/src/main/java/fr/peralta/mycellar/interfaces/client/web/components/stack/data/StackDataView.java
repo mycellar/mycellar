@@ -37,14 +37,15 @@ import fr.peralta.mycellar.interfaces.client.web.components.shared.data.Advanced
 /**
  * @author speralta
  */
-public class StackDataView extends AdvancedTable<Stack> {
+public class StackDataView extends AdvancedTable<Stack, StackOrderEnum> {
 
     private static final long serialVersionUID = 201111081449L;
 
-    private static List<IColumn<Stack>> getNewColumns() {
-        List<IColumn<Stack>> columns = new ArrayList<IColumn<Stack>>();
-        columns.add(new PropertyColumn<Stack>(new ResourceModel("hashCode"), "hashCode"));
-        columns.add(new AbstractColumn<Stack>(new ResourceModel("content")) {
+    private static List<IColumn<Stack, StackOrderEnum>> getNewColumns() {
+        List<IColumn<Stack, StackOrderEnum>> columns = new ArrayList<IColumn<Stack, StackOrderEnum>>();
+        columns.add(new PropertyColumn<Stack, StackOrderEnum>(new ResourceModel("hashCode"),
+                "hashCode"));
+        columns.add(new AbstractColumn<Stack, StackOrderEnum>(new ResourceModel("content")) {
             private static final long serialVersionUID = 201111290925L;
 
             @Override
@@ -54,9 +55,9 @@ public class StackDataView extends AdvancedTable<Stack> {
                         .substring(0, rowModel.getObject().getStack().indexOf("\n"))));
             }
         });
-        columns.add(new PropertyColumn<Stack>(new ResourceModel("count"), StackOrderEnum.COUNT
-                .name(), "count"));
-        columns.add(new AbstractColumn<Stack>(new ResourceModel("detail")) {
+        columns.add(new PropertyColumn<Stack, StackOrderEnum>(new ResourceModel("count"),
+                StackOrderEnum.COUNT, "count"));
+        columns.add(new AbstractColumn<Stack, StackOrderEnum>(new ResourceModel("detail")) {
             private static final long serialVersionUID = 201111290925L;
 
             @Override

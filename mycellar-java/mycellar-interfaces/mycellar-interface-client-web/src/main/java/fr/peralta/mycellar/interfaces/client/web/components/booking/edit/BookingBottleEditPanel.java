@@ -21,7 +21,7 @@ package fr.peralta.mycellar.interfaces.client.web.components.booking.edit;
 import org.apache.wicket.markup.html.form.TextField;
 import org.apache.wicket.markup.html.panel.Panel;
 import org.apache.wicket.model.IModel;
-import org.apache.wicket.validation.validator.MinimumValidator;
+import org.apache.wicket.validation.validator.RangeValidator;
 
 import fr.peralta.mycellar.domain.shared.repository.CountEnum;
 import fr.peralta.mycellar.domain.shared.repository.SearchForm;
@@ -45,7 +45,7 @@ public class BookingBottleEditPanel extends Panel {
         add(new FormComponentFeedbackBorder("max").add(new TextField<Integer>("max")
                 .setRequired(true)));
         add(new FormComponentFeedbackBorder("price").add(new TextField<Float>("price").setRequired(
-                true).add(new MinimumValidator<Float>(0f))));
+                true).add(RangeValidator.minimum(0f))));
         add(new FormComponentFeedbackBorder("url").add(new TextField<String>("url")
                 .setRequired(true)));
     }

@@ -19,8 +19,7 @@
 package fr.peralta.mycellar.interfaces.client.web.components.wine.autocomplete;
 
 import org.apache.wicket.model.IModel;
-import org.apache.wicket.spring.injection.annot.SpringBean;
-import org.wicketstuff.objectautocomplete.ObjectAutoCompleteBuilder;
+import org.odlabs.wiquery.ui.autocomplete.AutocompleteAjaxComponent;
 
 import fr.peralta.mycellar.domain.shared.repository.FilterEnum;
 import fr.peralta.mycellar.domain.shared.repository.SearchForm;
@@ -28,7 +27,6 @@ import fr.peralta.mycellar.domain.wine.Producer;
 import fr.peralta.mycellar.interfaces.client.web.components.shared.autocomplete.ComplexAutoComplete;
 import fr.peralta.mycellar.interfaces.client.web.components.shared.form.ObjectForm;
 import fr.peralta.mycellar.interfaces.client.web.components.wine.form.ProducerForm;
-import fr.peralta.mycellar.interfaces.facades.wine.WineServiceFacade;
 
 /**
  * @author speralta
@@ -36,9 +34,6 @@ import fr.peralta.mycellar.interfaces.facades.wine.WineServiceFacade;
 public class ProducerComplexAutoComplete extends ComplexAutoComplete<Producer> {
 
     private static final long serialVersionUID = 201107252130L;
-
-    @SpringBean
-    private WineServiceFacade wineServiceFacade;
 
     /**
      * @param id
@@ -54,16 +49,8 @@ public class ProducerComplexAutoComplete extends ComplexAutoComplete<Producer> {
      * {@inheritDoc}
      */
     @Override
-    protected ObjectAutoCompleteBuilder<Producer, Integer> createAutocomplete() {
-        return new ObjectAutoCompleteBuilder<Producer, Integer>(new ProducerAutoCompleteProvider());
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    protected Producer getObject(Integer id) {
-        return wineServiceFacade.getProducerById(id);
+    protected AutocompleteAjaxComponent<Producer> createAutocomplete(String id) {
+        return new ProducerAutoCompleteAjaxComponent(id);
     }
 
     /**

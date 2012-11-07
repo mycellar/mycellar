@@ -31,6 +31,7 @@ import fr.peralta.mycellar.domain.shared.repository.FilterEnum;
 import fr.peralta.mycellar.domain.shared.repository.SearchForm;
 import fr.peralta.mycellar.domain.stock.Cellar;
 import fr.peralta.mycellar.domain.stock.CellarShare;
+import fr.peralta.mycellar.domain.stock.repository.CellarShareOrderEnum;
 import fr.peralta.mycellar.interfaces.client.web.components.shared.Action;
 import fr.peralta.mycellar.interfaces.client.web.components.shared.ActionLink;
 import fr.peralta.mycellar.interfaces.client.web.components.shared.AjaxTool;
@@ -46,7 +47,7 @@ import fr.peralta.mycellar.interfaces.facades.stock.StockServiceFacade;
 /**
  * @author speralta
  */
-public class CellarShareTabPanel extends TabAdvancedTablePanel<CellarShare> {
+public class CellarShareTabPanel extends TabAdvancedTablePanel<CellarShare, CellarShareOrderEnum> {
 
     private static final long serialVersionUID = 201201241804L;
     private static final Logger logger = LoggerFactory.getLogger(CellarShareTabPanel.class);
@@ -85,7 +86,7 @@ public class CellarShareTabPanel extends TabAdvancedTablePanel<CellarShare> {
      * {@inheritDoc}
      */
     @Override
-    protected AdvancedTable<CellarShare> createAdvancedTable(String tableId) {
+    protected AdvancedTable<CellarShare, CellarShareOrderEnum> createAdvancedTable(String tableId) {
         return new CellarShareDataView(tableId, new SearchFormModel(new SearchForm().addToSet(
                 FilterEnum.CELLAR, getModelObject())));
     }

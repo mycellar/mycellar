@@ -19,25 +19,19 @@
 package fr.peralta.mycellar.interfaces.client.web.components.user.autocomplete;
 
 import org.apache.wicket.model.IModel;
-import org.apache.wicket.spring.injection.annot.SpringBean;
-import org.wicketstuff.objectautocomplete.ObjectAutoCompleteBuilder;
+import org.odlabs.wiquery.ui.autocomplete.AutocompleteAjaxComponent;
 
 import fr.peralta.mycellar.domain.shared.repository.FilterEnum;
 import fr.peralta.mycellar.domain.shared.repository.SearchForm;
 import fr.peralta.mycellar.domain.user.User;
 import fr.peralta.mycellar.interfaces.client.web.components.shared.autocomplete.SimpleAutoComplete;
-import fr.peralta.mycellar.interfaces.facades.user.UserServiceFacade;
 
 /**
  * @author speralta
- * 
  */
 public class UserSimpleAutoComplete extends SimpleAutoComplete<User> {
 
     private static final long serialVersionUID = 201205221854L;
-
-    @SpringBean
-    private UserServiceFacade userServiceFacade;
 
     /**
      * @param id
@@ -53,16 +47,8 @@ public class UserSimpleAutoComplete extends SimpleAutoComplete<User> {
      * {@inheritDoc}
      */
     @Override
-    protected ObjectAutoCompleteBuilder<User, Integer> createAutocomplete() {
-        return new ObjectAutoCompleteBuilder<User, Integer>(new UserAutoCompleteProvider());
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    protected User getObject(Integer id) {
-        return userServiceFacade.getUserById(id);
+    protected AutocompleteAjaxComponent<User> createAutocomplete(String id) {
+        return new UserAutoCompleteAjaxComponent(id);
     }
 
     /**

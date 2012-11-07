@@ -69,14 +69,14 @@ public class AppellationsPage extends
      * {@inheritDoc}
      */
     @Override
-    protected List<IColumn<Appellation>> getColumns() {
-        List<IColumn<Appellation>> columns = new ArrayList<IColumn<Appellation>>();
-        columns.add(new PropertyColumn<Appellation>(new ResourceModel("country"),
-                AppellationOrderEnum.COUNTRY_NAME.name(), "region.country.name"));
-        columns.add(new PropertyColumn<Appellation>(new ResourceModel("region"),
-                AppellationOrderEnum.REGION_NAME.name(), "region.name"));
-        columns.add(new PropertyColumn<Appellation>(new ResourceModel("name"),
-                AppellationOrderEnum.NAME.name(), "name"));
+    protected List<IColumn<Appellation, AppellationOrderEnum>> getColumns() {
+        List<IColumn<Appellation, AppellationOrderEnum>> columns = new ArrayList<IColumn<Appellation, AppellationOrderEnum>>();
+        columns.add(new PropertyColumn<Appellation, AppellationOrderEnum>(new ResourceModel(
+                "country"), AppellationOrderEnum.COUNTRY_NAME, "region.country.name"));
+        columns.add(new PropertyColumn<Appellation, AppellationOrderEnum>(new ResourceModel(
+                "region"), AppellationOrderEnum.REGION_NAME, "region.name"));
+        columns.add(new PropertyColumn<Appellation, AppellationOrderEnum>(
+                new ResourceModel("name"), AppellationOrderEnum.NAME, "name"));
         return columns;
     }
 

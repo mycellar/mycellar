@@ -16,41 +16,36 @@
  * You should have received a copy of the GNU General Public License
  * along with MyCellar. If not, see <http://www.gnu.org/licenses/>.
  */
-package fr.peralta.mycellar.interfaces.client.web.components.shared.tab;
+package fr.peralta.mycellar.interfaces.client.web.resources.js;
 
-import org.apache.wicket.markup.html.panel.Panel;
-import org.apache.wicket.model.IModel;
+import java.util.Arrays;
 
-import fr.peralta.mycellar.interfaces.client.web.components.shared.data.AdvancedTable;
+import org.apache.wicket.markup.head.HeaderItem;
+import org.apache.wicket.markup.head.JavaScriptHeaderItem;
+import org.apache.wicket.request.resource.JavaScriptResourceReference;
 
 /**
  * @author speralta
  */
-public abstract class TabAdvancedTablePanel<O, S> extends Panel {
+public class BootstrapPluginsReference extends JavaScriptResourceReference {
 
-    private static final long serialVersionUID = 201201241756L;
+    private static final long serialVersionUID = 201211051629L;
 
     /**
-     * @param id
-     * @param model
+     * @param scope
+     * @param name
      */
-    public TabAdvancedTablePanel(String id, IModel<?> model) {
-        super(id, model);
+    public BootstrapPluginsReference(Class<?> scope, String name) {
+        super(scope, name);
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    protected void onInitialize() {
-        super.onInitialize();
-        add(createAdvancedTable("table"));
+    public Iterable<? extends HeaderItem> getDependencies() {
+        return Arrays.asList(JavaScriptHeaderItem.forReference(JavaScriptReferences
+                .getBootstrapJs()));
     }
-
-    /**
-     * @param searchForm
-     * @return
-     */
-    protected abstract AdvancedTable<O, S> createAdvancedTable(String tableId);
 
 }

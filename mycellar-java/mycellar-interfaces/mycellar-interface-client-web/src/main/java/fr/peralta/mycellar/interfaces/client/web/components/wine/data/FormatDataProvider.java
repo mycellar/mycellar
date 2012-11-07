@@ -67,7 +67,7 @@ public class FormatDataProvider extends
      * {@inheritDoc}
      */
     @Override
-    public Iterator<? extends Format> iterator(int first, int count) {
+    public Iterator<? extends Format> iterator(long first, long count) {
         return wineServiceFacade.getFormats(searchFormModel.getObject(), getState().getOrders(),
                 first, count).iterator();
     }
@@ -76,8 +76,8 @@ public class FormatDataProvider extends
      * {@inheritDoc}
      */
     @Override
-    public int size() {
-        return (int) wineServiceFacade.countFormats(searchFormModel.getObject());
+    public long size() {
+        return wineServiceFacade.countFormats(searchFormModel.getObject());
     }
 
     /**

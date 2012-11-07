@@ -16,47 +16,54 @@
  * You should have received a copy of the GNU General Public License
  * along with MyCellar. If not, see <http://www.gnu.org/licenses/>.
  */
-package fr.peralta.mycellar.interfaces.client.web.components.wine.autocomplete;
+package fr.peralta.mycellar.interfaces.client.web.components.shared.autocomplete;
 
+import org.apache.wicket.ajax.AjaxRequestTarget;
+import org.apache.wicket.event.Broadcast;
 import org.apache.wicket.model.IModel;
 import org.odlabs.wiquery.ui.autocomplete.AutocompleteAjaxComponent;
 
-import fr.peralta.mycellar.domain.shared.repository.FilterEnum;
-import fr.peralta.mycellar.domain.shared.repository.SearchForm;
-import fr.peralta.mycellar.domain.wine.Producer;
-import fr.peralta.mycellar.interfaces.client.web.components.shared.autocomplete.SimpleAutoComplete;
+import fr.peralta.mycellar.domain.shared.IdentifiedEntity;
+import fr.peralta.mycellar.interfaces.client.web.components.shared.Action;
 
 /**
  * @author speralta
  */
-public class ProducerSimpleAutoComplete extends SimpleAutoComplete<Producer> {
+public abstract class AbstractAutoCompleteAjaxComponent<E extends IdentifiedEntity> extends
+        AutocompleteAjaxComponent<E> {
 
     private static final long serialVersionUID = 201107252130L;
 
     /**
      * @param id
-     * @param label
-     * @param searchFormModel
      */
-    public ProducerSimpleAutoComplete(String id, IModel<String> label,
-            IModel<SearchForm> searchFormModel) {
-        super(id, label, searchFormModel);
+    public AbstractAutoCompleteAjaxComponent(String id) {
+        this(id, null);
+    }
+
+    /**
+     * @param id
+     * @param model
+     */
+    public AbstractAutoCompleteAjaxComponent(String id, IModel<E> model) {
+        super(id, model);
+        setChoiceRenderer(new EntityChoiceRenderer<E>());
+        setAutoUpdate(true);
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    protected AutocompleteAjaxComponent<Producer> createAutocomplete(String id) {
-        return new ProducerAutoCompleteAjaxComponent(id);
+    public E getValueOnSearchFail(String input) {
+        return null;
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    protected FilterEnum getFilterToReplace() {
-        return FilterEnum.PRODUCER;
+    protected void onUpdate(AjaxRequestTarget target) {
+        send(getParent(), Broadcast.BUBBLE, Action.SELECT);
     }
-
 }

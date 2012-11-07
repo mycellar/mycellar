@@ -54,7 +54,7 @@ public interface UserServiceFacade {
      * @param count
      * @return
      */
-    List<User> getUsers(UserOrder orders, int first, int count);
+    List<User> getUsers(UserOrder orders, long first, long count);
 
     /**
      * @param term

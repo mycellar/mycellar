@@ -24,12 +24,14 @@ import java.util.List;
 import org.apache.wicket.event.IEvent;
 import org.apache.wicket.extensions.markup.html.repeater.data.table.IColumn;
 import org.apache.wicket.extensions.markup.html.repeater.data.table.PropertyColumn;
+import org.apache.wicket.model.Model;
 import org.apache.wicket.model.StringResourceModel;
 import org.apache.wicket.request.mapper.parameter.PageParameters;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import fr.peralta.mycellar.domain.contact.Contact;
+import fr.peralta.mycellar.domain.contact.repository.ContactOrderEnum;
 import fr.peralta.mycellar.domain.shared.repository.SearchForm;
 import fr.peralta.mycellar.domain.wine.Producer;
 import fr.peralta.mycellar.interfaces.client.web.components.contact.data.LastContactsDataProvider;
@@ -53,14 +55,15 @@ public class ContactsPage extends BookingSuperPage {
     /**
      * @return
      */
-    private static List<IColumn<Contact>> getColumns() {
-        List<IColumn<Contact>> columns = new ArrayList<IColumn<Contact>>();
-        columns.add(new PropertyColumn<Contact>(new StringResourceModel("producer.name", null),
-                "producer.name"));
-        columns.add(new PropertyColumn<Contact>(new StringResourceModel("currentDate", null),
-                "current"));
-        columns.add(new PropertyColumn<Contact>(new StringResourceModel("nextDate", null), "next"));
-        columns.add(new ActionsColumn<Contact>(true, false, true));
+    private static List<IColumn<Contact, ContactOrderEnum>> getColumns() {
+        List<IColumn<Contact, ContactOrderEnum>> columns = new ArrayList<IColumn<Contact, ContactOrderEnum>>();
+        columns.add(new PropertyColumn<Contact, ContactOrderEnum>(new StringResourceModel(
+                "producer.name", null), "producer.name"));
+        columns.add(new PropertyColumn<Contact, ContactOrderEnum>(new StringResourceModel(
+                "currentDate", null), "current"));
+        columns.add(new PropertyColumn<Contact, ContactOrderEnum>(new StringResourceModel(
+                "nextDate", null), "next"));
+        columns.add(new ActionsColumn<Contact, ContactOrderEnum>(true, false, true));
         return columns;
     }
 
@@ -72,9 +75,11 @@ public class ContactsPage extends BookingSuperPage {
     public ContactsPage(PageParameters parameters) {
         super(parameters);
         setOutputMarkupId(true);
-        add(producerSimpleAutoComplete = new ProducerSimpleAutoComplete("producer",
-                new StringResourceModel("producer", null), new SearchFormModel(new SearchForm())));
-        add(new AdvancedTable<Contact>("contacts", getColumns(), new LastContactsDataProvider(), 30));
+        add((producerSimpleAutoComplete = new ProducerSimpleAutoComplete("producer",
+                new StringResourceModel("producer", null), new SearchFormModel(new SearchForm())))
+                .setDefaultModel(new Model<Producer>()));
+        add(new AdvancedTable<Contact, ContactOrderEnum>("contacts", getColumns(),
+                new LastContactsDataProvider(), 30));
     }
 
     /**

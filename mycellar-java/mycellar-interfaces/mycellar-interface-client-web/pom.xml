@@ -59,8 +59,8 @@
       <artifactId>wicketstuff-security-swarm</artifactId>
     </dependency>
     <dependency>
-      <groupId>org.wicketstuff</groupId>
-      <artifactId>wicketstuff-objectautocomplete</artifactId>
+      <groupId>org.odlabs.wiquery</groupId>
+      <artifactId>wiquery-jquery-ui</artifactId>
     </dependency>
     <dependency>
       <groupId>joda-time</groupId>

@@ -33,8 +33,8 @@ import fr.peralta.mycellar.domain.shared.repository.AbstractEntityOrder;
 import fr.peralta.mycellar.interfaces.client.web.components.shared.Action;
 import fr.peralta.mycellar.interfaces.client.web.components.shared.ActionLink;
 import fr.peralta.mycellar.interfaces.client.web.components.shared.AjaxTool;
-import fr.peralta.mycellar.interfaces.client.web.components.shared.data.AdvancedTable;
 import fr.peralta.mycellar.interfaces.client.web.components.shared.data.ActionsColumn;
+import fr.peralta.mycellar.interfaces.client.web.components.shared.data.AdvancedTable;
 import fr.peralta.mycellar.interfaces.client.web.components.shared.data.MultipleSortableDataProvider;
 import fr.peralta.mycellar.interfaces.client.web.components.shared.nav.NavPanel;
 import fr.peralta.mycellar.interfaces.client.web.pages.shared.AdminSuperPage;
@@ -55,7 +55,7 @@ public abstract class AbstractListPage<E extends IdentifiedEntity, OE, O extends
      */
     public AbstractListPage(PageParameters parameters) {
         super(parameters);
-        add(new AdvancedTable<E>("list", getColumnsPlusEdit(), getDataProvider(), 50));
+        add(new AdvancedTable<E, OE>("list", getColumnsPlusEdit(), getDataProvider(), 50));
     }
 
     /**
@@ -70,9 +70,9 @@ public abstract class AbstractListPage<E extends IdentifiedEntity, OE, O extends
     /**
      * @return
      */
-    private List<IColumn<E>> getColumnsPlusEdit() {
-        List<IColumn<E>> columns = new ArrayList<IColumn<E>>(getColumns());
-        columns.add(new ActionsColumn<E>());
+    private List<IColumn<E, OE>> getColumnsPlusEdit() {
+        List<IColumn<E, OE>> columns = new ArrayList<IColumn<E, OE>>(getColumns());
+        columns.add(new ActionsColumn<E, OE>());
         return columns;
     }
 
@@ -84,7 +84,7 @@ public abstract class AbstractListPage<E extends IdentifiedEntity, OE, O extends
     /**
      * @return
      */
-    protected abstract List<IColumn<E>> getColumns();
+    protected abstract List<IColumn<E, OE>> getColumns();
 
     /**
      * {@inheritDoc}

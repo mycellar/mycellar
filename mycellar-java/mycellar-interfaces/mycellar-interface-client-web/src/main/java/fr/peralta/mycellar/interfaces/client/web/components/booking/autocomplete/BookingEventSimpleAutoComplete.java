@@ -19,13 +19,11 @@
 package fr.peralta.mycellar.interfaces.client.web.components.booking.autocomplete;
 
 import org.apache.wicket.model.IModel;
-import org.apache.wicket.spring.injection.annot.SpringBean;
-import org.wicketstuff.objectautocomplete.ObjectAutoCompleteBuilder;
+import org.odlabs.wiquery.ui.autocomplete.AutocompleteAjaxComponent;
 
 import fr.peralta.mycellar.domain.booking.BookingEvent;
 import fr.peralta.mycellar.domain.shared.repository.FilterEnum;
 import fr.peralta.mycellar.interfaces.client.web.components.shared.autocomplete.SimpleAutoComplete;
-import fr.peralta.mycellar.interfaces.facades.booking.BookingServiceFacade;
 
 /**
  * @author speralta
@@ -33,9 +31,6 @@ import fr.peralta.mycellar.interfaces.facades.booking.BookingServiceFacade;
 public class BookingEventSimpleAutoComplete extends SimpleAutoComplete<BookingEvent> {
 
     private static final long serialVersionUID = 201205221854L;
-
-    @SpringBean
-    private BookingServiceFacade bookingServiceFacade;
 
     /**
      * @param id
@@ -50,17 +45,8 @@ public class BookingEventSimpleAutoComplete extends SimpleAutoComplete<BookingEv
      * {@inheritDoc}
      */
     @Override
-    protected ObjectAutoCompleteBuilder<BookingEvent, Integer> createAutocomplete() {
-        return new ObjectAutoCompleteBuilder<BookingEvent, Integer>(
-                new BookingEventAutoCompleteProvider());
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    protected BookingEvent getObject(Integer id) {
-        return bookingServiceFacade.getBookingEventById(id);
+    protected AutocompleteAjaxComponent<BookingEvent> createAutocomplete(String id) {
+        return new BookingEventAutoCompleteAjaxComponent(id);
     }
 
     /**

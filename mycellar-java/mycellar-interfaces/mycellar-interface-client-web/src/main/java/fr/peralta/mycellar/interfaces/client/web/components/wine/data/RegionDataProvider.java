@@ -68,7 +68,7 @@ public class RegionDataProvider extends
      * {@inheritDoc}
      */
     @Override
-    public Iterator<? extends Region> iterator(int first, int count) {
+    public Iterator<? extends Region> iterator(long first, long count) {
         return wineServiceFacade.getRegions(searchFormModel.getObject(), getState().getOrders(),
                 first, count).iterator();
     }
@@ -77,8 +77,8 @@ public class RegionDataProvider extends
      * {@inheritDoc}
      */
     @Override
-    public int size() {
-        return (int) wineServiceFacade.countRegions(searchFormModel.getObject());
+    public long size() {
+        return wineServiceFacade.countRegions(searchFormModel.getObject());
     }
 
     /**

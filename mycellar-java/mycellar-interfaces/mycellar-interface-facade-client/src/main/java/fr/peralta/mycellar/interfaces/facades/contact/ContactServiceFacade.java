@@ -58,7 +58,7 @@ public interface ContactServiceFacade {
      * @param count
      * @return
      */
-    List<Contact> getContacts(ContactOrder orders, int first, int count);
+    List<Contact> getContacts(ContactOrder orders, long first, long count);
 
     /**
      * @param orders
@@ -66,7 +66,7 @@ public interface ContactServiceFacade {
      * @param count
      * @return
      */
-    List<Contact> getLastContacts(ContactOrder orders, int first, int count);
+    List<Contact> getLastContacts(ContactOrder orders, long first, long count);
 
     /**
      * @param producer
@@ -75,8 +75,8 @@ public interface ContactServiceFacade {
      * @param count
      * @return
      */
-    List<Contact> getContactsForProducer(Producer producer, ContactOrder orders, int first,
-            int count);
+    List<Contact> getContactsForProducer(Producer producer, ContactOrder orders, long first,
+            long count);
 
     /**
      * @param contact

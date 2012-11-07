@@ -56,7 +56,7 @@ public class BookingEventDataProvider extends
      * {@inheritDoc}
      */
     @Override
-    public Iterator<? extends BookingEvent> iterator(int first, int count) {
+    public Iterator<? extends BookingEvent> iterator(long first, long count) {
         return bookingServiceFacade.getBookingEvents(getState().getOrders(), first, count)
                 .iterator();
     }
@@ -65,8 +65,8 @@ public class BookingEventDataProvider extends
      * {@inheritDoc}
      */
     @Override
-    public int size() {
-        return (int) bookingServiceFacade.countBookingEvents();
+    public long size() {
+        return bookingServiceFacade.countBookingEvents();
     }
 
     /**

@@ -19,27 +19,26 @@
 package fr.peralta.mycellar.interfaces.client.web.components.shared.autocomplete;
 
 import org.apache.wicket.injection.Injector;
+import org.apache.wicket.markup.html.form.IChoiceRenderer;
 import org.apache.wicket.spring.injection.annot.SpringBean;
-import org.wicketstuff.objectautocomplete.ObjectAutoCompleteRenderer;
 
 import fr.peralta.mycellar.domain.shared.IdentifiedEntity;
 import fr.peralta.mycellar.interfaces.client.web.renderers.RendererServiceFacade;
 
 /**
  * @author speralta
- * 
  */
-public class AutoCompleteRenderer<E extends IdentifiedEntity> extends ObjectAutoCompleteRenderer<E> {
+public class EntityChoiceRenderer<E extends IdentifiedEntity> implements IChoiceRenderer<E> {
 
-    private static final long serialVersionUID = 201203161917L;
+    private static final long serialVersionUID = 201107182142L;
 
     @SpringBean
-    RendererServiceFacade rendererServiceFacade;
+    private RendererServiceFacade rendererServiceFacade;
 
     /**
-     * Default constructor.
+     * Default Constructor.
      */
-    public AutoCompleteRenderer() {
+    public EntityChoiceRenderer() {
         Injector.get().inject(this);
     }
 
@@ -47,16 +46,21 @@ public class AutoCompleteRenderer<E extends IdentifiedEntity> extends ObjectAuto
      * {@inheritDoc}
      */
     @Override
-    protected String getIdValue(E object) {
-        return Integer.toString(object.getId());
+    public Object getDisplayValue(E object) {
+        return rendererServiceFacade.render(object);
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    protected String getTextValue(E object) {
-        return rendererServiceFacade.render(object);
+    public String getIdValue(E object, int index) {
+        Integer id = object.getId();
+        if (id != null) {
+            return Integer.toString(id);
+        } else {
+            return "IDX" + Integer.toString(index);
+        }
     }
 
 }

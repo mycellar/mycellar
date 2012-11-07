@@ -123,7 +123,6 @@ public abstract class MyCellarWebApplication extends SwarmWebApplication {
         mountResource("/css/master.css", CssReferences.getMasterCss());
         mountResource("/css/master-responsive.css", CssReferences.getMasterResponsiveCss());
         // Add mounts for js
-        mountResource("/js/jquery.min.js", JavaScriptReferences.getJqueryJs());
         mountResource("/js/bootstrap.min.js", JavaScriptReferences.getBootstrapJs());
         mountResource("/js/bootstrap-datepicker.js",
                 JavaScriptReferences.getBootstrapDatePickerJs());
