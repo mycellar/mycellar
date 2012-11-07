@@ -24,15 +24,12 @@ import org.apache.wicket.event.IEvent;
 import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.panel.Panel;
 import org.apache.wicket.model.ComponentPropertyModel;
-import org.apache.wicket.model.Model;
 import org.apache.wicket.model.StringResourceModel;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import fr.peralta.mycellar.domain.booking.Booking;
 import fr.peralta.mycellar.domain.booking.BookingBottle;
-import fr.peralta.mycellar.domain.booking.BookingEvent;
-import fr.peralta.mycellar.domain.user.User;
 import fr.peralta.mycellar.interfaces.client.web.components.booking.autocomplete.BookingEventSimpleAutoComplete;
 import fr.peralta.mycellar.interfaces.client.web.components.booking.set.QuantitiesView;
 import fr.peralta.mycellar.interfaces.client.web.components.shared.Action;
@@ -68,11 +65,9 @@ public class BookingEditPanel extends Panel {
     public BookingEditPanel(String id, boolean readonly) {
         super(id);
         add((userSimpleAutoComplete = new UserSimpleAutoComplete("customer",
-                new StringResourceModel("customer", null), null))
-                .setDefaultModel(new Model<User>()));
+                new StringResourceModel("customer", null), null)));
         add((bookingEventSimpleAutoComplete = new BookingEventSimpleAutoComplete("bookingEvent",
-                new StringResourceModel("bookingEvent", null)))
-                .setDefaultModel(new Model<BookingEvent>()));
+                new StringResourceModel("bookingEvent", null))));
         add(quantitiesView = new QuantitiesView("bookingEvent.bottles", readonly));
         add(new WebMarkupContainer("noBottles") {
             private static final long serialVersionUID = 201108082329L;
