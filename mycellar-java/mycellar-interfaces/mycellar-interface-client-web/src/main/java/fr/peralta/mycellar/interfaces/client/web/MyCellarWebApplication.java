@@ -112,6 +112,7 @@ public abstract class MyCellarWebApplication extends SwarmWebApplication {
         getResourceSettings().getStringResourceLoaders().add(
                 new ClassStringResourceLoader(HomePageDescriptor.class));
         // Add mounts for img
+        mountResource("/img/database.png", ImageReferences.getDatabaseImage());
         mountResource("/img/glyphicons-halflings.png", ImageReferences.getGlyphiconsImage());
         mountResource("/img/glyphicons-halflings-white.png",
                 ImageReferences.getGlyphiconsWhiteImage());
