@@ -16,29 +16,29 @@
  * You should have received a copy of the GNU General Public License
  * along with MyCellar. If not, see <http://www.gnu.org/licenses/>.
  */
-package fr.peralta.mycellar.interfaces.client.web.components.wine.autocomplete;
+package fr.peralta.mycellar.interfaces.client.web.components.user.autocomplete;
 
 import org.apache.wicket.model.IModel;
-import org.odlabs.wiquery.ui.autocomplete.AutocompleteAjaxComponent;
 
 import fr.peralta.mycellar.domain.shared.repository.FilterEnum;
 import fr.peralta.mycellar.domain.shared.repository.SearchForm;
-import fr.peralta.mycellar.domain.wine.Producer;
-import fr.peralta.mycellar.interfaces.client.web.components.shared.autocomplete.SimpleAutoComplete;
+import fr.peralta.mycellar.domain.user.User;
+import fr.peralta.mycellar.interfaces.client.web.components.shared.autocomplete.AbstractTypeaheadComponent;
+import fr.peralta.mycellar.interfaces.client.web.components.shared.autocomplete.SimpleTypeahead;
 
 /**
  * @author speralta
  */
-public class ProducerSimpleAutoComplete extends SimpleAutoComplete<Producer> {
+public class UserSimpleTypeahead extends SimpleTypeahead<User> {
 
-    private static final long serialVersionUID = 201107252130L;
+    private static final long serialVersionUID = 201205221854L;
 
     /**
      * @param id
      * @param label
      * @param searchFormModel
      */
-    public ProducerSimpleAutoComplete(String id, IModel<String> label,
+    public UserSimpleTypeahead(String id, IModel<String> label,
             IModel<SearchForm> searchFormModel) {
         super(id, label, searchFormModel);
     }
@@ -47,8 +47,8 @@ public class ProducerSimpleAutoComplete extends SimpleAutoComplete<Producer> {
      * {@inheritDoc}
      */
     @Override
-    protected AutocompleteAjaxComponent<Producer> createAutocomplete(String id) {
-        return new ProducerAutoCompleteAjaxComponent(id);
+    protected AbstractTypeaheadComponent<User> createAutocomplete(String id) {
+        return new UserTypeaheadComponent(id);
     }
 
     /**
@@ -56,7 +56,6 @@ public class ProducerSimpleAutoComplete extends SimpleAutoComplete<Producer> {
      */
     @Override
     protected FilterEnum getFilterToReplace() {
-        return FilterEnum.PRODUCER;
+        return FilterEnum.USER;
     }
-
 }

@@ -18,38 +18,43 @@
  */
 package fr.peralta.mycellar.interfaces.client.web.components.booking.autocomplete;
 
-import java.util.List;
-
-import org.apache.wicket.spring.injection.annot.SpringBean;
+import org.apache.wicket.model.IModel;
 
 import fr.peralta.mycellar.domain.booking.BookingEvent;
-import fr.peralta.mycellar.interfaces.client.web.components.shared.autocomplete.AbstractAutoCompleteAjaxComponent;
-import fr.peralta.mycellar.interfaces.facades.booking.BookingServiceFacade;
+import fr.peralta.mycellar.domain.shared.repository.FilterEnum;
+import fr.peralta.mycellar.interfaces.client.web.components.shared.autocomplete.AbstractTypeaheadComponent;
+import fr.peralta.mycellar.interfaces.client.web.components.shared.autocomplete.SimpleTypeahead;
 
 /**
  * @author speralta
  */
-public class BookingEventAutoCompleteAjaxComponent extends
-        AbstractAutoCompleteAjaxComponent<BookingEvent> {
+public class BookingEventSimpleTypeahead extends SimpleTypeahead<BookingEvent> {
 
-    private static final long serialVersionUID = 201210311650L;
-
-    @SpringBean
-    private BookingServiceFacade bookingServiceFacade;
+    private static final long serialVersionUID = 201205221854L;
 
     /**
      * @param id
+     * @param label
+     * @param searchFormModel
      */
-    public BookingEventAutoCompleteAjaxComponent(String id) {
-        super(id);
+    public BookingEventSimpleTypeahead(String id, IModel<String> label) {
+        super(id, label, null);
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public List<BookingEvent> getValues(String term) {
-        return bookingServiceFacade.getBookingEventsLike(term);
+    protected AbstractTypeaheadComponent<BookingEvent> createAutocomplete(String id) {
+        return new BookingEventTypeaheadComponent(id);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    protected FilterEnum getFilterToReplace() {
+        return null;
     }
 
 }

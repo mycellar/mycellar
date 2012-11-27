@@ -60,7 +60,7 @@ import fr.peralta.mycellar.interfaces.client.web.components.shared.ActionLink;
 import fr.peralta.mycellar.interfaces.client.web.components.shared.AjaxTool;
 import fr.peralta.mycellar.interfaces.client.web.components.shared.SearchFormModel;
 import fr.peralta.mycellar.interfaces.client.web.components.shared.feedback.FormComponentFeedbackInlineBorder;
-import fr.peralta.mycellar.interfaces.client.web.components.wine.autocomplete.ProducerSimpleAutoComplete;
+import fr.peralta.mycellar.interfaces.client.web.components.wine.autocomplete.ProducerSimpleTypeahead;
 import fr.peralta.mycellar.interfaces.client.web.pages.shared.BookingSuperPage;
 import fr.peralta.mycellar.interfaces.client.web.shared.FormValidationHelper;
 import fr.peralta.mycellar.interfaces.client.web.shared.LoggingHelper;
@@ -227,7 +227,7 @@ public class ContactPage extends BookingSuperPage {
     @SpringBean
     private ContactServiceFacade contactServiceFacade;
 
-    private ProducerSimpleAutoComplete producerSimpleAutoComplete;
+    private ProducerSimpleTypeahead producerSimpleTypeahead;
     private ProducerForm producerForm;
     private ActionLink addContactLink;
     private ContactDataView contactDataView;
@@ -245,7 +245,7 @@ public class ContactPage extends BookingSuperPage {
         add((producerForm = new ProducerForm("producer", new CompoundPropertyModel<Producer>(
                 producer))).setVisibilityAllowed(producer != null));
         producerForm.add((addContactLink = new ActionLink("addContact", Action.ADD)));
-        add((producerSimpleAutoComplete = new ProducerSimpleAutoComplete("newProducer",
+        add((producerSimpleTypeahead = new ProducerSimpleTypeahead("newProducer",
                 new StringResourceModel("newProducer", null), new SearchFormModel(new SearchForm())))
                 .setVisibilityAllowed(producer == null).setDefaultModel(new Model<Producer>()));
         add((contactDataView = new ContactDataView("contact",
@@ -281,11 +281,11 @@ public class ContactPage extends BookingSuperPage {
             Action action = (Action) event.getPayload();
             switch (action) {
             case MODEL_CHANGED:
-                if (event.getSource() == producerSimpleAutoComplete) {
-                    Producer producer = producerSimpleAutoComplete.getModelObject();
+                if (event.getSource() == producerSimpleTypeahead) {
+                    Producer producer = producerSimpleTypeahead.getModelObject();
                     producerForm.setDefaultModel(new CompoundPropertyModel<Producer>(producer));
                     producerForm.setVisibilityAllowed(producer != null);
-                    producerSimpleAutoComplete.setVisibilityAllowed(producer == null);
+                    producerSimpleTypeahead.setVisibilityAllowed(producer == null);
                     addContactLink.setVisibilityAllowed(producer != null);
                     contactDataView.setVisibilityAllowed(producer != null);
                     contactDataProvider.setProducer(producer);

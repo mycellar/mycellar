@@ -27,9 +27,6 @@ import org.apache.wicket.markup.html.form.TextField;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.util.convert.IConverter;
 import org.joda.time.LocalDate;
-import org.odlabs.wiquery.core.javascript.JsQuery;
-import org.odlabs.wiquery.core.javascript.JsStatement;
-import org.odlabs.wiquery.core.options.Options;
 
 import fr.peralta.mycellar.interfaces.client.web.converters.LocalDateConverter;
 import fr.peralta.mycellar.interfaces.client.web.resources.css.CssReferences;
@@ -46,8 +43,6 @@ import fr.peralta.mycellar.interfaces.client.web.resources.js.JavaScriptReferenc
 public class LocalDateTextField extends TextField<LocalDate> implements ITextFormatProvider {
 
     private static final long serialVersionUID = 201203071827L;
-
-    private final Options options;
 
     /**
      * The converter for the TextField
@@ -78,8 +73,6 @@ public class LocalDateTextField extends TextField<LocalDate> implements ITextFor
     public LocalDateTextField(final String id, final IModel<LocalDate> model) {
         super(id, model, LocalDate.class);
         converter = new LocalDateConverter();
-        options = new Options(this);
-        options.put("format", "dd/mm/yyyy").put("weekstart", 2);
     }
 
     /**
@@ -128,11 +121,8 @@ public class LocalDateTextField extends TextField<LocalDate> implements ITextFor
         response.render(CssHeaderItem.forReference(CssReferences.getBootstrapDatePickerCss()));
         response.render(JavaScriptHeaderItem.forReference(JavaScriptReferences
                 .getBootstrapDatePickerJs()));
-        response.render(OnDomReadyHeaderItem.forScript(statement().render()));
-    }
-
-    public JsStatement statement() {
-        return new JsQuery(this).$().chain("datepicker", options.getJavaScriptOptions());
+        response.render(OnDomReadyHeaderItem.forScript("$('#" + getMarkupId()
+                + "').datepicker({format: 'dd/mm/yyyy', weekstart: '2'});"));
     }
 
 }

@@ -39,9 +39,8 @@
     
     <!-- Versions -->
     <slf4j.version>1.7.1</slf4j.version>
-    <wicket.version>6.2.0</wicket.version>
-    <wicketstuff.version>6.0.0</wicketstuff.version>
-    <wiquery.version>6.0-SNAPSHOT</wiquery.version>
+    <wicket.version>6.3.0</wicket.version>
+    <wicketstuff.version>6.2.1</wicketstuff.version>
     <spring.version>3.1.2.RELEASE</spring.version>
     <hibernate.version>4.1.7.Final</hibernate.version>
   </properties>
@@ -308,32 +307,6 @@
           <exclusion>
             <groupId>org.apache.wicket</groupId>
             <artifactId>wicket-util</artifactId>
-          </exclusion>
-        </exclusions>
-      </dependency>
-      <dependency>
-        <groupId>org.odlabs.wiquery</groupId>
-        <artifactId>wiquery-core</artifactId>
-        <version>${wiquery.version}</version>
-        <exclusions>
-          <exclusion>
-            <groupId>org.apache.wicket</groupId>
-            <artifactId>wicket-core</artifactId>
-          </exclusion>
-          <exclusion>
-            <groupId>org.slf4j</groupId>
-            <artifactId>slf4j-log4j12</artifactId>
-          </exclusion>
-        </exclusions>
-      </dependency>
-      <dependency>
-        <groupId>org.odlabs.wiquery</groupId>
-        <artifactId>wiquery-jquery-ui</artifactId>
-        <version>${wiquery.version}</version>
-        <exclusions>
-          <exclusion>
-            <groupId>org.slf4j</groupId>
-            <artifactId>slf4j-log4j12</artifactId>
           </exclusion>
         </exclusions>
       </dependency>

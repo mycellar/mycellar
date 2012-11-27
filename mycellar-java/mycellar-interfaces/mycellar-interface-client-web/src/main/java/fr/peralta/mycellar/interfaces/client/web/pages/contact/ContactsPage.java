@@ -40,7 +40,7 @@ import fr.peralta.mycellar.interfaces.client.web.components.shared.ActionLink;
 import fr.peralta.mycellar.interfaces.client.web.components.shared.SearchFormModel;
 import fr.peralta.mycellar.interfaces.client.web.components.shared.data.ActionsColumn;
 import fr.peralta.mycellar.interfaces.client.web.components.shared.data.AdvancedTable;
-import fr.peralta.mycellar.interfaces.client.web.components.wine.autocomplete.ProducerSimpleAutoComplete;
+import fr.peralta.mycellar.interfaces.client.web.components.wine.autocomplete.ProducerSimpleTypeahead;
 import fr.peralta.mycellar.interfaces.client.web.pages.shared.BookingSuperPage;
 import fr.peralta.mycellar.interfaces.client.web.shared.LoggingHelper;
 
@@ -67,7 +67,7 @@ public class ContactsPage extends BookingSuperPage {
         return columns;
     }
 
-    private ProducerSimpleAutoComplete producerSimpleAutoComplete;
+    private ProducerSimpleTypeahead producerSimpleTypeahead;
 
     /**
      * @param parameters
@@ -75,7 +75,7 @@ public class ContactsPage extends BookingSuperPage {
     public ContactsPage(PageParameters parameters) {
         super(parameters);
         setOutputMarkupId(true);
-        add((producerSimpleAutoComplete = new ProducerSimpleAutoComplete("producer",
+        add((producerSimpleTypeahead = new ProducerSimpleTypeahead("producer",
                 new StringResourceModel("producer", null), new SearchFormModel(new SearchForm())))
                 .setDefaultModel(new Model<Producer>()));
         add(new AdvancedTable<Contact, ContactOrderEnum>("contacts", getColumns(),
@@ -108,9 +108,9 @@ public class ContactsPage extends BookingSuperPage {
                 }
                 break;
             case MODEL_CHANGED:
-                if (event.getSource() == producerSimpleAutoComplete) {
+                if (event.getSource() == producerSimpleTypeahead) {
                     setResponsePage(ContactPage.class,
-                            ContactPage.getPageParameters(producerSimpleAutoComplete
+                            ContactPage.getPageParameters(producerSimpleTypeahead
                                     .getModelObject()));
                     event.stop();
                 }

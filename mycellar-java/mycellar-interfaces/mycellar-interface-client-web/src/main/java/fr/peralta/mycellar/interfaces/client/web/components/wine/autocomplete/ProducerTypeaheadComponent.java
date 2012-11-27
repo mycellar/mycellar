@@ -23,13 +23,13 @@ import java.util.List;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 
 import fr.peralta.mycellar.domain.wine.Producer;
-import fr.peralta.mycellar.interfaces.client.web.components.shared.autocomplete.AbstractAutoCompleteAjaxComponent;
+import fr.peralta.mycellar.interfaces.client.web.components.shared.autocomplete.AbstractTypeaheadComponent;
 import fr.peralta.mycellar.interfaces.facades.wine.WineServiceFacade;
 
 /**
  * @author speralta
  */
-public class ProducerAutoCompleteAjaxComponent extends AbstractAutoCompleteAjaxComponent<Producer> {
+public class ProducerTypeaheadComponent extends AbstractTypeaheadComponent<Producer> {
 
     private static final long serialVersionUID = 201107252130L;
 
@@ -39,7 +39,7 @@ public class ProducerAutoCompleteAjaxComponent extends AbstractAutoCompleteAjaxC
     /**
      * @param id
      */
-    public ProducerAutoCompleteAjaxComponent(String id) {
+    public ProducerTypeaheadComponent(String id) {
         super(id);
     }
 
@@ -47,7 +47,7 @@ public class ProducerAutoCompleteAjaxComponent extends AbstractAutoCompleteAjaxC
      * {@inheritDoc}
      */
     @Override
-    public List<Producer> getValues(String term) {
+    public List<Producer> getChoices(String term) {
         return wineServiceFacade.getProducersLike(term);
     }
 }

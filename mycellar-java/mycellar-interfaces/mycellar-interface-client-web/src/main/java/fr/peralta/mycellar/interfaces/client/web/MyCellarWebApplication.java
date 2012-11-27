@@ -127,6 +127,8 @@ public abstract class MyCellarWebApplication extends SwarmWebApplication {
         mountResource("/js/bootstrap.min.js", JavaScriptReferences.getBootstrapJs());
         mountResource("/js/bootstrap-datepicker.js",
                 JavaScriptReferences.getBootstrapDatePickerJs());
+        mountResource("/js/bootstrap-typeaheadkey.js",
+                JavaScriptReferences.getBootstrapDatePickerJs());
         mountResource("/js/master.js", JavaScriptReferences.getMasterJs());
 
         // Add mounts for pages

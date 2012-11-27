@@ -23,19 +23,18 @@ import org.apache.wicket.event.IEvent;
 import org.apache.wicket.event.IEventSource;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.Model;
-import org.odlabs.wiquery.ui.autocomplete.AutocompleteAjaxComponent;
 
 import fr.peralta.mycellar.domain.shared.IdentifiedEntity;
 import fr.peralta.mycellar.domain.shared.repository.SearchForm;
-import fr.peralta.mycellar.interfaces.client.web.components.shared.SimpleComponent;
+import fr.peralta.mycellar.interfaces.client.web.components.shared.ComplexComponent;
 
 /**
  * @author speralta
  * 
  * @param <O>
  */
-public abstract class SimpleAutoComplete<O extends IdentifiedEntity> extends
-        SimpleComponent<O, AutocompleteAjaxComponent<O>> {
+public abstract class ComplexTypeahead<O extends IdentifiedEntity> extends
+        ComplexComponent<O, AbstractTypeaheadComponent<O>> {
 
     private static final long serialVersionUID = 201108082348L;
 
@@ -44,7 +43,7 @@ public abstract class SimpleAutoComplete<O extends IdentifiedEntity> extends
      * @param label
      * @param searchFormModel
      */
-    public SimpleAutoComplete(String id, IModel<String> label, IModel<SearchForm> searchFormModel) {
+    public ComplexTypeahead(String id, IModel<String> label, IModel<SearchForm> searchFormModel) {
         super(id, label, searchFormModel);
     }
 
@@ -52,14 +51,14 @@ public abstract class SimpleAutoComplete<O extends IdentifiedEntity> extends
      * @param id
      * @return
      */
-    protected abstract AutocompleteAjaxComponent<O> createAutocomplete(String id);
+    protected abstract AbstractTypeaheadComponent<O> createAutocomplete(String id);
 
     /**
      * {@inheritDoc}
      */
     @Override
-    protected final AutocompleteAjaxComponent<O> createSelectorComponent(String id) {
-        AutocompleteAjaxComponent<O> component = createAutocomplete(id);
+    protected final AbstractTypeaheadComponent<O> createSelectorComponent(String id) {
+        AbstractTypeaheadComponent<O> component = createAutocomplete(id);
         component.setModel(new Model<O>());
         return component;
     }

@@ -19,19 +19,19 @@
 package fr.peralta.mycellar.interfaces.client.web.components.wine.autocomplete;
 
 import org.apache.wicket.model.IModel;
-import org.odlabs.wiquery.ui.autocomplete.AutocompleteAjaxComponent;
 
 import fr.peralta.mycellar.domain.shared.repository.FilterEnum;
 import fr.peralta.mycellar.domain.shared.repository.SearchForm;
 import fr.peralta.mycellar.domain.wine.Producer;
-import fr.peralta.mycellar.interfaces.client.web.components.shared.autocomplete.ComplexAutoComplete;
+import fr.peralta.mycellar.interfaces.client.web.components.shared.autocomplete.AbstractTypeaheadComponent;
+import fr.peralta.mycellar.interfaces.client.web.components.shared.autocomplete.ComplexTypeahead;
 import fr.peralta.mycellar.interfaces.client.web.components.shared.form.ObjectForm;
 import fr.peralta.mycellar.interfaces.client.web.components.wine.form.ProducerForm;
 
 /**
  * @author speralta
  */
-public class ProducerComplexAutoComplete extends ComplexAutoComplete<Producer> {
+public class ProducerComplexTypeahead extends ComplexTypeahead<Producer> {
 
     private static final long serialVersionUID = 201107252130L;
 
@@ -40,7 +40,7 @@ public class ProducerComplexAutoComplete extends ComplexAutoComplete<Producer> {
      * @param label
      * @param searchFormModel
      */
-    public ProducerComplexAutoComplete(String id, IModel<String> label,
+    public ProducerComplexTypeahead(String id, IModel<String> label,
             IModel<SearchForm> searchFormModel) {
         super(id, label, searchFormModel);
     }
@@ -49,8 +49,8 @@ public class ProducerComplexAutoComplete extends ComplexAutoComplete<Producer> {
      * {@inheritDoc}
      */
     @Override
-    protected AutocompleteAjaxComponent<Producer> createAutocomplete(String id) {
-        return new ProducerAutoCompleteAjaxComponent(id);
+    protected AbstractTypeaheadComponent<Producer> createAutocomplete(String id) {
+        return new ProducerTypeaheadComponent(id);
     }
 
     /**

@@ -34,6 +34,11 @@ public class JavaScriptReferences {
         return new BootstrapPluginsReference(JavaScriptReferences.class, "bootstrap-datepicker.js");
     }
 
+    public static JavaScriptResourceReference getTypeaheadkeyJs() {
+        return new BootstrapPluginsReference(JavaScriptReferences.class,
+                "bootstrap-typeaheadkey.js");
+    }
+
     public static JavaScriptResourceReference getMasterJs() {
         return new BootstrapPluginsReference(JavaScriptReferences.class, "master.js");
     }
