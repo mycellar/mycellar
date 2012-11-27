@@ -53,7 +53,7 @@ public class Format extends NamedEntity {
 
     @Id
     @GeneratedValue(generator = "FORMAT_ID_GENERATOR")
-    @Column(name = "ID", nullable = false, unique = true)
+    @Column(name = "ID", nullable = false)
     private Integer id;
 
     @SuppressWarnings("unused")

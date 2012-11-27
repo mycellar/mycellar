@@ -86,7 +86,7 @@ public class Wine extends NamedEntity {
 
     @Id
     @GeneratedValue(generator = "WINE_ID_GENERATOR")
-    @Column(name = "ID", nullable = false, unique = true)
+    @Column(name = "ID", nullable = false)
     private Integer id;
 
     @Pattern(regexp = ValidationPattern.URL_PATTERN)

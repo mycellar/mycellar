@@ -54,7 +54,7 @@ import fr.peralta.mycellar.domain.wine.Wine;
 public class DdlExport {
     public static void main(String... args) {
         Configuration cfg = new Configuration();
-        cfg.setProperty("hibernate.dialect", "org.hibernate.dialect.MySQLDialect");
+        cfg.setProperty("hibernate.dialect", "org.hibernate.dialect.MySQL5InnoDBDialect");
         cfg.addAnnotatedClass(Image.class);
         cfg.addAnnotatedClass(Address.class);
         cfg.addAnnotatedClass(Map.class);

@@ -62,7 +62,7 @@ public abstract class Movement extends IdentifiedEntity {
 
     @Id
     @GeneratedValue(generator = "MOVEMENT_ID_GENERATOR")
-    @Column(name = "ID", nullable = false, unique = true)
+    @Column(name = "ID", nullable = false)
     private Integer id;
 
     @Column(name = "NUMBER")

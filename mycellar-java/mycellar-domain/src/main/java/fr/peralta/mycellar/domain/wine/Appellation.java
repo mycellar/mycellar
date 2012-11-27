@@ -58,7 +58,7 @@ public class Appellation extends NamedEntity {
 
     @Id
     @GeneratedValue(generator = "APPELLATION_ID_GENERATOR")
-    @Column(name = "ID", nullable = false, unique = true)
+    @Column(name = "ID", nullable = false)
     private Integer id;
 
     @Embedded

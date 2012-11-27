@@ -64,7 +64,7 @@ public class BookingEvent extends NamedEntity {
 
     @Id
     @GeneratedValue(generator = "BOOKING_EVENT_ID_GENERATOR")
-    @Column(name = "ID", nullable = false, unique = true)
+    @Column(name = "ID", nullable = false)
     private Integer id;
 
     @Valid

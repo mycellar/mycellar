@@ -56,7 +56,7 @@ public class Varietal extends NamedEntity {
 
     @Id
     @GeneratedValue(generator = "VARIETAL_ID_GENERATOR")
-    @Column(name = "ID", nullable = false, unique = true)
+    @Column(name = "ID", nullable = false)
     private Integer id;
 
     @Column(name = "SKIN")

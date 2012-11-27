@@ -57,7 +57,7 @@ public class Cellar extends NamedEntity {
 
     @Id
     @GeneratedValue(generator = "CELLAR_ID_GENERATOR")
-    @Column(name = "ID", nullable = false, unique = true)
+    @Column(name = "ID", nullable = false)
     private Integer id;
 
     @ManyToOne(cascade = { CascadeType.PERSIST, CascadeType.MERGE })

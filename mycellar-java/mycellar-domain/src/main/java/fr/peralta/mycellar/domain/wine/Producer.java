@@ -62,7 +62,7 @@ public class Producer extends NamedEntity {
 
     @Id
     @GeneratedValue(generator = "PRODUCER_ID_GENERATOR")
-    @Column(name = "ID", nullable = false, unique = true)
+    @Column(name = "ID", nullable = false)
     private Integer id;
 
     @Column(name = "PHONE")

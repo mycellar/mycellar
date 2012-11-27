@@ -49,7 +49,7 @@ public class CellarShare extends IdentifiedEntity {
 
     @Id
     @GeneratedValue(generator = "CELLAR_SHARE_ID_GENERATOR")
-    @Column(name = "ID", nullable = false, unique = true)
+    @Column(name = "ID", nullable = false)
     private Integer id;
 
     @Email

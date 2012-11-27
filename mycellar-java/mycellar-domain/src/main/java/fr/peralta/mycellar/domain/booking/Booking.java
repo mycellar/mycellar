@@ -53,7 +53,7 @@ public class Booking extends IdentifiedEntity {
 
     @Id
     @GeneratedValue(generator = "BOOKING_ID_GENERATOR")
-    @Column(name = "ID", nullable = false, unique = true)
+    @Column(name = "ID", nullable = false)
     private Integer id;
 
     @ManyToOne

@@ -43,7 +43,7 @@ public class Stack extends IdentifiedEntity {
 
     @Id
     @GeneratedValue(generator = "STACK_ID_GENERATOR")
-    @Column(name = "ID", nullable = false, unique = true)
+    @Column(name = "ID", nullable = false)
     private Integer id;
 
     @Lob
