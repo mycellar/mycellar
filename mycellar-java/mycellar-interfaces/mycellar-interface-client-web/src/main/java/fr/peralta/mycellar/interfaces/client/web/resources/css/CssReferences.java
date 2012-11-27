@@ -26,7 +26,7 @@ import org.apache.wicket.request.resource.CssResourceReference;
 public class CssReferences {
 
     public static CssResourceReference getBootstrapCss() {
-        return getCss("bootstrap.min.css");
+        return getCss("bootstrap.css");
     }
 
     public static CssResourceReference getBootstrapDatePickerCss() {
@@ -38,7 +38,7 @@ public class CssReferences {
     }
 
     public static CssResourceReference getBootstrapResponsiveCss() {
-        return getCss("bootstrap-responsive.min.css");
+        return getCss("bootstrap-responsive.css");
     }
 
     public static CssResourceReference getMasterResponsiveCss() {

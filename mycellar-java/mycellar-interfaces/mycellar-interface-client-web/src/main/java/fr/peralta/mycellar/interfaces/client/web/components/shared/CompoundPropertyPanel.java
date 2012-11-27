@@ -44,7 +44,12 @@ public class CompoundPropertyPanel<O> extends FormComponentPanel<O> {
     @SuppressWarnings("unchecked")
     @Override
     protected IModel<?> initModel() {
-        return new CompoundPropertyModel<O>((IModel<O>) super.initModel());
+        IModel<O> superModel = (IModel<O>) super.initModel();
+        if (superModel != null) {
+            return new CompoundPropertyModel<O>(superModel);
+        } else {
+            return null;
+        }
     }
 
     /**

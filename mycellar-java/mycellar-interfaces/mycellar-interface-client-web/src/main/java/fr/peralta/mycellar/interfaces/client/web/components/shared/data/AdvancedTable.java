@@ -28,7 +28,7 @@ import org.apache.wicket.markup.html.WebMarkupContainer;
 /**
  * @author speralta
  */
-public class AdvancedTable<T> extends DataTable<T> {
+public class AdvancedTable<T, S> extends DataTable<T, S> {
 
     private static final long serialVersionUID = 201111221939L;
 
@@ -38,15 +38,15 @@ public class AdvancedTable<T> extends DataTable<T> {
      * @param dataProvider
      * @param rowsPerPage
      */
-    public AdvancedTable(String id, List<IColumn<T>> columns,
-            ISortableDataProvider<T> dataProvider, int rowsPerPage) {
+    public AdvancedTable(String id, List<IColumn<T, S>> columns,
+            ISortableDataProvider<T, S> dataProvider, int rowsPerPage) {
         super(id, columns, dataProvider, rowsPerPage);
         setOutputMarkupId(true);
         setVersioned(false);
         addTopToolbar(new ImageAjaxNavigationToolbar(this));
-        addTopToolbar(new AdvancedAjaxFallbackHeadersToolbar(this, dataProvider));
+        addTopToolbar(new AdvancedAjaxFallbackHeadersToolbar<S>(this, dataProvider));
         ((WebMarkupContainer) get("body")).add(new NoRecordsRow(this));
-        addBottomToolbar(new AdvancedAjaxFallbackHeadersToolbar(this, dataProvider));
+        addBottomToolbar(new AdvancedAjaxFallbackHeadersToolbar<S>(this, dataProvider));
         addBottomToolbar(new ImageAjaxNavigationToolbar(this));
     }
 

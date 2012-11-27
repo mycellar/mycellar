@@ -18,57 +18,37 @@
  */
 package fr.peralta.mycellar.interfaces.client.web.components.booking.autocomplete;
 
-import org.apache.wicket.model.IModel;
+import java.util.List;
+
 import org.apache.wicket.spring.injection.annot.SpringBean;
-import org.wicketstuff.objectautocomplete.ObjectAutoCompleteBuilder;
 
 import fr.peralta.mycellar.domain.booking.BookingEvent;
-import fr.peralta.mycellar.domain.shared.repository.FilterEnum;
-import fr.peralta.mycellar.interfaces.client.web.components.shared.autocomplete.SimpleAutoComplete;
+import fr.peralta.mycellar.interfaces.client.web.components.shared.autocomplete.AbstractTypeaheadComponent;
 import fr.peralta.mycellar.interfaces.facades.booking.BookingServiceFacade;
 
 /**
  * @author speralta
  */
-public class BookingEventSimpleAutoComplete extends SimpleAutoComplete<BookingEvent> {
+public class BookingEventTypeaheadComponent extends AbstractTypeaheadComponent<BookingEvent> {
 
-    private static final long serialVersionUID = 201205221854L;
+    private static final long serialVersionUID = 201210311650L;
 
     @SpringBean
     private BookingServiceFacade bookingServiceFacade;
 
     /**
      * @param id
-     * @param label
-     * @param searchFormModel
      */
-    public BookingEventSimpleAutoComplete(String id, IModel<String> label) {
-        super(id, label, null);
+    public BookingEventTypeaheadComponent(String id) {
+        super(id);
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    protected ObjectAutoCompleteBuilder<BookingEvent, Integer> createAutocomplete() {
-        return new ObjectAutoCompleteBuilder<BookingEvent, Integer>(
-                new BookingEventAutoCompleteProvider());
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    protected BookingEvent getObject(Integer id) {
-        return bookingServiceFacade.getBookingEventById(id);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    protected FilterEnum getFilterToReplace() {
-        return null;
+    protected List<BookingEvent> getChoices(String term) {
+        return bookingServiceFacade.getBookingEventsLike(term);
     }
 
 }

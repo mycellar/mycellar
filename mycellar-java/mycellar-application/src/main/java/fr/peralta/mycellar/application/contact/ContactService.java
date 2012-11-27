@@ -53,7 +53,7 @@ public interface ContactService extends EntityService<Contact, ContactOrderEnum,
      * @param count
      * @return
      */
-    List<Contact> getLastContacts(ContactOrder orders, int first, int count);
+    List<Contact> getLastContacts(ContactOrder orders, long first, long count);
 
     /**
      * @param producer
@@ -62,7 +62,7 @@ public interface ContactService extends EntityService<Contact, ContactOrderEnum,
      * @param count
      * @return
      */
-    List<Contact> getAllForProducer(Producer producer, ContactOrder orders, int first, int count);
+    List<Contact> getAllForProducer(Producer producer, ContactOrder orders, long first, long count);
 
     /**
      * @param producer

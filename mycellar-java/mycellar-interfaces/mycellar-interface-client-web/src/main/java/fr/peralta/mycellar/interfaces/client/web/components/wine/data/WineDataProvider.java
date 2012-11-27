@@ -68,7 +68,7 @@ public class WineDataProvider extends MultipleSortableDataProvider<Wine, WineOrd
      * {@inheritDoc}
      */
     @Override
-    public Iterator<? extends Wine> iterator(int first, int count) {
+    public Iterator<? extends Wine> iterator(long first, long count) {
         return wineServiceFacade.getWines(searchFormModel.getObject(), getState().getOrders(),
                 first, count).iterator();
     }
@@ -77,8 +77,8 @@ public class WineDataProvider extends MultipleSortableDataProvider<Wine, WineOrd
      * {@inheritDoc}
      */
     @Override
-    public int size() {
-        return (int) wineServiceFacade.countWines(searchFormModel.getObject());
+    public long size() {
+        return wineServiceFacade.countWines(searchFormModel.getObject());
     }
 
     /**

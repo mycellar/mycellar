@@ -80,7 +80,7 @@ public abstract class JpaEntitySearchFormRepository<E extends IdentifiedEntity, 
      * {@inheritDoc}
      */
     @Override
-    public final List<E> getAll(SearchForm searchForm, O orders, int first, int count) {
+    public final List<E> getAll(SearchForm searchForm, O orders, long first, long count) {
         CriteriaBuilder criteriaBuilder = getEntityManager().getCriteriaBuilder();
         CriteriaQuery<E> query = criteriaBuilder.createQuery(getEntityClass());
         Root<E> root = query.from(getEntityClass());
@@ -88,7 +88,7 @@ public abstract class JpaEntitySearchFormRepository<E extends IdentifiedEntity, 
         query = where(query, root, searchForm, criteriaBuilder, JoinType.INNER);
         return getEntityManager()
                 .createQuery(orderBy(query, root, orders, criteriaBuilder, JoinType.INNER))
-                .setFirstResult(first).setMaxResults(count).getResultList();
+                .setFirstResult((int) first).setMaxResults((int) count).getResultList();
     }
 
     /**

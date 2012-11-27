@@ -27,7 +27,7 @@ import fr.peralta.mycellar.domain.shared.repository.CountEnum;
 import fr.peralta.mycellar.domain.shared.repository.SearchForm;
 import fr.peralta.mycellar.interfaces.client.web.components.shared.SearchFormModel;
 import fr.peralta.mycellar.interfaces.client.web.components.shared.feedback.FormComponentFeedbackBorder;
-import fr.peralta.mycellar.interfaces.client.web.components.wine.autocomplete.ProducerComplexAutoComplete;
+import fr.peralta.mycellar.interfaces.client.web.components.wine.autocomplete.ProducerComplexTypeahead;
 import fr.peralta.mycellar.interfaces.client.web.components.wine.cloud.AppellationComplexTagCloud;
 import fr.peralta.mycellar.interfaces.client.web.components.wine.cloud.WineColorEnumSimpleTagCloud;
 import fr.peralta.mycellar.interfaces.client.web.components.wine.cloud.WineTypeEnumSimpleTagCloud;
@@ -46,7 +46,7 @@ public class WineEditPanel extends Panel {
     public WineEditPanel(String id, CountEnum count) {
         super(id);
         SearchFormModel searchFormModel = new SearchFormModel(new SearchForm());
-        add(new ProducerComplexAutoComplete("producer", new StringResourceModel("producer", this,
+        add(new ProducerComplexTypeahead("producer", new StringResourceModel("producer", this,
                 null), searchFormModel));
         add(new AppellationComplexTagCloud("appellation", new StringResourceModel("appellation",
                 this, null), searchFormModel, count));

@@ -20,6 +20,7 @@ package fr.peralta.mycellar.interfaces.client.web.components.shared;
 
 import org.apache.wicket.Component;
 import org.apache.wicket.ajax.AjaxRequestTarget;
+import org.apache.wicket.request.cycle.RequestCycle;
 
 /**
  * @author speralta
@@ -30,7 +31,7 @@ public final class AjaxTool {
      * @param component
      */
     public static void ajaxReRender(Component... components) {
-        AjaxRequestTarget target = AjaxRequestTarget.get();
+        AjaxRequestTarget target = RequestCycle.get().find(AjaxRequestTarget.class);
         if (target != null) {
             target.add(components);
         }

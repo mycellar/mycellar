@@ -64,7 +64,7 @@ public class ImageAjaxPagingNavigation extends AjaxPagingNavigation {
      * {@inheritDoc}
      */
     @Override
-    protected Link<?> newPagingNavigationLink(String id, IPageable pageable, int pageIndex) {
+    protected Link<?> newPagingNavigationLink(String id, IPageable pageable, long pageIndex) {
         return new ImageAjaxPagingNavigationLink(id, pageable, pageIndex);
     }
 
@@ -74,7 +74,7 @@ public class ImageAjaxPagingNavigation extends AjaxPagingNavigation {
     @Override
     protected void populateItem(LoopItem loopItem) {
         // Get the index of page this link shall point to
-        final int pageIndex = getStartIndex() + loopItem.getIndex();
+        final long pageIndex = getStartIndex() + loopItem.getIndex();
 
         // Add a page link pointing to the page
         final AbstractLink link = newPagingNavigationLink("pageLink", pageable, pageIndex);
@@ -113,7 +113,7 @@ public class ImageAjaxPagingNavigation extends AjaxPagingNavigation {
         /** resource key for the message */
         private static final String RES = "PagingNavigation.page";
         /** page number */
-        private final int page;
+        private final long page;
 
         /**
          * Constructor
@@ -121,15 +121,14 @@ public class ImageAjaxPagingNavigation extends AjaxPagingNavigation {
          * @param page
          *            page number to use as the ${page} var
          */
-        public TitleAppender(int page) {
+        public TitleAppender(long page) {
             this.page = page;
         }
 
         /** {@inheritDoc} */
         @Override
         public void onComponentTag(Component component, ComponentTag tag) {
-            Map<String, String> vars = new MicroMap<String, String>("page",
-                    String.valueOf(page + 1));
+            Map<String, String> vars = new MicroMap<String, String>("page", Long.toString(page + 1));
             tag.put("title", ImageAjaxPagingNavigation.this.getString(RES, Model.ofMap(vars)));
         }
     }

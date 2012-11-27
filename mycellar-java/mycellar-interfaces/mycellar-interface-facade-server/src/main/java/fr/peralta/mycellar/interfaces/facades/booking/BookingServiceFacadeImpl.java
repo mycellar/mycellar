@@ -139,7 +139,7 @@ public class BookingServiceFacadeImpl implements BookingServiceFacade {
      */
     @Override
     @Transactional(readOnly = true)
-    public List<BookingEvent> getBookingEvents(BookingEventOrder orders, int first, int count) {
+    public List<BookingEvent> getBookingEvents(BookingEventOrder orders, long first, long count) {
         return bookingEventService.getAll(orders, first, count);
     }
 
@@ -148,7 +148,7 @@ public class BookingServiceFacadeImpl implements BookingServiceFacade {
      */
     @Override
     @Transactional(readOnly = true)
-    public List<Booking> getBookings(BookingOrder orders, int first, int count) {
+    public List<Booking> getBookings(BookingOrder orders, long first, long count) {
         return bookingService.getAll(orders, first, count);
     }
 

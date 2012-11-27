@@ -68,7 +68,7 @@ public class CellarDataProvider extends
      * {@inheritDoc}
      */
     @Override
-    public Iterator<? extends Cellar> iterator(int first, int count) {
+    public Iterator<? extends Cellar> iterator(long first, long count) {
         return stockServiceFacade.getCellars(searchFormModel.getObject(), getState().getOrders(),
                 first, count).iterator();
     }
@@ -77,8 +77,8 @@ public class CellarDataProvider extends
      * {@inheritDoc}
      */
     @Override
-    public int size() {
-        return (int) stockServiceFacade.countCellars(searchFormModel.getObject());
+    public long size() {
+        return stockServiceFacade.countCellars(searchFormModel.getObject());
     }
 
     /**

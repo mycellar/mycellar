@@ -18,39 +18,43 @@
  */
 package fr.peralta.mycellar.interfaces.client.web.components.booking.autocomplete;
 
-import java.util.Iterator;
-
-import org.apache.wicket.injection.Injector;
-import org.apache.wicket.spring.injection.annot.SpringBean;
-import org.wicketstuff.objectautocomplete.AutoCompletionChoicesProvider;
+import org.apache.wicket.model.IModel;
 
 import fr.peralta.mycellar.domain.booking.BookingEvent;
-import fr.peralta.mycellar.interfaces.facades.booking.BookingServiceFacade;
+import fr.peralta.mycellar.domain.shared.repository.FilterEnum;
+import fr.peralta.mycellar.interfaces.client.web.components.shared.autocomplete.AbstractTypeaheadComponent;
+import fr.peralta.mycellar.interfaces.client.web.components.shared.autocomplete.SimpleTypeahead;
 
 /**
  * @author speralta
- * 
  */
-public class BookingEventAutoCompleteProvider implements
-        AutoCompletionChoicesProvider<BookingEvent> {
+public class BookingEventSimpleTypeahead extends SimpleTypeahead<BookingEvent> {
 
-    private static final long serialVersionUID = 201205221853L;
-
-    @SpringBean
-    private BookingServiceFacade bookingServiceFacade;
+    private static final long serialVersionUID = 201205221854L;
 
     /**
-     * Default constructor.
+     * @param id
+     * @param label
+     * @param searchFormModel
      */
-    public BookingEventAutoCompleteProvider() {
-        Injector.get().inject(this);
+    public BookingEventSimpleTypeahead(String id, IModel<String> label) {
+        super(id, label, null);
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public Iterator<BookingEvent> getChoices(String input) {
-        return bookingServiceFacade.getBookingEventsLike(input).iterator();
+    protected AbstractTypeaheadComponent<BookingEvent> createAutocomplete(String id) {
+        return new BookingEventTypeaheadComponent(id);
     }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    protected FilterEnum getFilterToReplace() {
+        return null;
+    }
+
 }

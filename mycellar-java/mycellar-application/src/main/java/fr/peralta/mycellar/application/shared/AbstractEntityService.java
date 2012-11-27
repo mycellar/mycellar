@@ -42,7 +42,7 @@ public abstract class AbstractEntityService<E extends IdentifiedEntity, OE, O ex
      * {@inheritDoc}
      */
     @Override
-    public final List<E> getAll(O orders, int first, int count) {
+    public final List<E> getAll(O orders, long first, long count) {
         return getRepository().getAll(orders, first, count);
     }
 

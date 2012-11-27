@@ -67,7 +67,7 @@ public class ProducerDataProvider extends
      * {@inheritDoc}
      */
     @Override
-    public Iterator<? extends Producer> iterator(int first, int count) {
+    public Iterator<? extends Producer> iterator(long first, long count) {
         return wineServiceFacade.getProducers(searchFormModel.getObject(), getState().getOrders(),
                 first, count).iterator();
     }
@@ -76,8 +76,8 @@ public class ProducerDataProvider extends
      * {@inheritDoc}
      */
     @Override
-    public int size() {
-        return (int) wineServiceFacade.countProducers(searchFormModel.getObject());
+    public long size() {
+        return wineServiceFacade.countProducers(searchFormModel.getObject());
     }
 
     /**

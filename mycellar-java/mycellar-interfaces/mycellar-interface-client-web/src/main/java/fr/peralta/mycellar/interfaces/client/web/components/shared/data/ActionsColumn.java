@@ -27,7 +27,7 @@ import org.apache.wicket.model.IModel;
 /**
  * @author speralta
  */
-public class ActionsColumn<T> implements IStyledColumn<T> {
+public class ActionsColumn<T, S> implements IStyledColumn<T, S> {
 
     private static final long serialVersionUID = 201201251241L;
 
@@ -92,7 +92,7 @@ public class ActionsColumn<T> implements IStyledColumn<T> {
      * {@inheritDoc}
      */
     @Override
-    public String getSortProperty() {
+    public S getSortProperty() {
         return null;
     }
 

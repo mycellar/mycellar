@@ -19,29 +19,22 @@
 package fr.peralta.mycellar.interfaces.client.web.components.shared.autocomplete;
 
 import org.apache.wicket.WicketRuntimeException;
-import org.apache.wicket.ajax.AjaxRequestTarget;
-import org.apache.wicket.event.Broadcast;
 import org.apache.wicket.event.IEvent;
 import org.apache.wicket.event.IEventSource;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.Model;
-import org.wicketstuff.objectautocomplete.ObjectAutoCompleteBuilder;
-import org.wicketstuff.objectautocomplete.ObjectAutoCompleteField;
-import org.wicketstuff.objectautocomplete.ObjectAutoCompleteSelectionChangeListener;
 
 import fr.peralta.mycellar.domain.shared.IdentifiedEntity;
 import fr.peralta.mycellar.domain.shared.repository.SearchForm;
-import fr.peralta.mycellar.interfaces.client.web.components.shared.Action;
-import fr.peralta.mycellar.interfaces.client.web.components.shared.SimpleComponent;
+import fr.peralta.mycellar.interfaces.client.web.components.shared.ComplexComponent;
 
 /**
  * @author speralta
  * 
  * @param <O>
  */
-public abstract class SimpleAutoComplete<O extends IdentifiedEntity> extends
-        SimpleComponent<O, ObjectAutoCompleteField<O, Integer>> implements
-        ObjectAutoCompleteSelectionChangeListener<Integer> {
+public abstract class ComplexTypeahead<O extends IdentifiedEntity> extends
+        ComplexComponent<O, AbstractTypeaheadComponent<O>> {
 
     private static final long serialVersionUID = 201108082348L;
 
@@ -50,7 +43,7 @@ public abstract class SimpleAutoComplete<O extends IdentifiedEntity> extends
      * @param label
      * @param searchFormModel
      */
-    public SimpleAutoComplete(String id, IModel<String> label, IModel<SearchForm> searchFormModel) {
+    public ComplexTypeahead(String id, IModel<String> label, IModel<SearchForm> searchFormModel) {
         super(id, label, searchFormModel);
     }
 
@@ -58,28 +51,16 @@ public abstract class SimpleAutoComplete<O extends IdentifiedEntity> extends
      * @param id
      * @return
      */
-    protected abstract ObjectAutoCompleteBuilder<O, Integer> createAutocomplete();
-
-    /**
-     * {@inheritDoc}
-     */
-    @SuppressWarnings("unchecked")
-    @Override
-    protected final ObjectAutoCompleteField<O, Integer> createSelectorComponent(String id) {
-        return createAutocomplete().idType(Integer.class).clearInputOnSelection()
-                .updateOnSelectionChange(this).autoCompleteRenderer(new AutoCompleteRenderer<O>())
-                .build(id, new Model<Integer>());
-    }
+    protected abstract AbstractTypeaheadComponent<O> createAutocomplete(String id);
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public void selectionChanged(AjaxRequestTarget pTarget, IModel<Integer> pModel) {
-        if (pModel.getObject() != null) {
-            getSelectorComponent().setDefaultModelObject(pModel.getObject()).send(this,
-                    Broadcast.BUBBLE, Action.SELECT);
-        }
+    protected final AbstractTypeaheadComponent<O> createSelectorComponent(String id) {
+        AbstractTypeaheadComponent<O> component = createAutocomplete(id);
+        component.setModel(new Model<O>());
+        return component;
     }
 
     /**
@@ -88,24 +69,18 @@ public abstract class SimpleAutoComplete<O extends IdentifiedEntity> extends
     @Override
     protected O getModelObjectFromEvent(IEventSource source) {
         if (source == getSelectorComponent()) {
-            return getObject(getSelectorComponent().getModelObject());
+            return getSelectorComponent().getModelObject();
         } else {
             throw new WicketRuntimeException("Event did not come from ObjectAutoCompleteField.");
         }
     }
 
     /**
-     * @param id
-     * @return
-     */
-    protected abstract O getObject(Integer id);
-
-    /**
      * {@inheritDoc}
      */
     @Override
     protected void onCancel(IEvent<?> event) {
-        getSelectorComponent().setDefaultModel(new Model<Integer>());
+        getSelectorComponent().setDefaultModel(new Model<O>());
         super.onCancel(event);
     }
 

@@ -66,14 +66,14 @@ public class UsersPage extends AbstractListPage<User, UserOrderEnum, UserOrder> 
      * {@inheritDoc}
      */
     @Override
-    protected List<IColumn<User>> getColumns() {
-        List<IColumn<User>> columns = new ArrayList<IColumn<User>>();
-        columns.add(new PropertyColumn<User>(new ResourceModel("email"),
-                UserOrderEnum.EMAIL.name(), "email"));
-        columns.add(new PropertyColumn<User>(new ResourceModel("firstname"),
-                UserOrderEnum.FIRSTNAME.name(), "firstname"));
-        columns.add(new PropertyColumn<User>(new ResourceModel("lastname"), UserOrderEnum.LASTNAME
-                .name(), "lastname"));
+    protected List<IColumn<User, UserOrderEnum>> getColumns() {
+        List<IColumn<User, UserOrderEnum>> columns = new ArrayList<IColumn<User, UserOrderEnum>>();
+        columns.add(new PropertyColumn<User, UserOrderEnum>(new ResourceModel("email"),
+                UserOrderEnum.EMAIL, "email"));
+        columns.add(new PropertyColumn<User, UserOrderEnum>(new ResourceModel("firstname"),
+                UserOrderEnum.FIRSTNAME, "firstname"));
+        columns.add(new PropertyColumn<User, UserOrderEnum>(new ResourceModel("lastname"),
+                UserOrderEnum.LASTNAME, "lastname"));
         return columns;
     }
 

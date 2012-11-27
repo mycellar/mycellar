@@ -67,7 +67,7 @@ public class CountryDataProvider extends
      * {@inheritDoc}
      */
     @Override
-    public Iterator<? extends Country> iterator(int first, int count) {
+    public Iterator<? extends Country> iterator(long first, long count) {
         return wineServiceFacade.getCountries(searchFormModel.getObject(), getState().getOrders(),
                 first, count).iterator();
     }
@@ -76,8 +76,8 @@ public class CountryDataProvider extends
      * {@inheritDoc}
      */
     @Override
-    public int size() {
-        return (int) wineServiceFacade.countCountries(searchFormModel.getObject());
+    public long size() {
+        return wineServiceFacade.countCountries(searchFormModel.getObject());
     }
 
     /**

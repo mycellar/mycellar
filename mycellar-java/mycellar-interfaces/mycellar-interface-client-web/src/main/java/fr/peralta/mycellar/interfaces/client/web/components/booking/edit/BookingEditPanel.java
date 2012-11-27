@@ -30,11 +30,11 @@ import org.slf4j.LoggerFactory;
 
 import fr.peralta.mycellar.domain.booking.Booking;
 import fr.peralta.mycellar.domain.booking.BookingBottle;
-import fr.peralta.mycellar.interfaces.client.web.components.booking.autocomplete.BookingEventSimpleAutoComplete;
+import fr.peralta.mycellar.interfaces.client.web.components.booking.autocomplete.BookingEventSimpleTypeahead;
 import fr.peralta.mycellar.interfaces.client.web.components.booking.set.QuantitiesView;
 import fr.peralta.mycellar.interfaces.client.web.components.shared.Action;
 import fr.peralta.mycellar.interfaces.client.web.components.shared.AjaxTool;
-import fr.peralta.mycellar.interfaces.client.web.components.user.autocomplete.UserSimpleAutoComplete;
+import fr.peralta.mycellar.interfaces.client.web.components.user.autocomplete.UserSimpleTypeahead;
 import fr.peralta.mycellar.interfaces.client.web.shared.LoggingHelper;
 
 /**
@@ -45,8 +45,8 @@ public class BookingEditPanel extends Panel {
     private static final long serialVersionUID = 201107252130L;
     private static final Logger logger = LoggerFactory.getLogger(BookingEditPanel.class);
 
-    private BookingEventSimpleAutoComplete bookingEventSimpleAutoComplete;
-    private UserSimpleAutoComplete userSimpleAutoComplete;
+    private BookingEventSimpleTypeahead bookingEventSimpleTypeahead;
+    private UserSimpleTypeahead userSimpleTypeahead;
     private QuantitiesView quantitiesView;
 
     private boolean initialized = false;
@@ -64,10 +64,10 @@ public class BookingEditPanel extends Panel {
      */
     public BookingEditPanel(String id, boolean readonly) {
         super(id);
-        add(userSimpleAutoComplete = new UserSimpleAutoComplete("customer",
-                new StringResourceModel("customer", null), null));
-        add(bookingEventSimpleAutoComplete = new BookingEventSimpleAutoComplete("bookingEvent",
-                new StringResourceModel("bookingEvent", null)));
+        add((userSimpleTypeahead = new UserSimpleTypeahead("customer",
+                new StringResourceModel("customer", null), null)));
+        add((bookingEventSimpleTypeahead = new BookingEventSimpleTypeahead("bookingEvent",
+                new StringResourceModel("bookingEvent", null))));
         add(quantitiesView = new QuantitiesView("bookingEvent.bottles", readonly));
         add(new WebMarkupContainer("noBottles") {
             private static final long serialVersionUID = 201108082329L;
@@ -77,8 +77,8 @@ public class BookingEditPanel extends Panel {
              */
             @Override
             public boolean isVisible() {
-                return (bookingEventSimpleAutoComplete.getModelObject() == null)
-                        || (bookingEventSimpleAutoComplete.getModelObject().getBottles().size() == 0);
+                return (bookingEventSimpleTypeahead.getModelObject() == null)
+                        || (bookingEventSimpleTypeahead.getModelObject().getBottles().size() == 0);
             }
         });
     }
@@ -97,8 +97,8 @@ public class BookingEditPanel extends Panel {
     }
 
     public BookingEditPanel setCustomerView() {
-        userSimpleAutoComplete.setVisibilityAllowed(false);
-        bookingEventSimpleAutoComplete.setVisibilityAllowed(false);
+        userSimpleTypeahead.setVisibilityAllowed(false);
+        bookingEventSimpleTypeahead.setVisibilityAllowed(false);
         return this;
     }
 
@@ -112,7 +112,7 @@ public class BookingEditPanel extends Panel {
             Action action = (Action) event.getPayload();
             switch (action) {
             case MODEL_CHANGED:
-                if (event.getSource() == bookingEventSimpleAutoComplete) {
+                if (event.getSource() == bookingEventSimpleTypeahead) {
                     Map<BookingBottle, Integer> quantities = ((Booking) getParent()
                             .getDefaultModelObject()).getQuantities();
                     quantities.clear();

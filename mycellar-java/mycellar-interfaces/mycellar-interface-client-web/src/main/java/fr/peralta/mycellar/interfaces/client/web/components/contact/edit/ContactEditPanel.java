@@ -26,7 +26,7 @@ import fr.peralta.mycellar.domain.shared.repository.SearchForm;
 import fr.peralta.mycellar.interfaces.client.web.components.shared.SearchFormModel;
 import fr.peralta.mycellar.interfaces.client.web.components.shared.feedback.FormComponentFeedbackBorder;
 import fr.peralta.mycellar.interfaces.client.web.components.shared.form.LocalDateTextField;
-import fr.peralta.mycellar.interfaces.client.web.components.wine.autocomplete.ProducerComplexAutoComplete;
+import fr.peralta.mycellar.interfaces.client.web.components.wine.autocomplete.ProducerComplexTypeahead;
 
 /**
  * @author speralta
@@ -40,7 +40,7 @@ public class ContactEditPanel extends Panel {
      */
     public ContactEditPanel(String id) {
         super(id);
-        add(new ProducerComplexAutoComplete("producer", new StringResourceModel("producer", null),
+        add(new ProducerComplexTypeahead("producer", new StringResourceModel("producer", null),
                 new SearchFormModel(new SearchForm())));
         add(new FormComponentFeedbackBorder("current").add(new LocalDateTextField("current")
                 .setRequired(true)));

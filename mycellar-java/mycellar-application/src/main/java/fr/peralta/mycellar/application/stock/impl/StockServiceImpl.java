@@ -126,7 +126,7 @@ public class StockServiceImpl implements StockService {
      * {@inheritDoc}
      */
     @Override
-    public List<Stock> getStocks(SearchForm searchForm, StockOrder orders, int first, int count) {
+    public List<Stock> getStocks(SearchForm searchForm, StockOrder orders, long first, long count) {
         return stockRepository.getAll(searchForm, orders, first, count);
     }
 

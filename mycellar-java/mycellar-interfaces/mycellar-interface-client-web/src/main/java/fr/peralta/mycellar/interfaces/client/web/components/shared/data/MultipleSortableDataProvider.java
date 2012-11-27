@@ -28,7 +28,7 @@ import fr.peralta.mycellar.domain.shared.repository.AbstractEntityOrder;
  * @author speralta
  */
 public abstract class MultipleSortableDataProvider<T, E, O extends AbstractEntityOrder<E, O>>
-        implements ISortableDataProvider<T> {
+        implements ISortableDataProvider<T, E> {
 
     private static final long serialVersionUID = 201111231029L;
 
@@ -45,7 +45,7 @@ public abstract class MultipleSortableDataProvider<T, E, O extends AbstractEntit
      * @see ISortableDataProvider#getSortState()
      */
     @Override
-    public final ISortState getSortState() {
+    public final ISortState<E> getSortState() {
         return state;
     }
 
@@ -64,7 +64,7 @@ public abstract class MultipleSortableDataProvider<T, E, O extends AbstractEntit
      * @param order
      *            sort order
      */
-    public void setSort(final String property, final SortOrder order) {
+    public void setSort(final E property, final SortOrder order) {
         state.setPropertySortOrder(property, order);
     }
 

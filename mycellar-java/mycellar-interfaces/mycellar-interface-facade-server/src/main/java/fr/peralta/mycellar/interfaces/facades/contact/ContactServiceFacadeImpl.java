@@ -79,7 +79,7 @@ public class ContactServiceFacadeImpl implements ContactServiceFacade {
      */
     @Override
     @Transactional(readOnly = true)
-    public List<Contact> getContacts(ContactOrder orders, int first, int count) {
+    public List<Contact> getContacts(ContactOrder orders, long first, long count) {
         return contactService.getAll(orders, first, count);
     }
 
@@ -88,7 +88,7 @@ public class ContactServiceFacadeImpl implements ContactServiceFacade {
      */
     @Override
     @Transactional(readOnly = true)
-    public List<Contact> getLastContacts(ContactOrder orders, int first, int count) {
+    public List<Contact> getLastContacts(ContactOrder orders, long first, long count) {
         return contactService.getLastContacts(orders, first, count);
     }
 
@@ -97,8 +97,8 @@ public class ContactServiceFacadeImpl implements ContactServiceFacade {
      */
     @Override
     @Transactional(readOnly = true)
-    public List<Contact> getContactsForProducer(Producer producer, ContactOrder orders, int first,
-            int count) {
+    public List<Contact> getContactsForProducer(Producer producer, ContactOrder orders, long first,
+            long count) {
         return contactService.getAllForProducer(producer, orders, first, count);
     }
 

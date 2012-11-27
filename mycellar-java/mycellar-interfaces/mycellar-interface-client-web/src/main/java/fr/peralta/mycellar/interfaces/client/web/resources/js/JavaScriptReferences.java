@@ -19,6 +19,7 @@
 package fr.peralta.mycellar.interfaces.client.web.resources.js;
 
 import org.apache.wicket.request.resource.JavaScriptResourceReference;
+import org.apache.wicket.resource.JQueryPluginResourceReference;
 
 /**
  * @author speralta
@@ -26,23 +27,20 @@ import org.apache.wicket.request.resource.JavaScriptResourceReference;
 public class JavaScriptReferences {
 
     public static JavaScriptResourceReference getBootstrapJs() {
-        return getJavaScript("bootstrap.min.js");
+        return new JQueryPluginResourceReference(JavaScriptReferences.class, "bootstrap.js");
     }
 
     public static JavaScriptResourceReference getBootstrapDatePickerJs() {
-        return getJavaScript("bootstrap-datepicker.js");
+        return new BootstrapPluginsReference(JavaScriptReferences.class, "bootstrap-datepicker.js");
     }
 
-    public static JavaScriptResourceReference getJqueryJs() {
-        return getJavaScript("jquery.min.js");
+    public static JavaScriptResourceReference getTypeaheadkeyJs() {
+        return new BootstrapPluginsReference(JavaScriptReferences.class,
+                "bootstrap-typeaheadkey.js");
     }
 
     public static JavaScriptResourceReference getMasterJs() {
-        return getJavaScript("master.js");
-    }
-
-    private static JavaScriptResourceReference getJavaScript(String filename) {
-        return new JavaScriptResourceReference(JavaScriptReferences.class, filename);
+        return new BootstrapPluginsReference(JavaScriptReferences.class, "master.js");
     }
 
     /**

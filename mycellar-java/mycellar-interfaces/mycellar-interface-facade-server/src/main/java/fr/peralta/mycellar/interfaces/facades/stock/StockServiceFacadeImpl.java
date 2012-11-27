@@ -167,7 +167,7 @@ public class StockServiceFacadeImpl implements StockServiceFacade {
      */
     @Override
     @Transactional(readOnly = true)
-    public List<Cellar> getCellars(SearchForm searchForm, CellarOrder order, int first, int count) {
+    public List<Cellar> getCellars(SearchForm searchForm, CellarOrder order, long first, long count) {
         return cellarService.getAll(searchForm, order, first, count);
     }
 
@@ -186,7 +186,7 @@ public class StockServiceFacadeImpl implements StockServiceFacade {
      */
     @Override
     public List<CellarShare> getCellarShares(SearchForm searchForm, CellarShareOrder order,
-            int first, int count) {
+            long first, long count) {
         return cellarShareService.getAll(searchForm, order, first, count);
     }
 
@@ -195,8 +195,8 @@ public class StockServiceFacadeImpl implements StockServiceFacade {
      */
     @Override
     @Transactional(readOnly = true)
-    public List<Movement> getMovements(SearchForm searchForm, MovementOrder orders, int first,
-            int count) {
+    public List<Movement> getMovements(SearchForm searchForm, MovementOrder orders, long first,
+            long count) {
         return movementService.getAll(searchForm, orders, first, count);
     }
 
@@ -205,7 +205,7 @@ public class StockServiceFacadeImpl implements StockServiceFacade {
      */
     @Override
     @Transactional(readOnly = true)
-    public List<Stock> getStocks(SearchForm searchForm, StockOrder orders, int first, int count) {
+    public List<Stock> getStocks(SearchForm searchForm, StockOrder orders, long first, long count) {
         return stockService.getStocks(searchForm, orders, first, count);
     }
 

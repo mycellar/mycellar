@@ -18,6 +18,10 @@
  */
 package fr.peralta.mycellar.interfaces.client.web.components.shared.form;
 
+import org.apache.wicket.markup.head.CssHeaderItem;
+import org.apache.wicket.markup.head.IHeaderResponse;
+import org.apache.wicket.markup.head.JavaScriptHeaderItem;
+import org.apache.wicket.markup.head.OnDomReadyHeaderItem;
 import org.apache.wicket.markup.html.form.AbstractTextComponent.ITextFormatProvider;
 import org.apache.wicket.markup.html.form.TextField;
 import org.apache.wicket.model.IModel;
@@ -25,6 +29,8 @@ import org.apache.wicket.util.convert.IConverter;
 import org.joda.time.LocalDate;
 
 import fr.peralta.mycellar.interfaces.client.web.converters.LocalDateConverter;
+import fr.peralta.mycellar.interfaces.client.web.resources.css.CssReferences;
+import fr.peralta.mycellar.interfaces.client.web.resources.js.JavaScriptReferences;
 
 /**
  * A TextField that is mapped to a <code>org.joda.time.LocalDate</code> object.
@@ -106,6 +112,17 @@ public class LocalDateTextField extends TextField<LocalDate> implements ITextFor
     @Override
     protected String getInputType() {
         return "date";
+    }
+
+    @Override
+    public void renderHead(final IHeaderResponse response) {
+        super.renderHead(response);
+
+        response.render(CssHeaderItem.forReference(CssReferences.getBootstrapDatePickerCss()));
+        response.render(JavaScriptHeaderItem.forReference(JavaScriptReferences
+                .getBootstrapDatePickerJs()));
+        response.render(OnDomReadyHeaderItem.forScript("$('#" + getMarkupId()
+                + "').datepicker({format: 'dd/mm/yyyy', weekstart: '2'});"));
     }
 
 }

@@ -62,7 +62,7 @@ public interface BookingServiceFacade {
      * @param count
      * @return
      */
-    List<Booking> getBookings(BookingOrder orders, int first, int count);
+    List<Booking> getBookings(BookingOrder orders, long first, long count);
 
     /**
      * @param orders
@@ -70,7 +70,7 @@ public interface BookingServiceFacade {
      * @param count
      * @return
      */
-    List<BookingEvent> getBookingEvents(BookingEventOrder orders, int first, int count);
+    List<BookingEvent> getBookingEvents(BookingEventOrder orders, long first, long count);
 
     /**
      * @param booking

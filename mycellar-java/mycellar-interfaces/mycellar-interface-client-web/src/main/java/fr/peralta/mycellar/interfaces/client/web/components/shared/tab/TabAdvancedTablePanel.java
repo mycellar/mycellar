@@ -26,7 +26,7 @@ import fr.peralta.mycellar.interfaces.client.web.components.shared.data.Advanced
 /**
  * @author speralta
  */
-public abstract class TabAdvancedTablePanel<O> extends Panel {
+public abstract class TabAdvancedTablePanel<O, S> extends Panel {
 
     private static final long serialVersionUID = 201201241756L;
 
@@ -51,6 +51,6 @@ public abstract class TabAdvancedTablePanel<O> extends Panel {
      * @param searchForm
      * @return
      */
-    protected abstract AdvancedTable<O> createAdvancedTable(String tableId);
+    protected abstract AdvancedTable<O, S> createAdvancedTable(String tableId);
 
 }

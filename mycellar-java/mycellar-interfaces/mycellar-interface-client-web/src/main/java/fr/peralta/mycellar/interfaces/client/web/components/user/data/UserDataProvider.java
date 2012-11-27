@@ -56,7 +56,7 @@ public class UserDataProvider extends MultipleSortableDataProvider<User, UserOrd
      * {@inheritDoc}
      */
     @Override
-    public Iterator<? extends User> iterator(int first, int count) {
+    public Iterator<? extends User> iterator(long first, long count) {
         return userServiceFacade.getUsers(getState().getOrders(), first, count).iterator();
     }
 
@@ -64,7 +64,7 @@ public class UserDataProvider extends MultipleSortableDataProvider<User, UserOrd
      * {@inheritDoc}
      */
     @Override
-    public int size() {
+    public long size() {
         return (int) userServiceFacade.countUsers();
     }
 

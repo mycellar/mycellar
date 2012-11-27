@@ -57,7 +57,8 @@ abstract class AbstractLoginForm extends StatelessForm<ValueMap> {
             ((WaspSession) getSession()).login(ctx);
             if (UserKey.getUserLoggedIn().getProfile() == null) {
                 setResponsePage(MyAccountPage.class);
-            } else if (!getPage().continueToOriginalDestination()) {
+            } else {
+                getPage().continueToOriginalDestination();
                 setResponsePage(getPage().getClass());
             }
         } catch (LoginException e) {

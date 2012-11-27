@@ -112,6 +112,7 @@ public abstract class MyCellarWebApplication extends SwarmWebApplication {
         getResourceSettings().getStringResourceLoaders().add(
                 new ClassStringResourceLoader(HomePageDescriptor.class));
         // Add mounts for img
+        mountResource("/img/database.png", ImageReferences.getDatabaseImage());
         mountResource("/img/glyphicons-halflings.png", ImageReferences.getGlyphiconsImage());
         mountResource("/img/glyphicons-halflings-white.png",
                 ImageReferences.getGlyphiconsWhiteImage());
@@ -123,9 +124,10 @@ public abstract class MyCellarWebApplication extends SwarmWebApplication {
         mountResource("/css/master.css", CssReferences.getMasterCss());
         mountResource("/css/master-responsive.css", CssReferences.getMasterResponsiveCss());
         // Add mounts for js
-        mountResource("/js/jquery.min.js", JavaScriptReferences.getJqueryJs());
         mountResource("/js/bootstrap.min.js", JavaScriptReferences.getBootstrapJs());
         mountResource("/js/bootstrap-datepicker.js",
+                JavaScriptReferences.getBootstrapDatePickerJs());
+        mountResource("/js/bootstrap-typeaheadkey.js",
                 JavaScriptReferences.getBootstrapDatePickerJs());
         mountResource("/js/master.js", JavaScriptReferences.getMasterJs());
 

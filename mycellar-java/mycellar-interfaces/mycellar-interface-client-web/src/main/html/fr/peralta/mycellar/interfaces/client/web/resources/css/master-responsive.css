@@ -1,7 +1,3 @@
-.navbar-fixed-top {
-  margin-bottom: 0px;
-}
-
 /** Landscape phones and down **/
 @media (max-width: 480px) {
   .login-collapse{
@@ -14,13 +10,6 @@
     overflow: hidden;
   }
 
-  .navbar-form {
-    border: none;
-    box-shadow: none;
-    margin: 0;
-    padding: 0;
-  }
-  
   .navbar .btn-inverse span {
     display: none;
   }
@@ -49,13 +38,6 @@
   .login-collapse, .login-collapse.collapse {
     height: 0;
     overflow: hidden;
-  }
-  
-  .navbar-form {
-    border: none;
-    box-shadow: none;
-    margin: 0;
-    padding: 0;
   }
   
   .navbar .btn-inverse span {
@@ -98,13 +80,6 @@
   .login-collapse, .login-collapse.collapse {
     height: 0;
     overflow: hidden;
-  }
-  
-  .navbar-form {
-    border: none;
-    box-shadow: none;
-    margin: 0;
-    padding: 0;
   }
   
   .filter-collapse {

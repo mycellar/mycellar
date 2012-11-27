@@ -69,16 +69,16 @@ public class CellarSharesPage extends
      * {@inheritDoc}
      */
     @Override
-    protected List<IColumn<CellarShare>> getColumns() {
-        List<IColumn<CellarShare>> columns = new ArrayList<IColumn<CellarShare>>();
-        columns.add(new PropertyColumn<CellarShare>(new ResourceModel("cellar.owner.email"),
-                CellarShareOrderEnum.OWNER_EMAIL.name(), "cellar.owner.email"));
-        columns.add(new PropertyColumn<CellarShare>(new ResourceModel("cellar.name"),
-                CellarShareOrderEnum.CELLAR_NAME.name(), "cellar.name"));
-        columns.add(new PropertyColumn<CellarShare>(new ResourceModel("email"),
-                CellarShareOrderEnum.EMAIL.name(), "email"));
-        columns.add(new PropertyColumn<CellarShare>(new ResourceModel("accessRight"),
-                CellarShareOrderEnum.ACCESS_RIGHT.name(), "accessRight"));
+    protected List<IColumn<CellarShare, CellarShareOrderEnum>> getColumns() {
+        List<IColumn<CellarShare, CellarShareOrderEnum>> columns = new ArrayList<IColumn<CellarShare, CellarShareOrderEnum>>();
+        columns.add(new PropertyColumn<CellarShare, CellarShareOrderEnum>(new ResourceModel(
+                "cellar.owner.email"), CellarShareOrderEnum.OWNER_EMAIL, "cellar.owner.email"));
+        columns.add(new PropertyColumn<CellarShare, CellarShareOrderEnum>(new ResourceModel(
+                "cellar.name"), CellarShareOrderEnum.CELLAR_NAME, "cellar.name"));
+        columns.add(new PropertyColumn<CellarShare, CellarShareOrderEnum>(
+                new ResourceModel("email"), CellarShareOrderEnum.EMAIL, "email"));
+        columns.add(new PropertyColumn<CellarShare, CellarShareOrderEnum>(new ResourceModel(
+                "accessRight"), CellarShareOrderEnum.ACCESS_RIGHT, "accessRight"));
         return columns;
     }
 

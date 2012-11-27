@@ -69,7 +69,7 @@ public class AppellationDataProvider extends
      * {@inheritDoc}
      */
     @Override
-    public Iterator<? extends Appellation> iterator(int first, int count) {
+    public Iterator<? extends Appellation> iterator(long first, long count) {
         return wineServiceFacade.getAppellations(searchFormModel.getObject(),
                 getState().getOrders(), first, count).iterator();
     }
@@ -78,8 +78,8 @@ public class AppellationDataProvider extends
      * {@inheritDoc}
      */
     @Override
-    public int size() {
-        return (int) wineServiceFacade.countAppellations(searchFormModel.getObject());
+    public long size() {
+        return wineServiceFacade.countAppellations(searchFormModel.getObject());
     }
 
     /**

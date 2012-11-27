@@ -60,7 +60,7 @@
     </dependency>
     <dependency>
       <groupId>org.jadira.usertype</groupId>
-      <artifactId>usertype.jodatime</artifactId>
+      <artifactId>usertype.core</artifactId>
     </dependency>
     <dependency>
       <groupId>${project.groupId}</groupId>

@@ -66,14 +66,14 @@ public class ContactsPage extends AbstractListPage<Contact, ContactOrderEnum, Co
      * {@inheritDoc}
      */
     @Override
-    protected List<IColumn<Contact>> getColumns() {
-        List<IColumn<Contact>> columns = new ArrayList<IColumn<Contact>>();
-        columns.add(new PropertyColumn<Contact>(new ResourceModel("producer.name"),
-                ContactOrderEnum.PRODUCER_NAME.name(), "producer.name"));
-        columns.add(new PropertyColumn<Contact>(new ResourceModel("current"),
-                ContactOrderEnum.CURRENT_DATE.name(), "current"));
-        columns.add(new PropertyColumn<Contact>(new ResourceModel("next"),
-                ContactOrderEnum.NEXT_DATE.name(), "next"));
+    protected List<IColumn<Contact, ContactOrderEnum>> getColumns() {
+        List<IColumn<Contact, ContactOrderEnum>> columns = new ArrayList<IColumn<Contact, ContactOrderEnum>>();
+        columns.add(new PropertyColumn<Contact, ContactOrderEnum>(
+                new ResourceModel("producer.name"), ContactOrderEnum.PRODUCER_NAME, "producer.name"));
+        columns.add(new PropertyColumn<Contact, ContactOrderEnum>(new ResourceModel("current"),
+                ContactOrderEnum.CURRENT_DATE, "current"));
+        columns.add(new PropertyColumn<Contact, ContactOrderEnum>(new ResourceModel("next"),
+                ContactOrderEnum.NEXT_DATE, "next"));
         return columns;
     }
 

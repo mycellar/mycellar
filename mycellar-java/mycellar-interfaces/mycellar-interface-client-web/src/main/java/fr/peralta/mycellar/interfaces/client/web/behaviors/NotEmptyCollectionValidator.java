@@ -19,14 +19,17 @@
 package fr.peralta.mycellar.interfaces.client.web.behaviors;
 
 import java.util.Collection;
+import java.util.HashMap;
 
+import org.apache.wicket.util.lang.Classes;
 import org.apache.wicket.validation.IValidatable;
-import org.apache.wicket.validation.validator.AbstractValidator;
+import org.apache.wicket.validation.IValidator;
+import org.apache.wicket.validation.ValidationError;
 
 /**
  * @author speralta
  */
-public class NotEmptyCollectionValidator extends AbstractValidator<Collection<?>> {
+public class NotEmptyCollectionValidator implements IValidator<Collection<?>> {
 
     private static final long serialVersionUID = 201202231614L;
 
@@ -34,9 +37,11 @@ public class NotEmptyCollectionValidator extends AbstractValidator<Collection<?>
      * {@inheritDoc}
      */
     @Override
-    protected void onValidate(IValidatable<Collection<?>> validatable) {
+    public void validate(IValidatable<Collection<?>> validatable) {
         if (validatable.getValue().size() == 0) {
-            error(validatable);
+            ValidationError error = new ValidationError().addKey(Classes.simpleName(getClass()));
+            error.setVariables(new HashMap<String, Object>(1));
+            validatable.error(error);
         }
     }
 

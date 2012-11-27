@@ -68,24 +68,24 @@ public class WinesPage extends AbstractListPage<Wine, WineOrderEnum, WineOrder> 
      * {@inheritDoc}
      */
     @Override
-    protected List<IColumn<Wine>> getColumns() {
-        List<IColumn<Wine>> columns = new ArrayList<IColumn<Wine>>();
-        columns.add(new PropertyColumn<Wine>(new ResourceModel("country"),
-                WineOrderEnum.COUNTRY_NAME.name(), "appellation.region.country.name"));
-        columns.add(new PropertyColumn<Wine>(new ResourceModel("region"), WineOrderEnum.REGION_NAME
-                .name(), "appellation.region.name"));
-        columns.add(new PropertyColumn<Wine>(new ResourceModel("appellation"),
-                WineOrderEnum.APPELLATION_NAME.name(), "appellation.name"));
-        columns.add(new PropertyColumn<Wine>(new ResourceModel("producer"),
-                WineOrderEnum.PRODUCER_NAME.name(), "producer.name"));
-        columns.add(new PropertyColumn<Wine>(new ResourceModel("name"), WineOrderEnum.NAME.name(),
-                "name"));
-        columns.add(new PropertyColumn<Wine>(new ResourceModel("type"), WineOrderEnum.TYPE.name(),
-                "type"));
-        columns.add(new PropertyColumn<Wine>(new ResourceModel("color"),
-                WineOrderEnum.COLOR.name(), "color"));
-        columns.add(new PropertyColumn<Wine>(new ResourceModel("vintage"), WineOrderEnum.VINTAGE
-                .name(), "vintage") {
+    protected List<IColumn<Wine, WineOrderEnum>> getColumns() {
+        List<IColumn<Wine, WineOrderEnum>> columns = new ArrayList<IColumn<Wine, WineOrderEnum>>();
+        columns.add(new PropertyColumn<Wine, WineOrderEnum>(new ResourceModel("country"),
+                WineOrderEnum.COUNTRY_NAME, "appellation.region.country.name"));
+        columns.add(new PropertyColumn<Wine, WineOrderEnum>(new ResourceModel("region"),
+                WineOrderEnum.REGION_NAME, "appellation.region.name"));
+        columns.add(new PropertyColumn<Wine, WineOrderEnum>(new ResourceModel("appellation"),
+                WineOrderEnum.APPELLATION_NAME, "appellation.name"));
+        columns.add(new PropertyColumn<Wine, WineOrderEnum>(new ResourceModel("producer"),
+                WineOrderEnum.PRODUCER_NAME, "producer.name"));
+        columns.add(new PropertyColumn<Wine, WineOrderEnum>(new ResourceModel("name"),
+                WineOrderEnum.NAME, "name"));
+        columns.add(new PropertyColumn<Wine, WineOrderEnum>(new ResourceModel("type"),
+                WineOrderEnum.TYPE, "type"));
+        columns.add(new PropertyColumn<Wine, WineOrderEnum>(new ResourceModel("color"),
+                WineOrderEnum.COLOR, "color"));
+        columns.add(new PropertyColumn<Wine, WineOrderEnum>(new ResourceModel("vintage"),
+                WineOrderEnum.VINTAGE, "vintage") {
             private static final long serialVersionUID = 201111301732L;
 
             @Override

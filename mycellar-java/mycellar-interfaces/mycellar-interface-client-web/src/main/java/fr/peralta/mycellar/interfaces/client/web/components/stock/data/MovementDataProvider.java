@@ -67,7 +67,7 @@ public class MovementDataProvider extends
      * {@inheritDoc}
      */
     @Override
-    public Iterator<? extends Movement> iterator(int first, int count) {
+    public Iterator<? extends Movement> iterator(long first, long count) {
         return stockServiceFacade.getMovements(searchFormModel.getObject(), getState().getOrders(),
                 first, count).iterator();
     }
@@ -76,8 +76,8 @@ public class MovementDataProvider extends
      * {@inheritDoc}
      */
     @Override
-    public int size() {
-        return (int) stockServiceFacade.countMovements(searchFormModel.getObject());
+    public long size() {
+        return stockServiceFacade.countMovements(searchFormModel.getObject());
     }
 
     /**

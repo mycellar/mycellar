@@ -37,7 +37,7 @@ import fr.peralta.mycellar.interfaces.client.web.behaviors.OnEventModelChangedAj
 import fr.peralta.mycellar.interfaces.client.web.components.shared.AjaxTool;
 import fr.peralta.mycellar.interfaces.client.web.components.shared.feedback.FormComponentFeedbackBorder;
 import fr.peralta.mycellar.interfaces.client.web.components.shared.list.SimpleList;
-import fr.peralta.mycellar.interfaces.client.web.components.wine.autocomplete.ProducerSimpleAutoComplete;
+import fr.peralta.mycellar.interfaces.client.web.components.wine.autocomplete.ProducerSimpleTypeahead;
 import fr.peralta.mycellar.interfaces.client.web.components.wine.cloud.AppellationSimpleTagCloud;
 import fr.peralta.mycellar.interfaces.client.web.components.wine.cloud.WineColorEnumSimpleTagCloud;
 import fr.peralta.mycellar.interfaces.client.web.components.wine.cloud.WineTypeEnumSimpleTagCloud;
@@ -60,7 +60,7 @@ public class WineSimpleList extends SimpleList<Wine> {
     private WineServiceFacade wineServiceFacade;
 
     private final AppellationSimpleTagCloud appellationSimpleTagCloud;
-    private final ProducerSimpleAutoComplete producerSimpleAutoComplete;
+    private final ProducerSimpleTypeahead producerSimpleTypeahead;
     private final WineTypeEnumSimpleTagCloud wineTypeEnumSimpleTagCloud;
     private final WineColorEnumSimpleTagCloud wineColorEnumSimpleTagCloud;
     private final NumberTextField<Integer> vintageTextField;
@@ -78,7 +78,7 @@ public class WineSimpleList extends SimpleList<Wine> {
         setOutputMarkupId(true);
         add(appellationSimpleTagCloud = new AppellationSimpleTagCloud(APPELLATION_COMPONENT_ID,
                 new StringResourceModel("appellation", this, null), searchFormModel, count));
-        add(producerSimpleAutoComplete = new ProducerSimpleAutoComplete(PRODUCER_COMPONENT_ID,
+        add(producerSimpleTypeahead = new ProducerSimpleTypeahead(PRODUCER_COMPONENT_ID,
                 new StringResourceModel("producer", this, null), searchFormModel));
         add(wineTypeEnumSimpleTagCloud = new WineTypeEnumSimpleTagCloud(TYPE_COMPONENT_ID,
                 new StringResourceModel("type", this, null), searchFormModel, count));
@@ -98,7 +98,7 @@ public class WineSimpleList extends SimpleList<Wine> {
         super.internalOnConfigure();
         boolean isValued = isValued();
         appellationSimpleTagCloud.setVisibilityAllowed(!isValued);
-        producerSimpleAutoComplete.setVisibilityAllowed(!isValued);
+        producerSimpleTypeahead.setVisibilityAllowed(!isValued);
         wineTypeEnumSimpleTagCloud.setVisibilityAllowed(!isValued);
         wineColorEnumSimpleTagCloud.setVisibilityAllowed(!isValued);
         vintageBorder.setVisibilityAllowed(!isValued);
@@ -109,7 +109,7 @@ public class WineSimpleList extends SimpleList<Wine> {
      */
     @Override
     protected boolean isReadyToSelect() {
-        return producerSimpleAutoComplete.isValued() || appellationSimpleTagCloud.isValued();
+        return producerSimpleTypeahead.isValued() || appellationSimpleTagCloud.isValued();
     }
 
     /**
@@ -126,9 +126,9 @@ public class WineSimpleList extends SimpleList<Wine> {
     @Override
     protected void onModelChanged(IEvent<?> event) {
         IEventSource source = event.getSource();
-        if (source == producerSimpleAutoComplete) {
+        if (source == producerSimpleTypeahead) {
             getSearchFormModel().getObject().replaceSet(FilterEnum.PRODUCER,
-                    producerSimpleAutoComplete.getModelObject());
+                    producerSimpleTypeahead.getModelObject());
         } else if (source == wineTypeEnumSimpleTagCloud) {
             getSearchFormModel().getObject().replaceSet(FilterEnum.TYPE,
                     wineTypeEnumSimpleTagCloud.getModelObject());
@@ -153,7 +153,7 @@ public class WineSimpleList extends SimpleList<Wine> {
     @Override
     protected Wine createDefaultObject() {
         Wine wine = new Wine();
-        wine.setProducer(producerSimpleAutoComplete.getModelObject());
+        wine.setProducer(producerSimpleTypeahead.getModelObject());
         wine.setAppellation(appellationSimpleTagCloud.getModelObject());
         wine.setType(wineTypeEnumSimpleTagCloud.getModelObject());
         wine.setColor(wineColorEnumSimpleTagCloud.getModelObject());

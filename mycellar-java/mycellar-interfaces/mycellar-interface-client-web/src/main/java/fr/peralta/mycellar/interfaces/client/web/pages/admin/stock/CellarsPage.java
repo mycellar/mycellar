@@ -68,16 +68,18 @@ public class CellarsPage extends AbstractListPage<Cellar, CellarOrderEnum, Cella
      * {@inheritDoc}
      */
     @Override
-    protected List<IColumn<Cellar>> getColumns() {
-        List<IColumn<Cellar>> columns = new ArrayList<IColumn<Cellar>>();
-        columns.add(new PropertyColumn<Cellar>(new ResourceModel("owner.email"),
-                CellarOrderEnum.OWNER_EMAIL.name(), "owner.email"));
-        columns.add(new PropertyColumn<Cellar>(new ResourceModel("owner.lastname"),
-                CellarOrderEnum.OWNER_LASTNAME.name(), "owner.lastname"));
-        columns.add(new PropertyColumn<Cellar>(new ResourceModel("owner.firstname"),
-                CellarOrderEnum.OWNER_FIRSTNAME.name(), "owner.firstname"));
-        columns.add(new PropertyColumn<Cellar>(new ResourceModel("name"), CellarOrderEnum.NAME
-                .name(), "name"));
+    protected List<IColumn<Cellar, CellarOrderEnum>> getColumns() {
+        List<IColumn<Cellar, CellarOrderEnum>> columns = new ArrayList<IColumn<Cellar, CellarOrderEnum>>();
+        columns.add(new PropertyColumn<Cellar, CellarOrderEnum>(new ResourceModel("owner.email"),
+                CellarOrderEnum.OWNER_EMAIL, "owner.email"));
+        columns.add(new PropertyColumn<Cellar, CellarOrderEnum>(
+                new ResourceModel("owner.lastname"), CellarOrderEnum.OWNER_LASTNAME,
+                "owner.lastname"));
+        columns.add(new PropertyColumn<Cellar, CellarOrderEnum>(
+                new ResourceModel("owner.firstname"), CellarOrderEnum.OWNER_FIRSTNAME,
+                "owner.firstname"));
+        columns.add(new PropertyColumn<Cellar, CellarOrderEnum>(new ResourceModel("name"),
+                CellarOrderEnum.NAME, "name"));
         return columns;
     }
 

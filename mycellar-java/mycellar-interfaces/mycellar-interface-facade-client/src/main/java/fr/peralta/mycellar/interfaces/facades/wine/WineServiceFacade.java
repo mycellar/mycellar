@@ -148,8 +148,8 @@ public interface WineServiceFacade {
      * @param count
      * @return
      */
-    List<Appellation> getAppellations(SearchForm searchForm, AppellationOrder order, int first,
-            int count);
+    List<Appellation> getAppellations(SearchForm searchForm, AppellationOrder order, long first,
+            long count);
 
     /**
      * @param regions
@@ -179,7 +179,7 @@ public interface WineServiceFacade {
      * @param count
      * @return
      */
-    List<Country> getCountries(SearchForm searchForm, CountryOrder orders, int first, int count);
+    List<Country> getCountries(SearchForm searchForm, CountryOrder orders, long first, long count);
 
     /**
      * @param countryId
@@ -205,7 +205,7 @@ public interface WineServiceFacade {
      * @param count
      * @return
      */
-    List<Format> getFormats(SearchForm searchForm, FormatOrder order, int first, int count);
+    List<Format> getFormats(SearchForm searchForm, FormatOrder order, long first, long count);
 
     /**
      * @param producerId
@@ -220,7 +220,7 @@ public interface WineServiceFacade {
      * @param count
      * @return
      */
-    List<Producer> getProducers(SearchForm searchForm, ProducerOrder order, int first, int count);
+    List<Producer> getProducers(SearchForm searchForm, ProducerOrder order, long first, long count);
 
     /**
      * @param term
@@ -247,7 +247,7 @@ public interface WineServiceFacade {
      * @param count
      * @return
      */
-    List<Region> getRegions(SearchForm searchForm, RegionOrder order, int first, int count);
+    List<Region> getRegions(SearchForm searchForm, RegionOrder order, long first, long count);
 
     /**
      * @param searchForm
@@ -269,7 +269,7 @@ public interface WineServiceFacade {
      * @param count
      * @return
      */
-    List<Wine> getWines(SearchForm searchForm, WineOrder order, int first, int count);
+    List<Wine> getWines(SearchForm searchForm, WineOrder order, long first, long count);
 
     /**
      * @param appellation

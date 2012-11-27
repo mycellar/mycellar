@@ -69,7 +69,7 @@ public class StockDataProvider extends
      * {@inheritDoc}
      */
     @Override
-    public Iterator<? extends Stock> iterator(int first, int count) {
+    public Iterator<? extends Stock> iterator(long first, long count) {
         return stockServiceFacade.getStocks(searchFormModel.getObject(), getState().getOrders(),
                 first, count).iterator();
     }
@@ -78,8 +78,8 @@ public class StockDataProvider extends
      * {@inheritDoc}
      */
     @Override
-    public int size() {
-        return (int) stockServiceFacade.countStocks(searchFormModel.getObject());
+    public long size() {
+        return stockServiceFacade.countStocks(searchFormModel.getObject());
     }
 
     /**

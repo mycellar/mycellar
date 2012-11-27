@@ -68,10 +68,10 @@ public class ProducersPage extends AbstractListPage<Producer, ProducerOrderEnum,
      * {@inheritDoc}
      */
     @Override
-    protected List<IColumn<Producer>> getColumns() {
-        List<IColumn<Producer>> columns = new ArrayList<IColumn<Producer>>();
-        columns.add(new PropertyColumn<Producer>(new ResourceModel("name"), ProducerOrderEnum.NAME
-                .name(), "name"));
+    protected List<IColumn<Producer, ProducerOrderEnum>> getColumns() {
+        List<IColumn<Producer, ProducerOrderEnum>> columns = new ArrayList<IColumn<Producer, ProducerOrderEnum>>();
+        columns.add(new PropertyColumn<Producer, ProducerOrderEnum>(new ResourceModel("name"),
+                ProducerOrderEnum.NAME, "name"));
         return columns;
     }
 

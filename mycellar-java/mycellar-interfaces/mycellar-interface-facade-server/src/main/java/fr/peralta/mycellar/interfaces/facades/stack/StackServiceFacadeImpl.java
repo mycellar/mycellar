@@ -67,7 +67,7 @@ public class StackServiceFacadeImpl implements StackServiceFacade {
      */
     @Override
     @Transactional(readOnly = true)
-    public List<Stack> getStacks(StackOrder orders, int first, int count) {
+    public List<Stack> getStacks(StackOrder orders, long first, long count) {
         return stackService.getAll(orders, first, count);
     }
 

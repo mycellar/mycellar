@@ -58,7 +58,7 @@ table th.actions {
   height: 20px;
 }
 
-.pagination-condensed a {
+.pagination-condensed ul > li > a, .pagination-condensed ul > li > span {
   padding: 0 5px;
   line-height: 20px;
 }
@@ -284,22 +284,6 @@ fieldset.step > legend:before {
 /** NORMAL BUTTON (.btn-navbar-normal) **/
 .navbar .btn-navbar.btn-navbar-normal {
   padding: 4px 10px;
-}
-
-/** OVERRIDE BOOTSTRAP **/
-
-.nav-collapse.collapse {
-  height:auto;
-}
-
-/** OVERRIDE TEXT COLOR IN NAVBAR **/
-.navbar,.navbar label {
-  color: #999999;
-}
-
-/** OVERRIDE MARGIN TOP IN NAVBAR FOR INPUTS **/
-.navbar-form input, .navbar-form select, .navbar-form .radio, .navbar-form .checkbox {
-    margin-top: 0px;
 }
 
 /** OVERRIDE PADDING-BOTTOM FOR LEGEND **/

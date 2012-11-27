@@ -32,7 +32,7 @@ public class ImageAjaxNavigationToolbar extends AjaxNavigationToolbar {
     /**
      * @param table
      */
-    public ImageAjaxNavigationToolbar(DataTable<?> table) {
+    public ImageAjaxNavigationToolbar(DataTable<?, ?> table) {
         super(table);
     }
 
@@ -40,7 +40,7 @@ public class ImageAjaxNavigationToolbar extends AjaxNavigationToolbar {
      * {@inheritDoc}
      */
     @Override
-    protected PagingNavigator newPagingNavigator(String navigatorId, DataTable<?> table) {
+    protected PagingNavigator newPagingNavigator(String navigatorId, DataTable<?, ?> table) {
         return new ImageAjaxPagingNavigator(navigatorId, table, 10);
     }
 

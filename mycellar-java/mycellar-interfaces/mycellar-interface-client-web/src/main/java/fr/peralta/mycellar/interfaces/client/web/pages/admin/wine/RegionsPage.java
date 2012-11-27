@@ -68,12 +68,12 @@ public class RegionsPage extends AbstractListPage<Region, RegionOrderEnum, Regio
      * {@inheritDoc}
      */
     @Override
-    protected List<IColumn<Region>> getColumns() {
-        List<IColumn<Region>> columns = new ArrayList<IColumn<Region>>();
-        columns.add(new PropertyColumn<Region>(new ResourceModel("country"),
-                RegionOrderEnum.COUNTRY_NAME.name(), "country.name"));
-        columns.add(new PropertyColumn<Region>(new ResourceModel("name"), RegionOrderEnum.NAME
-                .name(), "name"));
+    protected List<IColumn<Region, RegionOrderEnum>> getColumns() {
+        List<IColumn<Region, RegionOrderEnum>> columns = new ArrayList<IColumn<Region, RegionOrderEnum>>();
+        columns.add(new PropertyColumn<Region, RegionOrderEnum>(new ResourceModel("country"),
+                RegionOrderEnum.COUNTRY_NAME, "country.name"));
+        columns.add(new PropertyColumn<Region, RegionOrderEnum>(new ResourceModel("name"),
+                RegionOrderEnum.NAME, "name"));
         return columns;
     }
 

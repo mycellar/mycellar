@@ -116,7 +116,7 @@ public interface StockServiceFacade {
      * @param first
      * @return
      */
-    List<Cellar> getCellars(SearchForm searchForm, CellarOrder order, int first, int count);
+    List<Cellar> getCellars(SearchForm searchForm, CellarOrder order, long first, long count);
 
     /**
      * @param searchForm
@@ -133,8 +133,8 @@ public interface StockServiceFacade {
      * @param first
      * @return
      */
-    List<CellarShare> getCellarShares(SearchForm searchForm, CellarShareOrder order, int first,
-            int count);
+    List<CellarShare> getCellarShares(SearchForm searchForm, CellarShareOrder order, long first,
+            long count);
 
     /**
      * @param searchForm
@@ -143,7 +143,7 @@ public interface StockServiceFacade {
      * @param count
      * @return
      */
-    List<Movement> getMovements(SearchForm searchForm, MovementOrder orders, int first, int count);
+    List<Movement> getMovements(SearchForm searchForm, MovementOrder orders, long first, long count);
 
     /**
      * @param searchForm
@@ -152,7 +152,7 @@ public interface StockServiceFacade {
      * @param count
      * @return
      */
-    List<Stock> getStocks(SearchForm searchForm, StockOrder orders, int first, int count);
+    List<Stock> getStocks(SearchForm searchForm, StockOrder orders, long first, long count);
 
     /**
      * @param cellar

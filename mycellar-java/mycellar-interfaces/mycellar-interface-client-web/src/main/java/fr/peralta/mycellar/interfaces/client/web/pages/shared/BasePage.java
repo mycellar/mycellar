@@ -19,7 +19,9 @@
 package fr.peralta.mycellar.interfaces.client.web.pages.shared;
 
 import org.apache.wicket.devutils.debugbar.DebugBar;
-import org.apache.wicket.markup.html.IHeaderResponse;
+import org.apache.wicket.markup.head.CssHeaderItem;
+import org.apache.wicket.markup.head.IHeaderResponse;
+import org.apache.wicket.markup.head.JavaScriptHeaderItem;
 import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.link.BookmarkablePageLink;
 import org.apache.wicket.protocol.http.WebApplication;
@@ -69,15 +71,15 @@ public abstract class BasePage extends SecureWebPage {
      */
     @Override
     public void renderHead(IHeaderResponse response) {
-        response.renderCSSReference(CssReferences.getBootstrapCss());
-        response.renderCSSReference(CssReferences.getBootstrapDatePickerCss());
-        response.renderCSSReference(CssReferences.getMasterCss());
-        response.renderCSSReference(CssReferences.getBootstrapResponsiveCss());
-        response.renderCSSReference(CssReferences.getMasterResponsiveCss());
-        response.renderJavaScriptReference(JavaScriptReferences.getJqueryJs());
-        response.renderJavaScriptReference(JavaScriptReferences.getBootstrapJs());
-        response.renderJavaScriptReference(JavaScriptReferences.getBootstrapDatePickerJs());
-        response.renderJavaScriptReference(JavaScriptReferences.getMasterJs());
+        response.render(CssHeaderItem.forReference(CssReferences.getBootstrapCss()));
+        response.render(CssHeaderItem.forReference(CssReferences.getBootstrapDatePickerCss()));
+        response.render(CssHeaderItem.forReference(CssReferences.getMasterCss()));
+        response.render(CssHeaderItem.forReference(CssReferences.getBootstrapResponsiveCss()));
+        response.render(CssHeaderItem.forReference(CssReferences.getMasterResponsiveCss()));
+        response.render(JavaScriptHeaderItem.forReference(JavaScriptReferences.getBootstrapJs()));
+        response.render(JavaScriptHeaderItem.forReference(JavaScriptReferences
+                .getBootstrapDatePickerJs()));
+        response.render(JavaScriptHeaderItem.forReference(JavaScriptReferences.getMasterJs()));
     }
 
     protected Class<? extends BasePage> getMenuClass() {

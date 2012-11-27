@@ -19,9 +19,9 @@
 package fr.peralta.mycellar.interfaces.client.web.components.shared.data;
 
 import org.apache.commons.lang3.builder.ToStringBuilder;
-import org.apache.wicket.IClusterable;
 import org.apache.wicket.extensions.markup.html.repeater.data.sort.ISortState;
 import org.apache.wicket.extensions.markup.html.repeater.data.sort.SortOrder;
+import org.apache.wicket.util.io.IClusterable;
 import org.apache.wicket.util.lang.Args;
 
 import fr.peralta.mycellar.domain.shared.repository.AbstractEntityOrder;
@@ -30,7 +30,7 @@ import fr.peralta.mycellar.domain.shared.repository.OrderWayEnum;
 /**
  * @author speralta
  */
-public class MultipleSortState<E, O extends AbstractEntityOrder<E, O>> implements ISortState,
+public class MultipleSortState<E, O extends AbstractEntityOrder<E, O>> implements ISortState<E>,
         IClusterable {
 
     private static final long serialVersionUID = 201111231012L;
@@ -49,18 +49,14 @@ public class MultipleSortState<E, O extends AbstractEntityOrder<E, O>> implement
      *      org.apache.wicket.extensions.markup.html.repeater.data.sort.SortOrder)
      */
     @Override
-    public void setPropertySortOrder(final String property, final SortOrder order) {
+    public void setPropertySortOrder(final E property, final SortOrder order) {
         Args.notNull(property, "property");
         Args.notNull(order, "order");
 
-        E propertyEnum = orders.getFrom(property);
-
-        if (propertyEnum != null) {
-            if (order == SortOrder.NONE) {
-                orders.remove(propertyEnum);
-            } else {
-                orders.add(propertyEnum, getOrder(order));
-            }
+        if (order == SortOrder.NONE) {
+            orders.remove(property);
+        } else {
+            orders.add(property, getOrder(order));
         }
     }
 
@@ -105,16 +101,11 @@ public class MultipleSortState<E, O extends AbstractEntityOrder<E, O>> implement
      * @see org.apache.wicket.extensions.markup.html.repeater.data.sort.ISortState#getPropertySortOrder(java.lang.String)
      */
     @Override
-    public SortOrder getPropertySortOrder(final String property) {
+    public SortOrder getPropertySortOrder(final E property) {
         Args.notNull(property, "property");
 
-        E propertyEnum = orders.getFrom(property);
-        if (propertyEnum != null) {
-            OrderWayEnum way = orders.get(propertyEnum);
-            return getOrder(way);
-        } else {
-            return SortOrder.NONE;
-        }
+        OrderWayEnum way = orders.get(property);
+        return getOrder(way);
     }
 
     /**

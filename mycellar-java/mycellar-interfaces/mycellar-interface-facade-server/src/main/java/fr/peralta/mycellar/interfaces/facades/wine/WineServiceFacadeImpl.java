@@ -208,7 +208,7 @@ public class WineServiceFacadeImpl implements WineServiceFacade {
     @Override
     @Transactional(readOnly = true)
     public List<Appellation> getAppellations(SearchForm searchForm, AppellationOrder order,
-            int first, int count) {
+            long first, long count) {
         return appellationService.getAll(searchForm, order, first, count);
     }
 
@@ -246,8 +246,8 @@ public class WineServiceFacadeImpl implements WineServiceFacade {
      */
     @Override
     @Transactional(readOnly = true)
-    public List<Country> getCountries(SearchForm searchForm, CountryOrder orders, int first,
-            int count) {
+    public List<Country> getCountries(SearchForm searchForm, CountryOrder orders, long first,
+            long count) {
         return countryService.getAll(searchForm, orders, first, count);
     }
 
@@ -284,7 +284,7 @@ public class WineServiceFacadeImpl implements WineServiceFacade {
      */
     @Override
     @Transactional(readOnly = true)
-    public List<Format> getFormats(SearchForm searchForm, FormatOrder order, int first, int count) {
+    public List<Format> getFormats(SearchForm searchForm, FormatOrder order, long first, long count) {
         return formatService.getAll(searchForm, order, first, count);
     }
 
@@ -302,8 +302,8 @@ public class WineServiceFacadeImpl implements WineServiceFacade {
      */
     @Override
     @Transactional(readOnly = true)
-    public List<Producer> getProducers(SearchForm searchForm, ProducerOrder orders, int first,
-            int count) {
+    public List<Producer> getProducers(SearchForm searchForm, ProducerOrder orders, long first,
+            long count) {
         return producerService.getAll(searchForm, orders, first, count);
     }
 
@@ -340,7 +340,7 @@ public class WineServiceFacadeImpl implements WineServiceFacade {
      */
     @Override
     @Transactional(readOnly = true)
-    public List<Region> getRegions(SearchForm searchForm, RegionOrder order, int first, int count) {
+    public List<Region> getRegions(SearchForm searchForm, RegionOrder order, long first, long count) {
         return regionService.getAll(searchForm, order, first, count);
     }
 
@@ -367,7 +367,7 @@ public class WineServiceFacadeImpl implements WineServiceFacade {
      */
     @Override
     @Transactional(readOnly = true)
-    public List<Wine> getWines(SearchForm searchForm, WineOrder orders, int first, int count) {
+    public List<Wine> getWines(SearchForm searchForm, WineOrder orders, long first, long count) {
         return wineService.getAll(searchForm, orders, first, count);
     }
 
