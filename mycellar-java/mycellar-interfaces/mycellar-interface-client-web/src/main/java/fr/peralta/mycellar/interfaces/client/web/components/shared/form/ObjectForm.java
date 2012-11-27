@@ -49,7 +49,7 @@ public abstract class ObjectForm<O> extends Form<O> {
      * @param searchFormModel
      */
     public ObjectForm(String id, IModel<SearchForm> searchFormModel) {
-        super(id, new CompoundPropertyModel<O>((O) null));
+        super(id);
         this.searchFormModel = searchFormModel;
         add(new WebMarkupContainer(EDIT_PANEL_COMPONENT_ID).setOutputMarkupId(true));
         add(new FeedbackPanel("feedback", new ContainerVisibleFeedbackMessageFilter(this)));
