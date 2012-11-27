@@ -107,7 +107,7 @@ public class TotalPanel extends GenericPanel<Booking> {
                         }
                     }
                 }
-                return rendererServiceFacade.render(sum * 0.196f);
+                return rendererServiceFacade.render(sum - (sum / 1.196f));
             }
 
         }));
