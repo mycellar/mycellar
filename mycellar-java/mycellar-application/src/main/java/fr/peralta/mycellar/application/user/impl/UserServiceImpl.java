@@ -61,10 +61,10 @@ public class UserServiceImpl extends
      * {@inheritDoc}
      */
     @Override
-    public void resetPasswordRequest(String email) {
+    public void resetPasswordRequest(String email, String url) {
         User user = userRepository.getByEmail(email);
         if (user != null) {
-            resetPasswordRequestService.createAndSendEmail(user);
+            resetPasswordRequestService.createAndSendEmail(user, url);
         }
 
     }

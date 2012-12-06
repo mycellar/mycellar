@@ -52,6 +52,7 @@ public abstract class JpaSimpleRepository<E extends IdentifiedEntity> implements
     public final E save(E entity) {
         E result = entityManager.merge(entity);
         logger.debug("Entity merged {}.", result);
+        postSave(entity);
         return result;
     }
 
@@ -61,8 +62,9 @@ public abstract class JpaSimpleRepository<E extends IdentifiedEntity> implements
     @Override
     public final void delete(E entity) {
         E toRemove = entityManager.find(getEntityClass(), entity.getId());
-        logger.debug("Entity removed {}.", toRemove);
         entityManager.remove(toRemove);
+        logger.debug("Entity removed {}.", toRemove);
+        postDelete(entity);
     }
 
     // To override
@@ -71,6 +73,22 @@ public abstract class JpaSimpleRepository<E extends IdentifiedEntity> implements
      * @return
      */
     protected abstract Class<E> getEntityClass();
+
+    // Could be overriden
+
+    /**
+     * @param entity
+     */
+    protected void postSave(E entity) {
+
+    }
+
+    /**
+     * @param entity
+     */
+    protected void postDelete(E entity) {
+
+    }
 
     // Beans methods
 

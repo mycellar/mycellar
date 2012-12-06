@@ -26,6 +26,8 @@ import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.form.EmailTextField;
 import org.apache.wicket.markup.html.form.Form;
 import org.apache.wicket.model.Model;
+import org.apache.wicket.request.Url;
+import org.apache.wicket.request.cycle.RequestCycle;
 import org.apache.wicket.request.mapper.parameter.PageParameters;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 import org.slf4j.Logger;
@@ -65,7 +67,8 @@ public class ResetPasswordRequestPage extends HomeSuperPage {
         @Override
         protected void onSubmit(AjaxRequestTarget target, Form<?> form) {
             String email = (String) form.getModelObject();
-            userServiceFacade.resetPasswordRequest(email);
+            userServiceFacade.resetPasswordRequest(email, RequestCycle.get().getUrlRenderer()
+                    .renderFullUrl(Url.parse(urlFor(ResetPasswordPage.class, null).toString())));
             send(getParent(), Broadcast.BUBBLE, Action.SAVE);
         }
 

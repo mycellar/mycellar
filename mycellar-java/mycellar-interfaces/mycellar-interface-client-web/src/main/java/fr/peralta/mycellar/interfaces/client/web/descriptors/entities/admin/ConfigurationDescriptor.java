@@ -16,26 +16,28 @@
  * You should have received a copy of the GNU General Public License
  * along with MyCellar. If not, see <http://www.gnu.org/licenses/>.
  */
-package fr.peralta.mycellar.interfaces.client.web.descriptors.menu.admin;
+package fr.peralta.mycellar.interfaces.client.web.descriptors.entities.admin;
 
 import org.springframework.stereotype.Component;
 
-import fr.peralta.mycellar.interfaces.client.web.descriptors.menu.shared.IMenuDescriptor;
+import fr.peralta.mycellar.domain.admin.Configuration;
+import fr.peralta.mycellar.interfaces.client.web.descriptors.entities.shared.IEntityDescriptor;
 import fr.peralta.mycellar.interfaces.client.web.descriptors.shared.AbstractDescriptor;
-import fr.peralta.mycellar.interfaces.client.web.pages.admin.ListPage;
+import fr.peralta.mycellar.interfaces.client.web.pages.admin.admin.ConfigurationsPage;
 
 /**
  * @author speralta
  */
 @Component
-public class ListPageDescriptor extends AbstractDescriptor implements IMenuDescriptor<ListPage> {
+public class ConfigurationDescriptor extends AbstractDescriptor implements
+        IEntityDescriptor<Configuration, ConfigurationsPage> {
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public Class<ListPage> getMenuableClass() {
-        return ListPage.class;
+    public Class<ConfigurationsPage> getListPageClass() {
+        return ConfigurationsPage.class;
     }
 
     /**
@@ -43,23 +45,15 @@ public class ListPageDescriptor extends AbstractDescriptor implements IMenuDescr
      */
     @Override
     public String getTitleKey() {
-        return "lists";
+        return "configurations";
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public String getParentKey() {
-        return "adminMenuHeader";
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public int getWeight() {
-        return 10200;
+    public String getHeaderKey() {
+        return "adminHeader";
     }
 
 }

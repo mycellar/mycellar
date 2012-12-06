@@ -35,10 +35,12 @@ import org.wicketstuff.security.hive.config.PolicyFileHiveFactory;
 import org.wicketstuff.security.hive.config.SwarmPolicyFileHiveFactory;
 import org.wicketstuff.security.swarm.SwarmWebApplication;
 
+import fr.peralta.mycellar.domain.admin.ConfigurationKeyEnum;
 import fr.peralta.mycellar.domain.stock.AccessRightEnum;
 import fr.peralta.mycellar.domain.wine.WineColorEnum;
 import fr.peralta.mycellar.domain.wine.WineTypeEnum;
 import fr.peralta.mycellar.interfaces.client.web.converters.AccessRightEnumConverter;
+import fr.peralta.mycellar.interfaces.client.web.converters.ConfigurationKeyEnumConverter;
 import fr.peralta.mycellar.interfaces.client.web.converters.LocalDateConverter;
 import fr.peralta.mycellar.interfaces.client.web.converters.WineColorEnumConverter;
 import fr.peralta.mycellar.interfaces.client.web.converters.WineTypeEnumConverter;
@@ -48,6 +50,8 @@ import fr.peralta.mycellar.interfaces.client.web.pages.admin.AdminPage;
 import fr.peralta.mycellar.interfaces.client.web.pages.admin.ListPage;
 import fr.peralta.mycellar.interfaces.client.web.pages.admin.NewVintagesPage;
 import fr.peralta.mycellar.interfaces.client.web.pages.admin.StackPage;
+import fr.peralta.mycellar.interfaces.client.web.pages.admin.admin.ConfigurationPage;
+import fr.peralta.mycellar.interfaces.client.web.pages.admin.admin.ConfigurationsPage;
 import fr.peralta.mycellar.interfaces.client.web.pages.admin.booking.BookingEventPage;
 import fr.peralta.mycellar.interfaces.client.web.pages.admin.booking.BookingPage;
 import fr.peralta.mycellar.interfaces.client.web.pages.admin.stock.CellarPage;
@@ -176,6 +180,7 @@ public abstract class MyCellarWebApplication extends SwarmWebApplication {
         mountPage("/admin/lists/cellars",
                 fr.peralta.mycellar.interfaces.client.web.pages.admin.stock.CellarsPage.class);
         mountPage("/admin/lists/cellarShares", CellarSharesPage.class);
+        mountPage("/admin/lists/configurations", ConfigurationsPage.class);
         mountPage("/admin/lists/contacts",
                 fr.peralta.mycellar.interfaces.client.web.pages.admin.contact.ContactsPage.class);
         mountPage("/admin/lists/countries", CountriesPage.class);
@@ -191,6 +196,7 @@ public abstract class MyCellarWebApplication extends SwarmWebApplication {
         mountPage("/admin/edit/bookingEvent", BookingEventPage.class);
         mountPage("/admin/edit/cellar", CellarPage.class);
         mountPage("/admin/edit/cellarShare", CellarSharePage.class);
+        mountPage("/admin/edit/configuration", ConfigurationPage.class);
         mountPage("/admin/edit/contact",
                 fr.peralta.mycellar.interfaces.client.web.pages.admin.contact.ContactPage.class);
         mountPage("/admin/edit/country", CountryPage.class);
@@ -227,6 +233,7 @@ public abstract class MyCellarWebApplication extends SwarmWebApplication {
         converterLocator.set(WineTypeEnum.class, new WineTypeEnumConverter());
         converterLocator.set(WineColorEnum.class, new WineColorEnumConverter());
         converterLocator.set(AccessRightEnum.class, new AccessRightEnumConverter());
+        converterLocator.set(ConfigurationKeyEnum.class, new ConfigurationKeyEnumConverter());
         return converterLocator;
     }
 

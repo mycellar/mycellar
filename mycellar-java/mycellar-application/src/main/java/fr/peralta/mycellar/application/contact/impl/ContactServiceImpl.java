@@ -30,6 +30,7 @@ import org.springframework.mail.javamail.MimeMessagePreparator;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
+import fr.peralta.mycellar.application.admin.ConfigurationService;
 import fr.peralta.mycellar.application.contact.ContactService;
 import fr.peralta.mycellar.application.shared.AbstractEntityService;
 import fr.peralta.mycellar.domain.contact.Contact;
@@ -47,6 +48,8 @@ import fr.peralta.mycellar.domain.wine.Producer;
 public class ContactServiceImpl extends
         AbstractEntityService<Contact, ContactOrderEnum, ContactOrder, ContactRepository> implements
         ContactService {
+
+    private ConfigurationService configurationService;
 
     private ContactRepository contactRepository;
 
@@ -105,8 +108,8 @@ public class ContactServiceImpl extends
                 @Override
                 public void prepare(MimeMessage mimeMessage) throws Exception {
                     MimeMessageHelper helper = new MimeMessageHelper(mimeMessage);
-                    helper.setTo("stephanie@cave-et-terroirs.fr");
-                    helper.setFrom("contact@mycellar.peralta.fr");
+                    helper.setTo(configurationService.getReminderAddressReceivers());
+                    helper.setFrom(configurationService.getMailAddressSender());
                     helper.setSubject("Contacts à recontacter");
                     helper.setText(content.toString());
                 }

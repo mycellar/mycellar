@@ -16,45 +16,34 @@
  * You should have received a copy of the GNU General Public License
  * along with MyCellar. If not, see <http://www.gnu.org/licenses/>.
  */
-package fr.peralta.mycellar.application.user;
-
-import java.util.List;
+package fr.peralta.mycellar.application.admin;
 
 import fr.peralta.mycellar.application.shared.EntityService;
-import fr.peralta.mycellar.domain.shared.exception.BusinessException;
-import fr.peralta.mycellar.domain.user.User;
-import fr.peralta.mycellar.domain.user.repository.UserOrder;
-import fr.peralta.mycellar.domain.user.repository.UserOrderEnum;
+import fr.peralta.mycellar.domain.admin.Configuration;
+import fr.peralta.mycellar.domain.admin.ConfigurationKeyEnum;
+import fr.peralta.mycellar.domain.admin.repository.ConfigurationOrder;
+import fr.peralta.mycellar.domain.admin.repository.ConfigurationOrderEnum;
 
 /**
  * @author speralta
  */
-public interface UserService extends EntityService<User, UserOrderEnum, UserOrder> {
+public interface ConfigurationService extends
+        EntityService<Configuration, ConfigurationOrderEnum, ConfigurationOrder> {
 
     /**
-     * @param login
-     * @param password
+     * @param key
      * @return
      */
-    User authenticate(String login, String password);
+    Configuration find(ConfigurationKeyEnum key);
 
     /**
-     * @param input
      * @return
      */
-    List<User> getAllLike(String input);
+    String[] getReminderAddressReceivers();
 
     /**
-     * @param user
-     * @param password
-     * @throws BusinessException
+     * @return
      */
-    void saveUserPassword(User user, String password) throws BusinessException;
-
-    /**
-     * @param email
-     * @param url
-     */
-    void resetPasswordRequest(String email, String url);
+    String getMailAddressSender();
 
 }

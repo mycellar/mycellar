@@ -118,8 +118,8 @@ public class UserServiceFacadeImpl implements UserServiceFacade {
      */
     @Override
     @Transactional(readOnly = false)
-    public void resetPasswordRequest(String email) {
-        userService.resetPasswordRequest(email);
+    public void resetPasswordRequest(String email, String url) {
+        userService.resetPasswordRequest(email, url);
     }
 
     /**

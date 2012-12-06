@@ -51,7 +51,7 @@ public class AdminPageDescriptor extends AbstractDescriptor implements IMenuDesc
      */
     @Override
     public String getParentKey() {
-        return "adminHeader";
+        return "adminMenuHeader";
     }
 
     /**

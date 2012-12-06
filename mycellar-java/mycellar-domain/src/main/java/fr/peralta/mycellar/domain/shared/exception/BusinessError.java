@@ -43,6 +43,11 @@ public enum BusinessError {
     CELLAR_SHARE_00001("email"),
 
     /*
+     * Configuration
+     */
+    CONFIGURATION_00001("key"),
+
+    /*
      * Contact
      */
     CONTACT_00001("producer"),

@@ -77,9 +77,10 @@ public interface UserServiceFacade {
 
     /**
      * @param email
+     * @param url
      * @throws BusinessException
      */
-    void resetPasswordRequest(String email);
+    void resetPasswordRequest(String email, String url);
 
     /**
      * @param key

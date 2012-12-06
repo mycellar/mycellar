@@ -16,37 +16,23 @@
  * You should have received a copy of the GNU General Public License
  * along with MyCellar. If not, see <http://www.gnu.org/licenses/>.
  */
-package fr.peralta.mycellar.application.user;
+package fr.peralta.mycellar.domain.admin.repository;
 
-import fr.peralta.mycellar.application.shared.SimpleService;
-import fr.peralta.mycellar.domain.user.ResetPasswordRequest;
-import fr.peralta.mycellar.domain.user.User;
+import fr.peralta.mycellar.domain.shared.repository.AbstractEntityOrder;
 
 /**
  * @author speralta
  */
-public interface ResetPasswordRequestService extends SimpleService<ResetPasswordRequest> {
+public class ConfigurationOrder extends AbstractEntityOrder<ConfigurationOrderEnum, ConfigurationOrder> {
+
+    private static final long serialVersionUID = 201111291820L;
 
     /**
-     * 
+     * {@inheritDoc}
      */
-    void cleanOldRequests();
-
-    /**
-     * @param user
-     * @param url
-     */
-    void createAndSendEmail(User user, String url);
-
-    /**
-     * @param key
-     * @return
-     */
-    ResetPasswordRequest getByKey(String key);
-
-    /**
-     * @param user
-     */
-    void deleteAllForUser(User user);
+    @Override
+    public ConfigurationOrderEnum getFrom(String property) {
+        return ConfigurationOrderEnum.valueOf(property);
+    }
 
 }

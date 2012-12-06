@@ -52,7 +52,7 @@ public class NewVintagesPageDescriptor extends AbstractDescriptor implements
      */
     @Override
     public String getParentKey() {
-        return "adminHeader";
+        return "adminMenuHeader";
     }
 
     /**

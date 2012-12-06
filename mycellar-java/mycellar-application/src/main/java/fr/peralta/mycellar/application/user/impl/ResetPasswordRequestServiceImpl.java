@@ -33,6 +33,7 @@ import org.springframework.mail.javamail.MimeMessagePreparator;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
+import fr.peralta.mycellar.application.admin.ConfigurationService;
 import fr.peralta.mycellar.application.shared.AbstractSimpleService;
 import fr.peralta.mycellar.application.user.ResetPasswordRequestService;
 import fr.peralta.mycellar.domain.shared.exception.BusinessException;
@@ -51,6 +52,7 @@ public class ResetPasswordRequestServiceImpl extends
     private static SecureRandom secureRandom = new SecureRandom();
 
     private ResetPasswordRequestRepository resetPasswordRequestRepository;
+    private ConfigurationService configurationService;
     private JavaMailSender javaMailSender;
 
     /**
@@ -66,7 +68,7 @@ public class ResetPasswordRequestServiceImpl extends
      * {@inheritDoc}
      */
     @Override
-    public void createAndSendEmail(User user) {
+    public void createAndSendEmail(User user, String url) {
         // Create request
         ResetPasswordRequest request = new ResetPasswordRequest();
         request.setDateTime(new LocalDateTime());
@@ -79,8 +81,7 @@ public class ResetPasswordRequestServiceImpl extends
         final String email = user.getEmail();
         final String address;
         try {
-            address = "http://mycellar.peralta.fr/passwordReset?key="
-                    + URLEncoder.encode(request.getKey(), "UTF-8");
+            address = url + "?key=" + URLEncoder.encode(request.getKey(), "UTF-8");
         } catch (UnsupportedEncodingException e) {
             throw new RuntimeException("UTF-8 encoding not supported.", e);
         }
@@ -90,7 +91,7 @@ public class ResetPasswordRequestServiceImpl extends
             public void prepare(MimeMessage mimeMessage) throws Exception {
                 MimeMessageHelper helper = new MimeMessageHelper(mimeMessage);
                 helper.setTo(email);
-                helper.setFrom("contact@mycellar.peralta.fr");
+                helper.setFrom(configurationService.getMailAddressSender());
                 helper.setSubject("Changement de mot de passe");
                 helper.setText("Allez à l'adresse suivante : " + address);
             }
@@ -154,6 +155,15 @@ public class ResetPasswordRequestServiceImpl extends
     @Autowired
     public void setJavaMailSender(JavaMailSender javaMailSender) {
         this.javaMailSender = javaMailSender;
+    }
+
+    /**
+     * @param configurationService
+     *            the configurationService to set
+     */
+    @Autowired
+    public void setConfigurationService(ConfigurationService configurationService) {
+        this.configurationService = configurationService;
     }
 
 }

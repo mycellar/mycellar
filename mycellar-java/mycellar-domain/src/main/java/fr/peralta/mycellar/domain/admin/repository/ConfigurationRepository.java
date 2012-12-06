@@ -16,37 +16,22 @@
  * You should have received a copy of the GNU General Public License
  * along with MyCellar. If not, see <http://www.gnu.org/licenses/>.
  */
-package fr.peralta.mycellar.application.user;
+package fr.peralta.mycellar.domain.admin.repository;
 
-import fr.peralta.mycellar.application.shared.SimpleService;
-import fr.peralta.mycellar.domain.user.ResetPasswordRequest;
-import fr.peralta.mycellar.domain.user.User;
+import fr.peralta.mycellar.domain.admin.Configuration;
+import fr.peralta.mycellar.domain.admin.ConfigurationKeyEnum;
+import fr.peralta.mycellar.domain.shared.repository.EntityRepository;
 
 /**
  * @author speralta
  */
-public interface ResetPasswordRequestService extends SimpleService<ResetPasswordRequest> {
-
-    /**
-     * 
-     */
-    void cleanOldRequests();
-
-    /**
-     * @param user
-     * @param url
-     */
-    void createAndSendEmail(User user, String url);
+public interface ConfigurationRepository extends
+        EntityRepository<Configuration, ConfigurationOrderEnum, ConfigurationOrder> {
 
     /**
      * @param key
      * @return
      */
-    ResetPasswordRequest getByKey(String key);
-
-    /**
-     * @param user
-     */
-    void deleteAllForUser(User user);
+    Configuration find(ConfigurationKeyEnum key);
 
 }

@@ -21,8 +21,8 @@ package fr.peralta.mycellar.interfaces.client.web.components.shared.feedback;
 import java.util.List;
 
 import org.apache.wicket.AttributeModifier;
-import org.apache.wicket.Session;
 import org.apache.wicket.feedback.ContainerFeedbackMessageFilter;
+import org.apache.wicket.feedback.FeedbackCollector;
 import org.apache.wicket.feedback.FeedbackMessage;
 import org.apache.wicket.feedback.IFeedback;
 import org.apache.wicket.feedback.IFeedbackMessageFilter;
@@ -108,8 +108,8 @@ public class FormComponentFeedbackBorder extends Border implements IFeedback {
     @Override
     protected void onBeforeRender() {
         Label errorMsg = (Label) get("errorMsg");
-        List<FeedbackMessage> messages = Session.get().getFeedbackMessages()
-                .messages(getMessagesFilter());
+        List<FeedbackMessage> messages = new FeedbackCollector(getPage())
+                .collect(getMessagesFilter());
         FeedbackMessage messageToRender = null;
         for (FeedbackMessage message : messages) {
             if (((messageToRender == null) || (message.getLevel() > messageToRender.getLevel()))

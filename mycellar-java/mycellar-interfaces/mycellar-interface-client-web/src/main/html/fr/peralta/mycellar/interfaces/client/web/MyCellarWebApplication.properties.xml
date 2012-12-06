@@ -24,6 +24,8 @@
   <entry key="cellarShares">Partages de cave</entry>
   <entry key="color">Couleur</entry>
   <entry key="colors">Couleurs</entry>
+  <entry key="configuration">Paramétrage</entry>
+  <entry key="configurations">Paramétrages</entry>
   <entry key="contact">Contact</entry>
   <entry key="contacts">Contacts</entry>
   <entry key="country">Pays</entry>
@@ -44,6 +46,7 @@
   <entry key="wines">Vins</entry>
   
   <!-- ENTITIES HEADERS DESCRIPTORS -->
+  <entry key="adminHeader">admin</entry>
   <entry key="bookingHeader">booking</entry>
   <entry key="wineHeader">wine</entry>
   <entry key="userHeader">user</entry>
@@ -55,6 +58,7 @@
   <entry key="BusinessError.BOTTLE_00001">Cette bouteille existe déjà.</entry>
   <entry key="BusinessError.CELLAR_00001">Une cave existe déjà pour ce nom.</entry>
   <entry key="BusinessError.CELLAR_SHARE_00001">Cette cave est déjà partagée avec cet email.</entry>
+  <entry key="BusinessError.CONFIGURATION_00001">Un paramétrage existe déjà pour cette clé.</entry>
   <entry key="BusinessError.CONTACT_00001">Un contact existe déjà pour ce producteur et cette date.</entry>
   <entry key="BusinessError.COUNTRY_00001">Ce pays existe déjà.</entry>
   <entry key="BusinessError.FORMAT_00001">Un format existe déjà pour ce nom et cette quantité.</entry>

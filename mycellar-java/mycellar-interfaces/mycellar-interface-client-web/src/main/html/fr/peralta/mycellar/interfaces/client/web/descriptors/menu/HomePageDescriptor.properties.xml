@@ -3,7 +3,7 @@
 <properties>
   <!-- Menu headers -->
   <entry key="cellarsHeader">Gestion de cave</entry>
-  <entry key="adminHeader">Administration</entry>
+  <entry key="adminMenuHeader">Administration</entry>
   <entry key="bookingMenuHeader">Cave et Terroirs</entry>
 
   <!-- Menu title -->

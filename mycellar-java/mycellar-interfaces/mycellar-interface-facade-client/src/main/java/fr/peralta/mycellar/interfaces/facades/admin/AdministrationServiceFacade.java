@@ -16,45 +16,48 @@
  * You should have received a copy of the GNU General Public License
  * along with MyCellar. If not, see <http://www.gnu.org/licenses/>.
  */
-package fr.peralta.mycellar.application.user;
+package fr.peralta.mycellar.interfaces.facades.admin;
 
 import java.util.List;
 
-import fr.peralta.mycellar.application.shared.EntityService;
+import fr.peralta.mycellar.domain.admin.Configuration;
+import fr.peralta.mycellar.domain.admin.repository.ConfigurationOrder;
 import fr.peralta.mycellar.domain.shared.exception.BusinessException;
-import fr.peralta.mycellar.domain.user.User;
-import fr.peralta.mycellar.domain.user.repository.UserOrder;
-import fr.peralta.mycellar.domain.user.repository.UserOrderEnum;
 
 /**
  * @author speralta
  */
-public interface UserService extends EntityService<User, UserOrderEnum, UserOrder> {
+public interface AdministrationServiceFacade {
 
     /**
-     * @param login
-     * @param password
      * @return
      */
-    User authenticate(String login, String password);
+    long countConfigurations();
 
     /**
-     * @param input
+     * @param configurationId
      * @return
      */
-    List<User> getAllLike(String input);
+    Configuration getConfigurationById(Integer configurationId);
 
     /**
-     * @param user
-     * @param password
+     * @param orders
+     * @param first
+     * @param count
+     * @return
+     */
+    List<Configuration> getConfigurations(ConfigurationOrder orders, long first, long count);
+
+    /**
+     * @param configuration
      * @throws BusinessException
      */
-    void saveUserPassword(User user, String password) throws BusinessException;
+    void saveConfiguration(Configuration configuration) throws BusinessException;
 
     /**
-     * @param email
-     * @param url
+     * @param configuration
+     * @throws BusinessException
      */
-    void resetPasswordRequest(String email, String url);
+    void deleteConfiguration(Configuration configuration) throws BusinessException;
 
 }

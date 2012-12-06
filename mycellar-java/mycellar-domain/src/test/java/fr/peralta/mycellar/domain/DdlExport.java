@@ -19,9 +19,9 @@ package fr.peralta.mycellar.domain;
  * along with MyCellar. If not, see <http://www.gnu.org/licenses/>.
  */
 
-import org.hibernate.cfg.Configuration;
 import org.hibernate.tool.hbm2ddl.SchemaExport;
 
+import fr.peralta.mycellar.domain.admin.Configuration;
 import fr.peralta.mycellar.domain.booking.Booking;
 import fr.peralta.mycellar.domain.booking.BookingBottle;
 import fr.peralta.mycellar.domain.booking.BookingEvent;
@@ -53,7 +53,7 @@ import fr.peralta.mycellar.domain.wine.Wine;
  */
 public class DdlExport {
     public static void main(String... args) {
-        Configuration cfg = new Configuration();
+        org.hibernate.cfg.Configuration cfg = new org.hibernate.cfg.Configuration();
         cfg.setProperty("hibernate.dialect", "org.hibernate.dialect.MySQL5InnoDBDialect");
         cfg.addAnnotatedClass(Image.class);
         cfg.addAnnotatedClass(Address.class);
@@ -80,6 +80,7 @@ public class DdlExport {
         cfg.addAnnotatedClass(BookingEvent.class);
         cfg.addAnnotatedClass(BookingBottle.class);
         cfg.addAnnotatedClass(Contact.class);
+        cfg.addAnnotatedClass(Configuration.class);
         SchemaExport schemaExport = new SchemaExport(cfg);
         schemaExport.setDelimiter(";");
         schemaExport.execute(true, false, false, true);
