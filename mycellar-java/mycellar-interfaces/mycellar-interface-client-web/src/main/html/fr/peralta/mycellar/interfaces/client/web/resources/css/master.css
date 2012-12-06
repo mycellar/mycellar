@@ -156,30 +156,30 @@ div.wicket-aa ul li:hover {
 
 /** CLOUD **/
 .cloud:nth-child(3n) a {
-  color: blue;
+  color: #0088CC;
   text-decoration: none;
 }
 
 .cloud:nth-child(3n+1) a {
-  color: red;
+  color: #006DCC;
   text-decoration: none;
 }
 
 .cloud:nth-child(3n+2) a {
-  color: green;
+  color: #49AFCD;
   text-decoration: none;
 }
 
 .cloud:nth-child(3n) a:hover {
-  color: darkBlue;
+  color: #005580;
 }
 
 .cloud:nth-child(3n+1) a:hover {
-  color: darkRed;
+  color: #0044CC;
 }
 
 .cloud:nth-child(3n+2) a:hover {
-  color: darkGreen;
+  color: #2F96B4;
 }
 
 /** List **/
