@@ -56,7 +56,6 @@ public class Format extends NamedEntity {
     @Column(name = "ID", nullable = false)
     private Integer id;
 
-    @SuppressWarnings("unused")
     @OneToMany(mappedBy = "format")
     private final Set<Bottle> bottles = new HashSet<Bottle>();
 

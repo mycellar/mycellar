@@ -60,7 +60,6 @@ public class Country extends NamedEntity {
     @Embedded
     private Map map;
 
-    @SuppressWarnings("unused")
     @OneToMany(mappedBy = "country")
     private final Set<Region> regions = new HashSet<Region>();
 

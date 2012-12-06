@@ -78,7 +78,6 @@ public class Producer extends NamedEntity {
     @Column(name = "WEBSITE_URL")
     private String websiteUrl;
 
-    @SuppressWarnings("unused")
     @OneToMany(mappedBy = "producer")
     private final Set<Wine> wines = new HashSet<Wine>();
 

@@ -62,7 +62,6 @@ public class Wine extends NamedEntity {
 
     private static final long serialVersionUID = 201111181451L;
 
-    @SuppressWarnings("unused")
     @OneToMany(mappedBy = "wine")
     private final Set<Bottle> bottles = new HashSet<Bottle>();
 

@@ -51,7 +51,6 @@ public class Cellar extends NamedEntity {
 
     private static final long serialVersionUID = 201111181451L;
 
-    @SuppressWarnings("unused")
     @OneToMany(mappedBy = "cellar")
     private final Set<Stock> stocks = new HashSet<Stock>();
 

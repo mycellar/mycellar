@@ -68,7 +68,6 @@ public class Appellation extends NamedEntity {
     @JoinColumn(name = "REGION", nullable = false)
     private Region region;
 
-    @SuppressWarnings("unused")
     @OneToMany(mappedBy = "appellation")
     private final Set<Wine> wines = new HashSet<Wine>();
 

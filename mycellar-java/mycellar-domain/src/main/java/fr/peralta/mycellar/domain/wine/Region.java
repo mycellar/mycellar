@@ -54,7 +54,6 @@ public class Region extends NamedEntity {
 
     private static final long serialVersionUID = 201111181451L;
 
-    @SuppressWarnings("unused")
     @OneToMany(mappedBy = "region")
     private final Set<Appellation> appellations = new HashSet<Appellation>();
 
