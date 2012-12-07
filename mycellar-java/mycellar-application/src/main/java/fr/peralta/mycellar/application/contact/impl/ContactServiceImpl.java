@@ -170,4 +170,13 @@ public class ContactServiceImpl extends
         this.javaMailSender = javaMailSender;
     }
 
+    /**
+     * @param configurationService
+     *            the configurationService to set
+     */
+    @Autowired
+    public void setConfigurationService(ConfigurationService configurationService) {
+        this.configurationService = configurationService;
+    }
+
 }
