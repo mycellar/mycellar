@@ -296,6 +296,21 @@ public abstract class JpaEntitySearchFormRepository<E extends IdentifiedEntity, 
     protected final <Q extends AbstractQuery<T>, T> Q where(Q query, Root<E> root,
             SearchForm searchForm, CriteriaBuilder criteriaBuilder, JoinType joinType,
             FilterEnum... filters) {
+        List<Predicate> predicates = wherePredicates(root, searchForm, criteriaBuilder, joinType,
+                filters);
+        return where(query, criteriaBuilder, predicates);
+    }
+
+    /**
+     * @param root
+     * @param searchForm
+     * @param criteriaBuilder
+     * @param joinType
+     * @param filters
+     * @return
+     */
+    protected List<Predicate> wherePredicates(Root<E> root, SearchForm searchForm,
+            CriteriaBuilder criteriaBuilder, JoinType joinType, FilterEnum... filters) {
         List<FilterEnum> filtersList;
         if ((filters != null) && (filters.length > 0)) {
             filtersList = new ArrayList<FilterEnum>(Arrays.asList(filters));
@@ -359,7 +374,7 @@ public abstract class JpaEntitySearchFormRepository<E extends IdentifiedEntity, 
         if (filtersList.contains(FilterEnum.WINE)) {
             in(predicates, searchForm, root, FilterEnum.WINE, criteriaBuilder, joinType);
         }
-        return where(query, criteriaBuilder, predicates);
+        return predicates;
     }
 
     /**

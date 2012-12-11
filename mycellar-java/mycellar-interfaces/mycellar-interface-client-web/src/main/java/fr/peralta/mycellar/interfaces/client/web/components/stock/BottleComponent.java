@@ -68,7 +68,7 @@ public class BottleComponent extends CompoundPropertyPanel<Bottle> {
         this.searchFormModel = searchFormModel;
         setOutputMarkupId(true);
         add(wineComplexList = new WineComplexList(WINE_COMPONENT_ID, new StringResourceModel(
-                "wine", this, null), searchFormModel, count));
+                "wine", this, null), searchFormModel));
         add(formatComplexTagCloud = new FormatComplexTagCloud(FORMAT_COMPONENT_ID,
                 new StringResourceModel("format", this, null), searchFormModel, count,
                 FilterEnum.FORMAT));

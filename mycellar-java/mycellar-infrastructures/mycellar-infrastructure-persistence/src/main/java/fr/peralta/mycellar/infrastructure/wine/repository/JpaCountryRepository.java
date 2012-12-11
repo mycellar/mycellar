@@ -18,6 +18,8 @@
  */
 package fr.peralta.mycellar.infrastructure.wine.repository;
 
+import java.util.List;
+
 import javax.persistence.NoResultException;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
@@ -25,11 +27,13 @@ import javax.persistence.criteria.Expression;
 import javax.persistence.criteria.From;
 import javax.persistence.criteria.JoinType;
 import javax.persistence.criteria.Order;
+import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
 
 import org.springframework.stereotype.Repository;
 
 import fr.peralta.mycellar.domain.shared.repository.FilterEnum;
+import fr.peralta.mycellar.domain.shared.repository.SearchForm;
 import fr.peralta.mycellar.domain.stock.Cellar;
 import fr.peralta.mycellar.domain.stock.CellarShare;
 import fr.peralta.mycellar.domain.stock.Stock;
@@ -70,6 +74,22 @@ public class JpaCountryRepository extends
         } catch (NoResultException e) {
             return null;
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public List<Country> getAllLike(String term, SearchForm searchForm, FilterEnum... filters) {
+        CriteriaBuilder criteriaBuilder = getEntityManager().getCriteriaBuilder();
+        CriteriaQuery<Country> query = criteriaBuilder.createQuery(Country.class);
+        Root<Country> root = query.from(Country.class);
+        List<Predicate> predicates = wherePredicates(root, searchForm, criteriaBuilder,
+                JoinType.LEFT, filters);
+        predicates.add(criteriaBuilder.like(criteriaBuilder.lower(root.<String> get("name")), "%"
+                + term.toLowerCase() + "%"));
+        where(query, criteriaBuilder, predicates);
+        return getEntityManager().createQuery(query.select(root)).getResultList();
     }
 
     /**

@@ -18,10 +18,13 @@
  */
 package fr.peralta.mycellar.interfaces.client.web.components.wine.list;
 
+import java.util.Arrays;
 import java.util.List;
 
 import org.apache.wicket.event.IEvent;
 import org.apache.wicket.event.IEventSource;
+import org.apache.wicket.extensions.markup.html.form.select.Select;
+import org.apache.wicket.extensions.markup.html.form.select.SelectOptions;
 import org.apache.wicket.markup.html.form.NumberTextField;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.StringResourceModel;
@@ -32,15 +35,16 @@ import fr.peralta.mycellar.domain.shared.repository.CountEnum;
 import fr.peralta.mycellar.domain.shared.repository.FilterEnum;
 import fr.peralta.mycellar.domain.shared.repository.SearchForm;
 import fr.peralta.mycellar.domain.wine.Wine;
+import fr.peralta.mycellar.domain.wine.WineColorEnum;
+import fr.peralta.mycellar.domain.wine.WineTypeEnum;
 import fr.peralta.mycellar.domain.wine.repository.WineOrder;
 import fr.peralta.mycellar.interfaces.client.web.behaviors.OnEventModelChangedAjaxBehavior;
 import fr.peralta.mycellar.interfaces.client.web.components.shared.AjaxTool;
 import fr.peralta.mycellar.interfaces.client.web.components.shared.feedback.FormComponentFeedbackBorder;
 import fr.peralta.mycellar.interfaces.client.web.components.shared.list.SimpleList;
+import fr.peralta.mycellar.interfaces.client.web.components.shared.select.SelectRenderer;
+import fr.peralta.mycellar.interfaces.client.web.components.wine.autocomplete.AppellationSimpleTypeahead;
 import fr.peralta.mycellar.interfaces.client.web.components.wine.autocomplete.ProducerSimpleTypeahead;
-import fr.peralta.mycellar.interfaces.client.web.components.wine.cloud.AppellationSimpleTagCloud;
-import fr.peralta.mycellar.interfaces.client.web.components.wine.cloud.WineColorEnumSimpleTagCloud;
-import fr.peralta.mycellar.interfaces.client.web.components.wine.cloud.WineTypeEnumSimpleTagCloud;
 import fr.peralta.mycellar.interfaces.facades.wine.WineServiceFacade;
 
 /**
@@ -59,10 +63,12 @@ public class WineSimpleList extends SimpleList<Wine> {
     @SpringBean
     private WineServiceFacade wineServiceFacade;
 
-    private final AppellationSimpleTagCloud appellationSimpleTagCloud;
+    private final AppellationSimpleTypeahead appellationSimpleTypeahead;
     private final ProducerSimpleTypeahead producerSimpleTypeahead;
-    private final WineTypeEnumSimpleTagCloud wineTypeEnumSimpleTagCloud;
-    private final WineColorEnumSimpleTagCloud wineColorEnumSimpleTagCloud;
+    private final Select<WineTypeEnum> wineTypeEnumSelect;
+    private final FormComponentFeedbackBorder wineTypeEnumBorder;
+    private final Select<WineColorEnum> wineColorEnumSelect;
+    private final FormComponentFeedbackBorder wineColorEnumBorder;
     private final NumberTextField<Integer> vintageTextField;
     private final FormComponentFeedbackBorder vintageBorder;
 
@@ -76,14 +82,19 @@ public class WineSimpleList extends SimpleList<Wine> {
             CountEnum count) {
         super(id, label, searchFormModel);
         setOutputMarkupId(true);
-        add(appellationSimpleTagCloud = new AppellationSimpleTagCloud(APPELLATION_COMPONENT_ID,
-                new StringResourceModel("appellation", this, null), searchFormModel, count));
+        add(appellationSimpleTypeahead = new AppellationSimpleTypeahead(APPELLATION_COMPONENT_ID,
+                new StringResourceModel("appellation", this, null), searchFormModel));
         add(producerSimpleTypeahead = new ProducerSimpleTypeahead(PRODUCER_COMPONENT_ID,
                 new StringResourceModel("producer", this, null), searchFormModel));
-        add(wineTypeEnumSimpleTagCloud = new WineTypeEnumSimpleTagCloud(TYPE_COMPONENT_ID,
-                new StringResourceModel("type", this, null), searchFormModel, count));
-        add(wineColorEnumSimpleTagCloud = new WineColorEnumSimpleTagCloud(COLOR_COMPONENT_ID,
-                new StringResourceModel("color", this, null), searchFormModel, count));
+        add((wineTypeEnumBorder = new FormComponentFeedbackBorder(TYPE_COMPONENT_ID))
+                .add((wineTypeEnumSelect = new Select<WineTypeEnum>(TYPE_COMPONENT_ID))
+                        .add(new SelectOptions<WineTypeEnum>("options", Arrays.asList(WineTypeEnum
+                                .values()), new SelectRenderer<WineTypeEnum>()))));
+        add((wineColorEnumBorder = new FormComponentFeedbackBorder(COLOR_COMPONENT_ID))
+                .add((wineColorEnumSelect = new Select<WineColorEnum>(COLOR_COMPONENT_ID))
+                        .add(new SelectOptions<WineColorEnum>("options", Arrays
+                                .asList(WineColorEnum.values()),
+                                new SelectRenderer<WineColorEnum>()))));
         add((vintageBorder = new FormComponentFeedbackBorder(VINTAGE_COMPONENT_ID))
                 .add((vintageTextField = new NumberTextField<Integer>(VINTAGE_COMPONENT_ID))
                         .setMinimum(1800).setMaximum(new LocalDate().getYear())
@@ -97,10 +108,10 @@ public class WineSimpleList extends SimpleList<Wine> {
     protected void internalOnConfigure() {
         super.internalOnConfigure();
         boolean isValued = isValued();
-        appellationSimpleTagCloud.setVisibilityAllowed(!isValued);
+        appellationSimpleTypeahead.setVisibilityAllowed(!isValued);
         producerSimpleTypeahead.setVisibilityAllowed(!isValued);
-        wineTypeEnumSimpleTagCloud.setVisibilityAllowed(!isValued);
-        wineColorEnumSimpleTagCloud.setVisibilityAllowed(!isValued);
+        wineTypeEnumBorder.setVisibilityAllowed(!isValued);
+        wineColorEnumBorder.setVisibilityAllowed(!isValued);
         vintageBorder.setVisibilityAllowed(!isValued);
     }
 
@@ -109,7 +120,7 @@ public class WineSimpleList extends SimpleList<Wine> {
      */
     @Override
     protected boolean isReadyToSelect() {
-        return producerSimpleTypeahead.isValued() || appellationSimpleTagCloud.isValued();
+        return producerSimpleTypeahead.isValued() || appellationSimpleTypeahead.isValued();
     }
 
     /**
@@ -129,15 +140,15 @@ public class WineSimpleList extends SimpleList<Wine> {
         if (source == producerSimpleTypeahead) {
             getSearchFormModel().getObject().replaceSet(FilterEnum.PRODUCER,
                     producerSimpleTypeahead.getModelObject());
-        } else if (source == wineTypeEnumSimpleTagCloud) {
+        } else if (source == wineTypeEnumSelect) {
             getSearchFormModel().getObject().replaceSet(FilterEnum.TYPE,
-                    wineTypeEnumSimpleTagCloud.getModelObject());
-        } else if (source == wineColorEnumSimpleTagCloud) {
+                    wineTypeEnumSelect.getModelObject());
+        } else if (source == wineColorEnumSelect) {
             getSearchFormModel().getObject().replaceSet(FilterEnum.COLOR,
-                    wineColorEnumSimpleTagCloud.getModelObject());
-        } else if (source == appellationSimpleTagCloud) {
+                    wineColorEnumSelect.getModelObject());
+        } else if (source == appellationSimpleTypeahead) {
             getSearchFormModel().getObject().replaceSet(FilterEnum.APPELLATION,
-                    appellationSimpleTagCloud.getModelObject());
+                    appellationSimpleTypeahead.getModelObject());
         } else if (source == vintageTextField) {
             getSearchFormModel().getObject().replaceSet(FilterEnum.VINTAGE,
                     vintageTextField.getModelObject());
@@ -154,9 +165,9 @@ public class WineSimpleList extends SimpleList<Wine> {
     protected Wine createDefaultObject() {
         Wine wine = new Wine();
         wine.setProducer(producerSimpleTypeahead.getModelObject());
-        wine.setAppellation(appellationSimpleTagCloud.getModelObject());
-        wine.setType(wineTypeEnumSimpleTagCloud.getModelObject());
-        wine.setColor(wineColorEnumSimpleTagCloud.getModelObject());
+        wine.setAppellation(appellationSimpleTypeahead.getModelObject());
+        wine.setType(wineTypeEnumSelect.getModelObject());
+        wine.setColor(wineColorEnumSelect.getModelObject());
         wine.setVintage(vintageTextField.getModelObject());
         return wine;
     }

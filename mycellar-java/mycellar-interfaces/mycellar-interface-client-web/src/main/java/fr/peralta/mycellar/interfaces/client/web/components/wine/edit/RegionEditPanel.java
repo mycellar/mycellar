@@ -23,11 +23,10 @@ import org.apache.wicket.markup.html.form.TextField;
 import org.apache.wicket.markup.html.panel.Panel;
 import org.apache.wicket.model.StringResourceModel;
 
-import fr.peralta.mycellar.domain.shared.repository.CountEnum;
 import fr.peralta.mycellar.domain.shared.repository.SearchForm;
 import fr.peralta.mycellar.interfaces.client.web.components.shared.SearchFormModel;
 import fr.peralta.mycellar.interfaces.client.web.components.shared.feedback.FormComponentFeedbackBorder;
-import fr.peralta.mycellar.interfaces.client.web.components.wine.cloud.CountryComplexTagCloud;
+import fr.peralta.mycellar.interfaces.client.web.components.wine.autocomplete.CountryComplexTypeahead;
 
 /**
  * @author speralta
@@ -36,23 +35,23 @@ public class RegionEditPanel extends Panel {
 
     private static final long serialVersionUID = 201011071626L;
 
-    private final CountryComplexTagCloud countryComplexTagCloud;
+    private final CountryComplexTypeahead countryComplexTypeahead;
 
     /**
      * @param id
-     * @param count
      */
-    public RegionEditPanel(String id, CountEnum count) {
+    public RegionEditPanel(String id) {
         super(id);
-        add(countryComplexTagCloud = new CountryComplexTagCloud("country", new StringResourceModel(
-                "country", this, null), new SearchFormModel(new SearchForm()), count));
+        add(countryComplexTypeahead = new CountryComplexTypeahead("country",
+                new StringResourceModel("country", this, null), new SearchFormModel(
+                        new SearchForm())));
         add(new FormComponentFeedbackBorder("name").add(new TextField<String>("name")
                 .setRequired(true)));
         add(new FormComponentFeedbackBorder("description").add(new TextArea<String>("description")));
     }
 
     public RegionEditPanel setCountryCancelAllowed(boolean allowed) {
-        countryComplexTagCloud.setCancelAllowed(allowed);
+        countryComplexTypeahead.setCancelAllowed(allowed);
         return this;
     }
 

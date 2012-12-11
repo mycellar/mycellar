@@ -21,7 +21,6 @@ package fr.peralta.mycellar.interfaces.client.web.components.wine.form;
 import org.apache.wicket.Component;
 import org.apache.wicket.model.IModel;
 
-import fr.peralta.mycellar.domain.shared.repository.CountEnum;
 import fr.peralta.mycellar.domain.shared.repository.FilterEnum;
 import fr.peralta.mycellar.domain.shared.repository.SearchForm;
 import fr.peralta.mycellar.domain.wine.Appellation;
@@ -35,33 +34,27 @@ public class AppellationForm extends ObjectForm<Appellation> {
 
     private static final long serialVersionUID = 201205101324L;
 
-    private final CountEnum count;
     private final FilterEnum[] filters;
 
     /**
      * @param id
      * @param searchFormModel
      * @param newObject
-     * @param count
      * @param filters
      */
     public AppellationForm(String id, IModel<SearchForm> searchFormModel, Appellation newObject,
-            CountEnum count, FilterEnum... filters) {
+            FilterEnum... filters) {
         super(id, searchFormModel, newObject);
-        this.count = count;
         this.filters = filters;
     }
 
     /**
      * @param id
      * @param searchFormModel
-     * @param count
      * @param filters
      */
-    public AppellationForm(String id, IModel<SearchForm> searchFormModel, CountEnum count,
-            FilterEnum... filters) {
+    public AppellationForm(String id, IModel<SearchForm> searchFormModel, FilterEnum... filters) {
         super(id, searchFormModel);
-        this.count = count;
         this.filters = filters;
     }
 
@@ -70,6 +63,6 @@ public class AppellationForm extends ObjectForm<Appellation> {
      */
     @Override
     protected Component createEditPanel(String id, IModel<SearchForm> searchFormModel) {
-        return new AppellationEditPanel(id, searchFormModel, count, filters);
+        return new AppellationEditPanel(id, searchFormModel, filters);
     }
 }

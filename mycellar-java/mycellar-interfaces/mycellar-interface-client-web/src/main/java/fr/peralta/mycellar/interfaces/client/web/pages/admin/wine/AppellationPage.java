@@ -23,7 +23,6 @@ import org.apache.wicket.request.mapper.parameter.PageParameters;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 
 import fr.peralta.mycellar.domain.shared.exception.BusinessException;
-import fr.peralta.mycellar.domain.shared.repository.CountEnum;
 import fr.peralta.mycellar.domain.shared.repository.SearchForm;
 import fr.peralta.mycellar.domain.wine.Appellation;
 import fr.peralta.mycellar.interfaces.client.web.components.shared.form.ObjectForm;
@@ -104,7 +103,7 @@ public class AppellationPage extends AbstractEditPage<Appellation> {
     @Override
     protected ObjectForm<Appellation> createObjectForm(String id,
             IModel<SearchForm> searchFormModel, Appellation appellation) {
-        return new AppellationForm(id, searchFormModel, appellation, CountEnum.WINE);
+        return new AppellationForm(id, searchFormModel, appellation);
     }
 
     /**

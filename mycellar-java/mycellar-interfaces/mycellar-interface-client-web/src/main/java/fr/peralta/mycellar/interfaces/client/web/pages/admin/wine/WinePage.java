@@ -23,7 +23,6 @@ import org.apache.wicket.request.mapper.parameter.PageParameters;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 
 import fr.peralta.mycellar.domain.shared.exception.BusinessException;
-import fr.peralta.mycellar.domain.shared.repository.CountEnum;
 import fr.peralta.mycellar.domain.shared.repository.SearchForm;
 import fr.peralta.mycellar.domain.wine.Wine;
 import fr.peralta.mycellar.interfaces.client.web.components.shared.form.ObjectForm;
@@ -104,7 +103,7 @@ public class WinePage extends AbstractEditPage<Wine> {
     @Override
     protected ObjectForm<Wine> createObjectForm(String id, IModel<SearchForm> searchFormModel,
             Wine object) {
-        return new WineForm(id, searchFormModel, object, CountEnum.WINE);
+        return new WineForm(id, searchFormModel, object);
     }
 
     /**

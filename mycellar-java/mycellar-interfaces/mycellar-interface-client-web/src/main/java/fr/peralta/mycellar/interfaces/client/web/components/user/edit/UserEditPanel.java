@@ -18,10 +18,6 @@
  */
 package fr.peralta.mycellar.interfaces.client.web.components.user.edit;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-
 import org.apache.wicket.extensions.markup.html.form.select.Select;
 import org.apache.wicket.extensions.markup.html.form.select.SelectOptions;
 import org.apache.wicket.markup.html.form.EmailTextField;
@@ -30,6 +26,7 @@ import org.apache.wicket.markup.html.panel.Panel;
 
 import fr.peralta.mycellar.domain.user.ProfileEnum;
 import fr.peralta.mycellar.interfaces.client.web.components.shared.feedback.FormComponentFeedbackBorder;
+import fr.peralta.mycellar.interfaces.client.web.components.shared.select.SelectEnumUtils;
 import fr.peralta.mycellar.interfaces.client.web.components.shared.select.SelectRenderer;
 
 /**
@@ -38,12 +35,6 @@ import fr.peralta.mycellar.interfaces.client.web.components.shared.select.Select
 public class UserEditPanel extends Panel {
 
     private static final long serialVersionUID = 201203091757L;
-
-    private static List<ProfileEnum> values = new ArrayList<ProfileEnum>();
-    static {
-        values.add(null);
-        values.addAll(Arrays.asList(ProfileEnum.values()));
-    }
 
     /**
      * @param id
@@ -57,7 +48,7 @@ public class UserEditPanel extends Panel {
         add(new FormComponentFeedbackBorder("email").add(new EmailTextField("email")
                 .setRequired(true)));
         add(new FormComponentFeedbackBorder("profile").add(new Select<ProfileEnum>("profile")
-                .add(new SelectOptions<ProfileEnum>("options", values,
-                        new SelectRenderer<ProfileEnum>()))));
+                .add(new SelectOptions<ProfileEnum>("options", SelectEnumUtils
+                        .nullBeforeValues(ProfileEnum.class), new SelectRenderer<ProfileEnum>()))));
     }
 }

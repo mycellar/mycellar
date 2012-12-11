@@ -227,6 +227,16 @@ public class WineServiceFacadeImpl implements WineServiceFacade {
      */
     @Override
     @Transactional(readOnly = true)
+    public List<Appellation> getAppellationsLike(String term, SearchForm searchForm,
+            FilterEnum... filters) {
+        return appellationService.getAllLike(term, searchForm, filters);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    @Transactional(readOnly = true)
     public Map<WineColorEnum, Long> getColors(SearchForm searchForm, CountEnum count) {
         return wineService.getColors(searchForm, count);
     }
@@ -249,6 +259,15 @@ public class WineServiceFacadeImpl implements WineServiceFacade {
     public List<Country> getCountries(SearchForm searchForm, CountryOrder orders, long first,
             long count) {
         return countryService.getAll(searchForm, orders, first, count);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    @Transactional(readOnly = true)
+    public List<Country> getCountriesLike(String term, SearchForm searchForm, FilterEnum... filters) {
+        return countryService.getAllLike(term, searchForm, filters);
     }
 
     /**
@@ -323,6 +342,14 @@ public class WineServiceFacadeImpl implements WineServiceFacade {
     @Transactional(readOnly = true)
     public Region getRegionById(Integer regionId) {
         return regionService.getById(regionId);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public List<Region> getRegionsLike(String term, SearchForm searchForm, FilterEnum... filters) {
+        return regionService.getAllLike(term, searchForm, filters);
     }
 
     /**

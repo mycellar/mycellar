@@ -3,8 +3,20 @@
     <legend><wicket:message key="wineEdit">Vin</wicket:message></legend>
     <div wicket:id="producer" />
     <div wicket:id="appellation" />
-    <div wicket:id="type" />
-    <div wicket:id="color" />
+    <div class="control-group" wicket:id="type">
+      <select id="type" wicket:id="type">
+        <wicket:container wicket:id="options">
+          <option wicket:id="option"></option>
+        </wicket:container>
+      </select>
+    </div>
+    <div class="control-group" wicket:id="color">
+      <select id="color" wicket:id="color">
+        <wicket:container wicket:id="options">
+          <option wicket:id="option"></option>
+        </wicket:container>
+      </select>
+    </div>
     <div class="control-group" wicket:id="name">
       <input id="name" wicket:id="name" type="text" />
     </div>

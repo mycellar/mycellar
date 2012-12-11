@@ -82,6 +82,14 @@ public interface WineServiceFacade {
     long countWines(SearchForm searchForm);
 
     /**
+     * @param toCopy
+     * @param from
+     * @param to
+     * @throws BusinessException
+     */
+    List<Wine> createVintages(Wine toCopy, int from, int to) throws BusinessException;
+
+    /**
      * @param appellation
      * @throws BusinessException
      */
@@ -159,6 +167,14 @@ public interface WineServiceFacade {
             FilterEnum... filters);
 
     /**
+     * @param term
+     * @param searchForm
+     * @param filters
+     * @return
+     */
+    List<Appellation> getAppellationsLike(String term, SearchForm searchForm, FilterEnum... filters);
+
+    /**
      * @param searchForm
      * @param wine
      * @return
@@ -180,6 +196,14 @@ public interface WineServiceFacade {
      * @return
      */
     List<Country> getCountries(SearchForm searchForm, CountryOrder orders, long first, long count);
+
+    /**
+     * @param term
+     * @param searchForm
+     * @param filters
+     * @return
+     */
+    List<Country> getCountriesLike(String term, SearchForm searchForm, FilterEnum... filters);
 
     /**
      * @param countryId
@@ -233,6 +257,14 @@ public interface WineServiceFacade {
      * @return
      */
     Region getRegionById(Integer regionId);
+
+    /**
+     * @param term
+     * @param searchForm
+     * @param filters
+     * @return
+     */
+    List<Region> getRegionsLike(String term, SearchForm searchForm, FilterEnum... filters);
 
     /**
      * @param countries
@@ -312,13 +344,5 @@ public interface WineServiceFacade {
      * @throws BusinessException
      */
     void validateCountry(Country country) throws BusinessException;
-
-    /**
-     * @param toCopy
-     * @param from
-     * @param to
-     * @throws BusinessException
-     */
-    List<Wine> createVintages(Wine toCopy, int from, int to) throws BusinessException;
 
 }

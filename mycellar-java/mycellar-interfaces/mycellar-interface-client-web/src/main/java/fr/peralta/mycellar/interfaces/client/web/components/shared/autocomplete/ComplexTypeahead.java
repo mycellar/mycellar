@@ -18,13 +18,14 @@
  */
 package fr.peralta.mycellar.interfaces.client.web.components.shared.autocomplete;
 
+import java.io.Serializable;
+
 import org.apache.wicket.WicketRuntimeException;
 import org.apache.wicket.event.IEvent;
 import org.apache.wicket.event.IEventSource;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.Model;
 
-import fr.peralta.mycellar.domain.shared.IdentifiedEntity;
 import fr.peralta.mycellar.domain.shared.repository.SearchForm;
 import fr.peralta.mycellar.interfaces.client.web.components.shared.ComplexComponent;
 
@@ -33,7 +34,7 @@ import fr.peralta.mycellar.interfaces.client.web.components.shared.ComplexCompon
  * 
  * @param <O>
  */
-public abstract class ComplexTypeahead<O extends IdentifiedEntity> extends
+public abstract class ComplexTypeahead<O extends Serializable> extends
         ComplexComponent<O, AbstractTypeaheadComponent<O>> {
 
     private static final long serialVersionUID = 201108082348L;

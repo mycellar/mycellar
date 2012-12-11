@@ -18,7 +18,11 @@
  */
 package fr.peralta.mycellar.domain.wine.repository;
 
+import java.util.List;
+
 import fr.peralta.mycellar.domain.shared.repository.EntitySearchFormRepository;
+import fr.peralta.mycellar.domain.shared.repository.FilterEnum;
+import fr.peralta.mycellar.domain.shared.repository.SearchForm;
 import fr.peralta.mycellar.domain.wine.Appellation;
 import fr.peralta.mycellar.domain.wine.Region;
 
@@ -34,5 +38,13 @@ public interface AppellationRepository extends
      * @return
      */
     Appellation find(Region region, String name);
+
+    /**
+     * @param term
+     * @param searchForm
+     * @param filters
+     * @return
+     */
+    List<Appellation> getAllLike(String term, SearchForm searchForm, FilterEnum... filters);
 
 }

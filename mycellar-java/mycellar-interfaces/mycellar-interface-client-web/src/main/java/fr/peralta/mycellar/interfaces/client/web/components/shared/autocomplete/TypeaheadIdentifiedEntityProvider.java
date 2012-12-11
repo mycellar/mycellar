@@ -16,34 +16,19 @@
  * You should have received a copy of the GNU General Public License
  * along with MyCellar. If not, see <http://www.gnu.org/licenses/>.
  */
-package fr.peralta.mycellar.interfaces.client.web.components.shared.cloud;
+package fr.peralta.mycellar.interfaces.client.web.components.shared.autocomplete;
 
 import java.util.List;
 
-import org.apache.wicket.model.AbstractReadOnlyModel;
+import fr.peralta.mycellar.domain.shared.IdentifiedEntity;
 
 /**
  * @author speralta
+ * 
+ * @param <E>
  */
-class TagDataModel<E> extends AbstractReadOnlyModel<List<TagData<E>>> {
+public interface TypeaheadIdentifiedEntityProvider<E extends IdentifiedEntity> {
 
-    private static final long serialVersionUID = 201205091616L;
-
-    private final TagDataProvider<E> provider;
-
-    /**
-     * @param provider
-     */
-    public TagDataModel(TagDataProvider<E> provider) {
-        this.provider = provider;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public List<TagData<E>> getObject() {
-        return provider.getList();
-    }
+    List<E> getChoices(String term);
 
 }

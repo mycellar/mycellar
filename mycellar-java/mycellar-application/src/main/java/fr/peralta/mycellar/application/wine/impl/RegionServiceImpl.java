@@ -18,6 +18,8 @@
  */
 package fr.peralta.mycellar.application.wine.impl;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -25,6 +27,8 @@ import fr.peralta.mycellar.application.shared.AbstractEntitySearchFormService;
 import fr.peralta.mycellar.application.wine.RegionService;
 import fr.peralta.mycellar.domain.shared.exception.BusinessError;
 import fr.peralta.mycellar.domain.shared.exception.BusinessException;
+import fr.peralta.mycellar.domain.shared.repository.FilterEnum;
+import fr.peralta.mycellar.domain.shared.repository.SearchForm;
 import fr.peralta.mycellar.domain.wine.Region;
 import fr.peralta.mycellar.domain.wine.repository.RegionOrder;
 import fr.peralta.mycellar.domain.wine.repository.RegionOrderEnum;
@@ -39,6 +43,14 @@ public class RegionServiceImpl extends
         implements RegionService {
 
     private RegionRepository regionRepository;
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public List<Region> getAllLike(String term, SearchForm searchForm, FilterEnum... filters) {
+        return regionRepository.getAllLike(term, searchForm, filters);
+    }
 
     /**
      * {@inheritDoc}

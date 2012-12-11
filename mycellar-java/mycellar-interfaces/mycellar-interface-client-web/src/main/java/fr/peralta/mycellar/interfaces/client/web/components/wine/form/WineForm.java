@@ -22,7 +22,6 @@ import org.apache.wicket.Component;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 
-import fr.peralta.mycellar.domain.shared.repository.CountEnum;
 import fr.peralta.mycellar.domain.shared.repository.SearchForm;
 import fr.peralta.mycellar.domain.wine.Wine;
 import fr.peralta.mycellar.interfaces.client.web.components.shared.form.ObjectForm;
@@ -39,27 +38,21 @@ public class WineForm extends ObjectForm<Wine> {
     @SpringBean
     private WineServiceFacade wineServiceFacade;
 
-    private final CountEnum count;
-
     /**
      * @param id
      * @param searchFormModel
      * @param newObject
-     * @param count
      */
-    public WineForm(String id, IModel<SearchForm> searchFormModel, Wine newObject, CountEnum count) {
+    public WineForm(String id, IModel<SearchForm> searchFormModel, Wine newObject) {
         super(id, searchFormModel, newObject);
-        this.count = count;
     }
 
     /**
      * @param id
      * @param searchFormModel
-     * @param count
      */
-    public WineForm(String id, IModel<SearchForm> searchFormModel, CountEnum count) {
+    public WineForm(String id, IModel<SearchForm> searchFormModel) {
         super(id, searchFormModel);
-        this.count = count;
     }
 
     /**
@@ -67,7 +60,7 @@ public class WineForm extends ObjectForm<Wine> {
      */
     @Override
     protected Component createEditPanel(String id, IModel<SearchForm> searchFormModel) {
-        return new WineEditPanel(id, count);
+        return new WineEditPanel(id);
     }
 
     /**

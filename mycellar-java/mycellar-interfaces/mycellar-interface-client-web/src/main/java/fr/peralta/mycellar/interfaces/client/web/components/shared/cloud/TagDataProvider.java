@@ -20,30 +20,14 @@ package fr.peralta.mycellar.interfaces.client.web.components.shared.cloud;
 
 import java.util.List;
 
-import org.apache.wicket.model.AbstractReadOnlyModel;
-
 /**
  * @author speralta
  */
-class TagDataModel<E> extends AbstractReadOnlyModel<List<TagData<E>>> {
-
-    private static final long serialVersionUID = 201205091616L;
-
-    private final TagDataProvider<E> provider;
+interface TagDataProvider<O> {
 
     /**
-     * @param provider
+     * @return
      */
-    public TagDataModel(TagDataProvider<E> provider) {
-        this.provider = provider;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public List<TagData<E>> getObject() {
-        return provider.getList();
-    }
+    List<TagData<O>> getList();
 
 }

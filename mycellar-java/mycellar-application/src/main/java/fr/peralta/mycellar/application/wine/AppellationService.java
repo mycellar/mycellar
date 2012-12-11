@@ -18,7 +18,11 @@
  */
 package fr.peralta.mycellar.application.wine;
 
+import java.util.List;
+
 import fr.peralta.mycellar.application.shared.EntitySearchFormService;
+import fr.peralta.mycellar.domain.shared.repository.FilterEnum;
+import fr.peralta.mycellar.domain.shared.repository.SearchForm;
 import fr.peralta.mycellar.domain.wine.Appellation;
 import fr.peralta.mycellar.domain.wine.repository.AppellationOrder;
 import fr.peralta.mycellar.domain.wine.repository.AppellationOrderEnum;
@@ -28,5 +32,13 @@ import fr.peralta.mycellar.domain.wine.repository.AppellationOrderEnum;
  */
 public interface AppellationService extends
         EntitySearchFormService<Appellation, AppellationOrderEnum, AppellationOrder> {
+
+    /**
+     * @param term
+     * @param searchForm
+     * @param filters
+     * @return
+     */
+    List<Appellation> getAllLike(String term, SearchForm searchForm, FilterEnum... filters);
 
 }

@@ -39,19 +39,17 @@ import org.apache.wicket.request.cycle.RequestCycle;
 import org.apache.wicket.request.handler.TextRequestHandler;
 import org.apache.wicket.util.string.Strings;
 
-import fr.peralta.mycellar.domain.shared.IdentifiedEntity;
 import fr.peralta.mycellar.interfaces.client.web.components.shared.Action;
 import fr.peralta.mycellar.interfaces.client.web.resources.js.JavaScriptReferences;
 
 /**
  * @author speralta
  */
-public abstract class AbstractTypeaheadComponent<T extends IdentifiedEntity> extends
-        FormComponentPanel<T> {
+public abstract class AbstractTypeaheadComponent<T> extends FormComponentPanel<T> {
 
     private static final long serialVersionUID = 201211091622L;
 
-    private static class TextFieldModel<T extends IdentifiedEntity> extends ComponentModel<String> {
+    private static class TextFieldModel<T> extends ComponentModel<String> {
 
         private static final long serialVersionUID = 201211121756L;
 
@@ -73,8 +71,7 @@ public abstract class AbstractTypeaheadComponent<T extends IdentifiedEntity> ext
 
     }
 
-    private static class HiddenFieldModel<T extends IdentifiedEntity> extends
-            ComponentModel<String> {
+    private static class HiddenFieldModel<T> extends ComponentModel<String> {
 
         private static final long serialVersionUID = 201211121756L;
 
@@ -113,7 +110,6 @@ public abstract class AbstractTypeaheadComponent<T extends IdentifiedEntity> ext
      */
     public AbstractTypeaheadComponent(String id) {
         super(id);
-        setChoiceRenderer(new EntityChoiceRenderer<T>());
     }
 
     /**

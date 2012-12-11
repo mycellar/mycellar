@@ -18,21 +18,25 @@
  */
 package fr.peralta.mycellar.interfaces.client.web.components.wine.list;
 
+import java.util.Arrays;
 import java.util.List;
 
 import org.apache.wicket.event.IEvent;
 import org.apache.wicket.event.IEventSource;
+import org.apache.wicket.extensions.markup.html.form.select.Select;
+import org.apache.wicket.extensions.markup.html.form.select.SelectOptions;
 import org.apache.wicket.markup.html.form.NumberTextField;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.StringResourceModel;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 import org.joda.time.LocalDate;
 
-import fr.peralta.mycellar.domain.shared.repository.CountEnum;
 import fr.peralta.mycellar.domain.shared.repository.FilterEnum;
 import fr.peralta.mycellar.domain.shared.repository.OrderWayEnum;
 import fr.peralta.mycellar.domain.shared.repository.SearchForm;
 import fr.peralta.mycellar.domain.wine.Wine;
+import fr.peralta.mycellar.domain.wine.WineColorEnum;
+import fr.peralta.mycellar.domain.wine.WineTypeEnum;
 import fr.peralta.mycellar.domain.wine.repository.WineOrder;
 import fr.peralta.mycellar.domain.wine.repository.WineOrderEnum;
 import fr.peralta.mycellar.interfaces.client.web.behaviors.OnEventModelChangedAjaxBehavior;
@@ -40,10 +44,9 @@ import fr.peralta.mycellar.interfaces.client.web.components.shared.AjaxTool;
 import fr.peralta.mycellar.interfaces.client.web.components.shared.feedback.FormComponentFeedbackBorder;
 import fr.peralta.mycellar.interfaces.client.web.components.shared.form.ObjectForm;
 import fr.peralta.mycellar.interfaces.client.web.components.shared.list.ComplexList;
+import fr.peralta.mycellar.interfaces.client.web.components.shared.select.SelectRenderer;
+import fr.peralta.mycellar.interfaces.client.web.components.wine.autocomplete.AppellationComplexTypeahead;
 import fr.peralta.mycellar.interfaces.client.web.components.wine.autocomplete.ProducerComplexTypeahead;
-import fr.peralta.mycellar.interfaces.client.web.components.wine.cloud.AppellationComplexTagCloud;
-import fr.peralta.mycellar.interfaces.client.web.components.wine.cloud.WineColorEnumSimpleTagCloud;
-import fr.peralta.mycellar.interfaces.client.web.components.wine.cloud.WineTypeEnumSimpleTagCloud;
 import fr.peralta.mycellar.interfaces.client.web.components.wine.form.WineForm;
 import fr.peralta.mycellar.interfaces.facades.wine.WineServiceFacade;
 
@@ -63,34 +66,36 @@ public class WineComplexList extends ComplexList<Wine> {
     @SpringBean
     private WineServiceFacade wineServiceFacade;
 
-    private final AppellationComplexTagCloud appellationComplexTagCloud;
+    private final AppellationComplexTypeahead appellationComplexTypeahead;
     private final ProducerComplexTypeahead producerComplexTypeahead;
-    private final WineTypeEnumSimpleTagCloud wineTypeEnumSimpleTagCloud;
-    private final WineColorEnumSimpleTagCloud wineColorEnumSimpleTagCloud;
+    private final Select<WineTypeEnum> wineTypeEnumSelect;
+    private final FormComponentFeedbackBorder wineTypeEnumBorder;
+    private final Select<WineColorEnum> wineColorEnumSelect;
+    private final FormComponentFeedbackBorder wineColorEnumBorder;
     private final NumberTextField<Integer> vintageTextField;
     private final FormComponentFeedbackBorder vintageBorder;
-
-    private final CountEnum count;
 
     /**
      * @param id
      * @param label
      * @param searchFormModel
-     * @param count
      */
-    public WineComplexList(String id, IModel<String> label, IModel<SearchForm> searchFormModel,
-            CountEnum count) {
+    public WineComplexList(String id, IModel<String> label, IModel<SearchForm> searchFormModel) {
         super(id, label, searchFormModel);
-        this.count = count;
-        add(appellationComplexTagCloud = new AppellationComplexTagCloud(APPELLATION_COMPONENT_ID,
-                new StringResourceModel("appellation", this, null), searchFormModel, count,
+        add(appellationComplexTypeahead = new AppellationComplexTypeahead(APPELLATION_COMPONENT_ID,
+                new StringResourceModel("appellation", this, null), searchFormModel,
                 FilterEnum.COUNTRY, FilterEnum.REGION, FilterEnum.APPELLATION));
         add(producerComplexTypeahead = new ProducerComplexTypeahead(PRODUCER_COMPONENT_ID,
                 new StringResourceModel("producer", this, null), searchFormModel));
-        add(wineTypeEnumSimpleTagCloud = new WineTypeEnumSimpleTagCloud(TYPE_COMPONENT_ID,
-                new StringResourceModel("type", this, null), searchFormModel, count));
-        add(wineColorEnumSimpleTagCloud = new WineColorEnumSimpleTagCloud(COLOR_COMPONENT_ID,
-                new StringResourceModel("color", this, null), searchFormModel, count));
+        add((wineTypeEnumBorder = new FormComponentFeedbackBorder(TYPE_COMPONENT_ID))
+                .add((wineTypeEnumSelect = new Select<WineTypeEnum>(TYPE_COMPONENT_ID))
+                        .add(new SelectOptions<WineTypeEnum>("options", Arrays.asList(WineTypeEnum
+                                .values()), new SelectRenderer<WineTypeEnum>()))));
+        add((wineColorEnumBorder = new FormComponentFeedbackBorder(COLOR_COMPONENT_ID))
+                .add((wineColorEnumSelect = new Select<WineColorEnum>(COLOR_COMPONENT_ID))
+                        .add(new SelectOptions<WineColorEnum>("options", Arrays
+                                .asList(WineColorEnum.values()),
+                                new SelectRenderer<WineColorEnum>()))));
         add((vintageBorder = new FormComponentFeedbackBorder(VINTAGE_COMPONENT_ID))
                 .add((vintageTextField = new NumberTextField<Integer>(VINTAGE_COMPONENT_ID))
                         .setMinimum(1800).setMaximum(new LocalDate().getYear())
@@ -102,10 +107,10 @@ public class WineComplexList extends ComplexList<Wine> {
      */
     @Override
     protected void setOtherComponentsVisibilityAllowed(boolean allowed) {
-        appellationComplexTagCloud.setVisibilityAllowed(allowed);
+        appellationComplexTypeahead.setVisibilityAllowed(allowed);
         producerComplexTypeahead.setVisibilityAllowed(allowed);
-        wineTypeEnumSimpleTagCloud.setVisibilityAllowed(allowed);
-        wineColorEnumSimpleTagCloud.setVisibilityAllowed(allowed);
+        wineTypeEnumBorder.setVisibilityAllowed(allowed);
+        wineColorEnumBorder.setVisibilityAllowed(allowed);
         vintageBorder.setVisibilityAllowed(allowed);
     }
 
@@ -122,7 +127,7 @@ public class WineComplexList extends ComplexList<Wine> {
      */
     @Override
     protected ObjectForm<Wine> createForm(String id, IModel<SearchForm> searchFormModel) {
-        return new WineForm(id, searchFormModel, count);
+        return new WineForm(id, searchFormModel);
     }
 
     /**
@@ -132,9 +137,9 @@ public class WineComplexList extends ComplexList<Wine> {
     protected Wine createObject() {
         Wine wine = new Wine();
         wine.setProducer(producerComplexTypeahead.getModelObject());
-        wine.setAppellation(appellationComplexTagCloud.getModelObject());
-        wine.setType(wineTypeEnumSimpleTagCloud.getModelObject());
-        wine.setColor(wineColorEnumSimpleTagCloud.getModelObject());
+        wine.setAppellation(appellationComplexTypeahead.getModelObject());
+        wine.setType(wineTypeEnumSelect.getModelObject());
+        wine.setColor(wineColorEnumSelect.getModelObject());
         wine.setVintage(vintageTextField.getModelObject());
         return wine;
     }
@@ -144,7 +149,7 @@ public class WineComplexList extends ComplexList<Wine> {
      */
     @Override
     protected boolean isReadyToSelect() {
-        return producerComplexTypeahead.isValued() && appellationComplexTagCloud.isValued();
+        return producerComplexTypeahead.isValued() && appellationComplexTypeahead.isValued();
     }
 
     /**
@@ -165,15 +170,15 @@ public class WineComplexList extends ComplexList<Wine> {
         if (source == producerComplexTypeahead) {
             getSearchFormModel().getObject().replaceSet(FilterEnum.PRODUCER,
                     producerComplexTypeahead.getModelObject());
-        } else if (source == wineTypeEnumSimpleTagCloud) {
+        } else if (source == wineTypeEnumSelect) {
             getSearchFormModel().getObject().replaceSet(FilterEnum.TYPE,
-                    wineTypeEnumSimpleTagCloud.getModelObject());
-        } else if (source == wineColorEnumSimpleTagCloud) {
+                    wineTypeEnumSelect.getModelObject());
+        } else if (source == wineColorEnumSelect) {
             getSearchFormModel().getObject().replaceSet(FilterEnum.COLOR,
-                    wineColorEnumSimpleTagCloud.getModelObject());
-        } else if (source == appellationComplexTagCloud) {
+                    wineColorEnumSelect.getModelObject());
+        } else if (source == appellationComplexTypeahead) {
             getSearchFormModel().getObject().replaceSet(FilterEnum.APPELLATION,
-                    appellationComplexTagCloud.getModelObject());
+                    appellationComplexTypeahead.getModelObject());
         } else if (source == vintageTextField) {
             getSearchFormModel().getObject().replaceSet(FilterEnum.VINTAGE,
                     vintageTextField.getModelObject());

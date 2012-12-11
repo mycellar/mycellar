@@ -18,20 +18,26 @@
  */
 package fr.peralta.mycellar.interfaces.client.web.components.wine.autocomplete;
 
+import java.util.List;
+
 import org.apache.wicket.model.IModel;
+import org.apache.wicket.spring.injection.annot.SpringBean;
 
 import fr.peralta.mycellar.domain.shared.repository.FilterEnum;
 import fr.peralta.mycellar.domain.shared.repository.SearchForm;
 import fr.peralta.mycellar.domain.wine.Producer;
-import fr.peralta.mycellar.interfaces.client.web.components.shared.autocomplete.AbstractTypeaheadComponent;
-import fr.peralta.mycellar.interfaces.client.web.components.shared.autocomplete.SimpleTypeahead;
+import fr.peralta.mycellar.interfaces.client.web.components.shared.autocomplete.SimpleIdentifiedEntityTypeahead;
+import fr.peralta.mycellar.interfaces.facades.wine.WineServiceFacade;
 
 /**
  * @author speralta
  */
-public class ProducerSimpleTypeahead extends SimpleTypeahead<Producer> {
+public class ProducerSimpleTypeahead extends SimpleIdentifiedEntityTypeahead<Producer> {
 
     private static final long serialVersionUID = 201107252130L;
+
+    @SpringBean
+    private WineServiceFacade wineServiceFacade;
 
     /**
      * @param id
@@ -47,8 +53,8 @@ public class ProducerSimpleTypeahead extends SimpleTypeahead<Producer> {
      * {@inheritDoc}
      */
     @Override
-    protected AbstractTypeaheadComponent<Producer> createAutocomplete(String id) {
-        return new ProducerTypeaheadComponent(id);
+    public List<Producer> getChoices(String term) {
+        return wineServiceFacade.getProducersLike(term);
     }
 
     /**

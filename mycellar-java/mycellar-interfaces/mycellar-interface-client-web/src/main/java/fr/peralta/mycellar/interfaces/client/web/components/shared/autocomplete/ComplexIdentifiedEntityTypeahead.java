@@ -16,51 +16,52 @@
  * You should have received a copy of the GNU General Public License
  * along with MyCellar. If not, see <http://www.gnu.org/licenses/>.
  */
-package fr.peralta.mycellar.interfaces.client.web.components.user.autocomplete;
-
-import java.util.List;
+package fr.peralta.mycellar.interfaces.client.web.components.shared.autocomplete;
 
 import org.apache.wicket.model.IModel;
-import org.apache.wicket.spring.injection.annot.SpringBean;
 
+import fr.peralta.mycellar.domain.shared.IdentifiedEntity;
 import fr.peralta.mycellar.domain.shared.repository.FilterEnum;
 import fr.peralta.mycellar.domain.shared.repository.SearchForm;
-import fr.peralta.mycellar.domain.user.User;
-import fr.peralta.mycellar.interfaces.client.web.components.shared.autocomplete.SimpleIdentifiedEntityTypeahead;
-import fr.peralta.mycellar.interfaces.facades.user.UserServiceFacade;
 
 /**
  * @author speralta
+ * 
+ * @param <E>
  */
-public class UserSimpleTypeahead extends SimpleIdentifiedEntityTypeahead<User> {
+public abstract class ComplexIdentifiedEntityTypeahead<E extends IdentifiedEntity> extends
+        ComplexTypeahead<E> implements TypeaheadIdentifiedEntityProvider<E> {
 
-    private static final long serialVersionUID = 201205221854L;
+    private static final long serialVersionUID = 201108082348L;
 
-    @SpringBean
-    private UserServiceFacade userServiceFacade;
+    private final FilterEnum[] filters;
 
     /**
      * @param id
      * @param label
      * @param searchFormModel
+     * @param filters
      */
-    public UserSimpleTypeahead(String id, IModel<String> label, IModel<SearchForm> searchFormModel) {
+    public ComplexIdentifiedEntityTypeahead(String id, IModel<String> label,
+            IModel<SearchForm> searchFormModel, FilterEnum... filters) {
         super(id, label, searchFormModel);
+        this.filters = filters;
     }
 
     /**
-     * {@inheritDoc}
+     * @param id
+     * @return
      */
     @Override
-    public List<User> getChoices(String term) {
-        return userServiceFacade.getUsersLike(term);
+    protected AbstractTypeaheadComponent<E> createAutocomplete(String id) {
+        return new IdentifiedEntityTypeaheadComponent<E>(id, this);
     }
 
     /**
-     * {@inheritDoc}
+     * @return the filters
      */
-    @Override
-    protected FilterEnum getFilterToReplace() {
-        return FilterEnum.USER;
+    public FilterEnum[] getFilters() {
+        return filters;
     }
+
 }

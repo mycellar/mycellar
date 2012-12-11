@@ -16,26 +16,27 @@
  * You should have received a copy of the GNU General Public License
  * along with MyCellar. If not, see <http://www.gnu.org/licenses/>.
  */
-package fr.peralta.mycellar.interfaces.client.web.components.wine.cloud;
+package fr.peralta.mycellar.interfaces.client.web.components.wine.autocomplete;
 
-import java.util.Map;
+import java.util.List;
 
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 
-import fr.peralta.mycellar.domain.shared.repository.CountEnum;
 import fr.peralta.mycellar.domain.shared.repository.FilterEnum;
 import fr.peralta.mycellar.domain.shared.repository.SearchForm;
 import fr.peralta.mycellar.domain.wine.Country;
-import fr.peralta.mycellar.interfaces.client.web.components.shared.cloud.SimpleTagCloud;
+import fr.peralta.mycellar.interfaces.client.web.components.shared.autocomplete.ComplexIdentifiedEntityTypeahead;
+import fr.peralta.mycellar.interfaces.client.web.components.shared.form.ObjectForm;
+import fr.peralta.mycellar.interfaces.client.web.components.wine.form.CountryForm;
 import fr.peralta.mycellar.interfaces.facades.wine.WineServiceFacade;
 
 /**
  * @author speralta
  */
-public class CountrySimpleTagCloud extends SimpleTagCloud<Country> {
+public class CountryComplexTypeahead extends ComplexIdentifiedEntityTypeahead<Country> {
 
-    private static final long serialVersionUID = 201111161904L;
+    private static final long serialVersionUID = 201107252130L;
 
     @SpringBean
     private WineServiceFacade wineServiceFacade;
@@ -44,21 +45,36 @@ public class CountrySimpleTagCloud extends SimpleTagCloud<Country> {
      * @param id
      * @param label
      * @param searchFormModel
-     * @param count
      * @param filters
      */
-    public CountrySimpleTagCloud(String id, IModel<String> label,
-            IModel<SearchForm> searchFormModel, CountEnum count, FilterEnum... filters) {
-        super(id, label, searchFormModel, count, filters);
+    public CountryComplexTypeahead(String id, IModel<String> label,
+            IModel<SearchForm> searchFormModel, FilterEnum... filters) {
+        super(id, label, searchFormModel, filters);
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    protected Map<Country, Long> getChoices(SearchForm searchForm, CountEnum count,
-            FilterEnum... filters) {
-        return wineServiceFacade.getCountries(searchForm, count, filters);
+    public List<Country> getChoices(String term) {
+        return wineServiceFacade.getCountriesLike(term, getSearchFormModel().getObject(),
+                getFilters());
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    protected ObjectForm<Country> createForm(String id, IModel<SearchForm> searchFormModel) {
+        return new CountryForm(id, searchFormModel);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    protected Country createObject() {
+        return new Country();
     }
 
     /**
@@ -68,5 +84,4 @@ public class CountrySimpleTagCloud extends SimpleTagCloud<Country> {
     protected FilterEnum getFilterToReplace() {
         return FilterEnum.COUNTRY;
     }
-
 }

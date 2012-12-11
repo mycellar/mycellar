@@ -38,7 +38,8 @@ import fr.peralta.mycellar.interfaces.client.web.components.shared.SimpleCompone
  * 
  * @param <O>
  */
-public abstract class SimpleTagCloud<O> extends SimpleComponent<O, TagCloudPanel<O>> {
+public abstract class SimpleTagCloud<O> extends SimpleComponent<O, TagCloudPanel<O>> implements
+        TagDataProvider<O> {
 
     private static final long serialVersionUID = 201111161904L;
 
@@ -99,7 +100,8 @@ public abstract class SimpleTagCloud<O> extends SimpleComponent<O, TagCloudPanel
     /**
      * @return
      */
-    final List<TagData<O>> getList() {
+    @Override
+    public final List<TagData<O>> getList() {
         Map<O, Long> choices;
         if (isReadyToSelect()) {
             choices = getChoices(getSearchFormModel().getObject(), count, filters);

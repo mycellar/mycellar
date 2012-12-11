@@ -21,7 +21,6 @@ package fr.peralta.mycellar.interfaces.client.web.components.wine.form;
 import org.apache.wicket.Component;
 import org.apache.wicket.model.IModel;
 
-import fr.peralta.mycellar.domain.shared.repository.CountEnum;
 import fr.peralta.mycellar.domain.shared.repository.SearchForm;
 import fr.peralta.mycellar.domain.wine.Region;
 import fr.peralta.mycellar.interfaces.client.web.components.shared.form.ObjectForm;
@@ -34,29 +33,23 @@ public class RegionForm extends ObjectForm<Region> {
 
     private static final long serialVersionUID = 201205101324L;
 
-    private final CountEnum count;
     private boolean countryCancelAllowed = true;
 
     /**
      * @param id
      * @param searchFormModel
      * @param newObject
-     * @param count
      */
-    public RegionForm(String id, IModel<SearchForm> searchFormModel, Region newObject,
-            CountEnum count) {
+    public RegionForm(String id, IModel<SearchForm> searchFormModel, Region newObject) {
         super(id, searchFormModel, newObject);
-        this.count = count;
     }
 
     /**
      * @param id
      * @param searchFormModel
-     * @param count
      */
-    public RegionForm(String id, IModel<SearchForm> searchFormModel, CountEnum count) {
+    public RegionForm(String id, IModel<SearchForm> searchFormModel) {
         super(id, searchFormModel);
-        this.count = count;
     }
 
     /**
@@ -73,7 +66,7 @@ public class RegionForm extends ObjectForm<Region> {
      */
     @Override
     protected Component createEditPanel(String id, IModel<SearchForm> searchFormModel) {
-        return new RegionEditPanel(id, count).setCountryCancelAllowed(countryCancelAllowed);
+        return new RegionEditPanel(id).setCountryCancelAllowed(countryCancelAllowed);
     }
 
 }

@@ -24,11 +24,10 @@ import org.apache.wicket.markup.html.panel.Panel;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.StringResourceModel;
 
-import fr.peralta.mycellar.domain.shared.repository.CountEnum;
 import fr.peralta.mycellar.domain.shared.repository.FilterEnum;
 import fr.peralta.mycellar.domain.shared.repository.SearchForm;
 import fr.peralta.mycellar.interfaces.client.web.components.shared.feedback.FormComponentFeedbackBorder;
-import fr.peralta.mycellar.interfaces.client.web.components.wine.cloud.RegionComplexTagCloud;
+import fr.peralta.mycellar.interfaces.client.web.components.wine.autocomplete.RegionComplexTypeahead;
 import fr.peralta.mycellar.interfaces.client.web.shared.FilterEnumHelper;
 
 /**
@@ -41,15 +40,13 @@ public class AppellationEditPanel extends Panel {
     /**
      * @param id
      * @param searchFormModel
-     * @param count
      * @param filters
      */
-    public AppellationEditPanel(String id, IModel<SearchForm> searchFormModel, CountEnum count,
+    public AppellationEditPanel(String id, IModel<SearchForm> searchFormModel,
             FilterEnum... filters) {
         super(id);
-        add(new RegionComplexTagCloud("region", new StringResourceModel("region", this, null),
-                searchFormModel, count, FilterEnumHelper.removeFilter(filters,
-                        FilterEnum.APPELLATION)));
+        add(new RegionComplexTypeahead("region", new StringResourceModel("region", this, null),
+                searchFormModel, FilterEnumHelper.removeFilter(filters, FilterEnum.APPELLATION)));
         add(new FormComponentFeedbackBorder("name").add(new TextField<String>("name")
                 .setRequired(true)));
         add(new FormComponentFeedbackBorder("description").add(new TextArea<String>("description")));

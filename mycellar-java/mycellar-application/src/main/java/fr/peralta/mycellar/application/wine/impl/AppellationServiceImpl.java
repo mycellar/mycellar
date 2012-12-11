@@ -18,6 +18,8 @@
  */
 package fr.peralta.mycellar.application.wine.impl;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -25,6 +27,8 @@ import fr.peralta.mycellar.application.shared.AbstractEntitySearchFormService;
 import fr.peralta.mycellar.application.wine.AppellationService;
 import fr.peralta.mycellar.domain.shared.exception.BusinessError;
 import fr.peralta.mycellar.domain.shared.exception.BusinessException;
+import fr.peralta.mycellar.domain.shared.repository.FilterEnum;
+import fr.peralta.mycellar.domain.shared.repository.SearchForm;
 import fr.peralta.mycellar.domain.wine.Appellation;
 import fr.peralta.mycellar.domain.wine.repository.AppellationOrder;
 import fr.peralta.mycellar.domain.wine.repository.AppellationOrderEnum;
@@ -40,6 +44,14 @@ public class AppellationServiceImpl
         implements AppellationService {
 
     private AppellationRepository appellationRepository;
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public List<Appellation> getAllLike(String term, SearchForm searchForm, FilterEnum... filters) {
+        return appellationRepository.getAllLike(term, searchForm, filters);
+    }
 
     /**
      * {@inheritDoc}

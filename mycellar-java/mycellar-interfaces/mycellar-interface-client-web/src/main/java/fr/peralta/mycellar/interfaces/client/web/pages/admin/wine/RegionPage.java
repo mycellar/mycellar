@@ -23,7 +23,6 @@ import org.apache.wicket.request.mapper.parameter.PageParameters;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 
 import fr.peralta.mycellar.domain.shared.exception.BusinessException;
-import fr.peralta.mycellar.domain.shared.repository.CountEnum;
 import fr.peralta.mycellar.domain.shared.repository.SearchForm;
 import fr.peralta.mycellar.domain.wine.Region;
 import fr.peralta.mycellar.interfaces.client.web.components.shared.form.ObjectForm;
@@ -104,7 +103,7 @@ public class RegionPage extends AbstractEditPage<Region> {
     @Override
     protected ObjectForm<Region> createObjectForm(String id, IModel<SearchForm> searchFormModel,
             Region object) {
-        return new RegionForm(id, searchFormModel, object, CountEnum.WINE);
+        return new RegionForm(id, searchFormModel, object);
     }
 
     /**
