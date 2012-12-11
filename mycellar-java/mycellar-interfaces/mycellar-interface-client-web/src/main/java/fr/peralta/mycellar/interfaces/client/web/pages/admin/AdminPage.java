@@ -23,6 +23,7 @@ import java.sql.SQLException;
 
 import javax.sql.DataSource;
 
+import org.apache.wicket.Application;
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.image.Image;
 import org.apache.wicket.markup.html.link.BookmarkablePageLink;
@@ -33,6 +34,7 @@ import org.apache.wicket.request.mapper.parameter.PageParameters;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 
 import fr.peralta.mycellar.domain.shared.repository.SearchForm;
+import fr.peralta.mycellar.interfaces.client.web.MyCellarWebApplication;
 import fr.peralta.mycellar.interfaces.client.web.components.stack.data.StackDataView;
 import fr.peralta.mycellar.interfaces.client.web.pages.shared.AdminSuperPage;
 import fr.peralta.mycellar.interfaces.client.web.resources.img.ImageReferences;
@@ -65,6 +67,9 @@ public class AdminPage extends AdminSuperPage {
     public AdminPage(PageParameters parameters) {
         super(parameters);
         setOutputMarkupId(true);
+        add(new Label("version", MyCellarWebApplication.class.getPackage()
+                .getImplementationVersion()));
+        add(new Label("wicketVersion", Application.get().getFrameworkSettings().getVersion()));
         add(new Label("configType", WebApplication.get().getConfigurationType().name()));
         add(new Label("userCount", Long.toString(userServiceFacade.countUsers())));
         add(new Label("wineCount", Long.toString(wineServiceFacade.countWines(new SearchForm()))));

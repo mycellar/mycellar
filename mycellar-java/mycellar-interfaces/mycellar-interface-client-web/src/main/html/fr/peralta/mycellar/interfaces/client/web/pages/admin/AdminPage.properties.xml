@@ -6,8 +6,11 @@
   <entry key="throwExceptionLink">Lancer une exception</entry>
   <entry key="cleanStacksLink">Purger les stacks</entry>
   <entry key="dashboard">Tableau de bord</entry>
+  <entry key="myCellar">MyCellar</entry>
+  <entry key="version">Version</entry>
   <entry key="wicket">wicket</entry>
   <entry key="configType">Configuration wicket</entry>
+  <entry key="wicketVersion">Version</entry>
   <entry key="tools">Outils</entry>
   <entry key="database">Base de données</entry>
   <entry key="metadataFailure">Lecture impossible</entry>

@@ -106,6 +106,13 @@
         <artifactId>maven-war-plugin</artifactId>
         <configuration>
           <filteringDeploymentDescriptors>true</filteringDeploymentDescriptors>
+          <archive>                   
+            <manifest>
+              <addDefaultImplementationEntries>true</addDefaultImplementationEntries>
+              <addDefaultSpecificationEntries>true</addDefaultSpecificationEntries>
+            </manifest>
+          </archive>
+          <archiveClasses>true</archiveClasses>
         </configuration>
       </plugin>
       <plugin>
