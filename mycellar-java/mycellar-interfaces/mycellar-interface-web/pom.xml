@@ -142,9 +142,10 @@
         <artifactId>jetty-maven-plugin</artifactId>
         <configuration>
           <jettyXml>${project.build.directory}/jetty/jetty.xml</jettyXml>
-          <webAppConfig>
+          <webApp>
+            <defaultsDescriptor>${project.build.directory}/jetty/webdefault.xml</defaultsDescriptor>
             <descriptor>${project.build.directory}/${project.build.finalName}/WEB-INF/web.xml</descriptor>
-          </webAppConfig>
+          </webApp>
         </configuration>
         <dependencies>
           <dependency>

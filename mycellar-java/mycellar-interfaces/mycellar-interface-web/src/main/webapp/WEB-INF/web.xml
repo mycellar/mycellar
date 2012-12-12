@@ -48,7 +48,7 @@
 
   <filter-mapping>
     <filter-name>WebApplication</filter-name>
-    <url-pattern>/*</url-pattern>
+    <url-pattern>/mycellar-wicket/*</url-pattern>
   </filter-mapping>
   
   <resource-ref>
