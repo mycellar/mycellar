@@ -14,9 +14,9 @@
     this.sorter = this.options.sorter || this.sorter
     this.highlighter = this.options.highlighter || this.highlighter
     this.updater = this.options.updater || this.updater
-    this.$menu = $(this.options.menu).appendTo('body')
     this.sourceUrl = this.options.sourceUrl
     this.updateUrl = this.options.updateUrl
+    this.$menu = $(this.options.menu)
     this.shown = false
     this.listen()
   }
@@ -77,6 +77,9 @@
       switch(e.keyCode) {
         case 40: // down arrow
         case 38: // up arrow
+        case 16: // shift
+        case 17: // ctrl
+        case 18: // alt
           break
 
         case 9: // tab

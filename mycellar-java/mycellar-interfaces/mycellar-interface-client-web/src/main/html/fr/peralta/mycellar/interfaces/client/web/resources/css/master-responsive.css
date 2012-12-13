@@ -105,8 +105,15 @@
   .filter-collapse {
     height: auto !important;
   }
+  
+  .navbar-inverse .nav > li > a i {
+    display: none;
+  }
 }
 
 /** Large desktop **/
 @media (min-width: 1200px) {
+  .navbar-inverse .nav > li > a i {
+    display: inline-block;
+  }
 }

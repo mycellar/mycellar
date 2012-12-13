@@ -290,3 +290,15 @@ fieldset.step > legend:before {
 legend {
   margin-bottom: 0;
 }
+
+/** OPACITY FOR ICON ON NAVBAR **/
+.navbar-inverse .nav > li > a i {
+    opacity: 0.5;
+    margin-right: 2px;
+}
+.navbar-inverse .nav > li > a:hover i, 
+.navbar-inverse .nav li.dropdown.open > .dropdown-toggle i, 
+.navbar-inverse .nav li.dropdown.active > .dropdown-toggle i, 
+.navbar-inverse .nav li.dropdown.open.active > .dropdown-toggle i {
+    opacity: 1;
+}

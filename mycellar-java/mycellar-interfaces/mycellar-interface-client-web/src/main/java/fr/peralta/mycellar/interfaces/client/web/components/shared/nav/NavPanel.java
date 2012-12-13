@@ -20,8 +20,10 @@ package fr.peralta.mycellar.interfaces.client.web.components.shared.nav;
 
 import java.util.List;
 
+import org.apache.commons.lang3.StringUtils;
 import org.apache.wicket.Component;
 import org.apache.wicket.behavior.AttributeAppender;
+import org.apache.wicket.markup.html.WebComponent;
 import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.link.AbstractLink;
@@ -70,6 +72,7 @@ public class NavPanel extends Panel {
                 final AbstractLink link;
                 final Component subNav;
                 final Label header;
+                String icon = null;
                 if (listItem.getModelObject() instanceof NavHeaderDescriptor) {
                     NavHeaderDescriptor descriptor = (NavHeaderDescriptor) listItem
                             .getModelObject();
@@ -83,7 +86,14 @@ public class NavPanel extends Panel {
                                 .add(new AttributeAppender("data-toggle", "dropdown")
                                         .setSeparator(" "));
                         link.add(new Label("label", new StringResourceModel(descriptor
-                                .getHeaderKey(), this, null)));
+                                .getHeaderKey(), this, null)).setOutputMarkupPlaceholderTag(false));
+
+                        try {
+                            icon = new StringResourceModel(descriptor.getHeaderKey() + "Icon",
+                                    this, null).getString();
+                        } catch (Exception e) {
+                            icon = null;
+                        }
 
                         // add check on first page in list
                         SecureComponentHelper.setSecurityCheck(link, new LinkSecurityCheck(link,
@@ -110,6 +120,12 @@ public class NavPanel extends Panel {
                     link = new BookmarkablePageLink<Void>("link", descriptor.getPageClass());
                     link.add(new Label("label", new StringResourceModel(descriptor
                             .getPageTitleKey(), this, null)));
+                    try {
+                        icon = new StringResourceModel(descriptor.getPageTitleKey() + "Icon", this,
+                                null).getString();
+                    } catch (Exception e) {
+                        icon = null;
+                    }
                     subNav = new WebMarkupContainer("subNav");
                     subNav.setVisibilityAllowed(false);
                     header = new Label("header");
@@ -126,6 +142,12 @@ public class NavPanel extends Panel {
                 Label caret = new Label("caret", "");
                 caret.setVisibilityAllowed(subNav.isVisibilityAllowed());
                 link.add(caret);
+                if (StringUtils.isNotEmpty(icon)) {
+                    link.add(new WebComponent("icon").add(new AttributeAppender("class", "icon-"
+                            + icon).setSeparator(" ")));
+                } else {
+                    link.add(new WebComponent("icon").setVisibilityAllowed(false));
+                }
                 listItem.add(link);
                 listItem.add(subNav);
                 listItem.add(header);

@@ -5,9 +5,13 @@
   <entry key="cellarsHeader">Gestion de cave</entry>
   <entry key="adminMenuHeader">Administration</entry>
   <entry key="bookingMenuHeader">Cave et Terroirs</entry>
+  <entry key="cellarsHeaderIcon">folder-open</entry>
+  <entry key="adminMenuHeaderIcon">wrench</entry>
+  <entry key="bookingMenuHeaderIcon">shopping-cart</entry>
 
   <!-- Menu title -->
   <entry key="home">Accueil</entry>
+  <entry key="homeIcon">home</entry>
   <entry key="admin">Tableau de bord</entry>
   <entry key="lists">Données</entry>
   <entry key="newVintages">Créer des millésimes</entry>
@@ -17,6 +21,7 @@
   <entry key="packageArrival">Arrivée d'un colis</entry>
   <entry key="shareCellars">Partage de cave</entry>
   <entry key="vinopedia">Vinopedia</entry>
+  <entry key="vinopediaIcon">book</entry>
   <entry key="myBookingEvents">Réservations en cours</entry>
   <entry key="myBookings">Mes réservations</entry>
   <entry key="bookingReports">Suivi des réservations</entry>
