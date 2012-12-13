@@ -29,6 +29,19 @@ import fr.peralta.mycellar.domain.user.User;
 public interface UserRepository extends EntityRepository<User, UserOrderEnum, UserOrder> {
 
     /**
+     * @return
+     */
+    long countNewUsers();
+
+    /**
+     * @param orders
+     * @param first
+     * @param count
+     * @return
+     */
+    List<User> getAllNewUsers(UserOrder orders, long first, long count);
+
+    /**
      * @param email
      * @return
      */

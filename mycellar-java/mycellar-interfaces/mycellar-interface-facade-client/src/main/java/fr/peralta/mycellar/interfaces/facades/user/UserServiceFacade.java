@@ -43,6 +43,11 @@ public interface UserServiceFacade {
     long countUsers();
 
     /**
+     * @return
+     */
+    long countNewUsers();
+
+    /**
      * @param userId
      * @return
      */
@@ -55,6 +60,14 @@ public interface UserServiceFacade {
      * @return
      */
     List<User> getUsers(UserOrder orders, long first, long count);
+
+    /**
+     * @param orders
+     * @param first
+     * @param count
+     * @return
+     */
+    List<User> getNewUsers(UserOrder orders, long first, long count);
 
     /**
      * @param term
@@ -98,4 +111,5 @@ public interface UserServiceFacade {
      * @throws BusinessException
      */
     void deleteUser(User user) throws BusinessException;
+
 }

@@ -109,6 +109,24 @@ public class UserServiceFacadeImpl implements UserServiceFacade {
      */
     @Override
     @Transactional(readOnly = true)
+    public long countNewUsers() {
+        return userService.countNewUsers();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    @Transactional(readOnly = true)
+    public List<User> getNewUsers(UserOrder orders, long first, long count) {
+        return userService.getAllNewUsers(orders, first, count);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    @Transactional(readOnly = true)
     public List<User> getUsers(UserOrder orders, long first, long count) {
         return userService.getAll(orders, first, count);
     }

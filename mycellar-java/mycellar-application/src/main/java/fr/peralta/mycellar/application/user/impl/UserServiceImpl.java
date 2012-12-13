@@ -52,6 +52,22 @@ public class UserServiceImpl extends
      * {@inheritDoc}
      */
     @Override
+    public final long countNewUsers() {
+        return userRepository.countNewUsers();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public final List<User> getAllNewUsers(UserOrder orders, long first, long count) {
+        return userRepository.getAllNewUsers(orders, first, count);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
     public void saveUserPassword(User user, String password) throws BusinessException {
         user.setPassword(passwordEncryptor.encryptPassword(password));
         save(user);

@@ -46,6 +46,33 @@ public class JpaUserRepository extends JpaEntityRepository<User, UserOrderEnum, 
      * {@inheritDoc}
      */
     @Override
+    public final long countNewUsers() {
+        CriteriaBuilder criteriaBuilder = getEntityManager().getCriteriaBuilder();
+        CriteriaQuery<Long> query = criteriaBuilder.createQuery(Long.class);
+        Root<User> root = query.from(User.class);
+        return getEntityManager().createQuery(
+                query.select(criteriaBuilder.count(root)).where(
+                        criteriaBuilder.isNull(root.get("profile")))).getSingleResult();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public final List<User> getAllNewUsers(UserOrder orders, long first, long count) {
+        CriteriaBuilder criteriaBuilder = getEntityManager().getCriteriaBuilder();
+        CriteriaQuery<User> query = criteriaBuilder.createQuery(User.class);
+        Root<User> root = query.from(User.class);
+        query = query.select(root).where(criteriaBuilder.isNull(root.get("profile")));
+        return getEntityManager()
+                .createQuery(orderBy(query, root, orders, criteriaBuilder, JoinType.INNER))
+                .setFirstResult((int) first).setMaxResults((int) count).getResultList();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
     public List<User> getAllLike(String term) {
         CriteriaBuilder criteriaBuilder = getEntityManager().getCriteriaBuilder();
         CriteriaQuery<User> query = criteriaBuilder.createQuery(User.class);

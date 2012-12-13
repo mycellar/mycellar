@@ -32,6 +32,19 @@ import fr.peralta.mycellar.domain.user.repository.UserOrderEnum;
 public interface UserService extends EntityService<User, UserOrderEnum, UserOrder> {
 
     /**
+     * @return
+     */
+    long countNewUsers();
+
+    /**
+     * @param orders
+     * @param first
+     * @param count
+     * @return
+     */
+    List<User> getAllNewUsers(UserOrder orders, long first, long count);
+
+    /**
      * @param login
      * @param password
      * @return
