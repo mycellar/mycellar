@@ -28,6 +28,7 @@ import org.apache.wicket.model.StringResourceModel;
 import fr.peralta.mycellar.domain.shared.repository.SearchForm;
 import fr.peralta.mycellar.domain.wine.WineColorEnum;
 import fr.peralta.mycellar.domain.wine.WineTypeEnum;
+import fr.peralta.mycellar.interfaces.client.web.behaviors.OnEventModelChangedAjaxBehavior;
 import fr.peralta.mycellar.interfaces.client.web.components.shared.SearchFormModel;
 import fr.peralta.mycellar.interfaces.client.web.components.shared.feedback.FormComponentFeedbackBorder;
 import fr.peralta.mycellar.interfaces.client.web.components.shared.select.SelectEnumUtils;
@@ -52,14 +53,18 @@ public class WineEditPanel extends Panel {
                 new StringResourceModel("producer", this, null), searchFormModel));
         add(new AppellationComplexTypeahead("appellation", new StringResourceModel("appellation",
                 this, null), searchFormModel));
-        add((new FormComponentFeedbackBorder("type")).add((new Select<WineTypeEnum>("type")
-                .setRequired(true)).add(new SelectOptions<WineTypeEnum>("options", SelectEnumUtils
-                .nullBeforeValues(WineTypeEnum.class), new SelectRenderer<WineTypeEnum>()))));
-        add((new FormComponentFeedbackBorder("color")).add((new Select<WineColorEnum>("color"))
-                .setRequired(true).add(
-                        new SelectOptions<WineColorEnum>("options", SelectEnumUtils
+        add(new FormComponentFeedbackBorder("type").add(new Select<WineTypeEnum>("type")
+                .setRequired(true)
+                .add(new SelectOptions<WineTypeEnum>("options", SelectEnumUtils
+                        .nullBeforeValues(WineTypeEnum.class), new SelectRenderer<WineTypeEnum>()))
+                .add(new OnEventModelChangedAjaxBehavior("select"))));
+        add(new FormComponentFeedbackBorder("color")
+                .add(new Select<WineColorEnum>("color")
+                        .setRequired(true)
+                        .add(new SelectOptions<WineColorEnum>("options", SelectEnumUtils
                                 .nullBeforeValues(WineColorEnum.class),
-                                new SelectRenderer<WineColorEnum>()))));
+                                new SelectRenderer<WineColorEnum>()))
+                        .add(new OnEventModelChangedAjaxBehavior("select"))));
         add(new FormComponentFeedbackBorder("vintage").add(new NumberTextField<Integer>("vintage")));
         add(new FormComponentFeedbackBorder("name").add(new TextField<String>("name")));
         add(new FormComponentFeedbackBorder("ranking").add(new TextField<String>("ranking")));

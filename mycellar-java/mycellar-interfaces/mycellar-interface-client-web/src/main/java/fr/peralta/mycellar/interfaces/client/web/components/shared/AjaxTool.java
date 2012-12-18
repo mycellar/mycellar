@@ -33,7 +33,11 @@ public final class AjaxTool {
     public static void ajaxReRender(Component... components) {
         AjaxRequestTarget target = RequestCycle.get().find(AjaxRequestTarget.class);
         if (target != null) {
-            target.add(components);
+            for (Component component : components) {
+                if (component.isVisibleInHierarchy()) {
+                    target.add(components);
+                }
+            }
         }
     }
 
