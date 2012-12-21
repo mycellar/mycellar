@@ -98,6 +98,7 @@
           <wtpversion>2.0</wtpversion>
           <additionalProjectFacets>
             <jst.web>3.0</jst.web>
+            <jst.java>1.7</jst.java>
           </additionalProjectFacets>
         </configuration>
       </plugin>

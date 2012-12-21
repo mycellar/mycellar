@@ -24,6 +24,7 @@ import org.apache.wicket.markup.html.form.NumberTextField;
 import org.apache.wicket.markup.html.form.TextField;
 import org.apache.wicket.markup.html.panel.Panel;
 import org.apache.wicket.model.StringResourceModel;
+import org.joda.time.LocalDate;
 
 import fr.peralta.mycellar.domain.shared.repository.SearchForm;
 import fr.peralta.mycellar.domain.wine.WineColorEnum;
@@ -65,7 +66,8 @@ public class WineEditPanel extends Panel {
                                 .nullBeforeValues(WineColorEnum.class),
                                 new SelectRenderer<WineColorEnum>()))
                         .add(new OnEventModelChangedAjaxBehavior("select"))));
-        add(new FormComponentFeedbackBorder("vintage").add(new NumberTextField<Integer>("vintage")));
+        add(new FormComponentFeedbackBorder("vintage").add(new NumberTextField<Integer>("vintage")
+                .setMinimum(1800).setMaximum(new LocalDate().getYear())));
         add(new FormComponentFeedbackBorder("name").add(new TextField<String>("name")));
         add(new FormComponentFeedbackBorder("ranking").add(new TextField<String>("ranking")));
     }
