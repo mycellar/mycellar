@@ -18,7 +18,6 @@
  */
 package fr.peralta.mycellar.interfaces.client.web.components.wine.list;
 
-import java.util.Arrays;
 import java.util.List;
 
 import org.apache.wicket.event.IEvent;
@@ -44,6 +43,7 @@ import fr.peralta.mycellar.interfaces.client.web.components.shared.AjaxTool;
 import fr.peralta.mycellar.interfaces.client.web.components.shared.feedback.FormComponentFeedbackBorder;
 import fr.peralta.mycellar.interfaces.client.web.components.shared.form.ObjectForm;
 import fr.peralta.mycellar.interfaces.client.web.components.shared.list.ComplexList;
+import fr.peralta.mycellar.interfaces.client.web.components.shared.select.SelectEnumUtils;
 import fr.peralta.mycellar.interfaces.client.web.components.shared.select.SelectRenderer;
 import fr.peralta.mycellar.interfaces.client.web.components.wine.autocomplete.AppellationComplexTypeahead;
 import fr.peralta.mycellar.interfaces.client.web.components.wine.autocomplete.ProducerComplexTypeahead;
@@ -88,14 +88,17 @@ public class WineComplexList extends ComplexList<Wine> {
         add(producerComplexTypeahead = new ProducerComplexTypeahead(PRODUCER_COMPONENT_ID,
                 new StringResourceModel("producer", this, null), searchFormModel));
         add((wineTypeEnumBorder = new FormComponentFeedbackBorder(TYPE_COMPONENT_ID))
-                .add((wineTypeEnumSelect = new Select<WineTypeEnum>(TYPE_COMPONENT_ID))
-                        .add(new SelectOptions<WineTypeEnum>("options", Arrays.asList(WineTypeEnum
-                                .values()), new SelectRenderer<WineTypeEnum>()))));
+                .add((wineTypeEnumSelect = new Select<WineTypeEnum>(TYPE_COMPONENT_ID)).add(
+                        new SelectOptions<WineTypeEnum>("options", SelectEnumUtils
+                                .nullBeforeValues(WineTypeEnum.class),
+                                new SelectRenderer<WineTypeEnum>())).add(
+                        new OnEventModelChangedAjaxBehavior("change"))));
         add((wineColorEnumBorder = new FormComponentFeedbackBorder(COLOR_COMPONENT_ID))
-                .add((wineColorEnumSelect = new Select<WineColorEnum>(COLOR_COMPONENT_ID))
-                        .add(new SelectOptions<WineColorEnum>("options", Arrays
-                                .asList(WineColorEnum.values()),
-                                new SelectRenderer<WineColorEnum>()))));
+                .add((wineColorEnumSelect = new Select<WineColorEnum>(COLOR_COMPONENT_ID)).add(
+                        new SelectOptions<WineColorEnum>("options", SelectEnumUtils
+                                .nullBeforeValues(WineColorEnum.class),
+                                new SelectRenderer<WineColorEnum>())).add(
+                        new OnEventModelChangedAjaxBehavior("change"))));
         add((vintageBorder = new FormComponentFeedbackBorder(VINTAGE_COMPONENT_ID))
                 .add((vintageTextField = new NumberTextField<Integer>(VINTAGE_COMPONENT_ID))
                         .setMinimum(1800).setMaximum(new LocalDate().getYear())
