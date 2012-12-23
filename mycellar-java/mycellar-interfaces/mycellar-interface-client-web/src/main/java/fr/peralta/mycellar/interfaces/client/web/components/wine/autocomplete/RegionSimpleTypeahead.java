@@ -55,7 +55,7 @@ public class RegionSimpleTypeahead extends SimpleIdentifiedEntityTypeahead<Regio
      */
     public RegionSimpleTypeahead(String id, IModel<String> label,
             IModel<SearchForm> searchFormModel, FilterEnum... filters) {
-        super(id, label, searchFormModel);
+        super(id, label, searchFormModel, filters);
         add(countrySimpleTypeahead = new CountrySimpleTypeahead(COUNTRY_COMPONENT_ID,
                 new StringResourceModel("country", this, null), searchFormModel,
                 FilterEnumHelper.removeFilter(filters, FilterEnum.REGION)));
