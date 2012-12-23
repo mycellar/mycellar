@@ -60,7 +60,7 @@ public class RegionComplexTypeahead extends ComplexIdentifiedEntityTypeahead<Reg
      */
     public RegionComplexTypeahead(String id, IModel<String> label,
             IModel<SearchForm> searchFormModel, FilterEnum... filters) {
-        super(id, label, searchFormModel);
+        super(id, label, searchFormModel, filters);
         add(countryComplexTypeahead = new CountryComplexTypeahead(COUNTRY_COMPONENT_ID,
                 new StringResourceModel("country", this, null), searchFormModel,
                 FilterEnumHelper.removeFilter(filters, FilterEnum.REGION)));

@@ -55,7 +55,7 @@ public class AppellationSimpleTypeahead extends SimpleIdentifiedEntityTypeahead<
      */
     public AppellationSimpleTypeahead(String id, IModel<String> label,
             IModel<SearchForm> searchFormModel, FilterEnum... filters) {
-        super(id, label, searchFormModel);
+        super(id, label, searchFormModel, filters);
         add(regionSimpleTypeahead = new RegionSimpleTypeahead(REGION_COMPONENT_ID,
                 new StringResourceModel("region", this, null), searchFormModel,
                 FilterEnumHelper.removeFilter(filters, FilterEnum.REGION)));
