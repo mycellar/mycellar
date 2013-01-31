@@ -33,6 +33,14 @@ public class HomePageDescriptor extends AbstractDescriptor implements IMenuDescr
      * {@inheritDoc}
      */
     @Override
+    public String getIcon() {
+        return "home";
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
     public String getRoute() {
         return "/home";
     }

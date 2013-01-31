@@ -1,5 +1,5 @@
 'use strict';
 
-angular.module('mycellar', ['http-auth-interceptor', 'ngResource'], function($locationProvider) {
+angular.module('mycellar', ['http-auth-interceptor', 'ngResource', 'bootstrap'], function($locationProvider) {
   $locationProvider.html5Mode(true);
 });

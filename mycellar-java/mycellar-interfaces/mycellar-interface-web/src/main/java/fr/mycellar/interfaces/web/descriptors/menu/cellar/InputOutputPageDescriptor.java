@@ -28,6 +28,13 @@ import fr.mycellar.interfaces.web.descriptors.shared.AbstractDescriptor;
  */
 @Component
 public class InputOutputPageDescriptor extends AbstractDescriptor implements IMenuDescriptor {
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public String getIcon() {
+        return "folder-open";
+    }
 
     /**
      * {@inheritDoc}

@@ -9,10 +9,7 @@
     http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-3.0.xsd 
     http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-3.0.xsd">
 
-  <import resource="context-infrastructure.xml" />
-  
-  <import resource="context-interface-facades.xml" />
-  
-  <import resource="classpath:context-interface-client-web.xml" />
+  <context:component-scan base-package="fr.mycellar.interfaces.web">
+  </context:component-scan>
 
 </beans>

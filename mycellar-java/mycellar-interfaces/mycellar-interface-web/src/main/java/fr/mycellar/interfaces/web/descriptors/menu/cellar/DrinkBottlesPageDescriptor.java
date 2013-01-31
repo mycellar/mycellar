@@ -33,6 +33,14 @@ public class DrinkBottlesPageDescriptor extends AbstractDescriptor implements IM
      * {@inheritDoc}
      */
     @Override
+    public String getIcon() {
+        return "folder-open";
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
     public String getRoute() {
         return "/drinkBottles";
     }

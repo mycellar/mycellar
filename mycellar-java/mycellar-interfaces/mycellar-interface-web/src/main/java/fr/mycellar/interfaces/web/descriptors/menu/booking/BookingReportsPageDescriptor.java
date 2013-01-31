@@ -28,6 +28,13 @@ import fr.mycellar.interfaces.web.descriptors.shared.AbstractDescriptor;
  */
 @Component
 public class BookingReportsPageDescriptor extends AbstractDescriptor implements IMenuDescriptor {
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public String getIcon() {
+        return "shopping-cart";
+    }
 
     /**
      * {@inheritDoc}

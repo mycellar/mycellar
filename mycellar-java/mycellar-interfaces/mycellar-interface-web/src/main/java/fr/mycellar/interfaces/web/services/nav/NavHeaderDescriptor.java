@@ -32,20 +32,38 @@ public class NavHeaderDescriptor implements NavDescriptor {
 
     private final SortedMap<Integer, NavPageDescriptor> pages = new TreeMap<Integer, NavPageDescriptor>();
 
-    private final String headerKey;
+    private final String label;
+
+    private final String icon;
 
     /**
-     * @param headerKey
+     * @param label
      */
-    public NavHeaderDescriptor(String headerKey) {
-        this.headerKey = headerKey;
+    public NavHeaderDescriptor(String label) {
+        this(label, null);
     }
 
     /**
-     * @return the headerKey
+     * @param label
+     * @param icon
      */
-    public String getHeaderKey() {
-        return headerKey;
+    public NavHeaderDescriptor(String label, String icon) {
+        this.label = label;
+        this.icon = icon;
+    }
+
+    /**
+     * @return the label
+     */
+    public String getLabel() {
+        return label;
+    }
+
+    /**
+     * @return the icon
+     */
+    public String getIcon() {
+        return icon;
     }
 
     /**

@@ -33,6 +33,14 @@ public class AdminPageDescriptor extends AbstractDescriptor implements IMenuDesc
      * {@inheritDoc}
      */
     @Override
+    public String getIcon() {
+        return "wrench";
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
     public String getRoute() {
         return "/admin";
     }

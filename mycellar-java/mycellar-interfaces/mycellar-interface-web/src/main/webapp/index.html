@@ -8,14 +8,15 @@
     <script src="js/lib/jquery.js"></script>
     <script src="js/lib/angular.js"></script>
     <script src="js/lib/angular-resource.js"></script>
+    <script src="js/lib/angular-bootstrap.js"></script>
     <script src="js/lib/http-auth-interceptor.js"></script>
-    <script src="js/lib/bootstrap.js"></script>
     <script src="js/app/mycellar.js"></script>
     <script src="js/app/login.js"></script>
     <script src="js/app/navigation.js"></script>
     <link rel="stylesheet" href="css/bootstrap.css" type="text/css">
+    <link rel="stylesheet" href="css/font-awesome.css" type="text/css">
+    <link rel="stylesheet" href="css/font-awesome-ie7.css" type="text/css">
     <link rel="stylesheet" href="css/mycellar.css" type="text/css">
-    <link rel="stylesheet" href="css/bootstrap-responsive.css" type="text/css">
     <link rel="stylesheet" href="css/mycellar-responsive.css" type="text/css">
   </head>
   <body>
@@ -27,58 +28,10 @@
             <span class="icon-bar"></span>
             <span class="icon-bar"></span>
           </a>
-          <a class="btn btn-navbar btn-navbar-normal" data-toggle="collapse" data-target=".login-collapse"><i class="icon-user icon-white"></i></a>
           <header>
             <a class="brand" href="home">MyCellar</a>
           </header>
-          <div class="login-collapse" data-ng-controller="LoginController">
-            <div class="btn-group" data-ng-hide="$scope.isLoggedIn">
-              <a class="btn btn-inverse btn-small" href="login" title="Connexion"><i class="icon-user icon-white"></i> Connexion</a>
-            </div>
-            <div class="btn-group" data-ng-show="$scope.isLoggedIn">
-              <a class="btn btn-inverse btn-small" href="myaccount" title="Mon compte">sebastien@peralta.fr <i class="icon-user icon-white"></i></a>
-              <a class="btn btn-inverse btn-small" href="logout" title="Déconnexion"><i class="icon-off icon-white"></i> Déconnexion</a>
-            </div>
-          </div>
-          <div class="nav-collapse" data-ng-controller="NavigationController">
-            <ul class="nav">
-              <li class="divider-vertical"></li>
-              <li class="active">
-                <a href="home"><i class="icon-home icon-white"></i> Accueil</a>
-              </li>
-              <li class="dropdown">
-                <a href="#" class="dropdown-toggle" data-toggle="dropdown"><i class="icon-folder-open icon-white"></i> Gestion de cave<b class="caret"></b></a>
-                <ul class="dropdown-menu">
-                  <li><a href="cellars">Mes caves</a></li>
-                  <li><a href="io">Entrées / Sorties</a></li>
-                  <li><a href="packageArrival">Arrivée d&#039;un colis</a></li>
-                  <li><a href="drinkBottles">Sortie de cave</a></li>
-                  <li><a href="shares">Partage de cave</a></li>
-                </ul>
-              </li>
-              <li class="dropdown">
-                <a href="#" class="dropdown-toggle" data-toggle="dropdown"><i class="icon-shopping-cart icon-white"></i> Cave et Terroirs<b class="caret"></b></a>
-                <ul class="dropdown-menu">
-                  <li><a href="booking">Réservations en cours</a></li>
-                  <li><a href="booking/mybookings">Mes réservations</a></li>
-                  <li><a href="booking/reports">Suivi des réservations</a></li>
-                  <li><a href="booking/contacts">Suivi des contacts</a></li>
-                </ul>
-              </li>
-              <li>
-                <a href="pedia"><i class="icon-book icon-white"></i> Vinopedia</a>
-              </li>
-              <li class="dropdown">
-                <a href="#" class="dropdown-toggle" data-toggle="dropdown"><i class="icon-wrench icon-white"></i> Administration<b class="caret"></b></a>
-                <ul class="dropdown-menu">
-                  <li><a href="admin">Tableau de bord</a></li>
-                  <li><a href="admin/lists">Données</a></li>
-                  <li><a href="admin/newVintages">Créer des millésimes</a></li>
-                </ul>
-              </li>
-              <li class="divider-vertical"></li>
-            </ul>
-          </div>
+          <data-mycellar-nav data-ng-controller="NavigationController" menus="menus" class="nav-collapse"></data-mycellar-nav>
         </div>
       </div>
     </nav>

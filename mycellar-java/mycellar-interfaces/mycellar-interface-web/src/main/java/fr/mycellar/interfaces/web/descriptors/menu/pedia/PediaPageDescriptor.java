@@ -33,6 +33,14 @@ public class PediaPageDescriptor extends AbstractDescriptor implements IMenuDesc
      * {@inheritDoc}
      */
     @Override
+    public String getIcon() {
+        return "book";
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
     public String getRoute() {
         return "/pedia";
     }

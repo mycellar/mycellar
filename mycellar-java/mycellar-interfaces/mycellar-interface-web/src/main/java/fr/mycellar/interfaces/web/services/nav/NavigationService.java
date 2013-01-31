@@ -26,6 +26,10 @@ import java.util.SortedMap;
 import java.util.TreeMap;
 
 import javax.annotation.PostConstruct;
+import javax.ws.rs.GET;
+import javax.ws.rs.Path;
+import javax.ws.rs.Produces;
+import javax.ws.rs.core.MediaType;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -39,6 +43,7 @@ import fr.peralta.mycellar.interfaces.client.web.descriptors.entities.shared.IEn
  * @author speralta
  */
 @Service
+@Path("/navigation")
 public class NavigationService {
 
     private DescriptorServiceFacade descriptorServiceFacade;
@@ -61,7 +66,7 @@ public class NavigationService {
                 SortedMap<String, NavPageDescriptor> pages;
                 if (header == null) {
                     header = new NavHeaderDescriptor(entityDescriptor.getHeaderKey());
-                    listHeaders.put(header.getHeaderKey(), header);
+                    listHeaders.put(header.getLabel(), header);
                     pages = new TreeMap<String, NavPageDescriptor>();
                     listPages.put(header, pages);
                 } else {
@@ -79,18 +84,19 @@ public class NavigationService {
                 if (menuDescriptor.getParentKey() != null) {
                     NavHeaderDescriptor header = getHeader(menuDescriptor.getParentKey(), menuPages);
                     if (header == null) {
-                        header = new NavHeaderDescriptor(menuDescriptor.getParentKey());
+                        header = new NavHeaderDescriptor(menuDescriptor.getParentKey(),
+                                menuDescriptor.getIcon());
                         menuPages.put(menuDescriptor.getWeight(), header);
                     }
                     header.addPage(
                             menuDescriptor.getWeight(),
                             new NavPageDescriptor(menuDescriptor.getRoute(), menuDescriptor
-                                    .getTitleKey()));
+                                    .getTitleKey(), menuDescriptor.getIcon()));
                 } else {
                     menuPages.put(
                             menuDescriptor.getWeight(),
                             new NavPageDescriptor(menuDescriptor.getRoute(), menuDescriptor
-                                    .getTitleKey()));
+                                    .getTitleKey(), menuDescriptor.getIcon()));
                 }
             }
         }
@@ -114,7 +120,7 @@ public class NavigationService {
         for (NavDescriptor navDescriptor : menuPages.values()) {
             if (navDescriptor instanceof NavHeaderDescriptor) {
                 NavHeaderDescriptor header = (NavHeaderDescriptor) navDescriptor;
-                if (header.getHeaderKey().equals(parentKey)) {
+                if (header.getLabel().equals(parentKey)) {
                     return header;
                 }
             }
@@ -129,6 +135,12 @@ public class NavigationService {
         return lists;
     }
 
+    /**
+     * @return the menu
+     */
+    @GET
+    @Produces(MediaType.APPLICATION_JSON)
+    @Path("menu")
     public List<NavDescriptor> getMenu() {
         return menu;
     }

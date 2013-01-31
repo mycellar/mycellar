@@ -33,6 +33,14 @@ public class BookingEventsPageDescriptor extends AbstractDescriptor implements I
      * {@inheritDoc}
      */
     @Override
+    public String getIcon() {
+        return "shopping-cart";
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
     public String getRoute() {
         return "/booking";
     }

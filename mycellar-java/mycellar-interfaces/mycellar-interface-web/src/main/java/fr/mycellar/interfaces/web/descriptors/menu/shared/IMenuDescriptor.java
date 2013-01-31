@@ -25,6 +25,8 @@ import fr.mycellar.interfaces.web.descriptors.shared.IDescriptor;
  */
 public interface IMenuDescriptor extends IDescriptor {
 
+    String getIcon();
+
     String getRoute();
 
     String getTitleKey();

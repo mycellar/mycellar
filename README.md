@@ -1,4 +1,4 @@
 MyCellar
 ========
 
-Cellar management tool developed with Wicket and Bootstrap.
+Cellar management tool developed with angularjs and jersey.

@@ -18,7 +18,6 @@
  */
 package fr.mycellar.interfaces.web.services.nav;
 
-
 /**
  * @author speralta
  */
@@ -28,22 +27,34 @@ public class NavPageDescriptor implements NavDescriptor {
 
     private final String route;
 
-    private final String pageTitleKey;
+    private final String label;
+
+    private final String icon;
 
     /**
      * @param route
-     * @param pageTitleKey
+     * @param label
      */
-    public NavPageDescriptor(String route, String pageTitleKey) {
-        this.route = route;
-        this.pageTitleKey = pageTitleKey;
+    public NavPageDescriptor(String route, String label) {
+        this(route, label, null);
     }
 
     /**
-     * @return the pageTitleKey
+     * @param route
+     * @param label
+     * @param icon
      */
-    public String getPageTitleKey() {
-        return pageTitleKey;
+    public NavPageDescriptor(String route, String label, String icon) {
+        this.route = route;
+        this.label = label;
+        this.icon = icon;
+    }
+
+    /**
+     * @return the label
+     */
+    public String getLabel() {
+        return label;
     }
 
     /**
@@ -51,6 +62,13 @@ public class NavPageDescriptor implements NavDescriptor {
      */
     public String getRoute() {
         return route;
+    }
+
+    /**
+     * @return the icon
+     */
+    public String getIcon() {
+        return icon;
     }
 
 }

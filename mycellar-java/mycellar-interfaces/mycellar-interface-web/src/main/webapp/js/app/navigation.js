@@ -1,12 +1,17 @@
 'use strict';
 
+angular.module('mycellar').directive('mycellarNav', function() {
+  return {
+    restrict: 'E',
+    replace: true,
+    templateUrl: 'partials/nav.html',
+  }
+});
+
 angular.module('mycellar').controller({
-  NavigationController: function ($scope, $http) {
-    $scope.getMenu = function() {
-      $http.get('navigation/menu').success(function() {
-        
-      });
-    };
-    $scope.menuNotLoggedIn = false;
+  NavigationController: function ($scope, $resource) {
+    $scope.menuResource = $resource('/api/navigation/menu');
+    $scope.menus = $scope.menuResource.query();
+    $scope.menuNotLoggedIn = true;
   }
 });
