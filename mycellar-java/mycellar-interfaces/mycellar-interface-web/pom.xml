@@ -24,10 +24,9 @@
   <modelVersion>4.0.0</modelVersion>
 
   <parent>
-    <groupId>fr.peralta.mycellar</groupId>
+    <groupId>mycellar</groupId>
     <artifactId>mycellar-interfaces</artifactId>
     <version>0.6.3-SNAPSHOT</version>
-    <relativePath>../pom.xml</relativePath>
   </parent>
   <artifactId>mycellar-interface-web</artifactId>
   <packaging>war</packaging>
@@ -56,20 +55,12 @@
     </dependency>
     <dependency>
       <groupId>javax.servlet</groupId>
-      <artifactId>servlet-api</artifactId>
+      <artifactId>javax.servlet-api</artifactId>
       <scope>provided</scope>
     </dependency>
     <dependency>
       <groupId>org.springframework</groupId>
       <artifactId>spring-context</artifactId>
-    </dependency>
-    <dependency>
-      <groupId>org.springframework</groupId>
-      <artifactId>spring-tx</artifactId>
-    </dependency>
-    <dependency>
-      <groupId>org.springframework</groupId>
-      <artifactId>spring-orm</artifactId>
     </dependency>
     <dependency>
       <groupId>org.springframework</groupId>
@@ -98,6 +89,10 @@
     <dependency>
       <groupId>com.sun.jersey.contribs</groupId>
       <artifactId>jersey-spring</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>org.tuckey</groupId>
+      <artifactId>urlrewritefilter</artifactId>
     </dependency>
   </dependencies>
 

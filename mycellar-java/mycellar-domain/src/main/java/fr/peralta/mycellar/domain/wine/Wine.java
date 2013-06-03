@@ -31,6 +31,7 @@ import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
@@ -45,6 +46,8 @@ import javax.validation.constraints.Pattern;
 
 import org.apache.commons.lang3.ObjectUtils;
 import org.apache.commons.lang3.builder.ToStringBuilder;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import fr.peralta.mycellar.domain.shared.IdentifiedEntity;
 import fr.peralta.mycellar.domain.shared.NamedEntity;
@@ -63,6 +66,7 @@ public class Wine extends NamedEntity {
     private static final long serialVersionUID = 201111181451L;
 
     @OneToMany(mappedBy = "wine")
+    @JsonIgnore
     private final Set<Bottle> bottles = new HashSet<Bottle>();
 
     @Valid
@@ -74,7 +78,7 @@ public class Wine extends NamedEntity {
     @Enumerated(EnumType.ORDINAL)
     private WineColorEnum color;
 
-    @ElementCollection
+    @ElementCollection(fetch = FetchType.EAGER)
     @JoinTable(name = "WINE_VARIETAL", joinColumns = @JoinColumn(name = "WINE"))
     @Column(name = "PERCENT")
     @MapKeyJoinColumn(name = "VARIETAL")

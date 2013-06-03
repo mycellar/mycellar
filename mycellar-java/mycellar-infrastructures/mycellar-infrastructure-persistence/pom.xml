@@ -24,10 +24,9 @@
   <modelVersion>4.0.0</modelVersion>
 
   <parent>
-    <groupId>fr.peralta.mycellar</groupId>
+    <groupId>mycellar</groupId>
     <artifactId>mycellar-infrastructures</artifactId>
     <version>0.6.3-SNAPSHOT</version>
-    <relativePath>../pom.xml</relativePath>
   </parent>
   <artifactId>mycellar-infrastructure-persistence</artifactId>
   <packaging>jar</packaging>
@@ -44,7 +43,11 @@
     </dependency>
     <dependency>
       <groupId>org.springframework</groupId>
-      <artifactId>spring-tx</artifactId>
+      <artifactId>spring-jdbc</artifactId>
+    </dependency> 
+    <dependency>
+      <groupId>org.springframework.data</groupId>
+      <artifactId>spring-data-jpa</artifactId>
     </dependency>
   </dependencies>
   

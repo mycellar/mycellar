@@ -4,20 +4,32 @@
     <title>MyCellar</title>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <base href="http://localhost:8080/" /> <!-- fixme copy angularjs loading -->
-    <script src="js/lib/jquery.js"></script>
+    <base href="http://localhost:8080/" /> <!-- fixme copy angularjs.org loading -->
+    <script src="js/lib/jquery-2.0.0.js"></script>
     <script src="js/lib/angular.js"></script>
+    <script src="js/lib/angular-locale_fr-fr.js"></script>
     <script src="js/lib/angular-resource.js"></script>
     <script src="js/lib/angular-bootstrap.js"></script>
+    <script src="js/lib/angular-ui.js"></script>
+    <script src="js/lib/ng-grid-2.0.5.debug.js"></script>
     <script src="js/lib/http-auth-interceptor.js"></script>
     <script src="js/app/mycellar.js"></script>
     <script src="js/app/login.js"></script>
     <script src="js/app/navigation.js"></script>
+    <script src="js/app/filters/shared.js"></script>
+    <script src="js/app/filters/renderer.js"></script>
+    <script src="js/app/controllers/home.js"></script>
+    <script src="js/app/controllers/admin/navigation.js"></script>
+    <script src="js/app/controllers/admin/admin.js"></script>
+    <script src="js/app/controllers/admin/lists.js"></script>
+    <script src="js/app/controllers/admin/domain/stack/stacks.js"></script>
+    <script src="js/app/controllers/admin/domain/wine/wines.js"></script>
     <link rel="stylesheet" href="css/bootstrap.css" type="text/css">
     <link rel="stylesheet" href="css/font-awesome.css" type="text/css">
-    <link rel="stylesheet" href="css/font-awesome-ie7.css" type="text/css">
     <link rel="stylesheet" href="css/mycellar.css" type="text/css">
+    <link rel="stylesheet" href="css/bootstrap-responsive.css" type="text/css">
     <link rel="stylesheet" href="css/mycellar-responsive.css" type="text/css">
+    <link rel="stylesheet" href="css/ng-grid.css" type="text/css">
   </head>
   <body>
     <nav class="navbar navbar-inverse navbar-fixed-top">
@@ -29,45 +41,27 @@
             <span class="icon-bar"></span>
           </a>
           <header>
-            <a class="brand" href="home">MyCellar</a>
+            <a class="brand" href="/">MyCellar</a>
           </header>
           <data-mycellar-nav data-ng-controller="NavigationController" menus="menus" class="nav-collapse"></data-mycellar-nav>
         </div>
       </div>
     </nav>
     <div class="container-fluid">
-      <header class="page-header"><h1>Actualités du site</h1></header>
-      <section>
-        <div class="row-fluid">
-          <div class="span12">
-            <div class="hero-unit">
-              <h1>Réservations disponibles</h1>
-              <p>L'outil de réservation pour les campagnes de Cave et Terroirs est en ligne. Utilisez-le pour effectuer vos réservations !</p>
-              <p><a class="btn btn-primary" href="booking">Voir les campagnes en cours</a></p>
-            </div>
-          </div>
-        </div>
-        <div class="row-fluid">
-          <div class="span4">
-            <div class="well">
-              <p><a href="http://www.cave-et-terroirs.fr/">Cave et Terroirs</a></p>
-              <p>Pour pouvoir accéder aux réservations, votre inscription doit être validée. Inscrivez-vous en cliquant sur le bouton ci-dessous, nous vous tiendrons informé dans les plus brefs délais.</p>
-              <p><a class="btn" href="register">Créer un nouveau compte</a></p>
-            </div>
-          </div>
-          <div class="span4">
-            <div class="well">
-              <p>Une bibliothèque des vins contenant plus de 425 références !</p>
-              <p><a class="btn" href="pedia">Accéder à Vinopedia</a></p>
-            </div>
-          </div>
-          <div class="span4">
-            <div class="well">
-              <p>Bientôt en ligne : un outil de gestion cave couplé à vos réservations.</p>
-            </div>
-          </div>
-        </div>
-      </section>
+      <!--[if lt IE 7]>
+      <p class="alert alert-error">Votre est navigateur est <em>trop vieux !</em>
+        <a href="http://browsehappy.com/">Changez de navigateur internet</a> pour utiliser correctement ce site.
+      </p>
+      <![endif]-->
+
+      <!--[if lt IE 9]>
+      <div class="alert">
+        Vous utilisez une ancienne version d'Internet Explorer.
+        Pour une meilleure expérience <a href="http://www.microsoft.com/IE9">mettez à jour IE</a>
+        ou <a href="http://browsehappy.com/">changez de navigateur internet</a>.
+      </div>
+      <![endif]-->
+      <div ng-view></div>
     </div>
     <footer>
       <p>2013 Tous droits réservés, MyCellar GPL V3.</p>

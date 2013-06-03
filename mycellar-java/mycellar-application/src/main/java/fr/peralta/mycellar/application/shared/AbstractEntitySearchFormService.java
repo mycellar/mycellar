@@ -18,6 +18,7 @@
  */
 package fr.peralta.mycellar.application.shared;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -47,6 +48,9 @@ public abstract class AbstractEntitySearchFormService<E extends IdentifiedEntity
      */
     @Override
     public final List<E> getAll(SearchForm searchForm, O orders, long first, long count) {
+        if (count < 1) {
+            return new ArrayList<E>();
+        }
         return getRepository().getAll(searchForm, orders, first, count);
     }
 

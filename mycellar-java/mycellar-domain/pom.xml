@@ -24,10 +24,9 @@
   <modelVersion>4.0.0</modelVersion>
 
   <parent>
-    <groupId>fr.peralta.mycellar</groupId>
+    <groupId>mycellar</groupId>
     <artifactId>mycellar-java</artifactId>
     <version>0.6.3-SNAPSHOT</version>
-    <relativePath>../pom.xml</relativePath>
   </parent>
   <artifactId>mycellar-domain</artifactId>
   <packaging>jar</packaging>
@@ -37,6 +36,10 @@
     <dependency>
       <groupId>org.apache.commons</groupId>
       <artifactId>commons-lang3</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>com.fasterxml.jackson.core</groupId>
+      <artifactId>jackson-annotations</artifactId>
     </dependency>
     <dependency>
       <groupId>org.hibernate</groupId>

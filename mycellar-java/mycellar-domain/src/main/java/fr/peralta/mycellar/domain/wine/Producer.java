@@ -35,6 +35,8 @@ import javax.validation.constraints.Pattern;
 import org.apache.commons.lang3.ObjectUtils;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import fr.peralta.mycellar.domain.position.Address;
 import fr.peralta.mycellar.domain.shared.IdentifiedEntity;
 import fr.peralta.mycellar.domain.shared.NamedEntity;
@@ -79,6 +81,7 @@ public class Producer extends NamedEntity {
     private String websiteUrl;
 
     @OneToMany(mappedBy = "producer")
+    @JsonIgnore
     private final Set<Wine> wines = new HashSet<Wine>();
 
     /**

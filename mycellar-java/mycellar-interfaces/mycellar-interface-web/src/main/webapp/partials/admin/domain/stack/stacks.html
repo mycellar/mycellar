@@ -1,0 +1,33 @@
+<header class="page-header"><h1>Header</h1></header>
+<div class="row-fluid">
+  <div class="span2">
+    <nav role="secondary">
+      <data-mycellar-admin-nav data-ng-controller="AdminNavigationController"></data-mycellar-admin-nav>
+    </nav>
+  </div>
+  <div class="span10">
+    <table class="table table-bordered table-striped table-condensed">
+      <thead>
+        <tr>
+          <th>Hashcode</th>
+          <th>Stack</th>
+          <th>Count</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr ng-repeat="stack in stacks">
+          <td>{{stack.hashCode}}</td>
+          <td>{{stack.stack | firstLine}}</td>
+          <td>{{stack.count}}</td>
+        </tr>
+      </tbody>
+      <tfoot>
+        <tr>
+          <th>Hashcode</th>
+          <th>Stack</th>
+          <th>Count</th>
+        </tr>
+      </tfoot>
+    </table>
+  </div>
+</div>

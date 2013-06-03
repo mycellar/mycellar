@@ -19,9 +19,7 @@
 package fr.mycellar.interfaces.web.services.nav;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.SortedMap;
 import java.util.TreeMap;
 
@@ -37,7 +35,6 @@ import org.springframework.stereotype.Service;
 import fr.mycellar.interfaces.web.descriptors.DescriptorServiceFacade;
 import fr.mycellar.interfaces.web.descriptors.menu.shared.IMenuDescriptor;
 import fr.mycellar.interfaces.web.descriptors.shared.IDescriptor;
-import fr.peralta.mycellar.interfaces.client.web.descriptors.entities.shared.IEntityDescriptor;
 
 /**
  * @author speralta
@@ -49,36 +46,14 @@ public class NavigationService {
     private DescriptorServiceFacade descriptorServiceFacade;
 
     private List<NavDescriptor> menu;
-    private List<NavDescriptor> lists;
 
     @PostConstruct
     public void build() {
         List<IDescriptor> descriptors = descriptorServiceFacade.getDescriptors();
 
-        SortedMap<String, NavHeaderDescriptor> listHeaders = new TreeMap<String, NavHeaderDescriptor>();
-        Map<NavHeaderDescriptor, SortedMap<String, NavPageDescriptor>> listPages = new HashMap<NavHeaderDescriptor, SortedMap<String, NavPageDescriptor>>();
         SortedMap<Integer, NavDescriptor> menuPages = new TreeMap<Integer, NavDescriptor>();
 
         for (IDescriptor descriptor : descriptors) {
-            if (descriptor instanceof IEntityDescriptor) {
-                IEntityDescriptor<?, ?> entityDescriptor = ((IEntityDescriptor<?, ?>) descriptor);
-                NavHeaderDescriptor header = listHeaders.get(entityDescriptor.getHeaderKey());
-                SortedMap<String, NavPageDescriptor> pages;
-                if (header == null) {
-                    header = new NavHeaderDescriptor(entityDescriptor.getHeaderKey());
-                    listHeaders.put(header.getLabel(), header);
-                    pages = new TreeMap<String, NavPageDescriptor>();
-                    listPages.put(header, pages);
-                } else {
-                    pages = listPages.get(header);
-                }
-
-                // pages.put(
-                // entityDescriptor.getTitleKey(),
-                // new NavPageDescriptor(entityDescriptor.getListPageClass(),
-                // entityDescriptor
-                // .getTitleKey()));
-            }
             if (descriptor instanceof IMenuDescriptor) {
                 IMenuDescriptor menuDescriptor = ((IMenuDescriptor) descriptor);
                 if (menuDescriptor.getParentKey() != null) {
@@ -102,12 +77,6 @@ public class NavigationService {
         }
 
         menu = new ArrayList<NavDescriptor>(menuPages.values());
-
-        lists = new ArrayList<NavDescriptor>();
-        for (NavHeaderDescriptor header : listHeaders.values()) {
-            lists.add(header);
-            lists.addAll(listPages.get(header).values());
-        }
     }
 
     /**
@@ -126,13 +95,6 @@ public class NavigationService {
             }
         }
         return null;
-    }
-
-    /**
-     * @return the listPages
-     */
-    public List<NavDescriptor> getListPages() {
-        return lists;
     }
 
     /**

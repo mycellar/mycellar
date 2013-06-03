@@ -39,6 +39,8 @@ import javax.validation.Valid;
 import org.apache.commons.lang3.ObjectUtils;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import fr.peralta.mycellar.domain.position.Map;
 import fr.peralta.mycellar.domain.shared.IdentifiedEntity;
 import fr.peralta.mycellar.domain.shared.NamedEntity;
@@ -55,6 +57,7 @@ public class Region extends NamedEntity {
     private static final long serialVersionUID = 201111181451L;
 
     @OneToMany(mappedBy = "region")
+    @JsonIgnore
     private final Set<Appellation> appellations = new HashSet<Appellation>();
 
     @Valid

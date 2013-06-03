@@ -1,0 +1,12 @@
+<div class="{{class}}">
+  <ul class="nav nav-list">
+    <li ng-repeat="header in headers">
+      <span class="nav-header">{{header.label}}</span>
+      <ul>
+        <li ng-repeat="menu in header.menus">
+          <a href="{{menu.route}}"> {{menu.label}}</a>
+        </li>
+      </ul>
+    </li>
+  </ul>
+</div>

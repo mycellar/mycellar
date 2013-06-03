@@ -38,6 +38,8 @@ import javax.persistence.UniqueConstraint;
 import org.apache.commons.lang3.ObjectUtils;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import fr.peralta.mycellar.domain.position.Map;
 import fr.peralta.mycellar.domain.shared.IdentifiedEntity;
 import fr.peralta.mycellar.domain.shared.NamedEntity;
@@ -69,6 +71,7 @@ public class Appellation extends NamedEntity {
     private Region region;
 
     @OneToMany(mappedBy = "appellation")
+    @JsonIgnore
     private final Set<Wine> wines = new HashSet<Wine>();
 
     /**

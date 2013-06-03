@@ -9,6 +9,9 @@
 
   <logger name="fr.peralta.mycellar" level="trace" />
   
+  <!-- URLRWRITE -->
+  <!-- <logger name="org.tuckey.web.filters.urlrewrite" level="debug" /> -->
+  
   <!-- HIBERNATE QUERIES -->
   <!-- <logger name="org.hibernate.SQL" level="debug" /> -->
   <!-- <logger name="org.hibernate.type" level="trace" /> -->

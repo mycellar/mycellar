@@ -24,10 +24,9 @@
   <modelVersion>4.0.0</modelVersion>
 
   <parent>
-    <groupId>fr.peralta.mycellar</groupId>
+    <groupId>mycellar</groupId>
     <artifactId>mycellar-java</artifactId>
     <version>0.6.3-SNAPSHOT</version>
-    <relativePath>../pom.xml</relativePath>
   </parent>
   <artifactId>mycellar-application</artifactId>
   <packaging>jar</packaging>

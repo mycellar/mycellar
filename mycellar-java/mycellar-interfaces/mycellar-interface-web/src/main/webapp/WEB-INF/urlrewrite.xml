@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<!DOCTYPE urlrewrite
+    PUBLIC "-//tuckey.org//DTD UrlRewrite 4.0//EN"
+    "http://www.tuckey.org/res/dtds/urlrewrite4.0.dtd">
+
+<urlrewrite>
+
+  <rule>
+    <name>API</name>
+    <note>Do not forward API calls.</note>
+    <from>^/api/(.*)</from>
+    <to last="true">-</to>
+  </rule>
+  <rule>
+    <note>To throw an error for wrong js.</note>
+    <from>^/js/(.*)</from>
+    <to last="true">-</to>
+  </rule>
+  <rule>
+    <note>To throw an error for wrong css.</note>
+    <from>^/css/(.*)</from>
+    <to last="true">-</to>
+  </rule>
+  <rule>
+    <note>To throw an error for wrong font.</note>
+    <from>^/font/(.*)</from>
+    <to last="true">-</to>
+  </rule>
+  <rule>
+    <note>For angular to throw a 404 if partial is not present.</note>
+    <from>^/partials/(.*)</from>
+    <to last="true">-</to>
+  </rule>
+
+  <rule>
+    <condition type="request-filename" operator="notdir"></condition>
+    <condition type="request-filename" operator="notfile"></condition>
+    <from>^/(.*)</from>
+    <to>/index.html</to>
+  </rule>
+
+</urlrewrite>

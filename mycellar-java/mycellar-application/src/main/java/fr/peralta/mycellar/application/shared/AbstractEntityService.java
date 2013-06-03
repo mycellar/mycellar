@@ -18,6 +18,7 @@
  */
 package fr.peralta.mycellar.application.shared;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import fr.peralta.mycellar.domain.shared.IdentifiedEntity;
@@ -43,6 +44,9 @@ public abstract class AbstractEntityService<E extends IdentifiedEntity, OE, O ex
      */
     @Override
     public final List<E> getAll(O orders, long first, long count) {
+        if (count < 1) {
+            return new ArrayList<E>();
+        }
         return getRepository().getAll(orders, first, count);
     }
 
