@@ -10,26 +10,20 @@
       <table class="table table-bordered table-striped table-condensed table-hover">
         <thead>
           <tr>
-            <th>HashCode</th>
-            <th>Stack</th>
-            <th>Count</th>
+            <th>Name</th>
           </tr>
         </thead>
         <tbody ng-controller="LoadingCtrl">
           <tr ng-repeat="item in items">
-            <td ng-click="edit(item.id)">{{item.hashCode}}</td>
-            <td ng-click="edit(item.id)">{{item.stack | firstLine}}</td>
-            <td ng-click="edit(item.id)">{{item.count}}</td>
+            <td ng-click="edit(item.id)">{{item.name}}</td>
           </tr>
           <tr ui-if="!loading && items.length == 0">
-            <td colspan="3">No items to display.</td>
+            <td colspan="1">No items to display.</td>
           </tr>
         </tbody>
         <tfoot>
           <tr>
-            <th>HashCode</th>
-            <th>Stack</th>
-            <th>Count</th>
+            <th>Name</th>
           </tr>
         </tfoot>
       </table>

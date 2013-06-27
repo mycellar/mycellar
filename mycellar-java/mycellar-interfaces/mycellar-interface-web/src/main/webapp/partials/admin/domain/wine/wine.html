@@ -1,0 +1,54 @@
+<header class="page-header"><h1>Header</h1></header>
+<div class="row-fluid">
+  <div class="span2">
+    <nav role="secondary">
+      <data-mycellar-admin-nav data-ng-controller="AdminNavigationController"></data-mycellar-admin-nav>
+    </nav>
+  </div>
+  <div class="span10">
+    <form name="form" class="form form-horizontal">
+      <fieldset>
+        <legend>Wine</legend>
+        <div wicket:id="producer" />
+        <div wicket:id="appellation" />
+        <div class="control-group" wicket:id="type">
+          <select id="type" wicket:id="type">
+              <option wicket:id="option"></option>
+          </select>
+        </div>
+        <div class="control-group" wicket:id="color">
+          <select id="color" wicket:id="color">
+              <option wicket:id="option"></option>
+          </select>
+        </div>
+        <data-mycellar-input id="name" 
+            name="name" 
+            label="Name" 
+            form="form" 
+            model="wine"></data-mycellar-input>
+        <data-mycellar-input id="vintage" 
+            name="vintage" 
+            label="Vintage" 
+            form="form" 
+            model="wine"
+            type="number"></data-mycellar-input>
+        <data-mycellar-input id="ranking" 
+            name="ranking" 
+            label="Ranking" 
+            form="form" 
+            model="wine"></data-mycellar-input>
+        <data-mycellar-textarea id="description" 
+            name="description" 
+            label="Description" 
+            form="form" 
+            model="wine"
+            class="input-block-level"
+            rows="5"></data-mycellar-textarea>
+      </fieldset>
+      <div class="form-actions">
+        <input type="submit" class="btn btn-primary" value="Save" ng-click="save()" />
+        <input type="submit" class="btn" value="Cancel" ng-click="cancel()" />
+      </div>
+    </form>
+  </div>
+</div>

@@ -1,0 +1,36 @@
+<header class="page-header"><h1>Header</h1></header>
+<div class="row-fluid">
+  <div class="span2">
+    <nav role="secondary">
+      <data-mycellar-admin-nav data-ng-controller="AdminNavigationController"></data-mycellar-admin-nav>
+    </nav>
+  </div>
+  <div class="span10">
+    <form name="form" class="form form-horizontal">
+      <fieldset>
+        <legend>Stack</legend>
+        <data-mycellar-input id="hashCode" 
+            name="hashCode" 
+            label="HashCode" 
+            form="form" 
+            model="stack"></data-mycellar-input>
+        <data-mycellar-textarea id="stack" 
+            name="stack" 
+            label="Stack" 
+            form="form" 
+            model="stack"
+            class="input-block-level"
+            rows="15"></data-mycellar-textarea>
+        <data-mycellar-input id="count" 
+            name="count" 
+            label="Count" 
+            form="form" 
+            model="stack"
+            type="number"></data-mycellar-input>
+      </fieldset>
+      <div class="form-actions">
+        <input type="submit" class="btn" value="Cancel" ng-click="cancel()" />
+      </div>
+    </form>
+  </div>
+</div>

@@ -1,0 +1,18 @@
+<div>
+  <div ng-transclude></div>
+  <div class="pagination pagination-centered">
+    <ul>
+      <li class="disabled"><a>{{firstItem + 1}} - {{firstItem + count}} / {{itemCount}}</a></li>
+    </ul>
+    &nbsp;
+    <ul>
+      <li ng-class="{disabled: currentPage == 0}"><a ng-click="currentPage == 0 || setPage(0)" href="">&laquo;</a></li>
+      <li ng-class="{disabled: currentPage == 0}"><a ng-click="currentPage == 0 || previousPage()" href="">&lsaquo;</a></li>
+      <li class="disabled" ui-if="pages[0].number != 0"><a>...</a></li>
+      <li ng-class="{active: currentPage == page.number}" ng-repeat="page in pages"><a ng-click="currentPage == page.number || setPage(page.number)" href="">{{page.number + 1}}</a></li>
+      <li class="disabled" ui-if="pages[pages.length - 1].number != (pageCount - 1)"><a>...</a></li>
+      <li ng-class="{disabled: currentPage == pageCount - 1}"><a ng-click="currentPage == pageCount - 1 || nextPage()" href="">&rsaquo;</a></li>
+      <li ng-class="{disabled: currentPage == pageCount - 1}"><a ng-click="currentPage == pageCount - 1 || setPage(pageCount - 1)" href="">&raquo;</a></li>
+    </ul>
+  </div>
+</div>

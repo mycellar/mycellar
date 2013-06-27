@@ -6,6 +6,45 @@
     </nav>
   </div>
   <div class="span10">
-    <div class="gridStyle" ng-grid="gridOptions"></div>
+    <data-mycellar-table items-per-page="20" page-range="3" options="tableOptions" items="items">
+      <table class="table table-bordered table-striped table-condensed table-hover">
+        <thead>
+          <tr>
+            <th>Country</th>
+            <th>Region</th>
+            <th>Appellation</th>
+            <th>Producer</th>
+            <th>Name</th>
+            <th>Vintage</th>
+            <th>Color</th>
+          </tr>
+        </thead>
+        <tbody ng-controller="LoadingCtrl" >
+          <tr ng-repeat="item in items">
+            <td ng-click="edit(item.id)">{{item.appellation.region.country.name}}</td>
+            <td ng-click="edit(item.id)">{{item.appellation.region.name}}</td>
+            <td ng-click="edit(item.id)">{{item.appellation.name}}</td>
+            <td ng-click="edit(item.id)">{{item.producer.name}}</td>
+            <td ng-click="edit(item.id)">{{item.name}}</td>
+            <td ng-click="edit(item.id)">{{item.vintage}}</td>
+            <td ng-click="edit(item.id)">{{item.color}}</td>
+          </tr>
+          <tr ui-if="!loading && items.length == 0">
+            <td colspan="7">No items to display.</td>
+          </tr>
+        </tbody>
+        <tfoot>
+          <tr>
+            <th>Country</th>
+            <th>Region</th>
+            <th>Appellation</th>
+            <th>Producer</th>
+            <th>Name</th>
+            <th>Vintage</th>
+            <th>Color</th>
+          </tr>
+        </tfoot>
+      </table>
+    </data-mycellar-table>
   </div>
 </div>

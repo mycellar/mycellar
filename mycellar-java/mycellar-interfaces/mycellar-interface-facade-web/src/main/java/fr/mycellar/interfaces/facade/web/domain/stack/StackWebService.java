@@ -22,6 +22,7 @@ import java.util.List;
 
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
+import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.MediaType;
@@ -37,24 +38,31 @@ import fr.peralta.mycellar.interfaces.facades.stack.StackServiceFacade;
  * @author speralta
  */
 @Service
-@Path("/domain/stack/stacks")
-public class StackService {
+@Path("/domain/stack")
+public class StackWebService {
 
     private StackServiceFacade stackServiceFacade;
 
     @GET
     @Produces(MediaType.APPLICATION_JSON)
-    @Path("count")
+    @Path("stacks/count")
     public long countStacks() {
         return stackServiceFacade.countStacks();
     }
 
     @GET
     @Produces(MediaType.APPLICATION_JSON)
-    @Path("list")
+    @Path("stacks/list")
     public List<Stack> getStacks(@QueryParam("first") long first, @QueryParam("count") long count) {
         StackOrder orders = new StackOrder();
         return stackServiceFacade.getStacks(orders, first, count);
+    }
+
+    @GET
+    @Produces(MediaType.APPLICATION_JSON)
+    @Path("stack/{id}")
+    public Stack getStackById(@PathParam("id") int stackId) {
+        return stackServiceFacade.getStackById(stackId);
     }
 
     /**

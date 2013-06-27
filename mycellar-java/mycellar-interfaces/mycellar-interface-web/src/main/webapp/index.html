@@ -5,15 +5,16 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <base href="http://localhost:8080/" /> <!-- fixme copy angularjs.org loading -->
-    <script src="js/lib/jquery-2.0.0.js"></script>
     <script src="js/lib/angular.js"></script>
     <script src="js/lib/angular-locale_fr-fr.js"></script>
     <script src="js/lib/angular-resource.js"></script>
     <script src="js/lib/angular-bootstrap.js"></script>
     <script src="js/lib/angular-ui.js"></script>
-    <script src="js/lib/ng-grid-2.0.5.debug.js"></script>
     <script src="js/lib/http-auth-interceptor.js"></script>
+    <script src="js/lib/loading.js"></script>
     <script src="js/app/mycellar.js"></script>
+    <script src="js/app/directives/table.js"></script>
+    <script src="js/app/directives/form.js"></script>
     <script src="js/app/login.js"></script>
     <script src="js/app/navigation.js"></script>
     <script src="js/app/filters/shared.js"></script>
@@ -23,13 +24,13 @@
     <script src="js/app/controllers/admin/admin.js"></script>
     <script src="js/app/controllers/admin/lists.js"></script>
     <script src="js/app/controllers/admin/domain/stack/stacks.js"></script>
+    <script src="js/app/controllers/admin/domain/wine/countries.js"></script>
     <script src="js/app/controllers/admin/domain/wine/wines.js"></script>
     <link rel="stylesheet" href="css/bootstrap.css" type="text/css">
     <link rel="stylesheet" href="css/font-awesome.css" type="text/css">
     <link rel="stylesheet" href="css/mycellar.css" type="text/css">
     <link rel="stylesheet" href="css/bootstrap-responsive.css" type="text/css">
     <link rel="stylesheet" href="css/mycellar-responsive.css" type="text/css">
-    <link rel="stylesheet" href="css/ng-grid.css" type="text/css">
   </head>
   <body>
     <nav class="navbar navbar-inverse navbar-fixed-top">
@@ -47,7 +48,8 @@
         </div>
       </div>
     </nav>
-    <div class="container-fluid">
+    <div class="container-fluid" ng-controller="LoadingCtrl">
+      <div ng-show="loading" style="top: 45%; left: 45%; position: absolute; text-align: center; width: 100px;" class="well">Loading</div>
       <!--[if lt IE 7]>
       <p class="alert alert-error">Votre est navigateur est <em>trop vieux !</em>
         <a href="http://browsehappy.com/">Changez de navigateur internet</a> pour utiliser correctement ce site.

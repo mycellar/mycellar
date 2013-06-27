@@ -38,20 +38,20 @@ import fr.peralta.mycellar.interfaces.facades.user.UserServiceFacade;
  */
 @Service
 @Path("/domain/user")
-public class UserService {
+public class UserWebService {
 
     private UserServiceFacade userServiceFacade;
 
     @GET
     @Produces(MediaType.APPLICATION_JSON)
-    @Path("count")
+    @Path("users/count")
     public long countUsers() {
         return userServiceFacade.countUsers();
     }
 
     @GET
     @Produces(MediaType.APPLICATION_JSON)
-    @Path("list/{first}/{count}")
+    @Path("users/list/{first}/{count}")
     public List<User> getUsers(@PathParam("{first}") long first, @PathParam("{count}") long count) {
         UserOrder orders = new UserOrder();
         return userServiceFacade.getUsers(orders, first, count);
