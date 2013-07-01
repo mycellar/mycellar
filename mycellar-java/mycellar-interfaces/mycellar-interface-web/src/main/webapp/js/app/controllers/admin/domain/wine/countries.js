@@ -2,12 +2,32 @@
 
 angular.module('mycellar').controller({
   AdminDomainCountriesController: function ($scope, $resource, $http, $location) {
+    $scope.sort = {
+      properties: [
+        'name',
+      ],
+      ways: {
+        name: 'asc',
+      }
+    };
+    
     $scope.tableOptions = {
       itemResource: $resource('/api/domain/wine/countries/list'),
       itemCountGet: $http.get('/api/domain/wine/countries/count'),
     };
     $scope.edit = function(itemId) {
       $location.path('/admin/domain/wine/country/' + itemId);
+    };
+    $scope.sortBy = function(property) {
+      if ($scope.sort.ways[property] == 'asc') {
+        $scope.sort.ways[property] = 'desc';
+      } else if ($scope.sort.ways[property] == 'desc') {
+        $scope.sort.properties.splice($scope.sort.properties.indexOf(property), 1);
+        $scope.sort.ways[property] = null;
+      } else {
+        $scope.sort.properties.push(property);
+        $scope.sort.ways[property] = 'asc';
+      }
     };
   },
   AdminDomainCountryController: function ($scope, $resource, $route, $location) {

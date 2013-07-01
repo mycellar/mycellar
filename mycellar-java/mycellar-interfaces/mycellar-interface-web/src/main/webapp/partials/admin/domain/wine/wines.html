@@ -6,17 +6,18 @@
     </nav>
   </div>
   <div class="span10">
-    <data-mycellar-table items-per-page="20" page-range="3" options="tableOptions" items="items">
+    <data-mycellar-table page-range="3" options="tableOptions" items="items" sort="sort">
       <table class="table table-bordered table-striped table-condensed table-hover">
         <thead>
           <tr>
-            <th>Country</th>
-            <th>Region</th>
-            <th>Appellation</th>
-            <th>Producer</th>
-            <th>Name</th>
-            <th>Vintage</th>
-            <th>Color</th>
+            <th>Country <span ng-click="sortBy('country_name')">sort: {{sort.ways['country_name']}}</span></th>
+            <th>Region <span ng-click="sortBy('region_name')">sort: {{sort.ways['region_name']}}</span></th>
+            <th>Appellation <span ng-click="sortBy('appellation_name')">sort: {{sort.ways['appellation_name']}}</span></th>
+            <th>Producer <span ng-click="sortBy('producer_name')">sort: {{sort.ways['producer_name']}}</span></th>
+            <th>Name <span ng-click="sortBy('name')">sort: {{sort.ways['name']}}</span></th>
+            <th>Vintage <span ng-click="sortBy('vintage')">sort: {{sort.ways['vintage']}}</span></th>
+            <th>Color <span ng-click="sortBy('color')">sort: {{sort.ways['color']}}</span></th>
+            <th>Type <span ng-click="sortBy('type')">sort: {{sort.ways['type']}}</span></th>
           </tr>
         </thead>
         <tbody ng-controller="LoadingCtrl" >
@@ -28,20 +29,22 @@
             <td ng-click="edit(item.id)">{{item.name}}</td>
             <td ng-click="edit(item.id)">{{item.vintage}}</td>
             <td ng-click="edit(item.id)">{{item.color}}</td>
+            <td ng-click="edit(item.id)">{{item.type}}</td>
           </tr>
           <tr ui-if="!loading && items.length == 0">
-            <td colspan="7">No items to display.</td>
+            <td colspan="8">No items to display.</td>
           </tr>
         </tbody>
         <tfoot>
           <tr>
-            <th>Country</th>
-            <th>Region</th>
-            <th>Appellation</th>
-            <th>Producer</th>
-            <th>Name</th>
-            <th>Vintage</th>
-            <th>Color</th>
+            <th>Country <span ng-click="sortBy('country_name')">sort: {{sort.ways['country_name']}}</span></th>
+            <th>Region <span ng-click="sortBy('region_name')">sort: {{sort.ways['region_name']}}</span></th>
+            <th>Appellation <span ng-click="sortBy('appellation_name')">sort: {{sort.ways['appellation_name']}}</span></th>
+            <th>Producer <span ng-click="sortBy('producer_name')">sort: {{sort.ways['producer_name']}}</span></th>
+            <th>Name <span ng-click="sortBy('name')">sort: {{sort.ways['name']}}</span></th>
+            <th>Vintage <span ng-click="sortBy('vintage')">sort: {{sort.ways['vintage']}}</span></th>
+            <th>Color <span ng-click="sortBy('color')">sort: {{sort.ways['color']}}</span></th>
+            <th>Type <span ng-click="sortBy('type')">sort: {{sort.ways['type']}}</span></th>
           </tr>
         </tfoot>
       </table>

@@ -53,9 +53,13 @@ public class StackWebService {
     @GET
     @Produces(MediaType.APPLICATION_JSON)
     @Path("stacks/list")
-    public List<Stack> getStacks(@QueryParam("first") long first, @QueryParam("count") long count) {
-        StackOrder orders = new StackOrder();
-        return stackServiceFacade.getStacks(orders, first, count);
+    public List<Stack> getStacks(@QueryParam("first") long first, @QueryParam("count") long count,
+            @QueryParam("sort") List<StackOrderCouple> orders) {
+        StackOrder stackOrder = new StackOrder();
+        for (StackOrderCouple order : orders) {
+            stackOrder.add(order.getOrder(), order.getWay());
+        }
+        return stackServiceFacade.getStacks(stackOrder, first, count);
     }
 
     @GET

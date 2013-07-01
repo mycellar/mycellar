@@ -6,13 +6,13 @@
     </nav>
   </div>
   <div class="span10">
-    <data-mycellar-table items-per-page="20" page-range="3" options="tableOptions" items="items">
+    <data-mycellar-table page-range="3" options="tableOptions" items="items" sort="sort">
       <table class="table table-bordered table-striped table-condensed table-hover">
         <thead>
           <tr>
             <th>HashCode</th>
             <th>Stack</th>
-            <th>Count</th>
+            <th>Count <span ng-click="sortBy('count')">sort: {{sort.ways['count']}}</span></th>
           </tr>
         </thead>
         <tbody ng-controller="LoadingCtrl">
@@ -29,7 +29,7 @@
           <tr>
             <th>HashCode</th>
             <th>Stack</th>
-            <th>Count</th>
+            <th>Count <span ng-click="sortBy('count')">sort: {{sort.ways['count']}}</span></th>
           </tr>
         </tfoot>
       </table>

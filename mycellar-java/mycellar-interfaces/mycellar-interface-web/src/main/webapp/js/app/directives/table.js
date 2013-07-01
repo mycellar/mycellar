@@ -8,13 +8,26 @@ angular.module('mycellar').directive('mycellarTable', function() {
     templateUrl: 'partials/directives/table.html',
     scope: {
       options: '=',
-      itemsPerPage: '=',
       pageRange: '=',
       items: '=',
       colSpan: '=',
+      sort: '='
+    },
+    link: function(scope, iElement, iAttrs, controller) {
+      scope.$watch('sort.ways', function(value) {
+        if (scope.currentPage >= 0) {
+          scope.setPage(scope.currentPage);
+        }
+      }, true);
+      scope.$watch('itemsPerPage', function (value) {
+        if (scope.currentPage >= 0) {
+          scope.setPage(scope.currentPage);
+        }
+      });
     },
     controller: function($scope) {
       $scope.setPage = function(page) {
+        $scope.pageCount = (~~($scope.itemCount / $scope.itemsPerPage)) + 1;
         $scope.currentPage = page;
         $scope.pages = [];
         var i;
@@ -31,10 +44,15 @@ angular.module('mycellar').directive('mycellarTable', function() {
           }
         }
         $scope.firstItem = $scope.currentPage * $scope.itemsPerPage;
-        $scope.count = ($scope.currentPage + 1) * $scope.itemsPerPage > $scope.itemCount ? $scope.itemCount - $scope.currentPage * $scope.itemsPerPage : $scope.itemsPerPage;
+        $scope.count = ($scope.currentPage + 1) * $scope.itemsPerPage > $scope.itemCount ? $scope.itemCount - $scope.currentPage * $scope.itemsPerPage : $scope.itemsPerPage * 1;
+        var sort = [];
+        for (var t in $scope.sort.properties) {
+          sort.push($scope.sort.properties[t] + ',' + $scope.sort.ways[$scope.sort.properties[t]]);
+        }
         $scope.items = $scope.itemResource.query({
-          first: $scope.firstItem, 
-          count: $scope.count
+          first: $scope.firstItem,
+          count: $scope.count,
+          sort: sort
         });
       };
       $scope.nextPage = function() {
@@ -46,10 +64,10 @@ angular.module('mycellar').directive('mycellarTable', function() {
       
       $scope.itemCountGet = $scope.options.itemCountGet;
       $scope.itemResource = $scope.options.itemResource;
+      $scope.itemsPerPage = 20;
       
       $scope.itemCountGet.success(function(data, status, headers, config) {
         $scope.itemCount = data;
-        $scope.pageCount = (~~($scope.itemCount / $scope.itemsPerPage)) + 1;
         $scope.setPage(0);
       });
     }

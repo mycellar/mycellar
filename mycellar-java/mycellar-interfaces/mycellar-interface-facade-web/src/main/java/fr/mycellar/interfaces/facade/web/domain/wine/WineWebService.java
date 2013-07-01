@@ -32,12 +32,15 @@ import javax.ws.rs.core.MediaType;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import fr.mycellar.interfaces.facade.web.domain.OrderCouple;
 import fr.peralta.mycellar.domain.shared.exception.BusinessException;
 import fr.peralta.mycellar.domain.shared.repository.SearchForm;
 import fr.peralta.mycellar.domain.wine.Country;
 import fr.peralta.mycellar.domain.wine.Wine;
 import fr.peralta.mycellar.domain.wine.repository.CountryOrder;
+import fr.peralta.mycellar.domain.wine.repository.CountryOrderEnum;
 import fr.peralta.mycellar.domain.wine.repository.WineOrder;
+import fr.peralta.mycellar.domain.wine.repository.WineOrderEnum;
 import fr.peralta.mycellar.interfaces.facades.wine.WineServiceFacade;
 
 /**
@@ -59,9 +62,13 @@ public class WineWebService {
     @GET
     @Produces(MediaType.APPLICATION_JSON)
     @Path("wines/list")
-    public List<Wine> getWines(@QueryParam("first") long first, @QueryParam("count") long count) {
-        WineOrder orders = new WineOrder();
-        return wineServiceFacade.getWines(new SearchForm(), orders, first, count);
+    public List<Wine> getWines(@QueryParam("first") long first, @QueryParam("count") long count,
+            @QueryParam("sort") List<WineOrderCouple> orders) {
+        WineOrder wineOrder = new WineOrder();
+        for (OrderCouple<WineOrderEnum> order : orders) {
+            wineOrder.add(order.getOrder(), order.getWay());
+        }
+        return wineServiceFacade.getWines(new SearchForm(), wineOrder, first, count);
     }
 
     @GET
@@ -89,9 +96,12 @@ public class WineWebService {
     @Produces(MediaType.APPLICATION_JSON)
     @Path("countries/list")
     public List<Country> getCountries(@QueryParam("first") long first,
-            @QueryParam("count") long count) {
-        CountryOrder orders = new CountryOrder();
-        return wineServiceFacade.getCountries(new SearchForm(), orders, first, count);
+            @QueryParam("count") long count, @QueryParam("sort") List<CountryOrderCouple> orders) {
+        CountryOrder countryOrder = new CountryOrder();
+        for (OrderCouple<CountryOrderEnum> order : orders) {
+            countryOrder.add(order.getOrder(), order.getWay());
+        }
+        return wineServiceFacade.getCountries(new SearchForm(), countryOrder, first, count);
     }
 
     @GET

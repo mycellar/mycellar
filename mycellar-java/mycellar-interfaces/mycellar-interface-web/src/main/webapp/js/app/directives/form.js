@@ -21,10 +21,10 @@ angular.module('mycellar').directive({
         iAttrs.$observe('type', function(value) {
           scope.inputType = value || 'text';
         });
-        iAttrs.$observe('form', function(value) {
+        scope.$watch('form', function(value) {
           scope.input = value[scope.inputId];
         });
-        iAttrs.$observe('inputId', function(value) {
+        scope.$watch('inputId', function(value) {
           scope.input = scope.form[value];
         });
       }
