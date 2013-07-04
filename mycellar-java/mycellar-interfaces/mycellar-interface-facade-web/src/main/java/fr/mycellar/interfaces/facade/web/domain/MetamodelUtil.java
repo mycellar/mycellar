@@ -19,14 +19,20 @@
 package fr.mycellar.interfaces.facade.web.domain;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.persistence.metamodel.Attribute;
+
+import com.google.common.base.Splitter;
 
 /**
  * @author speralta
  */
 public class MetamodelUtil {
+
+    private static Map<Class<?>, Class<?>> metamodelCache = new HashMap<>();
 
     @SuppressWarnings("unchecked")
     public static <E> Attribute<E, ?> toMetamodelFirstPath(String path, Class<E> from) {
@@ -54,11 +60,17 @@ public class MetamodelUtil {
     private static List<Attribute<?, ?>> toMetamodelListAttributes(String path, Class<?> from) {
         try {
             List<Attribute<?, ?>> attributes = new ArrayList<>();
-            String[] pathItems = path.split("\\.");
             Class<?> current = from;
-            for (String pathItem : pathItems) {
-                Attribute<?, ?> attribute = (Attribute<?, ?>) Class
-                        .forName(current.getName() + "_").getField(pathItem).get(null);
+            for (String pathItem : Splitter.on(".").split(path)) {
+                Class<?> metamodelClass;
+                if (metamodelCache.containsKey(current)) {
+                    metamodelClass = metamodelCache.get(current);
+                } else {
+                    metamodelClass = Class.forName(current.getName() + "_");
+                    metamodelCache.put(current, metamodelClass);
+                }
+                Attribute<?, ?> attribute = (Attribute<?, ?>) metamodelClass.getField(pathItem)
+                        .get(null);
                 attributes.add(attribute);
                 current = attribute.getJavaType();
             }
