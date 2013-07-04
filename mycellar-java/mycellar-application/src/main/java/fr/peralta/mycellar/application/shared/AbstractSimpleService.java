@@ -26,7 +26,7 @@ import fr.peralta.mycellar.domain.shared.repository.SimpleRepository;
  * @author speralta
  */
 public abstract class AbstractSimpleService<E extends IdentifiedEntity, R extends SimpleRepository<E>>
-        implements SimpleService<E> {
+        extends AbstractGenericService<R, E, Integer> implements SimpleService<E> {
 
     /**
      * {@inheritDoc}
@@ -53,5 +53,4 @@ public abstract class AbstractSimpleService<E extends IdentifiedEntity, R extend
         getRepository().save(entity);
     }
 
-    protected abstract R getRepository();
 }

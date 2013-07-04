@@ -18,46 +18,12 @@
  */
 package fr.peralta.mycellar.domain.wine.repository;
 
-import java.util.Map;
-
-import fr.peralta.mycellar.domain.shared.repository.CountEnum;
-import fr.peralta.mycellar.domain.shared.repository.EntitySearchFormRepository;
-import fr.peralta.mycellar.domain.shared.repository.SearchForm;
-import fr.peralta.mycellar.domain.wine.Appellation;
-import fr.peralta.mycellar.domain.wine.Producer;
+import fr.peralta.mycellar.domain.shared.repository.SimpleRepository;
 import fr.peralta.mycellar.domain.wine.Wine;
-import fr.peralta.mycellar.domain.wine.WineColorEnum;
-import fr.peralta.mycellar.domain.wine.WineTypeEnum;
 
 /**
  * @author speralta
  */
-public interface WineRepository extends EntitySearchFormRepository<Wine, WineOrderEnum, WineOrder> {
-
-    /**
-     * @param searchForm
-     * @param countEnum
-     * @return
-     */
-    Map<WineTypeEnum, Long> getTypes(SearchForm searchForm, CountEnum countEnum);
-
-    /**
-     * @param searchForm
-     * @param countEnum
-     * @return
-     */
-    Map<WineColorEnum, Long> getColors(SearchForm searchForm, CountEnum countEnum);
-
-    /**
-     * @param producer
-     * @param appellation
-     * @param type
-     * @param color
-     * @param name
-     * @param vintage
-     * @return
-     */
-    Wine find(Producer producer, Appellation appellation, WineTypeEnum type, WineColorEnum color,
-            String name, Integer vintage);
+public interface WineRepository extends SimpleRepository<Wine> {
 
 }

@@ -30,8 +30,9 @@ import javax.ws.rs.core.MediaType;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import fr.mycellar.interfaces.facade.web.domain.OrderCouple;
+import fr.peralta.mycellar.domain.shared.repository.SearchParameters;
 import fr.peralta.mycellar.domain.stack.Stack;
-import fr.peralta.mycellar.domain.stack.repository.StackOrder;
 import fr.peralta.mycellar.interfaces.facades.stack.StackServiceFacade;
 
 /**
@@ -47,19 +48,21 @@ public class StackWebService {
     @Produces(MediaType.APPLICATION_JSON)
     @Path("stacks/count")
     public long countStacks() {
-        return stackServiceFacade.countStacks();
+        return stackServiceFacade.countStacks(new SearchParameters());
     }
 
     @GET
     @Produces(MediaType.APPLICATION_JSON)
     @Path("stacks/list")
-    public List<Stack> getStacks(@QueryParam("first") long first, @QueryParam("count") long count,
-            @QueryParam("sort") List<StackOrderCouple> orders) {
-        StackOrder stackOrder = new StackOrder();
-        for (StackOrderCouple order : orders) {
-            stackOrder.add(order.getOrder(), order.getWay());
+    public List<Stack> getStacks(@QueryParam("first") int first, @QueryParam("count") int count,
+            @QueryParam("sort") List<OrderCouple> orders) {
+        SearchParameters searchParameters = new SearchParameters();
+        searchParameters.setFirstResult(first);
+        searchParameters.setMaxResults(count);
+        for (OrderCouple order : orders) {
+            searchParameters.addOrderBy(order.getProperty(), order.getDirection());
         }
-        return stackServiceFacade.getStacks(stackOrder, first, count);
+        return stackServiceFacade.getStacks(searchParameters);
     }
 
     @GET

@@ -10,10 +10,10 @@
       <table class="table table-bordered table-striped table-condensed table-hover">
         <thead>
           <tr>
-            <th>Country <span ng-click="sortBy('country_name')">sort: {{sort.ways['country_name']}}</span></th>
-            <th>Region <span ng-click="sortBy('region_name')">sort: {{sort.ways['region_name']}}</span></th>
-            <th>Appellation <span ng-click="sortBy('appellation_name')">sort: {{sort.ways['appellation_name']}}</span></th>
-            <th>Producer <span ng-click="sortBy('producer_name')">sort: {{sort.ways['producer_name']}}</span></th>
+            <th>Country <span ng-click="sortBy('appellation.region.country.name')">sort: {{sort.ways['appellation.region.country.name']}}</span></th>
+            <th>Region <span ng-click="sortBy('appellation.region.name')">sort: {{sort.ways['appellation.region.name']}}</span></th>
+            <th>Appellation <span ng-click="sortBy('appellation.name')">sort: {{sort.ways['appellation.name']}}</span></th>
+            <th>Producer <span ng-click="sortBy('producer.name')">sort: {{sort.ways['producer.name']}}</span></th>
             <th>Name <span ng-click="sortBy('name')">sort: {{sort.ways['name']}}</span></th>
             <th>Vintage <span ng-click="sortBy('vintage')">sort: {{sort.ways['vintage']}}</span></th>
             <th>Color <span ng-click="sortBy('color')">sort: {{sort.ways['color']}}</span></th>
@@ -37,10 +37,10 @@
         </tbody>
         <tfoot>
           <tr>
-            <th>Country <span ng-click="sortBy('country_name')">sort: {{sort.ways['country_name']}}</span></th>
-            <th>Region <span ng-click="sortBy('region_name')">sort: {{sort.ways['region_name']}}</span></th>
-            <th>Appellation <span ng-click="sortBy('appellation_name')">sort: {{sort.ways['appellation_name']}}</span></th>
-            <th>Producer <span ng-click="sortBy('producer_name')">sort: {{sort.ways['producer_name']}}</span></th>
+            <th>Country <span ng-click="sortBy('appellation.region.country.name')">sort: {{sort.ways['appellation.region.country.name']}}</span></th>
+            <th>Region <span ng-click="sortBy('appellation.region.name')">sort: {{sort.ways['appellation.region.name']}}</span></th>
+            <th>Appellation <span ng-click="sortBy('appellation.name')">sort: {{sort.ways['appellation.name']}}</span></th>
+            <th>Producer <span ng-click="sortBy('producer.name')">sort: {{sort.ways['producer.name']}}</span></th>
             <th>Name <span ng-click="sortBy('name')">sort: {{sort.ways['name']}}</span></th>
             <th>Vintage <span ng-click="sortBy('vintage')">sort: {{sort.ways['vintage']}}</span></th>
             <th>Color <span ng-click="sortBy('color')">sort: {{sort.ways['color']}}</span></th>

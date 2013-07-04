@@ -28,12 +28,6 @@ import fr.peralta.mycellar.domain.user.User;
 public interface ResetPasswordRequestRepository extends SimpleRepository<ResetPasswordRequest> {
 
     /**
-     * @param key
-     * @return
-     */
-    ResetPasswordRequest getByKey(String key);
-
-    /**
      * @param user
      */
     void deleteAllForUser(User user);

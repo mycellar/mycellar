@@ -26,9 +26,8 @@ import org.springframework.transaction.annotation.Transactional;
 
 import fr.peralta.mycellar.application.contact.ContactService;
 import fr.peralta.mycellar.domain.contact.Contact;
-import fr.peralta.mycellar.domain.contact.repository.ContactOrder;
 import fr.peralta.mycellar.domain.shared.exception.BusinessException;
-import fr.peralta.mycellar.domain.wine.Producer;
+import fr.peralta.mycellar.domain.shared.repository.SearchParameters;
 
 /**
  * @author speralta
@@ -43,8 +42,8 @@ public class ContactServiceFacadeImpl implements ContactServiceFacade {
      */
     @Override
     @Transactional(readOnly = true)
-    public long countContacts() {
-        return contactService.count();
+    public long countContacts(SearchParameters searchParameters) {
+        return contactService.count(searchParameters);
     }
 
     /**
@@ -61,15 +60,6 @@ public class ContactServiceFacadeImpl implements ContactServiceFacade {
      */
     @Override
     @Transactional(readOnly = true)
-    public long countContactsForProducer(Producer producer) {
-        return contactService.countForProducer(producer);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    @Transactional(readOnly = true)
     public Contact getContactById(Integer objectId) {
         return contactService.getById(objectId);
     }
@@ -79,8 +69,8 @@ public class ContactServiceFacadeImpl implements ContactServiceFacade {
      */
     @Override
     @Transactional(readOnly = true)
-    public List<Contact> getContacts(ContactOrder orders, long first, long count) {
-        return contactService.getAll(orders, first, count);
+    public List<Contact> getContacts(SearchParameters searchParameters) {
+        return contactService.find(searchParameters);
     }
 
     /**
@@ -88,18 +78,8 @@ public class ContactServiceFacadeImpl implements ContactServiceFacade {
      */
     @Override
     @Transactional(readOnly = true)
-    public List<Contact> getLastContacts(ContactOrder orders, long first, long count) {
-        return contactService.getLastContacts(orders, first, count);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    @Transactional(readOnly = true)
-    public List<Contact> getContactsForProducer(Producer producer, ContactOrder orders, long first,
-            long count) {
-        return contactService.getAllForProducer(producer, orders, first, count);
+    public List<Contact> getLastContacts(SearchParameters searchParameters) {
+        return contactService.getLastContacts(searchParameters);
     }
 
     /**

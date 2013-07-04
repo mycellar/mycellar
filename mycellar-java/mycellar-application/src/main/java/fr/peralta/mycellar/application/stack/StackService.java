@@ -18,15 +18,13 @@
  */
 package fr.peralta.mycellar.application.stack;
 
-import fr.peralta.mycellar.application.shared.EntityService;
+import fr.peralta.mycellar.application.shared.SimpleService;
 import fr.peralta.mycellar.domain.stack.Stack;
-import fr.peralta.mycellar.domain.stack.repository.StackOrder;
-import fr.peralta.mycellar.domain.stack.repository.StackOrderEnum;
 
 /**
  * @author speralta
  */
-public interface StackService extends EntityService<Stack, StackOrderEnum, StackOrder> {
+public interface StackService extends SimpleService<Stack> {
 
     /**
      * @param exception

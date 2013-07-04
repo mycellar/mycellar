@@ -34,6 +34,7 @@ import javax.validation.constraints.Pattern;
 
 import org.apache.commons.lang3.ObjectUtils;
 import org.apache.commons.lang3.builder.ToStringBuilder;
+import org.hibernate.search.annotations.Indexed;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
@@ -46,6 +47,7 @@ import fr.peralta.mycellar.domain.shared.ValidationPattern;
  * @author speralta
  */
 @Entity
+@Indexed
 @Table(name = "PRODUCER")
 @AttributeOverride(name = "name", column = @Column(name = "NAME", nullable = false))
 @SequenceGenerator(name = "PRODUCER_ID_GENERATOR", allocationSize = 1)

@@ -24,9 +24,8 @@ import java.util.Map;
 import fr.peralta.mycellar.domain.booking.Booking;
 import fr.peralta.mycellar.domain.booking.BookingBottle;
 import fr.peralta.mycellar.domain.booking.BookingEvent;
-import fr.peralta.mycellar.domain.booking.repository.BookingEventOrder;
-import fr.peralta.mycellar.domain.booking.repository.BookingOrder;
 import fr.peralta.mycellar.domain.shared.exception.BusinessException;
+import fr.peralta.mycellar.domain.shared.repository.SearchParameters;
 import fr.peralta.mycellar.domain.user.User;
 
 /**
@@ -35,14 +34,16 @@ import fr.peralta.mycellar.domain.user.User;
 public interface BookingServiceFacade {
 
     /**
+     * @param searchParameters
      * @return
      */
-    long countBookings();
+    long countBookings(SearchParameters searchParameters);
 
     /**
+     * @param searchParameters
      * @return
      */
-    long countBookingEvents();
+    long countBookingEvents(SearchParameters searchParameters);
 
     /**
      * @param bookingId
@@ -57,20 +58,16 @@ public interface BookingServiceFacade {
     BookingEvent getBookingEventById(Integer bookingEventId);
 
     /**
-     * @param orders
-     * @param first
-     * @param count
+     * @param searchParameters
      * @return
      */
-    List<Booking> getBookings(BookingOrder orders, long first, long count);
+    List<Booking> getBookings(SearchParameters searchParameters);
 
     /**
-     * @param orders
-     * @param first
-     * @param count
+     * @param searchParameters
      * @return
      */
-    List<BookingEvent> getBookingEvents(BookingEventOrder orders, long first, long count);
+    List<BookingEvent> getBookingEvents(SearchParameters searchParameters);
 
     /**
      * @param booking

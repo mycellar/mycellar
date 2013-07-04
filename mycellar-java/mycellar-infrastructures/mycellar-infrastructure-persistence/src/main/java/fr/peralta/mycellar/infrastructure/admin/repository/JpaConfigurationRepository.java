@@ -18,103 +18,26 @@
  */
 package fr.peralta.mycellar.infrastructure.admin.repository;
 
-import java.util.Map;
-import java.util.concurrent.ConcurrentHashMap;
-
-import javax.annotation.PostConstruct;
-import javax.persistence.NoResultException;
-import javax.persistence.criteria.CriteriaBuilder;
-import javax.persistence.criteria.CriteriaQuery;
-import javax.persistence.criteria.Expression;
-import javax.persistence.criteria.JoinType;
-import javax.persistence.criteria.Root;
-
-import org.springframework.stereotype.Repository;
+import javax.inject.Named;
+import javax.inject.Singleton;
 
 import fr.peralta.mycellar.domain.admin.Configuration;
-import fr.peralta.mycellar.domain.admin.ConfigurationKeyEnum;
-import fr.peralta.mycellar.domain.admin.repository.ConfigurationOrder;
-import fr.peralta.mycellar.domain.admin.repository.ConfigurationOrderEnum;
 import fr.peralta.mycellar.domain.admin.repository.ConfigurationRepository;
-import fr.peralta.mycellar.infrastructure.shared.repository.JpaEntityRepository;
+import fr.peralta.mycellar.infrastructure.shared.repository.JpaSimpleRepository;
 
 /**
  * @author speralta
  */
-@Repository
-public class JpaConfigurationRepository extends
-        JpaEntityRepository<Configuration, ConfigurationOrderEnum, ConfigurationOrder> implements
+@Named
+@Singleton
+public class JpaConfigurationRepository extends JpaSimpleRepository<Configuration> implements
         ConfigurationRepository {
 
-    private final Map<ConfigurationKeyEnum, Configuration> cache = new ConcurrentHashMap<ConfigurationKeyEnum, Configuration>();
-
-    @PostConstruct
-    public void initializeCache() {
-        for (ConfigurationKeyEnum key : ConfigurationKeyEnum.values()) {
-            find(key);
-        }
-    }
-
     /**
-     * {@inheritDoc}
+     * Default constructor.
      */
-    @Override
-    public Configuration find(ConfigurationKeyEnum key) {
-        if (cache.containsKey(key)) {
-            return cache.get(key);
-        }
-        CriteriaBuilder criteriaBuilder = getEntityManager().getCriteriaBuilder();
-        CriteriaQuery<Configuration> query = criteriaBuilder.createQuery(Configuration.class);
-        Root<Configuration> root = query.from(Configuration.class);
-
-        try {
-            Configuration configuration = getEntityManager().createQuery(
-                    query.select(root).where(criteriaBuilder.equal(root.get("key"), key)))
-                    .getSingleResult();
-            cache.put(key, configuration);
-            return configuration;
-        } catch (NoResultException e) {
-            throw new IllegalStateException("Configuration for " + key + " not found.", e);
-        }
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    protected Expression<?> getOrderByPath(Root<Configuration> root, ConfigurationOrderEnum order,
-            JoinType joinType) {
-        switch (order) {
-        case KEY:
-            return root.get("key");
-        default:
-            throw new IllegalStateException("Unknown "
-                    + ConfigurationOrderEnum.class.getSimpleName() + " value [" + order + "].");
-        }
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    protected Class<Configuration> getEntityClass() {
-        return Configuration.class;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    protected void postSave(Configuration entity) {
-        cache.put(entity.getKey(), entity);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    protected void postDelete(Configuration entity) {
-        cache.remove(entity.getKey());
+    public JpaConfigurationRepository() {
+        super(Configuration.class);
     }
 
 }

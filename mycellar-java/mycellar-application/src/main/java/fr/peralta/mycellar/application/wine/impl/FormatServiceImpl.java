@@ -18,25 +18,28 @@
  */
 package fr.peralta.mycellar.application.wine.impl;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
+import javax.inject.Inject;
+import javax.inject.Named;
+import javax.inject.Singleton;
 
-import fr.peralta.mycellar.application.shared.AbstractEntitySearchFormService;
+import fr.peralta.mycellar.application.shared.AbstractSimpleService;
 import fr.peralta.mycellar.application.wine.FormatService;
+import fr.peralta.mycellar.domain.shared.NamedEntity_;
 import fr.peralta.mycellar.domain.shared.exception.BusinessError;
 import fr.peralta.mycellar.domain.shared.exception.BusinessException;
+import fr.peralta.mycellar.domain.shared.repository.PropertySelector;
+import fr.peralta.mycellar.domain.shared.repository.SearchParameters;
 import fr.peralta.mycellar.domain.wine.Format;
-import fr.peralta.mycellar.domain.wine.repository.FormatOrder;
-import fr.peralta.mycellar.domain.wine.repository.FormatOrderEnum;
+import fr.peralta.mycellar.domain.wine.Format_;
 import fr.peralta.mycellar.domain.wine.repository.FormatRepository;
 
 /**
  * @author speralta
  */
-@Service
-public class FormatServiceImpl extends
-        AbstractEntitySearchFormService<Format, FormatOrderEnum, FormatOrder, FormatRepository>
-        implements FormatService {
+@Named
+@Singleton
+public class FormatServiceImpl extends AbstractSimpleService<Format, FormatRepository> implements
+        FormatService {
 
     private FormatRepository formatRepository;
 
@@ -45,7 +48,14 @@ public class FormatServiceImpl extends
      */
     @Override
     public void validate(Format entity) throws BusinessException {
-        Format existing = formatRepository.find(entity.getName(), entity.getCapacity());
+        Format existing = formatRepository
+                .findUniqueOrNone(new SearchParameters() //
+                        .property(
+                                PropertySelector.newPropertySelector(entity.getCapacity(),
+                                        Format_.capacity)) //
+                        .property(
+                                PropertySelector.newPropertySelector(entity.getName(),
+                                        NamedEntity_.name)));
         if ((existing != null)
                 && ((entity.getId() == null) || !existing.getId().equals(entity.getId()))) {
             throw new BusinessException(BusinessError.FORMAT_00001);
@@ -64,7 +74,7 @@ public class FormatServiceImpl extends
      * @param formatRepository
      *            the formatRepository to set
      */
-    @Autowired
+    @Inject
     public void setFormatRepository(FormatRepository formatRepository) {
         this.formatRepository = formatRepository;
     }

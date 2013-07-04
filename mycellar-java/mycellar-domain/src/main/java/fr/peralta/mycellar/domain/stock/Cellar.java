@@ -35,6 +35,7 @@ import javax.persistence.Table;
 
 import org.apache.commons.lang3.ObjectUtils;
 import org.apache.commons.lang3.builder.ToStringBuilder;
+import org.hibernate.search.annotations.Indexed;
 
 import fr.peralta.mycellar.domain.shared.IdentifiedEntity;
 import fr.peralta.mycellar.domain.shared.NamedEntity;
@@ -45,6 +46,7 @@ import fr.peralta.mycellar.domain.user.User;
  * 
  */
 @Entity
+@Indexed
 @Table(name = "CELLAR")
 @SequenceGenerator(name = "CELLAR_ID_GENERATOR", allocationSize = 1)
 public class Cellar extends NamedEntity {

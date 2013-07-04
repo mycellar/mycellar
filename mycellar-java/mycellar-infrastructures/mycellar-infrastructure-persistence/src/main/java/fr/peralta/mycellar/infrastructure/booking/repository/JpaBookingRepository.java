@@ -23,31 +23,31 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 
-import javax.persistence.NoResultException;
+import javax.inject.Named;
+import javax.inject.Singleton;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
-import javax.persistence.criteria.Expression;
-import javax.persistence.criteria.JoinType;
 import javax.persistence.criteria.Root;
-
-import org.springframework.stereotype.Repository;
 
 import fr.peralta.mycellar.domain.booking.Booking;
 import fr.peralta.mycellar.domain.booking.BookingBottle;
 import fr.peralta.mycellar.domain.booking.BookingEvent;
-import fr.peralta.mycellar.domain.booking.repository.BookingOrder;
-import fr.peralta.mycellar.domain.booking.repository.BookingOrderEnum;
 import fr.peralta.mycellar.domain.booking.repository.BookingRepository;
-import fr.peralta.mycellar.domain.shared.repository.OrderWayEnum;
-import fr.peralta.mycellar.domain.user.User;
-import fr.peralta.mycellar.infrastructure.shared.repository.JpaEntityRepository;
+import fr.peralta.mycellar.infrastructure.shared.repository.JpaSimpleRepository;
 
 /**
  * @author speralta
  */
-@Repository
-public class JpaBookingRepository extends
-        JpaEntityRepository<Booking, BookingOrderEnum, BookingOrder> implements BookingRepository {
+@Named
+@Singleton
+public class JpaBookingRepository extends JpaSimpleRepository<Booking> implements BookingRepository {
+
+    /**
+     * Default constructor.
+     */
+    public JpaBookingRepository() {
+        super(Booking.class);
+    }
 
     /**
      * {@inheritDoc}
@@ -71,73 +71,6 @@ public class JpaBookingRepository extends
             }
         }
         return result;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public Booking getBookingByEventAndCustomer(BookingEvent bookingEvent, User customer) {
-        CriteriaBuilder criteriaBuilder = getEntityManager().getCriteriaBuilder();
-        CriteriaQuery<Booking> query = criteriaBuilder.createQuery(Booking.class);
-        Root<Booking> root = query.from(Booking.class);
-
-        try {
-            return getEntityManager().createQuery(
-                    query.select(root).where(
-                            criteriaBuilder.equal(root.get("bookingEvent"), bookingEvent),
-                            criteriaBuilder.equal(root.get("customer"), customer)))
-                    .getSingleResult();
-        } catch (NoResultException e) {
-            return null;
-        }
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public List<Booking> getBookings(User customer) {
-        CriteriaBuilder criteriaBuilder = getEntityManager().getCriteriaBuilder();
-        CriteriaQuery<Booking> query = criteriaBuilder.createQuery(Booking.class);
-        Root<Booking> root = query.from(Booking.class);
-
-        return getEntityManager().createQuery(
-                orderBy(query.select(root).where(
-                        criteriaBuilder.equal(root.get("customer"), customer)),
-                        root,
-                        new BookingOrder().add(BookingOrderEnum.EVENT_END, OrderWayEnum.DESC).add(
-                                BookingOrderEnum.EVENT_NAME, OrderWayEnum.ASC), criteriaBuilder,
-                        JoinType.LEFT)).getResultList();
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    protected Class<Booking> getEntityClass() {
-        return Booking.class;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    protected Expression<?> getOrderByPath(Root<Booking> root, BookingOrderEnum order,
-            JoinType joinType) {
-        switch (order) {
-        case CUSTOMER_EMAIL:
-            return root.get("customer").get("email");
-        case EVENT_END:
-            return root.get("bookingEvent").get("end");
-        case EVENT_NAME:
-            return root.get("bookingEvent").get("name");
-        case EVENT_START:
-            return root.get("bookingEvent").get("start");
-        default:
-            throw new IllegalStateException("Unknown " + BookingOrderEnum.class.getSimpleName()
-                    + " value [" + order + "].");
-        }
     }
 
 }

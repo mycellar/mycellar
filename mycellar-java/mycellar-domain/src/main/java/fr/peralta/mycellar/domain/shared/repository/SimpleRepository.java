@@ -23,7 +23,7 @@ import fr.peralta.mycellar.domain.shared.IdentifiedEntity;
 /**
  * @author speralta
  */
-public interface SimpleRepository<E extends IdentifiedEntity> {
+public interface SimpleRepository<E extends IdentifiedEntity> extends GenericRepository<E, Integer> {
 
     /**
      * @param id

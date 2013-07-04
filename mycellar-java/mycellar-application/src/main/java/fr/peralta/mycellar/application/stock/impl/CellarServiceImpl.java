@@ -18,25 +18,29 @@
  */
 package fr.peralta.mycellar.application.stock.impl;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
+import javax.inject.Inject;
+import javax.inject.Named;
+import javax.inject.Singleton;
 
-import fr.peralta.mycellar.application.shared.AbstractEntitySearchFormService;
+import fr.peralta.mycellar.application.shared.AbstractSimpleService;
 import fr.peralta.mycellar.application.stock.CellarService;
+import fr.peralta.mycellar.domain.shared.NamedEntity_;
 import fr.peralta.mycellar.domain.shared.exception.BusinessError;
 import fr.peralta.mycellar.domain.shared.exception.BusinessException;
+import fr.peralta.mycellar.domain.shared.repository.EntitySelector;
+import fr.peralta.mycellar.domain.shared.repository.PropertySelector;
+import fr.peralta.mycellar.domain.shared.repository.SearchParameters;
 import fr.peralta.mycellar.domain.stock.Cellar;
-import fr.peralta.mycellar.domain.stock.repository.CellarOrder;
-import fr.peralta.mycellar.domain.stock.repository.CellarOrderEnum;
+import fr.peralta.mycellar.domain.stock.Cellar_;
 import fr.peralta.mycellar.domain.stock.repository.CellarRepository;
 
 /**
  * @author speralta
  */
-@Service
-public class CellarServiceImpl extends
-        AbstractEntitySearchFormService<Cellar, CellarOrderEnum, CellarOrder, CellarRepository>
-        implements CellarService {
+@Named
+@Singleton
+public class CellarServiceImpl extends AbstractSimpleService<Cellar, CellarRepository> implements
+        CellarService {
 
     private CellarRepository cellarRepository;
 
@@ -45,7 +49,9 @@ public class CellarServiceImpl extends
      */
     @Override
     public void validate(Cellar entity) throws BusinessException {
-        Cellar existing = cellarRepository.find(entity.getOwner(), entity.getName());
+        Cellar existing = cellarRepository.findUniqueOrNone(new SearchParameters().entity(
+                EntitySelector.newEntitySelector(Cellar_.owner, entity.getOwner())).property(
+                PropertySelector.newPropertySelector(entity.getName(), NamedEntity_.name)));
         if ((existing != null)
                 && ((entity.getId() == null) || !existing.getId().equals(entity.getId()))) {
             throw new BusinessException(BusinessError.CELLAR_00001);
@@ -64,7 +70,7 @@ public class CellarServiceImpl extends
      * @param cellarRepository
      *            the cellarRepository to set
      */
-    @Autowired
+    @Inject
     public void setCellarRepository(CellarRepository cellarRepository) {
         this.cellarRepository = cellarRepository;
     }

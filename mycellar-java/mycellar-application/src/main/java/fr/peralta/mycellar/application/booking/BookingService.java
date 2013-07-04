@@ -21,19 +21,17 @@ package fr.peralta.mycellar.application.booking;
 import java.util.List;
 import java.util.Map;
 
-import fr.peralta.mycellar.application.shared.EntityService;
+import fr.peralta.mycellar.application.shared.SimpleService;
 import fr.peralta.mycellar.domain.booking.Booking;
 import fr.peralta.mycellar.domain.booking.BookingBottle;
 import fr.peralta.mycellar.domain.booking.BookingEvent;
-import fr.peralta.mycellar.domain.booking.repository.BookingOrder;
-import fr.peralta.mycellar.domain.booking.repository.BookingOrderEnum;
 import fr.peralta.mycellar.domain.shared.exception.BusinessException;
 import fr.peralta.mycellar.domain.user.User;
 
 /**
  * @author speralta
  */
-public interface BookingService extends EntityService<Booking, BookingOrderEnum, BookingOrder> {
+public interface BookingService extends SimpleService<Booking> {
 
     /**
      * @param bookingEvent

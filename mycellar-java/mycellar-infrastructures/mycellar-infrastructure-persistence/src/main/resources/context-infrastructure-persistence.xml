@@ -28,7 +28,17 @@
   <bean id="entityManagerFactory"
     class="org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean"
     p:dataSource-ref="dataSource" p:jpaVendorAdapter-ref="jpaVendorAdapter"
-    p:persistenceUnitName="pu" />
+    p:persistenceUnitName="pu">
+    <property name="jpaPropertyMap">
+      <map>
+        <entry key="hibernate.search.model_mapping"
+          value="fr.peralta.mycellar.infrastructure.shared.search.SearchMappingFactory" />
+        <entry key="hibernate.search.default.directory_provider" value="ram" />
+        <entry key="hibernate.search.worker.execution" value="async" />
+        <entry key="hibernate.search.worker.thread_pool.size" value="3" />
+      </map>
+    </property>
+  </bean>
 
   <bean
     class="org.springframework.orm.jpa.support.PersistenceAnnotationBeanPostProcessor" />

@@ -19,12 +19,9 @@
 package fr.peralta.mycellar.interfaces.facades.stock;
 
 import java.util.List;
-import java.util.Map;
 
 import fr.peralta.mycellar.domain.shared.exception.BusinessException;
-import fr.peralta.mycellar.domain.shared.repository.CountEnum;
-import fr.peralta.mycellar.domain.shared.repository.FilterEnum;
-import fr.peralta.mycellar.domain.shared.repository.SearchForm;
+import fr.peralta.mycellar.domain.shared.repository.SearchParameters;
 import fr.peralta.mycellar.domain.stock.Arrival;
 import fr.peralta.mycellar.domain.stock.Bottle;
 import fr.peralta.mycellar.domain.stock.Cellar;
@@ -32,10 +29,6 @@ import fr.peralta.mycellar.domain.stock.CellarShare;
 import fr.peralta.mycellar.domain.stock.Drink;
 import fr.peralta.mycellar.domain.stock.Movement;
 import fr.peralta.mycellar.domain.stock.Stock;
-import fr.peralta.mycellar.domain.stock.repository.CellarOrder;
-import fr.peralta.mycellar.domain.stock.repository.CellarShareOrder;
-import fr.peralta.mycellar.domain.stock.repository.MovementOrder;
-import fr.peralta.mycellar.domain.stock.repository.StockOrder;
 import fr.peralta.mycellar.domain.wine.Format;
 import fr.peralta.mycellar.domain.wine.Wine;
 
@@ -50,28 +43,28 @@ public interface StockServiceFacade {
     void arrival(Arrival arrival);
 
     /**
-     * @param searchForm
+     * @param searchParameters
      * @return
      */
-    long countCellars(SearchForm searchForm);
+    long countCellars(SearchParameters searchParameters);
 
     /**
-     * @param searchForm
+     * @param searchParameters
      * @return
      */
-    long countCellarShares(SearchForm searchForm);
+    long countCellarShares(SearchParameters searchParameters);
 
     /**
-     * @param searchForm
+     * @param searchParameters
      * @return
      */
-    long countMovements(SearchForm searchForm);
+    long countMovements(SearchParameters searchParameters);
 
     /**
-     * @param searchForm
+     * @param searchParameters
      * @return
      */
-    long countStocks(SearchForm searchForm);
+    long countStocks(SearchParameters searchParameters);
 
     /**
      * @param cellar
@@ -110,49 +103,28 @@ public interface StockServiceFacade {
     CellarShare getCellarShareById(Integer cellarShareId);
 
     /**
-     * @param searchForm
-     * @param order
-     * @param count
-     * @param first
+     * @param searchParameters
      * @return
      */
-    List<Cellar> getCellars(SearchForm searchForm, CellarOrder order, long first, long count);
+    List<Cellar> getCellars(SearchParameters searchParameters);
 
     /**
-     * @param searchForm
-     * @param count
-     * @param filters
+     * @param searchParameters
      * @return
      */
-    Map<Cellar, Long> getCellars(SearchForm searchForm, CountEnum count, FilterEnum... filters);
+    List<CellarShare> getCellarShares(SearchParameters searchParameters);
 
     /**
-     * @param searchForm
-     * @param order
-     * @param count
-     * @param first
+     * @param searchParameters
      * @return
      */
-    List<CellarShare> getCellarShares(SearchForm searchForm, CellarShareOrder order, long first,
-            long count);
+    List<Movement> getMovements(SearchParameters searchParameters);
 
     /**
-     * @param searchForm
-     * @param orders
-     * @param first
-     * @param count
+     * @param searchParameters
      * @return
      */
-    List<Movement> getMovements(SearchForm searchForm, MovementOrder orders, long first, long count);
-
-    /**
-     * @param searchForm
-     * @param orders
-     * @param first
-     * @param count
-     * @return
-     */
-    List<Stock> getStocks(SearchForm searchForm, StockOrder orders, long first, long count);
+    List<Stock> getStocks(SearchParameters searchParameters);
 
     /**
      * @param cellar

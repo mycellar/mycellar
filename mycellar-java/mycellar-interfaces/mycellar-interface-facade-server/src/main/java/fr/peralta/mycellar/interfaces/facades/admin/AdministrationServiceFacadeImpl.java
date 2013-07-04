@@ -26,8 +26,8 @@ import org.springframework.transaction.annotation.Transactional;
 
 import fr.peralta.mycellar.application.admin.ConfigurationService;
 import fr.peralta.mycellar.domain.admin.Configuration;
-import fr.peralta.mycellar.domain.admin.repository.ConfigurationOrder;
 import fr.peralta.mycellar.domain.shared.exception.BusinessException;
+import fr.peralta.mycellar.domain.shared.repository.SearchParameters;
 
 /**
  * @author speralta
@@ -42,8 +42,8 @@ public class AdministrationServiceFacadeImpl implements AdministrationServiceFac
      */
     @Override
     @Transactional(readOnly = true)
-    public long countConfigurations() {
-        return configurationService.count();
+    public long countConfigurations(SearchParameters searchParameters) {
+        return configurationService.count(searchParameters);
     }
 
     /**
@@ -60,8 +60,8 @@ public class AdministrationServiceFacadeImpl implements AdministrationServiceFac
      */
     @Override
     @Transactional(readOnly = true)
-    public List<Configuration> getConfigurations(ConfigurationOrder orders, long first, long count) {
-        return configurationService.getAll(orders, first, count);
+    public List<Configuration> getConfigurations(SearchParameters searchParameters) {
+        return configurationService.find(searchParameters);
     }
 
     /**

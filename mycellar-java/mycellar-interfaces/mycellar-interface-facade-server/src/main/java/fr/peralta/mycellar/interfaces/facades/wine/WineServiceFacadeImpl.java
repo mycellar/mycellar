@@ -19,7 +19,6 @@
 package fr.peralta.mycellar.interfaces.facades.wine;
 
 import java.util.List;
-import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -32,9 +31,7 @@ import fr.peralta.mycellar.application.wine.ProducerService;
 import fr.peralta.mycellar.application.wine.RegionService;
 import fr.peralta.mycellar.application.wine.WineService;
 import fr.peralta.mycellar.domain.shared.exception.BusinessException;
-import fr.peralta.mycellar.domain.shared.repository.CountEnum;
-import fr.peralta.mycellar.domain.shared.repository.FilterEnum;
-import fr.peralta.mycellar.domain.shared.repository.SearchForm;
+import fr.peralta.mycellar.domain.shared.repository.SearchParameters;
 import fr.peralta.mycellar.domain.wine.Appellation;
 import fr.peralta.mycellar.domain.wine.Country;
 import fr.peralta.mycellar.domain.wine.Format;
@@ -43,12 +40,6 @@ import fr.peralta.mycellar.domain.wine.Region;
 import fr.peralta.mycellar.domain.wine.Wine;
 import fr.peralta.mycellar.domain.wine.WineColorEnum;
 import fr.peralta.mycellar.domain.wine.WineTypeEnum;
-import fr.peralta.mycellar.domain.wine.repository.AppellationOrder;
-import fr.peralta.mycellar.domain.wine.repository.CountryOrder;
-import fr.peralta.mycellar.domain.wine.repository.FormatOrder;
-import fr.peralta.mycellar.domain.wine.repository.ProducerOrder;
-import fr.peralta.mycellar.domain.wine.repository.RegionOrder;
-import fr.peralta.mycellar.domain.wine.repository.WineOrder;
 
 /**
  * @author speralta
@@ -72,8 +63,8 @@ public class WineServiceFacadeImpl implements WineServiceFacade {
      * {@inheritDoc}
      */
     @Override
-    public long countAppellations(SearchForm searchForm) {
-        return appellationService.count(searchForm);
+    public long countAppellations(SearchParameters searchParameters) {
+        return appellationService.count(searchParameters);
     }
 
     /**
@@ -81,25 +72,16 @@ public class WineServiceFacadeImpl implements WineServiceFacade {
      */
     @Override
     @Transactional(readOnly = true)
-    public long countCountries(SearchForm searchForm) {
-        return countryService.count(searchForm);
+    public long countCountries(SearchParameters searchParameters) {
+        return countryService.count(searchParameters);
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public long countFormats(SearchForm searchForm) {
-        return formatService.count(searchForm);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    @Transactional(readOnly = true)
-    public long countProducers(SearchForm searchForm) {
-        return producerService.count(searchForm);
+    public long countFormats(SearchParameters searchParameters) {
+        return formatService.count(searchParameters);
     }
 
     /**
@@ -107,8 +89,8 @@ public class WineServiceFacadeImpl implements WineServiceFacade {
      */
     @Override
     @Transactional(readOnly = true)
-    public long countRegions(SearchForm searchForm) {
-        return regionService.count(searchForm);
+    public long countProducers(SearchParameters searchParameters) {
+        return producerService.count(searchParameters);
     }
 
     /**
@@ -116,8 +98,17 @@ public class WineServiceFacadeImpl implements WineServiceFacade {
      */
     @Override
     @Transactional(readOnly = true)
-    public long countWines(SearchForm searchForm) {
-        return wineService.count(searchForm);
+    public long countRegions(SearchParameters searchParameters) {
+        return regionService.count(searchParameters);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    @Transactional(readOnly = true)
+    public long countWines(SearchParameters searchParameters) {
+        return wineService.count(searchParameters);
     }
 
     /**
@@ -207,9 +198,8 @@ public class WineServiceFacadeImpl implements WineServiceFacade {
      */
     @Override
     @Transactional(readOnly = true)
-    public List<Appellation> getAppellations(SearchForm searchForm, AppellationOrder order,
-            long first, long count) {
-        return appellationService.getAll(searchForm, order, first, count);
+    public List<Appellation> getAppellations(SearchParameters searchParameters) {
+        return appellationService.find(searchParameters);
     }
 
     /**
@@ -217,57 +207,8 @@ public class WineServiceFacadeImpl implements WineServiceFacade {
      */
     @Override
     @Transactional(readOnly = true)
-    public Map<Appellation, Long> getAppellations(SearchForm searchForm, CountEnum count,
-            FilterEnum... filters) {
-        return appellationService.getAll(searchForm, count, filters);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    @Transactional(readOnly = true)
-    public List<Appellation> getAppellationsLike(String term, SearchForm searchForm,
-            FilterEnum... filters) {
-        return appellationService.getAllLike(term, searchForm, filters);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    @Transactional(readOnly = true)
-    public Map<WineColorEnum, Long> getColors(SearchForm searchForm, CountEnum count) {
-        return wineService.getColors(searchForm, count);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    @Transactional(readOnly = true)
-    public Map<Country, Long> getCountries(SearchForm searchForm, CountEnum count,
-            FilterEnum... filters) {
-        return countryService.getAll(searchForm, count, filters);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    @Transactional(readOnly = true)
-    public List<Country> getCountries(SearchForm searchForm, CountryOrder orders, long first,
-            long count) {
-        return countryService.getAll(searchForm, orders, first, count);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    @Transactional(readOnly = true)
-    public List<Country> getCountriesLike(String term, SearchForm searchForm, FilterEnum... filters) {
-        return countryService.getAllLike(term, searchForm, filters);
+    public List<Country> getCountries(SearchParameters searchParameters) {
+        return countryService.find(searchParameters);
     }
 
     /**
@@ -293,18 +234,8 @@ public class WineServiceFacadeImpl implements WineServiceFacade {
      */
     @Override
     @Transactional(readOnly = true)
-    public Map<Format, Long> getFormats(SearchForm searchForm, CountEnum count,
-            FilterEnum... filters) {
-        return formatService.getAll(searchForm, count, filters);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    @Transactional(readOnly = true)
-    public List<Format> getFormats(SearchForm searchForm, FormatOrder order, long first, long count) {
-        return formatService.getAll(searchForm, order, first, count);
+    public List<Format> getFormats(SearchParameters searchParameters) {
+        return formatService.find(searchParameters);
     }
 
     /**
@@ -321,18 +252,8 @@ public class WineServiceFacadeImpl implements WineServiceFacade {
      */
     @Override
     @Transactional(readOnly = true)
-    public List<Producer> getProducers(SearchForm searchForm, ProducerOrder orders, long first,
-            long count) {
-        return producerService.getAll(searchForm, orders, first, count);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    @Transactional(readOnly = true)
-    public List<Producer> getProducersLike(String term) {
-        return producerService.getAllLike(term);
+    public List<Producer> getProducers(SearchParameters searchParameters) {
+        return producerService.find(searchParameters);
     }
 
     /**
@@ -348,36 +269,9 @@ public class WineServiceFacadeImpl implements WineServiceFacade {
      * {@inheritDoc}
      */
     @Override
-    public List<Region> getRegionsLike(String term, SearchForm searchForm, FilterEnum... filters) {
-        return regionService.getAllLike(term, searchForm, filters);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
     @Transactional(readOnly = true)
-    public Map<Region, Long> getRegions(SearchForm searchForm, CountEnum count,
-            FilterEnum... filters) {
-        return regionService.getAll(searchForm, count, filters);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    @Transactional(readOnly = true)
-    public List<Region> getRegions(SearchForm searchForm, RegionOrder order, long first, long count) {
-        return regionService.getAll(searchForm, order, first, count);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    @Transactional(readOnly = true)
-    public Map<WineTypeEnum, Long> getTypes(SearchForm searchForm, CountEnum count) {
-        return wineService.getTypes(searchForm, count);
+    public List<Region> getRegions(SearchParameters searchParameters) {
+        return regionService.find(searchParameters);
     }
 
     /**
@@ -394,8 +288,8 @@ public class WineServiceFacadeImpl implements WineServiceFacade {
      */
     @Override
     @Transactional(readOnly = true)
-    public List<Wine> getWines(SearchForm searchForm, WineOrder orders, long first, long count) {
-        return wineService.getAll(searchForm, orders, first, count);
+    public List<Wine> getWines(SearchParameters searchParameters) {
+        return wineService.find(searchParameters);
     }
 
     /**

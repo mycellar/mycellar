@@ -18,11 +18,13 @@
  */
 package fr.peralta.mycellar.application.stock.impl;
 
-import org.joda.time.LocalDate;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
+import javax.inject.Inject;
+import javax.inject.Named;
+import javax.inject.Singleton;
 
-import fr.peralta.mycellar.application.shared.AbstractEntitySearchFormService;
+import org.joda.time.LocalDate;
+
+import fr.peralta.mycellar.application.shared.AbstractSimpleService;
 import fr.peralta.mycellar.application.stock.MovementService;
 import fr.peralta.mycellar.domain.shared.exception.BusinessException;
 import fr.peralta.mycellar.domain.stock.Bottle;
@@ -30,17 +32,14 @@ import fr.peralta.mycellar.domain.stock.Cellar;
 import fr.peralta.mycellar.domain.stock.Input;
 import fr.peralta.mycellar.domain.stock.Movement;
 import fr.peralta.mycellar.domain.stock.Output;
-import fr.peralta.mycellar.domain.stock.repository.MovementOrder;
-import fr.peralta.mycellar.domain.stock.repository.MovementOrderEnum;
 import fr.peralta.mycellar.domain.stock.repository.MovementRepository;
 
 /**
  * @author speralta
  */
-@Service
-public class MovementServiceImpl
-        extends
-        AbstractEntitySearchFormService<Movement, MovementOrderEnum, MovementOrder, MovementRepository>
+@Named
+@Singleton
+public class MovementServiceImpl extends AbstractSimpleService<Movement, MovementRepository>
         implements MovementService {
 
     private MovementRepository movementRepository;
@@ -98,7 +97,7 @@ public class MovementServiceImpl
      * @param movementRepository
      *            the movementRepository to set
      */
-    @Autowired
+    @Inject
     public void setMovementRepository(MovementRepository movementRepository) {
         this.movementRepository = movementRepository;
     }

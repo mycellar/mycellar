@@ -18,6 +18,8 @@ angular.module('mycellar', ['loading', 'ui', 'http-auth-interceptor', 'ngResourc
   $routeProvider.when('/admin/domain/stack/stack/:stackId', {templateUrl: 'partials/admin/domain/stack/stack.html', controller: 'AdminDomainStackController'});
   $routeProvider.when('/admin/domain/wine/countries', {templateUrl: 'partials/admin/domain/wine/countries.html', controller: 'AdminDomainCountriesController'});
   $routeProvider.when('/admin/domain/wine/country/:countryId', {templateUrl: 'partials/admin/domain/wine/country.html', controller: 'AdminDomainCountryController'});
+  $routeProvider.when('/admin/domain/wine/regions', {templateUrl: 'partials/admin/domain/wine/regions.html', controller: 'AdminDomainRegionsController'});
+  $routeProvider.when('/admin/domain/wine/region/:countryId', {templateUrl: 'partials/admin/domain/wine/region.html', controller: 'AdminDomainRegionController'});
   $routeProvider.when('/admin/domain/wine/wines', {templateUrl: 'partials/admin/domain/wine/wines.html', controller: 'AdminDomainWinesController'});
   $routeProvider.when('/admin/domain/wine/wine/:wineId', {templateUrl: 'partials/admin/domain/wine/wine.html', controller: 'AdminDomainWineController'});
   $routeProvider.otherwise({redirectTo: '/home'});

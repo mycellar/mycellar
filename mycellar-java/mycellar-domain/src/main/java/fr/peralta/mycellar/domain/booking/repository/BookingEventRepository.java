@@ -18,26 +18,12 @@
  */
 package fr.peralta.mycellar.domain.booking.repository;
 
-import java.util.List;
-
 import fr.peralta.mycellar.domain.booking.BookingEvent;
-import fr.peralta.mycellar.domain.shared.repository.EntityRepository;
+import fr.peralta.mycellar.domain.shared.repository.SimpleRepository;
 
 /**
  * @author speralta
  */
-public interface BookingEventRepository extends
-        EntityRepository<BookingEvent, BookingEventOrderEnum, BookingEventOrder> {
-
-    /**
-     * @param term
-     * @return
-     */
-    List<BookingEvent> getAllLike(String term);
-
-    /**
-     * @return
-     */
-    List<BookingEvent> getCurrentBookingEvents();
+public interface BookingEventRepository extends SimpleRepository<BookingEvent> {
 
 }

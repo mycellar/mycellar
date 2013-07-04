@@ -20,16 +20,13 @@ package fr.peralta.mycellar.application.booking;
 
 import java.util.List;
 
-import fr.peralta.mycellar.application.shared.EntityService;
+import fr.peralta.mycellar.application.shared.SimpleService;
 import fr.peralta.mycellar.domain.booking.BookingEvent;
-import fr.peralta.mycellar.domain.booking.repository.BookingEventOrder;
-import fr.peralta.mycellar.domain.booking.repository.BookingEventOrderEnum;
 
 /**
  * @author speralta
  */
-public interface BookingEventService extends
-        EntityService<BookingEvent, BookingEventOrderEnum, BookingEventOrder> {
+public interface BookingEventService extends SimpleService<BookingEvent> {
 
     /**
      * @param term

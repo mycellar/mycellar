@@ -19,19 +19,11 @@
 package fr.peralta.mycellar.domain.admin.repository;
 
 import fr.peralta.mycellar.domain.admin.Configuration;
-import fr.peralta.mycellar.domain.admin.ConfigurationKeyEnum;
-import fr.peralta.mycellar.domain.shared.repository.EntityRepository;
+import fr.peralta.mycellar.domain.shared.repository.SimpleRepository;
 
 /**
  * @author speralta
  */
-public interface ConfigurationRepository extends
-        EntityRepository<Configuration, ConfigurationOrderEnum, ConfigurationOrder> {
-
-    /**
-     * @param key
-     * @return
-     */
-    Configuration find(ConfigurationKeyEnum key);
+public interface ConfigurationRepository extends SimpleRepository<Configuration> {
 
 }

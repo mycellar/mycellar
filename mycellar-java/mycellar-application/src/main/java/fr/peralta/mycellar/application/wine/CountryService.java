@@ -18,29 +18,14 @@
  */
 package fr.peralta.mycellar.application.wine;
 
-import java.util.List;
-
-import fr.peralta.mycellar.application.shared.EntitySearchFormService;
-import fr.peralta.mycellar.domain.shared.repository.FilterEnum;
-import fr.peralta.mycellar.domain.shared.repository.SearchForm;
+import fr.peralta.mycellar.application.shared.SimpleService;
 import fr.peralta.mycellar.domain.wine.Country;
-import fr.peralta.mycellar.domain.wine.repository.CountryOrder;
-import fr.peralta.mycellar.domain.wine.repository.CountryOrderEnum;
 
 /**
  * @author speralta
  */
-public interface CountryService extends
-        EntitySearchFormService<Country, CountryOrderEnum, CountryOrder> {
+public interface CountryService extends SimpleService<Country> {
 
     Country find(String name);
-
-    /**
-     * @param term
-     * @param searchForm
-     * @param filters
-     * @return
-     */
-    List<Country> getAllLike(String term, SearchForm searchForm, FilterEnum... filters);
 
 }

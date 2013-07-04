@@ -23,16 +23,19 @@ import java.io.Serializable;
 import javax.persistence.Column;
 import javax.persistence.MappedSuperclass;
 import javax.persistence.Version;
+import javax.xml.bind.annotation.XmlTransient;
 
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.hibernate.Hibernate;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 /**
  * @author speralta
  */
 @MappedSuperclass
-public abstract class IdentifiedEntity implements Serializable {
+public abstract class IdentifiedEntity implements Identifiable<Integer>, Serializable {
 
     private static final long serialVersionUID = 201111181451L;
 
@@ -71,7 +74,15 @@ public abstract class IdentifiedEntity implements Serializable {
         return dataEquals((IdentifiedEntity) other);
     }
 
-    public abstract Integer getId();
+    /**
+     * {@inheritDoc}
+     */
+    @XmlTransient
+    @JsonIgnore
+    @Override
+    public boolean isIdSet() {
+        return getId() != null;
+    }
 
     /**
      * @return the version

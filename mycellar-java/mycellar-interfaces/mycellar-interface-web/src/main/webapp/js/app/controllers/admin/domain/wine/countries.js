@@ -10,10 +10,12 @@ angular.module('mycellar').controller({
         name: 'asc',
       }
     };
+    $scope.filters = {
+      name: ''
+    }
     
     $scope.tableOptions = {
-      itemResource: $resource('/api/domain/wine/countries/list'),
-      itemCountGet: $http.get('/api/domain/wine/countries/count'),
+      itemResource: $resource('/api/domain/wine/countries')
     };
     $scope.edit = function(itemId) {
       $location.path('/admin/domain/wine/country/' + itemId);

@@ -18,14 +18,12 @@
  */
 package fr.peralta.mycellar.application.wine;
 
-import fr.peralta.mycellar.application.shared.EntitySearchFormService;
+import fr.peralta.mycellar.application.shared.SimpleService;
 import fr.peralta.mycellar.domain.wine.Format;
-import fr.peralta.mycellar.domain.wine.repository.FormatOrder;
-import fr.peralta.mycellar.domain.wine.repository.FormatOrderEnum;
 
 /**
  * @author speralta
  */
-public interface FormatService extends EntitySearchFormService<Format, FormatOrderEnum, FormatOrder> {
+public interface FormatService extends SimpleService<Format> {
 
 }

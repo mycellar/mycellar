@@ -18,15 +18,18 @@
  */
 package fr.peralta.mycellar.application.stock.impl;
 
-import java.util.List;
+import javax.inject.Inject;
+import javax.inject.Named;
+import javax.inject.Singleton;
 
 import org.joda.time.LocalDate;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
 
+import fr.peralta.mycellar.application.shared.AbstractSimpleService;
 import fr.peralta.mycellar.application.stock.MovementService;
 import fr.peralta.mycellar.application.stock.StockService;
-import fr.peralta.mycellar.domain.shared.repository.SearchForm;
+import fr.peralta.mycellar.domain.shared.exception.BusinessException;
+import fr.peralta.mycellar.domain.shared.repository.EntitySelector;
+import fr.peralta.mycellar.domain.shared.repository.SearchParameters;
 import fr.peralta.mycellar.domain.stock.Arrival;
 import fr.peralta.mycellar.domain.stock.ArrivalBottle;
 import fr.peralta.mycellar.domain.stock.Bottle;
@@ -34,14 +37,16 @@ import fr.peralta.mycellar.domain.stock.Cellar;
 import fr.peralta.mycellar.domain.stock.Drink;
 import fr.peralta.mycellar.domain.stock.DrinkBottle;
 import fr.peralta.mycellar.domain.stock.Stock;
-import fr.peralta.mycellar.domain.stock.repository.StockOrder;
+import fr.peralta.mycellar.domain.stock.Stock_;
 import fr.peralta.mycellar.domain.stock.repository.StockRepository;
 
 /**
  * @author speralta
  */
-@Service
-public class StockServiceImpl implements StockService {
+@Named
+@Singleton
+public class StockServiceImpl extends AbstractSimpleService<Stock, StockRepository> implements
+        StockService {
 
     private StockRepository stockRepository;
 
@@ -119,30 +124,32 @@ public class StockServiceImpl implements StockService {
      */
     @Override
     public Stock findStock(Bottle bottle, Cellar cellar) {
-        return stockRepository.find(bottle, cellar);
+        return stockRepository.findUniqueOrNone(new SearchParameters().entity(
+                EntitySelector.newEntitySelector(Stock_.bottle, bottle)).entity(
+                EntitySelector.newEntitySelector(Stock_.cellar, cellar)));
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public List<Stock> getStocks(SearchForm searchForm, StockOrder orders, long first, long count) {
-        return stockRepository.getAll(searchForm, orders, first, count);
+    public void validate(Stock entity) throws BusinessException {
+
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public long countStocks(SearchForm searchForm) {
-        return stockRepository.count(searchForm);
+    protected StockRepository getRepository() {
+        return stockRepository;
     }
 
     /**
      * @param stockRepository
      *            the stockRepository to set
      */
-    @Autowired
+    @Inject
     public void setStockRepository(StockRepository stockRepository) {
         this.stockRepository = stockRepository;
     }
@@ -151,7 +158,7 @@ public class StockServiceImpl implements StockService {
      * @param movementService
      *            the movementService to set
      */
-    @Autowired
+    @Inject
     public void setMovementService(MovementService movementService) {
         this.movementService = movementService;
     }

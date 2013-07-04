@@ -24,7 +24,7 @@ import fr.peralta.mycellar.domain.shared.exception.BusinessException;
 /**
  * @author speralta
  */
-public interface SimpleService<E extends IdentifiedEntity> {
+public interface SimpleService<E extends IdentifiedEntity> extends GenericService<E, Integer> {
 
     /**
      * @param entity

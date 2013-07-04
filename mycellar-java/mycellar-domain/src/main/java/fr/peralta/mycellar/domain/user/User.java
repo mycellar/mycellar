@@ -35,6 +35,9 @@ import javax.persistence.UniqueConstraint;
 
 import org.apache.commons.lang3.ObjectUtils;
 import org.apache.commons.lang3.builder.ToStringBuilder;
+import org.hibernate.search.annotations.Analyzer;
+import org.hibernate.search.annotations.Field;
+import org.hibernate.search.annotations.Indexed;
 
 import fr.peralta.mycellar.domain.booking.Booking;
 import fr.peralta.mycellar.domain.shared.IdentifiedEntity;
@@ -44,6 +47,7 @@ import fr.peralta.mycellar.domain.stock.Cellar;
  * @author bperalta
  */
 @Entity
+@Indexed
 @Table(name = "USER", uniqueConstraints = @UniqueConstraint(columnNames = { "EMAIL" }))
 @SequenceGenerator(name = "USER_ID_GENERATOR", allocationSize = 1)
 public class User extends IdentifiedEntity {
@@ -57,9 +61,11 @@ public class User extends IdentifiedEntity {
     private final Set<Booking> bookings = new HashSet<Booking>();
 
     @Column(name = "EMAIL", nullable = false)
+    @Field(analyzer = @Analyzer(definition = "custom"))
     private String email;
 
     @Column(name = "FIRSTNAME", nullable = false)
+    @Field(analyzer = @Analyzer(definition = "custom"))
     private String firstname;
 
     @Id
@@ -68,6 +74,7 @@ public class User extends IdentifiedEntity {
     private Integer id;
 
     @Column(name = "LASTNAME", nullable = false)
+    @Field(analyzer = @Analyzer(definition = "custom"))
     private String lastname;
 
     @Column(name = "PASSWORD", nullable = false, length = 40)

@@ -18,29 +18,29 @@
  */
 package fr.peralta.mycellar.application.wine.impl;
 
-import java.util.List;
+import javax.inject.Inject;
+import javax.inject.Named;
+import javax.inject.Singleton;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-
-import fr.peralta.mycellar.application.shared.AbstractEntitySearchFormService;
+import fr.peralta.mycellar.application.shared.AbstractSimpleService;
 import fr.peralta.mycellar.application.wine.RegionService;
+import fr.peralta.mycellar.domain.shared.NamedEntity_;
 import fr.peralta.mycellar.domain.shared.exception.BusinessError;
 import fr.peralta.mycellar.domain.shared.exception.BusinessException;
-import fr.peralta.mycellar.domain.shared.repository.FilterEnum;
-import fr.peralta.mycellar.domain.shared.repository.SearchForm;
+import fr.peralta.mycellar.domain.shared.repository.EntitySelector;
+import fr.peralta.mycellar.domain.shared.repository.PropertySelector;
+import fr.peralta.mycellar.domain.shared.repository.SearchParameters;
 import fr.peralta.mycellar.domain.wine.Region;
-import fr.peralta.mycellar.domain.wine.repository.RegionOrder;
-import fr.peralta.mycellar.domain.wine.repository.RegionOrderEnum;
+import fr.peralta.mycellar.domain.wine.Region_;
 import fr.peralta.mycellar.domain.wine.repository.RegionRepository;
 
 /**
  * @author speralta
  */
-@Service
-public class RegionServiceImpl extends
-        AbstractEntitySearchFormService<Region, RegionOrderEnum, RegionOrder, RegionRepository>
-        implements RegionService {
+@Named
+@Singleton
+public class RegionServiceImpl extends AbstractSimpleService<Region, RegionRepository> implements
+        RegionService {
 
     private RegionRepository regionRepository;
 
@@ -48,16 +48,14 @@ public class RegionServiceImpl extends
      * {@inheritDoc}
      */
     @Override
-    public List<Region> getAllLike(String term, SearchForm searchForm, FilterEnum... filters) {
-        return regionRepository.getAllLike(term, searchForm, filters);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
     public void validate(Region entity) throws BusinessException {
-        Region existing = regionRepository.find(entity.getCountry(), entity.getName());
+        Region existing = regionRepository
+                .findUniqueOrNone(new SearchParameters() //
+                        .entity(EntitySelector.newEntitySelector(Region_.country,
+                                entity.getCountry())) //
+                        .property(
+                                PropertySelector.newPropertySelector(entity.getName(),
+                                        NamedEntity_.name)));
         if ((existing != null)
                 && ((entity.getId() == null) || !existing.getId().equals(entity.getId()))) {
             throw new BusinessException(BusinessError.REGION_00001);
@@ -76,7 +74,7 @@ public class RegionServiceImpl extends
      * @param regionRepository
      *            the regionRepository to set
      */
-    @Autowired
+    @Inject
     public void setRegionRepository(RegionRepository regionRepository) {
         this.regionRepository = regionRepository;
     }

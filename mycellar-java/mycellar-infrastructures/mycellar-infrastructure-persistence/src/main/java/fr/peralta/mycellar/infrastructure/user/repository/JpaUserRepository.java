@@ -18,94 +18,26 @@
  */
 package fr.peralta.mycellar.infrastructure.user.repository;
 
-import java.util.List;
-
-import javax.persistence.NoResultException;
-import javax.persistence.criteria.CriteriaBuilder;
-import javax.persistence.criteria.CriteriaQuery;
-import javax.persistence.criteria.Expression;
-import javax.persistence.criteria.JoinType;
-import javax.persistence.criteria.Root;
-
-import org.springframework.stereotype.Repository;
+import javax.inject.Named;
+import javax.inject.Singleton;
 
 import fr.peralta.mycellar.domain.user.User;
-import fr.peralta.mycellar.domain.user.repository.UserOrder;
-import fr.peralta.mycellar.domain.user.repository.UserOrderEnum;
+import fr.peralta.mycellar.domain.user.User_;
 import fr.peralta.mycellar.domain.user.repository.UserRepository;
-import fr.peralta.mycellar.infrastructure.shared.repository.JpaEntityRepository;
+import fr.peralta.mycellar.infrastructure.shared.repository.JpaSimpleRepository;
 
 /**
  * @author speralta
  */
-@Repository
-public class JpaUserRepository extends JpaEntityRepository<User, UserOrderEnum, UserOrder>
-        implements UserRepository {
+@Named
+@Singleton
+public class JpaUserRepository extends JpaSimpleRepository<User> implements UserRepository {
 
     /**
-     * {@inheritDoc}
+     * Default constructor.
      */
-    @Override
-    public List<User> getAllLike(String term) {
-        CriteriaBuilder criteriaBuilder = getEntityManager().getCriteriaBuilder();
-        CriteriaQuery<User> query = criteriaBuilder.createQuery(User.class);
-        Root<User> root = query.from(User.class);
-        return getEntityManager().createQuery(
-                query.select(root).where(
-                        criteriaBuilder.or(
-                                criteriaBuilder.like(
-                                        criteriaBuilder.lower(root.<String> get("firstname")), "%"
-                                                + term.toLowerCase() + "%"),
-                                criteriaBuilder.like(
-                                        criteriaBuilder.lower(root.<String> get("lastname")), "%"
-                                                + term.toLowerCase() + "%"),
-                                criteriaBuilder.like(
-                                        criteriaBuilder.lower(root.<String> get("email")), "%"
-                                                + term.toLowerCase() + "%")))).getResultList();
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public User getByEmail(String email) {
-        CriteriaBuilder criteriaBuilder = getEntityManager().getCriteriaBuilder();
-        CriteriaQuery<User> query = criteriaBuilder.createQuery(User.class);
-        Root<User> root = query.from(User.class);
-
-        try {
-            return getEntityManager().createQuery(
-                    query.select(root).where(criteriaBuilder.equal(root.get("email"), email)))
-                    .getSingleResult();
-        } catch (NoResultException e) {
-            return null;
-        }
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    protected Expression<?> getOrderByPath(Root<User> root, UserOrderEnum order, JoinType joinType) {
-        switch (order) {
-        case EMAIL:
-            return root.get("email");
-        case FIRSTNAME:
-            return root.get("firstname");
-        case LASTNAME:
-            return root.get("lastname");
-        default:
-            throw new IllegalStateException("Unknown " + UserOrderEnum.class.getSimpleName()
-                    + " value [" + order + "].");
-        }
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    protected Class<User> getEntityClass() {
-        return User.class;
+    public JpaUserRepository() {
+        super(User.class, User_.email, User_.firstname, User_.lastname);
     }
 
 }

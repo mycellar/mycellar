@@ -21,9 +21,9 @@ package fr.peralta.mycellar.interfaces.facades.user;
 import java.util.List;
 
 import fr.peralta.mycellar.domain.shared.exception.BusinessException;
+import fr.peralta.mycellar.domain.shared.repository.SearchParameters;
 import fr.peralta.mycellar.domain.user.ResetPasswordRequest;
 import fr.peralta.mycellar.domain.user.User;
-import fr.peralta.mycellar.domain.user.repository.UserOrder;
 
 /**
  * @author speralta
@@ -38,9 +38,10 @@ public interface UserServiceFacade {
     User authenticateUser(String login, String password);
 
     /**
+     * @param searchParameters
      * @return
      */
-    long countUsers();
+    long countUsers(SearchParameters searchParameters);
 
     /**
      * @param userId
@@ -49,12 +50,10 @@ public interface UserServiceFacade {
     User getUserById(Integer userId);
 
     /**
-     * @param orders
-     * @param first
-     * @param count
+     * @param searchParameters
      * @return
      */
-    List<User> getUsers(UserOrder orders, long first, long count);
+    List<User> getUsers(SearchParameters searchParameters);
 
     /**
      * @param term

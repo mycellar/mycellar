@@ -18,20 +18,12 @@
  */
 package fr.peralta.mycellar.domain.wine.repository;
 
-import fr.peralta.mycellar.domain.shared.repository.EntitySearchFormRepository;
+import fr.peralta.mycellar.domain.shared.repository.SimpleRepository;
 import fr.peralta.mycellar.domain.wine.Format;
 
 /**
  * @author speralta
  */
-public interface FormatRepository extends
-        EntitySearchFormRepository<Format, FormatOrderEnum, FormatOrder> {
-
-    /**
-     * @param name
-     * @param capacity
-     * @return
-     */
-    Format find(String name, float capacity);
+public interface FormatRepository extends SimpleRepository<Format> {
 
 }

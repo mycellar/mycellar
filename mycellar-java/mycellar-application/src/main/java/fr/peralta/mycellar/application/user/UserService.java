@@ -18,18 +18,14 @@
  */
 package fr.peralta.mycellar.application.user;
 
-import java.util.List;
-
-import fr.peralta.mycellar.application.shared.EntityService;
+import fr.peralta.mycellar.application.shared.SimpleService;
 import fr.peralta.mycellar.domain.shared.exception.BusinessException;
 import fr.peralta.mycellar.domain.user.User;
-import fr.peralta.mycellar.domain.user.repository.UserOrder;
-import fr.peralta.mycellar.domain.user.repository.UserOrderEnum;
 
 /**
  * @author speralta
  */
-public interface UserService extends EntityService<User, UserOrderEnum, UserOrder> {
+public interface UserService extends SimpleService<User> {
 
     /**
      * @param login
@@ -37,12 +33,6 @@ public interface UserService extends EntityService<User, UserOrderEnum, UserOrde
      * @return
      */
     User authenticate(String login, String password);
-
-    /**
-     * @param input
-     * @return
-     */
-    List<User> getAllLike(String input);
 
     /**
      * @param user

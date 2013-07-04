@@ -37,6 +37,7 @@ import javax.persistence.UniqueConstraint;
 
 import org.apache.commons.lang3.ObjectUtils;
 import org.apache.commons.lang3.builder.ToStringBuilder;
+import org.hibernate.search.annotations.Indexed;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
@@ -48,6 +49,7 @@ import fr.peralta.mycellar.domain.shared.NamedEntity;
  * @author speralta
  */
 @Entity
+@Indexed
 @Table(name = "APPELLATION", uniqueConstraints = @UniqueConstraint(columnNames = { "NAME", "REGION" }))
 @AttributeOverride(name = "name", column = @Column(name = "NAME", nullable = false))
 @SequenceGenerator(name = "APPELLATION_ID_GENERATOR", allocationSize = 1)

@@ -27,9 +27,10 @@ import org.springframework.transaction.annotation.Transactional;
 import fr.peralta.mycellar.application.user.ResetPasswordRequestService;
 import fr.peralta.mycellar.application.user.UserService;
 import fr.peralta.mycellar.domain.shared.exception.BusinessException;
+import fr.peralta.mycellar.domain.shared.repository.SearchParameters;
 import fr.peralta.mycellar.domain.user.ResetPasswordRequest;
 import fr.peralta.mycellar.domain.user.User;
-import fr.peralta.mycellar.domain.user.repository.UserOrder;
+import fr.peralta.mycellar.domain.user.User_;
 
 /**
  * @author speralta
@@ -47,7 +48,8 @@ public class UserServiceFacadeImpl implements UserServiceFacade {
     @Override
     @Transactional(readOnly = true)
     public List<User> getUsersLike(String term) {
-        return userService.getAllLike(term);
+        return userService.find(new SearchParameters().termOnAny(term, User_.email,
+                User_.firstname, User_.lastname));
     }
 
     /**
@@ -100,8 +102,8 @@ public class UserServiceFacadeImpl implements UserServiceFacade {
      */
     @Override
     @Transactional(readOnly = true)
-    public long countUsers() {
-        return userService.count();
+    public long countUsers(SearchParameters searchParameters) {
+        return userService.count(searchParameters);
     }
 
     /**
@@ -109,8 +111,8 @@ public class UserServiceFacadeImpl implements UserServiceFacade {
      */
     @Override
     @Transactional(readOnly = true)
-    public List<User> getUsers(UserOrder orders, long first, long count) {
-        return userService.getAll(orders, first, count);
+    public List<User> getUsers(SearchParameters searchParameters) {
+        return userService.find(searchParameters);
     }
 
     /**

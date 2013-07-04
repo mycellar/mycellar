@@ -4,28 +4,27 @@ angular.module('mycellar').controller({
   AdminDomainWinesController: function ($scope, $resource, $http, $location) {
     $scope.sort = {
       properties: [
-        'country_name',
-        'region_name', 
-        'appellation_name', 
-        'producer_name',
+        'appellation.region.country.name',
+        'appellation.region.name', 
+        'appellation.name', 
+        'producer.name',
         'name',
         'vintage'
       ],
       ways: {
-        country_name: 'asc',
-        region_name: 'asc',
-        appellation_name: 'asc',
-        producer_name: 'asc',
-        name: 'asc',
-        vintage: 'asc',
-        color: null,
-        type: null
+        'appellation.region.country.name': 'asc',
+        'appellation.region.name': 'asc',
+        'appellation.name': 'asc',
+        'producer.name': 'asc',
+        'name': 'asc',
+        'vintage': 'asc',
+        'color': null,
+        'type': null
       }
     };
     
     $scope.tableOptions = {
-      itemResource: $resource('/api/domain/wine/wines/list'),
-      itemCountGet: $http.get('/api/domain/wine/wines/count'),
+      itemResource: $resource('/api/domain/wine/wines'),
     };
     $scope.edit = function(itemId) {
       $location.path('/admin/domain/wine/wine/' + itemId);

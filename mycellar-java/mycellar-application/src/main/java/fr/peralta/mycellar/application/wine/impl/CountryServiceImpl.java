@@ -18,29 +18,27 @@
  */
 package fr.peralta.mycellar.application.wine.impl;
 
-import java.util.List;
+import javax.inject.Inject;
+import javax.inject.Named;
+import javax.inject.Singleton;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-
-import fr.peralta.mycellar.application.shared.AbstractEntitySearchFormService;
+import fr.peralta.mycellar.application.shared.AbstractSimpleService;
 import fr.peralta.mycellar.application.wine.CountryService;
+import fr.peralta.mycellar.domain.shared.NamedEntity_;
 import fr.peralta.mycellar.domain.shared.exception.BusinessError;
 import fr.peralta.mycellar.domain.shared.exception.BusinessException;
-import fr.peralta.mycellar.domain.shared.repository.FilterEnum;
-import fr.peralta.mycellar.domain.shared.repository.SearchForm;
+import fr.peralta.mycellar.domain.shared.repository.PropertySelector;
+import fr.peralta.mycellar.domain.shared.repository.SearchParameters;
 import fr.peralta.mycellar.domain.wine.Country;
-import fr.peralta.mycellar.domain.wine.repository.CountryOrder;
-import fr.peralta.mycellar.domain.wine.repository.CountryOrderEnum;
 import fr.peralta.mycellar.domain.wine.repository.CountryRepository;
 
 /**
  * @author speralta
  */
-@Service
-public class CountryServiceImpl extends
-        AbstractEntitySearchFormService<Country, CountryOrderEnum, CountryOrder, CountryRepository>
-        implements CountryService {
+@Named
+@Singleton
+public class CountryServiceImpl extends AbstractSimpleService<Country, CountryRepository> implements
+        CountryService {
 
     private CountryRepository countryRepository;
 
@@ -48,16 +46,9 @@ public class CountryServiceImpl extends
      * {@inheritDoc}
      */
     @Override
-    public List<Country> getAllLike(String term, SearchForm searchForm, FilterEnum... filters) {
-        return countryRepository.getAllLike(term, searchForm, filters);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
     public Country find(String name) {
-        return countryRepository.find(name);
+        return countryRepository.findUniqueOrNone(new SearchParameters().property(PropertySelector
+                .newPropertySelector(name, NamedEntity_.name)));
     }
 
     /**
@@ -84,7 +75,7 @@ public class CountryServiceImpl extends
      * @param countryRepository
      *            the countryRepository to set
      */
-    @Autowired
+    @Inject
     public void setCountryRepository(CountryRepository countryRepository) {
         this.countryRepository = countryRepository;
     }

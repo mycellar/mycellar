@@ -22,29 +22,34 @@ import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 import java.security.SecureRandom;
 
+import javax.inject.Inject;
+import javax.inject.Named;
+import javax.inject.Singleton;
 import javax.mail.internet.MimeMessage;
 
 import org.jasypt.contrib.org.apache.commons.codec_1_3.binary.Base64;
 import org.joda.time.LocalDateTime;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.mail.javamail.MimeMessagePreparator;
 import org.springframework.scheduling.annotation.Scheduled;
-import org.springframework.stereotype.Service;
 
 import fr.peralta.mycellar.application.admin.ConfigurationService;
 import fr.peralta.mycellar.application.shared.AbstractSimpleService;
 import fr.peralta.mycellar.application.user.ResetPasswordRequestService;
 import fr.peralta.mycellar.domain.shared.exception.BusinessException;
+import fr.peralta.mycellar.domain.shared.repository.PropertySelector;
+import fr.peralta.mycellar.domain.shared.repository.SearchParameters;
 import fr.peralta.mycellar.domain.user.ResetPasswordRequest;
+import fr.peralta.mycellar.domain.user.ResetPasswordRequest_;
 import fr.peralta.mycellar.domain.user.User;
 import fr.peralta.mycellar.domain.user.repository.ResetPasswordRequestRepository;
 
 /**
  * @author speralta
  */
-@Service
+@Named
+@Singleton
 public class ResetPasswordRequestServiceImpl extends
         AbstractSimpleService<ResetPasswordRequest, ResetPasswordRequestRepository> implements
         ResetPasswordRequestService {
@@ -108,7 +113,9 @@ public class ResetPasswordRequestServiceImpl extends
      */
     @Override
     public ResetPasswordRequest getByKey(String key) {
-        ResetPasswordRequest request = resetPasswordRequestRepository.getByKey(key);
+        ResetPasswordRequest request = resetPasswordRequestRepository
+                .findUniqueOrNone(new SearchParameters().property(PropertySelector
+                        .newPropertySelector(key, ResetPasswordRequest_.key)));
         return (request != null)
                 && request.getDateTime().isAfter(new LocalDateTime().minusHours(1)) ? request
                 : null;
@@ -142,7 +149,7 @@ public class ResetPasswordRequestServiceImpl extends
      * @param resetPasswordRequestRepository
      *            the resetPasswordRequestRepository to set
      */
-    @Autowired
+    @Inject
     public void setResetPasswordRequestRepository(
             ResetPasswordRequestRepository resetPasswordRequestRepository) {
         this.resetPasswordRequestRepository = resetPasswordRequestRepository;
@@ -152,7 +159,7 @@ public class ResetPasswordRequestServiceImpl extends
      * @param javaMailSender
      *            the javaMailSender to set
      */
-    @Autowired
+    @Inject
     public void setJavaMailSender(JavaMailSender javaMailSender) {
         this.javaMailSender = javaMailSender;
     }
@@ -161,7 +168,7 @@ public class ResetPasswordRequestServiceImpl extends
      * @param configurationService
      *            the configurationService to set
      */
-    @Autowired
+    @Inject
     public void setConfigurationService(ConfigurationService configurationService) {
         this.configurationService = configurationService;
     }

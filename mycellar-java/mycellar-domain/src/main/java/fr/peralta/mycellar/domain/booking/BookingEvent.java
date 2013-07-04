@@ -41,6 +41,7 @@ import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.hibernate.annotations.Sort;
 import org.hibernate.annotations.SortType;
 import org.hibernate.annotations.Type;
+import org.hibernate.search.annotations.Indexed;
 import org.joda.time.LocalDate;
 
 import fr.peralta.mycellar.domain.booking.comparator.BookingBottlePositionComparator;
@@ -51,6 +52,7 @@ import fr.peralta.mycellar.domain.shared.NamedEntity;
  * @author speralta
  */
 @Entity
+@Indexed
 @Table(name = "BOOKING_EVENT", uniqueConstraints = @UniqueConstraint(columnNames = { "NAME",
         "START", "END" }))
 @SequenceGenerator(name = "BOOKING_EVENT_ID_GENERATOR", allocationSize = 1)

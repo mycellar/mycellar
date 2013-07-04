@@ -19,12 +19,9 @@
 package fr.peralta.mycellar.interfaces.facades.wine;
 
 import java.util.List;
-import java.util.Map;
 
 import fr.peralta.mycellar.domain.shared.exception.BusinessException;
-import fr.peralta.mycellar.domain.shared.repository.CountEnum;
-import fr.peralta.mycellar.domain.shared.repository.FilterEnum;
-import fr.peralta.mycellar.domain.shared.repository.SearchForm;
+import fr.peralta.mycellar.domain.shared.repository.SearchParameters;
 import fr.peralta.mycellar.domain.wine.Appellation;
 import fr.peralta.mycellar.domain.wine.Country;
 import fr.peralta.mycellar.domain.wine.Format;
@@ -33,12 +30,6 @@ import fr.peralta.mycellar.domain.wine.Region;
 import fr.peralta.mycellar.domain.wine.Wine;
 import fr.peralta.mycellar.domain.wine.WineColorEnum;
 import fr.peralta.mycellar.domain.wine.WineTypeEnum;
-import fr.peralta.mycellar.domain.wine.repository.AppellationOrder;
-import fr.peralta.mycellar.domain.wine.repository.CountryOrder;
-import fr.peralta.mycellar.domain.wine.repository.FormatOrder;
-import fr.peralta.mycellar.domain.wine.repository.ProducerOrder;
-import fr.peralta.mycellar.domain.wine.repository.RegionOrder;
-import fr.peralta.mycellar.domain.wine.repository.WineOrder;
 
 /**
  * @author speralta
@@ -46,40 +37,40 @@ import fr.peralta.mycellar.domain.wine.repository.WineOrder;
 public interface WineServiceFacade {
 
     /**
-     * @param searchForm
+     * @param searchParameters
      * @return
      */
-    long countAppellations(SearchForm searchForm);
+    long countAppellations(SearchParameters searchParameters);
 
     /**
-     * @param searchForm
+     * @param searchParameters
      * @return
      */
-    long countCountries(SearchForm searchForm);
+    long countCountries(SearchParameters searchParameters);
 
     /**
-     * @param searchForm
+     * @param searchParameters
      * @return
      */
-    long countFormats(SearchForm searchForm);
+    long countFormats(SearchParameters searchParameters);
 
     /**
-     * @param searchForm
+     * @param searchParameters
      * @return
      */
-    long countProducers(SearchForm searchForm);
+    long countProducers(SearchParameters searchParameters);
 
     /**
-     * @param searchForm
+     * @param searchParameters
      * @return
      */
-    long countRegions(SearchForm searchForm);
+    long countRegions(SearchParameters searchParameters);
 
     /**
-     * @param searchForm
+     * @param searchParameters
      * @return
      */
-    long countWines(SearchForm searchForm);
+    long countWines(SearchParameters searchParameters);
 
     /**
      * @param toCopy
@@ -150,60 +141,16 @@ public interface WineServiceFacade {
     Appellation getAppellationById(Integer appellationId);
 
     /**
-     * @param searchForm
-     * @param order
-     * @param first
-     * @param count
+     * @param searchParameters
      * @return
      */
-    List<Appellation> getAppellations(SearchForm searchForm, AppellationOrder order, long first,
-            long count);
+    List<Appellation> getAppellations(SearchParameters searchParameters);
 
     /**
-     * @param regions
+     * @param searchParameters
      * @return
      */
-    Map<Appellation, Long> getAppellations(SearchForm searchForm, CountEnum count,
-            FilterEnum... filters);
-
-    /**
-     * @param term
-     * @param searchForm
-     * @param filters
-     * @return
-     */
-    List<Appellation> getAppellationsLike(String term, SearchForm searchForm, FilterEnum... filters);
-
-    /**
-     * @param searchForm
-     * @param wine
-     * @return
-     */
-    Map<WineColorEnum, Long> getColors(SearchForm searchForm, CountEnum wine);
-
-    /**
-     * @param searchForm
-     * @param count
-     * @return
-     */
-    Map<Country, Long> getCountries(SearchForm searchForm, CountEnum count, FilterEnum... filters);
-
-    /**
-     * @param searchForm
-     * @param order
-     * @param first
-     * @param count
-     * @return
-     */
-    List<Country> getCountries(SearchForm searchForm, CountryOrder orders, long first, long count);
-
-    /**
-     * @param term
-     * @param searchForm
-     * @param filters
-     * @return
-     */
-    List<Country> getCountriesLike(String term, SearchForm searchForm, FilterEnum... filters);
+    List<Country> getCountries(SearchParameters searchParameters);
 
     /**
      * @param countryId
@@ -218,18 +165,10 @@ public interface WineServiceFacade {
     Format getFormatById(Integer formatId);
 
     /**
+     * @param searchParameters
      * @return
      */
-    Map<Format, Long> getFormats(SearchForm searchForm, CountEnum count, FilterEnum... filters);
-
-    /**
-     * @param searchForm
-     * @param order
-     * @param first
-     * @param count
-     * @return
-     */
-    List<Format> getFormats(SearchForm searchForm, FormatOrder order, long first, long count);
+    List<Format> getFormats(SearchParameters searchParameters);
 
     /**
      * @param producerId
@@ -238,19 +177,10 @@ public interface WineServiceFacade {
     Producer getProducerById(Integer producerId);
 
     /**
-     * @param searchForm
-     * @param order
-     * @param first
-     * @param count
+     * @param searchParameters
      * @return
      */
-    List<Producer> getProducers(SearchForm searchForm, ProducerOrder order, long first, long count);
-
-    /**
-     * @param term
-     * @return
-     */
-    List<Producer> getProducersLike(String term);
+    List<Producer> getProducers(SearchParameters searchParameters);
 
     /**
      * @param regionId
@@ -259,34 +189,10 @@ public interface WineServiceFacade {
     Region getRegionById(Integer regionId);
 
     /**
-     * @param term
-     * @param searchForm
-     * @param filters
+     * @param searchParameters
      * @return
      */
-    List<Region> getRegionsLike(String term, SearchForm searchForm, FilterEnum... filters);
-
-    /**
-     * @param countries
-     * @return
-     */
-    Map<Region, Long> getRegions(SearchForm searchForm, CountEnum count, FilterEnum... filters);
-
-    /**
-     * @param searchForm
-     * @param order
-     * @param first
-     * @param count
-     * @return
-     */
-    List<Region> getRegions(SearchForm searchForm, RegionOrder order, long first, long count);
-
-    /**
-     * @param searchForm
-     * @param count
-     * @return
-     */
-    Map<WineTypeEnum, Long> getTypes(SearchForm searchForm, CountEnum count);
+    List<Region> getRegions(SearchParameters searchParameters);
 
     /**
      * @param wineId
@@ -295,13 +201,10 @@ public interface WineServiceFacade {
     Wine getWineById(Integer wineId);
 
     /**
-     * @param searchForm
-     * @param order
-     * @param first
-     * @param count
+     * @param searchParameters
      * @return
      */
-    List<Wine> getWines(SearchForm searchForm, WineOrder order, long first, long count);
+    List<Wine> getWines(SearchParameters searchParameters);
 
     /**
      * @param appellation

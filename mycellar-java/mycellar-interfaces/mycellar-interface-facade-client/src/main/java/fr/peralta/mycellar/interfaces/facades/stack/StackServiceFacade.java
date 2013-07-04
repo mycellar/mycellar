@@ -20,8 +20,8 @@ package fr.peralta.mycellar.interfaces.facades.stack;
 
 import java.util.List;
 
+import fr.peralta.mycellar.domain.shared.repository.SearchParameters;
 import fr.peralta.mycellar.domain.stack.Stack;
-import fr.peralta.mycellar.domain.stack.repository.StackOrder;
 
 /**
  * @author speralta
@@ -34,9 +34,10 @@ public interface StackServiceFacade {
     void onException(Exception exception);
 
     /**
+     * @param searchParameters
      * @return
      */
-    long countStacks();
+    long countStacks(SearchParameters searchParameters);
 
     /**
      * 
@@ -44,12 +45,10 @@ public interface StackServiceFacade {
     void deleteAllStacks();
 
     /**
-     * @param orders
-     * @param first
-     * @param count
+     * @param searchParameters
      * @return
      */
-    List<Stack> getStacks(StackOrder orders, long first, long count);
+    List<Stack> getStacks(SearchParameters searchParameters);
 
     /**
      * @param stackId

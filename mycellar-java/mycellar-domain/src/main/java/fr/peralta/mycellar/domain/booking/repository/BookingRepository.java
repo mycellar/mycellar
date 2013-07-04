@@ -18,33 +18,17 @@
  */
 package fr.peralta.mycellar.domain.booking.repository;
 
-import java.util.List;
 import java.util.Map;
 
 import fr.peralta.mycellar.domain.booking.Booking;
 import fr.peralta.mycellar.domain.booking.BookingBottle;
 import fr.peralta.mycellar.domain.booking.BookingEvent;
-import fr.peralta.mycellar.domain.shared.repository.EntityRepository;
-import fr.peralta.mycellar.domain.user.User;
+import fr.peralta.mycellar.domain.shared.repository.SimpleRepository;
 
 /**
  * @author speralta
  */
-public interface BookingRepository extends
-        EntityRepository<Booking, BookingOrderEnum, BookingOrder> {
-
-    /**
-     * @param bookingEvent
-     * @param customer
-     * @return
-     */
-    Booking getBookingByEventAndCustomer(BookingEvent bookingEvent, User customer);
-
-    /**
-     * @param customer
-     * @return
-     */
-    List<Booking> getBookings(User customer);
+public interface BookingRepository extends SimpleRepository<Booking> {
 
     /**
      * @param bookingEvent

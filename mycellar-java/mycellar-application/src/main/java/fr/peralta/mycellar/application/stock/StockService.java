@@ -18,22 +18,19 @@
  */
 package fr.peralta.mycellar.application.stock;
 
-import java.util.List;
-
 import org.joda.time.LocalDate;
 
-import fr.peralta.mycellar.domain.shared.repository.SearchForm;
+import fr.peralta.mycellar.application.shared.SimpleService;
 import fr.peralta.mycellar.domain.stock.Arrival;
 import fr.peralta.mycellar.domain.stock.Bottle;
 import fr.peralta.mycellar.domain.stock.Cellar;
 import fr.peralta.mycellar.domain.stock.Drink;
 import fr.peralta.mycellar.domain.stock.Stock;
-import fr.peralta.mycellar.domain.stock.repository.StockOrder;
 
 /**
  * @author speralta
  */
-public interface StockService {
+public interface StockService extends SimpleService<Stock> {
 
     /**
      * @param cellar
@@ -74,20 +71,5 @@ public interface StockService {
      * @param arrival
      */
     void stock(Arrival arrival);
-
-    /**
-     * @param searchForm
-     * @param orders
-     * @param first
-     * @param count
-     * @return
-     */
-    List<Stock> getStocks(SearchForm searchForm, StockOrder orders, long first, long count);
-
-    /**
-     * @param searchForm
-     * @return
-     */
-    long countStocks(SearchForm searchForm);
 
 }

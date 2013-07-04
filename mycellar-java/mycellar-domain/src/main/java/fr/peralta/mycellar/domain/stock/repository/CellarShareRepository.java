@@ -18,21 +18,12 @@
  */
 package fr.peralta.mycellar.domain.stock.repository;
 
-import fr.peralta.mycellar.domain.shared.repository.EntitySearchFormRepository;
-import fr.peralta.mycellar.domain.stock.Cellar;
+import fr.peralta.mycellar.domain.shared.repository.SimpleRepository;
 import fr.peralta.mycellar.domain.stock.CellarShare;
 
 /**
  * @author speralta
  */
-public interface CellarShareRepository extends
-        EntitySearchFormRepository<CellarShare, CellarShareOrderEnum, CellarShareOrder> {
-
-    /**
-     * @param cellar
-     * @param email
-     * @return
-     */
-    CellarShare find(Cellar cellar, String email);
+public interface CellarShareRepository extends SimpleRepository<CellarShare> {
 
 }

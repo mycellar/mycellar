@@ -6,7 +6,11 @@
     </nav>
   </div>
   <div class="span10">
-    <data-mycellar-table page-range="3" options="tableOptions" items="items" sort="sort">
+    <form id="form" class="form-inline">
+      <label for="name">Name</label>
+      <input id="name" name="name" placeholder="Name" ng-model="filters.name" type="text" />
+    </form>
+    <data-mycellar-table page-range="3" options="tableOptions" items="items" sort="sort" filters="filters">
       <table class="table table-bordered table-striped table-condensed table-hover">
         <thead>
           <tr>

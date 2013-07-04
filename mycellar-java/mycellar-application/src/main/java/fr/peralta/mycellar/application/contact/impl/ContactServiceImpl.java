@@ -20,33 +20,36 @@ package fr.peralta.mycellar.application.contact.impl;
 
 import java.util.List;
 
+import javax.inject.Inject;
+import javax.inject.Named;
+import javax.inject.Singleton;
 import javax.mail.internet.MimeMessage;
 
 import org.joda.time.LocalDate;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.mail.javamail.MimeMessagePreparator;
 import org.springframework.scheduling.annotation.Scheduled;
-import org.springframework.stereotype.Service;
 
 import fr.peralta.mycellar.application.admin.ConfigurationService;
 import fr.peralta.mycellar.application.contact.ContactService;
-import fr.peralta.mycellar.application.shared.AbstractEntityService;
+import fr.peralta.mycellar.application.shared.AbstractSimpleService;
 import fr.peralta.mycellar.domain.contact.Contact;
-import fr.peralta.mycellar.domain.contact.repository.ContactOrder;
-import fr.peralta.mycellar.domain.contact.repository.ContactOrderEnum;
+import fr.peralta.mycellar.domain.contact.Contact_;
 import fr.peralta.mycellar.domain.contact.repository.ContactRepository;
 import fr.peralta.mycellar.domain.shared.exception.BusinessError;
 import fr.peralta.mycellar.domain.shared.exception.BusinessException;
+import fr.peralta.mycellar.domain.shared.repository.EntitySelector;
+import fr.peralta.mycellar.domain.shared.repository.PropertySelector;
+import fr.peralta.mycellar.domain.shared.repository.SearchParameters;
 import fr.peralta.mycellar.domain.wine.Producer;
 
 /**
  * @author speralta
  */
-@Service
-public class ContactServiceImpl extends
-        AbstractEntityService<Contact, ContactOrderEnum, ContactOrder, ContactRepository> implements
+@Named
+@Singleton
+public class ContactServiceImpl extends AbstractSimpleService<Contact, ContactRepository> implements
         ContactService {
 
     private ConfigurationService configurationService;
@@ -67,25 +70,8 @@ public class ContactServiceImpl extends
      * {@inheritDoc}
      */
     @Override
-    public List<Contact> getLastContacts(ContactOrder orders, long first, long count) {
-        return contactRepository.getLastContacts(orders, first, count);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public List<Contact> getAllForProducer(Producer producer, ContactOrder orders, long first,
-            long count) {
-        return contactRepository.getAllForProducer(producer, orders, first, count);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public long countForProducer(Producer producer) {
-        return contactRepository.countForProducer(producer);
+    public List<Contact> getLastContacts(SearchParameters searchParameters) {
+        return contactRepository.getLastContacts(searchParameters);
     }
 
     /**
@@ -141,7 +127,9 @@ public class ContactServiceImpl extends
      */
     @Override
     public Contact find(Producer producer, LocalDate current) {
-        return contactRepository.find(producer, current);
+        return contactRepository.findUnique(new SearchParameters().entity(
+                EntitySelector.newEntitySelector(Contact_.producer, producer)).property(
+                PropertySelector.newPropertySelector(current, Contact_.current)));
     }
 
     /**
@@ -156,7 +144,7 @@ public class ContactServiceImpl extends
      * @param contactRepository
      *            the contactRepository to set
      */
-    @Autowired
+    @Inject
     public void setContactRepository(ContactRepository contactRepository) {
         this.contactRepository = contactRepository;
     }
@@ -165,7 +153,7 @@ public class ContactServiceImpl extends
      * @param javaMailSender
      *            the javaMailSender to set
      */
-    @Autowired
+    @Inject
     public void setJavaMailSender(JavaMailSender javaMailSender) {
         this.javaMailSender = javaMailSender;
     }
@@ -174,7 +162,7 @@ public class ContactServiceImpl extends
      * @param configurationService
      *            the configurationService to set
      */
-    @Autowired
+    @Inject
     public void setConfigurationService(ConfigurationService configurationService) {
         this.configurationService = configurationService;
     }

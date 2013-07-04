@@ -18,27 +18,12 @@
  */
 package fr.peralta.mycellar.domain.wine.repository;
 
-import java.util.List;
-
-import fr.peralta.mycellar.domain.shared.repository.EntitySearchFormRepository;
+import fr.peralta.mycellar.domain.shared.repository.SimpleRepository;
 import fr.peralta.mycellar.domain.wine.Producer;
 
 /**
  * @author speralta
  */
-public interface ProducerRepository extends
-        EntitySearchFormRepository<Producer, ProducerOrderEnum, ProducerOrder> {
-
-    /**
-     * @param term
-     * @return
-     */
-    List<Producer> getAllProducersLike(String term);
-
-    /**
-     * @param name
-     * @return
-     */
-    Producer find(String name);
+public interface ProducerRepository extends SimpleRepository<Producer> {
 
 }

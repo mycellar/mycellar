@@ -21,9 +21,8 @@ package fr.peralta.mycellar.interfaces.facades.contact;
 import java.util.List;
 
 import fr.peralta.mycellar.domain.contact.Contact;
-import fr.peralta.mycellar.domain.contact.repository.ContactOrder;
 import fr.peralta.mycellar.domain.shared.exception.BusinessException;
-import fr.peralta.mycellar.domain.wine.Producer;
+import fr.peralta.mycellar.domain.shared.repository.SearchParameters;
 
 /**
  * @author speralta
@@ -31,20 +30,15 @@ import fr.peralta.mycellar.domain.wine.Producer;
 public interface ContactServiceFacade {
 
     /**
+     * @param searchParameters
      * @return
      */
-    long countContacts();
+    long countContacts(SearchParameters searchParameters);
 
     /**
      * @return
      */
     long countLastContacts();
-
-    /**
-     * @param object
-     * @return
-     */
-    long countContactsForProducer(Producer producer);
 
     /**
      * @param objectId
@@ -53,30 +47,16 @@ public interface ContactServiceFacade {
     Contact getContactById(Integer objectId);
 
     /**
-     * @param orders
-     * @param first
-     * @param count
+     * @param searchParameters
      * @return
      */
-    List<Contact> getContacts(ContactOrder orders, long first, long count);
+    List<Contact> getContacts(SearchParameters searchParameters);
 
     /**
-     * @param orders
-     * @param first
-     * @param count
+     * @param searchParameters
      * @return
      */
-    List<Contact> getLastContacts(ContactOrder orders, long first, long count);
-
-    /**
-     * @param producer
-     * @param orders
-     * @param first
-     * @param count
-     * @return
-     */
-    List<Contact> getContactsForProducer(Producer producer, ContactOrder orders, long first,
-            long count);
+    List<Contact> getLastContacts(SearchParameters searchParameters);
 
     /**
      * @param contact

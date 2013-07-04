@@ -20,32 +20,33 @@ package fr.peralta.mycellar.application.wine.impl;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
+import javax.inject.Inject;
+import javax.inject.Named;
+import javax.inject.Singleton;
 
-import fr.peralta.mycellar.application.shared.AbstractEntitySearchFormService;
+import fr.peralta.mycellar.application.shared.AbstractSimpleService;
 import fr.peralta.mycellar.application.wine.WineService;
+import fr.peralta.mycellar.domain.shared.NamedEntity_;
 import fr.peralta.mycellar.domain.shared.exception.BusinessError;
 import fr.peralta.mycellar.domain.shared.exception.BusinessException;
-import fr.peralta.mycellar.domain.shared.repository.CountEnum;
-import fr.peralta.mycellar.domain.shared.repository.SearchForm;
+import fr.peralta.mycellar.domain.shared.repository.EntitySelector;
+import fr.peralta.mycellar.domain.shared.repository.PropertySelector;
+import fr.peralta.mycellar.domain.shared.repository.SearchParameters;
 import fr.peralta.mycellar.domain.wine.Appellation;
 import fr.peralta.mycellar.domain.wine.Producer;
 import fr.peralta.mycellar.domain.wine.Wine;
 import fr.peralta.mycellar.domain.wine.WineColorEnum;
 import fr.peralta.mycellar.domain.wine.WineTypeEnum;
-import fr.peralta.mycellar.domain.wine.repository.WineOrder;
-import fr.peralta.mycellar.domain.wine.repository.WineOrderEnum;
+import fr.peralta.mycellar.domain.wine.Wine_;
 import fr.peralta.mycellar.domain.wine.repository.WineRepository;
 
 /**
  * @author speralta
  */
-@Service
-public class WineServiceImpl extends
-        AbstractEntitySearchFormService<Wine, WineOrderEnum, WineOrder, WineRepository> implements
+@Named
+@Singleton
+public class WineServiceImpl extends AbstractSimpleService<Wine, WineRepository> implements
         WineService {
 
     private WineRepository wineRepository;
@@ -56,7 +57,20 @@ public class WineServiceImpl extends
     @Override
     public Wine find(Producer producer, Appellation appellation, WineTypeEnum type,
             WineColorEnum color, String name, Integer vintage) {
-        return wineRepository.find(producer, appellation, type, color, name, vintage);
+        Wine model = new Wine();
+        model.setProducer(producer);
+        model.setAppellation(appellation);
+        model.setType(type);
+        model.setColor(color);
+        model.setName(name);
+        model.setVintage(vintage);
+        return wineRepository.findUniqueOrNone(new SearchParameters() //
+                .entity(EntitySelector.newEntitySelector(Wine_.producer, producer)) //
+                .entity(EntitySelector.newEntitySelector(Wine_.appellation, appellation)) //
+                .property(PropertySelector.newPropertySelector(type, Wine_.type)) //
+                .property(PropertySelector.newPropertySelector(color, Wine_.color)) //
+                .property(PropertySelector.newPropertySelector(name, NamedEntity_.name)) //
+                .property(PropertySelector.newPropertySelector(vintage, Wine_.vintage)));
     }
 
     /**
@@ -70,34 +84,6 @@ public class WineServiceImpl extends
                 && ((entity.getId() == null) || !existing.getId().equals(entity.getId()))) {
             throw new BusinessException(BusinessError.WINE_00001);
         }
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public Map<WineTypeEnum, Long> getTypes(SearchForm searchForm, CountEnum count) {
-        Map<WineTypeEnum, Long> types = wineRepository.getTypes(searchForm, count);
-        for (WineTypeEnum type : WineTypeEnum.values()) {
-            if (!types.containsKey(type)) {
-                types.put(type, 0L);
-            }
-        }
-        return types;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public Map<WineColorEnum, Long> getColors(SearchForm searchForm, CountEnum count) {
-        Map<WineColorEnum, Long> colors = wineRepository.getColors(searchForm, count);
-        for (WineColorEnum color : WineColorEnum.values()) {
-            if (!colors.containsKey(color)) {
-                colors.put(color, 0L);
-            }
-        }
-        return colors;
     }
 
     /**
@@ -145,7 +131,7 @@ public class WineServiceImpl extends
      * @param wineRepository
      *            the wineRepository to set
      */
-    @Autowired
+    @Inject
     public void setWineRepository(WineRepository wineRepository) {
         this.wineRepository = wineRepository;
     }

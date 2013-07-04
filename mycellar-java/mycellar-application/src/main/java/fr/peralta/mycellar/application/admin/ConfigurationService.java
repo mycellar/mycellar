@@ -18,17 +18,14 @@
  */
 package fr.peralta.mycellar.application.admin;
 
-import fr.peralta.mycellar.application.shared.EntityService;
+import fr.peralta.mycellar.application.shared.SimpleService;
 import fr.peralta.mycellar.domain.admin.Configuration;
 import fr.peralta.mycellar.domain.admin.ConfigurationKeyEnum;
-import fr.peralta.mycellar.domain.admin.repository.ConfigurationOrder;
-import fr.peralta.mycellar.domain.admin.repository.ConfigurationOrderEnum;
 
 /**
  * @author speralta
  */
-public interface ConfigurationService extends
-        EntityService<Configuration, ConfigurationOrderEnum, ConfigurationOrder> {
+public interface ConfigurationService extends SimpleService<Configuration> {
 
     /**
      * @param key

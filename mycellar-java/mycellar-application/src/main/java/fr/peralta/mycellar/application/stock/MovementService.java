@@ -20,17 +20,15 @@ package fr.peralta.mycellar.application.stock;
 
 import org.joda.time.LocalDate;
 
-import fr.peralta.mycellar.application.shared.EntitySearchFormService;
+import fr.peralta.mycellar.application.shared.SimpleService;
 import fr.peralta.mycellar.domain.stock.Bottle;
 import fr.peralta.mycellar.domain.stock.Cellar;
 import fr.peralta.mycellar.domain.stock.Movement;
-import fr.peralta.mycellar.domain.stock.repository.MovementOrder;
-import fr.peralta.mycellar.domain.stock.repository.MovementOrderEnum;
 
 /**
  * @author speralta
  */
-public interface MovementService extends EntitySearchFormService<Movement, MovementOrderEnum, MovementOrder> {
+public interface MovementService extends SimpleService<Movement> {
 
     /**
      * @param cellar

@@ -18,26 +18,28 @@
  */
 package fr.peralta.mycellar.application.stock.impl;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
+import javax.inject.Inject;
+import javax.inject.Named;
+import javax.inject.Singleton;
 
-import fr.peralta.mycellar.application.shared.AbstractEntitySearchFormService;
+import fr.peralta.mycellar.application.shared.AbstractSimpleService;
 import fr.peralta.mycellar.application.stock.CellarShareService;
 import fr.peralta.mycellar.domain.shared.exception.BusinessError;
 import fr.peralta.mycellar.domain.shared.exception.BusinessException;
+import fr.peralta.mycellar.domain.shared.repository.EntitySelector;
+import fr.peralta.mycellar.domain.shared.repository.PropertySelector;
+import fr.peralta.mycellar.domain.shared.repository.SearchParameters;
 import fr.peralta.mycellar.domain.stock.CellarShare;
-import fr.peralta.mycellar.domain.stock.repository.CellarShareOrder;
-import fr.peralta.mycellar.domain.stock.repository.CellarShareOrderEnum;
+import fr.peralta.mycellar.domain.stock.CellarShare_;
 import fr.peralta.mycellar.domain.stock.repository.CellarShareRepository;
 
 /**
  * @author speralta
  */
-@Service
-public class CellarShareServiceImpl
-        extends
-        AbstractEntitySearchFormService<CellarShare, CellarShareOrderEnum, CellarShareOrder, CellarShareRepository>
-        implements CellarShareService {
+@Named
+@Singleton
+public class CellarShareServiceImpl extends
+        AbstractSimpleService<CellarShare, CellarShareRepository> implements CellarShareService {
 
     private CellarShareRepository cellarShareRepository;
 
@@ -46,7 +48,13 @@ public class CellarShareServiceImpl
      */
     @Override
     public void validate(CellarShare entity) throws BusinessException {
-        CellarShare existing = cellarShareRepository.find(entity.getCellar(), entity.getEmail());
+        CellarShare existing = cellarShareRepository
+                .findUniqueOrNone(new SearchParameters() //
+                        .entity(EntitySelector.newEntitySelector(CellarShare_.cellar,
+                                entity.getCellar())) //
+                        .property(
+                                PropertySelector.newPropertySelector(entity.getEmail(),
+                                        CellarShare_.email)));
         if ((existing != null)
                 && ((entity.getId() == null) || !existing.getId().equals(entity.getId()))) {
             throw new BusinessException(BusinessError.CELLAR_SHARE_00001);
@@ -57,7 +65,7 @@ public class CellarShareServiceImpl
      * @param cellarShareRepository
      *            the cellarShareRepository to set
      */
-    @Autowired
+    @Inject
     public void setCellarShareRepository(CellarShareRepository cellarShareRepository) {
         this.cellarShareRepository = cellarShareRepository;
     }

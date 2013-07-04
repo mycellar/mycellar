@@ -30,9 +30,8 @@ import fr.peralta.mycellar.application.booking.BookingService;
 import fr.peralta.mycellar.domain.booking.Booking;
 import fr.peralta.mycellar.domain.booking.BookingBottle;
 import fr.peralta.mycellar.domain.booking.BookingEvent;
-import fr.peralta.mycellar.domain.booking.repository.BookingEventOrder;
-import fr.peralta.mycellar.domain.booking.repository.BookingOrder;
 import fr.peralta.mycellar.domain.shared.exception.BusinessException;
+import fr.peralta.mycellar.domain.shared.repository.SearchParameters;
 import fr.peralta.mycellar.domain.user.User;
 
 /**
@@ -101,8 +100,8 @@ public class BookingServiceFacadeImpl implements BookingServiceFacade {
      */
     @Override
     @Transactional(readOnly = true)
-    public long countBookingEvents() {
-        return bookingEventService.count();
+    public long countBookingEvents(SearchParameters searchParameters) {
+        return bookingEventService.count(searchParameters);
     }
 
     /**
@@ -110,8 +109,8 @@ public class BookingServiceFacadeImpl implements BookingServiceFacade {
      */
     @Override
     @Transactional(readOnly = true)
-    public long countBookings() {
-        return bookingService.count();
+    public long countBookings(SearchParameters searchParameters) {
+        return bookingService.count(searchParameters);
     }
 
     /**
@@ -139,8 +138,8 @@ public class BookingServiceFacadeImpl implements BookingServiceFacade {
      */
     @Override
     @Transactional(readOnly = true)
-    public List<BookingEvent> getBookingEvents(BookingEventOrder orders, long first, long count) {
-        return bookingEventService.getAll(orders, first, count);
+    public List<BookingEvent> getBookingEvents(SearchParameters searchParameters) {
+        return bookingEventService.find(searchParameters);
     }
 
     /**
@@ -148,8 +147,8 @@ public class BookingServiceFacadeImpl implements BookingServiceFacade {
      */
     @Override
     @Transactional(readOnly = true)
-    public List<Booking> getBookings(BookingOrder orders, long first, long count) {
-        return bookingService.getAll(orders, first, count);
+    public List<Booking> getBookings(SearchParameters searchParameters) {
+        return bookingService.find(searchParameters);
     }
 
     /**

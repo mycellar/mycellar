@@ -22,15 +22,16 @@ import java.util.List;
 
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
-import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
+import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.MediaType;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import fr.mycellar.interfaces.facade.web.domain.OrderCouple;
+import fr.peralta.mycellar.domain.shared.repository.SearchParameters;
 import fr.peralta.mycellar.domain.user.User;
-import fr.peralta.mycellar.domain.user.repository.UserOrder;
 import fr.peralta.mycellar.interfaces.facades.user.UserServiceFacade;
 
 /**
@@ -46,15 +47,21 @@ public class UserWebService {
     @Produces(MediaType.APPLICATION_JSON)
     @Path("users/count")
     public long countUsers() {
-        return userServiceFacade.countUsers();
+        return userServiceFacade.countUsers(new SearchParameters());
     }
 
     @GET
     @Produces(MediaType.APPLICATION_JSON)
-    @Path("users/list/{first}/{count}")
-    public List<User> getUsers(@PathParam("{first}") long first, @PathParam("{count}") long count) {
-        UserOrder orders = new UserOrder();
-        return userServiceFacade.getUsers(orders, first, count);
+    @Path("users/list/")
+    public List<User> getUsers(@QueryParam("first") int first, @QueryParam("count") int count,
+            @QueryParam("sort") List<OrderCouple> orders) {
+        SearchParameters searchParameters = new SearchParameters();
+        searchParameters.setFirstResult(first);
+        searchParameters.setMaxResults(count);
+        for (OrderCouple order : orders) {
+            searchParameters.addOrderBy(order.getProperty(), order.getDirection());
+        }
+        return userServiceFacade.getUsers(searchParameters);
     }
 
     /**

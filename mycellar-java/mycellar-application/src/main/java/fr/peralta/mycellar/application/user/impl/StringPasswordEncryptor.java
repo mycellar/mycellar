@@ -18,15 +18,18 @@
  */
 package fr.peralta.mycellar.application.user.impl;
 
+import javax.inject.Inject;
+import javax.inject.Named;
+import javax.inject.Singleton;
+
 import org.jasypt.digest.StringDigester;
 import org.jasypt.util.password.PasswordEncryptor;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
 
 /**
  * @author speralta
  */
-@Component
+@Named
+@Singleton
 public class StringPasswordEncryptor implements PasswordEncryptor {
 
     private StringDigester stringDigester;
@@ -51,7 +54,7 @@ public class StringPasswordEncryptor implements PasswordEncryptor {
      * @param stringDigester
      *            the stringDigester to set
      */
-    @Autowired
+    @Inject
     public void setStringDigester(StringDigester stringDigester) {
         this.stringDigester = stringDigester;
     }

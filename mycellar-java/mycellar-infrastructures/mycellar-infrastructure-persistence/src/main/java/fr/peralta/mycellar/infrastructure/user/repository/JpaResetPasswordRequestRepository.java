@@ -20,13 +20,13 @@ package fr.peralta.mycellar.infrastructure.user.repository;
 
 import java.util.List;
 
-import javax.persistence.NoResultException;
+import javax.inject.Named;
+import javax.inject.Singleton;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Root;
 
 import org.joda.time.LocalDate;
-import org.springframework.stereotype.Repository;
 
 import fr.peralta.mycellar.domain.user.ResetPasswordRequest;
 import fr.peralta.mycellar.domain.user.User;
@@ -36,9 +36,17 @@ import fr.peralta.mycellar.infrastructure.shared.repository.JpaSimpleRepository;
 /**
  * @author speralta
  */
-@Repository
+@Named
+@Singleton
 public class JpaResetPasswordRequestRepository extends JpaSimpleRepository<ResetPasswordRequest>
         implements ResetPasswordRequestRepository {
+
+    /**
+     * Default constructor.
+     */
+    public JpaResetPasswordRequestRepository() {
+        super(ResetPasswordRequest.class);
+    }
 
     /**
      * {@inheritDoc}
@@ -74,31 +82,6 @@ public class JpaResetPasswordRequestRepository extends JpaSimpleRepository<Reset
         for (ResetPasswordRequest request : requests) {
             getEntityManager().remove(request);
         }
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public ResetPasswordRequest getByKey(String key) {
-        CriteriaBuilder criteriaBuilder = getEntityManager().getCriteriaBuilder();
-        CriteriaQuery<ResetPasswordRequest> query = criteriaBuilder
-                .createQuery(ResetPasswordRequest.class);
-        Root<ResetPasswordRequest> root = query.from(ResetPasswordRequest.class);
-        query.select(root).where(criteriaBuilder.equal(root.get("key"), key));
-        try {
-            return getEntityManager().createQuery(query).getSingleResult();
-        } catch (NoResultException e) {
-            return null;
-        }
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    protected Class<ResetPasswordRequest> getEntityClass() {
-        return ResetPasswordRequest.class;
     }
 
 }

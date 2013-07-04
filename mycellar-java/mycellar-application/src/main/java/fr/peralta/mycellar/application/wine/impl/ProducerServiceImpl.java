@@ -18,27 +18,26 @@
  */
 package fr.peralta.mycellar.application.wine.impl;
 
-import java.util.List;
+import javax.inject.Inject;
+import javax.inject.Named;
+import javax.inject.Singleton;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-
-import fr.peralta.mycellar.application.shared.AbstractEntitySearchFormService;
+import fr.peralta.mycellar.application.shared.AbstractSimpleService;
 import fr.peralta.mycellar.application.wine.ProducerService;
+import fr.peralta.mycellar.domain.shared.NamedEntity_;
 import fr.peralta.mycellar.domain.shared.exception.BusinessError;
 import fr.peralta.mycellar.domain.shared.exception.BusinessException;
+import fr.peralta.mycellar.domain.shared.repository.PropertySelector;
+import fr.peralta.mycellar.domain.shared.repository.SearchParameters;
 import fr.peralta.mycellar.domain.wine.Producer;
-import fr.peralta.mycellar.domain.wine.repository.ProducerOrder;
-import fr.peralta.mycellar.domain.wine.repository.ProducerOrderEnum;
 import fr.peralta.mycellar.domain.wine.repository.ProducerRepository;
 
 /**
  * @author speralta
  */
-@Service
-public class ProducerServiceImpl
-        extends
-        AbstractEntitySearchFormService<Producer, ProducerOrderEnum, ProducerOrder, ProducerRepository>
+@Named
+@Singleton
+public class ProducerServiceImpl extends AbstractSimpleService<Producer, ProducerRepository>
         implements ProducerService {
 
     private ProducerRepository producerRepository;
@@ -48,19 +47,13 @@ public class ProducerServiceImpl
      */
     @Override
     public void validate(Producer entity) throws BusinessException {
-        Producer existing = producerRepository.find(entity.getName());
+        Producer existing = producerRepository
+                .findUniqueOrNone(new SearchParameters().property(PropertySelector
+                        .newPropertySelector(entity.getName(), NamedEntity_.name)));
         if ((existing != null)
                 && ((entity.getId() == null) || !existing.getId().equals(entity.getId()))) {
             throw new BusinessException(BusinessError.PRODUCER_00001);
         }
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public List<Producer> getAllLike(String term) {
-        return producerRepository.getAllProducersLike(term);
     }
 
     /**
@@ -75,7 +68,7 @@ public class ProducerServiceImpl
      * @param producerRepository
      *            the producerRepository to set
      */
-    @Autowired
+    @Inject
     public void setProducerRepository(ProducerRepository producerRepository) {
         this.producerRepository = producerRepository;
     }

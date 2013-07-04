@@ -20,47 +20,33 @@ package fr.peralta.mycellar.infrastructure.contact.repository;
 
 import java.util.List;
 
-import javax.persistence.NoResultException;
+import javax.inject.Named;
+import javax.inject.Singleton;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
-import javax.persistence.criteria.Expression;
-import javax.persistence.criteria.JoinType;
 import javax.persistence.criteria.Root;
 import javax.persistence.criteria.Subquery;
 
 import org.joda.time.LocalDate;
-import org.springframework.stereotype.Repository;
 
 import fr.peralta.mycellar.domain.contact.Contact;
-import fr.peralta.mycellar.domain.contact.repository.ContactOrder;
-import fr.peralta.mycellar.domain.contact.repository.ContactOrderEnum;
 import fr.peralta.mycellar.domain.contact.repository.ContactRepository;
-import fr.peralta.mycellar.domain.wine.Producer;
-import fr.peralta.mycellar.infrastructure.shared.repository.JpaEntityRepository;
+import fr.peralta.mycellar.domain.shared.repository.SearchParameters;
+import fr.peralta.mycellar.infrastructure.shared.repository.JpaSimpleRepository;
+import fr.peralta.mycellar.infrastructure.shared.repository.JpaUtil;
 
 /**
  * @author speralta
  */
-@Repository
-public class JpaContactRepository extends
-        JpaEntityRepository<Contact, ContactOrderEnum, ContactOrder> implements ContactRepository {
+@Named
+@Singleton
+public class JpaContactRepository extends JpaSimpleRepository<Contact> implements ContactRepository {
 
     /**
-     * {@inheritDoc}
+     * Default constructor.
      */
-    @Override
-    public Contact find(Producer producer, LocalDate current) {
-        CriteriaBuilder criteriaBuilder = getEntityManager().getCriteriaBuilder();
-        CriteriaQuery<Contact> query = criteriaBuilder.createQuery(Contact.class);
-        Root<Contact> root = query.from(Contact.class);
-
-        try {
-            return getEntityManager().createQuery(
-                    query.select(root).where(criteriaBuilder.equal(root.get("producer"), producer),
-                            criteriaBuilder.equal(root.get("current"), current))).getSingleResult();
-        } catch (NoResultException e) {
-            return null;
-        }
+    public JpaContactRepository() {
+        super(Contact.class);
     }
 
     /**
@@ -88,7 +74,7 @@ public class JpaContactRepository extends
      * {@inheritDoc}
      */
     @Override
-    public List<Contact> getLastContacts(ContactOrder orders, long first, long count) {
+    public List<Contact> getLastContacts(SearchParameters searchParameters) {
         CriteriaBuilder criteriaBuilder = getEntityManager().getCriteriaBuilder();
         CriteriaQuery<Contact> query = criteriaBuilder.createQuery(Contact.class);
         Root<Contact> root = query.from(Contact.class);
@@ -102,42 +88,12 @@ public class JpaContactRepository extends
 
         return getEntityManager()
                 .createQuery(
-                        orderBy(query.select(root).where(
-                                criteriaBuilder.not(criteriaBuilder.exists(subquery))), root,
-                                orders, criteriaBuilder, JoinType.LEFT))
-                .setFirstResult((int) first).setMaxResults((int) count).getResultList();
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public List<Contact> getAllForProducer(Producer producer, ContactOrder orders, long first,
-            long count) {
-        CriteriaBuilder criteriaBuilder = getEntityManager().getCriteriaBuilder();
-        CriteriaQuery<Contact> query = criteriaBuilder.createQuery(Contact.class);
-        Root<Contact> root = query.from(Contact.class);
-
-        return getEntityManager()
-                .createQuery(
-                        orderBy(query.select(root).where(
-                                criteriaBuilder.equal(root.get("producer"), producer)), root,
-                                orders, criteriaBuilder, JoinType.LEFT))
-                .setFirstResult((int) first).setMaxResults((int) count).getResultList();
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public long countForProducer(Producer producer) {
-        CriteriaBuilder criteriaBuilder = getEntityManager().getCriteriaBuilder();
-        CriteriaQuery<Long> query = criteriaBuilder.createQuery(Long.class);
-        Root<Contact> root = query.from(Contact.class);
-
-        return getEntityManager().createQuery(
-                query.select(criteriaBuilder.count(root)).where(
-                        criteriaBuilder.equal(root.get("producer"), producer))).getSingleResult();
+                        query.orderBy(
+                                JpaUtil.buildJpaOrders(searchParameters.getOrders(), root,
+                                        criteriaBuilder, searchParameters)).select(root)
+                                .where(criteriaBuilder.not(criteriaBuilder.exists(subquery))))
+                .setFirstResult(searchParameters.getFirstResult())
+                .setMaxResults(searchParameters.getMaxResults()).getResultList();
     }
 
     /**
@@ -161,33 +117,6 @@ public class JpaContactRepository extends
                         criteriaBuilder.not(criteriaBuilder.exists(subquery)),
                         criteriaBuilder.lessThanOrEqualTo(root.<LocalDate> get("next"),
                                 new LocalDate()))).getResultList();
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    protected Expression<?> getOrderByPath(Root<Contact> root, ContactOrderEnum order,
-            JoinType joinType) {
-        switch (order) {
-        case PRODUCER_NAME:
-            return root.get("producer").get("name");
-        case CURRENT_DATE:
-            return root.get("current");
-        case NEXT_DATE:
-            return root.get("next");
-        default:
-            throw new IllegalStateException("Unknown " + ContactOrderEnum.class.getSimpleName()
-                    + " value [" + order + "].");
-        }
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    protected Class<Contact> getEntityClass() {
-        return Contact.class;
     }
 
 }

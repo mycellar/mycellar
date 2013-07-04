@@ -20,25 +20,29 @@ package fr.peralta.mycellar.application.booking.impl;
 
 import java.util.List;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
+import javax.inject.Inject;
+import javax.inject.Named;
+import javax.inject.Singleton;
+
+import org.joda.time.LocalDate;
 
 import fr.peralta.mycellar.application.booking.BookingEventService;
-import fr.peralta.mycellar.application.shared.AbstractEntityService;
+import fr.peralta.mycellar.application.shared.AbstractSimpleService;
 import fr.peralta.mycellar.domain.booking.BookingEvent;
-import fr.peralta.mycellar.domain.booking.repository.BookingEventOrder;
-import fr.peralta.mycellar.domain.booking.repository.BookingEventOrderEnum;
+import fr.peralta.mycellar.domain.booking.BookingEvent_;
 import fr.peralta.mycellar.domain.booking.repository.BookingEventRepository;
+import fr.peralta.mycellar.domain.shared.NamedEntity_;
 import fr.peralta.mycellar.domain.shared.exception.BusinessException;
+import fr.peralta.mycellar.domain.shared.repository.Range;
+import fr.peralta.mycellar.domain.shared.repository.SearchParameters;
 
 /**
  * @author speralta
  */
-@Service
-public class BookingEventServiceImpl
-        extends
-        AbstractEntityService<BookingEvent, BookingEventOrderEnum, BookingEventOrder, BookingEventRepository>
-        implements BookingEventService {
+@Named
+@Singleton
+public class BookingEventServiceImpl extends
+        AbstractSimpleService<BookingEvent, BookingEventRepository> implements BookingEventService {
 
     private BookingEventRepository bookingEventRepository;
 
@@ -47,7 +51,11 @@ public class BookingEventServiceImpl
      */
     @Override
     public List<BookingEvent> getCurrentBookingEvents() {
-        return bookingEventRepository.getCurrentBookingEvents();
+        return bookingEventRepository.find(new SearchParameters() //
+                .range(new Range<BookingEvent, LocalDate>( //
+                        BookingEvent_.start, null, new LocalDate())) //
+                .range(new Range<BookingEvent, LocalDate>( //
+                        BookingEvent_.end, new LocalDate(), null)));
     }
 
     /**
@@ -55,7 +63,9 @@ public class BookingEventServiceImpl
      */
     @Override
     public List<BookingEvent> getAllLike(String term) {
-        return bookingEventRepository.getAllLike(term);
+        BookingEvent bookingEvent = new BookingEvent();
+        bookingEvent.setName(term);
+        return bookingEventRepository.find(new SearchParameters().term(term, NamedEntity_.name));
     }
 
     /**
@@ -78,7 +88,7 @@ public class BookingEventServiceImpl
      * @param bookingEventRepository
      *            the bookingEventRepository to set
      */
-    @Autowired
+    @Inject
     public void setBookingEventRepository(BookingEventRepository bookingEventRepository) {
         this.bookingEventRepository = bookingEventRepository;
     }

@@ -33,6 +33,7 @@ import javax.persistence.Table;
 
 import org.apache.commons.lang3.ObjectUtils;
 import org.apache.commons.lang3.builder.ToStringBuilder;
+import org.hibernate.search.annotations.Indexed;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
@@ -44,6 +45,7 @@ import fr.peralta.mycellar.domain.shared.NamedEntity;
  * @author speralta
  */
 @Entity
+@Indexed
 @Table(name = "COUNTRY")
 @AttributeOverride(name = "name", column = @Column(name = "NAME", nullable = false, unique = true))
 @SequenceGenerator(name = "COUNTRY_ID_GENERATOR", allocationSize = 1)

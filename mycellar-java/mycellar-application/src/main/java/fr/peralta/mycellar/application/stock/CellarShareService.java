@@ -18,15 +18,12 @@
  */
 package fr.peralta.mycellar.application.stock;
 
-import fr.peralta.mycellar.application.shared.EntitySearchFormService;
+import fr.peralta.mycellar.application.shared.SimpleService;
 import fr.peralta.mycellar.domain.stock.CellarShare;
-import fr.peralta.mycellar.domain.stock.repository.CellarShareOrder;
-import fr.peralta.mycellar.domain.stock.repository.CellarShareOrderEnum;
 
 /**
  * @author speralta
  */
-public interface CellarShareService extends
-        EntitySearchFormService<CellarShare, CellarShareOrderEnum, CellarShareOrder> {
+public interface CellarShareService extends SimpleService<CellarShare> {
 
 }

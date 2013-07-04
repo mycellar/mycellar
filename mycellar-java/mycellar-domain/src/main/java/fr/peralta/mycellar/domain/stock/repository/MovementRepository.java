@@ -18,13 +18,12 @@
  */
 package fr.peralta.mycellar.domain.stock.repository;
 
-import fr.peralta.mycellar.domain.shared.repository.EntitySearchFormRepository;
+import fr.peralta.mycellar.domain.shared.repository.SimpleRepository;
 import fr.peralta.mycellar.domain.stock.Movement;
 
 /**
  * @author speralta
  */
-public interface MovementRepository extends
-        EntitySearchFormRepository<Movement, MovementOrderEnum, MovementOrder> {
+public interface MovementRepository extends SimpleRepository<Movement> {
 
 }

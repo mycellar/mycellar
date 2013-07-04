@@ -18,28 +18,29 @@
  */
 package fr.peralta.mycellar.application.user.impl;
 
-import java.util.List;
+import javax.inject.Inject;
+import javax.inject.Named;
+import javax.inject.Singleton;
 
 import org.jasypt.util.password.PasswordEncryptor;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
 
-import fr.peralta.mycellar.application.shared.AbstractEntityService;
+import fr.peralta.mycellar.application.shared.AbstractSimpleService;
 import fr.peralta.mycellar.application.user.ResetPasswordRequestService;
 import fr.peralta.mycellar.application.user.UserService;
 import fr.peralta.mycellar.domain.shared.exception.BusinessError;
 import fr.peralta.mycellar.domain.shared.exception.BusinessException;
+import fr.peralta.mycellar.domain.shared.repository.PropertySelector;
+import fr.peralta.mycellar.domain.shared.repository.SearchParameters;
 import fr.peralta.mycellar.domain.user.User;
-import fr.peralta.mycellar.domain.user.repository.UserOrder;
-import fr.peralta.mycellar.domain.user.repository.UserOrderEnum;
+import fr.peralta.mycellar.domain.user.User_;
 import fr.peralta.mycellar.domain.user.repository.UserRepository;
 
 /**
  * @author speralta
  */
-@Service
-public class UserServiceImpl extends
-        AbstractEntityService<User, UserOrderEnum, UserOrder, UserRepository> implements
+@Named
+@Singleton
+public class UserServiceImpl extends AbstractSimpleService<User, UserRepository> implements
         UserService {
 
     private ResetPasswordRequestService resetPasswordRequestService;
@@ -62,7 +63,8 @@ public class UserServiceImpl extends
      */
     @Override
     public void resetPasswordRequest(String email, String url) {
-        User user = userRepository.getByEmail(email);
+        User user = userRepository.findUniqueOrNone(new SearchParameters()
+                .property(PropertySelector.newPropertySelector(email, User_.email)));
         if (user != null) {
             resetPasswordRequestService.createAndSendEmail(user, url);
         }
@@ -73,16 +75,9 @@ public class UserServiceImpl extends
      * {@inheritDoc}
      */
     @Override
-    public List<User> getAllLike(String term) {
-        return userRepository.getAllLike(term);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
     public void validate(User entity) throws BusinessException {
-        User existing = userRepository.getByEmail(entity.getEmail());
+        User existing = userRepository.findUniqueOrNone(new SearchParameters()
+                .property(PropertySelector.newPropertySelector(entity.getEmail(), User_.email)));
         if ((existing != null)
                 && ((entity.getId() == null) || !existing.getId().equals(entity.getId()))) {
             throw new BusinessException(BusinessError.USER_00001);
@@ -94,7 +89,8 @@ public class UserServiceImpl extends
      */
     @Override
     public User authenticate(String login, String password) {
-        User user = userRepository.getByEmail(login);
+        User user = userRepository.findUniqueOrNone(new SearchParameters()
+                .property(PropertySelector.newPropertySelector(login, User_.email)));
         if ((user != null) && !passwordEncryptor.checkPassword(password, user.getPassword())) {
             user = null;
         }
@@ -113,7 +109,7 @@ public class UserServiceImpl extends
      * @param userRepository
      *            the userRepository to set
      */
-    @Autowired
+    @Inject
     public void setUserRepository(UserRepository userRepository) {
         this.userRepository = userRepository;
     }
@@ -122,7 +118,7 @@ public class UserServiceImpl extends
      * @param passwordEncryptor
      *            the passwordEncryptor to set
      */
-    @Autowired
+    @Inject
     public void setPasswordEncryptor(PasswordEncryptor passwordEncryptor) {
         this.passwordEncryptor = passwordEncryptor;
     }
@@ -131,7 +127,7 @@ public class UserServiceImpl extends
      * @param resetPasswordRequestService
      *            the resetPasswordRequestService to set
      */
-    @Autowired
+    @Inject
     public void setResetPasswordRequestService(
             ResetPasswordRequestService resetPasswordRequestService) {
         this.resetPasswordRequestService = resetPasswordRequestService;

@@ -18,10 +18,8 @@
  */
 package fr.peralta.mycellar.application.stock;
 
-import fr.peralta.mycellar.application.shared.EntityService;
+import fr.peralta.mycellar.application.shared.SimpleService;
 import fr.peralta.mycellar.domain.stock.Bottle;
-import fr.peralta.mycellar.domain.stock.repository.BottleOrder;
-import fr.peralta.mycellar.domain.stock.repository.BottleOrderEnum;
 import fr.peralta.mycellar.domain.wine.Format;
 import fr.peralta.mycellar.domain.wine.Wine;
 
@@ -29,7 +27,7 @@ import fr.peralta.mycellar.domain.wine.Wine;
  * @author speralta
  * 
  */
-public interface BottleService extends EntityService<Bottle, BottleOrderEnum, BottleOrder> {
+public interface BottleService extends SimpleService<Bottle> {
 
     /**
      * @param wine

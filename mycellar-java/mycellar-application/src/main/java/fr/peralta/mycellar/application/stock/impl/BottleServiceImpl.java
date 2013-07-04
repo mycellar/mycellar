@@ -18,16 +18,18 @@
  */
 package fr.peralta.mycellar.application.stock.impl;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
+import javax.inject.Inject;
+import javax.inject.Named;
+import javax.inject.Singleton;
 
-import fr.peralta.mycellar.application.shared.AbstractEntityService;
+import fr.peralta.mycellar.application.shared.AbstractSimpleService;
 import fr.peralta.mycellar.application.stock.BottleService;
 import fr.peralta.mycellar.domain.shared.exception.BusinessError;
 import fr.peralta.mycellar.domain.shared.exception.BusinessException;
+import fr.peralta.mycellar.domain.shared.repository.EntitySelector;
+import fr.peralta.mycellar.domain.shared.repository.SearchParameters;
 import fr.peralta.mycellar.domain.stock.Bottle;
-import fr.peralta.mycellar.domain.stock.repository.BottleOrder;
-import fr.peralta.mycellar.domain.stock.repository.BottleOrderEnum;
+import fr.peralta.mycellar.domain.stock.Bottle_;
 import fr.peralta.mycellar.domain.stock.repository.BottleRepository;
 import fr.peralta.mycellar.domain.wine.Format;
 import fr.peralta.mycellar.domain.wine.Wine;
@@ -35,9 +37,9 @@ import fr.peralta.mycellar.domain.wine.Wine;
 /**
  * @author speralta
  */
-@Service
-public class BottleServiceImpl extends
-        AbstractEntityService<Bottle, BottleOrderEnum, BottleOrder, BottleRepository> implements
+@Named
+@Singleton
+public class BottleServiceImpl extends AbstractSimpleService<Bottle, BottleRepository> implements
         BottleService {
 
     private BottleRepository bottleRepository;
@@ -59,7 +61,9 @@ public class BottleServiceImpl extends
      */
     @Override
     public Bottle find(Wine wine, Format format) {
-        return bottleRepository.find(wine, format);
+        return bottleRepository.findUniqueOrNone(new SearchParameters().entity(
+                EntitySelector.newEntitySelector(Bottle_.format, format)).entity(
+                EntitySelector.newEntitySelector(Bottle_.wine, wine)));
     }
 
     /**
@@ -74,7 +78,7 @@ public class BottleServiceImpl extends
      * @param bottleRepository
      *            the bottleRepository to set
      */
-    @Autowired
+    @Inject
     public void setBottleRepository(BottleRepository bottleRepository) {
         this.bottleRepository = bottleRepository;
     }

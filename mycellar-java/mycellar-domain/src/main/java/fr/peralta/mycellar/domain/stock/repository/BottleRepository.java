@@ -18,21 +18,12 @@
  */
 package fr.peralta.mycellar.domain.stock.repository;
 
-import fr.peralta.mycellar.domain.shared.repository.EntityRepository;
+import fr.peralta.mycellar.domain.shared.repository.SimpleRepository;
 import fr.peralta.mycellar.domain.stock.Bottle;
-import fr.peralta.mycellar.domain.wine.Format;
-import fr.peralta.mycellar.domain.wine.Wine;
 
 /**
  * @author speralta
  */
-public interface BottleRepository extends EntityRepository<Bottle, BottleOrderEnum, BottleOrder> {
-
-    /**
-     * @param wine
-     * @param format
-     * @return
-     */
-    Bottle find(Wine wine, Format format);
+public interface BottleRepository extends SimpleRepository<Bottle> {
 
 }

@@ -32,6 +32,7 @@ import javax.persistence.Table;
 
 import org.apache.commons.lang3.ObjectUtils;
 import org.apache.commons.lang3.builder.ToStringBuilder;
+import org.hibernate.search.annotations.Indexed;
 
 import fr.peralta.mycellar.domain.shared.IdentifiedEntity;
 import fr.peralta.mycellar.domain.shared.NamedEntity;
@@ -41,6 +42,7 @@ import fr.peralta.mycellar.domain.stock.Bottle;
  * @author speralta
  */
 @Entity
+@Indexed
 @Table(name = "FORMAT")
 @AttributeOverride(name = "name", column = @Column(name = "NAME", nullable = false, unique = true))
 @SequenceGenerator(name = "FORMAT_ID_GENERATOR", allocationSize = 1)

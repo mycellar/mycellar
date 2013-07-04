@@ -43,10 +43,6 @@
     </dependency>
     <dependency>
       <groupId>${project.groupId}</groupId>
-      <artifactId>mycellar-interface-client-web</artifactId>
-    </dependency>
-    <dependency>
-      <groupId>${project.groupId}</groupId>
       <artifactId>mycellar-infrastructure-persistence</artifactId>
     </dependency>
     <dependency>
@@ -93,6 +89,10 @@
     <dependency>
       <groupId>org.tuckey</groupId>
       <artifactId>urlrewritefilter</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>net.bull.javamelody</groupId>
+      <artifactId>javamelody-core</artifactId>
     </dependency>
   </dependencies>
 

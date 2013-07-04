@@ -18,15 +18,15 @@
  */
 package fr.mycellar.interfaces.facade.web.domain;
 
-import fr.peralta.mycellar.domain.shared.repository.OrderWayEnum;
+import fr.peralta.mycellar.domain.shared.repository.OrderByDirection;
 
 /**
  * @author speralta
  */
-public abstract class OrderCouple<O extends Enum<O>> {
+public class OrderCouple {
 
-    private final O order;
-    private final OrderWayEnum way;
+    private final String property;
+    private final OrderByDirection direction;
 
     /**
      * Default constructor.
@@ -34,27 +34,23 @@ public abstract class OrderCouple<O extends Enum<O>> {
      * @param couple
      */
     public OrderCouple(String couple) {
-        order = getValueOf(couple.substring(0, couple.indexOf(",")).toUpperCase());
-        way = OrderWayEnum.valueOf(couple.substring(couple.indexOf(",") + 1).toUpperCase());
+        property = couple.substring(0, couple.indexOf(","));
+        direction = OrderByDirection.valueOf(couple.substring(couple.indexOf(",") + 1)
+                .toUpperCase());
     }
 
     /**
-     * @return
+     * @return the property
      */
-    protected abstract O getValueOf(String value);
-
-    /**
-     * @return the order
-     */
-    public O getOrder() {
-        return order;
+    public String getProperty() {
+        return property;
     }
 
     /**
-     * @return the way
+     * @return the direction
      */
-    public OrderWayEnum getWay() {
-        return way;
+    public OrderByDirection getDirection() {
+        return direction;
     }
 
 }

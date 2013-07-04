@@ -18,8 +18,7 @@
  */
 package fr.peralta.mycellar.infrastructure.shared.repository;
 
-import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
+import javax.persistence.metamodel.SingularAttribute;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -30,19 +29,25 @@ import fr.peralta.mycellar.domain.shared.repository.SimpleRepository;
 /**
  * @author speralta
  */
-public abstract class JpaSimpleRepository<E extends IdentifiedEntity> implements
-        SimpleRepository<E> {
+public abstract class JpaSimpleRepository<E extends IdentifiedEntity> extends
+        JpaGenericRepository<E, Integer> implements SimpleRepository<E> {
 
     private static final Logger logger = LoggerFactory.getLogger(JpaSimpleRepository.class);
 
-    private EntityManager entityManager;
+    /**
+     * @param type
+     * @param indexedAttributes
+     */
+    public JpaSimpleRepository(Class<E> type, SingularAttribute<?, ?>... indexedAttributes) {
+        super(type, indexedAttributes);
+    }
 
     /**
      * {@inheritDoc}
      */
     @Override
     public final E getById(Integer id) {
-        return entityManager.find(getEntityClass(), id);
+        return getEntityManager().find(getType(), id);
     }
 
     /**
@@ -50,7 +55,7 @@ public abstract class JpaSimpleRepository<E extends IdentifiedEntity> implements
      */
     @Override
     public final E save(E entity) {
-        E result = entityManager.merge(entity);
+        E result = getEntityManager().merge(entity);
         logger.debug("Entity merged {}.", result);
         postSave(entity);
         return result;
@@ -61,18 +66,11 @@ public abstract class JpaSimpleRepository<E extends IdentifiedEntity> implements
      */
     @Override
     public final void delete(E entity) {
-        E toRemove = entityManager.find(getEntityClass(), entity.getId());
-        entityManager.remove(toRemove);
+        E toRemove = getEntityManager().find(getType(), entity.getId());
+        getEntityManager().remove(toRemove);
         logger.debug("Entity removed {}.", toRemove);
         postDelete(entity);
     }
-
-    // To override
-
-    /**
-     * @return
-     */
-    protected abstract Class<E> getEntityClass();
 
     // Could be overriden
 
@@ -88,23 +86,5 @@ public abstract class JpaSimpleRepository<E extends IdentifiedEntity> implements
      */
     protected void postDelete(E entity) {
 
-    }
-
-    // Beans methods
-
-    /**
-     * @return the entityManager
-     */
-    protected final EntityManager getEntityManager() {
-        return entityManager;
-    }
-
-    /**
-     * @param entityManager
-     *            the entityManager to set
-     */
-    @PersistenceContext
-    public final void setEntityManager(EntityManager entityManager) {
-        this.entityManager = entityManager;
     }
 }

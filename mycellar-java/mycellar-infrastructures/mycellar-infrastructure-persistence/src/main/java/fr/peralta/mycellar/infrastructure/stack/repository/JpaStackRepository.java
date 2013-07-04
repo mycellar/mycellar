@@ -18,27 +18,26 @@
  */
 package fr.peralta.mycellar.infrastructure.stack.repository;
 
-import javax.persistence.NoResultException;
-import javax.persistence.criteria.CriteriaBuilder;
-import javax.persistence.criteria.CriteriaQuery;
-import javax.persistence.criteria.Expression;
-import javax.persistence.criteria.JoinType;
-import javax.persistence.criteria.Root;
-
-import org.springframework.stereotype.Repository;
+import javax.inject.Named;
+import javax.inject.Singleton;
 
 import fr.peralta.mycellar.domain.stack.Stack;
-import fr.peralta.mycellar.domain.stack.repository.StackOrder;
-import fr.peralta.mycellar.domain.stack.repository.StackOrderEnum;
 import fr.peralta.mycellar.domain.stack.repository.StackRepository;
-import fr.peralta.mycellar.infrastructure.shared.repository.JpaEntityRepository;
+import fr.peralta.mycellar.infrastructure.shared.repository.JpaSimpleRepository;
 
 /**
  * @author speralta
  */
-@Repository
-public class JpaStackRepository extends JpaEntityRepository<Stack, StackOrderEnum, StackOrder>
-        implements StackRepository {
+@Named
+@Singleton
+public class JpaStackRepository extends JpaSimpleRepository<Stack> implements StackRepository {
+
+    /**
+     * Default constructor.
+     */
+    public JpaStackRepository() {
+        super(Stack.class);
+    }
 
     /**
      * {@inheritDoc}
@@ -46,48 +45,6 @@ public class JpaStackRepository extends JpaEntityRepository<Stack, StackOrderEnu
     @Override
     public void deleteAllStacks() {
         getEntityManager().createQuery("DELETE " + Stack.class.getSimpleName()).executeUpdate();
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public Stack getByHashCode(int hashCode) {
-        CriteriaBuilder criteriaBuilder = getEntityManager().getCriteriaBuilder();
-        CriteriaQuery<Stack> query = criteriaBuilder.createQuery(Stack.class);
-        Root<Stack> root = query.from(Stack.class);
-
-        try {
-            return getEntityManager()
-                    .createQuery(
-                            query.select(root).where(
-                                    criteriaBuilder.equal(root.get("hashCode"), hashCode)))
-                    .getSingleResult();
-        } catch (NoResultException e) {
-            return null;
-        }
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    protected Expression<?> getOrderByPath(Root<Stack> root, StackOrderEnum order, JoinType joinType) {
-        switch (order) {
-        case COUNT:
-            return root.get("count");
-        default:
-            throw new IllegalStateException("Unknown " + StackOrderEnum.class.getSimpleName()
-                    + " value [" + order + "].");
-        }
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    protected Class<Stack> getEntityClass() {
-        return Stack.class;
     }
 
 }

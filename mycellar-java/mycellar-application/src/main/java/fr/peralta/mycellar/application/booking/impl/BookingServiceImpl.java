@@ -22,26 +22,28 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
+import javax.inject.Inject;
+import javax.inject.Named;
+import javax.inject.Singleton;
 
 import fr.peralta.mycellar.application.booking.BookingService;
-import fr.peralta.mycellar.application.shared.AbstractEntityService;
+import fr.peralta.mycellar.application.shared.AbstractSimpleService;
 import fr.peralta.mycellar.domain.booking.Booking;
 import fr.peralta.mycellar.domain.booking.BookingBottle;
 import fr.peralta.mycellar.domain.booking.BookingEvent;
-import fr.peralta.mycellar.domain.booking.repository.BookingOrder;
-import fr.peralta.mycellar.domain.booking.repository.BookingOrderEnum;
+import fr.peralta.mycellar.domain.booking.Booking_;
 import fr.peralta.mycellar.domain.booking.repository.BookingRepository;
 import fr.peralta.mycellar.domain.shared.exception.BusinessException;
+import fr.peralta.mycellar.domain.shared.repository.EntitySelector;
+import fr.peralta.mycellar.domain.shared.repository.SearchParameters;
 import fr.peralta.mycellar.domain.user.User;
 
 /**
  * @author speralta
  */
-@Service
-public class BookingServiceImpl extends
-        AbstractEntityService<Booking, BookingOrderEnum, BookingOrder, BookingRepository> implements
+@Named
+@Singleton
+public class BookingServiceImpl extends AbstractSimpleService<Booking, BookingRepository> implements
         BookingService {
 
     private BookingRepository bookingRepository;
@@ -79,7 +81,8 @@ public class BookingServiceImpl extends
      */
     @Override
     public List<Booking> getBookings(User customer) {
-        return bookingRepository.getBookings(customer);
+        return bookingRepository.find(new SearchParameters().entity(EntitySelector
+                .newEntitySelector(Booking_.customer, customer)));
     }
 
     /**
@@ -87,7 +90,9 @@ public class BookingServiceImpl extends
      */
     @Override
     public Booking getBooking(BookingEvent bookingEvent, User customer) {
-        Booking booking = bookingRepository.getBookingByEventAndCustomer(bookingEvent, customer);
+        Booking booking = bookingRepository.findUniqueOrNone(new SearchParameters().entity(
+                EntitySelector.newEntitySelector(Booking_.bookingEvent, bookingEvent)).entity(
+                EntitySelector.newEntitySelector(Booking_.customer, customer)));
         if (booking == null) {
             booking = new Booking();
             booking.setCustomer(customer);
@@ -116,7 +121,7 @@ public class BookingServiceImpl extends
      * @param bookingRepository
      *            the bookingRepository to set
      */
-    @Autowired
+    @Inject
     public void setBookingRepository(BookingRepository bookingRepository) {
         this.bookingRepository = bookingRepository;
     }

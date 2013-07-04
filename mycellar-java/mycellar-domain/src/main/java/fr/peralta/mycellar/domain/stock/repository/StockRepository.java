@@ -18,22 +18,12 @@
  */
 package fr.peralta.mycellar.domain.stock.repository;
 
-import fr.peralta.mycellar.domain.shared.repository.EntitySearchFormRepository;
-import fr.peralta.mycellar.domain.stock.Bottle;
-import fr.peralta.mycellar.domain.stock.Cellar;
+import fr.peralta.mycellar.domain.shared.repository.SimpleRepository;
 import fr.peralta.mycellar.domain.stock.Stock;
 
 /**
  * @author speralta
  */
-public interface StockRepository extends
-        EntitySearchFormRepository<Stock, StockOrderEnum, StockOrder> {
-
-    /**
-     * @param bottle
-     * @param cellar
-     * @return
-     */
-    Stock find(Bottle bottle, Cellar cellar);
+public interface StockRepository extends SimpleRepository<Stock> {
 
 }

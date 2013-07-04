@@ -21,8 +21,8 @@ package fr.peralta.mycellar.interfaces.facades.admin;
 import java.util.List;
 
 import fr.peralta.mycellar.domain.admin.Configuration;
-import fr.peralta.mycellar.domain.admin.repository.ConfigurationOrder;
 import fr.peralta.mycellar.domain.shared.exception.BusinessException;
+import fr.peralta.mycellar.domain.shared.repository.SearchParameters;
 
 /**
  * @author speralta
@@ -30,9 +30,10 @@ import fr.peralta.mycellar.domain.shared.exception.BusinessException;
 public interface AdministrationServiceFacade {
 
     /**
+     * @param searchParameters
      * @return
      */
-    long countConfigurations();
+    long countConfigurations(SearchParameters searchParameters);
 
     /**
      * @param configurationId
@@ -41,12 +42,10 @@ public interface AdministrationServiceFacade {
     Configuration getConfigurationById(Integer configurationId);
 
     /**
-     * @param orders
-     * @param first
-     * @param count
+     * @param searchParameters
      * @return
      */
-    List<Configuration> getConfigurations(ConfigurationOrder orders, long first, long count);
+    List<Configuration> getConfigurations(SearchParameters searchParameters);
 
     /**
      * @param configuration

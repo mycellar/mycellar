@@ -25,8 +25,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import fr.peralta.mycellar.application.stack.StackService;
+import fr.peralta.mycellar.domain.shared.repository.SearchParameters;
 import fr.peralta.mycellar.domain.stack.Stack;
-import fr.peralta.mycellar.domain.stack.repository.StackOrder;
 
 /**
  * @author speralta
@@ -58,8 +58,8 @@ public class StackServiceFacadeImpl implements StackServiceFacade {
      */
     @Override
     @Transactional(readOnly = true)
-    public long countStacks() {
-        return stackService.count();
+    public long countStacks(SearchParameters searchParameters) {
+        return stackService.count(searchParameters);
     }
 
     /**
@@ -67,8 +67,8 @@ public class StackServiceFacadeImpl implements StackServiceFacade {
      */
     @Override
     @Transactional(readOnly = true)
-    public List<Stack> getStacks(StackOrder orders, long first, long count) {
-        return stackService.getAll(orders, first, count);
+    public List<Stack> getStacks(SearchParameters searchParameters) {
+        return stackService.find(searchParameters);
     }
 
     /**

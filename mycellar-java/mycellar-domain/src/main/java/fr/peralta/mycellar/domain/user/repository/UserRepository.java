@@ -18,26 +18,12 @@
  */
 package fr.peralta.mycellar.domain.user.repository;
 
-import java.util.List;
-
-import fr.peralta.mycellar.domain.shared.repository.EntityRepository;
+import fr.peralta.mycellar.domain.shared.repository.SimpleRepository;
 import fr.peralta.mycellar.domain.user.User;
 
 /**
  * @author speralta
  */
-public interface UserRepository extends EntityRepository<User, UserOrderEnum, UserOrder> {
-
-    /**
-     * @param email
-     * @return
-     */
-    User getByEmail(String email);
-
-    /**
-     * @param input
-     * @return
-     */
-    List<User> getAllLike(String input);
+public interface UserRepository extends SimpleRepository<User> {
 
 }

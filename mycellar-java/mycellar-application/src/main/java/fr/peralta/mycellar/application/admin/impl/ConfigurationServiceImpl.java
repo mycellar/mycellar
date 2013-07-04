@@ -18,27 +18,29 @@
  */
 package fr.peralta.mycellar.application.admin.impl;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
+import javax.inject.Inject;
+import javax.inject.Named;
+import javax.inject.Singleton;
 
 import fr.peralta.mycellar.application.admin.ConfigurationService;
-import fr.peralta.mycellar.application.shared.AbstractEntityService;
+import fr.peralta.mycellar.application.shared.AbstractSimpleService;
 import fr.peralta.mycellar.domain.admin.Configuration;
 import fr.peralta.mycellar.domain.admin.ConfigurationKeyEnum;
-import fr.peralta.mycellar.domain.admin.repository.ConfigurationOrder;
-import fr.peralta.mycellar.domain.admin.repository.ConfigurationOrderEnum;
+import fr.peralta.mycellar.domain.admin.Configuration_;
 import fr.peralta.mycellar.domain.admin.repository.ConfigurationRepository;
 import fr.peralta.mycellar.domain.shared.exception.BusinessError;
 import fr.peralta.mycellar.domain.shared.exception.BusinessException;
+import fr.peralta.mycellar.domain.shared.repository.PropertySelector;
+import fr.peralta.mycellar.domain.shared.repository.SearchParameters;
 
 /**
  * @author speralta
  */
-@Service
-public class ConfigurationServiceImpl
-        extends
-        AbstractEntityService<Configuration, ConfigurationOrderEnum, ConfigurationOrder, ConfigurationRepository>
-        implements ConfigurationService {
+@Named
+@Singleton
+public class ConfigurationServiceImpl extends
+        AbstractSimpleService<Configuration, ConfigurationRepository> implements
+        ConfigurationService {
 
     private ConfigurationRepository configurationRepository;
 
@@ -63,7 +65,8 @@ public class ConfigurationServiceImpl
      */
     @Override
     public Configuration find(ConfigurationKeyEnum key) {
-        return configurationRepository.find(key);
+        return configurationRepository.findUniqueOrNone(new SearchParameters()
+                .property(PropertySelector.newPropertySelector(key, Configuration_.key)));
     }
 
     /**
@@ -90,7 +93,7 @@ public class ConfigurationServiceImpl
      * @param configurationRepository
      *            the configurationRepository to set
      */
-    @Autowired
+    @Inject
     public void setConfigurationRepository(ConfigurationRepository configurationRepository) {
         this.configurationRepository = configurationRepository;
     }

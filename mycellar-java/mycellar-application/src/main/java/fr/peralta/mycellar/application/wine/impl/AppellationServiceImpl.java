@@ -18,30 +18,29 @@
  */
 package fr.peralta.mycellar.application.wine.impl;
 
-import java.util.List;
+import javax.inject.Inject;
+import javax.inject.Named;
+import javax.inject.Singleton;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-
-import fr.peralta.mycellar.application.shared.AbstractEntitySearchFormService;
+import fr.peralta.mycellar.application.shared.AbstractSimpleService;
 import fr.peralta.mycellar.application.wine.AppellationService;
+import fr.peralta.mycellar.domain.shared.NamedEntity_;
 import fr.peralta.mycellar.domain.shared.exception.BusinessError;
 import fr.peralta.mycellar.domain.shared.exception.BusinessException;
-import fr.peralta.mycellar.domain.shared.repository.FilterEnum;
-import fr.peralta.mycellar.domain.shared.repository.SearchForm;
+import fr.peralta.mycellar.domain.shared.repository.EntitySelector;
+import fr.peralta.mycellar.domain.shared.repository.PropertySelector;
+import fr.peralta.mycellar.domain.shared.repository.SearchParameters;
 import fr.peralta.mycellar.domain.wine.Appellation;
-import fr.peralta.mycellar.domain.wine.repository.AppellationOrder;
-import fr.peralta.mycellar.domain.wine.repository.AppellationOrderEnum;
+import fr.peralta.mycellar.domain.wine.Appellation_;
 import fr.peralta.mycellar.domain.wine.repository.AppellationRepository;
 
 /**
  * @author speralta
  */
-@Service
-public class AppellationServiceImpl
-        extends
-        AbstractEntitySearchFormService<Appellation, AppellationOrderEnum, AppellationOrder, AppellationRepository>
-        implements AppellationService {
+@Named
+@Singleton
+public class AppellationServiceImpl extends
+        AbstractSimpleService<Appellation, AppellationRepository> implements AppellationService {
 
     private AppellationRepository appellationRepository;
 
@@ -49,16 +48,16 @@ public class AppellationServiceImpl
      * {@inheritDoc}
      */
     @Override
-    public List<Appellation> getAllLike(String term, SearchForm searchForm, FilterEnum... filters) {
-        return appellationRepository.getAllLike(term, searchForm, filters);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
     public void validate(Appellation entity) throws BusinessException {
-        Appellation existing = appellationRepository.find(entity.getRegion(), entity.getName());
+        Appellation model = new Appellation();
+        model.setRegion(entity.getRegion());
+        model.setName(entity.getName());
+        Appellation existing = appellationRepository
+                .findUniqueOrNone(new SearchParameters().entity(
+                        EntitySelector.newEntitySelector(Appellation_.region, entity.getRegion()))
+                        .property(
+                                PropertySelector.newPropertySelector(entity.getName(),
+                                        NamedEntity_.name)));
         if ((existing != null)
                 && ((entity.getId() == null) || !existing.getId().equals(entity.getId()))) {
             throw new BusinessException(BusinessError.APPELLATION_00001);
@@ -77,7 +76,7 @@ public class AppellationServiceImpl
      * @param appellationRepository
      *            the appellationRepository to set
      */
-    @Autowired
+    @Inject
     public void setAppellationRepository(AppellationRepository appellationRepository) {
         this.appellationRepository = appellationRepository;
     }

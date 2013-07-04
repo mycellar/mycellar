@@ -18,19 +18,13 @@
  */
 package fr.peralta.mycellar.domain.stack.repository;
 
-import fr.peralta.mycellar.domain.shared.repository.EntityRepository;
+import fr.peralta.mycellar.domain.shared.repository.SimpleRepository;
 import fr.peralta.mycellar.domain.stack.Stack;
 
 /**
  * @author speralta
  */
-public interface StackRepository extends EntityRepository<Stack, StackOrderEnum, StackOrder> {
-
-    /**
-     * @param hashCode
-     * @return
-     */
-    Stack getByHashCode(int hashCode);
+public interface StackRepository extends SimpleRepository<Stack> {
 
     /**
      * 

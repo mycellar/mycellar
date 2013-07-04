@@ -73,14 +73,6 @@ public class CellarShare extends IdentifiedEntity {
     }
 
     /**
-     * @param id
-     *            the id to set
-     */
-    public void setId(Integer id) {
-        this.id = id;
-    }
-
-    /**
      * @return the email
      */
     public String getEmail() {

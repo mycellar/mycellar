@@ -11,7 +11,8 @@ angular.module('mycellar').directive('mycellarTable', function() {
       pageRange: '=',
       items: '=',
       colSpan: '=',
-      sort: '='
+      sort: '=',
+      filters: '='
     },
     link: function(scope, iElement, iAttrs, controller) {
       scope.$watch('sort.ways', function(value) {
@@ -19,40 +20,54 @@ angular.module('mycellar').directive('mycellarTable', function() {
           scope.setPage(scope.currentPage);
         }
       }, true);
+      scope.$watch('filters', function(value) {
+        if (scope.currentPage >= 0) {
+          scope.setPage(0);
+        }
+      }, true);
       scope.$watch('itemsPerPage', function (value) {
         if (scope.currentPage >= 0) {
           scope.setPage(scope.currentPage);
         }
       });
+      scope.$watch('result.count', function (value) {
+        scope.pageCount = (~~(scope.result.count / scope.itemsPerPage)) + 1;
+        scope.pages = [];
+        var i;
+        if (scope.currentPage < scope.pageRange) {
+          i = 0;
+        } else if (scope.currentPage >= scope.pageCount - scope.pageRange) {
+          i = scope.pageCount - scope.pageRange * 2 - 1;
+        } else {
+          i = scope.currentPage - scope.pageRange;
+        }
+        for (; i < scope.pageCount && scope.pages.length < 2 * scope.pageRange + 1 ; i++) {
+          if (i >= 0) {
+            scope.pages.push({number: i});
+          }
+        }
+      });
+      scope.$watch('result.list', function (value) {
+        scope.items = scope.result.list;
+      }, true);
     },
     controller: function($scope) {
       $scope.setPage = function(page) {
-        $scope.pageCount = (~~($scope.itemCount / $scope.itemsPerPage)) + 1;
         $scope.currentPage = page;
-        $scope.pages = [];
-        var i;
-        if ($scope.currentPage < $scope.pageRange) {
-          i = 0;
-        } else if ($scope.currentPage >= $scope.pageCount - $scope.pageRange) {
-          i = $scope.pageCount - $scope.pageRange * 2 - 1;
-        } else {
-          i = $scope.currentPage - $scope.pageRange;
-        }
-        for (; i < $scope.pageCount && $scope.pages.length < 2 * $scope.pageRange + 1 ; i++) {
-          if (i >= 0) {
-            $scope.pages.push({number: i});
-          }
-        }
         $scope.firstItem = $scope.currentPage * $scope.itemsPerPage;
-        $scope.count = ($scope.currentPage + 1) * $scope.itemsPerPage > $scope.itemCount ? $scope.itemCount - $scope.currentPage * $scope.itemsPerPage : $scope.itemsPerPage * 1;
         var sort = [];
         for (var t in $scope.sort.properties) {
           sort.push($scope.sort.properties[t] + ',' + $scope.sort.ways[$scope.sort.properties[t]]);
         }
-        $scope.items = $scope.itemResource.query({
+        var filters = [];
+        for (var t in $scope.filters) {
+          filters.push(t + ',' + $scope.filters[t]);
+        }
+        $scope.result = $scope.itemResource.get({
           first: $scope.firstItem,
-          count: $scope.count,
-          sort: sort
+          count: $scope.count(),
+          sort: sort,
+          filters: filters
         });
       };
       $scope.nextPage = function() {
@@ -61,15 +76,21 @@ angular.module('mycellar').directive('mycellarTable', function() {
       $scope.previousPage = function() {
         $scope.setPage($scope.currentPage - 1);
       };
+      $scope.count = function() {
+        if (($scope.currentPage + 1) * $scope.itemsPerPage > $scope.result.count) {
+          return $scope.result.count - $scope.currentPage * $scope.itemsPerPage;
+        } else {
+          return $scope.itemsPerPage * 1;
+        }
+      };
       
-      $scope.itemCountGet = $scope.options.itemCountGet;
       $scope.itemResource = $scope.options.itemResource;
       $scope.itemsPerPage = 20;
-      
-      $scope.itemCountGet.success(function(data, status, headers, config) {
-        $scope.itemCount = data;
-        $scope.setPage(0);
-      });
+      $scope.result = {
+          list: [],
+          count: $scope.itemsPerPage
+      };
+      $scope.setPage(0);
     }
   }
 });

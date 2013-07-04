@@ -19,7 +19,6 @@
 package fr.peralta.mycellar.interfaces.facades.stock;
 
 import java.util.List;
-import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -31,9 +30,7 @@ import fr.peralta.mycellar.application.stock.CellarShareService;
 import fr.peralta.mycellar.application.stock.MovementService;
 import fr.peralta.mycellar.application.stock.StockService;
 import fr.peralta.mycellar.domain.shared.exception.BusinessException;
-import fr.peralta.mycellar.domain.shared.repository.CountEnum;
-import fr.peralta.mycellar.domain.shared.repository.FilterEnum;
-import fr.peralta.mycellar.domain.shared.repository.SearchForm;
+import fr.peralta.mycellar.domain.shared.repository.SearchParameters;
 import fr.peralta.mycellar.domain.stock.Arrival;
 import fr.peralta.mycellar.domain.stock.Bottle;
 import fr.peralta.mycellar.domain.stock.Cellar;
@@ -41,10 +38,6 @@ import fr.peralta.mycellar.domain.stock.CellarShare;
 import fr.peralta.mycellar.domain.stock.Drink;
 import fr.peralta.mycellar.domain.stock.Movement;
 import fr.peralta.mycellar.domain.stock.Stock;
-import fr.peralta.mycellar.domain.stock.repository.CellarOrder;
-import fr.peralta.mycellar.domain.stock.repository.CellarShareOrder;
-import fr.peralta.mycellar.domain.stock.repository.MovementOrder;
-import fr.peralta.mycellar.domain.stock.repository.StockOrder;
 import fr.peralta.mycellar.domain.wine.Format;
 import fr.peralta.mycellar.domain.wine.Wine;
 
@@ -78,8 +71,8 @@ public class StockServiceFacadeImpl implements StockServiceFacade {
      */
     @Override
     @Transactional(readOnly = true)
-    public long countCellars(SearchForm searchForm) {
-        return cellarService.count(searchForm);
+    public long countCellars(SearchParameters searchParameters) {
+        return cellarService.count(searchParameters);
     }
 
     /**
@@ -87,8 +80,8 @@ public class StockServiceFacadeImpl implements StockServiceFacade {
      */
     @Override
     @Transactional(readOnly = true)
-    public long countCellarShares(SearchForm searchForm) {
-        return cellarShareService.count(searchForm);
+    public long countCellarShares(SearchParameters searchParameters) {
+        return cellarShareService.count(searchParameters);
     }
 
     /**
@@ -96,8 +89,8 @@ public class StockServiceFacadeImpl implements StockServiceFacade {
      */
     @Override
     @Transactional(readOnly = true)
-    public long countMovements(SearchForm searchForm) {
-        return movementService.count(searchForm);
+    public long countMovements(SearchParameters searchParameters) {
+        return movementService.count(searchParameters);
     }
 
     /**
@@ -105,8 +98,8 @@ public class StockServiceFacadeImpl implements StockServiceFacade {
      */
     @Override
     @Transactional(readOnly = true)
-    public long countStocks(SearchForm searchForm) {
-        return stockService.countStocks(searchForm);
+    public long countStocks(SearchParameters searchParameters) {
+        return stockService.count(searchParameters);
     }
 
     /**
@@ -167,8 +160,16 @@ public class StockServiceFacadeImpl implements StockServiceFacade {
      */
     @Override
     @Transactional(readOnly = true)
-    public List<Cellar> getCellars(SearchForm searchForm, CellarOrder order, long first, long count) {
-        return cellarService.getAll(searchForm, order, first, count);
+    public List<Cellar> getCellars(SearchParameters searchParameters) {
+        return cellarService.find(searchParameters);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public List<CellarShare> getCellarShares(SearchParameters searchParameters) {
+        return cellarShareService.find(searchParameters);
     }
 
     /**
@@ -176,18 +177,8 @@ public class StockServiceFacadeImpl implements StockServiceFacade {
      */
     @Override
     @Transactional(readOnly = true)
-    public Map<Cellar, Long> getCellars(SearchForm searchForm, CountEnum count,
-            FilterEnum... filters) {
-        return cellarService.getAll(searchForm, count, filters);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public List<CellarShare> getCellarShares(SearchForm searchForm, CellarShareOrder order,
-            long first, long count) {
-        return cellarShareService.getAll(searchForm, order, first, count);
+    public List<Movement> getMovements(SearchParameters searchParameters) {
+        return movementService.find(searchParameters);
     }
 
     /**
@@ -195,18 +186,8 @@ public class StockServiceFacadeImpl implements StockServiceFacade {
      */
     @Override
     @Transactional(readOnly = true)
-    public List<Movement> getMovements(SearchForm searchForm, MovementOrder orders, long first,
-            long count) {
-        return movementService.getAll(searchForm, orders, first, count);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    @Transactional(readOnly = true)
-    public List<Stock> getStocks(SearchForm searchForm, StockOrder orders, long first, long count) {
-        return stockService.getStocks(searchForm, orders, first, count);
+    public List<Stock> getStocks(SearchParameters searchParameters) {
+        return stockService.find(searchParameters);
     }
 
     /**

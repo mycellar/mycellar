@@ -18,188 +18,26 @@
  */
 package fr.peralta.mycellar.infrastructure.stock.repository;
 
-import javax.persistence.NoResultException;
-import javax.persistence.criteria.CriteriaBuilder;
-import javax.persistence.criteria.CriteriaQuery;
-import javax.persistence.criteria.Expression;
-import javax.persistence.criteria.From;
-import javax.persistence.criteria.JoinType;
-import javax.persistence.criteria.Order;
-import javax.persistence.criteria.Root;
+import javax.inject.Named;
+import javax.inject.Singleton;
 
-import org.springframework.stereotype.Repository;
-
-import fr.peralta.mycellar.domain.shared.repository.FilterEnum;
-import fr.peralta.mycellar.domain.stock.Cellar;
 import fr.peralta.mycellar.domain.stock.CellarShare;
-import fr.peralta.mycellar.domain.stock.Stock;
-import fr.peralta.mycellar.domain.stock.repository.CellarOrderEnum;
-import fr.peralta.mycellar.domain.stock.repository.CellarShareOrder;
-import fr.peralta.mycellar.domain.stock.repository.CellarShareOrderEnum;
 import fr.peralta.mycellar.domain.stock.repository.CellarShareRepository;
-import fr.peralta.mycellar.domain.user.User;
-import fr.peralta.mycellar.domain.wine.Appellation;
-import fr.peralta.mycellar.domain.wine.Country;
-import fr.peralta.mycellar.domain.wine.Format;
-import fr.peralta.mycellar.domain.wine.Producer;
-import fr.peralta.mycellar.domain.wine.Region;
-import fr.peralta.mycellar.domain.wine.Wine;
-import fr.peralta.mycellar.infrastructure.shared.repository.JoinHelper;
-import fr.peralta.mycellar.infrastructure.shared.repository.JpaEntitySearchFormRepository;
+import fr.peralta.mycellar.infrastructure.shared.repository.JpaSimpleRepository;
 
 /**
  * @author speralta
  */
-@Repository
-public class JpaCellarShareRepository extends
-        JpaEntitySearchFormRepository<CellarShare, CellarShareOrderEnum, CellarShareOrder>
-        implements CellarShareRepository {
+@Named
+@Singleton
+public class JpaCellarShareRepository extends JpaSimpleRepository<CellarShare> implements
+        CellarShareRepository {
 
     /**
-     * {@inheritDoc}
+     * Default constructor.
      */
-    @Override
-    public CellarShare find(Cellar cellar, String email) {
-        CriteriaBuilder criteriaBuilder = getEntityManager().getCriteriaBuilder();
-        CriteriaQuery<CellarShare> query = criteriaBuilder.createQuery(CellarShare.class);
-        Root<CellarShare> root = query.from(CellarShare.class);
-        try {
-            return getEntityManager().createQuery(
-                    query.select(root).where(criteriaBuilder.equal(root.get("email"), email),
-                            criteriaBuilder.equal(root.get("cellar"), cellar))).getSingleResult();
-        } catch (NoResultException e) {
-            return null;
-        }
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    protected Expression<?> getOrderByPath(Root<CellarShare> root, CellarShareOrderEnum order,
-            JoinType joinType) {
-        switch (order) {
-        case ACCESS_RIGHT:
-            return root.get("accessRight");
-        case EMAIL:
-            return root.get("email");
-        case CELLAR_NAME:
-            return getCellarJoin(root, joinType).get("name");
-        case OWNER_EMAIL:
-            return getOwnerJoin(root, joinType).get("email");
-        default:
-            throw new IllegalStateException("Unknown " + CellarOrderEnum.class.getSimpleName()
-                    + " value [" + order + "].");
-        }
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    protected Order[] getOrderByForAllWithCount(Root<CellarShare> root,
-            CriteriaBuilder criteriaBuilder, JoinType joinType) {
-        return new Order[] { criteriaBuilder.asc(root.get("name")) };
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    protected From<?, User> getOwnerJoin(Root<CellarShare> root, JoinType joinType) {
-        return JoinHelper.getJoin(getCellarJoin(root, joinType), "owner", joinType);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    protected From<?, Region> getRegionJoin(Root<CellarShare> root, JoinType joinType) {
-        return JoinHelper.getJoin(getAppellationJoin(root, joinType), "region", joinType);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    protected From<?, Producer> getProducerJoin(Root<CellarShare> root, JoinType joinType) {
-        return JoinHelper.getJoin(getWineJoin(root, joinType), "producer", joinType);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    protected From<?, Format> getFormatJoin(Root<CellarShare> root, JoinType joinType) {
-        return JoinHelper.getJoin(
-                JoinHelper.getJoin(getStockJoin(root, joinType), "bottle", joinType), "format",
-                joinType);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    protected From<?, Country> getCountryJoin(Root<CellarShare> root, JoinType joinType) {
-        return JoinHelper.getJoin(getRegionJoin(root, joinType), "country", joinType);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    protected From<?, Wine> getWineJoin(Root<CellarShare> root, JoinType joinType) {
-        return JoinHelper.getJoin(
-                JoinHelper.getJoin(getStockJoin(root, joinType), "bottle", joinType), "wine",
-                joinType);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    protected From<?, Cellar> getCellarJoin(Root<CellarShare> root, JoinType joinType) {
-        return JoinHelper.getJoin(root, "cellar", joinType);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    protected From<?, Appellation> getAppellationJoin(Root<CellarShare> root, JoinType joinType) {
-        return JoinHelper.getJoin(getWineJoin(root, joinType), "appellation", joinType);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    protected From<?, CellarShare> getSharesJoin(Root<CellarShare> root, JoinType joinType) {
-        return root;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    protected From<?, Stock> getStockJoin(Root<CellarShare> root, JoinType joinType) {
-        return JoinHelper.getJoinSet(getCellarJoin(root, joinType), "stocks", joinType);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    protected Class<CellarShare> getEntityClass() {
-        return CellarShare.class;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    protected FilterEnum getFilterToIgnore() {
-        return null;
+    public JpaCellarShareRepository() {
+        super(CellarShare.class);
     }
 
 }

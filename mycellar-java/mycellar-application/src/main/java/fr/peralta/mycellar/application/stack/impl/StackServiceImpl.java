@@ -21,23 +21,25 @@ package fr.peralta.mycellar.application.stack.impl;
 import java.io.PrintWriter;
 import java.io.StringWriter;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
+import javax.inject.Inject;
+import javax.inject.Named;
+import javax.inject.Singleton;
 
-import fr.peralta.mycellar.application.shared.AbstractEntityService;
+import fr.peralta.mycellar.application.shared.AbstractSimpleService;
 import fr.peralta.mycellar.application.stack.StackService;
 import fr.peralta.mycellar.domain.shared.exception.BusinessException;
+import fr.peralta.mycellar.domain.shared.repository.PropertySelector;
+import fr.peralta.mycellar.domain.shared.repository.SearchParameters;
 import fr.peralta.mycellar.domain.stack.Stack;
-import fr.peralta.mycellar.domain.stack.repository.StackOrder;
-import fr.peralta.mycellar.domain.stack.repository.StackOrderEnum;
+import fr.peralta.mycellar.domain.stack.Stack_;
 import fr.peralta.mycellar.domain.stack.repository.StackRepository;
 
 /**
  * @author speralta
  */
-@Service
-public class StackServiceImpl extends
-        AbstractEntityService<Stack, StackOrderEnum, StackOrder, StackRepository> implements
+@Named
+@Singleton
+public class StackServiceImpl extends AbstractSimpleService<Stack, StackRepository> implements
         StackService {
 
     private StackRepository stackRepository;
@@ -66,7 +68,9 @@ public class StackServiceImpl extends
         StringWriter stringWriter = new StringWriter();
         exception.printStackTrace(new PrintWriter(stringWriter));
         String stackContent = stringWriter.toString();
-        Stack stack = stackRepository.getByHashCode(stackContent.hashCode());
+        Stack stack = stackRepository.findUniqueOrNone(new SearchParameters()
+                .property(PropertySelector.newPropertySelector(stackContent.hashCode(),
+                        Stack_.hashCode)));
         if (stack == null) {
             stack = new Stack();
             stack.setStack(stackContent);
@@ -88,7 +92,7 @@ public class StackServiceImpl extends
      * @param stackRepository
      *            the stackRepository to set
      */
-    @Autowired
+    @Inject
     public void setStackRepository(StackRepository stackRepository) {
         this.stackRepository = stackRepository;
     }
