@@ -26,13 +26,15 @@ import fr.peralta.mycellar.application.shared.AbstractSimpleService;
 import fr.peralta.mycellar.application.stock.BottleService;
 import fr.peralta.mycellar.domain.shared.exception.BusinessError;
 import fr.peralta.mycellar.domain.shared.exception.BusinessException;
-import fr.peralta.mycellar.domain.shared.repository.EntitySelector;
+import fr.peralta.mycellar.domain.shared.repository.PropertySelector;
 import fr.peralta.mycellar.domain.shared.repository.SearchParameters;
 import fr.peralta.mycellar.domain.stock.Bottle;
 import fr.peralta.mycellar.domain.stock.Bottle_;
 import fr.peralta.mycellar.domain.stock.repository.BottleRepository;
 import fr.peralta.mycellar.domain.wine.Format;
+import fr.peralta.mycellar.domain.wine.Format_;
 import fr.peralta.mycellar.domain.wine.Wine;
+import fr.peralta.mycellar.domain.wine.Wine_;
 
 /**
  * @author speralta
@@ -61,9 +63,13 @@ public class BottleServiceImpl extends AbstractSimpleService<Bottle, BottleRepos
      */
     @Override
     public Bottle find(Wine wine, Format format) {
-        return bottleRepository.findUniqueOrNone(new SearchParameters().entity(
-                EntitySelector.newEntitySelector(Bottle_.format, format)).entity(
-                EntitySelector.newEntitySelector(Bottle_.wine, wine)));
+        return bottleRepository.findUniqueOrNone(new SearchParameters() //
+                .property(
+                        PropertySelector.newPropertySelector(format.getId(), Bottle_.format,
+                                Format_.id)) //
+                .property(
+                        PropertySelector.newPropertySelector(wine.getId(), Bottle_.wine, Wine_.id))//
+                );
     }
 
     /**

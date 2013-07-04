@@ -27,9 +27,9 @@ import fr.peralta.mycellar.application.wine.RegionService;
 import fr.peralta.mycellar.domain.shared.NamedEntity_;
 import fr.peralta.mycellar.domain.shared.exception.BusinessError;
 import fr.peralta.mycellar.domain.shared.exception.BusinessException;
-import fr.peralta.mycellar.domain.shared.repository.EntitySelector;
 import fr.peralta.mycellar.domain.shared.repository.PropertySelector;
 import fr.peralta.mycellar.domain.shared.repository.SearchParameters;
+import fr.peralta.mycellar.domain.wine.Country_;
 import fr.peralta.mycellar.domain.wine.Region;
 import fr.peralta.mycellar.domain.wine.Region_;
 import fr.peralta.mycellar.domain.wine.repository.RegionRepository;
@@ -51,11 +51,13 @@ public class RegionServiceImpl extends AbstractSimpleService<Region, RegionRepos
     public void validate(Region entity) throws BusinessException {
         Region existing = regionRepository
                 .findUniqueOrNone(new SearchParameters() //
-                        .entity(EntitySelector.newEntitySelector(Region_.country,
-                                entity.getCountry())) //
+                        .property(
+                                PropertySelector.newPropertySelector(entity.getCountry().getId(),
+                                        Region_.country, Country_.id)) //
                         .property(
                                 PropertySelector.newPropertySelector(entity.getName(),
-                                        NamedEntity_.name)));
+                                        NamedEntity_.name)) //
+                );
         if ((existing != null)
                 && ((entity.getId() == null) || !existing.getId().equals(entity.getId()))) {
             throw new BusinessException(BusinessError.REGION_00001);

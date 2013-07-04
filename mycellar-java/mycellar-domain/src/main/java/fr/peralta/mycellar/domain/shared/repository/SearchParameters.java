@@ -34,8 +34,6 @@ import org.apache.commons.lang3.builder.ToStringBuilder;
 import com.google.common.collect.ArrayListMultimap;
 import com.google.common.collect.Multimap;
 
-import fr.peralta.mycellar.domain.shared.Identifiable;
-
 /**
  * The SearchParameters is used to pass search parameters to the DAO layer.
  * 
@@ -93,12 +91,6 @@ public class SearchParameters implements Serializable {
 
     // property selectors
     private final List<PropertySelector<?, ?>> properties = newArrayList();
-
-    // entity selectors
-    private final List<EntitySelector<?, ? extends Identifiable<?>, ?>> entities = newArrayList();
-
-    // pattern to match against all strings.
-    private String searchPattern;
 
     // hibernate search terms
     private final List<String> termsOnDefault = newArrayList();
@@ -275,44 +267,6 @@ public class SearchParameters implements Serializable {
      */
     public Object getNamedQueryParameter(String parameterName) {
         return parameters.get(checkNotNull(parameterName));
-    }
-
-    // -----------------------------------
-    // Search pattern support
-    // -----------------------------------
-
-    /**
-     * When it returns true, it indicates to the DAO layer to use the passed
-     * searchPattern on all string properties.
-     */
-    public boolean hasSearchPattern() {
-        return StringUtils.isNotBlank(searchPattern);
-    }
-
-    /**
-     * Set the pattern which may contains wildcards (ex: "e%r%ka" ). The passed
-     * searchPattern is used by the DAO layer on all string properties. Null by
-     * default.
-     */
-    public void setSearchPattern(String searchPattern) {
-        this.searchPattern = searchPattern;
-    }
-
-    /**
-     * Fluently set the pattern which may contains wildcards (ex: "e%r%ka" ).
-     * The passed searchPattern is used by the DAO layer on all string
-     * properties. Null by default.
-     */
-    public SearchParameters searchPattern(String searchPattern) {
-        setSearchPattern(searchPattern);
-        return this;
-    }
-
-    /**
-     * Returns the search pattern to be used by the DAO layer.
-     */
-    public String getSearchPattern() {
-        return searchPattern;
     }
 
     // -----------------------------------
@@ -513,35 +467,6 @@ public class SearchParameters implements Serializable {
 
     public void clearProperties() {
         properties.clear();
-    }
-
-    // -----------------------------------
-    // Search by entity selector support
-    // -----------------------------------
-
-    public List<EntitySelector<?, ? extends Identifiable<?>, ?>> getEntities() {
-        return entities;
-    }
-
-    public void addEntity(EntitySelector<?, ? extends Identifiable<?>, ?> entitySelector) {
-        entities.add(entitySelector);
-    }
-
-    /**
-     * Add the passed {@link EntitySelector} in order to construct an OR
-     * predicate for the underlying foreign key.
-     */
-    public SearchParameters entity(EntitySelector<?, ? extends Identifiable<?>, ?> entitySelector) {
-        addEntity(entitySelector);
-        return this;
-    }
-
-    public boolean hasEntities() {
-        return !entities.isEmpty();
-    }
-
-    public void clearEntities() {
-        entities.clear();
     }
 
     // -----------------------------------

@@ -46,10 +46,10 @@ angular.module('mycellar').directive('mycellarTable', function() {
             scope.pages.push({number: i});
           }
         }
-        scope.count = (scope.currentPage + 1) * scope.itemsPerPage > scope.result.count ? scope.result.count - scope.currentPage * scope.itemsPerPage : scope.itemsPerPage * 1;
       });
       scope.$watch('result.list', function (value) {
         scope.items = scope.result.list;
+        scope.count = scope.result.list.length;
       }, true);
     },
     controller: function($scope) {

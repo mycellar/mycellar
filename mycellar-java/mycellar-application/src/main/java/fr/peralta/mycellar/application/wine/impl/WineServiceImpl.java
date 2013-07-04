@@ -30,11 +30,12 @@ import fr.peralta.mycellar.application.wine.WineService;
 import fr.peralta.mycellar.domain.shared.NamedEntity_;
 import fr.peralta.mycellar.domain.shared.exception.BusinessError;
 import fr.peralta.mycellar.domain.shared.exception.BusinessException;
-import fr.peralta.mycellar.domain.shared.repository.EntitySelector;
 import fr.peralta.mycellar.domain.shared.repository.PropertySelector;
 import fr.peralta.mycellar.domain.shared.repository.SearchParameters;
 import fr.peralta.mycellar.domain.wine.Appellation;
+import fr.peralta.mycellar.domain.wine.Appellation_;
 import fr.peralta.mycellar.domain.wine.Producer;
+import fr.peralta.mycellar.domain.wine.Producer_;
 import fr.peralta.mycellar.domain.wine.Wine;
 import fr.peralta.mycellar.domain.wine.WineColorEnum;
 import fr.peralta.mycellar.domain.wine.WineTypeEnum;
@@ -64,13 +65,18 @@ public class WineServiceImpl extends AbstractSimpleService<Wine, WineRepository>
         model.setColor(color);
         model.setName(name);
         model.setVintage(vintage);
-        return wineRepository.findUniqueOrNone(new SearchParameters() //
-                .entity(EntitySelector.newEntitySelector(Wine_.producer, producer)) //
-                .entity(EntitySelector.newEntitySelector(Wine_.appellation, appellation)) //
+        return wineRepository.findUniqueOrNone(new SearchParameters()
+                .property(
+                        PropertySelector.newPropertySelector(producer.getId(), Wine_.producer,
+                                Producer_.id)) //
+                .property(
+                        PropertySelector.newPropertySelector(appellation.getId(),
+                                Wine_.appellation, Appellation_.id)) //
                 .property(PropertySelector.newPropertySelector(type, Wine_.type)) //
                 .property(PropertySelector.newPropertySelector(color, Wine_.color)) //
                 .property(PropertySelector.newPropertySelector(name, NamedEntity_.name)) //
-                .property(PropertySelector.newPropertySelector(vintage, Wine_.vintage)));
+                .property(PropertySelector.newPropertySelector(vintage, Wine_.vintage)) //
+                );
     }
 
     /**

@@ -96,8 +96,8 @@ public class WineWebService {
         for (FilterCouple filter : filters) {
             if (StringUtils.isNotEmpty(filter.getFilter())) {
                 searchParameters.property(PropertySelector.newPropertySelector(filter.getFilter(),
-                        Country.class,
-                        MetamodelUtil.toMetamodelPath(filter.getProperty(), Country.class)));
+                        MetamodelUtil.toMetamodelFirstPath(filter.getProperty(), Country.class),
+                        MetamodelUtil.toMetamodelOtherPath(filter.getProperty(), Country.class)));
             }
         }
         searchParameters.setFirstResult(first);
@@ -135,8 +135,8 @@ public class WineWebService {
         for (FilterCouple filter : filters) {
             if (StringUtils.isNotEmpty(filter.getFilter())) {
                 searchParameters.property(PropertySelector.newPropertySelector(filter.getFilter(),
-                        Region.class,
-                        MetamodelUtil.toMetamodelPath(filter.getProperty(), Region.class)));
+                        MetamodelUtil.toMetamodelFirstPath(filter.getProperty(), Region.class),
+                        MetamodelUtil.toMetamodelOtherPath(filter.getProperty(), Region.class)));
             }
         }
         searchParameters.setFirstResult(first);

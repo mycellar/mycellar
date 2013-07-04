@@ -27,11 +27,11 @@ import fr.peralta.mycellar.application.wine.AppellationService;
 import fr.peralta.mycellar.domain.shared.NamedEntity_;
 import fr.peralta.mycellar.domain.shared.exception.BusinessError;
 import fr.peralta.mycellar.domain.shared.exception.BusinessException;
-import fr.peralta.mycellar.domain.shared.repository.EntitySelector;
 import fr.peralta.mycellar.domain.shared.repository.PropertySelector;
 import fr.peralta.mycellar.domain.shared.repository.SearchParameters;
 import fr.peralta.mycellar.domain.wine.Appellation;
 import fr.peralta.mycellar.domain.wine.Appellation_;
+import fr.peralta.mycellar.domain.wine.Region_;
 import fr.peralta.mycellar.domain.wine.repository.AppellationRepository;
 
 /**
@@ -53,11 +53,14 @@ public class AppellationServiceImpl extends
         model.setRegion(entity.getRegion());
         model.setName(entity.getName());
         Appellation existing = appellationRepository
-                .findUniqueOrNone(new SearchParameters().entity(
-                        EntitySelector.newEntitySelector(Appellation_.region, entity.getRegion()))
+                .findUniqueOrNone(new SearchParameters() //
+                        .property(
+                                PropertySelector.newPropertySelector(entity.getRegion().getId(),
+                                        Appellation_.region, Region_.id)) //
                         .property(
                                 PropertySelector.newPropertySelector(entity.getName(),
-                                        NamedEntity_.name)));
+                                        NamedEntity_.name)) //
+                );
         if ((existing != null)
                 && ((entity.getId() == null) || !existing.getId().equals(entity.getId()))) {
             throw new BusinessException(BusinessError.APPELLATION_00001);

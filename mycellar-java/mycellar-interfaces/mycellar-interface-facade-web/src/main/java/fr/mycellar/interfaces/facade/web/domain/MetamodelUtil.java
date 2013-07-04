@@ -28,7 +28,30 @@ import javax.persistence.metamodel.Attribute;
  */
 public class MetamodelUtil {
 
+    @SuppressWarnings("unchecked")
+    public static <E> Attribute<E, ?> toMetamodelFirstPath(String path, Class<E> from) {
+        try {
+            String[] pathItems = path.split("\\.");
+            Class<?> current = from;
+            return (Attribute<E, ?>) Class.forName(current.getName() + "_").getField(pathItems[0])
+                    .get(null);
+        } catch (Exception e) {
+            throw new IllegalStateException(e);
+        }
+    }
+
+    public static Attribute<?, ?>[] toMetamodelOtherPath(String path, Class<?> from) {
+        List<Attribute<?, ?>> attributes = toMetamodelListAttributes(path, from);
+        return attributes.subList(1, attributes.size()).toArray(
+                new Attribute<?, ?>[attributes.size() - 1]);
+    }
+
     public static Attribute<?, ?>[] toMetamodelPath(String path, Class<?> from) {
+        List<Attribute<?, ?>> attributes = toMetamodelListAttributes(path, from);
+        return attributes.toArray(new Attribute<?, ?>[attributes.size()]);
+    }
+
+    private static List<Attribute<?, ?>> toMetamodelListAttributes(String path, Class<?> from) {
         try {
             List<Attribute<?, ?>> attributes = new ArrayList<>();
             String[] pathItems = path.split("\\.");
@@ -39,7 +62,7 @@ public class MetamodelUtil {
                 attributes.add(attribute);
                 current = attribute.getJavaType();
             }
-            return attributes.toArray(new Attribute<?, ?>[attributes.size()]);
+            return attributes;
         } catch (Exception e) {
             throw new IllegalStateException(e);
         }

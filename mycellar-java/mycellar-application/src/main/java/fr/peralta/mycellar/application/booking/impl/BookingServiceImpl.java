@@ -31,12 +31,14 @@ import fr.peralta.mycellar.application.shared.AbstractSimpleService;
 import fr.peralta.mycellar.domain.booking.Booking;
 import fr.peralta.mycellar.domain.booking.BookingBottle;
 import fr.peralta.mycellar.domain.booking.BookingEvent;
+import fr.peralta.mycellar.domain.booking.BookingEvent_;
 import fr.peralta.mycellar.domain.booking.Booking_;
 import fr.peralta.mycellar.domain.booking.repository.BookingRepository;
 import fr.peralta.mycellar.domain.shared.exception.BusinessException;
-import fr.peralta.mycellar.domain.shared.repository.EntitySelector;
+import fr.peralta.mycellar.domain.shared.repository.PropertySelector;
 import fr.peralta.mycellar.domain.shared.repository.SearchParameters;
 import fr.peralta.mycellar.domain.user.User;
+import fr.peralta.mycellar.domain.user.User_;
 
 /**
  * @author speralta
@@ -81,8 +83,8 @@ public class BookingServiceImpl extends AbstractSimpleService<Booking, BookingRe
      */
     @Override
     public List<Booking> getBookings(User customer) {
-        return bookingRepository.find(new SearchParameters().entity(EntitySelector
-                .newEntitySelector(Booking_.customer, customer)));
+        return bookingRepository.find(new SearchParameters().property(PropertySelector
+                .newPropertySelector(customer.getId(), Booking_.customer, User_.id)));
     }
 
     /**
@@ -90,9 +92,14 @@ public class BookingServiceImpl extends AbstractSimpleService<Booking, BookingRe
      */
     @Override
     public Booking getBooking(BookingEvent bookingEvent, User customer) {
-        Booking booking = bookingRepository.findUniqueOrNone(new SearchParameters().entity(
-                EntitySelector.newEntitySelector(Booking_.bookingEvent, bookingEvent)).entity(
-                EntitySelector.newEntitySelector(Booking_.customer, customer)));
+        Booking booking = bookingRepository.findUniqueOrNone(new SearchParameters() //
+                .property(
+                        PropertySelector.newPropertySelector(bookingEvent.getId(),
+                                Booking_.bookingEvent, BookingEvent_.id)) //
+                .property(
+                        PropertySelector.newPropertySelector(customer.getId(), Booking_.customer,
+                                User_.id)) //
+                );
         if (booking == null) {
             booking = new Booking();
             booking.setCustomer(customer);

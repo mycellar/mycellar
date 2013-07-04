@@ -28,12 +28,14 @@ import fr.peralta.mycellar.application.shared.AbstractSimpleService;
 import fr.peralta.mycellar.application.stock.MovementService;
 import fr.peralta.mycellar.application.stock.StockService;
 import fr.peralta.mycellar.domain.shared.exception.BusinessException;
-import fr.peralta.mycellar.domain.shared.repository.EntitySelector;
+import fr.peralta.mycellar.domain.shared.repository.PropertySelector;
 import fr.peralta.mycellar.domain.shared.repository.SearchParameters;
 import fr.peralta.mycellar.domain.stock.Arrival;
 import fr.peralta.mycellar.domain.stock.ArrivalBottle;
 import fr.peralta.mycellar.domain.stock.Bottle;
+import fr.peralta.mycellar.domain.stock.Bottle_;
 import fr.peralta.mycellar.domain.stock.Cellar;
+import fr.peralta.mycellar.domain.stock.Cellar_;
 import fr.peralta.mycellar.domain.stock.Drink;
 import fr.peralta.mycellar.domain.stock.DrinkBottle;
 import fr.peralta.mycellar.domain.stock.Stock;
@@ -124,9 +126,14 @@ public class StockServiceImpl extends AbstractSimpleService<Stock, StockReposito
      */
     @Override
     public Stock findStock(Bottle bottle, Cellar cellar) {
-        return stockRepository.findUniqueOrNone(new SearchParameters().entity(
-                EntitySelector.newEntitySelector(Stock_.bottle, bottle)).entity(
-                EntitySelector.newEntitySelector(Stock_.cellar, cellar)));
+        return stockRepository.findUniqueOrNone(new SearchParameters() //
+                .property(
+                        PropertySelector.newPropertySelector(bottle.getId(), Stock_.bottle,
+                                Bottle_.id)) //
+                .property(
+                        PropertySelector.newPropertySelector(cellar.getId(), Stock_.cellar,
+                                Cellar_.id)) //
+                );
     }
 
     /**

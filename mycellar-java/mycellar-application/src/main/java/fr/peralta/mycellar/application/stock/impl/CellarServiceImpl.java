@@ -27,12 +27,12 @@ import fr.peralta.mycellar.application.stock.CellarService;
 import fr.peralta.mycellar.domain.shared.NamedEntity_;
 import fr.peralta.mycellar.domain.shared.exception.BusinessError;
 import fr.peralta.mycellar.domain.shared.exception.BusinessException;
-import fr.peralta.mycellar.domain.shared.repository.EntitySelector;
 import fr.peralta.mycellar.domain.shared.repository.PropertySelector;
 import fr.peralta.mycellar.domain.shared.repository.SearchParameters;
 import fr.peralta.mycellar.domain.stock.Cellar;
 import fr.peralta.mycellar.domain.stock.Cellar_;
 import fr.peralta.mycellar.domain.stock.repository.CellarRepository;
+import fr.peralta.mycellar.domain.user.User_;
 
 /**
  * @author speralta
@@ -49,9 +49,15 @@ public class CellarServiceImpl extends AbstractSimpleService<Cellar, CellarRepos
      */
     @Override
     public void validate(Cellar entity) throws BusinessException {
-        Cellar existing = cellarRepository.findUniqueOrNone(new SearchParameters().entity(
-                EntitySelector.newEntitySelector(Cellar_.owner, entity.getOwner())).property(
-                PropertySelector.newPropertySelector(entity.getName(), NamedEntity_.name)));
+        Cellar existing = cellarRepository
+                .findUniqueOrNone(new SearchParameters() //
+                        .property(
+                                PropertySelector.newPropertySelector(entity.getOwner().getId(),
+                                        Cellar_.owner, User_.id)) //
+                        .property(
+                                PropertySelector.newPropertySelector(entity.getName(),
+                                        NamedEntity_.name)) //
+                );
         if ((existing != null)
                 && ((entity.getId() == null) || !existing.getId().equals(entity.getId()))) {
             throw new BusinessException(BusinessError.CELLAR_00001);

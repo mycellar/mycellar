@@ -52,9 +52,7 @@ public abstract class JpaGenericRepository<E extends Identifiable<PK>, PK extend
 
     private final Logger logger = LoggerFactory.getLogger(getClass());
 
-    private ByEntitySelectorUtil byEntitySelectorUtil;
     private ByFullTextUtil byFullTextUtil;
-    private ByPatternUtil byPatternUtil;
     private ByPropertySelectorUtil byPropertySelectorUtil;
     private ByRangeUtil byRangeUtil;
     private NamedQueryUtil namedQueryUtil;
@@ -217,8 +215,6 @@ public abstract class JpaGenericRepository<E extends Identifiable<PK>, PK extend
                 byFullTextUtil.byFullText(root, query, builder, sp, type, indexedAttributes), //
                 byRangeUtil.byRanges(root, query, builder, sp.getRanges(), type), //
                 byPropertySelectorUtil.byPropertySelectors(root, builder, sp, sp.getProperties()), //
-                byEntitySelectorUtil.byEntitySelectors(root, builder, sp.getEntities()), //
-                byPatternUtil.byPattern(root, query, builder, sp, type), //
                 byExtraPredicate(root, query, builder, sp));
     }
 
@@ -253,22 +249,6 @@ public abstract class JpaGenericRepository<E extends Identifiable<PK>, PK extend
     // BEANS
 
     /**
-     * @return the byEntitySelectorUtil
-     */
-    protected final ByEntitySelectorUtil getByEntitySelectorUtil() {
-        return byEntitySelectorUtil;
-    }
-
-    /**
-     * @param byEntitySelectorUtil
-     *            the byEntitySelectorUtil to set
-     */
-    @Inject
-    public final void setByEntitySelectorUtil(ByEntitySelectorUtil byEntitySelectorUtil) {
-        this.byEntitySelectorUtil = byEntitySelectorUtil;
-    }
-
-    /**
      * @return the byFullTextUtil
      */
     protected final ByFullTextUtil getByFullTextUtil() {
@@ -282,22 +262,6 @@ public abstract class JpaGenericRepository<E extends Identifiable<PK>, PK extend
     @Inject
     public final void setByFullTextUtil(ByFullTextUtil byFullTextUtil) {
         this.byFullTextUtil = byFullTextUtil;
-    }
-
-    /**
-     * @return the byPatternUtil
-     */
-    protected final ByPatternUtil getByPatternUtil() {
-        return byPatternUtil;
-    }
-
-    /**
-     * @param byPatternUtil
-     *            the byPatternUtil to set
-     */
-    @Inject
-    public final void setByPatternUtil(ByPatternUtil byPatternUtil) {
-        this.byPatternUtil = byPatternUtil;
     }
 
     /**

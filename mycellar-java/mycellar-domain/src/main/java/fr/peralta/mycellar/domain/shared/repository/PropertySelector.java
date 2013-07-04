@@ -21,6 +21,7 @@ package fr.peralta.mycellar.domain.shared.repository;
 import static com.google.common.collect.Lists.*;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -43,19 +44,9 @@ public class PropertySelector<E, F> implements Serializable {
     /**
      * {@link PropertySelector} builder
      */
-    public static <E, F> PropertySelector<E, F> newPropertySelector(F selected, Class<E> rootClass,
-            Attribute<?, ?>... fields) {
-        PropertySelector<E, F> ps = new PropertySelector<E, F>(rootClass, fields);
-        ps.setSelected(selected);
-        return ps;
-    }
-
-    /**
-     * {@link PropertySelector} builder
-     */
     public static <E, F> PropertySelector<E, F> newPropertySelector(F selected,
-            Attribute<E, F> field) {
-        PropertySelector<E, F> ps = new PropertySelector<E, F>(field);
+            Attribute<E, ?> firstField, Attribute<?, ?>... fields) {
+        PropertySelector<E, F> ps = new PropertySelector<E, F>(firstField, fields);
         ps.setSelected(selected);
         return ps;
     }
@@ -87,18 +78,20 @@ public class PropertySelector<E, F> implements Serializable {
     /**
      * @param firstField
      *            the first path to property.
-     * @param attributes
+     * @param fields
      *            the property that should match one of the selected value.
      */
-    public PropertySelector(Class<E> rootClass, Attribute<?, ?>... fields) {
-        Class<?> from = rootClass;
-        for (Attribute<?, ?> field : fields) {
-            if (!field.getDeclaringType().getJavaType().isAssignableFrom(from)) {
+    public PropertySelector(Attribute<E, ?> firstAttribute, Attribute<?, ?>... attributes) {
+        Class<?> from = firstAttribute.getDeclaringType().getJavaType();
+        for (Attribute<?, ?> attribute : attributes) {
+            if (!attribute.getDeclaringType().getJavaType().isAssignableFrom(from)) {
                 throw new IllegalStateException("Wrong path.");
             }
-            from = field.getJavaType();
+            from = attribute.getJavaType();
         }
-        this.attributes = Arrays.asList(fields);
+        this.attributes = new ArrayList<>();
+        this.attributes.add(firstAttribute);
+        this.attributes.addAll(Arrays.asList(attributes));
     }
 
     public List<Attribute<?, ?>> getAttributes() {

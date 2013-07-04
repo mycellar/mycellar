@@ -39,10 +39,10 @@ import fr.peralta.mycellar.domain.contact.Contact_;
 import fr.peralta.mycellar.domain.contact.repository.ContactRepository;
 import fr.peralta.mycellar.domain.shared.exception.BusinessError;
 import fr.peralta.mycellar.domain.shared.exception.BusinessException;
-import fr.peralta.mycellar.domain.shared.repository.EntitySelector;
 import fr.peralta.mycellar.domain.shared.repository.PropertySelector;
 import fr.peralta.mycellar.domain.shared.repository.SearchParameters;
 import fr.peralta.mycellar.domain.wine.Producer;
+import fr.peralta.mycellar.domain.wine.Producer_;
 
 /**
  * @author speralta
@@ -127,9 +127,12 @@ public class ContactServiceImpl extends AbstractSimpleService<Contact, ContactRe
      */
     @Override
     public Contact find(Producer producer, LocalDate current) {
-        return contactRepository.findUnique(new SearchParameters().entity(
-                EntitySelector.newEntitySelector(Contact_.producer, producer)).property(
-                PropertySelector.newPropertySelector(current, Contact_.current)));
+        return contactRepository.findUnique(new SearchParameters()//
+                .property(
+                        PropertySelector.newPropertySelector(producer, Contact_.producer,
+                                Producer_.id)) //
+                .property(PropertySelector.newPropertySelector(current, Contact_.current))//
+                );
     }
 
     /**
