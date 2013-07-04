@@ -33,7 +33,6 @@ import fr.peralta.mycellar.domain.contact.Contact;
 import fr.peralta.mycellar.domain.contact.repository.ContactRepository;
 import fr.peralta.mycellar.domain.shared.repository.SearchParameters;
 import fr.peralta.mycellar.infrastructure.shared.repository.JpaSimpleRepository;
-import fr.peralta.mycellar.infrastructure.shared.repository.JpaUtil;
 
 /**
  * @author speralta
@@ -89,7 +88,7 @@ public class JpaContactRepository extends JpaSimpleRepository<Contact> implement
         return getEntityManager()
                 .createQuery(
                         query.orderBy(
-                                JpaUtil.buildJpaOrders(searchParameters.getOrders(), root,
+                                getOrderByUtil().buildJpaOrders(searchParameters.getOrders(), root,
                                         criteriaBuilder, searchParameters)).select(root)
                                 .where(criteriaBuilder.not(criteriaBuilder.exists(subquery))))
                 .setFirstResult(searchParameters.getFirstResult())

@@ -29,6 +29,7 @@ import javax.persistence.EntityManager;
 import javax.persistence.Parameter;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
+import javax.persistence.metamodel.Attribute;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -68,12 +69,12 @@ public class NamedQueryUtil {
                 if (!first) {
                     orderClausis.append(", ");
                 }
-                orderClausis.append(orderBy.getColumn());
+                orderClausis.append(getPath(orderBy.getAttributes()));
                 orderClausis.append(orderBy.isOrderDesc() ? " desc" : " asc");
                 first = false;
             }
 
-            logger.debug("appending: [{}] to {}", orderClausis, queryString);
+            logger.trace("appending: [{}] to {}", orderClausis, queryString);
 
             query = recreateQuery(query, queryString + " " + orderClausis.toString());
         }
@@ -94,10 +95,22 @@ public class NamedQueryUtil {
         List<T> result = query.getResultList();
 
         if (result != null) {
-            logger.debug("{} returned a List of size: {}", sp.getNamedQuery(), result.size());
+            logger.trace("{} returned a List of size: {}", sp.getNamedQuery(), result.size());
         }
 
         return result;
+    }
+
+    /**
+     * @param attributes
+     * @return
+     */
+    private String getPath(List<Attribute<?, ?>> attributes) {
+        StringBuilder builder = new StringBuilder();
+        for (Attribute<?, ?> attribute : attributes) {
+            builder.append(attribute.getName()).append(".");
+        }
+        return builder.substring(0, builder.length() - 1);
     }
 
     @SuppressWarnings("unchecked")

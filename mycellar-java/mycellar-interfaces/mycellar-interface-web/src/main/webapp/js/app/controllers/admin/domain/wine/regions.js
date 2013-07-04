@@ -15,7 +15,8 @@ angular.module('mycellar').controller({
     $scope.filters = {
       'country.name': '',
       name: ''
-    }
+    };
+    $scope.filtersIsCollapsed = true;
     
     $scope.tableOptions = {
       itemResource: $resource('/api/domain/wine/regions')
@@ -32,6 +33,11 @@ angular.module('mycellar').controller({
       } else {
         $scope.sort.properties.push(property);
         $scope.sort.ways[property] = 'asc';
+      }
+    };
+    $scope.clearFilters = function() {
+      for (var filter in $scope.filters) {
+        $scope.filters[filter] = '';
       }
     };
   },

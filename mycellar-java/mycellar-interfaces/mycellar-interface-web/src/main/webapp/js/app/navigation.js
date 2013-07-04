@@ -13,5 +13,6 @@ angular.module('mycellar').controller({
     $scope.menuResource = $resource('/api/navigation/menu');
     $scope.menus = $scope.menuResource.query();
     $scope.menuNotLoggedIn = true;
+    $scope.isCollapsed = true;
   }
 });

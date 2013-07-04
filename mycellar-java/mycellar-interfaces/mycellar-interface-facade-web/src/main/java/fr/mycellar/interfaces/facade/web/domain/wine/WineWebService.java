@@ -35,14 +35,14 @@ import org.springframework.stereotype.Service;
 
 import fr.mycellar.interfaces.facade.web.domain.FilterCouple;
 import fr.mycellar.interfaces.facade.web.domain.ListWithCount;
+import fr.mycellar.interfaces.facade.web.domain.MetamodelUtil;
 import fr.mycellar.interfaces.facade.web.domain.OrderCouple;
-import fr.peralta.mycellar.domain.shared.NamedEntity_;
 import fr.peralta.mycellar.domain.shared.exception.BusinessException;
+import fr.peralta.mycellar.domain.shared.repository.OrderBy;
 import fr.peralta.mycellar.domain.shared.repository.PropertySelector;
 import fr.peralta.mycellar.domain.shared.repository.SearchParameters;
 import fr.peralta.mycellar.domain.wine.Country;
 import fr.peralta.mycellar.domain.wine.Region;
-import fr.peralta.mycellar.domain.wine.Region_;
 import fr.peralta.mycellar.domain.wine.Wine;
 import fr.peralta.mycellar.interfaces.facades.wine.WineServiceFacade;
 
@@ -64,7 +64,8 @@ public class WineWebService {
         searchParameters.setFirstResult(first);
         searchParameters.setMaxResults(count);
         for (OrderCouple order : orders) {
-            searchParameters.addOrderBy(order.getProperty(), order.getDirection());
+            searchParameters.addOrderBy(new OrderBy(order.getDirection(), MetamodelUtil
+                    .toMetamodelPath(order.getProperty(), Wine.class)));
         }
         return new ListWithCount<>(wineServiceFacade.countWines(searchParameters),
                 wineServiceFacade.getWines(searchParameters));
@@ -91,18 +92,19 @@ public class WineWebService {
             @QueryParam("count") int count, @QueryParam("filters") List<FilterCouple> filters,
             @QueryParam("sort") List<OrderCouple> orders) {
         SearchParameters searchParameters = new SearchParameters();
+        searchParameters.anywhere();
         for (FilterCouple filter : filters) {
-            if (StringUtils.equalsIgnoreCase(filter.getProperty(), "name")) {
-                searchParameters.anywhere()
-                        .property(
-                                PropertySelector.newPropertySelector(filter.getFilter(),
-                                        NamedEntity_.name));
+            if (StringUtils.isNotEmpty(filter.getFilter())) {
+                searchParameters.property(PropertySelector.newPropertySelector(filter.getFilter(),
+                        Country.class,
+                        MetamodelUtil.toMetamodelPath(filter.getProperty(), Country.class)));
             }
         }
         searchParameters.setFirstResult(first);
         searchParameters.setMaxResults(count);
         for (OrderCouple order : orders) {
-            searchParameters.addOrderBy(order.getProperty(), order.getDirection());
+            searchParameters.addOrderBy(new OrderBy(order.getDirection(), MetamodelUtil
+                    .toMetamodelPath(order.getProperty(), Country.class)));
         }
         return new ListWithCount<>(wineServiceFacade.countCountries(searchParameters),
                 wineServiceFacade.getCountries(searchParameters));
@@ -129,22 +131,19 @@ public class WineWebService {
             @QueryParam("count") int count, @QueryParam("filters") List<FilterCouple> filters,
             @QueryParam("sort") List<OrderCouple> orders) {
         SearchParameters searchParameters = new SearchParameters();
+        searchParameters.anywhere();
         for (FilterCouple filter : filters) {
-            if (StringUtils.equalsIgnoreCase(filter.getProperty(), "name")) {
-                searchParameters.anywhere()
-                        .property(
-                                PropertySelector.newPropertySelector(filter.getFilter(),
-                                        NamedEntity_.name));
-            } else if (StringUtils.equalsIgnoreCase(filter.getProperty(), "country.name")) {
-                searchParameters.anywhere().property(
-                        PropertySelector.newPropertySelector(filter.getFilter(), Region_.country,
-                                NamedEntity_.name));
+            if (StringUtils.isNotEmpty(filter.getFilter())) {
+                searchParameters.property(PropertySelector.newPropertySelector(filter.getFilter(),
+                        Region.class,
+                        MetamodelUtil.toMetamodelPath(filter.getProperty(), Region.class)));
             }
         }
         searchParameters.setFirstResult(first);
         searchParameters.setMaxResults(count);
         for (OrderCouple order : orders) {
-            searchParameters.addOrderBy(order.getProperty(), order.getDirection());
+            searchParameters.addOrderBy(new OrderBy(order.getDirection(), MetamodelUtil
+                    .toMetamodelPath(order.getProperty(), Region.class)));
         }
         return new ListWithCount<>(wineServiceFacade.countRegions(searchParameters),
                 wineServiceFacade.getRegions(searchParameters));

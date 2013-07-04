@@ -25,9 +25,6 @@ import java.util.Arrays;
 import java.util.List;
 
 import javax.persistence.metamodel.Attribute;
-import javax.persistence.metamodel.SingularAttribute;
-
-import org.apache.commons.lang3.ArrayUtils;
 
 /**
  * Used to construct OR predicate for a property value. In other words you can
@@ -39,16 +36,16 @@ public class PropertySelector<E, F> implements Serializable {
     /**
      * {@link PropertySelector} builder
      */
-    public static <E, F> PropertySelector<E, F> newPropertySelector(SingularAttribute<E, F> field) {
+    public static <E, F> PropertySelector<E, F> newPropertySelector(Attribute<E, F> field) {
         return new PropertySelector<E, F>(field);
     }
 
     /**
      * {@link PropertySelector} builder
      */
-    public static <E, F> PropertySelector<E, F> newPropertySelector(F selected,
-            SingularAttribute<E, ?> field, SingularAttribute<?, ?>... fields) {
-        PropertySelector<E, F> ps = new PropertySelector<E, F>(field, fields);
+    public static <E, F> PropertySelector<E, F> newPropertySelector(F selected, Class<E> rootClass,
+            Attribute<?, ?>... fields) {
+        PropertySelector<E, F> ps = new PropertySelector<E, F>(rootClass, fields);
         ps.setSelected(selected);
         return ps;
     }
@@ -56,7 +53,17 @@ public class PropertySelector<E, F> implements Serializable {
     /**
      * {@link PropertySelector} builder
      */
-    public static <E, F> PropertySelector<E, F> newPropertySelector(SingularAttribute<E, F> field,
+    public static <E, F> PropertySelector<E, F> newPropertySelector(F selected,
+            Attribute<E, F> field) {
+        PropertySelector<E, F> ps = new PropertySelector<E, F>(field);
+        ps.setSelected(selected);
+        return ps;
+    }
+
+    /**
+     * {@link PropertySelector} builder
+     */
+    public static <E, F> PropertySelector<E, F> newPropertySelector(Attribute<E, F> field,
             SearchMode searchMode) {
         PropertySelector<E, F> ps = new PropertySelector<E, F>(field);
         ps.setSearchMode(searchMode);
@@ -65,7 +72,7 @@ public class PropertySelector<E, F> implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
-    private final Attribute<?, ?>[] fields;
+    private final List<Attribute<?, ?>> attributes;
     private List<F> selected = newArrayList();
     private SearchMode searchMode; // for string property only.
 
@@ -74,28 +81,28 @@ public class PropertySelector<E, F> implements Serializable {
      *            the property that should match one of the selected value.
      */
     public PropertySelector(Attribute<E, F> field) {
-        this.fields = new Attribute<?, ?>[] { field };
+        this.attributes = Arrays.<Attribute<?, ?>> asList(field);
     }
 
     /**
      * @param firstField
      *            the first path to property.
-     * @param fields
+     * @param attributes
      *            the property that should match one of the selected value.
      */
-    public PropertySelector(Attribute<E, ?> firstField, Attribute<?, ?>... fields) {
-        Class<?> from = firstField.getDeclaringType().getJavaType();
+    public PropertySelector(Class<E> rootClass, Attribute<?, ?>... fields) {
+        Class<?> from = rootClass;
         for (Attribute<?, ?> field : fields) {
             if (!field.getDeclaringType().getJavaType().isAssignableFrom(from)) {
                 throw new IllegalStateException("Wrong path.");
             }
             from = field.getJavaType();
         }
-        this.fields = ArrayUtils.add(fields, 0, firstField);
+        this.attributes = Arrays.asList(fields);
     }
 
-    public Attribute<?, ?>[] getFields() {
-        return fields;
+    public List<Attribute<?, ?>> getAttributes() {
+        return attributes;
     }
 
     /**
@@ -130,7 +137,7 @@ public class PropertySelector<E, F> implements Serializable {
     }
 
     public boolean isBoolean() {
-        return fields[fields.length - 1].getJavaType().isAssignableFrom(Boolean.class);
+        return attributes.get(attributes.size() - 1).getJavaType().isAssignableFrom(Boolean.class);
     }
 
     public SearchMode getSearchMode() {

@@ -440,48 +440,12 @@ public class SearchParameters implements Serializable {
         return orders;
     }
 
-    public void addOrderBy(String fieldName) {
-        orders.add(new OrderBy(checkNotNull(fieldName)));
-    }
-
-    public void addOrderBy(String fieldName, OrderByDirection direction) {
-        orders.add(new OrderBy(checkNotNull(fieldName), checkNotNull(direction)));
-    }
-
-    public void addOrderBy(SingularAttribute<?, ?> attribute) {
-        orders.add(new OrderBy(checkNotNull(attribute)));
-    }
-
-    public void addOrderBy(SingularAttribute<?, ?> attribute, OrderByDirection direction) {
-        orders.add(new OrderBy(checkNotNull(attribute), checkNotNull(direction)));
-    }
-
     public void addOrderBy(OrderBy orderBy) {
         orders.add(checkNotNull(orderBy));
     }
 
     public SearchParameters orderBy(OrderBy orderBy) {
         addOrderBy(orderBy);
-        return this;
-    }
-
-    public SearchParameters orderBy(String fieldName) {
-        addOrderBy(fieldName);
-        return this;
-    }
-
-    public SearchParameters orderBy(String fieldName, OrderByDirection direction) {
-        addOrderBy(fieldName, direction);
-        return this;
-    }
-
-    public SearchParameters orderBy(SingularAttribute<?, ?> attribute) {
-        addOrderBy(attribute);
-        return this;
-    }
-
-    public SearchParameters orderBy(SingularAttribute<?, ?> attribute, OrderByDirection direction) {
-        addOrderBy(attribute, direction);
         return this;
     }
 

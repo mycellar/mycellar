@@ -21,8 +21,10 @@ package fr.peralta.mycellar.domain.shared.repository;
 import static com.google.common.base.Preconditions.*;
 
 import java.io.Serializable;
+import java.util.Arrays;
+import java.util.List;
 
-import javax.persistence.metamodel.SingularAttribute;
+import javax.persistence.metamodel.Attribute;
 
 /**
  * Holder class for search ordering used by the {@link SearchParameters}. When
@@ -31,33 +33,19 @@ import javax.persistence.metamodel.SingularAttribute;
  */
 public class OrderBy implements Serializable {
     private static final long serialVersionUID = 1L;
-    private final String columnOrProperty;
-    private OrderByDirection direction = OrderByDirection.ASC;
+    private final List<Attribute<?, ?>> attributes;
+    private final OrderByDirection direction;
 
-    public OrderBy(String columnOrProperty, OrderByDirection direction) {
-        this.columnOrProperty = checkNotNull(columnOrProperty);
+    public OrderBy(OrderByDirection direction, Attribute<?, ?>... attributes) {
+        this.attributes = Arrays.asList(checkNotNull(attributes));
         this.direction = checkNotNull(direction);
     }
 
-    public OrderBy(String columnOrProperty) {
-        this(columnOrProperty, OrderByDirection.ASC);
-    }
-
-    public OrderBy(SingularAttribute<?, ?> attribute, OrderByDirection direction) {
-        columnOrProperty = checkNotNull(attribute).getName();
-        this.direction = checkNotNull(direction);
-    }
-
-    public OrderBy(SingularAttribute<?, ?> attribute) {
-        this(attribute, OrderByDirection.ASC);
-    }
-
-    public String getColumn() {
-        return columnOrProperty;
-    }
-
-    public String getProperty() {
-        return columnOrProperty;
+    /**
+     * @return the attributes
+     */
+    public List<Attribute<?, ?>> getAttributes() {
+        return attributes;
     }
 
     public OrderByDirection getDirection() {

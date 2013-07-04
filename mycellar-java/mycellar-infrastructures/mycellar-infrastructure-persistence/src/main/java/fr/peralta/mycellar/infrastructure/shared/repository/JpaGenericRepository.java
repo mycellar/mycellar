@@ -58,6 +58,7 @@ public abstract class JpaGenericRepository<E extends Identifiable<PK>, PK extend
     private ByPropertySelectorUtil byPropertySelectorUtil;
     private ByRangeUtil byRangeUtil;
     private NamedQueryUtil namedQueryUtil;
+    private OrderByUtil orderByUtil;
 
     private EntityManager entityManager;
 
@@ -109,7 +110,7 @@ public abstract class JpaGenericRepository<E extends Identifiable<PK>, PK extend
         }
 
         // order by
-        criteriaQuery.orderBy(JpaUtil.buildJpaOrders(sp.getOrders(), root, builder, sp));
+        criteriaQuery.orderBy(orderByUtil.buildJpaOrders(sp.getOrders(), root, builder, sp));
 
         TypedQuery<E> typedQuery = entityManager.createQuery(criteriaQuery);
 
@@ -361,6 +362,22 @@ public abstract class JpaGenericRepository<E extends Identifiable<PK>, PK extend
     @PersistenceContext
     public final void setEntityManager(EntityManager entityManager) {
         this.entityManager = entityManager;
+    }
+
+    /**
+     * @return the orderByUtil
+     */
+    protected final OrderByUtil getOrderByUtil() {
+        return orderByUtil;
+    }
+
+    /**
+     * @param orderByUtil
+     *            the orderByUtil to set
+     */
+    @Inject
+    public final void setOrderByUtil(OrderByUtil orderByUtil) {
+        this.orderByUtil = orderByUtil;
     }
 
 }

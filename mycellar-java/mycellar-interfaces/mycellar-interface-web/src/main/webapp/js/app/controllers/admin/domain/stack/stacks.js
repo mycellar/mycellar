@@ -10,10 +10,10 @@ angular.module('mycellar').controller({
         count: 'desc',
       }
     };
+    $scope.filtersIsCollapsed = true;
     
     $scope.tableOptions = {
-      itemResource: $resource('/api/domain/stack/stacks/list'),
-      itemCountGet: $http.get('/api/domain/stack/stacks/count'),
+      itemResource: $resource('/api/domain/stack/stacks'),
     };
     $scope.edit = function(itemId) {
       $location.path('/admin/domain/stack/stack/' + itemId);
@@ -27,6 +27,11 @@ angular.module('mycellar').controller({
       } else {
         $scope.sort.properties.push(property);
         $scope.sort.ways[property] = 'asc';
+      }
+    };
+    $scope.clearFilters = function() {
+      for (var filter in $scope.filters) {
+        $scope.filters[filter] = '';
       }
     };
   },

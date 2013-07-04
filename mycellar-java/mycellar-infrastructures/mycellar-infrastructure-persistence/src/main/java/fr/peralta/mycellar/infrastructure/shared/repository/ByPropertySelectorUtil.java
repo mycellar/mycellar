@@ -28,7 +28,6 @@ import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.Path;
 import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
-import javax.persistence.metamodel.Attribute;
 
 import fr.peralta.mycellar.domain.shared.repository.PropertySelector;
 import fr.peralta.mycellar.domain.shared.repository.SearchParameters;
@@ -46,7 +45,7 @@ public class ByPropertySelectorUtil {
 
         for (PropertySelector<?, ?> selector : selectors) {
             if (selector.isBoolean()) {
-                byBooleanSelector(root, builder, predicates,
+                byBooleanSelector(root, builder, predicates, sp,
                         (PropertySelector<? super E, Boolean>) selector);
             } else {
                 byObjectSelector(root, builder, predicates, sp,
@@ -57,12 +56,14 @@ public class ByPropertySelectorUtil {
     }
 
     private <E> void byBooleanSelector(Root<E> root, CriteriaBuilder builder,
-            List<Predicate> predicates, PropertySelector<? super E, Boolean> selector) {
+            List<Predicate> predicates, SearchParameters sp,
+            PropertySelector<? super E, Boolean> selector) {
         if (selector.isNotEmpty()) {
             List<Predicate> selectorPredicates = newArrayList();
 
             for (Boolean selection : selector.getSelected()) {
-                Path<Boolean> path = getPath(root, selector);
+                Path<Boolean> path = JpaUtil.getPath(root, selector.getAttributes(),
+                        sp.getDistinct());
                 if (selection == null) {
                     selectorPredicates.add(builder.isNull(path));
                 } else {
@@ -81,11 +82,13 @@ public class ByPropertySelectorUtil {
 
             for (Object selection : selector.getSelected()) {
                 if (selection instanceof String) {
-                    Path<String> path = getPath(root, selector);
+                    Path<String> path = JpaUtil.getPath(root, selector.getAttributes(),
+                            sp.getDistinct());
                     selectorPredicates.add(JpaUtil.stringPredicate(path, selection,
                             selector.getSearchMode(), sp, builder));
                 } else {
-                    Path<?> path = getPath(root, selector);
+                    Path<?> path = JpaUtil
+                            .getPath(root, selector.getAttributes(), sp.getDistinct());
                     selectorPredicates.add(selection == null ? builder.isNull(path) : builder
                             .equal(path, selection));
                 }
@@ -94,12 +97,4 @@ public class ByPropertySelectorUtil {
         }
     }
 
-    @SuppressWarnings("unchecked")
-    private <E, F> Path<F> getPath(Root<E> root, PropertySelector<? super E, ?> selector) {
-        Path<?> path = root;
-        for (Attribute<?, ?> attribute : selector.getFields()) {
-            path = path.get(attribute.getName());
-        }
-        return (Path<F>) path;
-    }
 }

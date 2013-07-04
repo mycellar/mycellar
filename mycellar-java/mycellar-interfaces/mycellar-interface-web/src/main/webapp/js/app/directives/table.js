@@ -46,6 +46,7 @@ angular.module('mycellar').directive('mycellarTable', function() {
             scope.pages.push({number: i});
           }
         }
+        scope.count = (scope.currentPage + 1) * scope.itemsPerPage > scope.result.count ? scope.result.count - scope.currentPage * scope.itemsPerPage : scope.itemsPerPage * 1;
       });
       scope.$watch('result.list', function (value) {
         scope.items = scope.result.list;
@@ -65,7 +66,7 @@ angular.module('mycellar').directive('mycellarTable', function() {
         }
         $scope.result = $scope.itemResource.get({
           first: $scope.firstItem,
-          count: $scope.count(),
+          count: $scope.itemsPerPage,
           sort: sort,
           filters: filters
         });
@@ -76,16 +77,9 @@ angular.module('mycellar').directive('mycellarTable', function() {
       $scope.previousPage = function() {
         $scope.setPage($scope.currentPage - 1);
       };
-      $scope.count = function() {
-        if (($scope.currentPage + 1) * $scope.itemsPerPage > $scope.result.count) {
-          return $scope.result.count - $scope.currentPage * $scope.itemsPerPage;
-        } else {
-          return $scope.itemsPerPage * 1;
-        }
-      };
       
       $scope.itemResource = $scope.options.itemResource;
-      $scope.itemsPerPage = 20;
+      $scope.itemsPerPage = 10;
       $scope.result = {
           list: [],
           count: $scope.itemsPerPage

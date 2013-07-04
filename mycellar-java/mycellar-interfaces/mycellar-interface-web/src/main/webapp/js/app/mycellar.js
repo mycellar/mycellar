@@ -8,7 +8,7 @@ angular.extend(mycellar, {
   'version': version
 });
 
-angular.module('mycellar', ['loading', 'ui', 'http-auth-interceptor', 'ngResource', 'bootstrap'], function($locationProvider) {
+angular.module('mycellar', ['loading', 'ui', 'ui.bootstrap', 'http-auth-interceptor', 'ngResource'], function($locationProvider) {
   $locationProvider.html5Mode(true);
 }).config(['$routeProvider', function($routeProvider) {
   $routeProvider.when('/home', {templateUrl: 'partials/home.html', controller: 'HomeController'});

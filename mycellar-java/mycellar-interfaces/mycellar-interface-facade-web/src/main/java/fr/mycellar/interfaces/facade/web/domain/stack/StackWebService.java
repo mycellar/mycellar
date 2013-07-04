@@ -30,7 +30,10 @@ import javax.ws.rs.core.MediaType;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import fr.mycellar.interfaces.facade.web.domain.ListWithCount;
+import fr.mycellar.interfaces.facade.web.domain.MetamodelUtil;
 import fr.mycellar.interfaces.facade.web.domain.OrderCouple;
+import fr.peralta.mycellar.domain.shared.repository.OrderBy;
 import fr.peralta.mycellar.domain.shared.repository.SearchParameters;
 import fr.peralta.mycellar.domain.stack.Stack;
 import fr.peralta.mycellar.interfaces.facades.stack.StackServiceFacade;
@@ -46,23 +49,18 @@ public class StackWebService {
 
     @GET
     @Produces(MediaType.APPLICATION_JSON)
-    @Path("stacks/count")
-    public long countStacks() {
-        return stackServiceFacade.countStacks(new SearchParameters());
-    }
-
-    @GET
-    @Produces(MediaType.APPLICATION_JSON)
-    @Path("stacks/list")
-    public List<Stack> getStacks(@QueryParam("first") int first, @QueryParam("count") int count,
-            @QueryParam("sort") List<OrderCouple> orders) {
+    @Path("stacks")
+    public ListWithCount<Stack> getStacks(@QueryParam("first") int first,
+            @QueryParam("count") int count, @QueryParam("sort") List<OrderCouple> orders) {
         SearchParameters searchParameters = new SearchParameters();
         searchParameters.setFirstResult(first);
         searchParameters.setMaxResults(count);
         for (OrderCouple order : orders) {
-            searchParameters.addOrderBy(order.getProperty(), order.getDirection());
+            searchParameters.addOrderBy(new OrderBy(order.getDirection(), MetamodelUtil
+                    .toMetamodelPath(order.getProperty(), Stack.class)));
         }
-        return stackServiceFacade.getStacks(searchParameters);
+        return new ListWithCount<>(stackServiceFacade.countStacks(searchParameters),
+                stackServiceFacade.getStacks(searchParameters));
     }
 
     @GET
