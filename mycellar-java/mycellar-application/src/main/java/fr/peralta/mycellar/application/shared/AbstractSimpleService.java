@@ -48,9 +48,9 @@ public abstract class AbstractSimpleService<E extends IdentifiedEntity, R extend
      * {@inheritDoc}
      */
     @Override
-    public final void save(E entity) throws BusinessException {
+    public final E save(E entity) throws BusinessException {
         validate(entity);
-        getRepository().save(entity);
+        return getRepository().save(entity);
     }
 
 }

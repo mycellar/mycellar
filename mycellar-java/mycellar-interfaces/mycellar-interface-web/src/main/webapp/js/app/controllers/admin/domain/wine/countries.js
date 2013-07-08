@@ -43,8 +43,19 @@ angular.module('mycellar').controller({
     $scope.countryResource = $resource('/api/domain/wine/country/:countryId');
     $scope.country = $scope.countryResource.get({countryId: countryId});
     $scope.save = function () {
-      $scope.country.$save();
-      $location.path('/admin/domain/wine/countries/');
+      $scope.backup = {};
+      angular.copy($scope.country, $scope.backup);
+      $scope.country.$save(function (value, headers) {
+        if (value.id != undefined) {
+          $scope.backup = undefined;
+          $location.path('/admin/domain/wine/countries/');
+        } else if (value.errorKey != undefined) {
+          for (var property in value.properties) {
+            $scope.form[value.properties[property]].$setValidity(value.errorKey, false);
+          }
+          angular.copy($scope.backup, $scope.country);
+        }
+      });
     };
     $scope.cancel = function () {
       $location.path('/admin/domain/wine/countries/');

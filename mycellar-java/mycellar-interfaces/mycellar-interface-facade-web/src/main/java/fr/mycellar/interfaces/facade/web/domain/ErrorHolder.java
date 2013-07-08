@@ -16,37 +16,39 @@
  * You should have received a copy of the GNU General Public License
  * along with MyCellar. If not, see <http://www.gnu.org/licenses/>.
  */
-package fr.peralta.mycellar.application.shared;
+package fr.mycellar.interfaces.facade.web.domain;
 
-import fr.peralta.mycellar.domain.shared.IdentifiedEntity;
-import fr.peralta.mycellar.domain.shared.exception.BusinessException;
+import java.util.List;
 
 /**
  * @author speralta
  */
-public interface SimpleService<E extends IdentifiedEntity> extends GenericService<E, Integer> {
+public class ErrorHolder {
+
+    private final List<String> properties;
+    private final String errorKey;
 
     /**
-     * @param entity
+     * @param properties
+     * @param errorKey
      */
-    void delete(E entity) throws BusinessException;
+    public ErrorHolder(List<String> properties, String errorKey) {
+        this.properties = properties;
+        this.errorKey = errorKey;
+    }
 
     /**
-     * @param id
-     * @return
+     * @return the properties
      */
-    E getById(Integer id);
+    public List<String> getProperties() {
+        return properties;
+    }
 
     /**
-     * @param entity
-     * @return
+     * @return the errorKey
      */
-    E save(E entity) throws BusinessException;
-
-    /**
-     * @param entity
-     * @throws BusinessException
-     */
-    void validate(E entity) throws BusinessException;
+    public String getErrorKey() {
+        return errorKey;
+    }
 
 }

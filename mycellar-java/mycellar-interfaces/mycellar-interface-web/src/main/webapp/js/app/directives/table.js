@@ -49,7 +49,9 @@ angular.module('mycellar').directive('mycellarTable', function() {
       });
       scope.$watch('result.list', function (value) {
         scope.items = scope.result.list;
-        scope.count = scope.result.list.length;
+        if (scope.items != undefined) {
+          scope.count = scope.items.length;
+        }
       }, true);
     },
     controller: function($scope) {

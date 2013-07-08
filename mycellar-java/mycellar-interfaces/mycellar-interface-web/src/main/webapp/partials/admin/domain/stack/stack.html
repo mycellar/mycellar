@@ -9,24 +9,33 @@
     <form name="form" class="form form-horizontal">
       <fieldset>
         <legend>Stack</legend>
-        <data-mycellar-input id="hashCode" 
-            name="hashCode" 
-            label="HashCode" 
-            form="form" 
-            model="stack"></data-mycellar-input>
-        <data-mycellar-textarea id="stack" 
-            name="stack" 
-            label="Stack" 
-            form="form" 
-            model="stack"
-            class="input-block-level"
-            rows="15"></data-mycellar-textarea>
-        <data-mycellar-input id="count" 
-            name="count" 
-            label="Count" 
-            form="form" 
-            model="stack"
-            type="number"></data-mycellar-input>
+        <div class="control-group" ng-class="{error: form.hashCode.$invalid}">
+          <label class="control-label" for="hashCode">HashCode</label>
+          <div class="controls">
+            <input id="hashCode" name="hashCode" type="text" ng-model="stack.hashCode" placeholder="HashCode" />
+            <span class="help-inline" ng-show="form.hashCode.$invalid">{{form.hashCode.$error}}</span>
+          </div>
+        </div>
+        <div class="control-group" ng-class="{error: form.stack.$invalid}">
+          <label class="control-label" for="stack">Stack</label>
+          <div class="controls">
+            <textarea 
+                id="stack" 
+                name="stack" 
+                ng-model="stack.stack" 
+                placeholder="Stack" 
+                class="input-block-level"
+                rows="15"></textarea>
+            <span class="help-inline" ng-show="form.stack.$invalid">{{form.stack.$error}}</span>
+          </div>
+        </div>
+        <div class="control-group" ng-class="{error: form.count.$invalid}">
+          <label class="control-label" for="count">Count</label>
+          <div class="controls">
+            <input id="count" name="count" type="number" ng-model="stack.count" placeholder="Count" />
+            <span class="help-inline" ng-show="form.count.$invalid">{{form.count.$error}}</span>
+          </div>
+        </div>
       </fieldset>
       <div class="form-actions">
         <input type="submit" class="btn" value="Cancel" ng-click="cancel()" />

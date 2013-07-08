@@ -46,8 +46,19 @@ angular.module('mycellar').controller({
     $scope.regionResource = $resource('/api/domain/wine/region/:regionId');
     $scope.region = $scope.regionResource.get({regionId: regionId});
     $scope.save = function () {
-      $scope.region.$save();
-      $location.path('/admin/domain/wine/regions/');
+      $scope.backup = {};
+      angular.copy($scope.region, $scope.backup);
+      $scope.region.$save(function (value, headers) {
+        if (value.id != undefined) {
+          $scope.backup = undefined;
+          $location.path('/admin/domain/wine/regions/');
+        } else if (value.errorKey != undefined) {
+          for (var property in value.properties) {
+            $scope.form[value.properties[property]].$setValidity(value.errorKey, false);
+          }
+          angular.copy($scope.backup, $scope.region);
+        }
+      });
     };
     $scope.cancel = function () {
       $location.path('/admin/domain/wine/regions/');

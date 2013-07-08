@@ -18,6 +18,21 @@
  */
 package fr.peralta.mycellar.domain.shared.exception;
 
+import javax.persistence.metamodel.Attribute;
+
+import fr.peralta.mycellar.domain.admin.Configuration_;
+import fr.peralta.mycellar.domain.contact.Contact_;
+import fr.peralta.mycellar.domain.stock.Bottle_;
+import fr.peralta.mycellar.domain.stock.CellarShare_;
+import fr.peralta.mycellar.domain.stock.Cellar_;
+import fr.peralta.mycellar.domain.user.User_;
+import fr.peralta.mycellar.domain.wine.Appellation_;
+import fr.peralta.mycellar.domain.wine.Country_;
+import fr.peralta.mycellar.domain.wine.Format_;
+import fr.peralta.mycellar.domain.wine.Producer_;
+import fr.peralta.mycellar.domain.wine.Region_;
+import fr.peralta.mycellar.domain.wine.Wine_;
+
 /**
  * @author speralta
  */
@@ -25,70 +40,70 @@ public enum BusinessError {
     /*
      * Appellation
      */
-    APPELLATION_00001("name"),
+    APPELLATION_00001(Appellation_.name),
 
     /*
      * Bottle
      */
-    BOTTLE_00001("wine"),
+    BOTTLE_00001(Bottle_.wine),
 
     /*
      * Cellar
      */
-    CELLAR_00001("name"),
+    CELLAR_00001(Cellar_.name),
 
     /*
      * CellarShare
      */
-    CELLAR_SHARE_00001("email"),
+    CELLAR_SHARE_00001(CellarShare_.email),
 
     /*
      * Configuration
      */
-    CONFIGURATION_00001("key"),
+    CONFIGURATION_00001(Configuration_.key),
 
     /*
      * Contact
      */
-    CONTACT_00001("producer"),
+    CONTACT_00001(Contact_.producer),
 
     /*
      * Country
      */
-    COUNTRY_00001("name"),
+    COUNTRY_00001(Country_.name),
 
     /*
      * Format
      */
-    FORMAT_00001("name"),
+    FORMAT_00001(Format_.name),
 
     /*
      * Producer
      */
-    PRODUCER_00001("name"),
+    PRODUCER_00001(Producer_.name),
 
     /*
      * Region
      */
-    REGION_00001("name"),
+    REGION_00001(Region_.name, Region_.country),
 
     /*
      * User
      */
-    USER_00001("email"),
+    USER_00001(User_.email),
 
     /*
      * Wine
      */
-    WINE_00001("name");
+    WINE_00001(Wine_.name);
 
-    private final String property;
+    private final Attribute<?, ?>[] properties;
 
     /**
-     * @param property
+     * @param properties
      */
-    private BusinessError(String property) {
-        this.property = property;
+    private BusinessError(Attribute<?, ?>... properties) {
+        this.properties = properties;
     }
 
     /**
@@ -99,10 +114,10 @@ public enum BusinessError {
     }
 
     /**
-     * @return the property
+     * @return the properties
      */
-    public String getProperty() {
-        return property;
+    public Attribute<?, ?>[] getProperties() {
+        return properties;
     }
 
 }

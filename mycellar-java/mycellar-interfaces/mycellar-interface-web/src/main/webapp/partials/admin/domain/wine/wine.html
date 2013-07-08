@@ -21,29 +21,40 @@
               <option wicket:id="option"></option>
           </select>
         </div>
-        <data-mycellar-input id="name" 
-            name="name" 
-            label="Name" 
-            form="form" 
-            model="wine"></data-mycellar-input>
-        <data-mycellar-input id="vintage" 
-            name="vintage" 
-            label="Vintage" 
-            form="form" 
-            model="wine"
-            type="number"></data-mycellar-input>
-        <data-mycellar-input id="ranking" 
-            name="ranking" 
-            label="Ranking" 
-            form="form" 
-            model="wine"></data-mycellar-input>
-        <data-mycellar-textarea id="description" 
-            name="description" 
-            label="Description" 
-            form="form" 
-            model="wine"
-            class="input-block-level"
-            rows="5"></data-mycellar-textarea>
+        <div class="control-group" ng-class="{error: form.name.$invalid}">
+          <label class="control-label" for="name">Name</label>
+          <div class="controls">
+            <input id="name" name="name" type="text" ng-model="wine.name" placeholder="Name" />
+            <span class="help-inline" ng-show="form.name.$invalid">{{form.name.$error}}</span>
+          </div>
+        </div>
+        <div class="control-group" ng-class="{error: form.vintage.$invalid}">
+          <label class="control-label" for="vintage">Vintage</label>
+          <div class="controls">
+            <input id="vintage" name="vintage" type="number" ng-model="wine.vintage" placeholder="Vintage" />
+            <span class="help-inline" ng-show="form.vintage.$invalid">{{form.vintage.$error}}</span>
+          </div>
+        </div>
+        <div class="control-group" ng-class="{error: form.ranking.$invalid}">
+          <label class="control-label" for="ranking">Ranking</label>
+          <div class="controls">
+            <input id="ranking" name="ranking" type="text" ng-model="wine.ranking" placeholder="Ranking" />
+            <span class="help-inline" ng-show="form.ranking.$invalid">{{form.ranking.$error}}</span>
+          </div>
+        </div>
+        <div class="control-group" ng-class="{error: form.description.$invalid}">
+          <label class="control-label" for="description">Description</label>
+          <div class="controls">
+            <textarea 
+                id="description" 
+                name="description" 
+                ng-model="wine.description" 
+                placeholder="Description" 
+                class="input-block-level"
+                rows="5"></textarea>
+            <span class="help-inline" ng-show="form.description.$invalid">{{form.description.$error}}</span>
+          </div>
+        </div>
       </fieldset>
       <div class="form-actions">
         <input type="submit" class="btn btn-primary" value="Save" ng-click="save()" />

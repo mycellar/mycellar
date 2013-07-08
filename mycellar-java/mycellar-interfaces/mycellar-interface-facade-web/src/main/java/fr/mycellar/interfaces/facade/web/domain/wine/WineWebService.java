@@ -119,9 +119,10 @@ public class WineWebService {
 
     @POST
     @Consumes(MediaType.APPLICATION_JSON)
+    @Produces(MediaType.APPLICATION_JSON)
     @Path("country")
-    public void saveCountry(Country country) throws BusinessException {
-        wineServiceFacade.saveCountry(country);
+    public Country saveCountry(Country country) throws BusinessException {
+        return wineServiceFacade.saveCountry(country);
     }
 
     @GET

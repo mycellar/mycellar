@@ -9,18 +9,26 @@
     <form name="form" class="form form-horizontal">
       <fieldset>
         <legend>Country</legend>
-        <data-mycellar-input id="name" 
-            name="name" 
-            label="Name" 
-            form="form" 
-            model="country"></data-mycellar-input>
-        <data-mycellar-textarea id="description" 
-            name="description" 
-            label="Description" 
-            form="form" 
-            model="country"
-            class="input-block-level"
-            rows="5"></data-mycellar-textarea>
+        <div class="control-group" ng-class="{error: form.name.$invalid}">
+          <label class="control-label" for="name">Name</label>
+          <div class="controls">
+            <input id="name" name="name" type="text" ng-model="country.name" placeholder="Name" />
+            <span class="help-inline" ng-show="form.name.$invalid">{{form.name.$error}}</span>
+          </div>
+        </div>
+        <div class="control-group" ng-class="{error: form.description.$invalid}">
+          <label class="control-label" for="description">Description</label>
+          <div class="controls">
+            <textarea 
+                id="description" 
+                name="description" 
+                ng-model="country.description" 
+                placeholder="Description" 
+                class="input-block-level"
+                rows="5"></textarea>
+            <span class="help-inline" ng-show="form.description.$invalid">{{form.description.$error}}</span>
+          </div>
+        </div>
       </fieldset>
       <div class="form-actions">
         <input type="submit" class="btn btn-primary" value="Save" ng-click="save()" />

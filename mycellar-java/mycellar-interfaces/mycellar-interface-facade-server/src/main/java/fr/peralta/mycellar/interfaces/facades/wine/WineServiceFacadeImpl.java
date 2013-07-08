@@ -306,8 +306,8 @@ public class WineServiceFacadeImpl implements WineServiceFacade {
      */
     @Override
     @Transactional
-    public void saveCountry(Country country) throws BusinessException {
-        countryService.save(country);
+    public Country saveCountry(Country country) throws BusinessException {
+        return countryService.save(country);
     }
 
     /**

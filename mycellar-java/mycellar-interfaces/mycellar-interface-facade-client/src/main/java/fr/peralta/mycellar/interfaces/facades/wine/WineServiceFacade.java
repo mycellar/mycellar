@@ -214,9 +214,10 @@ public interface WineServiceFacade {
 
     /**
      * @param country
+     * @return
      * @throws BusinessException
      */
-    void saveCountry(Country country) throws BusinessException;
+    Country saveCountry(Country country) throws BusinessException;
 
     /**
      * @param format
