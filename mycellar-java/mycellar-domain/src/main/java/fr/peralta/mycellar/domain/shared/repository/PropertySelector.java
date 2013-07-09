@@ -18,10 +18,10 @@
  */
 package fr.peralta.mycellar.domain.shared.repository;
 
+import static com.google.common.base.Preconditions.*;
 import static com.google.common.collect.Lists.*;
 
 import java.io.Serializable;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -44,9 +44,8 @@ public class PropertySelector<E, F> implements Serializable {
     /**
      * {@link PropertySelector} builder
      */
-    public static <E, F> PropertySelector<E, F> newPropertySelector(F selected,
-            Attribute<E, ?> firstField, Attribute<?, ?>... fields) {
-        PropertySelector<E, F> ps = new PropertySelector<E, F>(firstField, fields);
+    public static <E, F> PropertySelector<E, F> newPropertySelector(F selected, Attribute<?, ?>... fields) {
+        PropertySelector<E, F> ps = new PropertySelector<E, F>(fields);
         ps.setSelected(selected);
         return ps;
     }
@@ -54,8 +53,7 @@ public class PropertySelector<E, F> implements Serializable {
     /**
      * {@link PropertySelector} builder
      */
-    public static <E, F> PropertySelector<E, F> newPropertySelector(Attribute<E, F> field,
-            SearchMode searchMode) {
+    public static <E, F> PropertySelector<E, F> newPropertySelector(Attribute<E, F> field, SearchMode searchMode) {
         PropertySelector<E, F> ps = new PropertySelector<E, F>(field);
         ps.setSearchMode(searchMode);
         return ps;
@@ -67,31 +65,20 @@ public class PropertySelector<E, F> implements Serializable {
     private List<F> selected = newArrayList();
     private SearchMode searchMode; // for string property only.
 
-    /**
-     * @param field
-     *            the property that should match one of the selected value.
-     */
-    public PropertySelector(Attribute<E, F> field) {
-        this.attributes = Arrays.<Attribute<?, ?>> asList(field);
+    public PropertySelector(Attribute<?, ?>... attributes) {
+        this.attributes = newArrayList(checkNotNull(attributes));
+        verifyPath(newArrayList(attributes));
     }
 
-    /**
-     * @param firstField
-     *            the first path to property.
-     * @param fields
-     *            the property that should match one of the selected value.
-     */
-    public PropertySelector(Attribute<E, ?> firstAttribute, Attribute<?, ?>... attributes) {
-        Class<?> from = firstAttribute.getDeclaringType().getJavaType();
+    private void verifyPath(List<Attribute<?, ?>> attributes) {
+        Class<?> from = attributes.get(0).getJavaType();
+        attributes.remove(0);
         for (Attribute<?, ?> attribute : attributes) {
             if (!attribute.getDeclaringType().getJavaType().isAssignableFrom(from)) {
                 throw new IllegalStateException("Wrong path.");
             }
             from = attribute.getJavaType();
         }
-        this.attributes = new ArrayList<>();
-        this.attributes.add(firstAttribute);
-        this.attributes.addAll(Arrays.asList(attributes));
     }
 
     public List<Attribute<?, ?>> getAttributes() {

@@ -46,16 +46,23 @@ import fr.peralta.mycellar.domain.wine.Wine;
 @Named
 @Lazy(false)
 public class MassIndexerService {
-    private static final Logger log = LoggerFactory.getLogger(MassIndexerService.class);
-    protected static final Class<?>[] CLASSES_TO_BE_INDEXED = { BookingEvent.class, Cellar.class,
-            User.class, Appellation.class, Country.class, Format.class, Producer.class,
-            Region.class, Wine.class };
+
+    private static final Logger logger = LoggerFactory.getLogger(MassIndexerService.class);
+
+    protected static final Class<?>[] CLASSES_TO_BE_INDEXED = { BookingEvent.class, //
+            Cellar.class, User.class, Appellation.class, Country.class, Format.class, //
+            Producer.class, Region.class, Wine.class //
+    };
+
     @PersistenceContext
     private EntityManager entityManager;
+
     @Value("${massIndexer.nbThreadsToLoadObjects:1}")
     private int threadsToLoadObjects;
+
     @Value("${massIndexer.batchSizeToLoadObjects:10}")
     private int batchSizeToLoadObjects;
+
     @Value("${massIndexer.nbThreadsForSubsequentFetching:1}")
     private int threadsForSubsequentFetching;
 
@@ -72,8 +79,7 @@ public class MassIndexerService {
                     .start();
         } finally {
             stopWatch.stop();
-            log.info("Indexed {} in {}", Arrays.toString(CLASSES_TO_BE_INDEXED),
-                    stopWatch.toString());
+            logger.info("Indexed {} in {}", Arrays.toString(CLASSES_TO_BE_INDEXED), stopWatch.toString());
         }
     }
 }
