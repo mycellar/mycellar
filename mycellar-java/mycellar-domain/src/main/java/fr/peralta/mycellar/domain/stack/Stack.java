@@ -122,8 +122,8 @@ public class Stack extends IdentifiedEntity {
      * {@inheritDoc}
      */
     @Override
-    protected ToStringBuilder toStringBuilder() {
-        return super.toStringBuilder().append("count", count).append("hashCode", hashCode);
+    public String toString() {
+        return new ToStringBuilder(this).appendSuper(super.toString()).append("count", count).append("hashCode", hashCode).build();
     }
 
 }

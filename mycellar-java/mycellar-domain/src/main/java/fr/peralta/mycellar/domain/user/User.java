@@ -202,9 +202,8 @@ public class User extends IdentifiedEntity {
      * {@inheritDoc}
      */
     @Override
-    protected ToStringBuilder toStringBuilder() {
-        return super.toStringBuilder().append("email", email).append("firstname", firstname)
-                .append("lastname", lastname).append("profile", profile);
+    public String toString() {
+        return new ToStringBuilder(this).appendSuper(super.toString()).append("email", email).append("firstname", firstname).append("lastname", lastname).append("profile", profile).build();
     }
 
 }

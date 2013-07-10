@@ -220,9 +220,8 @@ public class Producer extends NamedEntity {
      * {@inheritDoc}
      */
     @Override
-    protected ToStringBuilder toStringBuilder() {
-        return super.toStringBuilder().append("address", address)
-                .append("description", description).append("websiteUrl", websiteUrl);
+    public String toString() {
+        return new ToStringBuilder(this).appendSuper(super.toString()).append("address", address).append("description", description).append("websiteUrl", websiteUrl).build();
     }
 
 }

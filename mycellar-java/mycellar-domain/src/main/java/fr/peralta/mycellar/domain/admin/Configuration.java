@@ -28,6 +28,7 @@ import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
 import org.apache.commons.lang3.ObjectUtils;
+import org.apache.commons.lang3.builder.ToStringBuilder;
 
 import fr.peralta.mycellar.domain.shared.IdentifiedEntity;
 
@@ -106,6 +107,14 @@ public class Configuration extends IdentifiedEntity {
     @Override
     protected Object[] getHashCodeData() {
         return new Object[] { getKey() };
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public String toString() {
+        return new ToStringBuilder(this).appendSuper(super.toString()).append("key", key).append("value", value).build();
     }
 
 }

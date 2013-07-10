@@ -85,7 +85,8 @@ public enum BusinessError {
     /*
      * Region
      */
-    REGION_00001(Region_.name, Region_.country),
+    REGION_00001(Region_.country), //
+    REGION_00002(Region_.country, Region_.name),
 
     /*
      * User

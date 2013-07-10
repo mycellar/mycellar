@@ -135,8 +135,7 @@ public class Appellation extends NamedEntity {
     @Override
     protected boolean dataEquals(IdentifiedEntity other) {
         Appellation appellation = (Appellation) other;
-        return ObjectUtils.equals(getName(), appellation.getName())
-                && ObjectUtils.equals(getRegion(), appellation.getRegion());
+        return ObjectUtils.equals(getName(), appellation.getName()) && ObjectUtils.equals(getRegion(), appellation.getRegion());
     }
 
     /**
@@ -151,9 +150,8 @@ public class Appellation extends NamedEntity {
      * {@inheritDoc}
      */
     @Override
-    protected ToStringBuilder toStringBuilder() {
-        return super.toStringBuilder().append("description", description).append("map", map)
-                .append("region", region);
+    public String toString() {
+        return new ToStringBuilder(this).appendSuper(super.toString()).append("description", description).append("map", map).append("region", region).build();
     }
 
 }

@@ -26,6 +26,8 @@ import java.util.List;
 
 import javax.persistence.metamodel.Attribute;
 
+import org.apache.commons.lang3.builder.ToStringBuilder;
+
 /**
  * Holder class for search ordering used by the {@link SearchParameters}. When
  * used with {@link NamedQueryUtil}, you pass column name. For other usage, pass
@@ -37,7 +39,11 @@ public class OrderBy implements Serializable {
     private final OrderByDirection direction;
 
     public OrderBy(OrderByDirection direction, Attribute<?, ?>... attributes) {
-        this.attributes = Arrays.asList(checkNotNull(attributes));
+        this(direction, Arrays.asList(checkNotNull(attributes)));
+    }
+
+    public OrderBy(OrderByDirection direction, List<Attribute<?, ?>> attributes) {
+        this.attributes = checkNotNull(attributes);
         this.direction = checkNotNull(direction);
     }
 
@@ -54,5 +60,21 @@ public class OrderBy implements Serializable {
 
     public boolean isOrderDesc() {
         return OrderByDirection.DESC == direction;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public String toString() {
+        ToStringBuilder toStringBuilder = new ToStringBuilder(this).append("direction", direction);
+        StringBuilder builder = new StringBuilder("{");
+        for (Attribute<?, ?> attribute : attributes) {
+            builder.append(new ToStringBuilder(attribute).append("declaringType", attribute.getDeclaringType()).append("javaType", attribute.getJavaType()).append("name", attribute.getName()).build())
+                    .append(",");
+        }
+        builder.deleteCharAt(builder.length() - 1).append("}");
+        toStringBuilder.append("attributes", builder.toString());
+        return toStringBuilder.build();
     }
 }

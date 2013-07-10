@@ -104,8 +104,7 @@ public class Cellar extends NamedEntity {
     @Override
     protected boolean dataEquals(IdentifiedEntity other) {
         Cellar cellar = (Cellar) other;
-        return ObjectUtils.equals(getName(), cellar.getName())
-                && ObjectUtils.equals(getOwner(), cellar.getOwner());
+        return ObjectUtils.equals(getName(), cellar.getName()) && ObjectUtils.equals(getOwner(), cellar.getOwner());
     }
 
     /**
@@ -120,8 +119,8 @@ public class Cellar extends NamedEntity {
      * {@inheritDoc}
      */
     @Override
-    protected ToStringBuilder toStringBuilder() {
-        return super.toStringBuilder().append("owner", owner);
+    public String toString() {
+        return new ToStringBuilder(this).appendSuper(super.toString()).append("owner", owner).build();
     }
 
 }

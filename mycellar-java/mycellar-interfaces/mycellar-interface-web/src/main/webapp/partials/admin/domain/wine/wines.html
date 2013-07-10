@@ -6,18 +6,46 @@
     </nav>
   </div>
   <div class="span10">
-    <data-mycellar-table page-range="3" options="tableOptions" items="items" sort="sort">
+    <form id="form" class="form-inline">
+      <fieldset>
+        <legend><a href ng-click="filtersIsCollapsed = !filtersIsCollapsed"><i ng-class="filtersIsCollapsed ? 'icon-expand-alt' : 'icon-collapse-alt'"></i></a> Filters</legend>
+        <div collapse="filtersIsCollapsed">
+          <div class="row-fluid">
+            <div class="span12">
+              <label for="appellation.region.country.name">Country name</label>
+              <input id="appellation.region.country.name" name="appellation.region.country.name" placeholder="Country name" ng-model="filters['appellation.region.country.name']" type="text" />
+              <label for="appellation.region.name">Region name</label>
+              <input id="appellation.region.name" name="appellation.region.name" placeholder="Region name" ng-model="filters['appellation.region.name']" type="text" />
+              <label for="appellation.name">Appellation name</label>
+              <input id="appellation.name" name="appellation.name" placeholder="Appellation name" ng-model="filters['appellation.name']" type="text" />
+            </div>
+          </div>
+          <div class="row-fluid">
+            <div class="span12">
+              <label for="producer.name">Producer name</label>
+              <input id="producer.name" name="producer.name" placeholder="Producer name" ng-model="filters['producer.name']" type="text" />
+              <label for="name">Name</label>
+              <input id="name" name="name" placeholder="Name" ng-model="filters.name" type="text" />
+              <label for="vintage">Vintage</label>
+              <input id="vintage" name="vintage" placeholder="Vintage" ng-model="filters.vintage" type="text" />
+            </div>
+          </div>
+          <input type="button" class="btn" value="Clear filters" ng-click="clearFilters()" />
+        </div>
+      </fieldset>
+    </form>
+    <data-mycellar-table page-range="3" options="tableOptions" items="items" sort="sort" filters="filters">
       <table class="table table-bordered table-striped table-condensed table-hover">
         <thead>
           <tr>
-            <th>Country <span ng-click="sortBy('appellation.region.country.name')">sort: {{sort.ways['appellation.region.country.name']}}</span></th>
-            <th>Region <span ng-click="sortBy('appellation.region.name')">sort: {{sort.ways['appellation.region.name']}}</span></th>
-            <th>Appellation <span ng-click="sortBy('appellation.name')">sort: {{sort.ways['appellation.name']}}</span></th>
-            <th>Producer <span ng-click="sortBy('producer.name')">sort: {{sort.ways['producer.name']}}</span></th>
-            <th>Name <span ng-click="sortBy('name')">sort: {{sort.ways['name']}}</span></th>
-            <th>Vintage <span ng-click="sortBy('vintage')">sort: {{sort.ways['vintage']}}</span></th>
-            <th>Color <span ng-click="sortBy('color')">sort: {{sort.ways['color']}}</span></th>
-            <th>Type <span ng-click="sortBy('type')">sort: {{sort.ways['type']}}</span></th>
+            <th>Country <icon-sort sort-fn="sortBy('appellation.region.country.name')" attribute="appellation.region.country.name" ways="sort.ways" /></th>
+            <th>Region <icon-sort sort-fn="sortBy('appellation.region.name')" attribute="appellation.region.name" ways="sort.ways" /></th>
+            <th>Appellation <icon-sort sort-fn="sortBy('appellation.name')" attribute="appellation.name" ways="sort.ways" /></th>
+            <th>Producer <icon-sort sort-fn="sortBy('producer.name')" attribute="producer.name" ways="sort.ways" /></th>
+            <th>Name <icon-sort sort-fn="sortBy('name')" attribute="name" ways="sort.ways" /></th>
+            <th>Vintage <icon-sort sort-fn="sortBy('vintage')" attribute="vintage" ways="sort.ways" /></th>
+            <th>Color <icon-sort sort-fn="sortBy('color')" attribute="color" ways="sort.ways" /></th>
+            <th>Type <icon-sort sort-fn="sortBy('type')" attribute="type" ways="sort.ways" /></th>
           </tr>
         </thead>
         <tbody ng-controller="LoadingCtrl" >
@@ -37,24 +65,17 @@
         </tbody>
         <tfoot>
           <tr>
-            <th>Country <span ng-click="sortBy('appellation.region.country.name')">sort: {{sort.ways['appellation.region.country.name']}}</span></th>
-            <th>Region <span ng-click="sortBy('appellation.region.name')">sort: {{sort.ways['appellation.region.name']}}</span></th>
-            <th>Appellation <span ng-click="sortBy('appellation.name')">sort: {{sort.ways['appellation.name']}}</span></th>
-            <th>Producer <span ng-click="sortBy('producer.name')">sort: {{sort.ways['producer.name']}}</span></th>
-            <th>Name <span ng-click="sortBy('name')">sort: {{sort.ways['name']}}</span></th>
-            <th>Vintage <span ng-click="sortBy('vintage')">sort: {{sort.ways['vintage']}}</span></th>
-            <th>Color <span ng-click="sortBy('color')">sort: {{sort.ways['color']}}</span></th>
-            <th>Type <span ng-click="sortBy('type')">sort: {{sort.ways['type']}}</span></th>
+            <th>Country <icon-sort sort-fn="sortBy('appellation.region.country.name')" attribute="appellation.region.country.name" ways="sort.ways" /></th>
+            <th>Region <icon-sort sort-fn="sortBy('appellation.region.name')" attribute="appellation.region.name" ways="sort.ways" /></th>
+            <th>Appellation <icon-sort sort-fn="sortBy('appellation.name')" attribute="appellation.name" ways="sort.ways" /></th>
+            <th>Producer <icon-sort sort-fn="sortBy('producer.name')" attribute="producer.name" ways="sort.ways" /></th>
+            <th>Name <icon-sort sort-fn="sortBy('name')" attribute="name" ways="sort.ways" /></th>
+            <th>Vintage <icon-sort sort-fn="sortBy('vintage')" attribute="vintage" ways="sort.ways" /></th>
+            <th>Color <icon-sort sort-fn="sortBy('color')" attribute="color" ways="sort.ways" /></th>
+            <th>Type <icon-sort sort-fn="sortBy('type')" attribute="type" ways="sort.ways" /></th>
           </tr>
         </tfoot>
       </table>
     </data-mycellar-table>
-    <form id="form" class="form-inline">
-      <fieldset>
-        <legend><a href ng-click="filtersIsCollapsed = !filtersIsCollapsed">Filters</a></legend>
-        <div collapse="filtersIsCollapsed">
-          <input type="button" class="btn" value="Clear filters" ng-click="clearFilters()" />
-        </div>
-      </fieldset>
   </div>
 </div>

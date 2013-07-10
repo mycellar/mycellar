@@ -254,12 +254,8 @@ public class Wine extends NamedEntity {
     @Override
     protected boolean dataEquals(IdentifiedEntity other) {
         Wine wine = (Wine) other;
-        return ObjectUtils.equals(getName(), wine.getName())
-                && ObjectUtils.equals(getType(), wine.getType())
-                && ObjectUtils.equals(getVintage(), wine.getVintage())
-                && ObjectUtils.equals(getColor(), wine.getColor())
-                && ObjectUtils.equals(getAppellation(), wine.getAppellation())
-                && ObjectUtils.equals(getProducer(), wine.getProducer());
+        return ObjectUtils.equals(getName(), wine.getName()) && ObjectUtils.equals(getType(), wine.getType()) && ObjectUtils.equals(getVintage(), wine.getVintage())
+                && ObjectUtils.equals(getColor(), wine.getColor()) && ObjectUtils.equals(getAppellation(), wine.getAppellation()) && ObjectUtils.equals(getProducer(), wine.getProducer());
     }
 
     /**
@@ -274,9 +270,8 @@ public class Wine extends NamedEntity {
      * {@inheritDoc}
      */
     @Override
-    protected ToStringBuilder toStringBuilder() {
-        return super.toStringBuilder().append("description", description)
-                .append("photoUrl", photoUrl).append("producer", producer)
-                .append("ranking", ranking).append("type", type).append("vintage", vintage);
+    public String toString() {
+        return new ToStringBuilder(this).appendSuper(super.toString()).append("description", description).append("photoUrl", photoUrl).append("producer", producer).append("ranking", ranking)
+                .append("type", type).append("vintage", vintage).build();
     }
 }

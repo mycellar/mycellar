@@ -134,9 +134,8 @@ public class Stock extends IdentifiedEntity {
      * {@inheritDoc}
      */
     @Override
-    protected ToStringBuilder toStringBuilder() {
-        return super.toStringBuilder().append("bottle", bottle).append("cellar", cellar)
-                .append("quantity", quantity);
+    public String toString() {
+        return new ToStringBuilder(this).appendSuper(super.toString()).append("bottle", bottle).append("cellar", cellar).append("quantity", quantity).build();
     }
 
 }

@@ -137,9 +137,8 @@ public class Varietal extends NamedEntity {
      * {@inheritDoc}
      */
     @Override
-    protected ToStringBuilder toStringBuilder() {
-        return super.toStringBuilder().append("description", description).append("flesh", flesh)
-                .append("skin", skin);
+    public String toString() {
+        return new ToStringBuilder(this).appendSuper(super.toString()).append("description", description).append("flesh", flesh).append("skin", skin).build();
     }
 
 }

@@ -144,9 +144,8 @@ public abstract class Movement extends IdentifiedEntity {
      * {@inheritDoc}
      */
     @Override
-    protected ToStringBuilder toStringBuilder() {
-        return super.toStringBuilder().append("bottle", bottle).append("cellar", cellar)
-                .append("date", date).append("number", number);
+    public String toString() {
+        return new ToStringBuilder(this).appendSuper(super.toString()).append("bottle", bottle).append("cellar", cellar).append("date", date).append("number", number).build();
     }
 
 }

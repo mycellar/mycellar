@@ -105,8 +105,8 @@ public class Format extends NamedEntity {
      * {@inheritDoc}
      */
     @Override
-    protected ToStringBuilder toStringBuilder() {
-        return super.toStringBuilder().append("capacity", capacity);
+    public String toString() {
+        return new ToStringBuilder(this).appendSuper(super.toString()).append("capacity", capacity).build();
     }
 
 }

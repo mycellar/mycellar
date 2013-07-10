@@ -9,8 +9,38 @@
     <form name="form" class="form form-horizontal">
       <fieldset>
         <legend>Wine</legend>
-        <div wicket:id="producer" />
-        <div wicket:id="appellation" />
+        <div class="control-group" ng-class="{error: form.appellation.$invalid}">
+          <label class="control-label" for="appellation">Appellation</label>
+          <div class="controls">
+            <input 
+                id="appellation" 
+                name="appellation" 
+                type="text" 
+                ng-model="wine.appellation" 
+                placeholder="Appellation" 
+                typeahead="appellation as appellation.name for appellation in appellations($viewValue)"
+                typeahead-editable="false"  
+                typeahead-min-length="2" 
+                typeahead-wait-ms="200" />
+            <span class="help-inline" ng-show="form.appellation.$invalid">{{form.appellation.$error}}</span>
+          </div>
+        </div>
+        <div class="control-group" ng-class="{error: form.producer.$invalid}">
+          <label class="control-label" for="producer">Producer</label>
+          <div class="controls">
+            <input 
+                id="producer" 
+                name="producer" 
+                type="text" 
+                ng-model="wine.producer" 
+                placeholder="Producer" 
+                typeahead="producer as producer.name for producer in producers($viewValue)"
+                typeahead-editable="false"  
+                typeahead-min-length="2" 
+                typeahead-wait-ms="200" />
+            <span class="help-inline" ng-show="form.producer.$invalid">{{form.producer.$error}}</span>
+          </div>
+        </div>
         <div class="control-group" wicket:id="type">
           <select id="type" wicket:id="type">
               <option wicket:id="option"></option>

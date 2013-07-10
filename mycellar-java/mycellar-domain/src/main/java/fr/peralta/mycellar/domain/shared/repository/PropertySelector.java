@@ -27,6 +27,8 @@ import java.util.List;
 
 import javax.persistence.metamodel.Attribute;
 
+import org.apache.commons.lang3.builder.ToStringBuilder;
+
 /**
  * Used to construct OR predicate for a property value. In other words you can
  * search all entities E having a given property set to one of the selected
@@ -53,6 +55,15 @@ public class PropertySelector<E, F> implements Serializable {
     /**
      * {@link PropertySelector} builder
      */
+    public static <E, F> PropertySelector<E, F> newPropertySelector(F selected, List<Attribute<?, ?>> fields) {
+        PropertySelector<E, F> ps = new PropertySelector<E, F>(fields);
+        ps.setSelected(selected);
+        return ps;
+    }
+
+    /**
+     * {@link PropertySelector} builder
+     */
     public static <E, F> PropertySelector<E, F> newPropertySelector(Attribute<E, F> field, SearchMode searchMode) {
         PropertySelector<E, F> ps = new PropertySelector<E, F>(field);
         ps.setSearchMode(searchMode);
@@ -66,7 +77,11 @@ public class PropertySelector<E, F> implements Serializable {
     private SearchMode searchMode; // for string property only.
 
     public PropertySelector(Attribute<?, ?>... attributes) {
-        this.attributes = newArrayList(checkNotNull(attributes));
+        this(newArrayList(checkNotNull(attributes)));
+    }
+
+    public PropertySelector(List<Attribute<?, ?>> attributes) {
+        this.attributes = checkNotNull(attributes);
         verifyPath(newArrayList(attributes));
     }
 
@@ -130,6 +145,22 @@ public class PropertySelector<E, F> implements Serializable {
      */
     public void setSearchMode(SearchMode searchMode) {
         this.searchMode = searchMode;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public String toString() {
+        ToStringBuilder toStringBuilder = new ToStringBuilder(this).append("searchMode", searchMode).append("selected", selected);
+        StringBuilder builder = new StringBuilder("{");
+        for (Attribute<?, ?> attribute : attributes) {
+            builder.append(new ToStringBuilder(attribute).append("declaringType", attribute.getDeclaringType()).append("javaType", attribute.getJavaType()).append("name", attribute.getName()).build())
+                    .append(",");
+        }
+        builder.deleteCharAt(builder.length() - 1).append("}");
+        toStringBuilder.append("attributes", builder.toString());
+        return toStringBuilder.build();
     }
 
 }

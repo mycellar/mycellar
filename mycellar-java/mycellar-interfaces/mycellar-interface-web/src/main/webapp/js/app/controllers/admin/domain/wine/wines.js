@@ -22,6 +22,16 @@ angular.module('mycellar').controller({
         'type': null
       }
     };
+    $scope.filters = {
+      'appellation.region.country.name': '',
+      'appellation.region.name': '',
+      'appellation.name': '',
+      'producer.name': '',
+      'name': '',
+      'vintage': '',
+      'color': '',
+      'type': ''
+      }
     $scope.filtersIsCollapsed = true;
     
     $scope.tableOptions = {
@@ -47,7 +57,7 @@ angular.module('mycellar').controller({
       }
     };
   },
-  AdminDomainWineController: function ($scope, $resource, $route, $location) {
+  AdminDomainWineController: function ($scope, $resource, $route, $location, $http) {
     var wineId = $route.current.params.wineId;
     $scope.wineResource = $resource('/api/domain/wine/wine/:wineId');
     $scope.wine = $scope.wineResource.get({wineId: wineId});
@@ -68,6 +78,16 @@ angular.module('mycellar').controller({
     };
     $scope.cancel = function () {
       $location.path('/admin/domain/wine/wines/');
+    };
+    $scope.appellations = function (appellationName) {
+      return $http.get("/api/domain/wine/appellations?count=15&filters=name,"+appellationName+"&first=0&sort=region.country.name,asc&sort=region.name,asc&sort=name,asc").then(function(response){
+        return response.data.list;
+      });
+    };
+    $scope.producers = function (producerName) {
+      return $http.get("/api/domain/wine/producers?count=15&filters=name,"+producerName+"&first=0&sort=name,asc").then(function(response){
+        return response.data.list;
+      });
     };
   }
 });

@@ -179,8 +179,7 @@ public class WineServiceFacadeImpl implements WineServiceFacade {
      */
     @Override
     @Transactional(readOnly = true)
-    public Wine findWine(Producer producer, Appellation appellation, WineTypeEnum type,
-            WineColorEnum color, String name, Integer vintage) {
+    public Wine findWine(Producer producer, Appellation appellation, WineTypeEnum type, WineColorEnum color, String name, Integer vintage) {
         return wineService.find(producer, appellation, type, color, name, vintage);
     }
 
@@ -297,8 +296,8 @@ public class WineServiceFacadeImpl implements WineServiceFacade {
      */
     @Override
     @Transactional
-    public void saveAppellation(Appellation appellation) throws BusinessException {
-        appellationService.save(appellation);
+    public Appellation saveAppellation(Appellation appellation) throws BusinessException {
+        return appellationService.save(appellation);
     }
 
     /**
@@ -324,8 +323,8 @@ public class WineServiceFacadeImpl implements WineServiceFacade {
      */
     @Override
     @Transactional
-    public void saveProducer(Producer producer) throws BusinessException {
-        producerService.save(producer);
+    public Producer saveProducer(Producer producer) throws BusinessException {
+        return producerService.save(producer);
     }
 
     /**

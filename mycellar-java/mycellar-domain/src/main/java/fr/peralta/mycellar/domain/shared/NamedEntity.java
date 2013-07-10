@@ -58,8 +58,8 @@ public abstract class NamedEntity extends IdentifiedEntity {
      * {@inheritDoc}
      */
     @Override
-    protected ToStringBuilder toStringBuilder() {
-        return super.toStringBuilder().append("name", name);
+    public String toString() {
+        return new ToStringBuilder(this).appendSuper(super.toString()).append("name", name).toString();
     }
 
 }

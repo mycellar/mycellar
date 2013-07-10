@@ -18,6 +18,8 @@
  */
 package fr.mycellar.interfaces.facade.web.domain.user;
 
+import static fr.mycellar.interfaces.facade.web.domain.MetamodelUtil.*;
+
 import java.util.List;
 
 import javax.ws.rs.GET;
@@ -30,7 +32,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import fr.mycellar.interfaces.facade.web.domain.ListWithCount;
-import fr.mycellar.interfaces.facade.web.domain.MetamodelUtil;
 import fr.mycellar.interfaces.facade.web.domain.OrderCouple;
 import fr.peralta.mycellar.domain.shared.repository.OrderBy;
 import fr.peralta.mycellar.domain.shared.repository.SearchParameters;
@@ -49,17 +50,14 @@ public class UserWebService {
     @GET
     @Produces(MediaType.APPLICATION_JSON)
     @Path("users")
-    public ListWithCount<User> getUsers(@QueryParam("first") int first,
-            @QueryParam("count") int count, @QueryParam("sort") List<OrderCouple> orders) {
+    public ListWithCount<User> getUsers(@QueryParam("first") int first, @QueryParam("count") int count, @QueryParam("sort") List<OrderCouple> orders) {
         SearchParameters searchParameters = new SearchParameters();
         searchParameters.setFirstResult(first);
         searchParameters.setMaxResults(count);
         for (OrderCouple order : orders) {
-            searchParameters.addOrderBy(new OrderBy(order.getDirection(), MetamodelUtil
-                    .toMetamodelPath(order.getProperty(), User.class)));
+            searchParameters.addOrderBy(new OrderBy(order.getDirection(), toAttributes(order.getProperty(), User.class)));
         }
-        return new ListWithCount<>(userServiceFacade.countUsers(searchParameters),
-                userServiceFacade.getUsers(searchParameters));
+        return new ListWithCount<>(userServiceFacade.countUsers(searchParameters), userServiceFacade.getUsers(searchParameters));
     }
 
     /**

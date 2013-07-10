@@ -96,12 +96,8 @@ public class Input extends Movement {
     @Override
     protected boolean dataEquals(IdentifiedEntity other) {
         Input input = (Input) other;
-        return ObjectUtils.equals(getDate(), input.getDate())
-                && ObjectUtils.equals(getCellar(), input.getCellar())
-                && ObjectUtils.equals(getCharges(), input.getCharges())
-                && ObjectUtils.equals(getNumber(), input.getNumber())
-                && ObjectUtils.equals(getPrice(), input.getPrice())
-                && ObjectUtils.equals(getSource(), input.getSource())
+        return ObjectUtils.equals(getDate(), input.getDate()) && ObjectUtils.equals(getCellar(), input.getCellar()) && ObjectUtils.equals(getCharges(), input.getCharges())
+                && ObjectUtils.equals(getNumber(), input.getNumber()) && ObjectUtils.equals(getPrice(), input.getPrice()) && ObjectUtils.equals(getSource(), input.getSource())
                 && ObjectUtils.equals(getBottle(), input.getBottle());
     }
 
@@ -117,9 +113,8 @@ public class Input extends Movement {
      * {@inheritDoc}
      */
     @Override
-    protected ToStringBuilder toStringBuilder() {
-        return super.toStringBuilder().append("charges", charges).append("price", price)
-                .append("source", source);
+    public String toString() {
+        return new ToStringBuilder(this).appendSuper(super.toString()).append("charges", charges).append("price", price).append("source", source).build();
     }
 
 }

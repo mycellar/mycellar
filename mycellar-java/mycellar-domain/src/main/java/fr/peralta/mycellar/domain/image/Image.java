@@ -134,8 +134,7 @@ public class Image extends NamedEntity {
         Image image = (Image) other;
         boolean result;
         if ((getContent() == null) || (image.getContent() == null)) {
-            result = ObjectUtils.equals(getName(), image.getName())
-                    && ObjectUtils.equals(getContentType(), image.getContentType());
+            result = ObjectUtils.equals(getName(), image.getName()) && ObjectUtils.equals(getContentType(), image.getContentType());
         } else {
             result = ObjectUtils.equals(getContent(), image.getContent());
         }
@@ -154,9 +153,8 @@ public class Image extends NamedEntity {
      * {@inheritDoc}
      */
     @Override
-    protected ToStringBuilder toStringBuilder() {
-        return super.toStringBuilder().append("contentType", contentType).append("height", height)
-                .append("width", width);
+    public String toString() {
+        return new ToStringBuilder(this).appendSuper(super.toString()).append("contentType", contentType).append("height", height).append("width", width).build();
     }
 
 }

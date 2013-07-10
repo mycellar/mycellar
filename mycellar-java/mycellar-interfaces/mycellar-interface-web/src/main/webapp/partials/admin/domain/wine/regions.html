@@ -6,12 +6,24 @@
     </nav>
   </div>
   <div class="span10">
+    <form id="form" class="form-inline">
+      <fieldset>
+        <legend><a href ng-click="filtersIsCollapsed = !filtersIsCollapsed"><i ng-class="filtersIsCollapsed ? 'icon-expand-alt' : 'icon-collapse-alt'"></i></a> Filters</legend>
+        <div collapse="filtersIsCollapsed">
+          <label for="country.name">Country name</label>
+          <input id="country.name" name="country.name" placeholder="Name" ng-model="filters['country.name']" type="text" />
+          <label for="name">Name</label>
+          <input id="name" name="name" placeholder="Name" ng-model="filters.name" type="text" />
+          <input type="button" class="btn" value="Clear filters" ng-click="clearFilters()" />
+        </div>
+      </fieldset>
+    </form>
     <data-mycellar-table page-range="3" options="tableOptions" items="items" sort="sort" filters="filters">
       <table class="table table-bordered table-striped table-condensed table-hover">
         <thead>
           <tr>
-            <th>Country <span ng-click="sortBy('country.name')">sort: {{sort.ways['country.name']}}</span></th>
-            <th>Name <span ng-click="sortBy('name')">sort: {{sort.ways['name']}}</span></th>
+            <th>Country <icon-sort sort-fn="sortBy('country.name')" attribute="country.name" ways="sort.ways" /></th>
+            <th>Name <icon-sort sort-fn="sortBy('name')" attribute="name" ways="sort.ways" /></th>
           </tr>
         </thead>
         <tbody ng-controller="LoadingCtrl">
@@ -25,23 +37,11 @@
         </tbody>
         <tfoot>
           <tr>
-            <th>Country <span ng-click="sortBy('country_name')">sort: {{sort.ways['country.name']}}</span></th>
-            <th>Name <span ng-click="sortBy('name')">sort: {{sort.ways['name']}}</span></th>
+            <th>Country <icon-sort sort-fn="sortBy('country.name')" attribute="country.name" ways="sort.ways" /></th>
+            <th>Name <icon-sort sort-fn="sortBy('name')" attribute="name" ways="sort.ways" /></th>
           </tr>
         </tfoot>
       </table>
     </data-mycellar-table>
-    <form id="form" class="form-inline">
-      <fieldset>
-        <legend><a href ng-click="filtersIsCollapsed = !filtersIsCollapsed">Filters</a></legend>
-        <div collapse="filtersIsCollapsed">
-          <label for="country.name">Country name</label>
-          <input id="country.name" name="country.name" placeholder="Name" ng-model="filters['country.name']" type="text" />
-          <label for="name">Name</label>
-          <input id="name" name="name" placeholder="Name" ng-model="filters.name" type="text" />
-          <input type="button" class="btn" value="Clear filters" ng-click="clearFilters()" />
-        </div>
-      </fieldset>
-    </form>
   </div>
 </div>

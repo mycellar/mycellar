@@ -32,6 +32,7 @@ import javax.persistence.Table;
 import javax.persistence.UniqueConstraint;
 
 import org.apache.commons.lang3.ObjectUtils;
+import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.hibernate.validator.constraints.Email;
 
 import fr.peralta.mycellar.domain.shared.IdentifiedEntity;
@@ -40,8 +41,7 @@ import fr.peralta.mycellar.domain.shared.IdentifiedEntity;
  * @author speralta
  */
 @Entity
-@Table(name = "CELLAR_SHARE", uniqueConstraints = @UniqueConstraint(columnNames = { "EMAIL",
-        "CELLAR" }))
+@Table(name = "CELLAR_SHARE", uniqueConstraints = @UniqueConstraint(columnNames = { "EMAIL", "CELLAR" }))
 @SequenceGenerator(name = "CELLAR_SHARE_ID_GENERATOR", allocationSize = 1)
 public class CellarShare extends IdentifiedEntity {
 
@@ -123,9 +123,7 @@ public class CellarShare extends IdentifiedEntity {
     @Override
     protected boolean dataEquals(IdentifiedEntity other) {
         CellarShare cellarShare = (CellarShare) other;
-        return ObjectUtils.equals(getEmail(), cellarShare.getEmail())
-                && ObjectUtils.equals(getAccessRight(), cellarShare.getAccessRight())
-                && ObjectUtils.equals(getCellar(), cellarShare.getCellar());
+        return ObjectUtils.equals(getEmail(), cellarShare.getEmail()) && ObjectUtils.equals(getAccessRight(), cellarShare.getAccessRight()) && ObjectUtils.equals(getCellar(), cellarShare.getCellar());
     }
 
     /**
@@ -134,6 +132,14 @@ public class CellarShare extends IdentifiedEntity {
     @Override
     protected Object[] getHashCodeData() {
         return new Object[] { getCellar(), getEmail(), getAccessRight() };
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public String toString() {
+        return new ToStringBuilder(this).appendSuper(super.toString()).append("accessRight", accessRight).append("cellar", cellar).append("email", email).build();
     }
 
 }

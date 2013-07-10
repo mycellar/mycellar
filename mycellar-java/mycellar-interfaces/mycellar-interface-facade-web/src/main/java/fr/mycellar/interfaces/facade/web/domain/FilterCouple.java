@@ -18,6 +18,8 @@
  */
 package fr.mycellar.interfaces.facade.web.domain;
 
+import org.apache.commons.lang.StringUtils;
+import org.joda.time.LocalDateTime;
 
 /**
  * @author speralta
@@ -25,7 +27,7 @@ package fr.mycellar.interfaces.facade.web.domain;
 public class FilterCouple {
 
     private final String property;
-    private final String filter;
+    private final Object filter;
 
     /**
      * Default constructor.
@@ -34,7 +36,28 @@ public class FilterCouple {
      */
     public FilterCouple(String couple) {
         property = couple.substring(0, couple.indexOf(","));
-        filter = couple.substring(couple.indexOf(",") + 1);
+        String value = couple.substring(couple.indexOf(",") + 1);
+        Object result = null;
+        try {
+            result = new Long(value);
+        } catch (Exception e) {
+        }
+        if (result == null) {
+            try {
+                result = new Double(value);
+            } catch (Exception e) {
+            }
+        }
+        if (result == null) {
+            try {
+                result = LocalDateTime.parse(value);
+            } catch (Exception e) {
+            }
+        }
+        if (result == null) {
+            result = value;
+        }
+        filter = result;
     }
 
     /**
@@ -47,8 +70,14 @@ public class FilterCouple {
     /**
      * @return the filter
      */
-    public String getFilter() {
+    public Object getFilter() {
         return filter;
     }
 
+    /**
+     * @return
+     */
+    public boolean isFilterSet() {
+        return (filter != null) && (!(filter instanceof String) || StringUtils.isNotEmpty((String) filter));
+    }
 }

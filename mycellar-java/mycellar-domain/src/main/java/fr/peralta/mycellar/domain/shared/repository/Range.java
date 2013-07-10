@@ -22,6 +22,8 @@ import java.io.Serializable;
 
 import javax.persistence.metamodel.SingularAttribute;
 
+import org.apache.commons.lang3.builder.ToStringBuilder;
+
 /**
  * Range support for {@link Comparable} types.
  */
@@ -168,5 +170,13 @@ public class Range<E, D extends Comparable<? super D>> implements Serializable {
         from = null;
         to = null;
         includeNull = null;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public String toString() {
+        return ToStringBuilder.reflectionToString(this);
     }
 }

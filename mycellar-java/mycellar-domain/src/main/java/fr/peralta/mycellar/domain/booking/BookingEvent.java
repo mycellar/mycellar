@@ -53,8 +53,7 @@ import fr.peralta.mycellar.domain.shared.NamedEntity;
  */
 @Entity
 @Indexed
-@Table(name = "BOOKING_EVENT", uniqueConstraints = @UniqueConstraint(columnNames = { "NAME",
-        "START", "END" }))
+@Table(name = "BOOKING_EVENT", uniqueConstraints = @UniqueConstraint(columnNames = { "NAME", "START", "END" }))
 @SequenceGenerator(name = "BOOKING_EVENT_ID_GENERATOR", allocationSize = 1)
 public class BookingEvent extends NamedEntity {
 
@@ -72,8 +71,7 @@ public class BookingEvent extends NamedEntity {
     @OneToMany(mappedBy = "bookingEvent", cascade = { CascadeType.MERGE, CascadeType.PERSIST }, fetch = FetchType.EAGER, orphanRemoval = true)
     @OrderBy("position")
     @Sort(comparator = BookingBottlePositionComparator.class, type = SortType.COMPARATOR)
-    private final SortedSet<BookingBottle> bottles = new TreeSet<BookingBottle>(
-            new BookingBottlePositionComparator());
+    private final SortedSet<BookingBottle> bottles = new TreeSet<BookingBottle>(new BookingBottlePositionComparator());
 
     @Column(name = "START", nullable = false)
     @Type(type = "org.jadira.usertype.dateandtime.joda.PersistentLocalDate")
@@ -134,9 +132,7 @@ public class BookingEvent extends NamedEntity {
     @Override
     protected boolean dataEquals(IdentifiedEntity other) {
         BookingEvent bookingEvent = (BookingEvent) other;
-        return ObjectUtils.equals(getStart(), bookingEvent.getStart())
-                && ObjectUtils.equals(getEnd(), bookingEvent.getEnd())
-                && ObjectUtils.equals(getName(), bookingEvent.getName());
+        return ObjectUtils.equals(getStart(), bookingEvent.getStart()) && ObjectUtils.equals(getEnd(), bookingEvent.getEnd()) && ObjectUtils.equals(getName(), bookingEvent.getName());
     }
 
     /**
@@ -151,8 +147,8 @@ public class BookingEvent extends NamedEntity {
      * {@inheritDoc}
      */
     @Override
-    protected ToStringBuilder toStringBuilder() {
-        return super.toStringBuilder().append("start", start).append("end", end);
+    public String toString() {
+        return new ToStringBuilder(this).appendSuper(super.toString()).append("start", start).append("end", end).build();
     }
 
 }

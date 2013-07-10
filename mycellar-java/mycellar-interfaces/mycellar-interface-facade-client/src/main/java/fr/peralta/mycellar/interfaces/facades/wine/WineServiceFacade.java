@@ -131,8 +131,7 @@ public interface WineServiceFacade {
      * @param vintage
      * @return
      */
-    Wine findWine(Producer producer, Appellation appellation, WineTypeEnum type,
-            WineColorEnum color, String name, Integer vintage);
+    Wine findWine(Producer producer, Appellation appellation, WineTypeEnum type, WineColorEnum color, String name, Integer vintage);
 
     /**
      * @param appellationId
@@ -210,7 +209,7 @@ public interface WineServiceFacade {
      * @param appellation
      * @throws BusinessException
      */
-    void saveAppellation(Appellation appellation) throws BusinessException;
+    Appellation saveAppellation(Appellation appellation) throws BusinessException;
 
     /**
      * @param country
@@ -229,7 +228,7 @@ public interface WineServiceFacade {
      * @param producer
      * @throws BusinessException
      */
-    void saveProducer(Producer producer) throws BusinessException;
+    Producer saveProducer(Producer producer) throws BusinessException;
 
     /**
      * @param region

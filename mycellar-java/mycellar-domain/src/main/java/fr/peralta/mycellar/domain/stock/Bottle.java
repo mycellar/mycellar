@@ -113,8 +113,7 @@ public class Bottle extends IdentifiedEntity {
     @Override
     protected boolean dataEquals(IdentifiedEntity other) {
         Bottle bottle = (Bottle) other;
-        return ObjectUtils.equals(getFormat(), bottle.getFormat())
-                && ObjectUtils.equals(getWine(), bottle.getWine());
+        return ObjectUtils.equals(getFormat(), bottle.getFormat()) && ObjectUtils.equals(getWine(), bottle.getWine());
     }
 
     /**
@@ -129,8 +128,8 @@ public class Bottle extends IdentifiedEntity {
      * {@inheritDoc}
      */
     @Override
-    protected ToStringBuilder toStringBuilder() {
-        return super.toStringBuilder().append("format", format).append("wine", wine);
+    public String toString() {
+        return new ToStringBuilder(this).appendSuper(super.toString()).append("format", format).append("wine", wine).build();
     }
 
 }

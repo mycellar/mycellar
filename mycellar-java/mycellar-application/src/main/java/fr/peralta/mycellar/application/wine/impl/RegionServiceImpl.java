@@ -39,8 +39,7 @@ import fr.peralta.mycellar.domain.wine.repository.RegionRepository;
  */
 @Named
 @Singleton
-public class RegionServiceImpl extends AbstractSimpleService<Region, RegionRepository> implements
-        RegionService {
+public class RegionServiceImpl extends AbstractSimpleService<Region, RegionRepository> implements RegionService {
 
     private RegionRepository regionRepository;
 
@@ -49,18 +48,15 @@ public class RegionServiceImpl extends AbstractSimpleService<Region, RegionRepos
      */
     @Override
     public void validate(Region entity) throws BusinessException {
-        Region existing = regionRepository
-                .findUniqueOrNone(new SearchParameters() //
-                        .property(
-                                PropertySelector.newPropertySelector(entity.getCountry().getId(),
-                                        Region_.country, Country_.id)) //
-                        .property(
-                                PropertySelector.newPropertySelector(entity.getName(),
-                                        NamedEntity_.name)) //
-                );
-        if ((existing != null)
-                && ((entity.getId() == null) || !existing.getId().equals(entity.getId()))) {
+        if (entity.getCountry() == null) {
             throw new BusinessException(BusinessError.REGION_00001);
+        }
+        Region existing = regionRepository.findUniqueOrNone(new SearchParameters() //
+                .property(PropertySelector.newPropertySelector(entity.getCountry().getId(), Region_.country, Country_.id)) //
+                .property(PropertySelector.newPropertySelector(entity.getName(), NamedEntity_.name)) //
+                );
+        if ((existing != null) && ((entity.getId() == null) || !existing.getId().equals(entity.getId()))) {
+            throw new BusinessException(BusinessError.REGION_00002);
         }
     }
 

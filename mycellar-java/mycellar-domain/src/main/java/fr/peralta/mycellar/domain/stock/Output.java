@@ -78,12 +78,8 @@ public class Output extends Movement {
     @Override
     protected boolean dataEquals(IdentifiedEntity other) {
         Output output = (Output) other;
-        return ObjectUtils.equals(getDate(), output.getDate())
-                && ObjectUtils.equals(getCellar(), output.getCellar())
-                && ObjectUtils.equals(getNumber(), output.getNumber())
-                && ObjectUtils.equals(getPrice(), output.getPrice())
-                && ObjectUtils.equals(getDestination(), output.getDestination())
-                && ObjectUtils.equals(getBottle(), output.getBottle());
+        return ObjectUtils.equals(getDate(), output.getDate()) && ObjectUtils.equals(getCellar(), output.getCellar()) && ObjectUtils.equals(getNumber(), output.getNumber())
+                && ObjectUtils.equals(getPrice(), output.getPrice()) && ObjectUtils.equals(getDestination(), output.getDestination()) && ObjectUtils.equals(getBottle(), output.getBottle());
     }
 
     /**
@@ -98,7 +94,7 @@ public class Output extends Movement {
      * {@inheritDoc}
      */
     @Override
-    protected ToStringBuilder toStringBuilder() {
-        return super.toStringBuilder().append("destination", destination).append("price", price);
+    public String toString() {
+        return new ToStringBuilder(this).appendSuper(super.toString()).append("destination", destination).append("price", price).build();
     }
 }

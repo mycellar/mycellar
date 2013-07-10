@@ -104,11 +104,7 @@ public abstract class IdentifiedEntity implements Identifiable<Integer>, Seriali
      */
     @Override
     public String toString() {
-        return toStringBuilder().toString();
-    }
-
-    protected ToStringBuilder toStringBuilder() {
-        return new ToStringBuilder(this).append("id", getId()).append("version", version);
+        return new ToStringBuilder(this).append("id", getId()).append("version", version).toString();
     }
 
     /**

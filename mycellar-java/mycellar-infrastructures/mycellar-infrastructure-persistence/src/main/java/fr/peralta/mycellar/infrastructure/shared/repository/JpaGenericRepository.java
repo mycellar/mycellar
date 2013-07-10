@@ -47,8 +47,7 @@ import fr.peralta.mycellar.domain.shared.repository.SearchParameters;
 /**
  * JPA 2 Generic DAO with find by example/range/pattern and CRUD support.
  */
-public abstract class JpaGenericRepository<E extends Identifiable<PK>, PK extends Serializable>
-        implements GenericRepository<E, PK> {
+public abstract class JpaGenericRepository<E extends Identifiable<PK>, PK extends Serializable> implements GenericRepository<E, PK> {
 
     private final Logger logger = LoggerFactory.getLogger(getClass());
 
@@ -125,7 +124,7 @@ public abstract class JpaGenericRepository<E extends Identifiable<PK>, PK extend
 
         // execution
         List<E> entities = typedQuery.getResultList();
-        logger.trace("Returned {} elements.", entities.size());
+        logger.trace("Returned {} elements for {}.", entities.size(), sp);
 
         return entities;
     }
@@ -202,15 +201,13 @@ public abstract class JpaGenericRepository<E extends Identifiable<PK>, PK extend
         }
 
         if (results.size() > 1) {
-            throw new NonUniqueResultException(
-                    "Developper: You expected 1 result but we found more !");
+            throw new NonUniqueResultException("Developper: You expected 1 result but we found more !");
         }
 
         return results.iterator().next();
     }
 
-    protected <R> Predicate getPredicate(Root<E> root, CriteriaQuery<R> query,
-            CriteriaBuilder builder, SearchParameters sp) {
+    protected <R> Predicate getPredicate(Root<E> root, CriteriaQuery<R> query, CriteriaBuilder builder, SearchParameters sp) {
         return JpaUtil.andPredicate(builder, //
                 byFullTextUtil.byFullText(root, query, builder, sp, type, indexedAttributes), //
                 byRangeUtil.byRanges(root, query, builder, sp.getRanges(), type), //
@@ -222,8 +219,7 @@ public abstract class JpaGenericRepository<E extends Identifiable<PK>, PK extend
      * You may override this method to add a Predicate to the default find
      * method.
      */
-    protected <R> Predicate byExtraPredicate(Root<E> root, CriteriaQuery<R> query,
-            CriteriaBuilder builder, SearchParameters sp) {
+    protected <R> Predicate byExtraPredicate(Root<E> root, CriteriaQuery<R> query, CriteriaBuilder builder, SearchParameters sp) {
         return null;
     }
 

@@ -31,6 +31,7 @@ import javax.persistence.UniqueConstraint;
 import javax.validation.Valid;
 
 import org.apache.commons.lang3.ObjectUtils;
+import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.hibernate.annotations.Type;
 import org.joda.time.LocalDate;
 
@@ -41,8 +42,7 @@ import fr.peralta.mycellar.domain.wine.Producer;
  * @author speralta
  */
 @Entity
-@Table(name = "CONTACT", uniqueConstraints = @UniqueConstraint(columnNames = { "PRODUCER",
-        "CURRENT" }))
+@Table(name = "CONTACT", uniqueConstraints = @UniqueConstraint(columnNames = { "PRODUCER", "CURRENT" }))
 @SequenceGenerator(name = "CONTACT_ID_GENERATOR", allocationSize = 1)
 public class Contact extends IdentifiedEntity {
 
@@ -143,8 +143,7 @@ public class Contact extends IdentifiedEntity {
     @Override
     protected boolean dataEquals(IdentifiedEntity other) {
         Contact contact = (Contact) other;
-        return ObjectUtils.equals(producer, contact.producer)
-                && ObjectUtils.equals(current, contact.current);
+        return ObjectUtils.equals(producer, contact.producer) && ObjectUtils.equals(current, contact.current);
     }
 
     /**
@@ -153,6 +152,14 @@ public class Contact extends IdentifiedEntity {
     @Override
     protected Object[] getHashCodeData() {
         return new Object[] { producer, current };
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public String toString() {
+        return new ToStringBuilder(this).appendSuper(super.toString()).append("next", next).append("producer", producer).append("text", text).build();
     }
 
 }

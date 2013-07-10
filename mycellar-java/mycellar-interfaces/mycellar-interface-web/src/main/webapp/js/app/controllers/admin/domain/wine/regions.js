@@ -41,7 +41,7 @@ angular.module('mycellar').controller({
       }
     };
   },
-  AdminDomainRegionController: function ($scope, $resource, $route, $location) {
+  AdminDomainRegionController: function ($scope, $resource, $route, $location, $http) {
     var regionId = $route.current.params.regionId;
     $scope.regionResource = $resource('/api/domain/wine/region/:regionId');
     $scope.region = $scope.regionResource.get({regionId: regionId});
@@ -62,6 +62,11 @@ angular.module('mycellar').controller({
     };
     $scope.cancel = function () {
       $location.path('/admin/domain/wine/regions/');
+    };
+    $scope.countries = function (countryName) {
+      return $http.get("/api/domain/wine/countries?count=15&filters=name,"+countryName+"&first=0&sort=name,asc").then(function(response){
+        return response.data.list;
+      });
     };
   }
 });

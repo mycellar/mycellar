@@ -137,8 +137,7 @@ public class Region extends NamedEntity {
     @Override
     protected boolean dataEquals(IdentifiedEntity other) {
         Region region = (Region) other;
-        return ObjectUtils.equals(getName(), region.getName())
-                && ObjectUtils.equals(getCountry(), region.getCountry());
+        return ObjectUtils.equals(getName(), region.getName()) && ObjectUtils.equals(getCountry(), region.getCountry());
     }
 
     /**
@@ -153,9 +152,8 @@ public class Region extends NamedEntity {
      * {@inheritDoc}
      */
     @Override
-    protected ToStringBuilder toStringBuilder() {
-        return super.toStringBuilder().append("country", country)
-                .append("description", description).append("map", map);
+    public String toString() {
+        return new ToStringBuilder(this).appendSuper(super.toString()).append("country", country).append("description", description).append("map", map).build();
     }
 
 }
