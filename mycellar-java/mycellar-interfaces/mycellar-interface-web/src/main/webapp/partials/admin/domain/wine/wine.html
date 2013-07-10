@@ -41,15 +41,29 @@
             <span class="help-inline" ng-show="form.producer.$invalid">{{form.producer.$error}}</span>
           </div>
         </div>
-        <div class="control-group" wicket:id="type">
-          <select id="type" wicket:id="type">
-              <option wicket:id="option"></option>
-          </select>
+        <div class="control-group" ng-class="{error: form.type.$invalid}">
+          <label class="control-label" for="type">Type</label>
+          <div class="controls">
+            <select id="type" name="type" ng-model="wine.type">
+              <option label="Still">STILL</option>
+              <option label="Sparkling">SPARKLING</option>
+              <option label="Spirit">SPIRIT</option>
+              <option label="Other">OTHER</option>
+            </select>
+            <span class="help-inline" ng-show="form.type.$invalid">{{form.type.$error}}</span>
+          </div>
         </div>
-        <div class="control-group" wicket:id="color">
-          <select id="color" wicket:id="color">
-              <option wicket:id="option"></option>
-          </select>
+        <div class="control-group" ng-class="{error: form.color.$invalid}">
+          <label class="control-label" for="color">Color</label>
+          <div class="controls">
+            <select id="color" name="color" ng-model="wine.color">
+              <option label="Red">RED</option>
+              <option label="White">WHITE</option>
+              <option label="Rosé">ROSE</option>
+              <option label="Other">OTHER</option>
+            </select>
+            <span class="help-inline" ng-show="form.color.$invalid">{{form.color.$error}}</span>
+          </div>
         </div>
         <div class="control-group" ng-class="{error: form.name.$invalid}">
           <label class="control-label" for="name">Name</label>

@@ -18,24 +18,25 @@
  */
 package fr.mycellar.interfaces.facade.web.domain.user;
 
-import static fr.mycellar.interfaces.facade.web.domain.MetamodelUtil.*;
-
+import java.util.ArrayList;
 import java.util.List;
 
+import javax.inject.Inject;
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.MediaType;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import fr.mycellar.interfaces.facade.web.domain.FilterCouple;
 import fr.mycellar.interfaces.facade.web.domain.ListWithCount;
 import fr.mycellar.interfaces.facade.web.domain.OrderCouple;
-import fr.peralta.mycellar.domain.shared.repository.OrderBy;
+import fr.mycellar.interfaces.facade.web.domain.SearchParametersUtil;
 import fr.peralta.mycellar.domain.shared.repository.SearchParameters;
 import fr.peralta.mycellar.domain.user.User;
+import fr.peralta.mycellar.domain.wine.Wine;
 import fr.peralta.mycellar.interfaces.facades.user.UserServiceFacade;
 
 /**
@@ -47,26 +48,44 @@ public class UserWebService {
 
     private UserServiceFacade userServiceFacade;
 
+    private SearchParametersUtil searchParametersUtil;
+
+    // --------------
+    // USER
+    // --------------
+
     @GET
     @Produces(MediaType.APPLICATION_JSON)
     @Path("users")
-    public ListWithCount<User> getUsers(@QueryParam("first") int first, @QueryParam("count") int count, @QueryParam("sort") List<OrderCouple> orders) {
-        SearchParameters searchParameters = new SearchParameters();
-        searchParameters.setFirstResult(first);
-        searchParameters.setMaxResults(count);
-        for (OrderCouple order : orders) {
-            searchParameters.addOrderBy(new OrderBy(order.getDirection(), toAttributes(order.getProperty(), User.class)));
+    public ListWithCount<User> getUsers(@QueryParam("first") int first, @QueryParam("count") int count, @QueryParam("filters") List<FilterCouple> filters, @QueryParam("sort") List<OrderCouple> orders) {
+        SearchParameters searchParameters = searchParametersUtil.getSearchParametersForListWithCount(first, count, filters, orders, Wine.class);
+        List<User> users;
+        if (count == 0) {
+            users = new ArrayList<>();
+        } else {
+            users = userServiceFacade.getUsers(searchParameters);
         }
-        return new ListWithCount<>(userServiceFacade.countUsers(searchParameters), userServiceFacade.getUsers(searchParameters));
+        return new ListWithCount<>(userServiceFacade.countUsers(searchParameters), users);
     }
+
+    // BEAN METHODS
 
     /**
      * @param userServiceFacade
      *            the userServiceFacade to set
      */
-    @Autowired
+    @Inject
     public void setUserServiceFacade(UserServiceFacade userServiceFacade) {
         this.userServiceFacade = userServiceFacade;
+    }
+
+    /**
+     * @param searchParametersUtil
+     *            the searchParametersUtil to set
+     */
+    @Inject
+    public void setSearchParametersUtil(SearchParametersUtil searchParametersUtil) {
+        this.searchParametersUtil = searchParametersUtil;
     }
 
 }

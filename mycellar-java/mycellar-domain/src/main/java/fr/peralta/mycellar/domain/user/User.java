@@ -18,7 +18,6 @@
  */
 package fr.peralta.mycellar.domain.user;
 
-import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -39,6 +38,8 @@ import org.hibernate.search.annotations.Analyzer;
 import org.hibernate.search.annotations.Field;
 import org.hibernate.search.annotations.Indexed;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import fr.peralta.mycellar.domain.booking.Booking;
 import fr.peralta.mycellar.domain.shared.IdentifiedEntity;
 import fr.peralta.mycellar.domain.stock.Cellar;
@@ -55,9 +56,11 @@ public class User extends IdentifiedEntity {
     private static final long serialVersionUID = 201111181451L;
 
     @OneToMany(mappedBy = "owner")
+    @JsonIgnore
     private final Set<Cellar> cellars = new HashSet<Cellar>();
 
     @OneToMany(mappedBy = "customer")
+    @JsonIgnore
     private final Set<Booking> bookings = new HashSet<Booking>();
 
     @Column(name = "EMAIL", nullable = false)
@@ -97,20 +100,6 @@ public class User extends IdentifiedEntity {
      */
     public void setProfile(ProfileEnum profile) {
         this.profile = profile;
-    }
-
-    /**
-     * @return the cellars
-     */
-    public Set<Cellar> getCellars() {
-        return Collections.unmodifiableSet(cellars);
-    }
-
-    /**
-     * @return the bookings
-     */
-    public Set<Booking> getBookings() {
-        return Collections.unmodifiableSet(bookings);
     }
 
     /**

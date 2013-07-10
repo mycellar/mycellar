@@ -28,6 +28,7 @@ import java.util.List;
 import javax.persistence.metamodel.Attribute;
 
 import org.apache.commons.lang3.builder.ToStringBuilder;
+import org.apache.commons.lang3.builder.ToStringStyle;
 
 /**
  * Used to construct OR predicate for a property value. In other words you can
@@ -152,11 +153,12 @@ public class PropertySelector<E, F> implements Serializable {
      */
     @Override
     public String toString() {
-        ToStringBuilder toStringBuilder = new ToStringBuilder(this).append("searchMode", searchMode).append("selected", selected);
+        ToStringBuilder toStringBuilder = new ToStringBuilder(this, ToStringStyle.SHORT_PREFIX_STYLE).append("searchMode", searchMode).append("selected", selected);
         StringBuilder builder = new StringBuilder("{");
         for (Attribute<?, ?> attribute : attributes) {
-            builder.append(new ToStringBuilder(attribute).append("declaringType", attribute.getDeclaringType()).append("javaType", attribute.getJavaType()).append("name", attribute.getName()).build())
-                    .append(",");
+            builder.append(
+                    new ToStringBuilder(attribute, ToStringStyle.SHORT_PREFIX_STYLE).append("declaringType", attribute.getDeclaringType()).append("javaType", attribute.getJavaType())
+                            .append("name", attribute.getName()).build()).append(",");
         }
         builder.deleteCharAt(builder.length() - 1).append("}");
         toStringBuilder.append("attributes", builder.toString());
