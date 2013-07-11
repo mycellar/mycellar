@@ -53,7 +53,7 @@ angular.module('mycellar').controller({
       $scope.user.$save(function (value, headers) {
         if (value.id != undefined) {
           $scope.backup = undefined;
-          $location.path('/admin/domain/user/countries/');
+          $location.path('/admin/domain/user/users/');
         } else if (value.errorKey != undefined) {
           for (var property in value.properties) {
             $scope.form[value.properties[property]].$setValidity(value.errorKey, false);
