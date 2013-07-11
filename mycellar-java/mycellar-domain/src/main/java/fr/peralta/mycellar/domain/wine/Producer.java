@@ -31,12 +31,11 @@ import javax.persistence.OneToMany;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 import javax.validation.constraints.Pattern;
+import javax.xml.bind.annotation.XmlTransient;
 
 import org.apache.commons.lang3.ObjectUtils;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.hibernate.search.annotations.Indexed;
-
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import fr.peralta.mycellar.domain.position.Address;
 import fr.peralta.mycellar.domain.shared.IdentifiedEntity;
@@ -83,7 +82,7 @@ public class Producer extends NamedEntity {
     private String websiteUrl;
 
     @OneToMany(mappedBy = "producer")
-    @JsonIgnore
+    @XmlTransient
     private final Set<Wine> wines = new HashSet<Wine>();
 
     /**

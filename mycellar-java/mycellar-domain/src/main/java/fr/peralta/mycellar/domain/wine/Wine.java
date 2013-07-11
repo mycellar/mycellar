@@ -43,12 +43,11 @@ import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 import javax.validation.Valid;
 import javax.validation.constraints.Pattern;
+import javax.xml.bind.annotation.XmlTransient;
 
 import org.apache.commons.lang3.ObjectUtils;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.hibernate.search.annotations.Indexed;
-
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import fr.peralta.mycellar.domain.shared.IdentifiedEntity;
 import fr.peralta.mycellar.domain.shared.NamedEntity;
@@ -68,7 +67,7 @@ public class Wine extends NamedEntity {
     private static final long serialVersionUID = 201111181451L;
 
     @OneToMany(mappedBy = "wine")
-    @JsonIgnore
+    @XmlTransient
     private final Set<Bottle> bottles = new HashSet<Bottle>();
 
     @Valid

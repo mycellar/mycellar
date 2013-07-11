@@ -73,13 +73,13 @@ public interface BookingServiceFacade {
      * @param booking
      * @throws BusinessException
      */
-    void saveBooking(Booking booking) throws BusinessException;
+    Booking saveBooking(Booking booking) throws BusinessException;
 
     /**
      * @param bookingEvent
      * @throws BusinessException
      */
-    void saveBookingEvent(BookingEvent bookingEvent) throws BusinessException;
+    BookingEvent saveBookingEvent(BookingEvent bookingEvent) throws BusinessException;
 
     /**
      * @param booking

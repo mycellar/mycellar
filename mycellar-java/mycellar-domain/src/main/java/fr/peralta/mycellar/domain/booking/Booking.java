@@ -34,6 +34,7 @@ import javax.persistence.MapKeyJoinColumn;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 import javax.persistence.UniqueConstraint;
+import javax.xml.bind.annotation.XmlTransient;
 
 import org.apache.commons.lang3.ObjectUtils;
 
@@ -44,8 +45,7 @@ import fr.peralta.mycellar.domain.user.User;
  * @author speralta
  */
 @Entity
-@Table(name = "BOOKING", uniqueConstraints = @UniqueConstraint(columnNames = { "CUSTOMER",
-        "BOOKING_EVENT" }))
+@Table(name = "BOOKING", uniqueConstraints = @UniqueConstraint(columnNames = { "CUSTOMER", "BOOKING_EVENT" }))
 @SequenceGenerator(name = "BOOKING_ID_GENERATOR", allocationSize = 1)
 public class Booking extends IdentifiedEntity {
 
@@ -71,6 +71,7 @@ public class Booking extends IdentifiedEntity {
     @JoinTable(name = "BOOKING_QUANTITIES", joinColumns = @JoinColumn(name = "BOOKING"))
     @Column(name = "QUANTITY", nullable = false)
     @MapKeyJoinColumn(name = "BOOKING_BOTTLE")
+    @XmlTransient
     private final Map<BookingBottle, Integer> quantities = new HashMap<BookingBottle, Integer>();
 
     /**
@@ -114,6 +115,7 @@ public class Booking extends IdentifiedEntity {
     /**
      * @return the quantities
      */
+    @XmlTransient
     public Map<BookingBottle, Integer> getQuantities() {
         return quantities;
     }
@@ -124,8 +126,7 @@ public class Booking extends IdentifiedEntity {
     @Override
     protected boolean dataEquals(IdentifiedEntity other) {
         Booking booking = (Booking) other;
-        return ObjectUtils.equals(getCustomer(), booking.getCustomer())
-                && ObjectUtils.equals(getBookingEvent(), booking.getBookingEvent());
+        return ObjectUtils.equals(getCustomer(), booking.getCustomer()) && ObjectUtils.equals(getBookingEvent(), booking.getBookingEvent());
     }
 
     /**

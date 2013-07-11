@@ -12,7 +12,7 @@
           <tr>
             <th>HashCode</th>
             <th>Stack</th>
-            <th>Count <span ng-click="sortBy('count')">sort: {{sort.ways['count']}}</span></th>
+            <th>Count <icon-sort sort-fn="sortBy('count')" attribute="count" ways="sort.ways" /></th>
           </tr>
         </thead>
         <tbody ng-controller="LoadingCtrl">
@@ -29,7 +29,7 @@
           <tr>
             <th>HashCode</th>
             <th>Stack</th>
-            <th>Count <span ng-click="sortBy('count')">sort: {{sort.ways['count']}}</span></th>
+            <th>Count <icon-sort sort-fn="sortBy('count')" attribute="count" ways="sort.ways" /></th>
           </tr>
         </tfoot>
       </table>

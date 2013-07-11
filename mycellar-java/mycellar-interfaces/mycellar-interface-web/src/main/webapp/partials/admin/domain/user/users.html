@@ -1,0 +1,52 @@
+<header class="page-header"><h1>Header</h1></header>
+<div class="row-fluid">
+  <div class="span2">
+    <nav role="secondary">
+      <data-mycellar-admin-nav data-ng-controller="AdminNavigationController"></data-mycellar-admin-nav>
+    </nav>
+  </div>
+  <div class="span10">
+    <form id="form" class="form-inline">
+      <fieldset>
+        <legend><a href ng-click="filtersIsCollapsed = !filtersIsCollapsed"><i ng-class="filtersIsCollapsed ? 'icon-expand-alt' : 'icon-collapse-alt'"></i></a> Filters</legend>
+        <div collapse="filtersIsCollapsed">
+          <label for="lastname">Lastname</label>
+          <input id="lastname" name="lastname" placeholder="Lastname" ng-model="filters.lastname" type="text" />
+          <label for="firstname">Firstname</label>
+          <input id="firstname" name="firstname" placeholder="Firstname" ng-model="filters.firstname" type="text" />
+          <label for="email">Email</label>
+          <input id="email" name="email" placeholder="Email" ng-model="filters.email" type="text" />
+          <input type="button" class="btn" value="Clear filters" ng-click="clearFilters()" />
+        </div>
+      </fieldset>
+    </form>
+    <data-mycellar-table page-range="3" options="tableOptions" items="items" sort="sort" filters="filters">
+      <table class="table table-bordered table-striped table-condensed table-hover">
+        <thead>
+          <tr>
+            <th>Lastname <icon-sort sort-fn="sortBy('lastname')" attribute="lastname" ways="sort.ways" /></th>
+            <th>Firstname <icon-sort sort-fn="sortBy('firstname')" attribute="firstname" ways="sort.ways" /></th>
+            <th>Email <icon-sort sort-fn="sortBy('email')" attribute="email" ways="sort.ways" /></th>
+          </tr>
+        </thead>
+        <tbody ng-controller="LoadingCtrl">
+          <tr ng-repeat="item in items">
+            <td ng-click="edit(item.id)">{{item.lastname}}</td>
+            <td ng-click="edit(item.id)">{{item.firstname}}</td>
+            <td ng-click="edit(item.id)">{{item.email}}</td>
+          </tr>
+          <tr ui-if="!loading && items.length == 0">
+            <td colspan="3">No items to display.</td>
+          </tr>
+        </tbody>
+        <tfoot>
+          <tr>
+            <th>Lastname <icon-sort sort-fn="sortBy('lastname')" attribute="lastname" ways="sort.ways" /></th>
+            <th>Firstname <icon-sort sort-fn="sortBy('firstname')" attribute="firstname" ways="sort.ways" /></th>
+            <th>Email <icon-sort sort-fn="sortBy('email')" attribute="email" ways="sort.ways" /></th>
+          </tr>
+        </tfoot>
+      </table>
+    </data-mycellar-table>
+  </div>
+</div>

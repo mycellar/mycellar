@@ -35,6 +35,7 @@ import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 import javax.persistence.UniqueConstraint;
 import javax.validation.Valid;
+import javax.xml.bind.annotation.XmlTransient;
 
 import org.apache.commons.lang3.ObjectUtils;
 import org.apache.commons.lang3.builder.ToStringBuilder;
@@ -60,6 +61,7 @@ public class BookingEvent extends NamedEntity {
     private static final long serialVersionUID = 201205220734L;
 
     @OneToMany(mappedBy = "bookingEvent")
+    @XmlTransient
     private final Set<Booking> bookings = new HashSet<Booking>();
 
     @Id
@@ -71,6 +73,7 @@ public class BookingEvent extends NamedEntity {
     @OneToMany(mappedBy = "bookingEvent", cascade = { CascadeType.MERGE, CascadeType.PERSIST }, fetch = FetchType.EAGER, orphanRemoval = true)
     @OrderBy("position")
     @Sort(comparator = BookingBottlePositionComparator.class, type = SortType.COMPARATOR)
+    @XmlTransient
     private final SortedSet<BookingBottle> bottles = new TreeSet<BookingBottle>(new BookingBottlePositionComparator());
 
     @Column(name = "START", nullable = false)
@@ -122,6 +125,7 @@ public class BookingEvent extends NamedEntity {
     /**
      * @return the bottles
      */
+    @XmlTransient
     public Set<BookingBottle> getBottles() {
         return bottles;
     }

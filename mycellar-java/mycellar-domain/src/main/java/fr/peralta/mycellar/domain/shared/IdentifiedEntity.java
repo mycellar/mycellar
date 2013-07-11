@@ -29,8 +29,6 @@ import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.hibernate.Hibernate;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-
 /**
  * @author speralta
  */
@@ -78,7 +76,6 @@ public abstract class IdentifiedEntity implements Identifiable<Integer>, Seriali
      * {@inheritDoc}
      */
     @XmlTransient
-    @JsonIgnore
     @Override
     public boolean isIdSet() {
         return getId() != null;

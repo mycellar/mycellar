@@ -31,14 +31,13 @@ import javax.persistence.OneToMany;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 import javax.persistence.UniqueConstraint;
+import javax.xml.bind.annotation.XmlTransient;
 
 import org.apache.commons.lang3.ObjectUtils;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.hibernate.search.annotations.Analyzer;
 import org.hibernate.search.annotations.Field;
 import org.hibernate.search.annotations.Indexed;
-
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import fr.peralta.mycellar.domain.booking.Booking;
 import fr.peralta.mycellar.domain.shared.IdentifiedEntity;
@@ -56,11 +55,11 @@ public class User extends IdentifiedEntity {
     private static final long serialVersionUID = 201111181451L;
 
     @OneToMany(mappedBy = "owner")
-    @JsonIgnore
+    @XmlTransient
     private final Set<Cellar> cellars = new HashSet<Cellar>();
 
     @OneToMany(mappedBy = "customer")
-    @JsonIgnore
+    @XmlTransient
     private final Set<Booking> bookings = new HashSet<Booking>();
 
     @Column(name = "EMAIL", nullable = false)

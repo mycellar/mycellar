@@ -45,8 +45,7 @@ import fr.peralta.mycellar.domain.user.User_;
  */
 @Named
 @Singleton
-public class BookingServiceImpl extends AbstractSimpleService<Booking, BookingRepository> implements
-        BookingService {
+public class BookingServiceImpl extends AbstractSimpleService<Booking, BookingRepository> implements BookingService {
 
     private BookingRepository bookingRepository;
 
@@ -62,7 +61,7 @@ public class BookingServiceImpl extends AbstractSimpleService<Booking, BookingRe
      * {@inheritDoc}
      */
     @Override
-    public void saveOrDelete(Booking booking) throws BusinessException {
+    public Booking saveOrDelete(Booking booking) throws BusinessException {
         int sum = 0;
         for (Entry<BookingBottle, Integer> bottle : booking.getQuantities().entrySet()) {
             if (bottle.getValue() != null) {
@@ -72,10 +71,11 @@ public class BookingServiceImpl extends AbstractSimpleService<Booking, BookingRe
             }
         }
         if (sum > 0) {
-            save(booking);
+            return save(booking);
         } else if ((booking.getId() != null) && (booking.getId() > 0)) {
             delete(booking);
         }
+        return null;
     }
 
     /**
@@ -83,8 +83,7 @@ public class BookingServiceImpl extends AbstractSimpleService<Booking, BookingRe
      */
     @Override
     public List<Booking> getBookings(User customer) {
-        return bookingRepository.find(new SearchParameters().property(PropertySelector
-                .newPropertySelector(customer.getId(), Booking_.customer, User_.id)));
+        return bookingRepository.find(new SearchParameters().property(PropertySelector.newPropertySelector(customer.getId(), Booking_.customer, User_.id)));
     }
 
     /**
@@ -93,12 +92,8 @@ public class BookingServiceImpl extends AbstractSimpleService<Booking, BookingRe
     @Override
     public Booking getBooking(BookingEvent bookingEvent, User customer) {
         Booking booking = bookingRepository.findUniqueOrNone(new SearchParameters() //
-                .property(
-                        PropertySelector.newPropertySelector(bookingEvent.getId(),
-                                Booking_.bookingEvent, BookingEvent_.id)) //
-                .property(
-                        PropertySelector.newPropertySelector(customer.getId(), Booking_.customer,
-                                User_.id)) //
+                .property(PropertySelector.newPropertySelector(bookingEvent.getId(), Booking_.bookingEvent, BookingEvent_.id)) //
+                .property(PropertySelector.newPropertySelector(customer.getId(), Booking_.customer, User_.id)) //
                 );
         if (booking == null) {
             booking = new Booking();

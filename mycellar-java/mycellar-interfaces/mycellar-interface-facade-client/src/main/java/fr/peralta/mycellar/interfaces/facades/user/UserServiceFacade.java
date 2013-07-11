@@ -65,7 +65,7 @@ public interface UserServiceFacade {
      * @param user
      * @throws BusinessException
      */
-    void saveUser(User user) throws BusinessException;
+    User saveUser(User user) throws BusinessException;
 
     /**
      * @param user

@@ -48,8 +48,7 @@ public class UserServiceFacadeImpl implements UserServiceFacade {
     @Override
     @Transactional(readOnly = true)
     public List<User> getUsersLike(String term) {
-        return userService.find(new SearchParameters().termOnAny(term, User_.email,
-                User_.firstname, User_.lastname));
+        return userService.find(new SearchParameters().termOnAny(term, User_.email, User_.firstname, User_.lastname));
     }
 
     /**
@@ -57,8 +56,8 @@ public class UserServiceFacadeImpl implements UserServiceFacade {
      */
     @Override
     @Transactional
-    public void saveUser(User user) throws BusinessException {
-        userService.save(user);
+    public User saveUser(User user) throws BusinessException {
+        return userService.save(user);
     }
 
     /**
@@ -156,8 +155,7 @@ public class UserServiceFacadeImpl implements UserServiceFacade {
      *            the resetPasswordRequestService to set
      */
     @Autowired
-    public void setResetPasswordRequestService(
-            ResetPasswordRequestService resetPasswordRequestService) {
+    public void setResetPasswordRequestService(ResetPasswordRequestService resetPasswordRequestService) {
         this.resetPasswordRequestService = resetPasswordRequestService;
     }
 

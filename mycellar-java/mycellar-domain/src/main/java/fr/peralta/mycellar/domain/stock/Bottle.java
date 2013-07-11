@@ -32,11 +32,10 @@ import javax.persistence.OneToMany;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 import javax.persistence.UniqueConstraint;
+import javax.xml.bind.annotation.XmlTransient;
 
 import org.apache.commons.lang3.ObjectUtils;
 import org.apache.commons.lang3.builder.ToStringBuilder;
-
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import fr.peralta.mycellar.domain.shared.IdentifiedEntity;
 import fr.peralta.mycellar.domain.wine.Format;
@@ -53,7 +52,7 @@ public class Bottle extends IdentifiedEntity {
     private static final long serialVersionUID = 201111181451L;
 
     @OneToMany(mappedBy = "bottle")
-    @JsonIgnore
+    @XmlTransient
     private final Set<Stock> stocks = new HashSet<Stock>();
 
     @ManyToOne(cascade = { CascadeType.PERSIST, CascadeType.MERGE })

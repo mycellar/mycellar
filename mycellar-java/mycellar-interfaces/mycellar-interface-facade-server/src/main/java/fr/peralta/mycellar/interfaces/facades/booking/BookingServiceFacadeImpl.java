@@ -156,8 +156,8 @@ public class BookingServiceFacadeImpl implements BookingServiceFacade {
      */
     @Override
     @Transactional
-    public void saveBooking(Booking booking) throws BusinessException {
-        bookingService.saveOrDelete(booking);
+    public Booking saveBooking(Booking booking) throws BusinessException {
+        return bookingService.saveOrDelete(booking);
     }
 
     /**
@@ -165,8 +165,8 @@ public class BookingServiceFacadeImpl implements BookingServiceFacade {
      */
     @Override
     @Transactional
-    public void saveBookingEvent(BookingEvent bookingEvent) throws BusinessException {
-        bookingEventService.save(bookingEvent);
+    public BookingEvent saveBookingEvent(BookingEvent bookingEvent) throws BusinessException {
+        return bookingEventService.save(bookingEvent);
     }
 
     /**

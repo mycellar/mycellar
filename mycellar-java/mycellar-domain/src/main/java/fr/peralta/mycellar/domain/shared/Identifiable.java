@@ -22,8 +22,6 @@ import java.io.Serializable;
 
 import javax.xml.bind.annotation.XmlTransient;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-
 /**
  * By making entities implement this interface we can easily retrieve from the
  * {@link fr.bdf.compta.dao.support.GenericDao} the identifier property of the
@@ -42,6 +40,5 @@ public interface Identifiable<PK extends Serializable> {
      * @return true if the primary key is set, false otherwise
      */
     @XmlTransient
-    @JsonIgnore
     boolean isIdSet();
 }

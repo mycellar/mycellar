@@ -37,7 +37,6 @@ import fr.mycellar.interfaces.facade.web.domain.OrderCouple;
 import fr.mycellar.interfaces.facade.web.domain.SearchParametersUtil;
 import fr.peralta.mycellar.domain.shared.repository.SearchParameters;
 import fr.peralta.mycellar.domain.stack.Stack;
-import fr.peralta.mycellar.domain.wine.Wine;
 import fr.peralta.mycellar.interfaces.facades.stack.StackServiceFacade;
 
 /**
@@ -56,7 +55,7 @@ public class StackWebService {
     @Path("stacks")
     public ListWithCount<Stack> getStacks(@QueryParam("first") int first, @QueryParam("count") int count, @QueryParam("filters") List<FilterCouple> filters,
             @QueryParam("sort") List<OrderCouple> orders) {
-        SearchParameters searchParameters = searchParametersUtil.getSearchParametersForListWithCount(first, count, filters, orders, Wine.class);
+        SearchParameters searchParameters = searchParametersUtil.getSearchParametersForListWithCount(first, count, filters, orders, Stack.class);
         List<Stack> stacks;
         if (count == 0) {
             stacks = new ArrayList<>();

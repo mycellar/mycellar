@@ -30,12 +30,11 @@ import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
+import javax.xml.bind.annotation.XmlTransient;
 
 import org.apache.commons.lang3.ObjectUtils;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.hibernate.search.annotations.Indexed;
-
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import fr.peralta.mycellar.domain.position.Map;
 import fr.peralta.mycellar.domain.shared.IdentifiedEntity;
@@ -65,7 +64,7 @@ public class Country extends NamedEntity {
     private Map map;
 
     @OneToMany(mappedBy = "country")
-    @JsonIgnore
+    @XmlTransient
     private final Set<Region> regions = new HashSet<Region>();
 
     /**

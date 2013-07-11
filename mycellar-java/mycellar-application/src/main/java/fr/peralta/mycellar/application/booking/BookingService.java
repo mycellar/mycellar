@@ -50,7 +50,7 @@ public interface BookingService extends SimpleService<Booking> {
      * @param booking
      * @throws BusinessException
      */
-    void saveOrDelete(Booking booking) throws BusinessException;
+    Booking saveOrDelete(Booking booking) throws BusinessException;
 
     /**
      * @param bookingEvent
