@@ -23,7 +23,7 @@ angular.module('mycellar', ['loading', 'ui', 'ui.bootstrap', 'http-auth-intercep
   $routeProvider.when('/admin/domain/user/users', {templateUrl: 'partials/admin/domain/user/users.html', controller: 'AdminDomainUsersController'});
   $routeProvider.when('/admin/domain/user/user/:userId', {templateUrl: 'partials/admin/domain/user/user.html', controller: 'AdminDomainUserController'});
   $routeProvider.when('/admin/domain/wine/appellations', {templateUrl: 'partials/admin/domain/wine/appellations.html', controller: 'AdminDomainAppellationsController'});
-  $routeProvider.when('/admin/domain/wine/appellation/:countryId', {templateUrl: 'partials/admin/domain/wine/appellation.html', controller: 'AdminDomainAppellationController'});
+  $routeProvider.when('/admin/domain/wine/appellation/:appellationId', {templateUrl: 'partials/admin/domain/wine/appellation.html', controller: 'AdminDomainAppellationController'});
   $routeProvider.when('/admin/domain/wine/countries', {templateUrl: 'partials/admin/domain/wine/countries.html', controller: 'AdminDomainCountriesController'});
   $routeProvider.when('/admin/domain/wine/country/:countryId', {templateUrl: 'partials/admin/domain/wine/country.html', controller: 'AdminDomainCountryController'});
   $routeProvider.when('/admin/domain/wine/regions', {templateUrl: 'partials/admin/domain/wine/regions.html', controller: 'AdminDomainRegionsController'});
