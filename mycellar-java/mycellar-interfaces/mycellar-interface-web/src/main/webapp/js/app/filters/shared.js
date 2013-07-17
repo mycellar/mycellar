@@ -16,4 +16,14 @@ angular.module('mycellar').filter('firstLine', function () {
     // to fix
     return input[2] + '/' + input[1] + '/' + input[0];
   }
+}).filter('errorKeys', function () {
+  return function (input) {
+    var collectionKeys = [];
+    for (var key in input) {
+      if (input.hasOwnProperty(key) && key.charAt(0) != '$') {
+        collectionKeys.push(key);
+      }
+    }
+    return collectionKeys;
+  }
 });

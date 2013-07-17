@@ -1,4 +1,4 @@
-<header class="page-header"><h1>Header</h1></header>
+<header class="page-header"><h1>Booking Events</h1></header>
 <div class="row-fluid">
   <div class="span2">
     <nav role="secondary">
@@ -27,8 +27,8 @@
         </thead>
         <tbody ng-controller="LoadingCtrl">
           <tr ng-repeat="item in items">
-            <td ng-click="edit(item.id)">{{item.start | localDate}}</td>
-            <td ng-click="edit(item.id)">{{item.end | localDate}}</td>
+            <td ng-click="edit(item.id)">{{item.start}}</td>
+            <td ng-click="edit(item.id)">{{item.end}}</td>
             <td ng-click="edit(item.id)">{{item.name}}</td>
           </tr>
           <tr ui-if="!loading && items.length == 0">

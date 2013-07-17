@@ -18,7 +18,6 @@
  */
 package fr.peralta.mycellar.domain.wine;
 
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
@@ -83,6 +82,7 @@ public class Wine extends NamedEntity {
     @JoinTable(name = "WINE_VARIETAL", joinColumns = @JoinColumn(name = "WINE"))
     @Column(name = "PERCENT")
     @MapKeyJoinColumn(name = "VARIETAL")
+    @XmlTransient
     private final Map<Varietal, Integer> composition = new HashMap<Varietal, Integer>();
 
     @Column(name = "DESCRIPTION")
@@ -124,13 +124,6 @@ public class Wine extends NamedEntity {
      */
     public WineColorEnum getColor() {
         return color;
-    }
-
-    /**
-     * @return the composition
-     */
-    public Map<Varietal, Integer> getComposition() {
-        return Collections.unmodifiableMap(composition);
     }
 
     /**

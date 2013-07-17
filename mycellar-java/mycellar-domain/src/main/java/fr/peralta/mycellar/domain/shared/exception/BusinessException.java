@@ -32,7 +32,7 @@ public class BusinessException extends Exception {
      * @param cause
      */
     public BusinessException(BusinessError businessError, Throwable cause) {
-        super(cause);
+        super(businessError.getKey(), cause);
         this.businessError = businessError;
     }
 
@@ -40,7 +40,7 @@ public class BusinessException extends Exception {
      * @param businessError
      */
     public BusinessException(BusinessError businessError) {
-        super();
+        super(businessError.getKey());
         this.businessError = businessError;
     }
 

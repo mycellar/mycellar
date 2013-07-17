@@ -16,14 +16,10 @@
  * You should have received a copy of the GNU General Public License
  * along with MyCellar. If not, see <http://www.gnu.org/licenses/>.
  */
-package fr.mycellar.interfaces.facade.web.domain;
-
-import java.util.ArrayList;
-import java.util.List;
+package fr.mycellar.interfaces.web;
 
 import javax.inject.Named;
 import javax.inject.Singleton;
-import javax.persistence.metamodel.Attribute;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.Status;
@@ -33,30 +29,23 @@ import javax.ws.rs.ext.Provider;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import fr.peralta.mycellar.domain.shared.exception.BusinessException;
-
 /**
  * @author speralta
  */
 @Named
 @Provider
 @Singleton
-public class BusinessExceptionMapper implements ExceptionMapper<BusinessException> {
+public class ThrowableMapper implements ExceptionMapper<Throwable> {
 
-    private static Logger logger = LoggerFactory.getLogger(BusinessExceptionMapper.class);
+    private static Logger logger = LoggerFactory.getLogger(ThrowableMapper.class);
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public Response toResponse(BusinessException exception) {
-        logger.debug("BusinessException thrown in web service.", exception);
-        List<String> properties = new ArrayList<String>();
-        for (Attribute<?, ?> attribute : exception.getBusinessError().getProperties()) {
-            properties.add(attribute.getName());
-        }
-        return Response.status(Status.BAD_REQUEST).type(MediaType.APPLICATION_JSON)
-                .entity(new ErrorHolder(properties, exception.getBusinessError().getKey())).build();
+    public Response toResponse(Throwable throwable) {
+        logger.error("Throwable thrown in web service.", throwable);
+        return Response.status(Status.INTERNAL_SERVER_ERROR).type(MediaType.TEXT_PLAIN).entity("Internal error : " + throwable.getMessage()).build();
     }
 
 }

@@ -1,4 +1,4 @@
-<header class="page-header"><h1>Header</h1></header>
+<header class="page-header"><h1>Wine</h1></header>
 <div class="row-fluid">
   <div class="span2">
     <nav role="secondary">
@@ -7,8 +7,9 @@
   </div>
   <div class="span10">
     <form name="form" class="form form-horizontal">
+      <error-form form="form"></error-form>
       <fieldset>
-        <legend>Wine</legend>
+        <legend>Details</legend>
         <div class="control-group" ng-class="{error: form.appellation.$invalid}">
           <label class="control-label" for="appellation">Appellation</label>
           <div class="controls">
@@ -22,7 +23,7 @@
                 typeahead-editable="false"  
                 typeahead-min-length="2" 
                 typeahead-wait-ms="200" />
-            <span class="help-inline" ng-show="form.appellation.$invalid">{{form.appellation.$error}}</span>
+            <error-ctrl ctrl="form.appellation"></error-ctrl>
           </div>
         </div>
         <div class="control-group" ng-class="{error: form.producer.$invalid}">
@@ -38,7 +39,7 @@
                 typeahead-editable="false"  
                 typeahead-min-length="2" 
                 typeahead-wait-ms="200" />
-            <span class="help-inline" ng-show="form.producer.$invalid">{{form.producer.$error}}</span>
+            <error-ctrl ctrl="form.producer"></error-ctrl>
           </div>
         </div>
         <div class="control-group" ng-class="{error: form.type.$invalid}">
@@ -50,7 +51,7 @@
               <option label="Spirit">SPIRIT</option>
               <option label="Other">OTHER</option>
             </select>
-            <span class="help-inline" ng-show="form.type.$invalid">{{form.type.$error}}</span>
+            <error-ctrl ctrl="form.type"></error-ctrl>
           </div>
         </div>
         <div class="control-group" ng-class="{error: form.color.$invalid}">
@@ -62,28 +63,28 @@
               <option label="Rosé">ROSE</option>
               <option label="Other">OTHER</option>
             </select>
-            <span class="help-inline" ng-show="form.color.$invalid">{{form.color.$error}}</span>
+            <error-ctrl ctrl="form.color"></error-ctrl>
           </div>
         </div>
         <div class="control-group" ng-class="{error: form.name.$invalid}">
           <label class="control-label" for="name">Name</label>
           <div class="controls">
             <input id="name" name="name" type="text" ng-model="wine.name" placeholder="Name" />
-            <span class="help-inline" ng-show="form.name.$invalid">{{form.name.$error}}</span>
+            <error-ctrl ctrl="form.name"></error-ctrl>
           </div>
         </div>
         <div class="control-group" ng-class="{error: form.vintage.$invalid}">
           <label class="control-label" for="vintage">Vintage</label>
           <div class="controls">
             <input id="vintage" name="vintage" type="number" ng-model="wine.vintage" placeholder="Vintage" />
-            <span class="help-inline" ng-show="form.vintage.$invalid">{{form.vintage.$error}}</span>
+            <error-ctrl ctrl="form.vintage"></error-ctrl>
           </div>
         </div>
         <div class="control-group" ng-class="{error: form.ranking.$invalid}">
           <label class="control-label" for="ranking">Ranking</label>
           <div class="controls">
             <input id="ranking" name="ranking" type="text" ng-model="wine.ranking" placeholder="Ranking" />
-            <span class="help-inline" ng-show="form.ranking.$invalid">{{form.ranking.$error}}</span>
+            <error-ctrl ctrl="form.ranking"></error-ctrl>
           </div>
         </div>
         <div class="control-group" ng-class="{error: form.description.$invalid}">
@@ -96,7 +97,7 @@
                 placeholder="Description" 
                 class="input-block-level"
                 rows="5"></textarea>
-            <span class="help-inline" ng-show="form.description.$invalid">{{form.description.$error}}</span>
+            <error-ctrl ctrl="form.description"></error-ctrl>
           </div>
         </div>
       </fieldset>

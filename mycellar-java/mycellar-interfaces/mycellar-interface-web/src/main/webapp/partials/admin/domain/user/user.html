@@ -1,4 +1,4 @@
-<header class="page-header"><h1>Header</h1></header>
+<header class="page-header"><h1>User: {{user.lastname}} {{user.firstname}}</h1></header>
 <div class="row-fluid">
   <div class="span2">
     <nav role="secondary">
@@ -7,27 +7,28 @@
   </div>
   <div class="span10">
     <form name="form" class="form form-horizontal">
+      <error-form form="form"></error-form>
       <fieldset>
-        <legend>User</legend>
+        <legend>Details</legend>
         <div class="control-group" ng-class="{error: form.lastname.$invalid}">
           <label class="control-label" for="lastname">Lastname</label>
           <div class="controls">
             <input id="lastname" name="lastname" type="text" ng-model="user.lastname" placeholder="Lastname" />
-            <span class="help-inline" ng-show="form.lastname.$invalid">{{form.lastname.$error}}</span>
+            <error-ctrl ctrl="form.lastname"></error-ctrl>
           </div>
         </div>
         <div class="control-group" ng-class="{error: form.firstname.$invalid}">
           <label class="control-label" for="firstname">Firstname</label>
           <div class="controls">
             <input id="firstname" name="firstname" type="text" ng-model="user.firstname" placeholder="Firstname" />
-            <span class="help-inline" ng-show="form.firstname.$invalid">{{form.firstname.$error}}</span>
+            <error-ctrl ctrl="form.firstname"></error-ctrl>
           </div>
         </div>
         <div class="control-group" ng-class="{error: form.email.$invalid}">
           <label class="control-label" for="email">Email</label>
           <div class="controls">
             <input id="email" name="email" type="email" ng-model="user.email" placeholder="Email" />
-            <span class="help-inline" ng-show="form.email.$invalid">{{form.email.$error}}</span>
+            <error-ctrl ctrl="form.email"></error-ctrl>
           </div>
         </div>
         <div class="control-group" ng-class="{error: form.profile.$invalid}">
@@ -40,7 +41,7 @@
               <option label="MyCellar">MYCELLAR</option>
               <option label="Admin">ADMIN</option>
             </select>
-            <span class="help-inline" ng-show="form.profile.$invalid">{{form.profile.$error}}</span>
+            <error-ctrl ctrl="form.profile"></error-ctrl>
           </div>
         </div>
       </fieldset>

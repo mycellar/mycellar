@@ -45,6 +45,8 @@ import org.hibernate.annotations.Type;
 import org.hibernate.search.annotations.Indexed;
 import org.joda.time.LocalDate;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+
 import fr.peralta.mycellar.domain.booking.comparator.BookingBottlePositionComparator;
 import fr.peralta.mycellar.domain.shared.IdentifiedEntity;
 import fr.peralta.mycellar.domain.shared.NamedEntity;
@@ -73,7 +75,7 @@ public class BookingEvent extends NamedEntity {
     @OneToMany(mappedBy = "bookingEvent", cascade = { CascadeType.MERGE, CascadeType.PERSIST }, fetch = FetchType.EAGER, orphanRemoval = true)
     @OrderBy("position")
     @Sort(comparator = BookingBottlePositionComparator.class, type = SortType.COMPARATOR)
-    @XmlTransient
+    @JsonManagedReference("bookingEvent-bottles")
     private final SortedSet<BookingBottle> bottles = new TreeSet<BookingBottle>(new BookingBottlePositionComparator());
 
     @Column(name = "START", nullable = false)
@@ -125,7 +127,6 @@ public class BookingEvent extends NamedEntity {
     /**
      * @return the bottles
      */
-    @XmlTransient
     public Set<BookingBottle> getBottles() {
         return bottles;
     }

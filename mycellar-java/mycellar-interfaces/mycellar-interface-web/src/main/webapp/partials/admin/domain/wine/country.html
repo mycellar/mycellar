@@ -1,4 +1,4 @@
-<header class="page-header"><h1>Header</h1></header>
+<header class="page-header"><h1>Country: {{country.name}}</h1></header>
 <div class="row-fluid">
   <div class="span2">
     <nav role="secondary">
@@ -7,13 +7,14 @@
   </div>
   <div class="span10">
     <form name="form" class="form form-horizontal">
+      <error-form form="form"></error-form>
       <fieldset>
-        <legend>Country</legend>
+        <legend>Details</legend>
         <div class="control-group" ng-class="{error: form.name.$invalid}">
           <label class="control-label" for="name">Name</label>
           <div class="controls">
             <input id="name" name="name" type="text" ng-model="country.name" placeholder="Name" />
-            <span class="help-inline" ng-show="form.name.$invalid">{{form.name.$error}}</span>
+            <error-ctrl ctrl="form.name"></error-ctrl>
           </div>
         </div>
         <div class="control-group" ng-class="{error: form.description.$invalid}">
@@ -26,7 +27,7 @@
                 placeholder="Description" 
                 class="input-block-level"
                 rows="5"></textarea>
-            <span class="help-inline" ng-show="form.description.$invalid">{{form.description.$error}}</span>
+            <error-ctrl ctrl="form.description"></error-ctrl>
           </div>
         </div>
       </fieldset>

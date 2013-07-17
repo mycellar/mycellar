@@ -54,6 +54,9 @@ angular.module('mycellar').controller({
             $scope.form[value.properties[property]].$setValidity(value.errorKey, false);
           }
           angular.copy($scope.backup, $scope.country);
+        } else {
+          $scope.form.$setValidity('Error occured.', false);
+          angular.copy($scope.backup, $scope.country);
         }
       });
     };

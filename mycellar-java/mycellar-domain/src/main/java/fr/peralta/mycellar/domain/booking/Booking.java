@@ -71,7 +71,6 @@ public class Booking extends IdentifiedEntity {
     @JoinTable(name = "BOOKING_QUANTITIES", joinColumns = @JoinColumn(name = "BOOKING"))
     @Column(name = "QUANTITY", nullable = false)
     @MapKeyJoinColumn(name = "BOOKING_BOTTLE")
-    @XmlTransient
     private final Map<BookingBottle, Integer> quantities = new HashMap<BookingBottle, Integer>();
 
     /**

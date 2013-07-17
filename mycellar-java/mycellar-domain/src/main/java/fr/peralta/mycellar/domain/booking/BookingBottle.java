@@ -33,6 +33,8 @@ import javax.validation.constraints.Pattern;
 
 import org.apache.commons.lang3.ObjectUtils;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+
 import fr.peralta.mycellar.domain.shared.IdentifiedEntity;
 import fr.peralta.mycellar.domain.shared.ValidationPattern;
 import fr.peralta.mycellar.domain.stock.Bottle;
@@ -41,9 +43,7 @@ import fr.peralta.mycellar.domain.stock.Bottle;
  * @author speralta
  */
 @Entity
-@Table(name = "BOOKING_BOTTLE", uniqueConstraints = {
-        @UniqueConstraint(columnNames = { "BOTTLE", "BOOKING_EVENT" }),
-        @UniqueConstraint(columnNames = { "BOOKING_EVENT", "POSITION" }) })
+@Table(name = "BOOKING_BOTTLE", uniqueConstraints = { @UniqueConstraint(columnNames = { "BOTTLE", "BOOKING_EVENT" }), @UniqueConstraint(columnNames = { "BOOKING_EVENT", "POSITION" }) })
 @SequenceGenerator(name = "BOOKING_BOTTLE_ID_GENERATOR", allocationSize = 1)
 public class BookingBottle extends IdentifiedEntity {
 
@@ -57,6 +57,7 @@ public class BookingBottle extends IdentifiedEntity {
     @Valid
     @ManyToOne(cascade = { CascadeType.MERGE, CascadeType.PERSIST })
     @JoinColumn(name = "BOOKING_EVENT")
+    @JsonBackReference("bookingEvent-bottles")
     private BookingEvent bookingEvent;
 
     @Valid
@@ -181,8 +182,7 @@ public class BookingBottle extends IdentifiedEntity {
     @Override
     protected boolean dataEquals(IdentifiedEntity other) {
         BookingBottle bookingBottle = (BookingBottle) other;
-        return ObjectUtils.equals(getBookingEvent(), bookingBottle.getBookingEvent())
-                && ObjectUtils.equals(getBottle(), bookingBottle.getBottle());
+        return ObjectUtils.equals(getBookingEvent(), bookingBottle.getBookingEvent()) && ObjectUtils.equals(getBottle(), bookingBottle.getBottle());
     }
 
     /**

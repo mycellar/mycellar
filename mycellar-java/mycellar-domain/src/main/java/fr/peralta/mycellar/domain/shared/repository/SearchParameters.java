@@ -30,6 +30,7 @@ import javax.persistence.metamodel.SingularAttribute;
 
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.builder.ToStringBuilder;
+import org.apache.commons.lang3.builder.ToStringStyle;
 
 import com.google.common.collect.ArrayListMultimap;
 import com.google.common.collect.Multimap;
@@ -328,8 +329,7 @@ public class SearchParameters implements Serializable {
         return ret.toArray(new String[ret.size()]);
     }
 
-    private SearchParameters addTerm(Multimap<String, String> termsMap, String term,
-            String... props) {
+    private SearchParameters addTerm(Multimap<String, String> termsMap, String term, String... props) {
         if (StringUtils.isBlank(term) || (props == null) || (props.length == 0)) {
             return this;
         }
@@ -668,6 +668,6 @@ public class SearchParameters implements Serializable {
 
     @Override
     public String toString() {
-        return ToStringBuilder.reflectionToString(this);
+        return ToStringBuilder.reflectionToString(this, ToStringStyle.SHORT_PREFIX_STYLE);
     }
 }

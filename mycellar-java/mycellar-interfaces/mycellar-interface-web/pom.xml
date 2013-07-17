@@ -1,24 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!--
- Copyright 2011, MyCellar
-
- This file is part of MyCellar.
-
- MyCellar is free software; you can redistribute it and/or modify
- it under the terms of the GNU General Public License as published by
- the Free Software Foundation; either version 3 of the License, or
- (at your option) any later version.
-
- MyCellar is distributed in the hope that it will be useful,
- but WITHOUT ANY WARRANTY; without even the implied warranty of
- MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- GNU General Public License for more details.
-
- You should have received a copy of the GNU General Public License
- along with MyCellar. If not, see <http://www.gnu.org/licenses/>.
--->
-<project xmlns="http://maven.apache.org/POM/4.0.0"
-  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+<!-- Copyright 2011, MyCellar This file is part of MyCellar. MyCellar is 
+  free software; you can redistribute it and/or modify it under the terms of 
+  the GNU General Public License as published by the Free Software Foundation; 
+  either version 3 of the License, or (at your option) any later version. MyCellar 
+  is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; 
+  without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR 
+  PURPOSE. See the GNU General Public License for more details. You should 
+  have received a copy of the GNU General Public License along with MyCellar. 
+  If not, see <http://www.gnu.org/licenses/>. -->
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
   xsi:schemaLocation="http://maven.apache.org/POM/4.0.0
   http://maven.apache.org/xsd/maven-4.0.0.xsd">
   <modelVersion>4.0.0</modelVersion>
@@ -31,11 +21,7 @@
   <artifactId>mycellar-interface-web</artifactId>
   <packaging>war</packaging>
   <name>MyCellar - Web Interface</name>
-  
-  <properties>
-    <wicket.configuration>development</wicket.configuration>
-  </properties>
-  
+
   <dependencies>
     <dependency>
       <groupId>${project.groupId}</groupId>
@@ -83,6 +69,22 @@
       <artifactId>jersey-json</artifactId>
     </dependency>
     <dependency>
+      <groupId>com.fasterxml.jackson.core</groupId>
+      <artifactId>jackson-core</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>com.fasterxml.jackson.core</groupId>
+      <artifactId>jackson-databind</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>com.fasterxml.jackson.jaxrs</groupId>
+      <artifactId>jackson-jaxrs-json-provider</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>com.fasterxml.jackson.datatype</groupId>
+      <artifactId>jackson-datatype-joda</artifactId>
+    </dependency>
+    <dependency>
       <groupId>com.sun.jersey.contribs</groupId>
       <artifactId>jersey-spring</artifactId>
     </dependency>
@@ -113,7 +115,7 @@
         <artifactId>maven-war-plugin</artifactId>
         <configuration>
           <filteringDeploymentDescriptors>true</filteringDeploymentDescriptors>
-          <archive>                   
+          <archive>
             <manifest>
               <addDefaultImplementationEntries>true</addDefaultImplementationEntries>
               <addDefaultSpecificationEntries>true</addDefaultSpecificationEntries>
@@ -174,7 +176,7 @@
       </plugin>
     </plugins>
   </build>
-  
+
   <profiles>
     <profile>
       <id>db-maria</id>
@@ -188,12 +190,6 @@
         <db.url>jdbc:mysql://localhost:3306/mycellar</db.url>
         <db.user>mycellar</db.user>
         <db.pass>pswcellar</db.pass>
-      </properties>
-    </profile>
-    <profile>
-      <id>package</id>
-      <properties>
-        <wicket.configuration>deployment</wicket.configuration>
       </properties>
     </profile>
   </profiles>

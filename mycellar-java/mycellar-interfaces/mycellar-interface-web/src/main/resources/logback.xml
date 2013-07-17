@@ -8,6 +8,7 @@
   </appender>
 
   <logger name="fr.peralta.mycellar" level="trace" />
+  <logger name="fr.mycellar" level="trace" />
   
   <!-- URLRWRITE -->
   <!-- <logger name="org.tuckey.web.filters.urlrewrite" level="debug" /> -->

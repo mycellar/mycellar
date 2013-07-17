@@ -1,0 +1,5 @@
+<div class="alert alert-error" ng-show="form.$invalid">
+  <span ng-repeat="error in form.$error | errorKeys">
+    {{error}}
+  </span>
+</div>

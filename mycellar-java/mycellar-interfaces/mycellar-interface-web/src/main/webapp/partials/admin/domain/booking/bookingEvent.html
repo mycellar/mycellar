@@ -1,4 +1,4 @@
-<header class="page-header"><h1>Header</h1></header>
+<header class="page-header"><h1>Booking Event: {{bookingEvent.name}}</h1></header>
 <div class="row-fluid">
   <div class="span2">
     <nav role="secondary">
@@ -7,15 +7,71 @@
   </div>
   <div class="span10">
     <form name="form" class="form form-horizontal">
+      <error-form form="form"></error-form>
       <fieldset>
-        <legend>Booking event</legend>
+        <legend>Details</legend>
         <div class="control-group" ng-class="{error: form.name.$invalid}">
           <label class="control-label" for="name">Name</label>
           <div class="controls">
             <input id="name" name="name" type="text" ng-model="bookingEvent.name" placeholder="Name" />
-            <span class="help-inline" ng-show="form.name.$invalid">{{form.name.$error}}</span>
+            <error-ctrl ctrl="form.name"></error-ctrl>
           </div>
         </div>
+        <div class="control-group" ng-class="{error: form.start.$invalid}">
+          <label class="control-label" for="start">Start</label>
+          <div class="controls">
+            <input id="start" name="start" type="date" ng-model="bookingEvent.start" placeholder="Start" />
+            <error-ctrl ctrl="form.start"></error-ctrl>
+          </div>
+        </div>
+        <div class="control-group" ng-class="{error: form.end.$invalid}">
+          <label class="control-label" for="end">End</label>
+          <div class="controls">
+            <input id="end" name="end" type="date" ng-model="bookingEvent.end" placeholder="End" />
+            <error-ctrl ctrl="form.end"></error-ctrl>
+          </div>
+        </div>
+      </fieldset>
+      <fieldset>
+        <legend>Bottles</legend>
+        <table class="table table-bordered table-striped table-condensed table-hover">
+          <thead>
+            <tr>
+              <th>Order</th>
+              <th>Producer</th>
+              <th>Appellation</th>
+              <th>Name</th>
+              <th>Vintage</th>
+              <th>Color</th>
+              <th>Type</th>
+            </tr>
+          </thead>
+          <tbody ng-controller="LoadingCtrl">
+            <tr ng-repeat="bookingBottle in bookingEvent.bottles">
+              <td>{{bookingBottle.position}}</td>
+              <td>{{bookingBottle.bottle.wine.producer.name}}</td>
+              <td>{{bookingBottle.bottle.wine.appellation.name}}</td>
+              <td>{{bookingBottle.bottle.wine.name}}</td>
+              <td>{{bookingBottle.bottle.wine.vintage}}</td>
+              <td>{{bookingBottle.bottle.wine.color}}</td>
+              <td>{{bookingBottle.bottle.wine.type}}</td>
+            </tr>
+            <tr ui-if="!loading && items.length == 0">
+              <td colspan="4">No items to display.</td>
+            </tr>
+          </tbody>
+          <tfoot>
+            <tr>
+              <th>Order</th>
+              <th>Producer</th>
+              <th>Appellation</th>
+              <th>Name</th>
+              <th>Vintage</th>
+              <th>Color</th>
+              <th>Type</th>
+            </tr>
+          </tfoot>
+        </table>
       </fieldset>
       <div class="form-actions">
         <input type="submit" class="btn btn-primary" value="Save" ng-click="save()" />
