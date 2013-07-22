@@ -14,6 +14,7 @@ angular.module('mycellar').controller({
                                               {label: 'Booking', route: '/admin/domain/booking/bookings'}]},
                       {label: 'wine', menus: [{label: 'Appellation', route: '/admin/domain/wine/appellations'},
                                               {label: 'Country', route: '/admin/domain/wine/countries'},
+                                              {label: 'Producer', route: '/admin/domain/wine/producers'},
                                               {label: 'Region', route: '/admin/domain/wine/regions'},
                                               {label: 'Wine', route: '/admin/domain/wine/wines'}]},
                       {label: 'user', menus: [{label: 'User', route: '/admin/domain/user/users'}]},

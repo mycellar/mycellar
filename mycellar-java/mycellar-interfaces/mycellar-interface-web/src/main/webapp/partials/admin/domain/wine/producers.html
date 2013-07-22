@@ -1,0 +1,42 @@
+<header class="page-header"><h1>Producers</h1></header>
+<div class="row-fluid">
+  <div class="span2">
+    <nav role="secondary">
+      <data-mycellar-admin-nav data-ng-controller="AdminNavigationController"></data-mycellar-admin-nav>
+    </nav>
+  </div>
+  <div class="span10">
+    <form id="form" class="form-inline">
+      <fieldset>
+        <legend><a href ng-click="filtersIsCollapsed = !filtersIsCollapsed"><i ng-class="filtersIsCollapsed ? 'icon-expand-alt' : 'icon-collapse-alt'"></i></a> Filters</legend>
+        <div collapse="filtersIsCollapsed">
+          <label for="name">Name</label>
+          <input id="name" name="name" placeholder="Name" ng-model="filters.name" type="text" />
+          <input type="button" class="btn" value="Clear filters" ng-click="clearFilters()" />
+        </div>
+      </fieldset>
+    </form>
+    <data-mycellar-table page-range="3" options="tableOptions" items="items" sort="sort" filters="filters">
+      <table class="table table-bordered table-striped table-condensed table-hover">
+        <thead>
+          <tr>
+            <th>Name <icon-sort sort-fn="sortBy('name')" attribute="name" ways="sort.ways" /></th>
+          </tr>
+        </thead>
+        <tbody ng-controller="LoadingCtrl">
+          <tr ng-repeat="item in items">
+            <td ng-click="edit(item.id)">{{item.name}}</td>
+          </tr>
+          <tr ui-if="!loading && items.length == 0">
+            <td colspan="1">No items to display.</td>
+          </tr>
+        </tbody>
+        <tfoot>
+          <tr>
+            <th>Name <icon-sort sort-fn="sortBy('name')" attribute="name" ways="sort.ways" /></th>
+          </tr>
+        </tfoot>
+      </table>
+    </data-mycellar-table>
+  </div>
+</div>
