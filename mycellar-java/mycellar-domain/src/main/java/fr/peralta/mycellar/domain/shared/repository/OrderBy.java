@@ -27,6 +27,7 @@ import java.util.List;
 import javax.persistence.metamodel.Attribute;
 
 import org.apache.commons.lang3.builder.ToStringBuilder;
+import org.apache.commons.lang3.builder.ToStringStyle;
 
 /**
  * Holder class for search ordering used by the {@link SearchParameters}. When
@@ -67,11 +68,12 @@ public class OrderBy implements Serializable {
      */
     @Override
     public String toString() {
-        ToStringBuilder toStringBuilder = new ToStringBuilder(this).append("direction", direction);
+        ToStringBuilder toStringBuilder = new ToStringBuilder(this, ToStringStyle.SHORT_PREFIX_STYLE).append("direction", direction);
         StringBuilder builder = new StringBuilder("{");
         for (Attribute<?, ?> attribute : attributes) {
-            builder.append(new ToStringBuilder(attribute).append("declaringType", attribute.getDeclaringType()).append("javaType", attribute.getJavaType()).append("name", attribute.getName()).build())
-                    .append(",");
+            builder.append(
+                    new ToStringBuilder(attribute, ToStringStyle.SHORT_PREFIX_STYLE).append("declaringType", attribute.getDeclaringType()).append("javaType", attribute.getJavaType())
+                            .append("name", attribute.getName()).build()).append(",");
         }
         builder.deleteCharAt(builder.length() - 1).append("}");
         toStringBuilder.append("attributes", builder.toString());

@@ -29,6 +29,7 @@ import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
+import javax.xml.bind.annotation.XmlTransient;
 
 import org.apache.commons.lang3.ObjectUtils;
 import org.apache.commons.lang3.builder.ToStringBuilder;
@@ -59,6 +60,7 @@ public class Format extends NamedEntity {
     private Integer id;
 
     @OneToMany(mappedBy = "format")
+    @XmlTransient
     private final Set<Bottle> bottles = new HashSet<Bottle>();
 
     /**

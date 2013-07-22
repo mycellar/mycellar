@@ -28,8 +28,8 @@
           <tr ng-repeat="item in items">
             <td ng-click="edit(item.id)">{{item.customer.lastname + ' ' + item.customer.firstname}}</td>
             <td ng-click="edit(item.id)">{{item.bookingEvent.name}}</td>
-            <td ng-click="edit(item.id)">{{item.bookingEvent.start | localDate}}</td>
-            <td ng-click="edit(item.id)">{{item.bookingEvent.end | localDate}}</td>
+            <td ng-click="edit(item.id)">{{item.bookingEvent.start}}</td>
+            <td ng-click="edit(item.id)">{{item.bookingEvent.end}}</td>
           </tr>
           <tr ui-if="!loading && items.length == 0">
             <td colspan="4">No items to display.</td>

@@ -34,7 +34,6 @@ import javax.persistence.MapKeyJoinColumn;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 import javax.persistence.UniqueConstraint;
-import javax.xml.bind.annotation.XmlTransient;
 
 import org.apache.commons.lang3.ObjectUtils;
 
@@ -114,7 +113,6 @@ public class Booking extends IdentifiedEntity {
     /**
      * @return the quantities
      */
-    @XmlTransient
     public Map<BookingBottle, Integer> getQuantities() {
         return quantities;
     }

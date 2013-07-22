@@ -16,19 +16,25 @@
  * You should have received a copy of the GNU General Public License
  * along with MyCellar. If not, see <http://www.gnu.org/licenses/>.
  */
-package fr.mycellar.interfaces.web.services.nav;
+package fr.mycellar.interfaces.web.json;
 
-import java.io.Serializable;
+import com.fasterxml.jackson.databind.module.SimpleModule;
 
-import com.fasterxml.jackson.annotation.JsonSubTypes;
-import com.fasterxml.jackson.annotation.JsonSubTypes.Type;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
+import fr.peralta.mycellar.domain.booking.BookingBottle;
 
 /**
  * @author speralta
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
-@JsonSubTypes({ @Type(value = NavHeaderDescriptor.class, name = "header"), @Type(value = NavPageDescriptor.class, name = "page") })
-public interface NavDescriptor extends Serializable {
+public class MyCellarJacksonModule extends SimpleModule {
+    private static final long serialVersionUID = 201307180835L;
+
+    public MyCellarJacksonModule() {
+        super(new MyCellarJacksonVersion());
+        // first deserializers
+        addKeyDeserializer(BookingBottle.class, new BookingBottleKeyDeserializer());
+
+        // then serializers
+        addKeySerializer(BookingBottle.class, new BookingBottleKeySerializer());
+    }
 
 }

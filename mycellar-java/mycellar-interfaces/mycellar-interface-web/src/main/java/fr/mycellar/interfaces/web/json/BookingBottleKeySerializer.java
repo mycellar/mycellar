@@ -16,36 +16,28 @@
  * You should have received a copy of the GNU General Public License
  * along with MyCellar. If not, see <http://www.gnu.org/licenses/>.
  */
-package fr.mycellar.interfaces.web;
+package fr.mycellar.interfaces.web.json;
 
-import javax.inject.Named;
-import javax.inject.Singleton;
-import javax.ws.rs.core.MediaType;
-import javax.ws.rs.core.Response;
-import javax.ws.rs.core.Response.Status;
-import javax.ws.rs.ext.ExceptionMapper;
-import javax.ws.rs.ext.Provider;
+import java.io.IOException;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import com.fasterxml.jackson.core.JsonGenerator;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.JsonSerializer;
+import com.fasterxml.jackson.databind.SerializerProvider;
+
+import fr.peralta.mycellar.domain.booking.BookingBottle;
 
 /**
  * @author speralta
  */
-@Named
-@Provider
-@Singleton
-public class ThrowableMapper implements ExceptionMapper<Throwable> {
-
-    private static Logger logger = LoggerFactory.getLogger(ThrowableMapper.class);
+public class BookingBottleKeySerializer extends JsonSerializer<BookingBottle> {
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public Response toResponse(Throwable throwable) {
-        logger.error("Throwable thrown in web service.", throwable);
-        return Response.status(Status.INTERNAL_SERVER_ERROR).type(MediaType.TEXT_PLAIN).entity("Internal error : " + throwable.getMessage()).build();
+    public void serialize(BookingBottle value, JsonGenerator jgen, SerializerProvider provider) throws IOException, JsonProcessingException {
+        jgen.writeFieldName(value.getId().toString());
     }
 
 }

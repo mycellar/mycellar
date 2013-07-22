@@ -11,11 +11,6 @@ angular.module('mycellar').filter('firstLine', function () {
     }
     return out;
   }
-}).filter('localDate', function () {
-  return function (input) {
-    // to fix
-    return input[2] + '/' + input[1] + '/' + input[0];
-  }
 }).filter('errorKeys', function () {
   return function (input) {
     var collectionKeys = [];

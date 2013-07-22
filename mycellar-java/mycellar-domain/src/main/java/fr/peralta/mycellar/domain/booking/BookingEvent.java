@@ -46,6 +46,7 @@ import org.hibernate.search.annotations.Indexed;
 import org.joda.time.LocalDate;
 
 import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 
 import fr.peralta.mycellar.domain.booking.comparator.BookingBottlePositionComparator;
 import fr.peralta.mycellar.domain.shared.IdentifiedEntity;
@@ -59,6 +60,16 @@ import fr.peralta.mycellar.domain.shared.NamedEntity;
 @Table(name = "BOOKING_EVENT", uniqueConstraints = @UniqueConstraint(columnNames = { "NAME", "START", "END" }))
 @SequenceGenerator(name = "BOOKING_EVENT_ID_GENERATOR", allocationSize = 1)
 public class BookingEvent extends NamedEntity {
+
+    public static class BookingBottleSet extends TreeSet<BookingBottle> {
+
+        private static final long serialVersionUID = 201307221610L;
+
+        public BookingBottleSet() {
+            super(new BookingBottlePositionComparator());
+        }
+
+    }
 
     private static final long serialVersionUID = 201205220734L;
 
@@ -76,7 +87,8 @@ public class BookingEvent extends NamedEntity {
     @OrderBy("position")
     @Sort(comparator = BookingBottlePositionComparator.class, type = SortType.COMPARATOR)
     @JsonManagedReference("bookingEvent-bottles")
-    private final SortedSet<BookingBottle> bottles = new TreeSet<BookingBottle>(new BookingBottlePositionComparator());
+    @JsonDeserialize(as = BookingBottleSet.class)
+    private final SortedSet<BookingBottle> bottles = new BookingBottleSet();
 
     @Column(name = "START", nullable = false)
     @Type(type = "org.jadira.usertype.dateandtime.joda.PersistentLocalDate")

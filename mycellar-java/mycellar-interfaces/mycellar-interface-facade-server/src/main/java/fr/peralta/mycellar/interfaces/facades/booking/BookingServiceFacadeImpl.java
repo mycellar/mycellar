@@ -148,7 +148,11 @@ public class BookingServiceFacadeImpl implements BookingServiceFacade {
     @Override
     @Transactional(readOnly = true)
     public List<Booking> getBookings(SearchParameters searchParameters) {
-        return bookingService.find(searchParameters);
+        List<Booking> bookings = bookingService.find(searchParameters);
+//        for (Booking booking : bookings) {
+//            updateBooking(booking);
+//        }
+        return bookings;
     }
 
     /**
@@ -185,6 +189,14 @@ public class BookingServiceFacadeImpl implements BookingServiceFacade {
     @Transactional
     public void deleteBookingEvent(BookingEvent bookingEvent) throws BusinessException {
         bookingEventService.delete(bookingEvent);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public BookingBottle getBookingBottleById(int bookingBottleId) {
+        return null;
     }
 
     private void updateBooking(Booking booking) {

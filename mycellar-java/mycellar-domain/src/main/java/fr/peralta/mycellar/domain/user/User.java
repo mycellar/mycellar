@@ -80,6 +80,7 @@ public class User extends IdentifiedEntity {
     private String lastname;
 
     @Column(name = "PASSWORD", nullable = false, length = 40)
+    @XmlTransient
     private String password;
 
     @Column(name = "PROFILE")

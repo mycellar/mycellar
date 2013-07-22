@@ -16,7 +16,7 @@
  * You should have received a copy of the GNU General Public License
  * along with MyCellar. If not, see <http://www.gnu.org/licenses/>.
  */
-package fr.mycellar.interfaces.web;
+package fr.mycellar.interfaces.web.json;
 
 import javax.inject.Named;
 import javax.inject.Singleton;
@@ -46,9 +46,10 @@ public class ObjectMapperProvider implements ContextResolver<ObjectMapper> {
      */
     public ObjectMapperProvider() {
         objectMapper = new ObjectMapper();
+        objectMapper.registerModule(new MyCellarJacksonModule());
         objectMapper.registerModule(new JodaModule());
         objectMapper.configure(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS, false);
-        objectMapper.setAnnotationIntrospector(new AnnotationIntrospectorPair(new JaxbAnnotationIntrospector(TypeFactory.defaultInstance()), new JacksonAnnotationIntrospector()));
+        objectMapper.setAnnotationIntrospector(new AnnotationIntrospectorPair(new JacksonAnnotationIntrospector(), new JaxbAnnotationIntrospector(TypeFactory.defaultInstance())));
     }
 
     /**

@@ -21,7 +21,6 @@ package fr.peralta.mycellar.domain.stock;
 import java.util.HashSet;
 import java.util.Set;
 
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -55,7 +54,7 @@ public class Bottle extends IdentifiedEntity {
     @XmlTransient
     private final Set<Stock> stocks = new HashSet<Stock>();
 
-    @ManyToOne(cascade = { CascadeType.PERSIST, CascadeType.MERGE })
+    @ManyToOne
     @JoinColumn(name = "FORMAT", nullable = false)
     private Format format;
 
@@ -64,7 +63,7 @@ public class Bottle extends IdentifiedEntity {
     @Column(name = "ID", nullable = false)
     private Integer id;
 
-    @ManyToOne(cascade = { CascadeType.PERSIST, CascadeType.MERGE })
+    @ManyToOne
     @JoinColumn(name = "WINE", nullable = false)
     private Wine wine;
 

@@ -10,11 +10,52 @@
       <error-form form="form"></error-form>
       <fieldset>
         <legend>Details</legend>
-        
+        <div class="control-group" ng-class="{error: form.bookingEvent.$invalid}">
+          <label class="control-label" for="bookingEvent">Booking event</label>
+          <div class="controls">
+            <input 
+                id="bookingEvent" 
+                name="bookingEvent" 
+                type="text" 
+                class="input-xxlarge"
+                ng-model="booking.bookingEvent" 
+                placeholder="Booking event" 
+                typeahead="bookingEvent as (bookingEvent.name + ' (' + bookingEvent.start + ' to ' + bookingEvent.end + ')') for bookingEvent in bookingEvents($viewValue)"
+                typeahead-editable="false"  
+                typeahead-min-length="2" 
+                typeahead-wait-ms="200" />
+            <error-ctrl ctrl="form.bookingEvent"></error-ctrl>
+          </div>
+        </div>
+        <div class="control-group" ng-class="{error: form.customer.$invalid}">
+          <label class="control-label" for="customer">Customer</label>
+          <div class="controls">
+            <input 
+                id="customer" 
+                name="customer" 
+                type="text"
+                class="input-xxlarge" 
+                ng-model="booking.customer" 
+                placeholder="Customer" 
+                typeahead="customer as (customer.lastname + ' ' + customer.firstname + ' (' + customer.email + ')') for customer in customers($viewValue)"
+                typeahead-editable="false"  
+                typeahead-min-length="2" 
+                typeahead-wait-ms="200" />
+            <error-ctrl ctrl="form.customer"></error-ctrl>
+          </div>
+        </div>
       </fieldset>
       <fieldset>
         <legend>Booking</legend>
-        
+        <table>
+          <thead></thead>
+          <tbody>
+            <tr ng-repeat="quantity in booking.quantities">
+              <td>{{quantity.value | wineRenderer}}</td>
+              <td><input id="" name="" type="number" class="input-tiny" ng-model="quantity.key" /></td>
+            </tr>
+          </tbody>
+        </table>
       </fieldset>
       <div class="form-actions">
         <input type="submit" class="btn btn-primary" value="Save" ng-click="save()" />

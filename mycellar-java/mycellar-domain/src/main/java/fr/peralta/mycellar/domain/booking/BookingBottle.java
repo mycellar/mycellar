@@ -55,7 +55,7 @@ public class BookingBottle extends IdentifiedEntity {
     private Integer id;
 
     @Valid
-    @ManyToOne(cascade = { CascadeType.MERGE, CascadeType.PERSIST })
+    @ManyToOne
     @JoinColumn(name = "BOOKING_EVENT")
     @JsonBackReference("bookingEvent-bottles")
     private BookingEvent bookingEvent;

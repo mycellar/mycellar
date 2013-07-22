@@ -45,7 +45,7 @@ angular.module('mycellar').controller({
       }
     };
   },
-  AdminDomainBookingController: function ($scope, $resource, $route, $location) {
+  AdminDomainBookingController: function ($scope, $resource, $route, $location, $http) {
     var bookingId = $route.current.params.bookingId;
     $scope.bookingResource = $resource('/api/domain/booking/booking/:bookingId');
     $scope.booking = $scope.bookingResource.get({bookingId: bookingId});
@@ -69,6 +69,17 @@ angular.module('mycellar').controller({
     };
     $scope.cancel = function () {
       $location.path('/admin/domain/booking/bookings/');
+    };
+    
+    $scope.bookingEvents = function (bookingEventName) {
+      return $http.get("/api/domain/booking/bookingEvents?count=15&filters=name,"+bookingEventName+"&first=0&sort=name,asc").then(function(response){
+        return response.data.list;
+      });
+    };
+    $scope.customers = function (customerName) {
+      return $http.get("/api/domain/user/users?count=15&filters=lastname,"+customerName+"&first=0&sort=lastname,asc").then(function(response){
+        return response.data.list;
+      });
     };
   }
 });
