@@ -51,12 +51,6 @@ public interface AdministrationServiceFacade {
      * @param configuration
      * @throws BusinessException
      */
-    void saveConfiguration(Configuration configuration) throws BusinessException;
-
-    /**
-     * @param configuration
-     * @throws BusinessException
-     */
-    void deleteConfiguration(Configuration configuration) throws BusinessException;
+    Configuration saveConfiguration(Configuration configuration) throws BusinessException;
 
 }

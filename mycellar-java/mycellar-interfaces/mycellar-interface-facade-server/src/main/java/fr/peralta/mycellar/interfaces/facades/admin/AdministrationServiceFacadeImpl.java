@@ -69,17 +69,8 @@ public class AdministrationServiceFacadeImpl implements AdministrationServiceFac
      */
     @Override
     @Transactional
-    public void saveConfiguration(Configuration configuration) throws BusinessException {
-        configurationService.save(configuration);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    @Transactional
-    public void deleteConfiguration(Configuration configuration) throws BusinessException {
-        configurationService.delete(configuration);
+    public Configuration saveConfiguration(Configuration configuration) throws BusinessException {
+        return configurationService.save(configuration);
     }
 
     /**

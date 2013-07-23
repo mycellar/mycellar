@@ -14,6 +14,8 @@ angular.module('mycellar', ['loading', 'ui', 'ui.bootstrap', 'http-auth-intercep
   $routeProvider.when('/home', {templateUrl: 'partials/home.html', controller: 'HomeController'});
   $routeProvider.when('/admin', {templateUrl: 'partials/admin/admin.html', controller: 'AdminController'});
   $routeProvider.when('/admin/lists', {templateUrl: 'partials/admin/lists.html', controller: 'AdminListsController'});
+  $routeProvider.when('/admin/domain/admin/configurations', {templateUrl: 'partials/admin/domain/admin/configurations.html', controller: 'AdminDomainConfigurationsController'});
+  $routeProvider.when('/admin/domain/admin/configuration/:configurationId', {templateUrl: 'partials/admin/domain/admin/configuration.html', controller: 'AdminDomainConfigurationController'});
   $routeProvider.when('/admin/domain/booking/bookings', {templateUrl: 'partials/admin/domain/booking/bookings.html', controller: 'AdminDomainBookingsController'});
   $routeProvider.when('/admin/domain/booking/booking/:bookingId', {templateUrl: 'partials/admin/domain/booking/booking.html', controller: 'AdminDomainBookingController'});
   $routeProvider.when('/admin/domain/booking/bookingEvents', {templateUrl: 'partials/admin/domain/booking/bookingEvents.html', controller: 'AdminDomainBookingEventsController'});
