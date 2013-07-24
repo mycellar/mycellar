@@ -21,22 +21,27 @@
       </fieldset>
     </form>
     <data-mycellar-table page-range="3" options="tableOptions" items="items" sort="sort" filters="filters">
-      <table class="table table-bordered table-striped table-condensed table-hover">
+      <table class="table table-bordered table-striped table-condensed">
         <thead>
           <tr>
             <th>Lastname <icon-sort sort-fn="sortBy('lastname')" attribute="lastname" ways="sort.ways" /></th>
             <th>Firstname <icon-sort sort-fn="sortBy('firstname')" attribute="firstname" ways="sort.ways" /></th>
             <th>Email <icon-sort sort-fn="sortBy('email')" attribute="email" ways="sort.ways" /></th>
+            <th class="actions"><a href ng-click="new()" class="btn btn-mini"><i class="icon-plus-sign icon-large"></i></a></th>
           </tr>
         </thead>
         <tbody ng-controller="LoadingCtrl">
           <tr ng-repeat="item in items">
-            <td ng-click="edit(item.id)">{{item.lastname}}</td>
-            <td ng-click="edit(item.id)">{{item.firstname}}</td>
-            <td ng-click="edit(item.id)">{{item.email}}</td>
+            <td>{{item.lastname}}</td>
+            <td>{{item.firstname}}</td>
+            <td>{{item.email}}</td>
+            <td>
+              <a href ng-click="edit(item.id)" class="btn btn-mini"><i class="icon-edit icon-large"></i></a>
+              <a href ng-click="delete(item.id)" class="btn btn-mini"><i class="icon-remove-sign icon-large"></i></a>
+            </td>
           </tr>
           <tr ui-if="!loading && items.length == 0">
-            <td colspan="3">No items to display.</td>
+            <td colspan="4">No items to display.</td>
           </tr>
         </tbody>
         <tfoot>
@@ -44,6 +49,7 @@
             <th>Lastname <icon-sort sort-fn="sortBy('lastname')" attribute="lastname" ways="sort.ways" /></th>
             <th>Firstname <icon-sort sort-fn="sortBy('firstname')" attribute="firstname" ways="sort.ways" /></th>
             <th>Email <icon-sort sort-fn="sortBy('email')" attribute="email" ways="sort.ways" /></th>
+            <th class="actions"><a href ng-click="new()" class="btn btn-mini"><i class="icon-plus-sign icon-large"></i></a></th>
           </tr>
         </tfoot>
       </table>

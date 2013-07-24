@@ -16,8 +16,21 @@ footer {
   hyphens: auto;
 }
 
-.gridStyle {
-  border: 1px solid rgb(212,212,212);
-  width: 400px;
-  height: 300px;
+.table th.actions {
+  text-align: center;
+  min-width: 60px;
+  max-width: 60px;
+  width: 60px;
+}
+
+.table td,.table th {
+  vertical-align: middle;
+}
+
+loading {
+  top: 45%;
+  left: 45%;
+  position: absolute;
+  text-align: center;
+  width: 100px;
 }

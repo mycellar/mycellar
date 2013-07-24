@@ -35,7 +35,7 @@
       </fieldset>
     </form>
     <data-mycellar-table page-range="3" options="tableOptions" items="items" sort="sort" filters="filters">
-      <table class="table table-bordered table-striped table-condensed table-hover">
+      <table class="table table-bordered table-striped table-condensed">
         <thead>
           <tr>
             <th>Country <icon-sort sort-fn="sortBy('appellation.region.country.name')" attribute="appellation.region.country.name" ways="sort.ways" /></th>
@@ -46,21 +46,26 @@
             <th>Vintage <icon-sort sort-fn="sortBy('vintage')" attribute="vintage" ways="sort.ways" /></th>
             <th>Color <icon-sort sort-fn="sortBy('color')" attribute="color" ways="sort.ways" /></th>
             <th>Type <icon-sort sort-fn="sortBy('type')" attribute="type" ways="sort.ways" /></th>
+            <th class="actions"><a href ng-click="new()" class="btn btn-mini"><i class="icon-plus-sign icon-large"></i></a></th>
           </tr>
         </thead>
         <tbody ng-controller="LoadingCtrl" >
           <tr ng-repeat="item in items">
-            <td ng-click="edit(item.id)">{{item.appellation.region.country.name}}</td>
-            <td ng-click="edit(item.id)">{{item.appellation.region.name}}</td>
-            <td ng-click="edit(item.id)">{{item.appellation.name}}</td>
-            <td ng-click="edit(item.id)">{{item.producer.name}}</td>
-            <td ng-click="edit(item.id)">{{item.name}}</td>
-            <td ng-click="edit(item.id)">{{item.vintage}}</td>
-            <td ng-click="edit(item.id)">{{item.color}}</td>
-            <td ng-click="edit(item.id)">{{item.type}}</td>
+            <td>{{item.appellation.region.country.name}}</td>
+            <td>{{item.appellation.region.name}}</td>
+            <td>{{item.appellation.name}}</td>
+            <td>{{item.producer.name}}</td>
+            <td>{{item.name}}</td>
+            <td>{{item.vintage}}</td>
+            <td>{{item.color}}</td>
+            <td>{{item.type}}</td>
+            <td>
+              <a href ng-click="edit(item.id)" class="btn btn-mini"><i class="icon-edit icon-large"></i></a>
+              <a href ng-click="delete(item.id)" class="btn btn-mini"><i class="icon-remove-sign icon-large"></i></a>
+            </td>
           </tr>
           <tr ui-if="!loading && items.length == 0">
-            <td colspan="8">No items to display.</td>
+            <td colspan="9">No items to display.</td>
           </tr>
         </tbody>
         <tfoot>
@@ -73,6 +78,7 @@
             <th>Vintage <icon-sort sort-fn="sortBy('vintage')" attribute="vintage" ways="sort.ways" /></th>
             <th>Color <icon-sort sort-fn="sortBy('color')" attribute="color" ways="sort.ways" /></th>
             <th>Type <icon-sort sort-fn="sortBy('type')" attribute="type" ways="sort.ways" /></th>
+            <th class="actions"><a href ng-click="new()" class="btn btn-mini"><i class="icon-plus-sign icon-large"></i></a></th>
           </tr>
         </tfoot>
       </table>
