@@ -157,7 +157,7 @@ public class PropertySelector<E, F> implements Serializable {
         StringBuilder builder = new StringBuilder("{");
         for (Attribute<?, ?> attribute : attributes) {
             builder.append(
-                    new ToStringBuilder(attribute, ToStringStyle.SHORT_PREFIX_STYLE).append("declaringType", attribute.getDeclaringType()).append("javaType", attribute.getJavaType())
+                    new ToStringBuilder(attribute, ToStringStyle.SHORT_PREFIX_STYLE).append("declaringType", attribute.getDeclaringType().getJavaType()).append("javaType", attribute.getJavaType())
                             .append("name", attribute.getName()).build()).append(",");
         }
         builder.deleteCharAt(builder.length() - 1).append("}");
