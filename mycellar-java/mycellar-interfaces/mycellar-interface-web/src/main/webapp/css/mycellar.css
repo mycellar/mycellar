@@ -27,7 +27,7 @@ footer {
   vertical-align: middle;
 }
 
-loading {
+.loading {
   top: 45%;
   left: 45%;
   position: absolute;
