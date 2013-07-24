@@ -21,16 +21,22 @@ package fr.mycellar.interfaces.web.json;
 import java.io.IOException;
 
 import javax.inject.Inject;
+import javax.inject.Named;
+import javax.inject.Singleton;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.DeserializationContext;
 import com.fasterxml.jackson.databind.KeyDeserializer;
 
+import fr.peralta.mycellar.domain.booking.BookingBottle;
+import fr.peralta.mycellar.domain.booking.BookingEvent;
 import fr.peralta.mycellar.interfaces.facades.booking.BookingServiceFacade;
 
 /**
  * @author speralta
  */
+@Named
+@Singleton
 public class BookingBottleKeyDeserializer extends KeyDeserializer {
 
     private BookingServiceFacade bookingServiceFacade;
@@ -40,7 +46,19 @@ public class BookingBottleKeyDeserializer extends KeyDeserializer {
      */
     @Override
     public Object deserializeKey(String key, DeserializationContext ctxt) throws IOException, JsonProcessingException {
-        return bookingServiceFacade.getBookingBottleById(Integer.parseInt(key));
+        String[] values = key.split("-");
+        if ((values == null) || (values.length != 2)) {
+            throw ctxt.weirdKeyException(String.class, key, "Cannot understand key.");
+        }
+        Integer bookingEventId = Integer.parseInt(values[0]);
+        Integer bookingBottleId = Integer.parseInt(values[1]);
+        BookingEvent bookingEvent = bookingServiceFacade.getBookingEventById(bookingEventId);
+        for (BookingBottle bookingBottle : bookingEvent.getBottles()) {
+            if (bookingBottle.getId().equals(bookingBottleId)) {
+                return bookingBottle;
+            }
+        }
+        throw ctxt.mappingException("Cannot deserialize booking bottle key.");
     }
 
     /**

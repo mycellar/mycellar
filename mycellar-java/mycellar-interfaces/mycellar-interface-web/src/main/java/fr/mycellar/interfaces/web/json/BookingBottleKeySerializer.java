@@ -20,6 +20,9 @@ package fr.mycellar.interfaces.web.json;
 
 import java.io.IOException;
 
+import javax.inject.Named;
+import javax.inject.Singleton;
+
 import com.fasterxml.jackson.core.JsonGenerator;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonSerializer;
@@ -30,6 +33,8 @@ import fr.peralta.mycellar.domain.booking.BookingBottle;
 /**
  * @author speralta
  */
+@Named
+@Singleton
 public class BookingBottleKeySerializer extends JsonSerializer<BookingBottle> {
 
     /**
@@ -37,7 +42,7 @@ public class BookingBottleKeySerializer extends JsonSerializer<BookingBottle> {
      */
     @Override
     public void serialize(BookingBottle value, JsonGenerator jgen, SerializerProvider provider) throws IOException, JsonProcessingException {
-        jgen.writeFieldName(value.getId().toString());
+        jgen.writeFieldName(value.getBookingEvent().getId().toString() + "-" + value.getId().toString());
     }
 
 }

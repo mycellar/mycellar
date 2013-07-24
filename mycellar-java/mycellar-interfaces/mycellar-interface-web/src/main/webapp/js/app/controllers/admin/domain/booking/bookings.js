@@ -15,8 +15,6 @@ angular.module('mycellar').controller({
       }
     };
     $scope.filters = {
-      'bookingEvent.start': '',
-      'bookingEvent.end': '',
       'bookingEvent.name': '',
       'customer.lastname': ''
     }
@@ -81,5 +79,14 @@ angular.module('mycellar').controller({
         return response.data.list;
       });
     };
+    $scope.total = 0;
+    $scope.$watch('booking.quantities', function (value) {
+      if ($scope.booking.quantities != undefined) {
+        $scope.total = 0;
+        angular.forEach($scope.booking.bookingEvent.bottles, function(value) {
+          $scope.total += value.price * $scope.booking.quantities[$scope.booking.bookingEvent.id + "-" + value.id];
+        });
+      }
+    }, true);
   }
 });

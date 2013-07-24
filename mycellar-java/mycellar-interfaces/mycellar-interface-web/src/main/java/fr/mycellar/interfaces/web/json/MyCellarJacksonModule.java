@@ -18,6 +18,10 @@
  */
 package fr.mycellar.interfaces.web.json;
 
+import javax.inject.Inject;
+import javax.inject.Named;
+import javax.inject.Singleton;
+
 import com.fasterxml.jackson.databind.module.SimpleModule;
 
 import fr.peralta.mycellar.domain.booking.BookingBottle;
@@ -25,16 +29,19 @@ import fr.peralta.mycellar.domain.booking.BookingBottle;
 /**
  * @author speralta
  */
+@Named
+@Singleton
 public class MyCellarJacksonModule extends SimpleModule {
     private static final long serialVersionUID = 201307180835L;
 
-    public MyCellarJacksonModule() {
+    @Inject
+    public MyCellarJacksonModule(BookingBottleKeyDeserializer bookingBottleKeyDeserializer, BookingBottleKeySerializer bookingBottleKeySerializer) {
         super(new MyCellarJacksonVersion());
         // first deserializers
-        addKeyDeserializer(BookingBottle.class, new BookingBottleKeyDeserializer());
+        addKeyDeserializer(BookingBottle.class, bookingBottleKeyDeserializer);
 
         // then serializers
-        addKeySerializer(BookingBottle.class, new BookingBottleKeySerializer());
+        addKeySerializer(BookingBottle.class, bookingBottleKeySerializer);
     }
 
 }

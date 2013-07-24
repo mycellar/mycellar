@@ -18,6 +18,7 @@
  */
 package fr.mycellar.interfaces.web.json;
 
+import javax.inject.Inject;
 import javax.inject.Named;
 import javax.inject.Singleton;
 import javax.ws.rs.ext.ContextResolver;
@@ -43,10 +44,13 @@ public class ObjectMapperProvider implements ContextResolver<ObjectMapper> {
 
     /**
      * Default constructor.
+     * 
+     * @param myCellarJacksonModule
      */
-    public ObjectMapperProvider() {
+    @Inject
+    public ObjectMapperProvider(MyCellarJacksonModule myCellarJacksonModule) {
         objectMapper = new ObjectMapper();
-        objectMapper.registerModule(new MyCellarJacksonModule());
+        objectMapper.registerModule(myCellarJacksonModule);
         objectMapper.registerModule(new JodaModule());
         objectMapper.configure(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS, false);
         objectMapper.setAnnotationIntrospector(new AnnotationIntrospectorPair(new JacksonAnnotationIntrospector(), new JaxbAnnotationIntrospector(TypeFactory.defaultInstance())));

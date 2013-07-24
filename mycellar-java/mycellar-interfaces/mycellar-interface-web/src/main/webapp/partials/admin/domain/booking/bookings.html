@@ -10,6 +10,10 @@
       <fieldset>
         <legend><a href ng-click="filtersIsCollapsed = !filtersIsCollapsed"><i ng-class="filtersIsCollapsed ? 'icon-expand-alt' : 'icon-collapse-alt'"></i></a> Filters</legend>
         <div collapse="filtersIsCollapsed">
+          <label for="bookingEvent.name">Booking event name</label>
+          <input id="bookingEvent.name" name="bookingEvent.name" placeholder="Booking event name" ng-model="filters['bookingEvent.name']" type="text" />
+          <label for="customer.lastname">Customer lastname</label>
+          <input id="customer.lastname" name="customer.lastname" placeholder="Customer lastname" ng-model="filters['customer.lastname']" type="text" />
           <input type="button" class="btn" value="Clear filters" ng-click="clearFilters()" />
         </div>
       </fieldset>

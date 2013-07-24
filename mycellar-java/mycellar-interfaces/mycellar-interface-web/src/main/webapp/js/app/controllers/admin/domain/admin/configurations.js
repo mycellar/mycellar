@@ -12,10 +12,6 @@ angular.module('mycellar').controller({
         email: null
       }
     };
-    $scope.filters = {
-      key: ''
-    }
-    $scope.filtersIsCollapsed = true;
     
     $scope.tableOptions = {
       itemResource: $resource('/api/domain/admin/configurations')
@@ -32,11 +28,6 @@ angular.module('mycellar').controller({
       } else {
         $scope.sort.properties.push(property);
         $scope.sort.ways[property] = 'asc';
-      }
-    };
-    $scope.clearFilters = function() {
-      for (var filter in $scope.filters) {
-        $scope.filters[filter] = '';
       }
     };
   },
