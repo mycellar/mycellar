@@ -9,7 +9,8 @@ angular.module('mycellar').directive('mycellarAdminNav', function() {
 });
 
 angular.module('mycellar').controller({
-  AdminNavigationController: function ($scope, $resource) {
+  AdminNavigationController: function ($scope, $resource, $location) {
+    $scope.currentLocation = $location.path();
     $scope.headers = [{label: 'admin', menus: [{label: 'Configuration', route: '/admin/domain/admin/configurations'}]},
                       {label: 'booking', menus: [{label: 'Booking Event', route: '/admin/domain/booking/bookingEvents'},
                                               {label: 'Booking', route: '/admin/domain/booking/bookings'}]},

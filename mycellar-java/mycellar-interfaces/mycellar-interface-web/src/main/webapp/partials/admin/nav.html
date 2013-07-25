@@ -2,8 +2,8 @@
   <ul class="nav nav-list">
     <li ng-repeat="header in headers">
       <span class="nav-header">{{header.label}}</span>
-      <ul>
-        <li ng-repeat="menu in header.menus">
+      <ul class="nav nav-list">
+        <li ng-repeat="menu in header.menus" ng-class="{active: menu.route == currentLocation}">
           <a href="{{menu.route}}"> {{menu.label}}</a>
         </li>
       </ul>
