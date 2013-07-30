@@ -24,12 +24,14 @@ import javax.inject.Singleton;
 
 import fr.peralta.mycellar.application.shared.AbstractSimpleService;
 import fr.peralta.mycellar.application.wine.CountryService;
+import fr.peralta.mycellar.application.wine.RegionService;
 import fr.peralta.mycellar.domain.shared.NamedEntity_;
 import fr.peralta.mycellar.domain.shared.exception.BusinessError;
 import fr.peralta.mycellar.domain.shared.exception.BusinessException;
 import fr.peralta.mycellar.domain.shared.repository.PropertySelector;
 import fr.peralta.mycellar.domain.shared.repository.SearchParameters;
 import fr.peralta.mycellar.domain.wine.Country;
+import fr.peralta.mycellar.domain.wine.Region_;
 import fr.peralta.mycellar.domain.wine.repository.CountryRepository;
 
 /**
@@ -37,18 +39,18 @@ import fr.peralta.mycellar.domain.wine.repository.CountryRepository;
  */
 @Named
 @Singleton
-public class CountryServiceImpl extends AbstractSimpleService<Country, CountryRepository> implements
-        CountryService {
+public class CountryServiceImpl extends AbstractSimpleService<Country, CountryRepository> implements CountryService {
 
     private CountryRepository countryRepository;
+
+    private RegionService regionService;
 
     /**
      * {@inheritDoc}
      */
     @Override
     public Country find(String name) {
-        return countryRepository.findUniqueOrNone(new SearchParameters().property(PropertySelector
-                .newPropertySelector(name, NamedEntity_.name)));
+        return countryRepository.findUniqueOrNone(new SearchParameters().property(PropertySelector.newPropertySelector(name, NamedEntity_.name)));
     }
 
     /**
@@ -57,9 +59,20 @@ public class CountryServiceImpl extends AbstractSimpleService<Country, CountryRe
     @Override
     public void validate(Country entity) throws BusinessException {
         Country existing = find(entity.getName());
-        if ((existing != null)
-                && ((entity.getId() == null) || !existing.getId().equals(entity.getId()))) {
+        if ((existing != null) && ((entity.getId() == null) || !existing.getId().equals(entity.getId()))) {
             throw new BusinessException(BusinessError.COUNTRY_00001);
+        }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    protected void validateDelete(Country entity) throws BusinessException {
+        SearchParameters searchParameters = new SearchParameters();
+        searchParameters.addProperty(PropertySelector.newPropertySelector(entity, Region_.country));
+        if (regionService.count(searchParameters) > 0) {
+            throw new BusinessException(BusinessError.COUNTRY_00002);
         }
     }
 
@@ -78,6 +91,15 @@ public class CountryServiceImpl extends AbstractSimpleService<Country, CountryRe
     @Inject
     public void setCountryRepository(CountryRepository countryRepository) {
         this.countryRepository = countryRepository;
+    }
+
+    /**
+     * @param regionService
+     *            the regionService to set
+     */
+    @Inject
+    public void setRegionService(RegionService regionService) {
+        this.regionService = regionService;
     }
 
 }

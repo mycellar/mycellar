@@ -23,6 +23,7 @@ import java.util.List;
 
 import javax.inject.Inject;
 import javax.ws.rs.Consumes;
+import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
@@ -76,6 +77,12 @@ public class UserWebService {
     @Path("user/{id}")
     public User getUserById(@PathParam("id") int userId) {
         return userServiceFacade.getUserById(userId);
+    }
+
+    @DELETE
+    @Path("user/{id}")
+    public void deleteUserById(@PathParam("id") int userId) throws BusinessException {
+        userServiceFacade.deleteUser(userServiceFacade.getUserById(userId));
     }
 
     @POST

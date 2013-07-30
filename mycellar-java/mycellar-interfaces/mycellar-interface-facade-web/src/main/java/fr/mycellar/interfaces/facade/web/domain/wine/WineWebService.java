@@ -23,6 +23,7 @@ import java.util.List;
 
 import javax.inject.Inject;
 import javax.ws.rs.Consumes;
+import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
@@ -83,6 +84,12 @@ public class WineWebService {
         return wineServiceFacade.getCountryById(countryId);
     }
 
+    @DELETE
+    @Path("country/{id}")
+    public void deleteCountryById(@PathParam("id") int countryId) throws BusinessException {
+        wineServiceFacade.deleteCountry(wineServiceFacade.getCountryById(countryId));
+    }
+
     @POST
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
@@ -115,6 +122,12 @@ public class WineWebService {
     @Path("appellation/{id}")
     public Appellation getAppellationById(@PathParam("id") int appellationId) {
         return wineServiceFacade.getAppellationById(appellationId);
+    }
+
+    @DELETE
+    @Path("appellation/{id}")
+    public void deleteAppellationById(@PathParam("id") int appellationId) throws BusinessException {
+        wineServiceFacade.deleteAppellation(wineServiceFacade.getAppellationById(appellationId));
     }
 
     @POST
@@ -151,6 +164,12 @@ public class WineWebService {
         return wineServiceFacade.getProducerById(producerId);
     }
 
+    @DELETE
+    @Path("producer/{id}")
+    public void deleteProducerById(@PathParam("id") int producerId) throws BusinessException {
+        wineServiceFacade.deleteProducer(wineServiceFacade.getProducerById(producerId));
+    }
+
     @POST
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
@@ -185,9 +204,11 @@ public class WineWebService {
         return wineServiceFacade.getRegionById(regionId);
     }
 
-    // --------------
-    // WINE
-    // --------------
+    @DELETE
+    @Path("region/{id}")
+    public void deleteRegionById(@PathParam("id") int regionId) throws BusinessException {
+        wineServiceFacade.deleteRegion(wineServiceFacade.getRegionById(regionId));
+    }
 
     @POST
     @Consumes(MediaType.APPLICATION_JSON)
@@ -195,6 +216,10 @@ public class WineWebService {
     public void saveRegion(Region region) throws BusinessException {
         wineServiceFacade.saveRegion(region);
     }
+
+    // --------------
+    // WINE
+    // --------------
 
     @GET
     @Produces(MediaType.APPLICATION_JSON)
@@ -215,6 +240,12 @@ public class WineWebService {
     @Path("wine/{id}")
     public Wine getWineById(@PathParam("id") int countryId) {
         return wineServiceFacade.getWineById(countryId);
+    }
+
+    @DELETE
+    @Path("wine/{id}")
+    public void deleteWineById(@PathParam("id") int wineId) throws BusinessException {
+        wineServiceFacade.deleteWine(wineServiceFacade.getWineById(wineId));
     }
 
     @POST

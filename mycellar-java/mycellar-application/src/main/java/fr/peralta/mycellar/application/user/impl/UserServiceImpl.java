@@ -24,13 +24,17 @@ import javax.inject.Singleton;
 
 import org.jasypt.util.password.PasswordEncryptor;
 
+import fr.peralta.mycellar.application.booking.BookingService;
 import fr.peralta.mycellar.application.shared.AbstractSimpleService;
+import fr.peralta.mycellar.application.stock.CellarService;
 import fr.peralta.mycellar.application.user.ResetPasswordRequestService;
 import fr.peralta.mycellar.application.user.UserService;
+import fr.peralta.mycellar.domain.booking.Booking_;
 import fr.peralta.mycellar.domain.shared.exception.BusinessError;
 import fr.peralta.mycellar.domain.shared.exception.BusinessException;
 import fr.peralta.mycellar.domain.shared.repository.PropertySelector;
 import fr.peralta.mycellar.domain.shared.repository.SearchParameters;
+import fr.peralta.mycellar.domain.stock.Cellar_;
 import fr.peralta.mycellar.domain.user.User;
 import fr.peralta.mycellar.domain.user.User_;
 import fr.peralta.mycellar.domain.user.repository.UserRepository;
@@ -40,14 +44,17 @@ import fr.peralta.mycellar.domain.user.repository.UserRepository;
  */
 @Named
 @Singleton
-public class UserServiceImpl extends AbstractSimpleService<User, UserRepository> implements
-        UserService {
+public class UserServiceImpl extends AbstractSimpleService<User, UserRepository> implements UserService {
 
     private ResetPasswordRequestService resetPasswordRequestService;
 
     private UserRepository userRepository;
 
     private PasswordEncryptor passwordEncryptor;
+
+    private BookingService bookingService;
+
+    private CellarService cellarService;
 
     /**
      * {@inheritDoc}
@@ -63,8 +70,7 @@ public class UserServiceImpl extends AbstractSimpleService<User, UserRepository>
      */
     @Override
     public void resetPasswordRequest(String email, String url) {
-        User user = userRepository.findUniqueOrNone(new SearchParameters()
-                .property(PropertySelector.newPropertySelector(email, User_.email)));
+        User user = userRepository.findUniqueOrNone(new SearchParameters().property(PropertySelector.newPropertySelector(email, User_.email)));
         if (user != null) {
             resetPasswordRequestService.createAndSendEmail(user, url);
         }
@@ -76,10 +82,8 @@ public class UserServiceImpl extends AbstractSimpleService<User, UserRepository>
      */
     @Override
     public void validate(User entity) throws BusinessException {
-        User existing = userRepository.findUniqueOrNone(new SearchParameters()
-                .property(PropertySelector.newPropertySelector(entity.getEmail(), User_.email)));
-        if ((existing != null)
-                && ((entity.getId() == null) || !existing.getId().equals(entity.getId()))) {
+        User existing = userRepository.findUniqueOrNone(new SearchParameters().property(PropertySelector.newPropertySelector(entity.getEmail(), User_.email)));
+        if ((existing != null) && ((entity.getId() == null) || !existing.getId().equals(entity.getId()))) {
             throw new BusinessException(BusinessError.USER_00001);
         }
     }
@@ -88,9 +92,24 @@ public class UserServiceImpl extends AbstractSimpleService<User, UserRepository>
      * {@inheritDoc}
      */
     @Override
+    protected void validateDelete(User entity) throws BusinessException {
+        SearchParameters searchParameters = new SearchParameters();
+        searchParameters.addProperty(PropertySelector.newPropertySelector(entity, Booking_.customer));
+        if (bookingService.count(searchParameters) > 0) {
+            throw new BusinessException(BusinessError.USER_00002);
+        }
+        searchParameters.addProperty(PropertySelector.newPropertySelector(entity, Cellar_.owner));
+        if (cellarService.count(searchParameters) > 0) {
+            throw new BusinessException(BusinessError.USER_00003);
+        }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
     public User authenticate(String login, String password) {
-        User user = userRepository.findUniqueOrNone(new SearchParameters()
-                .property(PropertySelector.newPropertySelector(login, User_.email)));
+        User user = userRepository.findUniqueOrNone(new SearchParameters().property(PropertySelector.newPropertySelector(login, User_.email)));
         if ((user != null) && !passwordEncryptor.checkPassword(password, user.getPassword())) {
             user = null;
         }
@@ -128,9 +147,26 @@ public class UserServiceImpl extends AbstractSimpleService<User, UserRepository>
      *            the resetPasswordRequestService to set
      */
     @Inject
-    public void setResetPasswordRequestService(
-            ResetPasswordRequestService resetPasswordRequestService) {
+    public void setResetPasswordRequestService(ResetPasswordRequestService resetPasswordRequestService) {
         this.resetPasswordRequestService = resetPasswordRequestService;
+    }
+
+    /**
+     * @param bookingService
+     *            the bookingService to set
+     */
+    @Inject
+    public void setBookingService(BookingService bookingService) {
+        this.bookingService = bookingService;
+    }
+
+    /**
+     * @param cellarService
+     *            the cellarService to set
+     */
+    @Inject
+    public void setCellarService(CellarService cellarService) {
+        this.cellarService = cellarService;
     }
 
 }

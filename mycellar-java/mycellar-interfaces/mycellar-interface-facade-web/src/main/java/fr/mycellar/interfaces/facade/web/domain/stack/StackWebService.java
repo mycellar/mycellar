@@ -22,6 +22,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import javax.inject.Inject;
+import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
@@ -35,6 +36,7 @@ import fr.mycellar.interfaces.facade.web.domain.FilterCouple;
 import fr.mycellar.interfaces.facade.web.domain.ListWithCount;
 import fr.mycellar.interfaces.facade.web.domain.OrderCouple;
 import fr.mycellar.interfaces.facade.web.domain.SearchParametersUtil;
+import fr.peralta.mycellar.domain.shared.exception.BusinessException;
 import fr.peralta.mycellar.domain.shared.repository.SearchParameters;
 import fr.peralta.mycellar.domain.stack.Stack;
 import fr.peralta.mycellar.interfaces.facades.stack.StackServiceFacade;
@@ -70,6 +72,18 @@ public class StackWebService {
     @Path("stack/{id}")
     public Stack getStackById(@PathParam("id") int stackId) {
         return stackServiceFacade.getStackById(stackId);
+    }
+
+    @DELETE
+    @Path("stack/{id}")
+    public void deleteStackById(@PathParam("id") int stackId) throws BusinessException {
+        stackServiceFacade.deleteStack(stackServiceFacade.getStackById(stackId));
+    }
+
+    @DELETE
+    @Path("stacks")
+    public void deleteAllStacks() throws BusinessException {
+        stackServiceFacade.deleteAllStacks();
     }
 
     // BEAN METHODS

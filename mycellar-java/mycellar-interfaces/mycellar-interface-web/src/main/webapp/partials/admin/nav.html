@@ -3,7 +3,7 @@
     <li ng-repeat="header in headers">
       <span class="nav-header">{{header.label}}</span>
       <ul class="nav nav-list">
-        <li ng-repeat="menu in header.menus" ng-class="{active: menu.route == currentLocation}">
+        <li ng-repeat="menu in header.menus" ng-class="{active: currentLocation.search(menu.route.substr(0, menu.route.length - 3)) > -1}">
           <a href="{{menu.route}}"> {{menu.label}}</a>
         </li>
       </ul>

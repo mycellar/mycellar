@@ -27,12 +27,16 @@ import javax.inject.Singleton;
 import org.joda.time.LocalDate;
 
 import fr.peralta.mycellar.application.booking.BookingEventService;
+import fr.peralta.mycellar.application.booking.BookingService;
 import fr.peralta.mycellar.application.shared.AbstractSimpleService;
 import fr.peralta.mycellar.domain.booking.BookingEvent;
 import fr.peralta.mycellar.domain.booking.BookingEvent_;
+import fr.peralta.mycellar.domain.booking.Booking_;
 import fr.peralta.mycellar.domain.booking.repository.BookingEventRepository;
 import fr.peralta.mycellar.domain.shared.NamedEntity_;
+import fr.peralta.mycellar.domain.shared.exception.BusinessError;
 import fr.peralta.mycellar.domain.shared.exception.BusinessException;
+import fr.peralta.mycellar.domain.shared.repository.PropertySelector;
 import fr.peralta.mycellar.domain.shared.repository.Range;
 import fr.peralta.mycellar.domain.shared.repository.SearchParameters;
 
@@ -41,10 +45,11 @@ import fr.peralta.mycellar.domain.shared.repository.SearchParameters;
  */
 @Named
 @Singleton
-public class BookingEventServiceImpl extends
-        AbstractSimpleService<BookingEvent, BookingEventRepository> implements BookingEventService {
+public class BookingEventServiceImpl extends AbstractSimpleService<BookingEvent, BookingEventRepository> implements BookingEventService {
 
     private BookingEventRepository bookingEventRepository;
+
+    private BookingService bookingService;
 
     /**
      * {@inheritDoc}
@@ -80,6 +85,18 @@ public class BookingEventServiceImpl extends
      * {@inheritDoc}
      */
     @Override
+    protected void validateDelete(BookingEvent entity) throws BusinessException {
+        SearchParameters searchParameters = new SearchParameters();
+        searchParameters.addProperty(PropertySelector.newPropertySelector(entity, Booking_.bookingEvent));
+        if (bookingService.count(searchParameters) > 0) {
+            throw new BusinessException(BusinessError.BOOKINGEVENT_00001);
+        }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
     protected BookingEventRepository getRepository() {
         return bookingEventRepository;
     }
@@ -91,6 +108,15 @@ public class BookingEventServiceImpl extends
     @Inject
     public void setBookingEventRepository(BookingEventRepository bookingEventRepository) {
         this.bookingEventRepository = bookingEventRepository;
+    }
+
+    /**
+     * @param bookingService
+     *            the bookingService to set
+     */
+    @Inject
+    public void setBookingService(BookingService bookingService) {
+        this.bookingService = bookingService;
     }
 
 }

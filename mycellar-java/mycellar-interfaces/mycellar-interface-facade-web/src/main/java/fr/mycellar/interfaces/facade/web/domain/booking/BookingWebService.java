@@ -23,6 +23,7 @@ import java.util.List;
 
 import javax.inject.Inject;
 import javax.ws.rs.Consumes;
+import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
@@ -80,6 +81,12 @@ public class BookingWebService {
         return bookingServiceFacade.getBookingById(bookingId);
     }
 
+    @DELETE
+    @Path("booking/{id}")
+    public void deleteBookingById(@PathParam("id") int bookingId) throws BusinessException {
+        bookingServiceFacade.deleteBooking(bookingServiceFacade.getBookingById(bookingId));
+    }
+
     @POST
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
@@ -112,6 +119,12 @@ public class BookingWebService {
     @Path("bookingEvent/{id}")
     public BookingEvent getBookingEventById(@PathParam("id") int bookingEventId) {
         return bookingServiceFacade.getBookingEventById(bookingEventId);
+    }
+
+    @DELETE
+    @Path("bookingEvent/{id}")
+    public void deleteBookingEventById(@PathParam("id") int bookingEventId) throws BusinessException {
+        bookingServiceFacade.deleteBookingEvent(bookingServiceFacade.getBookingEventById(bookingEventId));
     }
 
     @POST

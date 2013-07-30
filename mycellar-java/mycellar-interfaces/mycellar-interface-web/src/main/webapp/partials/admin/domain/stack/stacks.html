@@ -6,21 +6,27 @@
     </nav>
   </div>
   <div class="span10">
+    <div ng-show="errors.length > 0">
+      <div class="alert alert-error" ng-repeat="error in errors">
+        <button type="button" class="close" ng-click="errors.splice(errors.indexOf(error), 1)">&times;</button>
+        {{error.errorKey}}
+      </div>
+    </div>
     <data-mycellar-table page-range="3" options="tableOptions" items="items" sort="sort">
       <table class="table table-bordered table-striped table-condensed">
         <thead>
           <tr>
             <th>HashCode</th>
             <th>Stack</th>
-            <th>Count <icon-sort sort-fn="sortBy('count')" attribute="count" ways="sort.ways" /></th>
-            <th class="actions"></th>
+            <th class="stackCount">Count <icon-sort sort-fn="sortBy('count')" attribute="count" ways="sort.ways" /></th>
+            <th class="actions"><a href ng-click="deleteAll()" class="btn btn-mini" alt="Delete all stacks"><i class="icon-remove-sign icon-large"></i></a></th>
           </tr>
         </thead>
         <tbody ng-controller="LoadingCtrl">
           <tr ng-repeat="item in items">
             <td>{{item.hashCode}}</td>
-            <td>{{item.stack | firstLine}}</td>
-            <td>{{item.count}}</td>
+            <td class="stack">{{item.stack | firstLine}}</td>
+            <td class="stackCount">{{item.count}}</td>
             <td>
               <a href ng-click="edit(item.id)" class="btn btn-mini"><i class="icon-edit icon-large"></i></a>
               <a href ng-click="delete(item.id)" class="btn btn-mini"><i class="icon-remove-sign icon-large"></i></a>
@@ -34,7 +40,7 @@
           <tr>
             <th>HashCode</th>
             <th>Stack</th>
-            <th>Count <icon-sort sort-fn="sortBy('count')" attribute="count" ways="sort.ways" /></th>
+            <th class="stackCount">Count <icon-sort sort-fn="sortBy('count')" attribute="count" ways="sort.ways" /></th>
             <th class="actions"></th>
           </tr>
         </tfoot>

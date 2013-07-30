@@ -34,3 +34,15 @@ footer {
   text-align: center;
   width: 100px;
 }
+
+.table th.stackCount, .table td.stackCount {
+  text-align: center;
+  min-width: 60px;
+  max-width: 60px;
+  width: 60px;
+}
+
+.table td.stack {
+  word-break: break-all;
+  word-wrap: break-word;
+}

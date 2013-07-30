@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('mycellar').controller({
-  AdminDomainRegionsController: function ($scope, $resource, $http, $location) {
+  AdminDomainRegionsController: function ($scope, $resource, $http, $location, $route) {
     $scope.sort = {
       properties: [
         'country.name',
@@ -17,12 +17,27 @@ angular.module('mycellar').controller({
       name: ''
     };
     $scope.filtersIsCollapsed = true;
+    $scope.errors = [];
     
     $scope.tableOptions = {
       itemResource: $resource('/api/domain/wine/regions')
     };
     $scope.edit = function(itemId) {
       $location.path('/admin/domain/wine/region/' + itemId);
+    };
+    $scope.new = function() {
+      $location.path('/admin/domain/wine/region/');
+    };
+    $scope.delete = function(itemId) {
+      $resource('/api/domain/wine/region/:regionId').delete({regionId: itemId}, function (value, headers) {
+        if (value.errorKey != undefined) {
+          $scope.errors.push({errorKey: value.errorKey});
+        } else if (value.internalError != undefined) {
+          $scope.errors.push({errorKey: value.internalError});
+        } else {
+          $route.reload();
+        }
+      });
     };
     $scope.sortBy = function(property) {
       if ($scope.sort.ways[property] == 'asc') {
@@ -44,7 +59,11 @@ angular.module('mycellar').controller({
   AdminDomainRegionController: function ($scope, $resource, $route, $location, $http) {
     var regionId = $route.current.params.regionId;
     $scope.regionResource = $resource('/api/domain/wine/region/:regionId');
-    $scope.region = $scope.regionResource.get({regionId: regionId});
+    if (regionId != null && regionId > 0) {
+      $scope.region = $scope.regionResource.get({regionId: regionId});
+    } else {
+      $scope.region = new $scope.regionResource();
+    }
     $scope.save = function () {
       $scope.backup = {};
       angular.copy($scope.region, $scope.backup);

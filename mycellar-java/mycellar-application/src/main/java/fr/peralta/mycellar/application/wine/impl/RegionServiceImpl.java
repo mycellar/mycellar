@@ -23,12 +23,14 @@ import javax.inject.Named;
 import javax.inject.Singleton;
 
 import fr.peralta.mycellar.application.shared.AbstractSimpleService;
+import fr.peralta.mycellar.application.wine.AppellationService;
 import fr.peralta.mycellar.application.wine.RegionService;
 import fr.peralta.mycellar.domain.shared.NamedEntity_;
 import fr.peralta.mycellar.domain.shared.exception.BusinessError;
 import fr.peralta.mycellar.domain.shared.exception.BusinessException;
 import fr.peralta.mycellar.domain.shared.repository.PropertySelector;
 import fr.peralta.mycellar.domain.shared.repository.SearchParameters;
+import fr.peralta.mycellar.domain.wine.Appellation_;
 import fr.peralta.mycellar.domain.wine.Country_;
 import fr.peralta.mycellar.domain.wine.Region;
 import fr.peralta.mycellar.domain.wine.Region_;
@@ -42,6 +44,8 @@ import fr.peralta.mycellar.domain.wine.repository.RegionRepository;
 public class RegionServiceImpl extends AbstractSimpleService<Region, RegionRepository> implements RegionService {
 
     private RegionRepository regionRepository;
+
+    private AppellationService appellationService;
 
     /**
      * {@inheritDoc}
@@ -64,6 +68,18 @@ public class RegionServiceImpl extends AbstractSimpleService<Region, RegionRepos
      * {@inheritDoc}
      */
     @Override
+    protected void validateDelete(Region entity) throws BusinessException {
+        SearchParameters searchParameters = new SearchParameters();
+        searchParameters.addProperty(PropertySelector.newPropertySelector(entity, Appellation_.region));
+        if (appellationService.count(searchParameters) > 0) {
+            throw new BusinessException(BusinessError.REGION_00003);
+        }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
     protected RegionRepository getRepository() {
         return regionRepository;
     }
@@ -75,6 +91,15 @@ public class RegionServiceImpl extends AbstractSimpleService<Region, RegionRepos
     @Inject
     public void setRegionRepository(RegionRepository regionRepository) {
         this.regionRepository = regionRepository;
+    }
+
+    /**
+     * @param appellationService
+     *            the appellationService to set
+     */
+    @Inject
+    public void setAppellationService(AppellationService appellationService) {
+        this.appellationService = appellationService;
     }
 
 }

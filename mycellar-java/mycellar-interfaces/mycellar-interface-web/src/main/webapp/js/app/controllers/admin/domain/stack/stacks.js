@@ -18,6 +18,28 @@ angular.module('mycellar').controller({
     $scope.edit = function(itemId) {
       $location.path('/admin/domain/stack/stack/' + itemId);
     };
+    $scope.delete = function(itemId) {
+      $resource('/api/domain/stack/stack/:stackId').delete({stackId: itemId}, function (value, headers) {
+        if (value.errorKey != undefined) {
+          $scope.errors.push({errorKey: value.errorKey});
+        } else if (value.internalError != undefined) {
+          $scope.errors.push({errorKey: value.internalError});
+        } else {
+          $route.reload();
+        }
+      });
+    };
+    $scope.deleteAll = function() {
+      $resource('/api/domain/stack/stacks/').delete({}, function (value, headers) {
+        if (value.errorKey != undefined) {
+          $scope.errors.push({errorKey: value.errorKey});
+        } else if (value.internalError != undefined) {
+          $scope.errors.push({errorKey: value.internalError});
+        } else {
+          $route.reload();
+        }
+      });
+    };
     $scope.sortBy = function(property) {
       if ($scope.sort.ways[property] == 'asc') {
         $scope.sort.ways[property] = 'desc';

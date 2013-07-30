@@ -25,8 +25,7 @@ import fr.peralta.mycellar.domain.shared.repository.SimpleRepository;
 /**
  * @author speralta
  */
-public abstract class AbstractSimpleService<E extends IdentifiedEntity, R extends SimpleRepository<E>>
-        extends AbstractGenericService<R, E, Integer> implements SimpleService<E> {
+public abstract class AbstractSimpleService<E extends IdentifiedEntity, R extends SimpleRepository<E>> extends AbstractGenericService<R, E, Integer> implements SimpleService<E> {
 
     /**
      * {@inheritDoc}
@@ -40,8 +39,16 @@ public abstract class AbstractSimpleService<E extends IdentifiedEntity, R extend
      * {@inheritDoc}
      */
     @Override
-    public final void delete(E entity) {
+    public final void delete(E entity) throws BusinessException {
+        validateDelete(entity);
         getRepository().delete(entity);
+    }
+
+    /**
+     * @param entity
+     */
+    protected void validateDelete(E entity) throws BusinessException {
+
     }
 
     /**

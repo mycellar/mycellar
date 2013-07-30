@@ -16,21 +16,28 @@
  * You should have received a copy of the GNU General Public License
  * along with MyCellar. If not, see <http://www.gnu.org/licenses/>.
  */
-package fr.peralta.mycellar.application.stack;
+package fr.mycellar.interfaces.facade.web.domain;
 
-import fr.peralta.mycellar.application.shared.SimpleService;
-import fr.peralta.mycellar.domain.stack.Stack;
 
 /**
  * @author speralta
  */
-public interface StackService extends SimpleService<Stack> {
+public class InternalErrorHolder {
+
+    private final String internalError;
 
     /**
-     * @param throwable
+     * @param internalError
      */
-    void onThrowable(Throwable throwable);
+    public InternalErrorHolder(String internalError) {
+        this.internalError = internalError;
+    }
 
-    void deleteAllStacks();
+    /**
+     * @return the internalError
+     */
+    public String getInternalError() {
+        return internalError;
+    }
 
 }

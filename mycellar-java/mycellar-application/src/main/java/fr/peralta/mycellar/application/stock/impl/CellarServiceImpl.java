@@ -24,13 +24,17 @@ import javax.inject.Singleton;
 
 import fr.peralta.mycellar.application.shared.AbstractSimpleService;
 import fr.peralta.mycellar.application.stock.CellarService;
+import fr.peralta.mycellar.application.stock.CellarShareService;
+import fr.peralta.mycellar.application.stock.StockService;
 import fr.peralta.mycellar.domain.shared.NamedEntity_;
 import fr.peralta.mycellar.domain.shared.exception.BusinessError;
 import fr.peralta.mycellar.domain.shared.exception.BusinessException;
 import fr.peralta.mycellar.domain.shared.repository.PropertySelector;
 import fr.peralta.mycellar.domain.shared.repository.SearchParameters;
 import fr.peralta.mycellar.domain.stock.Cellar;
+import fr.peralta.mycellar.domain.stock.CellarShare_;
 import fr.peralta.mycellar.domain.stock.Cellar_;
+import fr.peralta.mycellar.domain.stock.Stock_;
 import fr.peralta.mycellar.domain.stock.repository.CellarRepository;
 import fr.peralta.mycellar.domain.user.User_;
 
@@ -39,28 +43,42 @@ import fr.peralta.mycellar.domain.user.User_;
  */
 @Named
 @Singleton
-public class CellarServiceImpl extends AbstractSimpleService<Cellar, CellarRepository> implements
-        CellarService {
+public class CellarServiceImpl extends AbstractSimpleService<Cellar, CellarRepository> implements CellarService {
 
     private CellarRepository cellarRepository;
+
+    private CellarShareService cellarShareService;
+
+    private StockService stockService;
 
     /**
      * {@inheritDoc}
      */
     @Override
     public void validate(Cellar entity) throws BusinessException {
-        Cellar existing = cellarRepository
-                .findUniqueOrNone(new SearchParameters() //
-                        .property(
-                                PropertySelector.newPropertySelector(entity.getOwner().getId(),
-                                        Cellar_.owner, User_.id)) //
-                        .property(
-                                PropertySelector.newPropertySelector(entity.getName(),
-                                        NamedEntity_.name)) //
+        Cellar existing = cellarRepository.findUniqueOrNone(new SearchParameters() //
+                .property(PropertySelector.newPropertySelector(entity.getOwner().getId(), Cellar_.owner, User_.id)) //
+                .property(PropertySelector.newPropertySelector(entity.getName(), NamedEntity_.name)) //
                 );
-        if ((existing != null)
-                && ((entity.getId() == null) || !existing.getId().equals(entity.getId()))) {
+        if ((existing != null) && ((entity.getId() == null) || !existing.getId().equals(entity.getId()))) {
             throw new BusinessException(BusinessError.CELLAR_00001);
+        }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    protected void validateDelete(Cellar entity) throws BusinessException {
+        SearchParameters searchParameters = new SearchParameters();
+        searchParameters.addProperty(PropertySelector.newPropertySelector(entity, Stock_.cellar));
+        if (stockService.count(searchParameters) > 0) {
+            throw new BusinessException(BusinessError.CELLAR_00002);
+        }
+        searchParameters = new SearchParameters();
+        searchParameters.addProperty(PropertySelector.newPropertySelector(entity, CellarShare_.cellar));
+        if (cellarShareService.count(searchParameters) > 0) {
+            throw new BusinessException(BusinessError.CELLAR_00003);
         }
     }
 
@@ -79,6 +97,24 @@ public class CellarServiceImpl extends AbstractSimpleService<Cellar, CellarRepos
     @Inject
     public void setCellarRepository(CellarRepository cellarRepository) {
         this.cellarRepository = cellarRepository;
+    }
+
+    /**
+     * @param cellarShareService
+     *            the cellarShareService to set
+     */
+    @Inject
+    public void setCellarShareService(CellarShareService cellarShareService) {
+        this.cellarShareService = cellarShareService;
+    }
+
+    /**
+     * @param stockService
+     *            the stockService to set
+     */
+    @Inject
+    public void setStockService(StockService stockService) {
+        this.stockService = stockService;
     }
 
 }

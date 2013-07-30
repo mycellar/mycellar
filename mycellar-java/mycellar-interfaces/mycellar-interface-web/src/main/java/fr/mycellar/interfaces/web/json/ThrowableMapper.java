@@ -18,6 +18,7 @@
  */
 package fr.mycellar.interfaces.web.json;
 
+import javax.inject.Inject;
 import javax.inject.Named;
 import javax.inject.Singleton;
 import javax.ws.rs.core.MediaType;
@@ -29,6 +30,9 @@ import javax.ws.rs.ext.Provider;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import fr.mycellar.interfaces.facade.web.domain.InternalErrorHolder;
+import fr.peralta.mycellar.interfaces.facades.stack.StackServiceFacade;
+
 /**
  * @author speralta
  */
@@ -39,13 +43,26 @@ public class ThrowableMapper implements ExceptionMapper<Throwable> {
 
     private static Logger logger = LoggerFactory.getLogger(ThrowableMapper.class);
 
+    private StackServiceFacade stackServiceFacade;
+
     /**
      * {@inheritDoc}
      */
     @Override
     public Response toResponse(Throwable throwable) {
+        stackServiceFacade.onThrowable(throwable);
         logger.error("Throwable thrown in web service.", throwable);
-        return Response.status(Status.INTERNAL_SERVER_ERROR).type(MediaType.TEXT_PLAIN).entity("Internal error : " + throwable.getMessage()).build();
+        return Response.status(Status.INTERNAL_SERVER_ERROR).type(MediaType.APPLICATION_JSON)
+                .entity(new InternalErrorHolder(throwable.getMessage() != null ? throwable.getMessage() : "Internal error.")).build();
+    }
+
+    /**
+     * @param stackServiceFacade
+     *            the stackServiceFacade to set
+     */
+    @Inject
+    public void setStackServiceFacade(StackServiceFacade stackServiceFacade) {
+        this.stackServiceFacade = stackServiceFacade;
     }
 
 }

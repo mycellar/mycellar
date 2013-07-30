@@ -24,6 +24,7 @@ import javax.inject.Singleton;
 
 import fr.peralta.mycellar.application.shared.AbstractSimpleService;
 import fr.peralta.mycellar.application.wine.AppellationService;
+import fr.peralta.mycellar.application.wine.WineService;
 import fr.peralta.mycellar.domain.shared.NamedEntity_;
 import fr.peralta.mycellar.domain.shared.exception.BusinessError;
 import fr.peralta.mycellar.domain.shared.exception.BusinessException;
@@ -32,6 +33,7 @@ import fr.peralta.mycellar.domain.shared.repository.SearchParameters;
 import fr.peralta.mycellar.domain.wine.Appellation;
 import fr.peralta.mycellar.domain.wine.Appellation_;
 import fr.peralta.mycellar.domain.wine.Region_;
+import fr.peralta.mycellar.domain.wine.Wine_;
 import fr.peralta.mycellar.domain.wine.repository.AppellationRepository;
 
 /**
@@ -39,31 +41,38 @@ import fr.peralta.mycellar.domain.wine.repository.AppellationRepository;
  */
 @Named
 @Singleton
-public class AppellationServiceImpl extends
-        AbstractSimpleService<Appellation, AppellationRepository> implements AppellationService {
+public class AppellationServiceImpl extends AbstractSimpleService<Appellation, AppellationRepository> implements AppellationService {
 
     private AppellationRepository appellationRepository;
+
+    private WineService wineService;
 
     /**
      * {@inheritDoc}
      */
     @Override
     public void validate(Appellation entity) throws BusinessException {
-        Appellation model = new Appellation();
-        model.setRegion(entity.getRegion());
-        model.setName(entity.getName());
-        Appellation existing = appellationRepository
-                .findUniqueOrNone(new SearchParameters() //
-                        .property(
-                                PropertySelector.newPropertySelector(entity.getRegion().getId(),
-                                        Appellation_.region, Region_.id)) //
-                        .property(
-                                PropertySelector.newPropertySelector(entity.getName(),
-                                        NamedEntity_.name)) //
-                );
-        if ((existing != null)
-                && ((entity.getId() == null) || !existing.getId().equals(entity.getId()))) {
+        if (entity.getRegion() == null) {
             throw new BusinessException(BusinessError.APPELLATION_00001);
+        }
+        Appellation existing = appellationRepository.findUniqueOrNone(new SearchParameters() //
+                .property(PropertySelector.newPropertySelector(entity.getRegion().getId(), Appellation_.region, Region_.id)) //
+                .property(PropertySelector.newPropertySelector(entity.getName(), NamedEntity_.name)) //
+                );
+        if ((existing != null) && ((entity.getId() == null) || !existing.getId().equals(entity.getId()))) {
+            throw new BusinessException(BusinessError.APPELLATION_00002);
+        }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    protected void validateDelete(Appellation entity) throws BusinessException {
+        SearchParameters searchParameters = new SearchParameters();
+        searchParameters.addProperty(PropertySelector.newPropertySelector(entity, Wine_.appellation));
+        if (wineService.count(searchParameters) > 0) {
+            throw new BusinessException(BusinessError.APPELLATION_00003);
         }
     }
 
@@ -82,6 +91,15 @@ public class AppellationServiceImpl extends
     @Inject
     public void setAppellationRepository(AppellationRepository appellationRepository) {
         this.appellationRepository = appellationRepository;
+    }
+
+    /**
+     * @param wineService
+     *            the wineService to set
+     */
+    @Inject
+    public void setWineService(WineService wineService) {
+        this.wineService = wineService;
     }
 
 }

@@ -26,12 +26,14 @@ import javax.inject.Named;
 import javax.inject.Singleton;
 
 import fr.peralta.mycellar.application.shared.AbstractSimpleService;
+import fr.peralta.mycellar.application.stock.BottleService;
 import fr.peralta.mycellar.application.wine.WineService;
 import fr.peralta.mycellar.domain.shared.NamedEntity_;
 import fr.peralta.mycellar.domain.shared.exception.BusinessError;
 import fr.peralta.mycellar.domain.shared.exception.BusinessException;
 import fr.peralta.mycellar.domain.shared.repository.PropertySelector;
 import fr.peralta.mycellar.domain.shared.repository.SearchParameters;
+import fr.peralta.mycellar.domain.stock.Bottle_;
 import fr.peralta.mycellar.domain.wine.Appellation;
 import fr.peralta.mycellar.domain.wine.Appellation_;
 import fr.peralta.mycellar.domain.wine.Producer;
@@ -47,17 +49,17 @@ import fr.peralta.mycellar.domain.wine.repository.WineRepository;
  */
 @Named
 @Singleton
-public class WineServiceImpl extends AbstractSimpleService<Wine, WineRepository> implements
-        WineService {
+public class WineServiceImpl extends AbstractSimpleService<Wine, WineRepository> implements WineService {
 
     private WineRepository wineRepository;
+
+    private BottleService bottleService;
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public Wine find(Producer producer, Appellation appellation, WineTypeEnum type,
-            WineColorEnum color, String name, Integer vintage) {
+    public Wine find(Producer producer, Appellation appellation, WineTypeEnum type, WineColorEnum color, String name, Integer vintage) {
         Wine model = new Wine();
         model.setProducer(producer);
         model.setAppellation(appellation);
@@ -65,13 +67,8 @@ public class WineServiceImpl extends AbstractSimpleService<Wine, WineRepository>
         model.setColor(color);
         model.setName(name);
         model.setVintage(vintage);
-        return wineRepository.findUniqueOrNone(new SearchParameters()
-                .property(
-                        PropertySelector.newPropertySelector(producer.getId(), Wine_.producer,
-                                Producer_.id)) //
-                .property(
-                        PropertySelector.newPropertySelector(appellation.getId(),
-                                Wine_.appellation, Appellation_.id)) //
+        return wineRepository.findUniqueOrNone(new SearchParameters().property(PropertySelector.newPropertySelector(producer.getId(), Wine_.producer, Producer_.id)) //
+                .property(PropertySelector.newPropertySelector(appellation.getId(), Wine_.appellation, Appellation_.id)) //
                 .property(PropertySelector.newPropertySelector(type, Wine_.type)) //
                 .property(PropertySelector.newPropertySelector(color, Wine_.color)) //
                 .property(PropertySelector.newPropertySelector(name, NamedEntity_.name)) //
@@ -84,11 +81,21 @@ public class WineServiceImpl extends AbstractSimpleService<Wine, WineRepository>
      */
     @Override
     public void validate(Wine entity) throws BusinessException {
-        Wine existing = find(entity.getProducer(), entity.getAppellation(), entity.getType(),
-                entity.getColor(), entity.getName(), entity.getVintage());
-        if ((existing != null)
-                && ((entity.getId() == null) || !existing.getId().equals(entity.getId()))) {
+        Wine existing = find(entity.getProducer(), entity.getAppellation(), entity.getType(), entity.getColor(), entity.getName(), entity.getVintage());
+        if ((existing != null) && ((entity.getId() == null) || !existing.getId().equals(entity.getId()))) {
             throw new BusinessException(BusinessError.WINE_00001);
+        }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    protected void validateDelete(Wine entity) throws BusinessException {
+        SearchParameters searchParameters = new SearchParameters();
+        searchParameters.addProperty(PropertySelector.newPropertySelector(entity, Bottle_.wine));
+        if (bottleService.count(searchParameters) > 0) {
+            throw new BusinessException(BusinessError.WINE_00002);
         }
     }
 
@@ -98,8 +105,7 @@ public class WineServiceImpl extends AbstractSimpleService<Wine, WineRepository>
     @Override
     public List<Wine> createVintages(Wine wine, int from, int to) {
         if (from > to) {
-            throw new IllegalArgumentException("From (" + from + ") must be before to (" + to
-                    + ").");
+            throw new IllegalArgumentException("From (" + from + ") must be before to (" + to + ").");
         }
         List<Wine> copies = new ArrayList<Wine>();
         for (int i = from; i <= to; i++) {
@@ -140,6 +146,15 @@ public class WineServiceImpl extends AbstractSimpleService<Wine, WineRepository>
     @Inject
     public void setWineRepository(WineRepository wineRepository) {
         this.wineRepository = wineRepository;
+    }
+
+    /**
+     * @param bottleService
+     *            the bottleService to set
+     */
+    @Inject
+    public void setBottleService(BottleService bottleService) {
+        this.bottleService = bottleService;
     }
 
 }

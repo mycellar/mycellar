@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('mycellar').controller({
-  AdminDomainWinesController: function ($scope, $resource, $http, $location) {
+  AdminDomainWinesController: function ($scope, $resource, $http, $location, $route) {
     $scope.sort = {
       properties: [
         'appellation.region.country.name',
@@ -33,12 +33,27 @@ angular.module('mycellar').controller({
       'type': ''
       }
     $scope.filtersIsCollapsed = true;
+    $scope.errors = [];
     
     $scope.tableOptions = {
       itemResource: $resource('/api/domain/wine/wines'),
     };
     $scope.edit = function(itemId) {
       $location.path('/admin/domain/wine/wine/' + itemId);
+    };
+    $scope.new = function() {
+      $location.path('/admin/domain/wine/country/');
+    };
+    $scope.delete = function(itemId) {
+      $resource('/api/domain/wine/wine/:wineId').delete({wineId: itemId}, function (value, headers) {
+        if (value.errorKey != undefined) {
+          $scope.errors.push({errorKey: value.errorKey});
+        } else if (value.internalError != undefined) {
+          $scope.errors.push({errorKey: value.internalError});
+        } else {
+          $route.reload();
+        }
+      });
     };
     $scope.sortBy = function(property) {
       if ($scope.sort.ways[property] == 'asc') {
@@ -60,7 +75,11 @@ angular.module('mycellar').controller({
   AdminDomainWineController: function ($scope, $resource, $route, $location, $http) {
     var wineId = $route.current.params.wineId;
     $scope.wineResource = $resource('/api/domain/wine/wine/:wineId');
-    $scope.wine = $scope.wineResource.get({wineId: wineId});
+    if (wineId != null && wineId > 0) {
+      $scope.wine = $scope.wineResource.get({wineId: wineId});
+    } else {
+      $scope.wine = new $scope.wineResource();
+    }
     $scope.save = function () {
       $scope.backup = {};
       angular.copy($scope.wine, $scope.backup);

@@ -20,6 +20,7 @@ package fr.peralta.mycellar.interfaces.facades.stack;
 
 import java.util.List;
 
+import fr.peralta.mycellar.domain.shared.exception.BusinessException;
 import fr.peralta.mycellar.domain.shared.repository.SearchParameters;
 import fr.peralta.mycellar.domain.stack.Stack;
 
@@ -29,9 +30,9 @@ import fr.peralta.mycellar.domain.stack.Stack;
 public interface StackServiceFacade {
 
     /**
-     * @param exception
+     * @param throwable
      */
-    void onException(Exception exception);
+    void onThrowable(Throwable throwable);
 
     /**
      * @param searchParameters
@@ -40,9 +41,15 @@ public interface StackServiceFacade {
     long countStacks(SearchParameters searchParameters);
 
     /**
-     * 
+     * @param stack
+     * @throws BusinessException
      */
-    void deleteAllStacks();
+    void deleteStack(Stack stack) throws BusinessException;
+
+    /**
+     * @throws BusinessException
+     */
+    void deleteAllStacks() throws BusinessException;
 
     /**
      * @param searchParameters

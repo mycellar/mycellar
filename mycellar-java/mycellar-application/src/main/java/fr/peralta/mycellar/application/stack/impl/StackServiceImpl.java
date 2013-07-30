@@ -39,8 +39,7 @@ import fr.peralta.mycellar.domain.stack.repository.StackRepository;
  */
 @Named
 @Singleton
-public class StackServiceImpl extends AbstractSimpleService<Stack, StackRepository> implements
-        StackService {
+public class StackServiceImpl extends AbstractSimpleService<Stack, StackRepository> implements StackService {
 
     private StackRepository stackRepository;
 
@@ -64,13 +63,11 @@ public class StackServiceImpl extends AbstractSimpleService<Stack, StackReposito
      * {@inheritDoc}
      */
     @Override
-    public void onException(Exception exception) {
+    public void onThrowable(Throwable throwable) {
         StringWriter stringWriter = new StringWriter();
-        exception.printStackTrace(new PrintWriter(stringWriter));
+        throwable.printStackTrace(new PrintWriter(stringWriter));
         String stackContent = stringWriter.toString();
-        Stack stack = stackRepository.findUniqueOrNone(new SearchParameters()
-                .property(PropertySelector.newPropertySelector(stackContent.hashCode(),
-                        Stack_.hashCode)));
+        Stack stack = stackRepository.findUniqueOrNone(new SearchParameters().property(PropertySelector.newPropertySelector(stackContent.hashCode(), Stack_.hashCode)));
         if (stack == null) {
             stack = new Stack();
             stack.setStack(stackContent);

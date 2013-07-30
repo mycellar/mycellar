@@ -21,6 +21,7 @@ package fr.peralta.mycellar.domain.shared.exception;
 import javax.persistence.metamodel.Attribute;
 
 import fr.peralta.mycellar.domain.admin.Configuration_;
+import fr.peralta.mycellar.domain.booking.BookingEvent_;
 import fr.peralta.mycellar.domain.contact.Contact_;
 import fr.peralta.mycellar.domain.stock.Bottle_;
 import fr.peralta.mycellar.domain.stock.CellarShare_;
@@ -40,63 +41,80 @@ public enum BusinessError {
     /*
      * Appellation
      */
-    APPELLATION_00001(Appellation_.name),
+    APPELLATION_00001(Appellation_.region), //
+    APPELLATION_00002(Appellation_.name, Appellation_.region), //
+    APPELLATION_00003(Appellation_.wines), //
+
+    /*
+     * Booking event
+     */
+    BOOKINGEVENT_00001(BookingEvent_.bookings), //
 
     /*
      * Bottle
      */
-    BOTTLE_00001(Bottle_.wine),
+    BOTTLE_00001(Bottle_.wine, Bottle_.format), //
 
     /*
      * Cellar
      */
-    CELLAR_00001(Cellar_.name),
+    CELLAR_00001(Cellar_.name), //
+    CELLAR_00002(Cellar_.stocks), //
+    CELLAR_00003(Cellar_.shares), //
 
     /*
      * CellarShare
      */
-    CELLAR_SHARE_00001(CellarShare_.email),
+    CELLAR_SHARE_00001(CellarShare_.email, CellarShare_.cellar), //
 
     /*
      * Configuration
      */
-    CONFIGURATION_00001(Configuration_.key),
+    CONFIGURATION_00001(Configuration_.key), //
 
     /*
      * Contact
      */
-    CONTACT_00001(Contact_.producer),
+    CONTACT_00001(Contact_.producer), //
 
     /*
      * Country
      */
-    COUNTRY_00001(Country_.name),
+    COUNTRY_00001(Country_.name), //
+    COUNTRY_00002(Country_.regions), //
 
     /*
      * Format
      */
-    FORMAT_00001(Format_.name),
+    FORMAT_00001(Format_.name), //
 
     /*
      * Producer
      */
-    PRODUCER_00001(Producer_.name),
+    PRODUCER_00001(Producer_.name), //
+    PRODUCER_00002(Producer_.wines), //
 
     /*
      * Region
      */
     REGION_00001(Region_.country), //
-    REGION_00002(Region_.country, Region_.name),
+    REGION_00002(Region_.country, Region_.name), //
+    REGION_00003(Region_.appellations), //
 
     /*
      * User
      */
-    USER_00001(User_.email),
+    USER_00001(User_.email), //
+    USER_00002(User_.bookings), //
+    USER_00003(User_.cellars), //
 
     /*
      * Wine
      */
-    WINE_00001(Wine_.name);
+    WINE_00001(Wine_.name), //
+    WINE_00002(Wine_.bottles), //
+
+    ;
 
     private final Attribute<?, ?>[] properties;
 

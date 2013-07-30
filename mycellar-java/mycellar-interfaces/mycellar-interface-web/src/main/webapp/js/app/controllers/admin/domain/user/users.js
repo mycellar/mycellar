@@ -19,12 +19,24 @@ angular.module('mycellar').controller({
       email: ''
     }
     $scope.filtersIsCollapsed = true;
+    $scope.errors = [];
     
     $scope.tableOptions = {
       itemResource: $resource('/api/domain/user/users')
     };
     $scope.edit = function(itemId) {
       $location.path('/admin/domain/user/user/' + itemId);
+    };
+    $scope.delete = function(itemId) {
+      $resource('/api/domain/user/user/:userId').delete({userId: itemId}, function (value, headers) {
+        if (value.errorKey != undefined) {
+          $scope.errors.push({errorKey: value.errorKey});
+        } else if (value.internalError != undefined) {
+          $scope.errors.push({errorKey: value.internalError});
+        } else {
+          $route.reload();
+        }
+      });
     };
     $scope.sortBy = function(property) {
       if ($scope.sort.ways[property] == 'asc') {

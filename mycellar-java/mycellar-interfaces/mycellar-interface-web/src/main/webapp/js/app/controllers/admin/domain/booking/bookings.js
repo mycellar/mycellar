@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('mycellar').controller({
-  AdminDomainBookingsController: function ($scope, $resource, $http, $location) {
+  AdminDomainBookingsController: function ($scope, $resource, $http, $location, $route) {
     $scope.sort = {
       properties: [
         'bookingEvent.start',
@@ -19,12 +19,27 @@ angular.module('mycellar').controller({
       'customer.lastname': ''
     }
     $scope.filtersIsCollapsed = true;
+    $scope.errors = [];
     
     $scope.tableOptions = {
       itemResource: $resource('/api/domain/booking/bookings')
     };
     $scope.edit = function(itemId) {
       $location.path('/admin/domain/booking/booking/' + itemId);
+    };
+    $scope.new = function() {
+      $location.path('/admin/domain/booking/booking/');
+    };
+    $scope.delete = function(itemId) {
+      $resource('/api/domain/booking/booking/:bookingId').delete({bookingId: itemId}, function (value, headers) {
+        if (value.errorKey != undefined) {
+          $scope.errors.push({errorKey: value.errorKey});
+        } else if (value.internalError != undefined) {
+          $scope.errors.push({errorKey: value.internalError});
+        } else {
+          $route.reload();
+        }
+      });
     };
     $scope.sortBy = function(property) {
       if ($scope.sort.ways[property] == 'asc') {
@@ -46,7 +61,11 @@ angular.module('mycellar').controller({
   AdminDomainBookingController: function ($scope, $resource, $route, $location, $http) {
     var bookingId = $route.current.params.bookingId;
     $scope.bookingResource = $resource('/api/domain/booking/booking/:bookingId');
-    $scope.booking = $scope.bookingResource.get({bookingId: bookingId});
+    if (bookingId != null && bookingId > 0) {
+      $scope.booking = $scope.bookingResource.get({bookingId: bookingId});
+    } else {
+      $scope.booking = new $scope.bookingResource();
+    }
     $scope.save = function () {
       $scope.backup = {};
       angular.copy($scope.booking, $scope.backup);

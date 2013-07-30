@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('mycellar').controller({
-  AdminDomainProducersController: function ($scope, $resource, $http, $location) {
+  AdminDomainProducersController: function ($scope, $resource, $http, $location, $route) {
     $scope.sort = {
       properties: [
         'name',
@@ -14,12 +14,27 @@ angular.module('mycellar').controller({
       name: ''
     }
     $scope.filtersIsCollapsed = true;
+    $scope.errors = [];
     
     $scope.tableOptions = {
       itemResource: $resource('/api/domain/wine/producers')
     };
     $scope.edit = function(itemId) {
       $location.path('/admin/domain/wine/producer/' + itemId);
+    };
+    $scope.new = function() {
+      $location.path('/admin/domain/wine/producer/');
+    };
+    $scope.delete = function(itemId) {
+      $resource('/api/domain/wine/producer/:producerId').delete({producerId: itemId}, function (value, headers) {
+        if (value.errorKey != undefined) {
+          $scope.errors.push({errorKey: value.errorKey});
+        } else if (value.internalError != undefined) {
+          $scope.errors.push({errorKey: value.internalError});
+        } else {
+          $route.reload();
+        }
+      });
     };
     $scope.sortBy = function(property) {
       if ($scope.sort.ways[property] == 'asc') {
@@ -41,7 +56,11 @@ angular.module('mycellar').controller({
   AdminDomainProducerController: function ($scope, $resource, $route, $location) {
     var producerId = $route.current.params.producerId;
     $scope.producerResource = $resource('/api/domain/wine/producer/:producerId');
-    $scope.producer = $scope.producerResource.get({producerId: producerId});
+    if (producerId != null && producerId > 0) {
+      $scope.producer = $scope.producerResource.get({producerId: producerId});
+    } else {
+      $scope.producer = new $scope.producerResource();
+    }
     $scope.save = function () {
       $scope.backup = {};
       angular.copy($scope.producer, $scope.backup);

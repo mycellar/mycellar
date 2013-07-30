@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('mycellar').controller({
-  AdminDomainAppellationsController: function ($scope, $resource, $http, $location) {
+  AdminDomainAppellationsController: function ($scope, $resource, $http, $location, $route) {
     $scope.sort = {
       properties: [
         'region.country.name',
@@ -20,12 +20,27 @@ angular.module('mycellar').controller({
       name: ''
     };
     $scope.filtersIsCollapsed = true;
+    $scope.errors = [];
     
     $scope.tableOptions = {
       itemResource: $resource('/api/domain/wine/appellations')
     };
     $scope.edit = function(itemId) {
       $location.path('/admin/domain/wine/appellation/' + itemId);
+    };
+    $scope.new = function() {
+      $location.path('/admin/domain/wine/appellation/');
+    };
+    $scope.delete = function(itemId) {
+      $resource('/api/domain/wine/appellation/:appellationId').delete({appellationId: itemId}, function (value, headers) {
+        if (value.errorKey != undefined) {
+          $scope.errors.push({errorKey: value.errorKey});
+        } else if (value.internalError != undefined) {
+          $scope.errors.push({errorKey: value.internalError});
+        } else {
+          $route.reload();
+        }
+      });
     };
     $scope.sortBy = function(property) {
       if ($scope.sort.ways[property] == 'asc') {
@@ -47,7 +62,11 @@ angular.module('mycellar').controller({
   AdminDomainAppellationController: function ($scope, $resource, $route, $location, $http) {
     var appellationId = $route.current.params.appellationId;
     $scope.appellationResource = $resource('/api/domain/wine/appellation/:appellationId');
-    $scope.appellation = $scope.appellationResource.get({appellationId: appellationId});
+    if (appellationId != null && appellationId > 0) {
+      $scope.appellation = $scope.appellationResource.get({appellationId: appellationId});
+    } else {
+      $scope.appellation = new $scope.appellationResource();
+    }
     $scope.save = function () {
       $scope.backup = {};
       angular.copy($scope.appellation, $scope.backup);

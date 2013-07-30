@@ -24,12 +24,14 @@ import javax.inject.Singleton;
 
 import fr.peralta.mycellar.application.shared.AbstractSimpleService;
 import fr.peralta.mycellar.application.wine.ProducerService;
+import fr.peralta.mycellar.application.wine.WineService;
 import fr.peralta.mycellar.domain.shared.NamedEntity_;
 import fr.peralta.mycellar.domain.shared.exception.BusinessError;
 import fr.peralta.mycellar.domain.shared.exception.BusinessException;
 import fr.peralta.mycellar.domain.shared.repository.PropertySelector;
 import fr.peralta.mycellar.domain.shared.repository.SearchParameters;
 import fr.peralta.mycellar.domain.wine.Producer;
+import fr.peralta.mycellar.domain.wine.Wine_;
 import fr.peralta.mycellar.domain.wine.repository.ProducerRepository;
 
 /**
@@ -37,22 +39,32 @@ import fr.peralta.mycellar.domain.wine.repository.ProducerRepository;
  */
 @Named
 @Singleton
-public class ProducerServiceImpl extends AbstractSimpleService<Producer, ProducerRepository>
-        implements ProducerService {
+public class ProducerServiceImpl extends AbstractSimpleService<Producer, ProducerRepository> implements ProducerService {
 
     private ProducerRepository producerRepository;
+
+    private WineService wineService;
 
     /**
      * {@inheritDoc}
      */
     @Override
     public void validate(Producer entity) throws BusinessException {
-        Producer existing = producerRepository
-                .findUniqueOrNone(new SearchParameters().property(PropertySelector
-                        .newPropertySelector(entity.getName(), NamedEntity_.name)));
-        if ((existing != null)
-                && ((entity.getId() == null) || !existing.getId().equals(entity.getId()))) {
+        Producer existing = producerRepository.findUniqueOrNone(new SearchParameters().property(PropertySelector.newPropertySelector(entity.getName(), NamedEntity_.name)));
+        if ((existing != null) && ((entity.getId() == null) || !existing.getId().equals(entity.getId()))) {
             throw new BusinessException(BusinessError.PRODUCER_00001);
+        }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    protected void validateDelete(Producer entity) throws BusinessException {
+        SearchParameters searchParameters = new SearchParameters();
+        searchParameters.addProperty(PropertySelector.newPropertySelector(entity, Wine_.producer));
+        if (wineService.count(searchParameters) > 0) {
+            throw new BusinessException(BusinessError.PRODUCER_00002);
         }
     }
 
@@ -71,6 +83,15 @@ public class ProducerServiceImpl extends AbstractSimpleService<Producer, Produce
     @Inject
     public void setProducerRepository(ProducerRepository producerRepository) {
         this.producerRepository = producerRepository;
+    }
+
+    /**
+     * @param wineService
+     *            the wineService to set
+     */
+    @Inject
+    public void setWineService(WineService wineService) {
+        this.wineService = wineService;
     }
 
 }

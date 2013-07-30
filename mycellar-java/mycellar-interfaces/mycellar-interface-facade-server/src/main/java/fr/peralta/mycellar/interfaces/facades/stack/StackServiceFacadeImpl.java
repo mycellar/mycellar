@@ -22,9 +22,11 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import fr.peralta.mycellar.application.stack.StackService;
+import fr.peralta.mycellar.domain.shared.exception.BusinessException;
 import fr.peralta.mycellar.domain.shared.repository.SearchParameters;
 import fr.peralta.mycellar.domain.stack.Stack;
 
@@ -49,8 +51,16 @@ public class StackServiceFacadeImpl implements StackServiceFacade {
      */
     @Override
     @Transactional(readOnly = false)
-    public void deleteAllStacks() {
+    public void deleteAllStacks() throws BusinessException {
         stackService.deleteAllStacks();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void deleteStack(Stack stack) throws BusinessException {
+        stackService.delete(stack);
     }
 
     /**
@@ -75,9 +85,9 @@ public class StackServiceFacadeImpl implements StackServiceFacade {
      * {@inheritDoc}
      */
     @Override
-    @Transactional(readOnly = false)
-    public void onException(Exception exception) {
-        stackService.onException(exception);
+    @Transactional(readOnly = false, propagation = Propagation.REQUIRES_NEW)
+    public void onThrowable(Throwable throwable) {
+        stackService.onThrowable(throwable);
     }
 
     /**
