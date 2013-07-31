@@ -30,7 +30,7 @@ import javax.ws.rs.ext.Provider;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import fr.mycellar.interfaces.facade.web.domain.InternalErrorHolder;
+import fr.mycellar.interfaces.facade.web.InternalErrorHolder;
 import fr.peralta.mycellar.interfaces.facades.stack.StackServiceFacade;
 
 /**

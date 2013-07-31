@@ -16,9 +16,9 @@
  * You should have received a copy of the GNU General Public License
  * along with MyCellar. If not, see <http://www.gnu.org/licenses/>.
  */
-package fr.mycellar.interfaces.facade.web.domain;
+package fr.mycellar.interfaces.facade.web;
 
-import static fr.mycellar.interfaces.facade.web.domain.MetamodelUtil.*;
+import static fr.mycellar.interfaces.facade.web.MetamodelUtil.*;
 import static fr.peralta.mycellar.domain.shared.repository.PropertySelector.*;
 
 import java.util.List;

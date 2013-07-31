@@ -16,7 +16,7 @@
  * You should have received a copy of the GNU General Public License
  * along with MyCellar. If not, see <http://www.gnu.org/licenses/>.
  */
-package fr.mycellar.interfaces.facade.web.domain.stack;
+package fr.mycellar.interfaces.facade.web.admin.domain.stack;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -32,10 +32,10 @@ import javax.ws.rs.core.MediaType;
 
 import org.springframework.stereotype.Service;
 
-import fr.mycellar.interfaces.facade.web.domain.FilterCouple;
-import fr.mycellar.interfaces.facade.web.domain.ListWithCount;
-import fr.mycellar.interfaces.facade.web.domain.OrderCouple;
-import fr.mycellar.interfaces.facade.web.domain.SearchParametersUtil;
+import fr.mycellar.interfaces.facade.web.FilterCouple;
+import fr.mycellar.interfaces.facade.web.ListWithCount;
+import fr.mycellar.interfaces.facade.web.OrderCouple;
+import fr.mycellar.interfaces.facade.web.SearchParametersUtil;
 import fr.peralta.mycellar.domain.shared.exception.BusinessException;
 import fr.peralta.mycellar.domain.shared.repository.SearchParameters;
 import fr.peralta.mycellar.domain.stack.Stack;
