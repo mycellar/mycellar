@@ -23,7 +23,6 @@ import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
-import javax.persistence.AttributeOverride;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.ElementCollection;
@@ -40,6 +39,7 @@ import javax.persistence.MapKeyJoinColumn;
 import javax.persistence.OneToMany;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
+import javax.persistence.UniqueConstraint;
 import javax.validation.Valid;
 import javax.validation.constraints.Pattern;
 import javax.xml.bind.annotation.XmlTransient;
@@ -58,8 +58,7 @@ import fr.peralta.mycellar.domain.stock.Bottle;
  */
 @Entity
 @Indexed
-@Table(name = "WINE")
-@AttributeOverride(name = "name", column = @Column(name = "NAME", nullable = true))
+@Table(name = "WINE", uniqueConstraints = @UniqueConstraint(columnNames = { "APPELLATION", "COLOR", "TYPE", "NAME", "VINTAGE", "PRODUCER" }))
 @SequenceGenerator(name = "WINE_ID_GENERATOR", allocationSize = 1)
 public class Wine extends NamedEntity {
 
@@ -71,7 +70,7 @@ public class Wine extends NamedEntity {
 
     @Valid
     @ManyToOne(cascade = { CascadeType.PERSIST, CascadeType.MERGE })
-    @JoinColumn(name = "APPELLATION")
+    @JoinColumn(name = "APPELLATION", nullable = false)
     private Appellation appellation;
 
     @Column(name = "COLOR", nullable = false)
@@ -99,7 +98,7 @@ public class Wine extends NamedEntity {
 
     @Valid
     @ManyToOne(cascade = { CascadeType.PERSIST, CascadeType.MERGE })
-    @JoinColumn(name = "PRODUCER")
+    @JoinColumn(name = "PRODUCER", nullable = false)
     private Producer producer;
 
     @Column(name = "RANKING")

@@ -114,6 +114,10 @@ public enum BusinessError {
     WINE_00001(Wine_.name), //
     WINE_00002(Wine_.bottles), //
 
+    /*
+     * Other
+     */
+    OTHER_00001(), //
     ;
 
     private final Attribute<?, ?>[] properties;

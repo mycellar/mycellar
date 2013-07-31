@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('mycellar').controller({
-  AdminDomainStacksController: function ($scope, $resource, $http, $location) {
+  AdminDomainStacksController: function ($scope, $resource, $http, $location, $route) {
     $scope.sort = {
       properties: [
         'count',

@@ -20,10 +20,15 @@ package fr.peralta.mycellar.interfaces.facades.stack;
 
 import java.util.List;
 
-import org.springframework.beans.factory.annotation.Autowired;
+import javax.inject.Inject;
+
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.PlatformTransactionManager;
+import org.springframework.transaction.TransactionDefinition;
+import org.springframework.transaction.TransactionStatus;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.transaction.support.TransactionCallback;
+import org.springframework.transaction.support.TransactionTemplate;
 
 import fr.peralta.mycellar.application.stack.StackService;
 import fr.peralta.mycellar.domain.shared.exception.BusinessException;
@@ -37,6 +42,8 @@ import fr.peralta.mycellar.domain.stack.Stack;
 public class StackServiceFacadeImpl implements StackServiceFacade {
 
     private StackService stackService;
+
+    private PlatformTransactionManager transactionManager;
 
     /**
      * {@inheritDoc}
@@ -85,18 +92,39 @@ public class StackServiceFacadeImpl implements StackServiceFacade {
      * {@inheritDoc}
      */
     @Override
-    @Transactional(readOnly = false, propagation = Propagation.REQUIRES_NEW)
-    public void onThrowable(Throwable throwable) {
-        stackService.onThrowable(throwable);
+    public synchronized void onThrowable(final Throwable throwable) {
+        // The transaction must be inside the lock. So we must use a transaction
+        // template and not the Transactional annotation.
+        TransactionTemplate transactionTemplate = new TransactionTemplate(transactionManager);
+        transactionTemplate.setPropagationBehavior(TransactionDefinition.PROPAGATION_REQUIRES_NEW);
+        transactionTemplate.setReadOnly(false);
+        transactionTemplate.execute(new TransactionCallback<Object>() {
+            @Override
+            public Object doInTransaction(TransactionStatus status) {
+                stackService.onThrowable(throwable);
+                return null;
+            }
+        });
     }
+
+    // METHODS BEAN
 
     /**
      * @param stackService
      *            the stackService to set
      */
-    @Autowired
+    @Inject
     public void setStackService(StackService stackService) {
         this.stackService = stackService;
+    }
+
+    /**
+     * @param transactionManager
+     *            the transactionManager to set
+     */
+    @Inject
+    public void setTransactionManager(PlatformTransactionManager transactionManager) {
+        this.transactionManager = transactionManager;
     }
 
 }

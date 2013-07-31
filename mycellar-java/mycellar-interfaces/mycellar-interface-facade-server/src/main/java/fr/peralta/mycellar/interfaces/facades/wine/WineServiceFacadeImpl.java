@@ -18,6 +18,7 @@
  */
 package fr.peralta.mycellar.interfaces.facades.wine;
 
+import java.util.Iterator;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,6 +31,7 @@ import fr.peralta.mycellar.application.wine.FormatService;
 import fr.peralta.mycellar.application.wine.ProducerService;
 import fr.peralta.mycellar.application.wine.RegionService;
 import fr.peralta.mycellar.application.wine.WineService;
+import fr.peralta.mycellar.domain.shared.exception.BusinessError;
 import fr.peralta.mycellar.domain.shared.exception.BusinessException;
 import fr.peralta.mycellar.domain.shared.repository.SearchParameters;
 import fr.peralta.mycellar.domain.wine.Appellation;
@@ -361,8 +363,16 @@ public class WineServiceFacadeImpl implements WineServiceFacade {
     @Transactional(readOnly = false)
     public List<Wine> createVintages(Wine toCopy, int from, int to) throws BusinessException {
         List<Wine> wines = wineService.createVintages(toCopy, from, to);
-        for (Wine wine : wines) {
-            saveWine(wine);
+        for (Iterator<Wine> iterator = wines.iterator(); iterator.hasNext();) {
+            try {
+                saveWine(iterator.next());
+            } catch (BusinessException e) {
+                if (e.getBusinessError() != BusinessError.WINE_00001) {
+                    throw e;
+                } else {
+                    iterator.remove();
+                }
+            }
         }
         return wines;
     }
