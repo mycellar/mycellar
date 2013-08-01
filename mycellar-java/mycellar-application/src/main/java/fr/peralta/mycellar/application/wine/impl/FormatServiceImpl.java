@@ -27,8 +27,7 @@ import fr.peralta.mycellar.application.wine.FormatService;
 import fr.peralta.mycellar.domain.shared.NamedEntity_;
 import fr.peralta.mycellar.domain.shared.exception.BusinessError;
 import fr.peralta.mycellar.domain.shared.exception.BusinessException;
-import fr.peralta.mycellar.domain.shared.repository.PropertySelector;
-import fr.peralta.mycellar.domain.shared.repository.SearchParameters;
+import fr.peralta.mycellar.domain.shared.repository.SearchParametersBuilder;
 import fr.peralta.mycellar.domain.wine.Format;
 import fr.peralta.mycellar.domain.wine.Format_;
 import fr.peralta.mycellar.domain.wine.repository.FormatRepository;
@@ -38,8 +37,7 @@ import fr.peralta.mycellar.domain.wine.repository.FormatRepository;
  */
 @Named
 @Singleton
-public class FormatServiceImpl extends AbstractSimpleService<Format, FormatRepository> implements
-        FormatService {
+public class FormatServiceImpl extends AbstractSimpleService<Format, FormatRepository> implements FormatService {
 
     private FormatRepository formatRepository;
 
@@ -48,16 +46,11 @@ public class FormatServiceImpl extends AbstractSimpleService<Format, FormatRepos
      */
     @Override
     public void validate(Format entity) throws BusinessException {
-        Format existing = formatRepository
-                .findUniqueOrNone(new SearchParameters() //
-                        .property(
-                                PropertySelector.newPropertySelector(entity.getCapacity(),
-                                        Format_.capacity)) //
-                        .property(
-                                PropertySelector.newPropertySelector(entity.getName(),
-                                        NamedEntity_.name)));
-        if ((existing != null)
-                && ((entity.getId() == null) || !existing.getId().equals(entity.getId()))) {
+        Format existing = formatRepository.findUniqueOrNone(new SearchParametersBuilder() //
+                .propertyWithValue(entity.getCapacity(), Format_.capacity) //
+                .propertyWithValue(entity.getName(), NamedEntity_.name) //
+                .toSearchParameters());
+        if ((existing != null) && ((entity.getId() == null) || !existing.getId().equals(entity.getId()))) {
             throw new BusinessException(BusinessError.FORMAT_00001);
         }
     }

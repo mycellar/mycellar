@@ -39,8 +39,8 @@ import fr.peralta.mycellar.domain.contact.Contact_;
 import fr.peralta.mycellar.domain.contact.repository.ContactRepository;
 import fr.peralta.mycellar.domain.shared.exception.BusinessError;
 import fr.peralta.mycellar.domain.shared.exception.BusinessException;
-import fr.peralta.mycellar.domain.shared.repository.PropertySelector;
 import fr.peralta.mycellar.domain.shared.repository.SearchParameters;
+import fr.peralta.mycellar.domain.shared.repository.SearchParametersBuilder;
 import fr.peralta.mycellar.domain.wine.Producer;
 import fr.peralta.mycellar.domain.wine.Producer_;
 
@@ -49,8 +49,7 @@ import fr.peralta.mycellar.domain.wine.Producer_;
  */
 @Named
 @Singleton
-public class ContactServiceImpl extends AbstractSimpleService<Contact, ContactRepository> implements
-        ContactService {
+public class ContactServiceImpl extends AbstractSimpleService<Contact, ContactRepository> implements ContactService {
 
     private ConfigurationService configurationService;
 
@@ -84,10 +83,8 @@ public class ContactServiceImpl extends AbstractSimpleService<Contact, ContactRe
         List<Contact> contacts = contactRepository.getAllToContact();
         if ((contacts != null) && (contacts.size() > 0)) {
             for (Contact contact : contacts) {
-                content.append("Domaine ").append(contact.getProducer().getName())
-                        .append(" à recontacter le ").append(contact.getNext()).append("\r\n");
-                content.append("Dernier contact le ").append(contact.getCurrent()).append(" :")
-                        .append("\r\n").append(contact.getText()).append("\r\n");
+                content.append("Domaine ").append(contact.getProducer().getName()).append(" à recontacter le ").append(contact.getNext()).append("\r\n");
+                content.append("Dernier contact le ").append(contact.getCurrent()).append(" :").append("\r\n").append(contact.getText()).append("\r\n");
                 content.append("------------------------------------------------").append("\r\n");
             }
             MimeMessagePreparator mimeMessagePreparator = new MimeMessagePreparator() {
@@ -114,8 +111,7 @@ public class ContactServiceImpl extends AbstractSimpleService<Contact, ContactRe
     @Override
     public void validate(Contact entity) throws BusinessException {
         Contact existing = find(entity.getProducer(), entity.getCurrent());
-        if ((existing != null)
-                && ((entity.getId() == null) || !existing.getId().equals(entity.getId()))) {
+        if ((existing != null) && ((entity.getId() == null) || !existing.getId().equals(entity.getId()))) {
             throw new BusinessException(BusinessError.CONTACT_00001);
         }
     }
@@ -127,12 +123,10 @@ public class ContactServiceImpl extends AbstractSimpleService<Contact, ContactRe
      */
     @Override
     public Contact find(Producer producer, LocalDate current) {
-        return contactRepository.findUnique(new SearchParameters()//
-                .property(
-                        PropertySelector.newPropertySelector(producer, Contact_.producer,
-                                Producer_.id)) //
-                .property(PropertySelector.newPropertySelector(current, Contact_.current))//
-                );
+        return contactRepository.findUnique(new SearchParametersBuilder()//
+                .propertyWithValue(producer, Contact_.producer, Producer_.id) //
+                .propertyWithValue(current, Contact_.current)//
+                .toSearchParameters());
     }
 
     /**

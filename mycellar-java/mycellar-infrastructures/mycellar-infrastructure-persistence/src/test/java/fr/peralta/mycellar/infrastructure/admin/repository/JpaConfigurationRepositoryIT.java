@@ -18,9 +18,8 @@
  */
 package fr.peralta.mycellar.infrastructure.admin.repository;
 
-import static fr.peralta.mycellar.domain.shared.repository.PropertySelector.*;
-import static org.hamcrest.CoreMatchers.*;
-import static org.junit.Assert.*;
+import static org.hamcrest.CoreMatchers.equalTo;
+import static org.junit.Assert.assertThat;
 
 import javax.inject.Inject;
 import javax.persistence.EntityManager;
@@ -36,6 +35,7 @@ import org.springframework.transaction.annotation.Transactional;
 import fr.peralta.mycellar.domain.admin.ConfigurationKeyEnum;
 import fr.peralta.mycellar.domain.admin.Configuration_;
 import fr.peralta.mycellar.domain.shared.repository.SearchParameters;
+import fr.peralta.mycellar.domain.shared.repository.SearchParametersBuilder;
 
 /**
  * @author speralta
@@ -62,7 +62,11 @@ public class JpaConfigurationRepositoryIT {
     @Test
     @Rollback
     public void byPropertySelector() {
-        assertThat(jpaConfigurationRepository.find(new SearchParameters().property(newPropertySelector(ConfigurationKeyEnum.MAIL_ADDRESS_SENDER, Configuration_.key))).size(), equalTo(1));
+        assertThat(jpaConfigurationRepository.find( //
+                new SearchParametersBuilder() //
+                        .propertyWithValue(ConfigurationKeyEnum.MAIL_ADDRESS_SENDER, Configuration_.key) //
+                        .toSearchParameters()) //
+                .size(), equalTo(1));
     }
 
 }

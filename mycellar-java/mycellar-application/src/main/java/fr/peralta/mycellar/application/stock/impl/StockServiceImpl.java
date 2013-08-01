@@ -28,8 +28,7 @@ import fr.peralta.mycellar.application.shared.AbstractSimpleService;
 import fr.peralta.mycellar.application.stock.MovementService;
 import fr.peralta.mycellar.application.stock.StockService;
 import fr.peralta.mycellar.domain.shared.exception.BusinessException;
-import fr.peralta.mycellar.domain.shared.repository.PropertySelector;
-import fr.peralta.mycellar.domain.shared.repository.SearchParameters;
+import fr.peralta.mycellar.domain.shared.repository.SearchParametersBuilder;
 import fr.peralta.mycellar.domain.stock.Arrival;
 import fr.peralta.mycellar.domain.stock.ArrivalBottle;
 import fr.peralta.mycellar.domain.stock.Bottle;
@@ -47,8 +46,7 @@ import fr.peralta.mycellar.domain.stock.repository.StockRepository;
  */
 @Named
 @Singleton
-public class StockServiceImpl extends AbstractSimpleService<Stock, StockRepository> implements
-        StockService {
+public class StockServiceImpl extends AbstractSimpleService<Stock, StockRepository> implements StockService {
 
     private StockRepository stockRepository;
 
@@ -60,8 +58,7 @@ public class StockServiceImpl extends AbstractSimpleService<Stock, StockReposito
     @Override
     public void drink(Drink drink) {
         for (DrinkBottle drinkBottle : drink.getDrinkBottles()) {
-            removeFromStock(drinkBottle.getCellar(), drinkBottle.getBottle(),
-                    drinkBottle.getQuantity(), drink.getDate(), drink.getDrinkWith(), 0);
+            removeFromStock(drinkBottle.getCellar(), drinkBottle.getBottle(), drinkBottle.getQuantity(), drink.getDate(), drink.getDrinkWith(), 0);
         }
     }
 
@@ -74,8 +71,7 @@ public class StockServiceImpl extends AbstractSimpleService<Stock, StockReposito
         float unitCharges = arrival.getOtherCharges() / arrival.getArrivalBottles().size();
         for (ArrivalBottle arrivalBottle : arrival.getArrivalBottles()) {
             Bottle bottle = arrivalBottle.getBottle();
-            addToStock(cellar, bottle, arrivalBottle.getQuantity(), arrival.getDate(), unitCharges,
-                    arrivalBottle.getPrice(), arrival.getSource());
+            addToStock(cellar, bottle, arrivalBottle.getQuantity(), arrival.getDate(), unitCharges, arrivalBottle.getPrice(), arrival.getSource());
         }
     }
 
@@ -83,24 +79,20 @@ public class StockServiceImpl extends AbstractSimpleService<Stock, StockReposito
      * {@inheritDoc}
      */
     @Override
-    public void addToStock(Cellar cellar, Bottle bottle, Integer quantity, LocalDate date,
-            float charges, float price, String source) {
+    public void addToStock(Cellar cellar, Bottle bottle, Integer quantity, LocalDate date, float charges, float price, String source) {
         Stock stock = updateStock(cellar, bottle, quantity);
         // Use cellar and bottle from stock, they could have been merged.
-        movementService.createInput(stock.getCellar(), stock.getBottle(), quantity, date, charges,
-                price, source);
+        movementService.createInput(stock.getCellar(), stock.getBottle(), quantity, date, charges, price, source);
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public void removeFromStock(Cellar cellar, Bottle bottle, Integer quantity, LocalDate date,
-            String destination, float price) {
+    public void removeFromStock(Cellar cellar, Bottle bottle, Integer quantity, LocalDate date, String destination, float price) {
         Stock stock = updateStock(cellar, bottle, -quantity);
         // Use cellar and bottle from stock, they could have been merged.
-        movementService.createOutput(stock.getCellar(), stock.getBottle(), quantity, date,
-                destination, price);
+        movementService.createOutput(stock.getCellar(), stock.getBottle(), quantity, date, destination, price);
     }
 
     /**
@@ -126,14 +118,10 @@ public class StockServiceImpl extends AbstractSimpleService<Stock, StockReposito
      */
     @Override
     public Stock findStock(Bottle bottle, Cellar cellar) {
-        return stockRepository.findUniqueOrNone(new SearchParameters() //
-                .property(
-                        PropertySelector.newPropertySelector(bottle.getId(), Stock_.bottle,
-                                Bottle_.id)) //
-                .property(
-                        PropertySelector.newPropertySelector(cellar.getId(), Stock_.cellar,
-                                Cellar_.id)) //
-                );
+        return stockRepository.findUniqueOrNone(new SearchParametersBuilder() //
+                .propertyWithValue(bottle.getId(), Stock_.bottle, Bottle_.id) //
+                .propertyWithValue(cellar.getId(), Stock_.cellar, Cellar_.id) //
+                .toSearchParameters());
     }
 
     /**

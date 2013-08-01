@@ -28,6 +28,7 @@ import fr.peralta.mycellar.application.user.ResetPasswordRequestService;
 import fr.peralta.mycellar.application.user.UserService;
 import fr.peralta.mycellar.domain.shared.exception.BusinessException;
 import fr.peralta.mycellar.domain.shared.repository.SearchParameters;
+import fr.peralta.mycellar.domain.shared.repository.SearchParametersBuilder;
 import fr.peralta.mycellar.domain.user.ResetPasswordRequest;
 import fr.peralta.mycellar.domain.user.User;
 import fr.peralta.mycellar.domain.user.User_;
@@ -48,7 +49,11 @@ public class UserServiceFacadeImpl implements UserServiceFacade {
     @Override
     @Transactional(readOnly = true)
     public List<User> getUsersLike(String term) {
-        return userService.find(new SearchParameters().termOnAny(term, User_.email, User_.firstname, User_.lastname));
+        return userService.find(new SearchParametersBuilder() //
+                .term(User_.email, term) //
+                .term(User_.firstname, term) //
+                .term(User_.lastname, term) //
+                .toSearchParameters());
     }
 
     /**

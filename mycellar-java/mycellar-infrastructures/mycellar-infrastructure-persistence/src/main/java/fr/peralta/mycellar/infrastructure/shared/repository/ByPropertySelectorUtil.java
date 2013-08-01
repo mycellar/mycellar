@@ -18,7 +18,7 @@
  */
 package fr.peralta.mycellar.infrastructure.shared.repository;
 
-import static com.google.common.collect.Lists.*;
+import static com.google.common.collect.Lists.newArrayList;
 
 import java.util.List;
 
@@ -38,59 +38,48 @@ import fr.peralta.mycellar.domain.shared.repository.SearchParameters;
 @Named
 @Singleton
 public class ByPropertySelectorUtil {
+
     @SuppressWarnings("unchecked")
-    public <E> Predicate byPropertySelectors(Root<E> root, CriteriaBuilder builder,
-            final SearchParameters sp, final List<PropertySelector<?, ?>> selectors) {
+    public <E> Predicate byPropertySelectors(Root<E> root, CriteriaBuilder builder, SearchParameters sp) {
         List<Predicate> predicates = newArrayList();
 
-        for (PropertySelector<?, ?> selector : selectors) {
-            if (selector.isBoolean()) {
-                byBooleanSelector(root, builder, predicates, sp,
-                        (PropertySelector<? super E, Boolean>) selector);
+        for (PropertySelector<?, ?> selector : sp.getProperties()) {
+            if (selector.isType(Boolean.class)) {
+                byBooleanSelector(root, builder, predicates, sp, (PropertySelector<? super E, Boolean>) selector);
             } else {
-                byObjectSelector(root, builder, predicates, sp,
-                        (PropertySelector<? super E, ?>) selector);
+                byObjectSelector(root, builder, predicates, sp, (PropertySelector<? super E, ?>) selector);
             }
         }
-        return JpaUtil.andPredicate(builder, predicates);
+        return JpaUtil.concatPredicate(sp, builder, predicates);
     }
 
-    private <E> void byBooleanSelector(Root<E> root, CriteriaBuilder builder,
-            List<Predicate> predicates, SearchParameters sp,
-            PropertySelector<? super E, Boolean> selector) {
-        if (selector.isNotEmpty()) {
+    private static <E> void byBooleanSelector(Root<E> root, CriteriaBuilder builder, List<Predicate> predicates, SearchParameters sp, PropertySelector<? super E, Boolean> selector) {
+        if (!selector.getValues().isEmpty()) {
             List<Predicate> selectorPredicates = newArrayList();
 
-            for (Boolean selection : selector.getSelected()) {
-                Path<Boolean> path = JpaUtil.getPath(root, selector.getAttributes(),
-                        sp.getDistinct());
+            for (Boolean selection : selector.getValues()) {
+                Path<Boolean> path = JpaUtil.getPath(root, selector.getAttributes());
                 if (selection == null) {
                     selectorPredicates.add(builder.isNull(path));
                 } else {
-                    selectorPredicates
-                            .add(selection ? builder.isTrue(path) : builder.isFalse(path));
+                    selectorPredicates.add(selection ? builder.isTrue(path) : builder.isFalse(path));
                 }
             }
             predicates.add(JpaUtil.orPredicate(builder, selectorPredicates));
         }
     }
 
-    private <E> void byObjectSelector(Root<E> root, CriteriaBuilder builder,
-            List<Predicate> predicates, SearchParameters sp, PropertySelector<? super E, ?> selector) {
-        if (selector.isNotEmpty()) {
+    private static <E> void byObjectSelector(Root<E> root, CriteriaBuilder builder, List<Predicate> predicates, SearchParameters sp, PropertySelector<? super E, ?> selector) {
+        if (!selector.getValues().isEmpty()) {
             List<Predicate> selectorPredicates = newArrayList();
 
-            for (Object selection : selector.getSelected()) {
+            for (Object selection : selector.getValues()) {
                 if (selection instanceof String) {
-                    Path<String> path = JpaUtil.getPath(root, selector.getAttributes(),
-                            sp.getDistinct());
-                    selectorPredicates.add(JpaUtil.stringPredicate(path, selection,
-                            selector.getSearchMode(), sp, builder));
+                    Path<String> path = JpaUtil.getPath(root, selector.getAttributes());
+                    selectorPredicates.add(JpaUtil.stringPredicate(path, selection, selector.getSearchMode(), sp, builder));
                 } else {
-                    Path<?> path = JpaUtil
-                            .getPath(root, selector.getAttributes(), sp.getDistinct());
-                    selectorPredicates.add(selection == null ? builder.isNull(path) : builder
-                            .equal(path, selection));
+                    Path<?> path = JpaUtil.getPath(root, selector.getAttributes());
+                    selectorPredicates.add(selection == null ? builder.isNull(path) : builder.equal(path, selection));
                 }
             }
             predicates.add(JpaUtil.orPredicate(builder, selectorPredicates));

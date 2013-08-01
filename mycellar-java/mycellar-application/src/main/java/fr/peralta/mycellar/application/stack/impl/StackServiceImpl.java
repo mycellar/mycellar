@@ -28,8 +28,7 @@ import javax.inject.Singleton;
 import fr.peralta.mycellar.application.shared.AbstractSimpleService;
 import fr.peralta.mycellar.application.stack.StackService;
 import fr.peralta.mycellar.domain.shared.exception.BusinessException;
-import fr.peralta.mycellar.domain.shared.repository.PropertySelector;
-import fr.peralta.mycellar.domain.shared.repository.SearchParameters;
+import fr.peralta.mycellar.domain.shared.repository.SearchParametersBuilder;
 import fr.peralta.mycellar.domain.stack.Stack;
 import fr.peralta.mycellar.domain.stack.Stack_;
 import fr.peralta.mycellar.domain.stack.repository.StackRepository;
@@ -67,7 +66,9 @@ public class StackServiceImpl extends AbstractSimpleService<Stack, StackReposito
         StringWriter stringWriter = new StringWriter();
         throwable.printStackTrace(new PrintWriter(stringWriter));
         String stackContent = stringWriter.toString();
-        Stack stack = stackRepository.findUniqueOrNone(new SearchParameters().property(PropertySelector.newPropertySelector(stackContent.hashCode(), Stack_.hashCode)));
+        Stack stack = stackRepository.findUniqueOrNone(new SearchParametersBuilder() //
+                .propertyWithValue(stackContent.hashCode(), Stack_.hashCode) //
+                .toSearchParameters());
         if (stack == null) {
             stack = new Stack();
             stack.setStack(stackContent);

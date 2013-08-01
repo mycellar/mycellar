@@ -18,10 +18,11 @@
  */
 package fr.peralta.mycellar.infrastructure.shared.repository;
 
-import static com.google.common.base.Preconditions.*;
-import static com.google.common.collect.Lists.*;
+import static com.google.common.base.Preconditions.checkNotNull;
 
 import java.io.Serializable;
+import java.lang.reflect.Method;
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.inject.Inject;
@@ -37,11 +38,15 @@ import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
 import javax.persistence.metamodel.SingularAttribute;
 
+import org.apache.commons.lang3.StringUtils;
+import org.hibernate.search.annotations.Field;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.BeanUtils;
 
 import fr.peralta.mycellar.domain.shared.Identifiable;
 import fr.peralta.mycellar.domain.shared.repository.GenericRepository;
+import fr.peralta.mycellar.domain.shared.repository.MetamodelUtil;
 import fr.peralta.mycellar.domain.shared.repository.SearchParameters;
 
 /**
@@ -61,16 +66,14 @@ public abstract class JpaGenericRepository<E extends Identifiable<PK>, PK extend
 
     private final Class<E> type;
     private final List<SingularAttribute<?, ?>> indexedAttributes;
-    private final String cacheRegion;
 
     /**
      * This constructor needs the real type of the generic type E so it can be
      * passed to the {@link EntityManager}.
      */
-    public JpaGenericRepository(Class<E> type, SingularAttribute<?, ?>... indexedAttributes) {
+    public JpaGenericRepository(Class<E> type) {
         this.type = type;
-        this.cacheRegion = type.getCanonicalName();
-        this.indexedAttributes = newArrayList(indexedAttributes);
+        this.indexedAttributes = buildIndexedAttributes(type);
     }
 
     public final Class<E> getType() {
@@ -83,7 +86,9 @@ public abstract class JpaGenericRepository<E extends Identifiable<PK>, PK extend
     @Override
     @SuppressWarnings("unchecked")
     public List<E> find(SearchParameters sp) {
-        if (sp.hasNamedQuery()) {
+        checkNotNull(sp, "The searchParameters cannot be null");
+
+        if (StringUtils.isNotBlank(sp.getNamedQuery())) {
             return getNamedQueryUtil().findByNamedQuery(sp);
         }
         CriteriaBuilder builder = entityManager.getCriteriaBuilder();
@@ -94,33 +99,25 @@ public abstract class JpaGenericRepository<E extends Identifiable<PK>, PK extend
         Root<E> root = criteriaQuery.from(type);
 
         // predicate
-        Predicate predicate = getPredicate(root, criteriaQuery, builder, sp);
+        Predicate predicate = getPredicate(root, builder, sp);
         if (predicate != null) {
             criteriaQuery = criteriaQuery.where(predicate);
         }
 
         // left join
-        if (sp.hasLeftJoins()) {
+        if (!sp.getLeftJoins().isEmpty()) {
             for (SingularAttribute<?, ?> arg : sp.getLeftJoins()) {
                 root.fetch((SingularAttribute<E, ?>) arg, JoinType.LEFT);
             }
         }
 
         // order by
-        criteriaQuery.orderBy(orderByUtil.buildJpaOrders(sp.getOrders(), root, builder, sp));
+        criteriaQuery.orderBy(orderByUtil.buildJpaOrders(root, builder, sp));
 
         TypedQuery<E> typedQuery = entityManager.createQuery(criteriaQuery);
 
-        // cache
-        setCacheHints(typedQuery, sp);
-
-        // pagination
-        if (sp.getFirstResult() >= 0) {
-            typedQuery.setFirstResult(sp.getFirstResult());
-        }
-        if (sp.getMaxResults() > 0) {
-            typedQuery.setMaxResults(sp.getMaxResults());
-        }
+        JpaUtil.applyCacheHints(typedQuery, sp, type);
+        JpaUtil.applyPagination(typedQuery, sp);
 
         // execution
         List<E> entities = typedQuery.getResultList();
@@ -136,7 +133,7 @@ public abstract class JpaGenericRepository<E extends Identifiable<PK>, PK extend
     public long findCount(SearchParameters sp) {
         checkNotNull(sp, "The searchParameters cannot be null");
 
-        if (sp.hasNamedQuery()) {
+        if (StringUtils.isNotBlank(sp.getNamedQuery())) {
             return getNamedQueryUtil().numberByNamedQuery(sp).intValue();
         }
         CriteriaBuilder builder = entityManager.getCriteriaBuilder();
@@ -151,25 +148,21 @@ public abstract class JpaGenericRepository<E extends Identifiable<PK>, PK extend
         }
 
         // predicate
-        Predicate predicate = getPredicate(root, criteriaQuery, builder, sp);
+        Predicate predicate = getPredicate(root, builder, sp);
         if (predicate != null) {
             criteriaQuery = criteriaQuery.where(predicate);
         }
 
         TypedQuery<Long> typedQuery = entityManager.createQuery(criteriaQuery);
 
+        // construct order by to fetch or joins if needed
+        orderByUtil.buildJpaOrders(root, builder, sp);
+
         // cache
-        setCacheHints(typedQuery, sp);
+        JpaUtil.applyCacheHints(typedQuery, sp, type);
 
         // execution
-        Long count = typedQuery.getSingleResult();
-
-        if (count != null) {
-            return count;
-        } else {
-            logger.warn("findCount returned null!");
-            return 0;
-        }
+        return typedQuery.getSingleResult().intValue();
     }
 
     /**
@@ -207,42 +200,50 @@ public abstract class JpaGenericRepository<E extends Identifiable<PK>, PK extend
         return results.iterator().next();
     }
 
-    protected <R> Predicate getPredicate(Root<E> root, CriteriaQuery<R> query, CriteriaBuilder builder, SearchParameters sp) {
+    protected <R> Predicate getPredicate(Root<E> root, CriteriaBuilder builder, SearchParameters sp) {
         return JpaUtil.andPredicate(builder, //
-                byFullTextUtil.byFullText(root, query, builder, sp, type, indexedAttributes), //
-                byRangeUtil.byRanges(root, query, builder, sp.getRanges(), type), //
-                byPropertySelectorUtil.byPropertySelectors(root, builder, sp, sp.getProperties()), //
-                byExtraPredicate(root, query, builder, sp));
+                bySearchPredicate(root, builder, sp), //
+                byMandatoryPredicate(root, builder, sp));
+    }
+
+    protected <R> Predicate bySearchPredicate(Root<E> root, CriteriaBuilder builder, SearchParameters sp) {
+        return JpaUtil.concatPredicate(sp, builder, //
+                byFullText(root, builder, sp, type, indexedAttributes), //
+                byRanges(root, builder, sp, type), //
+                byPropertySelectors(root, builder, sp));
+    }
+
+    protected Predicate byFullText(Root<E> root, CriteriaBuilder builder, SearchParameters sp, Class<E> type, List<SingularAttribute<?, ?>> indexedAttributes) {
+        return byFullTextUtil.byFullText(root, builder, sp, type, indexedAttributes);
+    }
+
+    protected Predicate byPropertySelectors(Root<E> root, CriteriaBuilder builder, SearchParameters sp) {
+        return byPropertySelectorUtil.byPropertySelectors(root, builder, sp);
+    }
+
+    protected Predicate byRanges(Root<E> root, CriteriaBuilder builder, SearchParameters sp, Class<E> type) {
+        return byRangeUtil.byRanges(root, builder, sp, type);
     }
 
     /**
      * You may override this method to add a Predicate to the default find
      * method.
      */
-    protected <R> Predicate byExtraPredicate(Root<E> root, CriteriaQuery<R> query, CriteriaBuilder builder, SearchParameters sp) {
+    protected Predicate byMandatoryPredicate(Root<E> root, CriteriaBuilder builder, SearchParameters sp) {
         return null;
     }
 
-    // -----------------
-    // Commons
-    // -----------------
-
-    /**
-     * Set hints for 2d level cache.
-     */
-    protected void setCacheHints(TypedQuery<?> typedQuery, SearchParameters sp) {
-        if (sp.isCacheable()) {
-            typedQuery.setHint("org.hibernate.cacheable", true);
-
-            if (sp.hasCacheRegion()) {
-                typedQuery.setHint("org.hibernate.cacheRegion", sp.getCacheRegion());
-            } else {
-                typedQuery.setHint("org.hibernate.cacheRegion", cacheRegion);
+    protected List<SingularAttribute<?, ?>> buildIndexedAttributes(Class<E> type) {
+        List<SingularAttribute<?, ?>> ret = new ArrayList<>();
+        for (Method m : type.getMethods()) {
+            if (m.getAnnotation(Field.class) != null) {
+                ret.add(MetamodelUtil.toAttribute(BeanUtils.findPropertyForMethod(m).getName(), type));
             }
         }
+        return ret;
     }
 
-    // BEANS
+    // BEANS METHODS
 
     /**
      * @return the byFullTextUtil

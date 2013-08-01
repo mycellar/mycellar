@@ -22,7 +22,6 @@ import javax.inject.Named;
 import javax.inject.Singleton;
 
 import fr.peralta.mycellar.domain.user.User;
-import fr.peralta.mycellar.domain.user.User_;
 import fr.peralta.mycellar.domain.user.repository.UserRepository;
 import fr.peralta.mycellar.infrastructure.shared.repository.JpaSimpleRepository;
 
@@ -37,7 +36,7 @@ public class JpaUserRepository extends JpaSimpleRepository<User> implements User
      * Default constructor.
      */
     public JpaUserRepository() {
-        super(User.class, User_.email, User_.firstname, User_.lastname);
+        super(User.class);
     }
 
 }

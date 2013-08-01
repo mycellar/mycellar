@@ -31,8 +31,7 @@ import fr.peralta.mycellar.application.wine.WineService;
 import fr.peralta.mycellar.domain.shared.NamedEntity_;
 import fr.peralta.mycellar.domain.shared.exception.BusinessError;
 import fr.peralta.mycellar.domain.shared.exception.BusinessException;
-import fr.peralta.mycellar.domain.shared.repository.PropertySelector;
-import fr.peralta.mycellar.domain.shared.repository.SearchParameters;
+import fr.peralta.mycellar.domain.shared.repository.SearchParametersBuilder;
 import fr.peralta.mycellar.domain.stock.Bottle_;
 import fr.peralta.mycellar.domain.wine.Appellation;
 import fr.peralta.mycellar.domain.wine.Appellation_;
@@ -67,13 +66,14 @@ public class WineServiceImpl extends AbstractSimpleService<Wine, WineRepository>
         model.setColor(color);
         model.setName(name);
         model.setVintage(vintage);
-        return wineRepository.findUniqueOrNone(new SearchParameters().property(PropertySelector.newPropertySelector(producer.getId(), Wine_.producer, Producer_.id)) //
-                .property(PropertySelector.newPropertySelector(appellation.getId(), Wine_.appellation, Appellation_.id)) //
-                .property(PropertySelector.newPropertySelector(type, Wine_.type)) //
-                .property(PropertySelector.newPropertySelector(color, Wine_.color)) //
-                .property(PropertySelector.newPropertySelector(name, NamedEntity_.name)) //
-                .property(PropertySelector.newPropertySelector(vintage, Wine_.vintage)) //
-                );
+        return wineRepository.findUniqueOrNone(new SearchParametersBuilder() //
+                .propertyWithValue(producer.getId(), Wine_.producer, Producer_.id) //
+                .propertyWithValue(appellation.getId(), Wine_.appellation, Appellation_.id) //
+                .propertyWithValue(type, Wine_.type) //
+                .propertyWithValue(color, Wine_.color) //
+                .propertyWithValue(name, NamedEntity_.name) //
+                .propertyWithValue(vintage, Wine_.vintage) //
+                .toSearchParameters());
     }
 
     /**
@@ -92,9 +92,9 @@ public class WineServiceImpl extends AbstractSimpleService<Wine, WineRepository>
      */
     @Override
     protected void validateDelete(Wine entity) throws BusinessException {
-        SearchParameters searchParameters = new SearchParameters();
-        searchParameters.addProperty(PropertySelector.newPropertySelector(entity, Bottle_.wine));
-        if (bottleService.count(searchParameters) > 0) {
+        if (bottleService.count(new SearchParametersBuilder() //
+                .propertyWithValue(entity, Bottle_.wine) //
+                .toSearchParameters()) > 0) {
             throw new BusinessException(BusinessError.WINE_00002);
         }
     }

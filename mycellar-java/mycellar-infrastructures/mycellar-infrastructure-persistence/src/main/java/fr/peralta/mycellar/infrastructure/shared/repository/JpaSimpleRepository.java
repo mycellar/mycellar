@@ -18,8 +18,6 @@
  */
 package fr.peralta.mycellar.infrastructure.shared.repository;
 
-import javax.persistence.metamodel.SingularAttribute;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -29,17 +27,15 @@ import fr.peralta.mycellar.domain.shared.repository.SimpleRepository;
 /**
  * @author speralta
  */
-public abstract class JpaSimpleRepository<E extends IdentifiedEntity> extends
-        JpaGenericRepository<E, Integer> implements SimpleRepository<E> {
+public abstract class JpaSimpleRepository<E extends IdentifiedEntity> extends JpaGenericRepository<E, Integer> implements SimpleRepository<E> {
 
     private static final Logger logger = LoggerFactory.getLogger(JpaSimpleRepository.class);
 
     /**
      * @param type
-     * @param indexedAttributes
      */
-    public JpaSimpleRepository(Class<E> type, SingularAttribute<?, ?>... indexedAttributes) {
-        super(type, indexedAttributes);
+    public JpaSimpleRepository(Class<E> type) {
+        super(type);
     }
 
     /**

@@ -38,8 +38,7 @@ import fr.peralta.mycellar.application.admin.ConfigurationService;
 import fr.peralta.mycellar.application.shared.AbstractSimpleService;
 import fr.peralta.mycellar.application.user.ResetPasswordRequestService;
 import fr.peralta.mycellar.domain.shared.exception.BusinessException;
-import fr.peralta.mycellar.domain.shared.repository.PropertySelector;
-import fr.peralta.mycellar.domain.shared.repository.SearchParameters;
+import fr.peralta.mycellar.domain.shared.repository.SearchParametersBuilder;
 import fr.peralta.mycellar.domain.user.ResetPasswordRequest;
 import fr.peralta.mycellar.domain.user.ResetPasswordRequest_;
 import fr.peralta.mycellar.domain.user.User;
@@ -50,9 +49,7 @@ import fr.peralta.mycellar.domain.user.repository.ResetPasswordRequestRepository
  */
 @Named
 @Singleton
-public class ResetPasswordRequestServiceImpl extends
-        AbstractSimpleService<ResetPasswordRequest, ResetPasswordRequestRepository> implements
-        ResetPasswordRequestService {
+public class ResetPasswordRequestServiceImpl extends AbstractSimpleService<ResetPasswordRequest, ResetPasswordRequestRepository> implements ResetPasswordRequestService {
 
     private static SecureRandom secureRandom = new SecureRandom();
 
@@ -77,8 +74,7 @@ public class ResetPasswordRequestServiceImpl extends
         // Create request
         ResetPasswordRequest request = new ResetPasswordRequest();
         request.setDateTime(new LocalDateTime());
-        request.setKey(new String(Base64.encodeBase64(secureRandom.generateSeed(128), false))
-                .substring(0, 32));
+        request.setKey(new String(Base64.encodeBase64(secureRandom.generateSeed(128), false)).substring(0, 32));
         request.setUser(user);
         // Merge it in repository
         resetPasswordRequestRepository.save(request);
@@ -113,12 +109,11 @@ public class ResetPasswordRequestServiceImpl extends
      */
     @Override
     public ResetPasswordRequest getByKey(String key) {
-        ResetPasswordRequest request = resetPasswordRequestRepository
-                .findUniqueOrNone(new SearchParameters().property(PropertySelector
-                        .newPropertySelector(key, ResetPasswordRequest_.key)));
-        return (request != null)
-                && request.getDateTime().isAfter(new LocalDateTime().minusHours(1)) ? request
-                : null;
+        ResetPasswordRequest request = resetPasswordRequestRepository.findUniqueOrNone( //
+                new SearchParametersBuilder() //
+                        .propertyWithValue(key, ResetPasswordRequest_.key) //
+                        .toSearchParameters());
+        return (request != null) && request.getDateTime().isAfter(new LocalDateTime().minusHours(1)) ? request : null;
     }
 
     /**
@@ -150,8 +145,7 @@ public class ResetPasswordRequestServiceImpl extends
      *            the resetPasswordRequestRepository to set
      */
     @Inject
-    public void setResetPasswordRequestRepository(
-            ResetPasswordRequestRepository resetPasswordRequestRepository) {
+    public void setResetPasswordRequestRepository(ResetPasswordRequestRepository resetPasswordRequestRepository) {
         this.resetPasswordRequestRepository = resetPasswordRequestRepository;
     }
 

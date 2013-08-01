@@ -29,8 +29,7 @@ import fr.peralta.mycellar.application.stock.StockService;
 import fr.peralta.mycellar.domain.shared.NamedEntity_;
 import fr.peralta.mycellar.domain.shared.exception.BusinessError;
 import fr.peralta.mycellar.domain.shared.exception.BusinessException;
-import fr.peralta.mycellar.domain.shared.repository.PropertySelector;
-import fr.peralta.mycellar.domain.shared.repository.SearchParameters;
+import fr.peralta.mycellar.domain.shared.repository.SearchParametersBuilder;
 import fr.peralta.mycellar.domain.stock.Cellar;
 import fr.peralta.mycellar.domain.stock.CellarShare_;
 import fr.peralta.mycellar.domain.stock.Cellar_;
@@ -56,10 +55,10 @@ public class CellarServiceImpl extends AbstractSimpleService<Cellar, CellarRepos
      */
     @Override
     public void validate(Cellar entity) throws BusinessException {
-        Cellar existing = cellarRepository.findUniqueOrNone(new SearchParameters() //
-                .property(PropertySelector.newPropertySelector(entity.getOwner().getId(), Cellar_.owner, User_.id)) //
-                .property(PropertySelector.newPropertySelector(entity.getName(), NamedEntity_.name)) //
-                );
+        Cellar existing = cellarRepository.findUniqueOrNone(new SearchParametersBuilder() //
+                .propertyWithValue(entity.getOwner().getId(), Cellar_.owner, User_.id) //
+                .propertyWithValue(entity.getName(), NamedEntity_.name) //
+                .toSearchParameters());
         if ((existing != null) && ((entity.getId() == null) || !existing.getId().equals(entity.getId()))) {
             throw new BusinessException(BusinessError.CELLAR_00001);
         }
@@ -70,14 +69,14 @@ public class CellarServiceImpl extends AbstractSimpleService<Cellar, CellarRepos
      */
     @Override
     protected void validateDelete(Cellar entity) throws BusinessException {
-        SearchParameters searchParameters = new SearchParameters();
-        searchParameters.addProperty(PropertySelector.newPropertySelector(entity, Stock_.cellar));
-        if (stockService.count(searchParameters) > 0) {
+        if (stockService.count(new SearchParametersBuilder() //
+                .propertyWithValue(entity, Stock_.cellar) //
+                .toSearchParameters()) > 0) {
             throw new BusinessException(BusinessError.CELLAR_00002);
         }
-        searchParameters = new SearchParameters();
-        searchParameters.addProperty(PropertySelector.newPropertySelector(entity, CellarShare_.cellar));
-        if (cellarShareService.count(searchParameters) > 0) {
+        if (cellarShareService.count(new SearchParametersBuilder() //
+                .propertyWithValue(entity, CellarShare_.cellar) //
+                .toSearchParameters()) > 0) {
             throw new BusinessException(BusinessError.CELLAR_00003);
         }
     }

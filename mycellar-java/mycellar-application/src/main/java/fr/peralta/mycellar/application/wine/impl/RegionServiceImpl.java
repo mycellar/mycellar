@@ -28,8 +28,7 @@ import fr.peralta.mycellar.application.wine.RegionService;
 import fr.peralta.mycellar.domain.shared.NamedEntity_;
 import fr.peralta.mycellar.domain.shared.exception.BusinessError;
 import fr.peralta.mycellar.domain.shared.exception.BusinessException;
-import fr.peralta.mycellar.domain.shared.repository.PropertySelector;
-import fr.peralta.mycellar.domain.shared.repository.SearchParameters;
+import fr.peralta.mycellar.domain.shared.repository.SearchParametersBuilder;
 import fr.peralta.mycellar.domain.wine.Appellation_;
 import fr.peralta.mycellar.domain.wine.Country_;
 import fr.peralta.mycellar.domain.wine.Region;
@@ -55,10 +54,10 @@ public class RegionServiceImpl extends AbstractSimpleService<Region, RegionRepos
         if (entity.getCountry() == null) {
             throw new BusinessException(BusinessError.REGION_00001);
         }
-        Region existing = regionRepository.findUniqueOrNone(new SearchParameters() //
-                .property(PropertySelector.newPropertySelector(entity.getCountry().getId(), Region_.country, Country_.id)) //
-                .property(PropertySelector.newPropertySelector(entity.getName(), NamedEntity_.name)) //
-                );
+        Region existing = regionRepository.findUniqueOrNone(new SearchParametersBuilder() //
+                .propertyWithValue(entity.getCountry().getId(), Region_.country, Country_.id) //
+                .propertyWithValue(entity.getName(), NamedEntity_.name) //
+                .toSearchParameters());
         if ((existing != null) && ((entity.getId() == null) || !existing.getId().equals(entity.getId()))) {
             throw new BusinessException(BusinessError.REGION_00002);
         }
@@ -69,9 +68,9 @@ public class RegionServiceImpl extends AbstractSimpleService<Region, RegionRepos
      */
     @Override
     protected void validateDelete(Region entity) throws BusinessException {
-        SearchParameters searchParameters = new SearchParameters();
-        searchParameters.addProperty(PropertySelector.newPropertySelector(entity, Appellation_.region));
-        if (appellationService.count(searchParameters) > 0) {
+        if (appellationService.count(new SearchParametersBuilder() //
+                .propertyWithValue(entity, Appellation_.region) //
+                .toSearchParameters()) > 0) {
             throw new BusinessException(BusinessError.REGION_00003);
         }
     }

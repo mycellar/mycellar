@@ -28,8 +28,7 @@ import fr.peralta.mycellar.application.wine.RegionService;
 import fr.peralta.mycellar.domain.shared.NamedEntity_;
 import fr.peralta.mycellar.domain.shared.exception.BusinessError;
 import fr.peralta.mycellar.domain.shared.exception.BusinessException;
-import fr.peralta.mycellar.domain.shared.repository.PropertySelector;
-import fr.peralta.mycellar.domain.shared.repository.SearchParameters;
+import fr.peralta.mycellar.domain.shared.repository.SearchParametersBuilder;
 import fr.peralta.mycellar.domain.wine.Country;
 import fr.peralta.mycellar.domain.wine.Region_;
 import fr.peralta.mycellar.domain.wine.repository.CountryRepository;
@@ -50,7 +49,10 @@ public class CountryServiceImpl extends AbstractSimpleService<Country, CountryRe
      */
     @Override
     public Country find(String name) {
-        return countryRepository.findUniqueOrNone(new SearchParameters().property(PropertySelector.newPropertySelector(name, NamedEntity_.name)));
+        return countryRepository.findUniqueOrNone( //
+                new SearchParametersBuilder() //
+                        .propertyWithValue(name, NamedEntity_.name) //
+                        .toSearchParameters());
     }
 
     /**
@@ -69,9 +71,9 @@ public class CountryServiceImpl extends AbstractSimpleService<Country, CountryRe
      */
     @Override
     protected void validateDelete(Country entity) throws BusinessException {
-        SearchParameters searchParameters = new SearchParameters();
-        searchParameters.addProperty(PropertySelector.newPropertySelector(entity, Region_.country));
-        if (regionService.count(searchParameters) > 0) {
+        if (regionService.count(new SearchParametersBuilder() //
+                .propertyWithValue(entity, Region_.country) //
+                .toSearchParameters()) > 0) {
             throw new BusinessException(BusinessError.COUNTRY_00002);
         }
     }

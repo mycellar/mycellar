@@ -36,9 +36,8 @@ import fr.peralta.mycellar.domain.booking.repository.BookingEventRepository;
 import fr.peralta.mycellar.domain.shared.NamedEntity_;
 import fr.peralta.mycellar.domain.shared.exception.BusinessError;
 import fr.peralta.mycellar.domain.shared.exception.BusinessException;
-import fr.peralta.mycellar.domain.shared.repository.PropertySelector;
 import fr.peralta.mycellar.domain.shared.repository.Range;
-import fr.peralta.mycellar.domain.shared.repository.SearchParameters;
+import fr.peralta.mycellar.domain.shared.repository.SearchParametersBuilder;
 
 /**
  * @author speralta
@@ -56,11 +55,10 @@ public class BookingEventServiceImpl extends AbstractSimpleService<BookingEvent,
      */
     @Override
     public List<BookingEvent> getCurrentBookingEvents() {
-        return bookingEventRepository.find(new SearchParameters() //
-                .range(new Range<BookingEvent, LocalDate>( //
-                        BookingEvent_.start, null, new LocalDate())) //
-                .range(new Range<BookingEvent, LocalDate>( //
-                        BookingEvent_.end, new LocalDate(), null)));
+        return bookingEventRepository.find(new SearchParametersBuilder() //
+                .range(new Range<BookingEvent, LocalDate>(BookingEvent_.start, null, new LocalDate()), //
+                        new Range<BookingEvent, LocalDate>(BookingEvent_.end, new LocalDate(), null)) //
+                .toSearchParameters());
     }
 
     /**
@@ -70,7 +68,7 @@ public class BookingEventServiceImpl extends AbstractSimpleService<BookingEvent,
     public List<BookingEvent> getAllLike(String term) {
         BookingEvent bookingEvent = new BookingEvent();
         bookingEvent.setName(term);
-        return bookingEventRepository.find(new SearchParameters().term(term, NamedEntity_.name));
+        return bookingEventRepository.find(new SearchParametersBuilder().term(NamedEntity_.name, term).toSearchParameters());
     }
 
     /**
@@ -86,9 +84,9 @@ public class BookingEventServiceImpl extends AbstractSimpleService<BookingEvent,
      */
     @Override
     protected void validateDelete(BookingEvent entity) throws BusinessException {
-        SearchParameters searchParameters = new SearchParameters();
-        searchParameters.addProperty(PropertySelector.newPropertySelector(entity, Booking_.bookingEvent));
-        if (bookingService.count(searchParameters) > 0) {
+        if (bookingService.count(new SearchParametersBuilder() //
+                .propertyWithValue(entity, Booking_.bookingEvent) //
+                .toSearchParameters()) > 0) {
             throw new BusinessException(BusinessError.BOOKINGEVENT_00001);
         }
     }

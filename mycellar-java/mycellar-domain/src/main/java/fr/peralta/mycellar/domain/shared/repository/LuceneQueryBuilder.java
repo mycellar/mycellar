@@ -16,26 +16,16 @@
  * You should have received a copy of the GNU General Public License
  * along with MyCellar. If not, see <http://www.gnu.org/licenses/>.
  */
-package fr.peralta.mycellar.infrastructure.wine.repository;
+package fr.peralta.mycellar.domain.shared.repository;
 
-import javax.inject.Named;
-import javax.inject.Singleton;
+import java.util.List;
 
-import fr.peralta.mycellar.domain.wine.Region;
-import fr.peralta.mycellar.domain.wine.repository.RegionRepository;
-import fr.peralta.mycellar.infrastructure.shared.repository.JpaSimpleRepository;
+import javax.persistence.metamodel.SingularAttribute;
 
-/**
- * @author speralta
- */
-@Named
-@Singleton
-public class JpaRegionRepository extends JpaSimpleRepository<Region> implements RegionRepository {
+import org.apache.lucene.search.Query;
+import org.hibernate.search.jpa.FullTextEntityManager;
 
-    /**
-     * Default constructor.
-     */
-    public JpaRegionRepository() {
-        super(Region.class);
-    }
+public interface LuceneQueryBuilder {
+
+    Query build(FullTextEntityManager fullTextEntityManager, SearchParameters searchParameters, List<SingularAttribute<?, ?>> availableProperties);
 }

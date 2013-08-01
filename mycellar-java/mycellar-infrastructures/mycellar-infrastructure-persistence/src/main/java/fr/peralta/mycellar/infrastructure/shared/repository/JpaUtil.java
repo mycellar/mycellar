@@ -18,21 +18,23 @@
  */
 package fr.peralta.mycellar.infrastructure.shared.repository;
 
-import static com.google.common.base.Predicates.*;
-import static com.google.common.base.Throwables.*;
-import static com.google.common.collect.Iterables.*;
-import static com.google.common.collect.Lists.*;
-import static java.lang.reflect.Modifier.*;
+import static com.google.common.base.Predicates.notNull;
+import static com.google.common.base.Throwables.propagate;
+import static com.google.common.collect.Iterables.filter;
+import static com.google.common.collect.Iterables.toArray;
+import static com.google.common.collect.Lists.newArrayList;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
+import java.lang.reflect.Modifier;
+import java.util.Arrays;
 import java.util.List;
 
-import javax.inject.Named;
-import javax.inject.Singleton;
 import javax.persistence.EmbeddedId;
+import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.Query;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.Expression;
 import javax.persistence.criteria.Fetch;
@@ -45,18 +47,17 @@ import javax.persistence.metamodel.ManagedType;
 import javax.persistence.metamodel.SingularAttribute;
 
 import org.apache.commons.lang.WordUtils;
+import org.apache.commons.lang3.StringUtils;
+import org.hibernate.proxy.HibernateProxyHelper;
 import org.springframework.beans.BeanUtils;
+import org.springframework.context.i18n.LocaleContextHolder;
+import org.springframework.core.annotation.AnnotationUtils;
 import org.springframework.util.ReflectionUtils;
 
 import fr.peralta.mycellar.domain.shared.Identifiable;
 import fr.peralta.mycellar.domain.shared.repository.SearchMode;
 import fr.peralta.mycellar.domain.shared.repository.SearchParameters;
 
-/**
- *
- */
-@Named
-@Singleton
 public class JpaUtil {
 
     public static boolean isEntityIdManuallyAssigned(Class<?> type) {
@@ -69,9 +70,7 @@ public class JpaUtil {
     }
 
     private static boolean isPrimaryKey(Method method) {
-        return isPublic(method.getModifiers())
-                && ((method.getAnnotation(Id.class) != null) || (method
-                        .getAnnotation(EmbeddedId.class) != null));
+        return Modifier.isPublic(method.getModifiers()) && ((method.getAnnotation(Id.class) != null) || (method.getAnnotation(EmbeddedId.class) != null));
     }
 
     private static boolean isManuallyAssigned(Method method) {
@@ -84,13 +83,27 @@ public class JpaUtil {
         }
     }
 
-    public static Predicate andPredicate(CriteriaBuilder builder,
-            Predicate... predicatesNullAllowed) {
-        return andPredicate(builder, newArrayList(predicatesNullAllowed));
+    public static Predicate concatPredicate(SearchParameters sp, CriteriaBuilder builder, Predicate... predicatesNullAllowed) {
+        return concatPredicate(sp, builder, Arrays.asList(predicatesNullAllowed));
     }
 
-    public static Predicate andPredicate(CriteriaBuilder builder,
-            Iterable<Predicate> predicatesNullAllowed) {
+    public static Predicate concatPredicate(SearchParameters sp, CriteriaBuilder builder, Iterable<Predicate> predicatesNullAllowed) {
+        if (sp.isAndMode()) {
+            return andPredicate(builder, predicatesNullAllowed);
+        } else {
+            return orPredicate(builder, predicatesNullAllowed);
+        }
+    }
+
+    public static Predicate andPredicate(CriteriaBuilder builder, Predicate... predicatesNullAllowed) {
+        return andPredicate(builder, Arrays.asList(predicatesNullAllowed));
+    }
+
+    public static Predicate orPredicate(CriteriaBuilder builder, Predicate... predicatesNullAllowed) {
+        return orPredicate(builder, Arrays.asList(predicatesNullAllowed));
+    }
+
+    public static Predicate andPredicate(CriteriaBuilder builder, Iterable<Predicate> predicatesNullAllowed) {
         List<Predicate> predicates = newArrayList(filter(predicatesNullAllowed, notNull()));
         if ((predicates == null) || predicates.isEmpty()) {
             return null;
@@ -101,8 +114,7 @@ public class JpaUtil {
         }
     }
 
-    public static Predicate orPredicate(CriteriaBuilder builder,
-            Iterable<Predicate> predicatesNullAllowed) {
+    public static Predicate orPredicate(CriteriaBuilder builder, Iterable<Predicate> predicatesNullAllowed) {
         List<Predicate> predicates = newArrayList(filter(predicatesNullAllowed, notNull()));
         if ((predicates == null) || predicates.isEmpty()) {
             return null;
@@ -113,11 +125,10 @@ public class JpaUtil {
         }
     }
 
-    public static <E> Predicate stringPredicate(Expression<String> path, Object attrValue,
-            SearchMode searchMode, SearchParameters sp, CriteriaBuilder builder) {
-        if (sp.isCaseInsensitive()) {
+    public static <E> Predicate stringPredicate(Expression<String> path, Object attrValue, SearchMode searchMode, SearchParameters sp, CriteriaBuilder builder) {
+        if (!sp.isCaseSensitive()) {
             path = builder.lower(path);
-            attrValue = ((String) attrValue).toLowerCase();
+            attrValue = ((String) attrValue).toLowerCase(LocaleContextHolder.getLocale());
         }
 
         switch (searchMode != null ? searchMode : sp.getSearchMode()) {
@@ -138,37 +149,33 @@ public class JpaUtil {
         }
     }
 
-    public static <E> Predicate stringPredicate(Expression<String> path, Object attrValue,
-            SearchParameters sp, CriteriaBuilder builder) {
+    public static <E> Predicate stringPredicate(Expression<String> path, Object attrValue, SearchParameters sp, CriteriaBuilder builder) {
         return stringPredicate(path, attrValue, null, sp, builder);
     }
 
     /**
-     * Convert the passed propertyPath into a JPA path. <br>
+     * Convert the passed propertyPath into a JPA path.
+     * <p>
      * Note: JPA will do joins if the property is in an associated entity.
      */
     @SuppressWarnings("unchecked")
-    public static <E, F> Path<F> getPath(Root<E> root, List<Attribute<?, ?>> attributes,
-            boolean distinct) {
+    public static <E, F> Path<F> getPath(Root<E> root, List<Attribute<?, ?>> attributes) {
         Path<?> path = root;
         for (Attribute<?, ?> attribute : attributes) {
             boolean found = false;
-            if (distinct) {
-                // handle case when order on already fetched attribute
-                for (Fetch<E, ?> fetch : root.getFetches()) {
-                    if (attribute.getName().equals(fetch.getAttribute().getName())
-                            && (fetch instanceof Join<?, ?>)) {
-                        path = (Join<E, ?>) fetch;
-                        found = true;
-                        break;
-                    }
+            // handle case when order on already fetched attribute
+            for (Fetch<E, ?> fetch : root.getFetches()) {
+                if (attribute.getName().equals(fetch.getAttribute().getName()) && (fetch instanceof Join<?, ?>)) {
+                    path = (Join<E, ?>) fetch;
+                    found = true;
+                    break;
                 }
-                for (Join<E, ?> join : root.getJoins()) {
-                    if (attribute.getName().equals(join.getAttribute().getName())) {
-                        path = join;
-                        found = true;
-                        break;
-                    }
+            }
+            for (Join<E, ?> join : root.getJoins()) {
+                if (attribute.getName().equals(join.getAttribute().getName())) {
+                    path = join;
+                    found = true;
+                    break;
                 }
             }
             if (!found) {
@@ -176,6 +183,14 @@ public class JpaUtil {
             }
         }
         return (Path<F>) path;
+    }
+
+    public static String getPath(List<Attribute<?, ?>> attributes) {
+        StringBuilder builder = new StringBuilder();
+        for (Attribute<?, ?> attribute : attributes) {
+            builder.append(attribute.getName()).append(".");
+        }
+        return builder.substring(0, builder.length() - 1);
     }
 
     public static <T extends Identifiable<?>> String compositePkPropertyName(T entity) {
@@ -194,8 +209,7 @@ public class JpaUtil {
 
     public static <T> boolean isPk(ManagedType<T> mt, SingularAttribute<? super T, ?> attr) {
         try {
-            Method m = BeanUtils.findMethod(mt.getJavaType(),
-                    "get" + WordUtils.capitalize(attr.getName()));
+            Method m = BeanUtils.findMethod(mt.getJavaType(), "get" + WordUtils.capitalize(attr.getName()));
             if ((m != null) && (m.getAnnotation(Id.class) != null)) {
                 return true;
             }
@@ -219,28 +233,34 @@ public class JpaUtil {
         }
     }
 
-    public static <T, A> SingularAttribute<? super T, A> attribute(ManagedType<? super T> mt,
-            Attribute<? super T, A> attr) {
+    public static <T, A> SingularAttribute<? super T, A> attribute(ManagedType<? super T> mt, Attribute<? super T, A> attr) {
         return mt.getSingularAttribute(attr.getName(), attr.getJavaType());
     }
 
-    public static <T> SingularAttribute<? super T, String> stringAttribute(
-            ManagedType<? super T> mt, Attribute<? super T, ?> attr) {
+    public static <T> SingularAttribute<? super T, String> stringAttribute(ManagedType<? super T> mt, Attribute<? super T, ?> attr) {
         return mt.getSingularAttribute(attr.getName(), String.class);
     }
 
-    public static <T extends Identifiable<?>> boolean hasSimplePk(Class<T> type) {
-        for (Method m : type.getMethods()) {
+    public static <T extends Identifiable<?>> boolean hasSimplePk(Class<T> entityClass) {
+        for (Method m : entityClass.getMethods()) {
             if (m.getAnnotation(Id.class) != null) {
                 return true;
             }
         }
-        for (Field f : type.getFields()) {
+        for (Field f : entityClass.getFields()) {
             if (f.getAnnotation(Id.class) != null) {
                 return true;
             }
         }
         return false;
+    }
+
+    public static String[] toNames(SingularAttribute<?, ?>... attributes) {
+        List<String> ret = newArrayList();
+        for (SingularAttribute<?, ?> attribute : attributes) {
+            ret.add(attribute.getName());
+        }
+        return ret.toArray(new String[ret.size()]);
     }
 
     public static List<String> toNamesList(List<SingularAttribute<?, ?>> attributes) {
@@ -249,5 +269,47 @@ public class JpaUtil {
             ret.add(attribute.getName());
         }
         return ret;
+    }
+
+    public static String getEntityName(Identifiable<?> entity) {
+        Entity entityAnnotation = AnnotationUtils.findAnnotation(entity.getClass(), Entity.class);
+        if (StringUtils.isBlank(entityAnnotation.name())) {
+            return HibernateProxyHelper.getClassWithoutInitializingProxy(entity).getSimpleName();
+        }
+        return entityAnnotation.name();
+    }
+
+    public static String methodToProperty(Method m) {
+        return BeanUtils.findPropertyForMethod(m).getName();
+    }
+
+    public static Object getValueFromField(Field field, Object object) {
+        boolean accessible = field.isAccessible();
+        try {
+            return ReflectionUtils.getField(field, object);
+        } finally {
+            field.setAccessible(accessible);
+        }
+    }
+
+    public static void applyPagination(Query query, SearchParameters sp) {
+        if (sp.getFirstResult() > 0) {
+            query.setFirstResult(sp.getFirstResult());
+        }
+        if (sp.getMaxResults() > 0) {
+            query.setMaxResults(sp.getMaxResults());
+        }
+    }
+
+    public static void applyCacheHints(Query query, SearchParameters sp, Class<? extends Identifiable<?>> type) {
+        if (sp.isCacheable()) {
+            query.setHint("org.hibernate.cacheable", true);
+
+            if (StringUtils.isNotBlank(sp.getCacheRegion())) {
+                query.setHint("org.hibernate.cacheRegion", sp.getCacheRegion());
+            } else {
+                query.setHint("org.hibernate.cacheRegion", type.getCanonicalName());
+            }
+        }
     }
 }

@@ -18,8 +18,7 @@
  */
 package fr.peralta.mycellar.infrastructure.shared.repository;
 
-import static com.google.common.collect.Lists.*;
-
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.inject.Named;
@@ -39,18 +38,11 @@ import fr.peralta.mycellar.domain.shared.repository.SearchParameters;
 @Singleton
 public class OrderByUtil {
 
-    public <E> List<Order> buildJpaOrders(Iterable<OrderBy> orders, Root<E> root,
-            CriteriaBuilder builder, SearchParameters sp) {
-        List<Order> jpaOrders = newArrayList();
-
-        for (OrderBy ob : orders) {
-            Path<?> path = JpaUtil.getPath(root, ob.getAttributes(), sp.getDistinct());
-
-            if (ob.isOrderDesc()) {
-                jpaOrders.add(builder.desc(path));
-            } else {
-                jpaOrders.add(builder.asc(path));
-            }
+    public <E> List<Order> buildJpaOrders(Root<E> root, CriteriaBuilder builder, SearchParameters sp) {
+        List<Order> jpaOrders = new ArrayList<>();
+        for (OrderBy ob : sp.getOrders()) {
+            Path<?> path = JpaUtil.getPath(root, ob.getAttributes());
+            jpaOrders.add(ob.isOrderDesc() ? builder.desc(path) : builder.asc(path));
         }
         return jpaOrders;
     }

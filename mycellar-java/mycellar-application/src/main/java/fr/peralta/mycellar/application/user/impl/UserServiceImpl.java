@@ -32,8 +32,7 @@ import fr.peralta.mycellar.application.user.UserService;
 import fr.peralta.mycellar.domain.booking.Booking_;
 import fr.peralta.mycellar.domain.shared.exception.BusinessError;
 import fr.peralta.mycellar.domain.shared.exception.BusinessException;
-import fr.peralta.mycellar.domain.shared.repository.PropertySelector;
-import fr.peralta.mycellar.domain.shared.repository.SearchParameters;
+import fr.peralta.mycellar.domain.shared.repository.SearchParametersBuilder;
 import fr.peralta.mycellar.domain.stock.Cellar_;
 import fr.peralta.mycellar.domain.user.User;
 import fr.peralta.mycellar.domain.user.User_;
@@ -70,7 +69,10 @@ public class UserServiceImpl extends AbstractSimpleService<User, UserRepository>
      */
     @Override
     public void resetPasswordRequest(String email, String url) {
-        User user = userRepository.findUniqueOrNone(new SearchParameters().property(PropertySelector.newPropertySelector(email, User_.email)));
+        User user = userRepository.findUniqueOrNone( //
+                new SearchParametersBuilder() //
+                        .propertyWithValue(email, User_.email) //
+                        .toSearchParameters());
         if (user != null) {
             resetPasswordRequestService.createAndSendEmail(user, url);
         }
@@ -82,7 +84,10 @@ public class UserServiceImpl extends AbstractSimpleService<User, UserRepository>
      */
     @Override
     public void validate(User entity) throws BusinessException {
-        User existing = userRepository.findUniqueOrNone(new SearchParameters().property(PropertySelector.newPropertySelector(entity.getEmail(), User_.email)));
+        User existing = userRepository.findUniqueOrNone( //
+                new SearchParametersBuilder() //
+                        .propertyWithValue(entity.getEmail(), User_.email)//
+                        .toSearchParameters());
         if ((existing != null) && ((entity.getId() == null) || !existing.getId().equals(entity.getId()))) {
             throw new BusinessException(BusinessError.USER_00001);
         }
@@ -93,13 +98,14 @@ public class UserServiceImpl extends AbstractSimpleService<User, UserRepository>
      */
     @Override
     protected void validateDelete(User entity) throws BusinessException {
-        SearchParameters searchParameters = new SearchParameters();
-        searchParameters.addProperty(PropertySelector.newPropertySelector(entity, Booking_.customer));
-        if (bookingService.count(searchParameters) > 0) {
+        if (bookingService.count(new SearchParametersBuilder() //
+                .propertyWithValue(entity, Booking_.customer) //
+                .toSearchParameters()) > 0) {
             throw new BusinessException(BusinessError.USER_00002);
         }
-        searchParameters.addProperty(PropertySelector.newPropertySelector(entity, Cellar_.owner));
-        if (cellarService.count(searchParameters) > 0) {
+        if (cellarService.count(new SearchParametersBuilder() //
+                .propertyWithValue(entity, Cellar_.owner) //
+                .toSearchParameters()) > 0) {
             throw new BusinessException(BusinessError.USER_00003);
         }
     }
@@ -109,7 +115,10 @@ public class UserServiceImpl extends AbstractSimpleService<User, UserRepository>
      */
     @Override
     public User authenticate(String login, String password) {
-        User user = userRepository.findUniqueOrNone(new SearchParameters().property(PropertySelector.newPropertySelector(login, User_.email)));
+        User user = userRepository.findUniqueOrNone( //
+                new SearchParametersBuilder() //
+                        .propertyWithValue(login, User_.email) //
+                        .toSearchParameters());
         if ((user != null) && !passwordEncryptor.checkPassword(password, user.getPassword())) {
             user = null;
         }

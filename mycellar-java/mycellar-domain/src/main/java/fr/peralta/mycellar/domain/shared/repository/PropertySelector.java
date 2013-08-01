@@ -18,10 +18,10 @@
  */
 package fr.peralta.mycellar.domain.shared.repository;
 
-import static com.google.common.base.Preconditions.*;
-import static com.google.common.collect.Lists.*;
+import static com.google.common.base.Preconditions.checkNotNull;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -32,58 +32,24 @@ import org.apache.commons.lang3.builder.ToStringStyle;
 
 /**
  * Used to construct OR predicate for a property value. In other words you can
- * search all entities E having a given property set to one of the selected
+ * search all entities E having a given property set to one of the values
  * values.
  */
 public class PropertySelector<E, F> implements Serializable {
 
-    /**
-     * {@link PropertySelector} builder
-     */
-    public static <E, F> PropertySelector<E, F> newPropertySelector(Attribute<E, F> field) {
-        return new PropertySelector<E, F>(field);
-    }
-
-    /**
-     * {@link PropertySelector} builder
-     */
-    public static <E, F> PropertySelector<E, F> newPropertySelector(F selected, Attribute<?, ?>... fields) {
-        PropertySelector<E, F> ps = new PropertySelector<E, F>(fields);
-        ps.setSelected(selected);
-        return ps;
-    }
-
-    /**
-     * {@link PropertySelector} builder
-     */
-    public static <E, F> PropertySelector<E, F> newPropertySelector(F selected, List<Attribute<?, ?>> fields) {
-        PropertySelector<E, F> ps = new PropertySelector<E, F>(fields);
-        ps.setSelected(selected);
-        return ps;
-    }
-
-    /**
-     * {@link PropertySelector} builder
-     */
-    public static <E, F> PropertySelector<E, F> newPropertySelector(Attribute<E, F> field, SearchMode searchMode) {
-        PropertySelector<E, F> ps = new PropertySelector<E, F>(field);
-        ps.setSearchMode(searchMode);
-        return ps;
-    }
-
-    private static final long serialVersionUID = 1L;
+    private static final long serialVersionUID = 201308010800L;
 
     private final List<Attribute<?, ?>> attributes;
-    private List<F> selected = newArrayList();
+    private final List<F> values = new ArrayList<>();
     private SearchMode searchMode; // for string property only.
 
     public PropertySelector(Attribute<?, ?>... attributes) {
-        this(newArrayList(checkNotNull(attributes)));
+        this(Arrays.asList(checkNotNull(attributes)));
     }
 
     public PropertySelector(List<Attribute<?, ?>> attributes) {
         this.attributes = checkNotNull(attributes);
-        verifyPath(newArrayList(attributes));
+        verifyPath(new ArrayList<>(attributes));
     }
 
     private void verifyPath(List<Attribute<?, ?>> attributes) {
@@ -104,36 +70,12 @@ public class PropertySelector<E, F> implements Serializable {
     /**
      * Get the possible candidates for property.
      */
-    public List<F> getSelected() {
-        return selected;
+    public List<F> getValues() {
+        return values;
     }
 
-    /**
-     * @param selected
-     */
-    public void setSelected(F selected) {
-        this.selected = Arrays.asList(selected);
-    }
-
-    /**
-     * Set the possible candidates for property.
-     */
-    public void setSelected(List<F> selected) {
-        this.selected = selected;
-    }
-
-    public boolean isNotEmpty() {
-        return (selected != null) && !selected.isEmpty();
-    }
-
-    public void clearSelected() {
-        if (selected != null) {
-            selected.clear();
-        }
-    }
-
-    public boolean isBoolean() {
-        return attributes.get(attributes.size() - 1).getJavaType().isAssignableFrom(Boolean.class);
+    public boolean isType(Class<?> type) {
+        return attributes.get(attributes.size() - 1).getJavaType().isAssignableFrom(type);
     }
 
     public SearchMode getSearchMode() {
@@ -153,7 +95,7 @@ public class PropertySelector<E, F> implements Serializable {
      */
     @Override
     public String toString() {
-        ToStringBuilder toStringBuilder = new ToStringBuilder(this, ToStringStyle.SHORT_PREFIX_STYLE).append("searchMode", searchMode).append("selected", selected);
+        ToStringBuilder toStringBuilder = new ToStringBuilder(this, ToStringStyle.SHORT_PREFIX_STYLE).append("searchMode", searchMode).append("values", values);
         StringBuilder builder = new StringBuilder("{");
         for (Attribute<?, ?> attribute : attributes) {
             builder.append(

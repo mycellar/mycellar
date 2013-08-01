@@ -35,8 +35,7 @@ import fr.peralta.mycellar.domain.booking.BookingEvent_;
 import fr.peralta.mycellar.domain.booking.Booking_;
 import fr.peralta.mycellar.domain.booking.repository.BookingRepository;
 import fr.peralta.mycellar.domain.shared.exception.BusinessException;
-import fr.peralta.mycellar.domain.shared.repository.PropertySelector;
-import fr.peralta.mycellar.domain.shared.repository.SearchParameters;
+import fr.peralta.mycellar.domain.shared.repository.SearchParametersBuilder;
 import fr.peralta.mycellar.domain.user.User;
 import fr.peralta.mycellar.domain.user.User_;
 
@@ -83,7 +82,9 @@ public class BookingServiceImpl extends AbstractSimpleService<Booking, BookingRe
      */
     @Override
     public List<Booking> getBookings(User customer) {
-        return bookingRepository.find(new SearchParameters().property(PropertySelector.newPropertySelector(customer.getId(), Booking_.customer, User_.id)));
+        return bookingRepository.find(new SearchParametersBuilder() //
+                .propertyWithValue(customer.getId(), Booking_.customer, User_.id) //
+                .toSearchParameters());
     }
 
     /**
@@ -91,10 +92,10 @@ public class BookingServiceImpl extends AbstractSimpleService<Booking, BookingRe
      */
     @Override
     public Booking getBooking(BookingEvent bookingEvent, User customer) {
-        Booking booking = bookingRepository.findUniqueOrNone(new SearchParameters() //
-                .property(PropertySelector.newPropertySelector(bookingEvent.getId(), Booking_.bookingEvent, BookingEvent_.id)) //
-                .property(PropertySelector.newPropertySelector(customer.getId(), Booking_.customer, User_.id)) //
-                );
+        Booking booking = bookingRepository.findUniqueOrNone(new SearchParametersBuilder() //
+                .propertyWithValue(bookingEvent.getId(), Booking_.bookingEvent, BookingEvent_.id) //
+                .propertyWithValue(customer.getId(), Booking_.customer, User_.id) //
+                .toSearchParameters());
         if (booking == null) {
             booking = new Booking();
             booking.setCustomer(customer);

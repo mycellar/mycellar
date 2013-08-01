@@ -18,16 +18,15 @@
  */
 package fr.mycellar.interfaces.facade.web;
 
-import static fr.mycellar.interfaces.facade.web.MetamodelUtil.*;
-import static fr.peralta.mycellar.domain.shared.repository.PropertySelector.*;
-
 import java.util.List;
 
 import javax.inject.Named;
 import javax.inject.Singleton;
 
-import fr.peralta.mycellar.domain.shared.repository.OrderBy;
+import fr.peralta.mycellar.domain.shared.repository.MetamodelUtil;
+import fr.peralta.mycellar.domain.shared.repository.SearchMode;
 import fr.peralta.mycellar.domain.shared.repository.SearchParameters;
+import fr.peralta.mycellar.domain.shared.repository.SearchParametersBuilder;
 
 /**
  * @author speralta
@@ -44,19 +43,18 @@ public class SearchParametersUtil {
      * @return
      */
     public SearchParameters getSearchParametersForListWithCount(int first, int count, List<FilterCouple> filters, List<OrderCouple> orders, Class<?> clazz) {
-        SearchParameters searchParameters = new SearchParameters();
-        searchParameters.anywhere();
+        SearchParametersBuilder searchParametersBuilder = new SearchParametersBuilder();
+        searchParametersBuilder.searchMode(SearchMode.ANYWHERE);
         for (FilterCouple filter : filters) {
             if (filter.isFilterSet()) {
-                searchParameters.property(newPropertySelector(filter.getFilter(), toAttributes(filter.getProperty(), clazz)));
+                searchParametersBuilder.propertyWithValue(filter.getFilter(), MetamodelUtil.toAttributes(filter.getProperty(), clazz));
             }
         }
-        searchParameters.setFirstResult(first);
-        searchParameters.setMaxResults(count);
+        searchParametersBuilder.firstResult(first).maxResults(count);
         for (OrderCouple order : orders) {
-            searchParameters.addOrderBy(new OrderBy(order.getDirection(), toAttributes(order.getProperty(), clazz)));
+            searchParametersBuilder.orderBy(order.getDirection(), MetamodelUtil.toAttributes(order.getProperty(), clazz));
         }
-        return searchParameters;
+        return searchParametersBuilder.toSearchParameters();
     }
 
 }

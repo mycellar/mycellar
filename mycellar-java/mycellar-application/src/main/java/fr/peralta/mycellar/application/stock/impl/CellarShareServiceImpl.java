@@ -26,8 +26,7 @@ import fr.peralta.mycellar.application.shared.AbstractSimpleService;
 import fr.peralta.mycellar.application.stock.CellarShareService;
 import fr.peralta.mycellar.domain.shared.exception.BusinessError;
 import fr.peralta.mycellar.domain.shared.exception.BusinessException;
-import fr.peralta.mycellar.domain.shared.repository.PropertySelector;
-import fr.peralta.mycellar.domain.shared.repository.SearchParameters;
+import fr.peralta.mycellar.domain.shared.repository.SearchParametersBuilder;
 import fr.peralta.mycellar.domain.stock.CellarShare;
 import fr.peralta.mycellar.domain.stock.CellarShare_;
 import fr.peralta.mycellar.domain.stock.Cellar_;
@@ -38,8 +37,7 @@ import fr.peralta.mycellar.domain.stock.repository.CellarShareRepository;
  */
 @Named
 @Singleton
-public class CellarShareServiceImpl extends
-        AbstractSimpleService<CellarShare, CellarShareRepository> implements CellarShareService {
+public class CellarShareServiceImpl extends AbstractSimpleService<CellarShare, CellarShareRepository> implements CellarShareService {
 
     private CellarShareRepository cellarShareRepository;
 
@@ -48,17 +46,11 @@ public class CellarShareServiceImpl extends
      */
     @Override
     public void validate(CellarShare entity) throws BusinessException {
-        CellarShare existing = cellarShareRepository
-                .findUniqueOrNone(new SearchParameters() //
-                        .property(
-                                PropertySelector.newPropertySelector(entity.getCellar().getId(),
-                                        CellarShare_.cellar, Cellar_.id)) //
-                        .property(
-                                PropertySelector.newPropertySelector(entity.getEmail(),
-                                        CellarShare_.email)) //
-                );
-        if ((existing != null)
-                && ((entity.getId() == null) || !existing.getId().equals(entity.getId()))) {
+        CellarShare existing = cellarShareRepository.findUniqueOrNone(new SearchParametersBuilder() //
+                .propertyWithValue(entity.getCellar().getId(), CellarShare_.cellar, Cellar_.id) //
+                .propertyWithValue(entity.getEmail(), CellarShare_.email) //
+                .toSearchParameters());
+        if ((existing != null) && ((entity.getId() == null) || !existing.getId().equals(entity.getId()))) {
             throw new BusinessException(BusinessError.CELLAR_SHARE_00001);
         }
     }

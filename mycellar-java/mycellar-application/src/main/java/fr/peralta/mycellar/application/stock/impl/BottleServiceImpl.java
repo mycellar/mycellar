@@ -26,8 +26,7 @@ import fr.peralta.mycellar.application.shared.AbstractSimpleService;
 import fr.peralta.mycellar.application.stock.BottleService;
 import fr.peralta.mycellar.domain.shared.exception.BusinessError;
 import fr.peralta.mycellar.domain.shared.exception.BusinessException;
-import fr.peralta.mycellar.domain.shared.repository.PropertySelector;
-import fr.peralta.mycellar.domain.shared.repository.SearchParameters;
+import fr.peralta.mycellar.domain.shared.repository.SearchParametersBuilder;
 import fr.peralta.mycellar.domain.stock.Bottle;
 import fr.peralta.mycellar.domain.stock.Bottle_;
 import fr.peralta.mycellar.domain.stock.repository.BottleRepository;
@@ -41,8 +40,7 @@ import fr.peralta.mycellar.domain.wine.Wine_;
  */
 @Named
 @Singleton
-public class BottleServiceImpl extends AbstractSimpleService<Bottle, BottleRepository> implements
-        BottleService {
+public class BottleServiceImpl extends AbstractSimpleService<Bottle, BottleRepository> implements BottleService {
 
     private BottleRepository bottleRepository;
 
@@ -52,8 +50,7 @@ public class BottleServiceImpl extends AbstractSimpleService<Bottle, BottleRepos
     @Override
     public void validate(Bottle entity) throws BusinessException {
         Bottle existing = find(entity.getWine(), entity.getFormat());
-        if ((existing != null)
-                && ((entity.getId() == null) || !existing.getId().equals(entity.getId()))) {
+        if ((existing != null) && ((entity.getId() == null) || !existing.getId().equals(entity.getId()))) {
             throw new BusinessException(BusinessError.BOTTLE_00001);
         }
     }
@@ -63,13 +60,10 @@ public class BottleServiceImpl extends AbstractSimpleService<Bottle, BottleRepos
      */
     @Override
     public Bottle find(Wine wine, Format format) {
-        return bottleRepository.findUniqueOrNone(new SearchParameters() //
-                .property(
-                        PropertySelector.newPropertySelector(format.getId(), Bottle_.format,
-                                Format_.id)) //
-                .property(
-                        PropertySelector.newPropertySelector(wine.getId(), Bottle_.wine, Wine_.id))//
-                );
+        return bottleRepository.findUniqueOrNone(new SearchParametersBuilder() //
+                .propertyWithValue(format.getId(), Bottle_.format, Format_.id) //
+                .propertyWithValue(wine.getId(), Bottle_.wine, Wine_.id)//
+                .toSearchParameters());
     }
 
     /**

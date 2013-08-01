@@ -28,8 +28,7 @@ import fr.peralta.mycellar.application.wine.WineService;
 import fr.peralta.mycellar.domain.shared.NamedEntity_;
 import fr.peralta.mycellar.domain.shared.exception.BusinessError;
 import fr.peralta.mycellar.domain.shared.exception.BusinessException;
-import fr.peralta.mycellar.domain.shared.repository.PropertySelector;
-import fr.peralta.mycellar.domain.shared.repository.SearchParameters;
+import fr.peralta.mycellar.domain.shared.repository.SearchParametersBuilder;
 import fr.peralta.mycellar.domain.wine.Appellation;
 import fr.peralta.mycellar.domain.wine.Appellation_;
 import fr.peralta.mycellar.domain.wine.Region_;
@@ -55,10 +54,10 @@ public class AppellationServiceImpl extends AbstractSimpleService<Appellation, A
         if (entity.getRegion() == null) {
             throw new BusinessException(BusinessError.APPELLATION_00001);
         }
-        Appellation existing = appellationRepository.findUniqueOrNone(new SearchParameters() //
-                .property(PropertySelector.newPropertySelector(entity.getRegion().getId(), Appellation_.region, Region_.id)) //
-                .property(PropertySelector.newPropertySelector(entity.getName(), NamedEntity_.name)) //
-                );
+        Appellation existing = appellationRepository.findUniqueOrNone(new SearchParametersBuilder() //
+                .propertyWithValue(entity.getRegion().getId(), Appellation_.region, Region_.id) //
+                .propertyWithValue(entity.getName(), NamedEntity_.name) //
+                .toSearchParameters());
         if ((existing != null) && ((entity.getId() == null) || !existing.getId().equals(entity.getId()))) {
             throw new BusinessException(BusinessError.APPELLATION_00002);
         }
@@ -69,9 +68,9 @@ public class AppellationServiceImpl extends AbstractSimpleService<Appellation, A
      */
     @Override
     protected void validateDelete(Appellation entity) throws BusinessException {
-        SearchParameters searchParameters = new SearchParameters();
-        searchParameters.addProperty(PropertySelector.newPropertySelector(entity, Wine_.appellation));
-        if (wineService.count(searchParameters) > 0) {
+        if (wineService.count(new SearchParametersBuilder() //
+                .propertyWithValue(entity, Wine_.appellation) //
+                .toSearchParameters()) > 0) {
             throw new BusinessException(BusinessError.APPELLATION_00003);
         }
     }

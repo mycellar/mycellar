@@ -21,7 +21,6 @@ package fr.peralta.mycellar.infrastructure.wine.repository;
 import javax.inject.Named;
 import javax.inject.Singleton;
 
-import fr.peralta.mycellar.domain.shared.NamedEntity_;
 import fr.peralta.mycellar.domain.wine.Appellation;
 import fr.peralta.mycellar.domain.wine.repository.AppellationRepository;
 import fr.peralta.mycellar.infrastructure.shared.repository.JpaSimpleRepository;
@@ -31,14 +30,13 @@ import fr.peralta.mycellar.infrastructure.shared.repository.JpaSimpleRepository;
  */
 @Named
 @Singleton
-public class JpaAppellationRepository extends JpaSimpleRepository<Appellation> implements
-        AppellationRepository {
+public class JpaAppellationRepository extends JpaSimpleRepository<Appellation> implements AppellationRepository {
 
     /**
      * Default constructor.
      */
     public JpaAppellationRepository() {
-        super(Appellation.class, NamedEntity_.name);
+        super(Appellation.class);
     }
 
 }

@@ -16,10 +16,10 @@
  * You should have received a copy of the GNU General Public License
  * along with MyCellar. If not, see <http://www.gnu.org/licenses/>.
  */
-package fr.mycellar.interfaces.facade.web;
+package fr.peralta.mycellar.domain.shared.repository;
 
-import static com.google.common.collect.Lists.*;
-import static com.google.common.collect.Maps.*;
+import static com.google.common.collect.Lists.newArrayList;
+import static com.google.common.collect.Maps.newHashMap;
 
 import java.lang.reflect.Field;
 import java.util.List;
@@ -27,11 +27,23 @@ import java.util.Map;
 
 import javax.persistence.metamodel.Attribute;
 import javax.persistence.metamodel.PluralAttribute;
+import javax.persistence.metamodel.SingularAttribute;
 
 import com.google.common.base.Splitter;
 
 public class MetamodelUtil {
     private static Map<Class<?>, Class<?>> metamodelCache = newHashMap();
+
+    public static SingularAttribute<?, ?> toAttribute(String property, Class<?> from) {
+        try {
+            Class<?> metamodelClass = getCachedClass(from);
+            Field field = metamodelClass.getField(property);
+            Attribute<?, ?> attribute = (Attribute<?, ?>) field.get(null);
+            return (SingularAttribute<?, ?>) attribute;
+        } catch (Exception e) {
+            throw new IllegalArgumentException(e);
+        }
+    }
 
     public static List<Attribute<?, ?>> toAttributes(String path, Class<?> from) {
         try {

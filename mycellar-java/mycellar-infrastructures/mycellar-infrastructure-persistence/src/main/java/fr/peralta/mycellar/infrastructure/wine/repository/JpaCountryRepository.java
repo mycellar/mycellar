@@ -21,7 +21,6 @@ package fr.peralta.mycellar.infrastructure.wine.repository;
 import javax.inject.Named;
 import javax.inject.Singleton;
 
-import fr.peralta.mycellar.domain.shared.NamedEntity_;
 import fr.peralta.mycellar.domain.wine.Country;
 import fr.peralta.mycellar.domain.wine.repository.CountryRepository;
 import fr.peralta.mycellar.infrastructure.shared.repository.JpaSimpleRepository;
@@ -37,7 +36,7 @@ public class JpaCountryRepository extends JpaSimpleRepository<Country> implement
      * Default constructor.
      */
     public JpaCountryRepository() {
-        super(Country.class, NamedEntity_.name);
+        super(Country.class);
     }
 
 }

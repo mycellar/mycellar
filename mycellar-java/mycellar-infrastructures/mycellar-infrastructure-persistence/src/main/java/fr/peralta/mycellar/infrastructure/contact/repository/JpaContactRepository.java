@@ -59,14 +59,10 @@ public class JpaContactRepository extends JpaSimpleRepository<Contact> implement
 
         Subquery<Contact> subquery = query.subquery(Contact.class);
         Root<Contact> subroot = subquery.from(Contact.class);
-        subquery.select(subroot).where(
-                criteriaBuilder.equal(root.get("producer"), subroot.get("producer")),
-                criteriaBuilder.greaterThan(subroot.<LocalDate> get("current"),
-                        root.<LocalDate> get("current")));
+        subquery.select(subroot).where(criteriaBuilder.equal(root.get("producer"), subroot.get("producer")),
+                criteriaBuilder.greaterThan(subroot.<LocalDate> get("current"), root.<LocalDate> get("current")));
 
-        return getEntityManager().createQuery(
-                query.select(criteriaBuilder.count(root)).where(
-                        criteriaBuilder.not(criteriaBuilder.exists(subquery)))).getSingleResult();
+        return getEntityManager().createQuery(query.select(criteriaBuilder.count(root)).where(criteriaBuilder.not(criteriaBuilder.exists(subquery)))).getSingleResult();
     }
 
     /**
@@ -80,19 +76,15 @@ public class JpaContactRepository extends JpaSimpleRepository<Contact> implement
 
         Subquery<Contact> subquery = query.subquery(Contact.class);
         Root<Contact> subroot = subquery.from(Contact.class);
-        subquery.select(subroot).where(
-                criteriaBuilder.equal(root.get("producer"), subroot.get("producer")),
-                criteriaBuilder.greaterThan(subroot.<LocalDate> get("current"),
-                        root.<LocalDate> get("current")));
+        subquery.select(subroot).where(criteriaBuilder.equal(root.get("producer"), subroot.get("producer")),
+                criteriaBuilder.greaterThan(subroot.<LocalDate> get("current"), root.<LocalDate> get("current")));
 
-        return getEntityManager()
-                .createQuery(
-                        query.orderBy(
-                                getOrderByUtil().buildJpaOrders(searchParameters.getOrders(), root,
-                                        criteriaBuilder, searchParameters)).select(root)
-                                .where(criteriaBuilder.not(criteriaBuilder.exists(subquery))))
-                .setFirstResult(searchParameters.getFirstResult())
-                .setMaxResults(searchParameters.getMaxResults()).getResultList();
+        return getEntityManager().createQuery( //
+                query.orderBy(getOrderByUtil().buildJpaOrders(root, criteriaBuilder, searchParameters)) //
+                        .select(root) //
+                        .where(criteriaBuilder.not(criteriaBuilder.exists(subquery)))) //
+                .setFirstResult(searchParameters.getFirstResult()). //
+                setMaxResults(searchParameters.getMaxResults()).getResultList();
     }
 
     /**
@@ -106,16 +98,11 @@ public class JpaContactRepository extends JpaSimpleRepository<Contact> implement
 
         Subquery<Contact> subquery = query.subquery(Contact.class);
         Root<Contact> subroot = subquery.from(Contact.class);
-        subquery.select(subroot).where(
-                criteriaBuilder.equal(root.get("producer"), subroot.get("producer")),
-                criteriaBuilder.greaterThan(subroot.<LocalDate> get("current"),
-                        root.<LocalDate> get("current")));
+        subquery.select(subroot).where(criteriaBuilder.equal(root.get("producer"), subroot.get("producer")),
+                criteriaBuilder.greaterThan(subroot.<LocalDate> get("current"), root.<LocalDate> get("current")));
 
         return getEntityManager().createQuery(
-                query.select(root).where(
-                        criteriaBuilder.not(criteriaBuilder.exists(subquery)),
-                        criteriaBuilder.lessThanOrEqualTo(root.<LocalDate> get("next"),
-                                new LocalDate()))).getResultList();
+                query.select(root).where(criteriaBuilder.not(criteriaBuilder.exists(subquery)), criteriaBuilder.lessThanOrEqualTo(root.<LocalDate> get("next"), new LocalDate()))).getResultList();
     }
 
 }

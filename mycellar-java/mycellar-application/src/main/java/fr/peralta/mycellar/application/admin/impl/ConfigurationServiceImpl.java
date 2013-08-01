@@ -30,17 +30,14 @@ import fr.peralta.mycellar.domain.admin.Configuration_;
 import fr.peralta.mycellar.domain.admin.repository.ConfigurationRepository;
 import fr.peralta.mycellar.domain.shared.exception.BusinessError;
 import fr.peralta.mycellar.domain.shared.exception.BusinessException;
-import fr.peralta.mycellar.domain.shared.repository.PropertySelector;
-import fr.peralta.mycellar.domain.shared.repository.SearchParameters;
+import fr.peralta.mycellar.domain.shared.repository.SearchParametersBuilder;
 
 /**
  * @author speralta
  */
 @Named
 @Singleton
-public class ConfigurationServiceImpl extends
-        AbstractSimpleService<Configuration, ConfigurationRepository> implements
-        ConfigurationService {
+public class ConfigurationServiceImpl extends AbstractSimpleService<Configuration, ConfigurationRepository> implements ConfigurationService {
 
     private ConfigurationRepository configurationRepository;
 
@@ -65,8 +62,9 @@ public class ConfigurationServiceImpl extends
      */
     @Override
     public Configuration find(ConfigurationKeyEnum key) {
-        return configurationRepository.findUniqueOrNone(new SearchParameters()
-                .property(PropertySelector.newPropertySelector(key, Configuration_.key)));
+        return configurationRepository.findUniqueOrNone(new SearchParametersBuilder() //
+                .propertyWithValue(key, Configuration_.key) //
+                .toSearchParameters());
     }
 
     /**
@@ -75,8 +73,7 @@ public class ConfigurationServiceImpl extends
     @Override
     public void validate(Configuration entity) throws BusinessException {
         Configuration existing = find(entity.getKey());
-        if ((existing != null)
-                && ((entity.getId() == null) || !existing.getId().equals(entity.getId()))) {
+        if ((existing != null) && ((entity.getId() == null) || !existing.getId().equals(entity.getId()))) {
             throw new BusinessException(BusinessError.CONFIGURATION_00001);
         }
     }

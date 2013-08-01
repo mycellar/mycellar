@@ -18,19 +18,20 @@
  */
 package fr.peralta.mycellar.infrastructure.shared.repository;
 
-import static com.google.common.collect.Lists.*;
-import static java.lang.Boolean.*;
+import static com.google.common.collect.Lists.newArrayList;
+import static java.lang.Boolean.FALSE;
+import static java.lang.Boolean.TRUE;
 
 import java.util.List;
 
 import javax.inject.Named;
 import javax.inject.Singleton;
 import javax.persistence.criteria.CriteriaBuilder;
-import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
 
 import fr.peralta.mycellar.domain.shared.repository.Range;
+import fr.peralta.mycellar.domain.shared.repository.SearchParameters;
 
 /**
  * Helper to create a predicate out of {@link Range}s.
@@ -39,10 +40,9 @@ import fr.peralta.mycellar.domain.shared.repository.Range;
 @Singleton
 public class ByRangeUtil {
 
-    public <E> Predicate byRanges(Root<E> root, CriteriaQuery<?> query, CriteriaBuilder builder,
-            final List<Range<?, ?>> ranges, final Class<E> type) {
+    public <E> Predicate byRanges(Root<E> root, CriteriaBuilder builder, SearchParameters sp, Class<E> type) {
         List<Predicate> predicates = newArrayList();
-        for (Range<?, ?> r : ranges) {
+        for (Range<?, ?> r : sp.getRanges()) {
             @SuppressWarnings("unchecked")
             Range<E, ?> range = (Range<E, ?>) r;
             if (range.isSet()) {
@@ -52,8 +52,7 @@ public class ByRangeUtil {
                     if (!range.isIncludeNullSet() || (range.getIncludeNull() == FALSE)) {
                         predicates.add(rangePredicate);
                     } else {
-                        predicates.add(builder.or(rangePredicate,
-                                builder.isNull(root.get(range.getField()))));
+                        predicates.add(builder.or(rangePredicate, builder.isNull(root.get(range.getField()))));
                     }
                 } else {
                     // no from/to is set, but include null or not could be:
@@ -69,8 +68,7 @@ public class ByRangeUtil {
         return JpaUtil.andPredicate(builder, predicates);
     }
 
-    private <D extends Comparable<? super D>, E> Predicate buildRangePredicate(Range<E, D> range,
-            Root<E> root, CriteriaBuilder builder) {
+    private <D extends Comparable<? super D>, E> Predicate buildRangePredicate(Range<E, D> range, Root<E> root, CriteriaBuilder builder) {
         if (range.isBetween()) {
             return builder.between(root.get(range.getField()), range.getFrom(), range.getTo());
         } else if (range.isFromSet()) {

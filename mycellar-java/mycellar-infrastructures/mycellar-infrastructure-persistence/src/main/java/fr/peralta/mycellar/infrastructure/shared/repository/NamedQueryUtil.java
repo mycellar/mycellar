@@ -31,6 +31,7 @@ import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 import javax.persistence.metamodel.Attribute;
 
+import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -52,16 +53,15 @@ public class NamedQueryUtil {
     private EntityManager entityManager;
 
     public <T> List<T> findByNamedQuery(SearchParameters sp) {
-        if ((sp == null) || !sp.hasNamedQuery()) {
-            throw new IllegalArgumentException(
-                    "searchParameters must be non null and must have a namedQuery");
+        if ((sp == null) || StringUtils.isBlank(sp.getNamedQuery())) {
+            throw new IllegalArgumentException("searchParameters must be non null and must have a namedQuery");
         }
 
         Query query = entityManager.createNamedQuery(sp.getNamedQuery());
         String queryString = getQueryString(query);
 
         // append order by if needed
-        if ((queryString != null) && sp.hasOrders()) {
+        if ((queryString != null) && !sp.getOrders().isEmpty()) {
             // create the sql restriction clausis
             StringBuilder orderClausis = new StringBuilder("order by ");
             boolean first = true;
@@ -123,17 +123,15 @@ public class NamedQueryUtil {
     }
 
     public Object objectByNamedQuery(SearchParameters sp) {
-        if ((sp == null) || !sp.hasNamedQuery()) {
-            throw new IllegalStateException(
-                    "Invalid search template provided: could not determine which namedQuery to use");
+        if ((sp == null) || StringUtils.isBlank(sp.getNamedQuery())) {
+            throw new IllegalStateException("Invalid search template provided: could not determine which namedQuery to use");
         }
 
         Query query = entityManager.createNamedQuery(sp.getNamedQuery());
         String queryString = getQueryString(query);
 
         // append select count if needed
-        if ((queryString != null) && queryString.toLowerCase().startsWith("from")
-                && !queryString.toLowerCase().contains("count(")) {
+        if ((queryString != null) && queryString.toLowerCase().startsWith("from") && !queryString.toLowerCase().contains("count(")) {
             query = recreateQuery(query, "select count(*) " + queryString);
         }
 
@@ -145,8 +143,7 @@ public class NamedQueryUtil {
         Object result = query.getSingleResult();
 
         if (logger.isDebugEnabled()) {
-            logger.debug("{} returned a {} object", sp.getNamedQuery(), result == null ? "null"
-                    : result.getClass());
+            logger.debug("{} returned a {} object", sp.getNamedQuery(), result == null ? "null" : result.getClass());
             if (result instanceof Number) {
                 logger.debug("{} returned a number with value : {}", sp.getNamedQuery(), result);
             }
