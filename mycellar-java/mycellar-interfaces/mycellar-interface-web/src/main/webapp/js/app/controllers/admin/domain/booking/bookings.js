@@ -1,29 +1,15 @@
 'use strict';
 
 angular.module('mycellar').controller({
-  AdminDomainBookingsController: function ($scope, $resource, $http, $location, $route) {
-    $scope.sort = {
-      properties: [
-        'bookingEvent.start',
-        'customer.lastname'
-      ],
-      ways: {
-        'bookingEvent.start': 'desc',
-        'bookingEvent.end': null,
-        'bookingEvent.name': null,
-        'customer.lastname': 'asc'
-      }
-    };
-    $scope.filters = {
-      'bookingEvent.name': '',
-      'customer.lastname': ''
-    }
-    $scope.filtersIsCollapsed = true;
+  AdminDomainBookingsController: function ($scope, $location, $route, bookingService, tableService) {
     $scope.errors = [];
     
     $scope.tableOptions = {
-      itemResource: $resource('/api/domain/booking/bookings')
+      itemResource: bookingService.resource.list,
+      defaultSort: ['bookingEvent.start', 'bookingEvent.start', 'customer.lastname']
     };
+    $scope.tableContext = tableService.createTableContext();
+    
     $scope.edit = function(itemId) {
       $location.path('/admin/domain/booking/booking/' + itemId);
     };
@@ -31,7 +17,7 @@ angular.module('mycellar').controller({
       $location.path('/admin/domain/booking/booking/');
     };
     $scope.delete = function(itemId) {
-      $resource('/api/domain/booking/booking/:bookingId').delete({bookingId: itemId}, function (value, headers) {
+      bookingService.resource.item.delete({bookingId: itemId}, function (value, headers) {
         if (value.errorKey != undefined) {
           $scope.errors.push({errorKey: value.errorKey});
         } else if (value.internalError != undefined) {
@@ -40,22 +26,6 @@ angular.module('mycellar').controller({
           $route.reload();
         }
       });
-    };
-    $scope.sortBy = function(property) {
-      if ($scope.sort.ways[property] == 'asc') {
-        $scope.sort.ways[property] = 'desc';
-      } else if ($scope.sort.ways[property] == 'desc') {
-        $scope.sort.properties.splice($scope.sort.properties.indexOf(property), 1);
-        $scope.sort.ways[property] = null;
-      } else {
-        $scope.sort.properties.push(property);
-        $scope.sort.ways[property] = 'asc';
-      }
-    };
-    $scope.clearFilters = function() {
-      for (var filter in $scope.filters) {
-        $scope.filters[filter] = '';
-      }
     };
   },
   AdminDomainBookingController: function ($scope, $resource, $route, $location, $http) {

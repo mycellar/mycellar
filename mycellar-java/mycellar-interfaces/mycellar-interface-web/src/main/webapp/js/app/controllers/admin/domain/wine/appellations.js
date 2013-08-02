@@ -1,30 +1,15 @@
 'use strict';
 
 angular.module('mycellar').controller({
-  AdminDomainAppellationsController: function ($scope, $resource, $http, $location, $route) {
-    $scope.sort = {
-      properties: [
-        'region.country.name',
-        'region.name',
-        'name',
-      ],
-      ways: {
-        'region.country.name': 'asc',
-        'region.name': 'asc',
-        'name': 'asc',
-      }
-    };
-    $scope.filters = {
-      'region.country.name': '',
-      'region.name': '',
-      name: ''
-    };
-    $scope.filtersIsCollapsed = true;
+  AdminDomainAppellationsController: function ($scope, $location, $route, appellationService, tableService) {
     $scope.errors = [];
     
     $scope.tableOptions = {
-      itemResource: $resource('/api/domain/wine/appellations')
+      itemResource: appellationService.resource.list,
+      defaultSort: ['region.country.name', 'region.name', 'name']
     };
+    $scope.tableContext = tableService.createTableContext();
+      
     $scope.edit = function(itemId) {
       $location.path('/admin/domain/wine/appellation/' + itemId);
     };
@@ -32,7 +17,7 @@ angular.module('mycellar').controller({
       $location.path('/admin/domain/wine/appellation/');
     };
     $scope.delete = function(itemId) {
-      $resource('/api/domain/wine/appellation/:appellationId').delete({appellationId: itemId}, function (value, headers) {
+      appellationService.resource.item.delete({appellationId: itemId}, function (value, headers) {
         if (value.errorKey != undefined) {
           $scope.errors.push({errorKey: value.errorKey});
         } else if (value.internalError != undefined) {
@@ -42,30 +27,13 @@ angular.module('mycellar').controller({
         }
       });
     };
-    $scope.sortBy = function(property) {
-      if ($scope.sort.ways[property] == 'asc') {
-        $scope.sort.ways[property] = 'desc';
-      } else if ($scope.sort.ways[property] == 'desc') {
-        $scope.sort.properties.splice($scope.sort.properties.indexOf(property), 1);
-        $scope.sort.ways[property] = null;
-      } else {
-        $scope.sort.properties.push(property);
-        $scope.sort.ways[property] = 'asc';
-      }
-    };
-    $scope.clearFilters = function() {
-      for (var filter in $scope.filters) {
-        $scope.filters[filter] = '';
-      }
-    };
   },
-  AdminDomainAppellationController: function ($scope, $resource, $route, $location, $http) {
+  AdminDomainAppellationController: function ($scope, $route, $location, appellationService, regionService) {
     var appellationId = $route.current.params.appellationId;
-    $scope.appellationResource = $resource('/api/domain/wine/appellation/:appellationId');
     if (appellationId != null && appellationId > 0) {
-      $scope.appellation = $scope.appellationResource.get({appellationId: appellationId});
+      $scope.appellation = appellationService.resource.item.get({appellationId: appellationId});
     } else {
-      $scope.appellation = new $scope.appellationResource();
+      $scope.appellation = new appellationService.resource.item();
     }
     $scope.save = function () {
       $scope.backup = {};
@@ -88,10 +56,6 @@ angular.module('mycellar').controller({
     $scope.cancel = function () {
       $location.path('/admin/domain/wine/appellations/');
     };
-    $scope.regions = function (regionName) {
-      return $http.get("/api/domain/wine/regions?count=15&filters=name,"+regionName+"&first=0&sort=name,asc").then(function(response){
-        return response.data.list;
-      });
-    };
+    $scope.regions = regionService.getAllLike;
   }
 });

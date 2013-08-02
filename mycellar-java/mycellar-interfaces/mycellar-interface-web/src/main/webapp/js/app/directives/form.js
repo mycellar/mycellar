@@ -20,5 +20,15 @@ angular.module('mycellar').directive({
         form: '='
       }
     }
+  },
+  'errorsDiv': function() {
+    return {
+      restrict: 'E',
+      replace: true,
+      templateUrl: 'partials/directives/errorsDiv.html',
+      scope: {
+        errors: '='
+      }
+    }
   }
 });

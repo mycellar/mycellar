@@ -1,0 +1,6 @@
+<div ng-show="errors.length > 0">
+  <div class="alert alert-error" ng-repeat="error in errors">
+    <button type="button" class="close" ng-click="errors.splice(errors.indexOf(error), 1)">&times;</button>
+    {{error.errorKey}}
+  </div>
+</div>

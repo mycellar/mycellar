@@ -6,11 +6,11 @@
     </nav>
   </div>
   <div class="span10">
-    <data-mycellar-table page-range="3" options="tableOptions" items="items" sort="sort" filters="filters">
+    <data-mycellar-table options="tableOptions" items="items" table-context="tableContext">
       <table class="table table-bordered table-striped table-condensed">
         <thead>
           <tr>
-            <th>Key <icon-sort sort-fn="sortBy('key')" attribute="key" ways="sort.ways" /></th>
+            <th>Key <icon-sort attribute="key" table-context="tableContext" /></th>
             <th>Value</th>
             <th class="actions"></th>
           </tr>
@@ -29,7 +29,7 @@
         </tbody>
         <tfoot>
           <tr>
-            <th>Key <icon-sort sort-fn="sortBy('key')" attribute="key" ways="sort.ways" /></th>
+            <th>Key <icon-sort attribute="key" table-context="tableContext" /></th>
             <th>Value</th>
             <th class="actions"></th>
           </tr>

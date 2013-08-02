@@ -6,19 +6,14 @@
     </nav>
   </div>
   <div class="span10">
-    <div ng-show="errors.length > 0">
-      <div class="alert alert-error" ng-repeat="error in errors">
-        <button type="button" class="close" ng-click="errors.splice(errors.indexOf(error), 1)">&times;</button>
-        {{error.errorKey}}
-      </div>
-    </div>
-    <data-mycellar-table page-range="3" options="tableOptions" items="items" sort="sort">
+    <data-errors-div errors="errors"></data-errors-div>
+    <data-mycellar-table options="tableOptions" items="items" table-context="tableContext">
       <table class="table table-bordered table-striped table-condensed">
         <thead>
           <tr>
             <th>HashCode</th>
             <th>Stack</th>
-            <th class="stackCount">Count <icon-sort sort-fn="sortBy('count')" attribute="count" ways="sort.ways" /></th>
+            <th class="stackCount">Count <icon-sort attribute="count" table-context="tableContext" /></th>
             <th class="actions"><a href ng-click="deleteAll()" class="btn btn-mini" alt="Delete all stacks"><i class="icon-remove-sign icon-large"></i></a></th>
           </tr>
         </thead>
@@ -40,7 +35,7 @@
           <tr>
             <th>HashCode</th>
             <th>Stack</th>
-            <th class="stackCount">Count <icon-sort sort-fn="sortBy('count')" attribute="count" ways="sort.ways" /></th>
+            <th class="stackCount">Count <icon-sort attribute="count" table-context="tableContext" /></th>
             <th class="actions"></th>
           </tr>
         </tfoot>

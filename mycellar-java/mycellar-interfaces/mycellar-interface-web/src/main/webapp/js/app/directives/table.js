@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('mycellar').directive({
-  mycellarTable: function($timeout) {
+  'mycellarTable': function($timeout) {
     return {
       restrict: 'E',
       transclude: true,
@@ -9,24 +9,22 @@ angular.module('mycellar').directive({
       templateUrl: 'partials/directives/table.html',
       scope: {
         options: '=',
-        pageRange: '=',
+        tableContext: '=',
         items: '=',
-        colSpan: '=',
-        sort: '=',
-        filters: '='
       },
       link: function(scope, iElement, iAttrs, controller) {
         var started = false;
-        scope.$watch('sort.ways', function(value) {
+        scope.$watch('tableContext.sort.ways', function(value) {
           if (started && scope.currentPage >= 0) {
             scope.setPage(scope.currentPage);
           }
         }, true);
         var timeoutId;
-        scope.$watch('filters', function(value) {
+        scope.$watch('tableContext.filters', function(value) {
           if (started && scope.currentPage >= 0) {
             if (timeoutId) {
-              $timeout.cancel(timeoutId);//cancel previous timeout
+              // cancel previous timeout
+              $timeout.cancel(timeoutId);
             }
             timeoutId = $timeout(function () {
               scope.setPage(0);
@@ -68,12 +66,12 @@ angular.module('mycellar').directive({
           $scope.currentPage = page;
           $scope.firstItem = $scope.currentPage * $scope.itemsPerPage;
           var sort = [];
-          for (var t in $scope.sort.properties) {
-            sort.push($scope.sort.properties[t] + ',' + $scope.sort.ways[$scope.sort.properties[t]]);
+          for (var t in $scope.tableContext.sort.properties) {
+            sort.push($scope.tableContext.sort.properties[t] + ',' + $scope.tableContext.sort.ways[$scope.tableContext.sort.properties[t]]);
           }
           var filters = [];
-          for (var t in $scope.filters) {
-            filters.push(t + ',' + $scope.filters[t]);
+          for (var t in $scope.tableContext.filters) {
+            filters.push(t + ',' + $scope.tableContext.filters[t]);
           }
           $scope.result = $scope.itemResource.get({
             first: $scope.firstItem,
@@ -89,11 +87,17 @@ angular.module('mycellar').directive({
           $scope.setPage($scope.currentPage - 1);
         };
         
+        $scope.pageRange = $scope.options.pageRange || 3;
         $scope.itemResource = $scope.options.itemResource;
         $scope.itemsPerPage = 10;
         $scope.result = {
             list: [],
             count: $scope.itemsPerPage
+        };
+        if ($scope.options.defaultSort != null) {
+          angular.forEach($scope.options.defaultSort, function(defaultSort) {
+            $scope.tableContext.sortBy(defaultSort);
+          });
         };
         $scope.setPage(0);
       }
@@ -105,9 +109,24 @@ angular.module('mycellar').directive({
       replace: true,
       templateUrl: 'partials/directives/icon-sort.html',
       scope: {
-        ways: '=',
-        sortFn: '&',
+        tableContext: '=',
         attribute: '@'
+      },
+      controller: function($scope) {
+        $scope.sortFn = function() {
+          $scope.tableContext.sortBy($scope.attribute);
+        };
+      }
+    }
+  },
+  'tableFilters': function() {
+    return {
+      restrict: 'E',
+      replace: true,
+      transclude: true,
+      templateUrl: 'partials/directives/tableFilters.html',
+      scope: {
+        tableContext: '='
       }
     }
   }

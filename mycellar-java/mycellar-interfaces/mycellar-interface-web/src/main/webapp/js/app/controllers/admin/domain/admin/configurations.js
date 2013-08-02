@@ -1,34 +1,15 @@
 'use strict';
 
 angular.module('mycellar').controller({
-  AdminDomainConfigurationsController: function ($scope, $resource, $http, $location) {
-    $scope.sort = {
-      properties: [
-        'key'
-      ],
-      ways: {
-        key: 'asc',
-        value: null,
-        email: null
-      }
-    };
-    
+  AdminDomainConfigurationsController: function ($scope, $location, configurationService, tableService) {
     $scope.tableOptions = {
-      itemResource: $resource('/api/domain/admin/configurations')
+      itemResource: configurationService.resource.list,
+      defaultSort: ['key']
     };
+    $scope.tableContext = tableService.createTableContext();
+    
     $scope.edit = function(itemId) {
       $location.path('/admin/domain/admin/configuration/' + itemId);
-    };
-    $scope.sortBy = function(property) {
-      if ($scope.sort.ways[property] == 'asc') {
-        $scope.sort.ways[property] = 'desc';
-      } else if ($scope.sort.ways[property] == 'desc') {
-        $scope.sort.properties.splice($scope.sort.properties.indexOf(property), 1);
-        $scope.sort.ways[property] = null;
-      } else {
-        $scope.sort.properties.push(property);
-        $scope.sort.ways[property] = 'asc';
-      }
     };
   },
   AdminDomainConfigurationController: function ($scope, $resource, $route, $location) {

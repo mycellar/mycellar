@@ -7,7 +7,7 @@
           id="country" 
           name="country" 
           type="text" 
-          ng-model="filters['appellation.region.country.name']" 
+          ng-model="tableContext.filters['appellation.region.country.name']" 
           placeholder="Country" 
           typeahead="country.name for country in countries($viewValue)"
           typeahead-editable="false"  
@@ -17,7 +17,7 @@
           id="region" 
           name="region" 
           type="text" 
-          ng-model="filters['appellation.region.name']" 
+          ng-model="tableContext.filters['appellation.region.name']" 
           placeholder="Region" 
           typeahead="region.name for region in regions($viewValue)"
           typeahead-editable="false"  
@@ -27,7 +27,7 @@
           id="appellation" 
           name="appellation" 
           type="text" 
-          ng-model="filters['appellation.name']" 
+          ng-model="tableContext.filters['appellation.name']" 
           placeholder="Appellation" 
           typeahead="appellation.name for appellation in appellations($viewValue)"
           typeahead-editable="false"  
@@ -37,43 +37,43 @@
           id="producer" 
           name="producer" 
           type="text" 
-          ng-model="filters['producer.name']" 
+          ng-model="tableContext.filters['producer.name']" 
           placeholder="Producer" 
           typeahead="producer.name for producer in producers($viewValue)"
           typeahead-editable="false" 
           typeahead-min-length="2" 
           typeahead-wait-ms="200" />
-      <select id="type" name="type" ng-model="filters['type']" placeholder="Type">
+      <select id="type" name="type" ng-model="tableContext.filters['type']" placeholder="Type">
         <option label="Type"></option>
         <option label="Still">STILL</option>
         <option label="Sparkling">SPARKLING</option>
         <option label="Spirit">SPIRIT</option>
         <option label="Other">OTHER</option>
       </select>
-      <select id="color" name="color" ng-model="filters['color']">
+      <select id="color" name="color" ng-model="tableContext.filters['color']">
         <option label="Color"></option>
         <option label="Red">RED</option>
         <option label="White">WHITE</option>
         <option label="Rosé">ROSE</option>
         <option label="Other">OTHER</option>
       </select>
-      <input id="name" name="name" type="text" ng-model="filters['name']" placeholder="Name" />
-      <input id="vintage" name="vintage" type="number" ng-model="filters['vintage']" placeholder="Vintage" />
+      <input id="name" name="name" type="text" ng-model="tableContext.filters['name']" placeholder="Name" />
+      <input id="vintage" name="vintage" type="number" ng-model="tableContext.filters['vintage']" placeholder="Vintage" />
     </fieldset>
     <fieldset class="span8">
       <legend>Wines</legend>
-      <data-mycellar-table page-range="3" options="tableOptions" items="wines" sort="sort" filters="filters">
+      <data-mycellar-table options="tableOptions" items="wines" table-context="tableContext">
         <table class="table table-bordered table-striped table-condensed">
           <thead>
             <tr>
-              <th>Country <icon-sort sort-fn="sortBy('appellation.region.country.name')" attribute="appellation.region.country.name" ways="sort.ways" /></th>
-              <th>Region <icon-sort sort-fn="sortBy('appellation.region.name')" attribute="appellation.region.name" ways="sort.ways" /></th>
-              <th>Appellation <icon-sort sort-fn="sortBy('appellation.name')" attribute="appellation.name" ways="sort.ways" /></th>
-              <th>Producer <icon-sort sort-fn="sortBy('producer.name')" attribute="producer.name" ways="sort.ways" /></th>
-              <th>Name <icon-sort sort-fn="sortBy('name')" attribute="name" ways="sort.ways" /></th>
-              <th>Vintage <icon-sort sort-fn="sortBy('vintage')" attribute="vintage" ways="sort.ways" /></th>
-              <th>Color <icon-sort sort-fn="sortBy('color')" attribute="color" ways="sort.ways" /></th>
-              <th>Type <icon-sort sort-fn="sortBy('type')" attribute="type" ways="sort.ways" /></th>
+              <th>Country <icon-sort attribute="appellation.region.country.name" table-context="tableContext" /></th>
+              <th>Region <icon-sort attribute="appellation.region.name" table-context="tableContext" /></th>
+              <th>Appellation <icon-sort attribute="appellation.name" table-context="tableContext" /></th>
+              <th>Producer <icon-sort attribute="producer.name" table-context="tableContext" /></th>
+              <th>Name <icon-sort attribute="name" table-context="tableContext" /></th>
+              <th>Vintage <icon-sort attribute="vintage" table-context="tableContext" /></th>
+              <th>Color <icon-sort attribute="color" table-context="tableContext" /></th>
+              <th>Type <icon-sort attribute="type" table-context="tableContext" /></th>
             </tr>
           </thead>
           <tbody ng-controller="LoadingCtrl" >
@@ -93,14 +93,14 @@
           </tbody>
           <tfoot>
             <tr>
-              <th>Country <icon-sort sort-fn="sortBy('appellation.region.country.name')" attribute="appellation.region.country.name" ways="sort.ways" /></th>
-              <th>Region <icon-sort sort-fn="sortBy('appellation.region.name')" attribute="appellation.region.name" ways="sort.ways" /></th>
-              <th>Appellation <icon-sort sort-fn="sortBy('appellation.name')" attribute="appellation.name" ways="sort.ways" /></th>
-              <th>Producer <icon-sort sort-fn="sortBy('producer.name')" attribute="producer.name" ways="sort.ways" /></th>
-              <th>Name <icon-sort sort-fn="sortBy('name')" attribute="name" ways="sort.ways" /></th>
-              <th>Vintage <icon-sort sort-fn="sortBy('vintage')" attribute="vintage" ways="sort.ways" /></th>
-              <th>Color <icon-sort sort-fn="sortBy('color')" attribute="color" ways="sort.ways" /></th>
-              <th>Type <icon-sort sort-fn="sortBy('type')" attribute="type" ways="sort.ways" /></th>
+              <th>Country <icon-sort attribute="appellation.region.country.name" table-context="tableContext" /></th>
+              <th>Region <icon-sort attribute="appellation.region.name" table-context="tableContext" /></th>
+              <th>Appellation <icon-sort attribute="appellation.name" table-context="tableContext" /></th>
+              <th>Producer <icon-sort attribute="producer.name" table-context="tableContext" /></th>
+              <th>Name <icon-sort attribute="name" table-context="tableContext" /></th>
+              <th>Vintage <icon-sort attribute="vintage" table-context="tableContext" /></th>
+              <th>Color <icon-sort attribute="color" table-context="tableContext" /></th>
+              <th>Type <icon-sort attribute="type" table-context="tableContext" /></th>
             </tr>
           </tfoot>
         </table>

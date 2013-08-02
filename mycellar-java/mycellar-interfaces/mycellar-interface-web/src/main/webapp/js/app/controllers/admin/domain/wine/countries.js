@@ -1,24 +1,15 @@
 'use strict';
 
 angular.module('mycellar').controller({
-  AdminDomainCountriesController: function ($scope, $resource, $http, $location, $route) {
-    $scope.sort = {
-      properties: [
-        'name',
-      ],
-      ways: {
-        name: 'asc',
-      }
-    };
-    $scope.filters = {
-      name: ''
-    }
-    $scope.filtersIsCollapsed = true;
+  AdminDomainCountriesController: function ($scope, $location, $route, countryService, tableService) {
     $scope.errors = [];
     
     $scope.tableOptions = {
-      itemResource: $resource('/api/domain/wine/countries')
+      itemResource: countryService.resource.list,
+      defaultSort: ['name']
     };
+    $scope.tableContext = tableService.createTableContext();
+    
     $scope.edit = function(itemId) {
       $location.path('/admin/domain/wine/country/' + itemId);
     };
@@ -26,7 +17,7 @@ angular.module('mycellar').controller({
       $location.path('/admin/domain/wine/country/');
     };
     $scope.delete = function(itemId) {
-      $resource('/api/domain/wine/country/:countryId').delete({countryId: itemId}, function (value, headers) {
+      countryService.resource.item.delete({countryId: itemId}, function (value, headers) {
         if (value.errorKey != undefined) {
           $scope.errors.push({errorKey: value.errorKey});
         } else if (value.internalError != undefined) {
@@ -36,30 +27,13 @@ angular.module('mycellar').controller({
         }
       });
     };
-    $scope.sortBy = function(property) {
-      if ($scope.sort.ways[property] == 'asc') {
-        $scope.sort.ways[property] = 'desc';
-      } else if ($scope.sort.ways[property] == 'desc') {
-        $scope.sort.properties.splice($scope.sort.properties.indexOf(property), 1);
-        $scope.sort.ways[property] = null;
-      } else {
-        $scope.sort.properties.push(property);
-        $scope.sort.ways[property] = 'asc';
-      }
-    };
-    $scope.clearFilters = function() {
-      for (var filter in $scope.filters) {
-        $scope.filters[filter] = '';
-      }
-    };
   },
-  AdminDomainCountryController: function ($scope, $resource, $route, $location) {
+  AdminDomainCountryController: function ($scope, $route, $location, countryService) {
     var countryId = $route.current.params.countryId;
-    $scope.countryResource = $resource('/api/domain/wine/country/:countryId');
     if (countryId != null && countryId > 0) {
-      $scope.country = $scope.countryResource.get({countryId: countryId});
+      $scope.country = countryService.resource.item.get({countryId: countryId});
     } else {
-      $scope.country = new $scope.countryResource();
+      $scope.country = new countryService.resource.item();
     }
     $scope.save = function () {
       $scope.backup = {};
