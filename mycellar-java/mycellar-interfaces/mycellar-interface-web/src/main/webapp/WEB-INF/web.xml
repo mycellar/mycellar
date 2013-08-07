@@ -20,8 +20,27 @@
   </context-param>
 
   <listener>
+    <description>Bootstrap listener to start up and shut down Spring's root WebApplicationContext</description>
     <listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>
   </listener>
+
+  <listener>
+    <description>Monitor application</description>
+    <listener-class>net.bull.javamelody.SessionListener</listener-class>
+  </listener>
+
+  <filter>
+    <filter-name>javamelodyFilter</filter-name>
+    <filter-class>net.bull.javamelody.MonitoringFilter</filter-class>
+    <init-param>
+      <param-name>log</param-name>
+      <param-value>true</param-value>
+    </init-param>
+  </filter>
+  <filter-mapping>
+    <filter-name>javamelodyFilter</filter-name>
+    <url-pattern>/*</url-pattern>
+  </filter-mapping>
 
   <filter>
     <filter-name>UrlRewriteFilter</filter-name>
