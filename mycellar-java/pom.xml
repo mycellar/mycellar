@@ -39,6 +39,7 @@
     <module>mycellar-interfaces</module>
     <module>mycellar-infrastructures</module>
     <module>mycellar-test</module>
+    <module>mycellar-tools</module>
   </modules>
 
   <build>

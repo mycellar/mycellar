@@ -32,11 +32,13 @@
     <wicket.version>6.3.0</wicket.version>
     <wicketstuff.version>6.2.1</wicketstuff.version>
     <spring.version>3.2.3.RELEASE</spring.version>
+    <spring.security.version>3.1.4.RELEASE</spring.security.version>
     <hibernate.version>4.2.3.Final</hibernate.version>
     <hibernate.validator.version>5.0.1.Final</hibernate.validator.version>
     <hibernate.search.version>4.3.0.Final</hibernate.search.version>
     <jersey.version>1.16</jersey.version>
     <jackson.version>2.2.2</jackson.version>
+    <wro4j.version>1.6.3</wro4j.version>
   </properties>
 
   <developers>
@@ -105,6 +107,11 @@
           <groupId>org.eclipse.jetty</groupId>
           <artifactId>jetty-maven-plugin</artifactId>
           <version>9.0.3.v20130506</version>
+        </plugin>
+        <plugin>
+          <groupId>ro.isdc.wro4j</groupId>
+          <artifactId>wro4j-maven-plugin</artifactId>
+          <version>${wro4j.version}</version>
         </plugin>
       </plugins>
     </pluginManagement>
@@ -275,6 +282,16 @@
         <groupId>org.springframework</groupId>
         <artifactId>spring-web</artifactId>
         <version>${spring.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>org.springframework.security</groupId>
+        <artifactId>spring-security-web</artifactId>
+        <version>${spring.security.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>org.springframework.security</groupId>
+        <artifactId>spring-security-config</artifactId>
+        <version>${spring.security.version}</version>
       </dependency>
 
       <!-- WICKET -->
@@ -491,6 +508,13 @@
         <groupId>net.bull.javamelody</groupId>
         <artifactId>javamelody-core</artifactId>
         <version>1.45.0</version>
+      </dependency>
+      
+      <!-- wro4j -->
+      <dependency>
+        <groupId>ro.isdc.wro4j</groupId>
+        <artifactId>wro4j-extensions</artifactId>
+        <version>${wro4j.version}</version>
       </dependency>
 
       <dependency>

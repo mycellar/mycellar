@@ -114,15 +114,23 @@ public class UserServiceImpl extends AbstractSimpleService<User, UserRepository>
      * {@inheritDoc}
      */
     @Override
-    public User authenticate(String login, String password) {
-        User user = userRepository.findUniqueOrNone( //
-                new SearchParametersBuilder() //
-                        .propertyWithValue(login, User_.email) //
-                        .toSearchParameters());
+    public User authenticate(String email, String password) {
+        User user = getByEmail(email);
         if ((user != null) && !passwordEncryptor.checkPassword(password, user.getPassword())) {
             user = null;
         }
         return user;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public User getByEmail(String email) {
+        return userRepository.findUniqueOrNone( //
+                new SearchParametersBuilder() //
+                        .propertyWithValue(email, User_.email) //
+                        .toSearchParameters());
     }
 
     /**

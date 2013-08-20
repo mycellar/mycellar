@@ -1,0 +1,16 @@
+<div>
+  <div ng-hide="isLoggedIn()">
+    <form class="navbar-form form-inline">
+      <label for="username" class="hide">Username</label>
+      <input type="email" id="username" class="input-small" size="18" placeholder="Username" ng-model="email" />
+      <label for="password" class="hide">Password</label>
+      <input type="password" id="password" class="input-small" size="8" placeholder="Password" ng-model="password" />
+      <button class="btn btn-inverse btn-small" ng-click="login(email, password)">Sign-in</button>
+      <a class="btn btn-inverse btn-small" title="New user">New user</a>
+    </form>
+  </div>
+  <div class="btn-group" ng-show="isLoggedIn()">
+    <a class="btn btn-inverse btn-small" title="My account" ng-click="myAccount()">{{user.email}}<i class="icon-user icon-white"></i></a>
+    <a class="btn btn-inverse btn-small" title="Logout" ng-click="logout()"><i class="icon-off icon-white"></i></a>
+  </div>
+</div>

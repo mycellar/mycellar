@@ -1,0 +1,43 @@
+<header class="page-header"><h1>Countries</h1></header>
+<div class="row-fluid">
+  <div class="span2">
+    <nav role="secondary">
+      <data-mycellar-admin-nav></data-mycellar-admin-nav>
+    </nav>
+  </div>
+  <div class="span10">
+    <data-error-div errors="errors"></data-error-div>
+    <data-table-filters table-context="tableContext">
+      <label for="name">Name</label> 
+      <input id="name" name="name" placeholder="Name" ng-model="tableContext.filters['name']" type="text" />
+    </data-table-filters>
+    <paginated options="tableOptions" items="items" table-context="tableContext">
+      <table class="table table-bordered table-striped table-condensed">
+        <thead>
+          <tr>
+            <th>Name <icon-sort attribute="name" table-context="tableContext" /></th>
+            <th class="actions"><a href ng-click="new()" class="btn btn-mini"><i class="icon-plus-sign icon-large"></i></a></th>
+          </tr>
+        </thead>
+        <tbody ng-controller="LoadingCtrl">
+          <tr ng-repeat="item in items">
+            <td>{{item.name}}</td>
+            <td>
+              <a href ng-click="edit(item.id)" class="btn btn-mini"><i class="icon-edit icon-large"></i></a>
+              <a href ng-click="delete(item.id)" class="btn btn-mini btn-danger"><i class="icon-remove-sign icon-large"></i></a>
+            </td>
+          </tr>
+          <tr ui-if="!loading && items.length == 0">
+            <td colspan="2">No items to display.</td>
+          </tr>
+        </tbody>
+        <tfoot>
+          <tr>
+            <th>Name <icon-sort attribute="name" table-context="tableContext" /></th>
+            <th class="actions"><a href ng-click="new()" class="btn btn-mini"><i class="icon-plus-sign icon-large"></i></a></th>
+          </tr>
+        </tfoot>
+      </table>
+    </paginated>
+  </div>
+</div>

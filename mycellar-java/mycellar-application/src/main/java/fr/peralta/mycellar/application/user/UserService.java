@@ -28,11 +28,11 @@ import fr.peralta.mycellar.domain.user.User;
 public interface UserService extends SimpleService<User> {
 
     /**
-     * @param login
+     * @param email
      * @param password
      * @return
      */
-    User authenticate(String login, String password);
+    User authenticate(String email, String password);
 
     /**
      * @param user
@@ -46,5 +46,11 @@ public interface UserService extends SimpleService<User> {
      * @param url
      */
     void resetPasswordRequest(String email, String url);
+
+    /**
+     * @param email
+     * @return
+     */
+    User getByEmail(String email);
 
 }

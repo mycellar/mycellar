@@ -2,3 +2,4 @@
 .settings
 .classpath
 target
+/mycellar-java/mycellar-interfaces/mycellar-interface-web/src/main/webapp/js/mycellar.js

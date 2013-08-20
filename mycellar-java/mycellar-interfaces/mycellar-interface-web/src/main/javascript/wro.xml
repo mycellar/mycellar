@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<groups xmlns="http://www.isdc.ro/wro">
+  <group name="mycellar">
+    <group-ref>app</group-ref>
+    <group-ref>shared</group-ref>
+  </group>
+  
+  <group name="app">
+    <js>./app/*.js</js>
+    <group-ref>app.admin</group-ref>
+  </group>
+  
+  <group name="app.admin">
+    <js>./app/admin/admin-parent.js</js>
+    <js>./app/admin/domain.js</js>
+    <js>./app/admin/admin.js</js>
+    <js>./app/admin/tools.js</js>
+    <js>./app/admin/domain/admin/*.js</js>
+    <js>./app/admin/domain/booking/*.js</js>
+    <js>./app/admin/domain/stack/*.js</js>
+    <js>./app/admin/domain/user/*.js</js>
+    <js>./app/admin/domain/wine/*.js</js>
+  </group>
+  
+  <group name="shared">
+    <group-ref>directives</group-ref>
+    <group-ref>filters</group-ref>
+    <group-ref>resources</group-ref>
+    <group-ref>services</group-ref>
+  </group>
+  
+  <group name="directives">
+    <js>./shared/directives/table/*.js</js>
+    <js>./shared/directives/error/*.js</js>
+    <js>./shared/directives/admin-domain-nav.js</js>
+    <js>./shared/directives/login-bar.js</js>
+  </group>
+
+  <group name="filters">
+    <js>./shared/filters/*.js</js>
+  </group>
+
+  <group name="resources">
+    <js>./shared/resources/admin/*.js</js>
+    <js>./shared/resources/booking/*.js</js>
+    <js>./shared/resources/stack/*.js</js>
+    <js>./shared/resources/user/*.js</js>
+    <js>./shared/resources/wine/*.js</js>
+  </group>
+  
+  <group name="services">
+    <js>./shared/services/*.js</js>
+    <js>./shared/services/security/*.js</js>
+  </group>
+  
+</groups>

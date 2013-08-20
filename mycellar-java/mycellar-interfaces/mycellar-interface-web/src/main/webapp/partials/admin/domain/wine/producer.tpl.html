@@ -1,0 +1,40 @@
+<header class="page-header"><h1>Producer: {{producer.name}}</h1></header>
+<div class="row-fluid">
+  <div class="span2">
+    <nav role="secondary">
+      <data-mycellar-admin-nav></data-mycellar-admin-nav>
+    </nav>
+  </div>
+  <div class="span10">
+    <form name="form" class="form form-horizontal">
+      <error-form form="form"></error-form>
+      <fieldset>
+        <legend>Details</legend>
+        <div class="control-group" ng-class="{error: form.name.$invalid}">
+          <label class="control-label" for="name">Name</label>
+          <div class="controls">
+            <input id="name" name="name" type="text" ng-model="producer.name" placeholder="Name" />
+            <error-ctrl ctrl="form.name"></error-ctrl>
+          </div>
+        </div>
+        <div class="control-group" ng-class="{error: form.description.$invalid}">
+          <label class="control-label" for="description">Description</label>
+          <div class="controls">
+            <textarea 
+                id="description" 
+                name="description" 
+                ng-model="producer.description" 
+                placeholder="Description" 
+                class="input-block-level"
+                rows="5"></textarea>
+            <error-ctrl ctrl="form.description"></error-ctrl>
+          </div>
+        </div>
+      </fieldset>
+      <div class="form-actions">
+        <input type="submit" class="btn btn-primary" value="Save" ng-click="save()" />
+        <input type="submit" class="btn" value="Cancel" ng-click="cancel()" />
+      </div>
+    </form>
+  </div>
+</div>

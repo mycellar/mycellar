@@ -97,8 +97,17 @@ public class UserServiceFacadeImpl implements UserServiceFacade {
      */
     @Override
     @Transactional(readOnly = true)
-    public User authenticateUser(String login, String password) {
-        return userService.authenticate(login, password);
+    public User getUserByEmail(String email) {
+        return userService.getByEmail(email);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    @Transactional(readOnly = true)
+    public User authenticateUser(String email, String password) {
+        return userService.authenticate(email, password);
     }
 
     /**

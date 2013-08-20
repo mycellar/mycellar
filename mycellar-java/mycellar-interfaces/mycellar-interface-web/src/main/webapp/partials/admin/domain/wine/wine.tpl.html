@@ -1,0 +1,110 @@
+<header class="page-header"><h1>Wine</h1></header>
+<div class="row-fluid">
+  <div class="span2">
+    <nav role="secondary">
+      <data-mycellar-admin-nav></data-mycellar-admin-nav>
+    </nav>
+  </div>
+  <div class="span10">
+    <form name="form" class="form form-horizontal">
+      <error-form form="form"></error-form>
+      <fieldset>
+        <legend>Details</legend>
+        <div class="control-group" ng-class="{error: form.appellation.$invalid}">
+          <label class="control-label" for="appellation">Appellation</label>
+          <div class="controls">
+            <input 
+                id="appellation" 
+                name="appellation" 
+                type="text" 
+                ng-model="wine.appellation" 
+                placeholder="Appellation" 
+                typeahead="appellation as appellation.name for appellation in appellations($viewValue)"
+                typeahead-editable="false"  
+                typeahead-min-length="2" 
+                typeahead-wait-ms="200" />
+            <error-ctrl ctrl="form.appellation"></error-ctrl>
+          </div>
+        </div>
+        <div class="control-group" ng-class="{error: form.producer.$invalid}">
+          <label class="control-label" for="producer">Producer</label>
+          <div class="controls">
+            <input 
+                id="producer" 
+                name="producer" 
+                type="text" 
+                ng-model="wine.producer" 
+                placeholder="Producer" 
+                typeahead="producer as producer.name for producer in producers($viewValue)"
+                typeahead-editable="false"  
+                typeahead-min-length="2" 
+                typeahead-wait-ms="200" />
+            <error-ctrl ctrl="form.producer"></error-ctrl>
+          </div>
+        </div>
+        <div class="control-group" ng-class="{error: form.type.$invalid}">
+          <label class="control-label" for="type">Type</label>
+          <div class="controls">
+            <select id="type" name="type" ng-model="wine.type">
+              <option label="Still">STILL</option>
+              <option label="Sparkling">SPARKLING</option>
+              <option label="Spirit">SPIRIT</option>
+              <option label="Other">OTHER</option>
+            </select>
+            <error-ctrl ctrl="form.type"></error-ctrl>
+          </div>
+        </div>
+        <div class="control-group" ng-class="{error: form.color.$invalid}">
+          <label class="control-label" for="color">Color</label>
+          <div class="controls">
+            <select id="color" name="color" ng-model="wine.color">
+              <option label="Red">RED</option>
+              <option label="White">WHITE</option>
+              <option label="Rosé">ROSE</option>
+              <option label="Other">OTHER</option>
+            </select>
+            <error-ctrl ctrl="form.color"></error-ctrl>
+          </div>
+        </div>
+        <div class="control-group" ng-class="{error: form.name.$invalid}">
+          <label class="control-label" for="name">Name</label>
+          <div class="controls">
+            <input id="name" name="name" type="text" ng-model="wine.name" placeholder="Name" />
+            <error-ctrl ctrl="form.name"></error-ctrl>
+          </div>
+        </div>
+        <div class="control-group" ng-class="{error: form.vintage.$invalid}">
+          <label class="control-label" for="vintage">Vintage</label>
+          <div class="controls">
+            <input id="vintage" name="vintage" type="number" ng-model="wine.vintage" placeholder="Vintage" />
+            <error-ctrl ctrl="form.vintage"></error-ctrl>
+          </div>
+        </div>
+        <div class="control-group" ng-class="{error: form.ranking.$invalid}">
+          <label class="control-label" for="ranking">Ranking</label>
+          <div class="controls">
+            <input id="ranking" name="ranking" type="text" ng-model="wine.ranking" placeholder="Ranking" />
+            <error-ctrl ctrl="form.ranking"></error-ctrl>
+          </div>
+        </div>
+        <div class="control-group" ng-class="{error: form.description.$invalid}">
+          <label class="control-label" for="description">Description</label>
+          <div class="controls">
+            <textarea 
+                id="description" 
+                name="description" 
+                ng-model="wine.description" 
+                placeholder="Description" 
+                class="input-block-level"
+                rows="5"></textarea>
+            <error-ctrl ctrl="form.description"></error-ctrl>
+          </div>
+        </div>
+      </fieldset>
+      <div class="form-actions">
+        <input type="submit" class="btn btn-primary" value="Save" ng-click="save()" />
+        <input type="submit" class="btn" value="Cancel" ng-click="cancel()" />
+      </div>
+    </form>
+  </div>
+</div>

@@ -1,0 +1,24 @@
+<div>
+  <div ng-transclude></div>
+  <div class="row-fluid">
+    <div class="span12">
+      <pagination num-pages="pageCount" current-page="currentPage" on-select-page="setPage" max-size="pageRange"></pagination>
+    </div>
+  </div>
+  <div class="row-fluid">
+    <div class="span6" style="line-height: 30px;">
+      Showing {{count > 0 ? firstItem + 1 : 0}} to {{firstItem + count}} of {{result.count}} entries.
+    </div>
+    <div class="span6 text-right">
+        Showing 
+        <select ng-model="itemsPerPage" class="input-mini" style="margin-bottom: 0;">
+          <option>10</option>
+          <option>20</option>
+          <option>30</option>
+          <option>40</option>
+          <option>50</option>
+        </select>
+        entries per page.
+    </div>
+  </div>
+</div>

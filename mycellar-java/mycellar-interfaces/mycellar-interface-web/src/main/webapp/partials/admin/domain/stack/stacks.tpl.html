@@ -1,0 +1,45 @@
+<header class="page-header"><h1>Stacks</h1></header>
+<div class="row-fluid">
+  <div class="span2">
+    <nav role="secondary">
+      <data-mycellar-admin-nav></data-mycellar-admin-nav>
+    </nav>
+  </div>
+  <div class="span10">
+    <data-error-div errors="errors"></data-error-div>
+    <paginated options="tableOptions" items="items" table-context="tableContext">
+      <table class="table table-bordered table-striped table-condensed">
+        <thead>
+          <tr>
+            <th>HashCode</th>
+            <th>Stack</th>
+            <th class="stackCount">Count <icon-sort attribute="count" table-context="tableContext" /></th>
+            <th class="actions"><a href ng-click="deleteAll()" class="btn btn-mini btn-danger" alt="Delete all stacks"><i class="icon-remove-sign icon-large"></i></a></th>
+          </tr>
+        </thead>
+        <tbody ng-controller="LoadingCtrl">
+          <tr ng-repeat="item in items">
+            <td>{{item.hashCode}}</td>
+            <td class="stack">{{item.stack | firstLine}}</td>
+            <td class="stackCount">{{item.count}}</td>
+            <td>
+              <a href ng-click="edit(item.id)" class="btn btn-mini"><i class="icon-edit icon-large"></i></a>
+              <a href ng-click="delete(item.id)" class="btn btn-mini btn-danger"><i class="icon-remove-sign icon-large"></i></a>
+            </td>
+          </tr>
+          <tr ui-if="!loading && items.length == 0">
+            <td colspan="4">No items to display.</td>
+          </tr>
+        </tbody>
+        <tfoot>
+          <tr>
+            <th>HashCode</th>
+            <th>Stack</th>
+            <th class="stackCount">Count <icon-sort attribute="count" table-context="tableContext" /></th>
+            <th class="actions"><a href ng-click="deleteAll()" class="btn btn-mini btn-danger" alt="Delete all stacks"><i class="icon-remove-sign icon-large"></i></a></th>
+          </tr>
+        </tfoot>
+      </table>
+    </paginated>
+  </div>
+</div>

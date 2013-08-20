@@ -1,0 +1,28 @@
+<nav class="navbar navbar-inverse navbar-fixed-top" data-ng-controller="NavigationController">
+  <div class="navbar-inner">
+    <div class="container">
+      <a class="btn btn-navbar" ng-click="isCollapsed = !isCollapsed">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </a>
+      <header>
+        <a class="brand" href="/">MyCellar</a>
+      </header>
+      <div collapse="isCollapsed" class="nav-collapse">
+        <ul class="nav">
+          <li class="divider-vertical"></li>
+          <li ng-repeat="menu in menuService.getAll()" ng-class="{dropdown: menu.pages, active: menu.active}">
+            <a href="{{menu.route}}" ui-if="!menu.pages"><i ui-if="menu.icon" class="icon-{{menu.icon}}"></i> {{menu.label}}</a>
+            <a href="{{menu.route}}" class="dropdown-toggle" ui-if="menu.pages"><i ui-if="menu.icon" class="icon-{{menu.icon}}"></i> {{menu.label}}<b class="caret"></b></a>
+            <ul class="dropdown-menu" ui-if="menu.pages">
+              <li ng-repeat="sub in menu.pages" ng-class="{active: sub.active}"><a href="{{sub.route}}">{{sub.label}}</a></li>
+            </ul>
+          </li>
+          <li class="divider-vertical"></li>
+        </ul>
+      </div>
+      <login-bar></login-bar>
+    </div>
+  </div>
+</nav>

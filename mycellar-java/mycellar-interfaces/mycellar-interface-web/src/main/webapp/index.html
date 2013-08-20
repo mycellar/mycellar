@@ -10,35 +10,8 @@
     <script src="js/lib/angular-resource.js"></script>
     <script src="js/lib/angular-ui.js"></script>
     <script src="js/lib/ui-bootstrap-tpls-0.4.0.js"></script>
-    <script src="js/lib/http-auth-interceptor.js"></script>
     <script src="js/lib/loading.js"></script>
-    <script src="js/app/mycellar.js"></script>
-    <script src="js/app/services/table.js"></script>
-    <script src="js/app/services/admin.js"></script>
-    <script src="js/app/services/booking.js"></script>
-    <script src="js/app/services/stack.js"></script>
-    <script src="js/app/services/user.js"></script>
-    <script src="js/app/services/wine.js"></script>
-    <script src="js/app/directives/form.js"></script>
-    <script src="js/app/directives/table.js"></script>
-    <script src="js/app/login.js"></script>
-    <script src="js/app/navigation.js"></script>
-    <script src="js/app/filters/shared.js"></script>
-    <script src="js/app/filters/renderer.js"></script>
-    <script src="js/app/controllers/home.js"></script>
-    <script src="js/app/controllers/admin/admin.js"></script>
-    <script src="js/app/controllers/admin/admin-tools.js"></script>
-    <script src="js/app/controllers/admin/navigation.js"></script>
-    <script src="js/app/controllers/admin/domain/admin/configurations.js"></script>
-    <script src="js/app/controllers/admin/domain/booking/bookings.js"></script>
-    <script src="js/app/controllers/admin/domain/booking/bookingEvents.js"></script>
-    <script src="js/app/controllers/admin/domain/stack/stacks.js"></script>
-    <script src="js/app/controllers/admin/domain/user/users.js"></script>
-    <script src="js/app/controllers/admin/domain/wine/appellations.js"></script>
-    <script src="js/app/controllers/admin/domain/wine/countries.js"></script>
-    <script src="js/app/controllers/admin/domain/wine/producers.js"></script>
-    <script src="js/app/controllers/admin/domain/wine/regions.js"></script>
-    <script src="js/app/controllers/admin/domain/wine/wines.js"></script>
+    <script src="js/mycellar.js"></script>
     <link rel="stylesheet" href="css/bootstrap.css" type="text/css">
     <link rel="stylesheet" href="css/font-awesome.css" type="text/css">
     <link rel="stylesheet" href="css/mycellar.css" type="text/css">
@@ -46,21 +19,7 @@
     <link rel="stylesheet" href="css/mycellar-responsive.css" type="text/css">
   </head>
   <body>
-    <nav class="navbar navbar-inverse navbar-fixed-top" data-ng-controller="NavigationController">
-      <div class="navbar-inner">
-        <div class="container">
-          <a class="btn btn-navbar" ng-click="isCollapsed = !isCollapsed">
-            <span class="icon-bar"></span>
-            <span class="icon-bar"></span>
-            <span class="icon-bar"></span>
-          </a>
-          <header>
-            <a class="brand" href="/">MyCellar</a>
-          </header>
-          <data-mycellar-nav menus="menus" collapse="isCollapsed" class="nav-collapse"></data-mycellar-nav>
-        </div>
-      </div>
-    </nav>
+    <div ng-include="'partials/nav.tpl.html'"></div>
     <div class="container-fluid" ng-controller="LoadingCtrl">
       <div ng-show="loading" class="loading well"><i class="icon-spinner icon-spin icon-large"></i> Loading</div>
       <!--[if lt IE 7]>

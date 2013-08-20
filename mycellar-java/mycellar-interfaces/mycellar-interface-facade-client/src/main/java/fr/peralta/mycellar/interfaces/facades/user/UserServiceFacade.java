@@ -31,11 +31,11 @@ import fr.peralta.mycellar.domain.user.User;
 public interface UserServiceFacade {
 
     /**
-     * @param login
+     * @param email
      * @param password
      * @return
      */
-    User authenticateUser(String login, String password);
+    User authenticateUser(String email, String password);
 
     /**
      * @param searchParameters
@@ -48,6 +48,12 @@ public interface UserServiceFacade {
      * @return
      */
     User getUserById(Integer userId);
+
+    /**
+     * @param email
+     * @return
+     */
+    User getUserByEmail(String email);
 
     /**
      * @param searchParameters
