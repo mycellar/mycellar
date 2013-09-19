@@ -1,28 +1,46 @@
-<nav class="navbar navbar-inverse navbar-fixed-top" data-ng-controller="NavigationController">
-  <div class="navbar-inner">
-    <div class="container">
-      <a class="btn btn-navbar" ng-click="isCollapsed = !isCollapsed">
-        <span class="icon-bar"></span>
-        <span class="icon-bar"></span>
-        <span class="icon-bar"></span>
-      </a>
-      <header>
-        <a class="brand" href="/">MyCellar</a>
-      </header>
-      <div collapse="isCollapsed" class="nav-collapse">
-        <ul class="nav">
-          <li class="divider-vertical"></li>
-          <li ng-repeat="menu in menuService.getAll()" ng-class="{dropdown: menu.pages, active: menu.active}">
-            <a href="{{menu.route}}" ui-if="!menu.pages"><i ui-if="menu.icon" class="icon-{{menu.icon}}"></i> {{menu.label}}</a>
-            <a href="{{menu.route}}" class="dropdown-toggle" ui-if="menu.pages"><i ui-if="menu.icon" class="icon-{{menu.icon}}"></i> {{menu.label}}<b class="caret"></b></a>
-            <ul class="dropdown-menu" ui-if="menu.pages">
-              <li ng-repeat="sub in menu.pages" ng-class="{active: sub.active}"><a href="{{sub.route}}">{{sub.label}}</a></li>
-            </ul>
-          </li>
-          <li class="divider-vertical"></li>
+<nav class="navbar navbar-inverse navbar-fixed-top" data-ng-controller="NavigationController" role="navigation">
+  <div class="navbar-header">
+    <button type="button" class="navbar-toggle" ng-click="isCollapsed = !isCollapsed">
+      <span class="sr-only">Toggle navigation</span>
+      <span class="icon-bar"></span>
+      <span class="icon-bar"></span>
+      <span class="icon-bar"></span>
+    </button>
+    <header>
+      <a class="navbar-brand" href="/">MyCellar</a>
+    </header>
+  </div>
+  <div class="navbar-collapse" collapse="isCollapsed">
+    <ul class="nav navbar-nav">
+      <li class="divider-vertical"></li>
+      <li ng-repeat="menu in menuService.getAll()" ng-class="{dropdown: menu.pages, active: menu.active}">
+        <a ng-href="{{menu.route}}" ui-if="!menu.pages" ng-click="$emit('collapse')"><i ui-if="menu.icon" class="glyphicon glyphicon-{{menu.icon}}"></i> {{menu.label}}</a>
+        <a href class="dropdown-toggle" ui-if="menu.pages"><i ui-if="menu.icon" class="glyphicon glyphicon-{{menu.icon}}"></i> {{menu.label}} <b class="caret"></b></a>
+        <ul class="dropdown-menu" ui-if="menu.pages">
+          <li ng-repeat="sub in menu.pages" ng-class="{active: sub.active}"><a ng-href="{{sub.route}}" ng-click="$emit('collapse')">{{sub.label}}</a></li>
         </ul>
+      </li>
+      <li class="divider-vertical"></li>
+    </ul>
+    <form class="navbar-form navbar-right" ng-hide="isLoggedIn()" role="login">
+      <div class="form-group">
+        <label for="username" class="sr-only">Username</label>
+        <input type="email" id="username" class="form-control input-small" size="18" placeholder="Username" ng-model="email" />
       </div>
-      <login-bar></login-bar>
-    </div>
+      <div class="form-group">
+        <label for="password" class="sr-only">Password</label>
+        <input type="password" id="password" class="form-control input-small" size="8" placeholder="Password" ng-model="password" />
+      </div>
+      <button type="submit" class="btn btn-default btn-small" ng-click="login(email, password)">Sign-in</button>
+      <a class="btn btn-default btn-small" title="New user">New user</a>
+    </form>
+    <ul class="nav navbar-nav navbar-right" ng-show="isLoggedIn()">
+      <li>
+        <a href="/account" title="My account">{{currentUser.email}} <i class="glyphicon glyphicon-user"></i></a>
+      </li>
+      <li>
+        <a href title="Logout" ng-click="logout()"><span class="sr-only">Logout</span> <i class="glyphicon glyphicon-off"></i></a>
+      </li>
+    </ul>
   </div>
 </nav>

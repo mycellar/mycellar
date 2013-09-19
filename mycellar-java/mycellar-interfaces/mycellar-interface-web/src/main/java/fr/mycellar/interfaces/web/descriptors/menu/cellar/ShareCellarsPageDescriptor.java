@@ -41,7 +41,7 @@ public class ShareCellarsPageDescriptor extends AbstractDescriptor implements IM
      */
     @Override
     public String getRoute() {
-        return "/shares";
+        return "/cellar/shares";
     }
 
     /**

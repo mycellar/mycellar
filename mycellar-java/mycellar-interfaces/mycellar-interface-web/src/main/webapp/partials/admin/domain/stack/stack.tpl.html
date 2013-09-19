@@ -1,46 +1,38 @@
-<header class="page-header"><h1>Stack</h1></header>
-<div class="row-fluid">
-  <div class="span2">
+<div class="row">
+  <div class="col-md-2">
     <nav role="secondary">
       <data-mycellar-admin-nav></data-mycellar-admin-nav>
     </nav>
   </div>
-  <div class="span10">
-    <form name="form" class="form form-horizontal">
+  <div class="col-md-10">
+    <header class="page-header"><h1>Stack: {{stack.hashCode}}</h1></header>
+    <form name="form" class="form">
       <error-form form="form"></error-form>
       <fieldset>
         <legend>Stack</legend>
-        <div class="control-group" ng-class="{error: form.hashCode.$invalid}">
+        <div class="form-group" ng-class="{error: form.hashCode.$invalid}">
           <label class="control-label" for="hashCode">HashCode</label>
-          <div class="controls">
-            <input id="hashCode" name="hashCode" type="text" ng-model="stack.hashCode" placeholder="HashCode" />
-            <error-ctrl ctrl="form.hashCode"></error-ctrl>
-          </div>
+          <input class="form-control" id="hashCode" name="hashCode" type="text" ng-model="stack.hashCode" placeholder="HashCode" />
+          <error-ctrl ctrl="form.hashCode"></error-ctrl>
         </div>
-        <div class="control-group" ng-class="{error: form.stack.$invalid}">
+        <div class="form-group" ng-class="{error: form.stack.$invalid}">
           <label class="control-label" for="stack">Stack</label>
-          <div class="controls">
-            <textarea 
-                id="stack" 
-                name="stack" 
-                ng-model="stack.stack" 
-                placeholder="Stack" 
-                class="input-block-level"
-                rows="15"></textarea>
-            <error-ctrl ctrl="form.stack"></error-ctrl>
-          </div>
+          <textarea 
+              id="stack" 
+              name="stack" 
+              ng-model="stack.stack" 
+              placeholder="Stack" 
+              class="form-control"
+              rows="15"></textarea>
+          <error-ctrl ctrl="form.stack"></error-ctrl>
         </div>
-        <div class="control-group" ng-class="{error: form.count.$invalid}">
+        <div class="form-group" ng-class="{error: form.count.$invalid}">
           <label class="control-label" for="count">Count</label>
-          <div class="controls">
-            <input id="count" name="count" type="number" ng-model="stack.count" placeholder="Count" />
-            <error-ctrl ctrl="form.count"></error-ctrl>
-          </div>
+          <input class="form-control" id="count" name="count" type="number" ng-model="stack.count" placeholder="Count" />
+          <error-ctrl ctrl="form.count"></error-ctrl>
         </div>
       </fieldset>
-      <div class="form-actions">
-        <input type="submit" class="btn" value="Cancel" ng-click="cancel()" />
-      </div>
+      <input type="submit" class="btn btn-default" value="Cancel" ng-click="cancel()" />
     </form>
   </div>
 </div>

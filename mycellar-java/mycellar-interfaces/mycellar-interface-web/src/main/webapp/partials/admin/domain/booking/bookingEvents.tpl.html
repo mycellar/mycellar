@@ -1,16 +1,18 @@
-<header class="page-header"><h1>Booking events</h1></header>
-<div class="row-fluid">
-  <div class="span2">
+<div class="row">
+  <div class="col-md-2">
     <nav role="secondary">
       <data-mycellar-admin-nav></data-mycellar-admin-nav>
     </nav>
   </div>
-  <div class="span10">
-    <data-error-div errors="errors"></data-error-div>
+  <div class="col-md-10">
+    <header class="page-header"><h1>Booking events</h1></header>
     <data-table-filters table-context="tableContext">
-      <label for="name">Name</label>
-      <input id="name" name="name" placeholder="Name" ng-model="tableContext.filters['name']" type="text" />
+      <div class="form-group">
+        <label class="control-label sr-only" for="name">Name</label>
+        <input class="form-control" id="name" name="name" placeholder="Name" ng-model="tableContext.filters['name']" type="text" />
+      </div>
     </data-table-filters>
+    <data-error-div errors="errors"></data-error-div>
     <paginated options="tableOptions" items="items" table-context="tableContext">
       <table class="table table-bordered table-striped table-condensed">
         <thead>
@@ -18,7 +20,7 @@
             <th>Start <icon-sort attribute="start" table-context="tableContext" /></th>
             <th>End <icon-sort attribute="end" table-context="tableContext" /></th>
             <th>Name <icon-sort attribute="name" table-context="tableContext" /></th>
-            <th class="actions"><a href ng-click="new()" class="btn btn-mini"><i class="icon-plus-sign icon-large"></i></a></th>
+            <th class="actions"><a href ng-click="new()" class="btn btn-default btn-xs"><i class="glyphicon glyphicon-plus-sign"></i></a></th>
           </tr>
         </thead>
         <tbody ng-controller="LoadingCtrl">
@@ -27,8 +29,8 @@
             <td>{{item.end}}</td>
             <td>{{item.name}}</td>
             <td>
-              <a href ng-click="edit(item.id)" class="btn btn-mini"><i class="icon-edit icon-large"></i></a>
-              <a href ng-click="delete(item.id)" class="btn btn-mini btn-danger"><i class="icon-remove-sign icon-large"></i></a>
+              <a href ng-click="edit(item.id)" class="btn btn-default btn-xs"><i class="glyphicon glyphicon-edit"></i></a>
+              <a href ng-click="delete(item.id)" class="btn btn-danger btn-xs"><i class="glyphicon glyphicon-remove-sign"></i></a>
             </td>
           </tr>
           <tr ui-if="!loading && items.length == 0">
@@ -40,7 +42,7 @@
             <th>Start <icon-sort attribute="start" table-context="tableContext" /></th>
             <th>End <icon-sort attribute="end" table-context="tableContext" /></th>
             <th>Name <icon-sort attribute="name" table-context="tableContext" /></th>
-            <th class="actions"><a href ng-click="new()" class="btn btn-mini"><i class="icon-plus-sign icon-large"></i></a></th>
+            <th class="actions"><a href ng-click="new()" class="btn btn-default btn-xs"><i class="glyphicon glyphicon-plus-sign"></i></a></th>
           </tr>
         </tfoot>
       </table>

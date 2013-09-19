@@ -1,43 +1,45 @@
 <header class="page-header"><h1>Site administration</h1></header>
 <section>
   <header><h2>Dashboard</h2></header>
-  <div class="row-fluid">
-    <div class="span4">
-      <div class="well">
-        <h3>MyCellar</h3>
-        <div class="content">
+  <div class="row">
+    <div class="col-md-4">
+      <div class="panel panel-default">
+        <div class="panel-heading"><h3 class="panel-title">MyCellar</h3></div>
+        <div class="panel-body">
           <ul>
             <li>Version : {{mycellarVersion}}</li>
           </ul>
         </div>
-        <h3>angular</h3>
-        <div class="content">
+      </div>
+      <div class="panel panel-default">
+        <div class="panel-heading"><h3 class="panel-title">angular</h3></div>
+        <div class="panel-body">
           <ul>
             <li>Version : {{angularVersion}}</li>
           </ul>
         </div>
       </div>
     </div>
-    <div class="span4">
-      <div class="well">
-        <h3>Counts</h3>
-        <div class="content">
-          <ul>
-            <li>User count : {{usersCount}}</li>
-            <li>Wine count : {{winesCount}}</li>
-            <li>Stack count : {{stacksCount}}</li>
-          </ul>
+    <div class="col-md-4">
+      <div class="panel panel-default">
+        <div class="panel-heading"><h3 class="panel-title">Counts</h3></div>
+        <div class="panel-body">
+          <dl>
+            <dt>User count</dt><dd>{{usersCount}}</dd>
+            <dt>Wine count</dt><dd>{{winesCount}}</dd>
+            <dt>Stack count</dt><dd>{{stacksCount}}</dd>
+          </dl>
         </div>
       </div>
     </div>
-    <div class="span4">
-      <div class="well">
-        <h3><img title="Database" class="vam" /> DB</h3>
-        <div class="content">
+    <div class="col-md-4">
+      <div class="panel panel-default">
+        <div class="panel-heading"><h3 class="panel-title"><img title="Database" class="vam" /> DB</h3></div>
+        <div class="panel-body">
           <ul>
-            <li>driver</span></li>
-            <li>url</span></li>
-            <li>login</span></li>
+            <li>driver</li>
+            <li>url</li>
+            <li>login</li>
           </ul>
         </div>
       </div>
@@ -48,7 +50,7 @@
   <header role="secondary"><h2>Tools</h2></header>
   <div class="well">
     <a href ng-click="deleteAllStacks()" class="btn btn-warning">Clean stacks</a>
-    <a href="" class="btn">Create vintages</a>
-    <a href="/monitoring" target="_self" class="btn">Monitoring</a>
+    <a href="" class="btn btn-default">Create vintages</a>
+    <a href="/monitoring" target="_self" class="btn btn-default">Monitoring</a>
   </div>
 </section>

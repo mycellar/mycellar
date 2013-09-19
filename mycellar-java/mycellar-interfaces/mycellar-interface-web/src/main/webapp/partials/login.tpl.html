@@ -1,56 +1,48 @@
 <section>
-  <div class="row-fluid">
-    <div class="span6">
+  <div class="row">
+    <div class="col-md-6">
       <header class="page-header">
         <h1>Déjà membre ? <small>Connectez-vous</small></h1>
       </header>
-      <form name="loginForm" class="form-horizontal">
-        <div class="control-group" ng-class="{error: loginForm.email.$invalid}">
+      <form name="loginForm" class="form">
+        <div class="form-group" ng-class="{error: loginForm.email.$invalid}">
           <label class="control-label" for="email">Email</label>
-          <div class="controls">
-            <input id="email" name="email" type="email" class="input-small" size="18" placeholder="Email" ng-model="email" />
-            <error-ctrl ctrl="loginForm.email"></error-ctrl>
-          </div>
+          <input id="email" name="email" type="email" class="input-small form-control" size="18" placeholder="Email" ng-model="email" />
+          <error-ctrl ctrl="loginForm.email"></error-ctrl>
         </div>
-        <div class="control-group" ng-class="{error: loginForm.password.$invalid}">
+        <div class="form-group" ng-class="{error: loginForm.password.$invalid}">
           <label class="control-label" for="password">Password</label>
-          <div class="controls">
-            <input type="password" id="password" class="input-small" size="8" placeholder="Password" ng-model="password" />
-            <error-ctrl ctrl="loginForm.password"></error-ctrl>
-          </div>
+          <input type="password" id="password" class="input-small form-control" size="8" placeholder="Password" ng-model="password" />
+          <error-ctrl ctrl="loginForm.password"></error-ctrl>
         </div>
-        <div class="form-actions">
-          <input type="submit" class="btn btn-primary" value="Sign-in" ng-click="login(email, password)" />
-          <a href class="btn btn-warning">Reset password</a>
-        </div>
+        <input type="submit" class="btn btn-primary" value="Sign-in" ng-click="login(email, password)" />
+        <a href class="btn btn-warning">Reset password</a>
       </form>
     </div>
-    <div class="span6">
+    <div class="col-md-6">
       <header class="page-header">
         <h1>Créer un compte <small>C'est gratuit !</small></h1>
       </header>
-      <form name="newUserForm" class="form-horizontal">
+      <form name="newUserForm" class="form">
         <fieldset>
           <legend>User details</legend>
-          <div class="control-group">
-            <input id="lastname" type="text" value="" />
+          <div class="form-group">
+            <input id="lastname" type="text" value="" class="form-control" />
           </div>
-          <div class="control-group">
-            <input id="firstname" type="text" value="" />
+          <div class="form-group">
+            <input id="firstname" type="text" value="" class="form-control" />
           </div>
-          <div class="control-group">
-            <input id="email" type="email" value="" />
+          <div class="form-group">
+            <input id="email" type="email" value="" class="form-control" />
           </div>
-          <div class="control-group">
-            <input id="password" type="password" value="" />
+          <div class="form-group">
+            <input id="password" type="password" value="" class="form-control" />
           </div>
-          <div class="control-group">
-            <input id="password2" type="password" value="" />
+          <div class="form-group">
+            <input id="password2" type="password" value="" class="form-control" />
           </div>
         </fieldset>
-        <div class="form-actions">
-          <input type="submit" class="btn btn-primary" value="save" />
-        </div>
+        <input type="submit" class="btn btn-primary" value="save" />
       </form>
     </div>
   </div>

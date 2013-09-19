@@ -1,48 +1,44 @@
-<header class="page-header"><h1>Booking</h1></header>
-<div class="row-fluid">
-  <div class="span2">
+<div class="row">
+  <div class="col-md-2">
     <nav role="secondary">
       <data-mycellar-admin-nav></data-mycellar-admin-nav>
     </nav>
   </div>
-  <div class="span10">
-    <form name="form" class="form form-horizontal">
+  <div class="col-md-10">
+    <header class="page-header"><h1>Booking</h1></header>
+    <form name="form" class="form">
       <error-form form="form"></error-form>
       <fieldset>
         <legend>Details</legend>
-        <div class="control-group" ng-class="{error: form.bookingEvent.$invalid}">
+        <div class="form-group" ng-class="{error: form.bookingEvent.$invalid}">
           <label class="control-label" for="bookingEvent">Booking event</label>
-          <div class="controls">
-            <input 
-                id="bookingEvent" 
-                name="bookingEvent" 
-                type="text" 
-                class="input-xxlarge"
-                ng-model="booking.bookingEvent" 
-                placeholder="Booking event" 
-                typeahead="bookingEvent as (bookingEvent.name + ' (' + bookingEvent.start + ' to ' + bookingEvent.end + ')') for bookingEvent in bookingEvents($viewValue)"
-                typeahead-editable="false"  
-                typeahead-min-length="2" 
-                typeahead-wait-ms="200" />
-            <error-ctrl ctrl="form.bookingEvent"></error-ctrl>
-          </div>
+          <input 
+              id="bookingEvent" 
+              name="bookingEvent" 
+              type="text" 
+              class="form-control"
+              ng-model="booking.bookingEvent" 
+              placeholder="Booking event" 
+              typeahead="bookingEvent as (bookingEvent.name + ' (' + bookingEvent.start + ' to ' + bookingEvent.end + ')') for bookingEvent in bookingEvents($viewValue)"
+              typeahead-editable="false"  
+              typeahead-min-length="2" 
+              typeahead-wait-ms="200" />
+          <error-ctrl ctrl="form.bookingEvent"></error-ctrl>
         </div>
-        <div class="control-group" ng-class="{error: form.customer.$invalid}">
+        <div class="form-group" ng-class="{error: form.customer.$invalid}">
           <label class="control-label" for="customer">Customer</label>
-          <div class="controls">
-            <input 
-                id="customer" 
-                name="customer" 
-                type="text"
-                class="input-xxlarge" 
-                ng-model="booking.customer" 
-                placeholder="Customer" 
-                typeahead="customer as (customer.lastname + ' ' + customer.firstname + ' (' + customer.email + ')') for customer in customers($viewValue)"
-                typeahead-editable="false"  
-                typeahead-min-length="2" 
-                typeahead-wait-ms="200" />
-            <error-ctrl ctrl="form.customer"></error-ctrl>
-          </div>
+          <input 
+              id="customer" 
+              name="customer" 
+              type="text"
+              class="form-control" 
+              ng-model="booking.customer" 
+              placeholder="Customer" 
+              typeahead="customer as (customer.lastname + ' ' + customer.firstname + ' (' + customer.email + ')') for customer in customers($viewValue)"
+              typeahead-editable="false"  
+              typeahead-min-length="2" 
+              typeahead-wait-ms="200" />
+          <error-ctrl ctrl="form.customer"></error-ctrl>
         </div>
       </fieldset>
       <fieldset>
@@ -62,7 +58,7 @@
               <td>{{bookingBottle.bottle.wine | wineRenderer}}</td>
               <td>{{bookingBottle.bottle.format | formatRenderer}}</td>
               <td>{{bookingBottle.price | currency:"€"}}</td>
-              <td><input id="quantity-{{bookingBottle.id}}" name="quantity-{{bookingBottle.id}}" type="number" class="input-mini" ng-model="booking.quantities[booking.bookingEvent.id + '-' + bookingBottle.id]" /></td>
+              <td><input class="form-control" id="quantity-{{bookingBottle.id}}" name="quantity-{{bookingBottle.id}}" type="number" class="input-mini" ng-model="booking.quantities[booking.bookingEvent.id + '-' + bookingBottle.id]" /></td>
               <td>{{bookingBottle.price * booking.quantities[booking.bookingEvent.id + '-' + bookingBottle.id] | currency:"€"}}</td>
             </tr>
           </tbody>
@@ -75,10 +71,8 @@
           </tfoot>
         </table>
       </fieldset>
-      <div class="form-actions">
-        <input type="submit" class="btn btn-primary" value="Save" ng-click="save()" />
-        <input type="submit" class="btn" value="Cancel" ng-click="cancel()" />
-      </div>
+      <input type="submit" class="btn btn-primary" value="Save" ng-click="save()" />
+      <input type="submit" class="btn btn-default" value="Cancel" ng-click="cancel()" />
     </form>
   </div>
 </div>

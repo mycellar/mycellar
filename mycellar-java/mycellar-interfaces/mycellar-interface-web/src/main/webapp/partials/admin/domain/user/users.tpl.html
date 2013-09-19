@@ -1,20 +1,26 @@
-<header class="page-header"><h1>Users</h1></header>
-<div class="row-fluid">
-  <div class="span2">
+<div class="row">
+  <div class="col-md-2">
     <nav role="secondary">
       <data-mycellar-admin-nav></data-mycellar-admin-nav>
     </nav>
   </div>
-  <div class="span10">
-    <data-error-div errors="errors"></data-error-div>
+  <div class="col-md-10">
+    <header class="page-header"><h1>Users</h1></header>
     <data-table-filters table-context="tableContext">
-      <label for="lastname">Lastname</label>
-      <input id="lastname" name="lastname" placeholder="Lastname" ng-model="tableContext.filters['lastname']" type="text" />
-      <label for="firstname">Firstname</label>
-      <input id="firstname" name="firstname" placeholder="Firstname" ng-model="tableContext.filters['firstname']" type="text" />
-      <label for="email">Email</label>
-      <input id="email" name="email" placeholder="Email" ng-model="tableContext.filters['email']" type="text" />
+      <div class="form-group">
+        <label class="control-label sr-only" for="lastname">Lastname</label>
+        <input class="form-control" id="lastname" name="lastname" placeholder="Lastname" ng-model="tableContext.filters['lastname']" type="text" />
+      </div>
+      <div class="form-group">
+        <label class="control-label sr-only" for="firstname">Firstname</label>
+        <input class="form-control" id="firstname" name="firstname" placeholder="Firstname" ng-model="tableContext.filters['firstname']" type="text" />
+      </div>
+      <div class="form-group">
+        <label class="control-label sr-only" for="email">Email</label>
+        <input class="form-control" id="email" name="email" placeholder="Email" ng-model="tableContext.filters['email']" type="text" />
+      </div>
     </data-table-filters>
+    <data-error-div errors="errors"></data-error-div>
     <paginated options="tableOptions" items="items" table-context="tableContext">
       <table class="table table-bordered table-striped table-condensed">
         <thead>
@@ -31,8 +37,8 @@
             <td>{{item.firstname}}</td>
             <td>{{item.email}}</td>
             <td>
-              <a href ng-click="edit(item.id)" class="btn btn-mini"><i class="icon-edit icon-large"></i></a>
-              <a href ng-click="delete(item.id)" class="btn btn-mini btn-danger"><i class="icon-remove-sign icon-large"></i></a>
+              <a href ng-click="edit(item.id)" class="btn btn-default btn-xs"><i class="glyphicon glyphicon-edit"></i></a>
+              <a href ng-click="delete(item.id)" class="btn btn-danger btn-xs"><i class="glyphicon glyphicon-remove-sign"></i></a>
             </td>
           </tr>
           <tr ui-if="!loading && items.length == 0">

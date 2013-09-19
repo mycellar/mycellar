@@ -1,6 +1,28 @@
 body {
-  padding-top: 40px;
+  padding-top: 70px;
 }
+
+/* START OF BOOTSTRAP overrides */
+
+.page-header {
+  margin: 20px 0;
+}
+
+@media (min-width: 1200px) {
+  .container {
+    max-width: none; /* remove bootstrap max-width for super large screen */
+  }
+}
+
+.list-group-item-heading {
+  text-transform: uppercase;
+}
+
+.list-group {
+  word-wrap: break-word;
+}
+
+/* END OF BOOTSTRAP overrides */
 
 footer {
   border-top: 1px solid #E5E5E5;
@@ -18,9 +40,9 @@ footer {
 
 .table th.actions {
   text-align: center;
-  min-width: 60px;
-  max-width: 60px;
-  width: 60px;
+  min-width: 64px;
+  max-width: 64px;
+  width: 64px;
 }
 
 .table td,.table th {

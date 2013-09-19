@@ -41,7 +41,7 @@ public class InputOutputPageDescriptor extends AbstractDescriptor implements IMe
      */
     @Override
     public String getRoute() {
-        return "/io";
+        return "/cellar/io";
     }
 
     /**

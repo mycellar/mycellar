@@ -1,9 +1,9 @@
 <form id="form" class="form-inline">
   <fieldset>
-    <legend><a href ng-click="tableContext.filtersIsCollapsed = !tableContext.filtersIsCollapsed"><i ng-class="tableContext.filtersIsCollapsed ? 'icon-expand-alt' : 'icon-collapse-alt'"></i></a> Filters</legend>
+    <legend><a href ng-click="tableContext.filtersIsCollapsed = !tableContext.filtersIsCollapsed"><i class="glyphicon" ng-class="tableContext.filtersIsCollapsed ? 'glyphicon-expand' : 'glyphicon-collapse-down'"></i></a> Filters</legend>
     <div collapse="tableContext.filtersIsCollapsed">
       <span ng-transclude></span>
-      <input type="button" class="btn" value="Clear filters" ng-click="tableContext.clearFilters()" />
+      <input type="button" class="btn btn-default" value="Clear filters" ng-click="tableContext.clearFilters()" />
     </div>
   </fieldset>
 </form>

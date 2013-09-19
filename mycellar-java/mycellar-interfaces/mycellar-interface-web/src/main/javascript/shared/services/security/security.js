@@ -1,8 +1,8 @@
-angular.module('services.security.service', []);
+angular.module('services.security.service', ['services.menu']);
 
 angular.module('services.security.service').factory('security', [
-  '$http', '$q', '$location',
-  function($http, $q, $location) {
+  '$http', '$q', '$location', 'menuService',
+  function($http, $q, $location, menuService) {
     // The public API of the service
     var service = {
       oldPath: '/',
@@ -15,6 +15,7 @@ angular.module('services.security.service').factory('security', [
           } else {
             $location.path('/');
           }
+          menuService.reloadMenus();
         });
       },
   
@@ -23,6 +24,7 @@ angular.module('services.security.service').factory('security', [
         $http.post('/api/logout').then(function() {
           service.currentUser = null;
           $location.path('/');
+          menuService.reloadMenus();
         });
       },
   

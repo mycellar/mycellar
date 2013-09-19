@@ -24,12 +24,15 @@ import java.util.SortedMap;
 import java.util.TreeMap;
 
 import javax.annotation.PostConstruct;
+import javax.inject.Inject;
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 
-import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.context.SecurityContext;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.web.access.WebInvocationPrivilegeEvaluator;
 import org.springframework.stereotype.Service;
 
 import fr.mycellar.interfaces.web.descriptors.DescriptorServiceFacade;
@@ -45,6 +48,8 @@ public class NavigationWebService {
 
     private DescriptorServiceFacade descriptorServiceFacade;
 
+    private WebInvocationPrivilegeEvaluator webInvocationPrivilegeEvaluator;
+
     private List<NavDescriptor> menu;
 
     @PostConstruct
@@ -59,19 +64,12 @@ public class NavigationWebService {
                 if (menuDescriptor.getParentKey() != null) {
                     NavHeaderDescriptor header = getHeader(menuDescriptor.getParentKey(), menuPages);
                     if (header == null) {
-                        header = new NavHeaderDescriptor(menuDescriptor.getParentKey(),
-                                menuDescriptor.getIcon());
+                        header = new NavHeaderDescriptor(menuDescriptor.getParentKey(), menuDescriptor.getIcon());
                         menuPages.put(menuDescriptor.getWeight(), header);
                     }
-                    header.addPage(
-                            menuDescriptor.getWeight(),
-                            new NavPageDescriptor(menuDescriptor.getRoute(), menuDescriptor
-                                    .getTitleKey(), menuDescriptor.getIcon()));
+                    header.addPage(menuDescriptor.getWeight(), new NavPageDescriptor(menuDescriptor.getRoute(), menuDescriptor.getTitleKey(), menuDescriptor.getIcon()));
                 } else {
-                    menuPages.put(
-                            menuDescriptor.getWeight(),
-                            new NavPageDescriptor(menuDescriptor.getRoute(), menuDescriptor
-                                    .getTitleKey(), menuDescriptor.getIcon()));
+                    menuPages.put(menuDescriptor.getWeight(), new NavPageDescriptor(menuDescriptor.getRoute(), menuDescriptor.getTitleKey(), menuDescriptor.getIcon()));
                 }
             }
         }
@@ -84,8 +82,7 @@ public class NavigationWebService {
      * @param menuPages
      * @return
      */
-    private NavHeaderDescriptor getHeader(String parentKey,
-            SortedMap<Integer, NavDescriptor> menuPages) {
+    private NavHeaderDescriptor getHeader(String parentKey, SortedMap<Integer, NavDescriptor> menuPages) {
         for (NavDescriptor navDescriptor : menuPages.values()) {
             if (navDescriptor instanceof NavHeaderDescriptor) {
                 NavHeaderDescriptor header = (NavHeaderDescriptor) navDescriptor;
@@ -104,16 +101,40 @@ public class NavigationWebService {
     @Produces(MediaType.APPLICATION_JSON)
     @Path("menu")
     public List<NavDescriptor> getMenu() {
-        return menu;
+        SecurityContext context = SecurityContextHolder.getContext();
+        List<NavDescriptor> filtered = new ArrayList<NavDescriptor>();
+        for (NavDescriptor descriptor : menu) {
+            if (descriptor instanceof NavPageDescriptor) {
+                NavPageDescriptor pageDescriptor = (NavPageDescriptor) descriptor;
+                if (webInvocationPrivilegeEvaluator.isAllowed(pageDescriptor.getRoute(), context.getAuthentication())) {
+                    filtered.add(pageDescriptor);
+                }
+            } else if (descriptor instanceof NavHeaderDescriptor) {
+                NavHeaderDescriptor headerDescriptor = (NavHeaderDescriptor) descriptor;
+                if (webInvocationPrivilegeEvaluator.isAllowed(headerDescriptor.getPages().get(0).getRoute(), context.getAuthentication())) {
+                    filtered.add(headerDescriptor);
+                }
+            }
+        }
+        return filtered;
     }
 
     /**
      * @param descriptorServiceFacade
      *            the descriptorServiceFacade to set
      */
-    @Autowired
+    @Inject
     public void setDescriptorServiceFacade(DescriptorServiceFacade descriptorServiceFacade) {
         this.descriptorServiceFacade = descriptorServiceFacade;
+    }
+
+    /**
+     * @param webInvocationPrivilegeEvaluator
+     *            the webInvocationPrivilegeEvaluator to set
+     */
+    @Inject
+    public void setWebInvocationPrivilegeEvaluator(WebInvocationPrivilegeEvaluator webInvocationPrivilegeEvaluator) {
+        this.webInvocationPrivilegeEvaluator = webInvocationPrivilegeEvaluator;
     }
 
 }

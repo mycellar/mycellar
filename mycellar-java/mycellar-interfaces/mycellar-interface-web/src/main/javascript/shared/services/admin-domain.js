@@ -48,26 +48,27 @@ angular.module('services.admin-domain').provider('adminDomainService', ['$routeP
     };
     
     adminDomainService.editMethods = function(group, resourceName, resource, formName, canSave) {
-      canSave = (canSave != undefined ? canSave : canSave);
+      canSave = (canSave != undefined ? canSave : true);
       var extension = {};
       extension.cancel = function () {
         $location.path(resourcesPath[group][resourceName]);
       };
       if (canSave) {
         extension.save = function () {
+          var self = this;
           extension.backup = {};
-          angular.copy(resource, $scope.backup);
+          angular.copy(resource, extension.backup);
           resource.$save(function (value, headers) {
             if (value.id != undefined) {
               extension.backup = undefined;
               $location.path(resourcesPath[group][resourceName]);
             } else if (value.errorKey != undefined) {
               for (var property in value.properties) {
-                extension[formName][value.properties[property]].$setValidity(value.errorKey, false);
+                self[formName][value.properties[property]].$setValidity(value.errorKey, false);
               }
               angular.copy(extension.backup, resource);
             } else {
-              extension[formName].$setValidity('Error occured.', false);
+              self[formName].$setValidity('Error occured.', false);
               angular.copy(extension.backup, resource);
             }
           });

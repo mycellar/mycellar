@@ -10,7 +10,7 @@ angular.module('admin.domain.wine.producers', [
   function(adminDomainServiceProvider){
     adminDomainServiceProvider.forDomain('wine', 'Producer', 'Producers', 'wine', 'Producers')
       .whenCrud({}, {
-        wine: ['$route', 'Producers', function ($route, Producers) {
+        producer: ['$route', 'Producers', function ($route, Producers) {
           var id = $route.current.params.id;
           if (id != null && id > 0) {
             return Producers.getById(id);

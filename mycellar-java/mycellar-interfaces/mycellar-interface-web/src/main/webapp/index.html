@@ -9,18 +9,15 @@
     <script src="js/lib/angular-locale_fr-fr.js"></script>
     <script src="js/lib/angular-resource.js"></script>
     <script src="js/lib/angular-ui.js"></script>
-    <script src="js/lib/ui-bootstrap-tpls-0.4.0.js"></script>
     <script src="js/lib/loading.js"></script>
     <script src="js/mycellar.js"></script>
-    <link rel="stylesheet" href="css/bootstrap.css" type="text/css">
-    <link rel="stylesheet" href="css/font-awesome.css" type="text/css">
-    <link rel="stylesheet" href="css/mycellar.css" type="text/css">
-    <link rel="stylesheet" href="css/bootstrap-responsive.css" type="text/css">
-    <link rel="stylesheet" href="css/mycellar-responsive.css" type="text/css">
+    <link rel="stylesheet" href="css/bootstrap.css" type="text/css" media="screen">
+    <link rel="stylesheet" href="css/bootstrap-theme.css" type="text/css" media="screen">
+    <link rel="stylesheet" href="css/mycellar.css" type="text/css" media="screen">
   </head>
   <body>
     <div ng-include="'partials/nav.tpl.html'"></div>
-    <div class="container-fluid" ng-controller="LoadingCtrl">
+    <div class="container" ng-controller="LoadingCtrl">
       <div ng-show="loading" class="loading well"><i class="icon-spinner icon-spin icon-large"></i> Loading</div>
       <!--[if lt IE 7]>
       <p class="alert alert-error">Votre est navigateur est <em>trop vieux !</em>

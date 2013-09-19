@@ -32,8 +32,8 @@
   <group name="directives">
     <js>./shared/directives/table/*.js</js>
     <js>./shared/directives/error/*.js</js>
+    <js>./shared/directives/bootstrap/*.js</js>
     <js>./shared/directives/admin-domain-nav.js</js>
-    <js>./shared/directives/login-bar.js</js>
   </group>
 
   <group name="filters">
@@ -51,6 +51,7 @@
   <group name="services">
     <js>./shared/services/*.js</js>
     <js>./shared/services/security/*.js</js>
+    <js>./shared/services/bootstrap/*.js</js>
   </group>
   
 </groups>

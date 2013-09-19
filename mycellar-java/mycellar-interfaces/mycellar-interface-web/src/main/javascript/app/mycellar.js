@@ -8,11 +8,11 @@ angular.extend(mycellar, {
 
 angular.module('mycellar', [
   'ui',
-  'ui.bootstrap',
   'loading',
+  'services.bootstrap',
   'services.menu',
   'services.security',
-  'directives.login-bar',
+  'directives.bootstrap',
   'home',
   'login',
   'admin'

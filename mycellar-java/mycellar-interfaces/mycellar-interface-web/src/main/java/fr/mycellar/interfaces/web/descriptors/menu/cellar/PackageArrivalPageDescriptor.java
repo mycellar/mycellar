@@ -41,7 +41,7 @@ public class PackageArrivalPageDescriptor extends AbstractDescriptor implements 
      */
     @Override
     public String getRoute() {
-        return "/packageArrival";
+        return "/cellar/packageArrival";
     }
 
     /**

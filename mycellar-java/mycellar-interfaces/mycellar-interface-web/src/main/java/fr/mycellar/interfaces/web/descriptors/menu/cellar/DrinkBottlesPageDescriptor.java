@@ -42,7 +42,7 @@ public class DrinkBottlesPageDescriptor extends AbstractDescriptor implements IM
      */
     @Override
     public String getRoute() {
-        return "/drinkBottles";
+        return "/cellar/drinkBottles";
     }
 
     /**

@@ -1,18 +1,22 @@
-<header class="page-header"><h1>Bookings</h1></header>
-<div class="row-fluid">
-  <div class="span2">
+<div class="row">
+  <div class="col-md-2">
     <nav role="secondary">
       <data-mycellar-admin-nav></data-mycellar-admin-nav>
     </nav>
   </div>
-  <div class="span10">
-    <data-error-div errors="errors"></data-error-div>
+  <div class="col-md-10">
+    <header class="page-header"><h1>Bookings</h1></header>
     <data-table-filters table-context="tableContext">
-      <label for="bookingEvent.name">Booking event name</label>
-      <input id="bookingEvent.name" name="bookingEvent.name" placeholder="Booking event name" ng-model="tableContext.filters['bookingEvent.name']" type="text" />
-      <label for="customer.lastname">Customer lastname</label>
-      <input id="customer.lastname" name="customer.lastname" placeholder="Customer lastname" ng-model="tableContext.filters['customer.lastname']" type="text" />
+      <div class="form-group">
+        <label class="control-label sr-only" for="bookingEvent.name">Booking event name</label>
+        <input class="form-control" id="bookingEvent.name" name="bookingEvent.name" placeholder="Booking event name" ng-model="tableContext.filters['bookingEvent.name']" type="text" />
+      </div>
+      <div class="form-group">
+        <label class="control-label sr-only" for="customer.lastname">Customer lastname</label>
+        <input class="form-control" id="customer.lastname" name="customer.lastname" placeholder="Customer lastname" ng-model="tableContext.filters['customer.lastname']" type="text" />
+      </div>
     </data-table-filters>
+    <data-error-div errors="errors"></data-error-div>
     <paginated options="tableOptions" items="items" table-context="tableContext">
       <table class="table table-bordered table-striped table-condensed">
         <thead>
@@ -21,7 +25,7 @@
             <th>Name <icon-sort attribute="bookingEvent.name" table-context="tableContext" /></th>
             <th>Start <icon-sort attribute="bookingEvent.start" table-context="tableContext" /></th>
             <th>End <icon-sort attribute="bookingEvent.end" table-context="tableContext" /></th>
-            <th class="actions"><a href ng-click="new()" class="btn btn-mini"><i class="icon-plus-sign icon-large"></i></a></th>
+            <th class="actions"><a href ng-click="new()" class="btn btn-default btn-xs"><i class="glyphicon glyphicon-plus-sign"></i></a></th>
           </tr>
         </thead>
         <tbody ng-controller="LoadingCtrl">
@@ -31,8 +35,8 @@
             <td>{{item.bookingEvent.start}}</td>
             <td>{{item.bookingEvent.end}}</td>
             <td>
-              <a href ng-click="edit(item.id)" class="btn btn-mini"><i class="icon-edit icon-large"></i></a>
-              <a href ng-click="delete(item.id)" class="btn btn-mini btn-danger"><i class="icon-remove-sign icon-large"></i></a>
+              <a href ng-click="edit(item.id)" class="btn btn-default btn-xs"><i class="glyphicon glyphicon-edit"></i></a>
+              <a href ng-click="delete(item.id)" class="btn btn-danger btn-xs"><i class="glyphicon glyphicon-remove-sign"></i></a>
             </td>
           </tr>
           <tr ui-if="!loading && items.length == 0">
@@ -45,7 +49,7 @@
             <th>Name <icon-sort attribute="bookingEvent.name" table-context="tableContext" /></th>
             <th>Start <icon-sort attribute="bookingEvent.start" table-context="tableContext" /></th>
             <th>End <icon-sort attribute="bookingEvent.end" table-context="tableContext" /></th>
-            <th class="actions"><a href ng-click="new()" class="btn btn-mini"><i class="icon-plus-sign icon-large"></i></a></th>
+            <th class="actions"><a href ng-click="new()" class="btn btn-default btn-xs"><i class="glyphicon glyphicon-plus-sign"></i></a></th>
           </tr>
         </tfoot>
       </table>

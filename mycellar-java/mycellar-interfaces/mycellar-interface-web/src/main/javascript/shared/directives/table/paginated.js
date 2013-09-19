@@ -1,4 +1,4 @@
-angular.module('directives.table.paginated', ['services.table']);
+angular.module('directives.table.paginated', ['services.table', 'directives.bootstrap.pagination']);
 
 angular.module('directives.table.paginated').directive('paginated', ['$timeout', function($timeout) {
   return {
@@ -36,7 +36,9 @@ angular.module('directives.table.paginated').directive('paginated', ['$timeout',
         }
       });
       scope.$watch('result.count', function (value) {
-        scope.pageCount = (~~(scope.result.count / scope.itemsPerPage)) + 1;
+        if (scope.result.count != undefined) {
+          scope.pageCount = Math.ceil(scope.result.count / scope.itemsPerPage);
+        }
       });
       scope.$watch('result.list', function (value) {
         if (scope.result.list != undefined) {

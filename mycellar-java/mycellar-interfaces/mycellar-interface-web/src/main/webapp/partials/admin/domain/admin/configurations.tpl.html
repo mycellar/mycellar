@@ -1,11 +1,11 @@
-<header class="page-header"><h1>Configurations</h1></header>
-<div class="row-fluid">
-  <div class="span2">
+<div class="row">
+  <div class="col-md-2">
     <nav role="secondary">
       <data-mycellar-admin-nav></data-mycellar-admin-nav>
     </nav>
   </div>
-  <div class="span10">
+  <div class="col-md-10">
+    <header class="page-header"><h1>Configurations</h1></header>
     <paginated options="tableOptions" items="items" table-context="tableContext">
       <table class="table table-bordered table-striped table-condensed">
         <thead>
@@ -20,7 +20,7 @@
             <td>{{item.key}}</td>
             <td>{{item.value}}</td>
             <td>
-              <a href ng-click="edit(item.id)" class="btn btn-mini"><i class="icon-edit icon-large"></i></a>
+              <a href ng-click="edit(item.id)" class="btn btn-default btn-xs"><i class="glyphicon glyphicon-edit"></i></a>
             </td>
           </tr>
           <tr ui-if="!loading && items.length == 0">

@@ -41,7 +41,7 @@ public class CellarsPageDescriptor extends AbstractDescriptor implements IMenuDe
      */
     @Override
     public String getRoute() {
-        return "/cellars";
+        return "/cellar/mycellars";
     }
 
     /**
