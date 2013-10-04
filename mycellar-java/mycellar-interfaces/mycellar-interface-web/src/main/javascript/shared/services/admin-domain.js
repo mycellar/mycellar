@@ -27,7 +27,7 @@ angular.module('services.admin-domain').provider('adminDomainService', ['$routeP
       };
       if (canCreate) {
         extension.new = function() {
-          $location.path(resourcePath[group][resourceName]);
+          $location.path(resourcePath[group][resourceName] + '/');
         };
       }
       if (canDelete) {
