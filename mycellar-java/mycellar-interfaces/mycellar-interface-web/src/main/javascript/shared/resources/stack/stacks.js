@@ -4,13 +4,9 @@ angular.module('resources.stack.stacks').factory('Stacks', ['$resource', '$q', f
 
   var Stacks = $resource('/api/domain/stack/stacks');
   var Stack = $resource('/api/domain/stack/stack/:stackId');
-  
-  Stack.deleteById = Stack.delete;
-  Stack.delete = function(fn) {
-    return Stack.deleteById({stackId: this.id}, fn);
-  };
+
   Stacks.deleteById = function(id, fn) {
-    return Stack.deleteById({stackId: id}, fn);
+    return Stack.delete({stackId: id}, fn);
   };
   
   Stacks.count = function () {

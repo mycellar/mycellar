@@ -30,12 +30,17 @@ angular.module('booking.currents').controller('CurrentBookingsController', [
     
     $scope.save = function(booking) {
       var errors = this.errors;
+      $scope.backup = {};
+      angular.copy($scope.booking, $scope.backup);
       $scope.booking.$save(function (value, headers) {
         if (value.errorKey != undefined) {
           errors.push({errorKey: value.errorKey});
+          angular.copy($scope.backup, $scope.booking);
         } else if (value.internalError != undefined) {
           errors.push({errorKey: value.internalError});
+          angular.copy($scope.backup, $scope.booking);
         } else {
+          $scope.backup = undefined;
           $location.path('booking/mybookings');
         }
       });
@@ -43,12 +48,17 @@ angular.module('booking.currents').controller('CurrentBookingsController', [
     
     $scope.delete = function(booking) {
       var errors = this.errors;
-      $scope.booking.$delete(function (value, headers) {
+      $scope.backup = {};
+      angular.copy($scope.booking, $scope.backup);
+      Bookings.deleteById($scope.booking.id, function (value, headers) {
         if (value.errorKey != undefined) {
           errors.push({errorKey: value.errorKey});
+          angular.copy($scope.backup, $scope.booking);
         } else if (value.internalError != undefined) {
           errors.push({errorKey: value.internalError});
+          angular.copy($scope.backup, $scope.booking);
         } else {
+          $scope.backup = undefined;
           $location.path('booking/mybookings');
         }
       });

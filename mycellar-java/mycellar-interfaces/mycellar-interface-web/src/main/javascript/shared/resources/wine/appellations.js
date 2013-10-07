@@ -5,12 +5,8 @@ angular.module('resources.wine.appellations').factory('Appellations', ['$resourc
   var Appellations = $resource('/api/domain/wine/appellations');
   var Appellation = $resource('/api/domain/wine/appellation/:appellationId');
   
-  Appellation.deleteById = Appellation.delete;
-  Appellation.delete = function(fn) {
-    return Appellation.deleteById({appellationId: this.id}, fn);
-  };
   Appellations.deleteById = function(id, fn) {
-    return Appellation.deleteById({appellationId: id}, fn);
+    return Appellation.delete({appellationId: id}, fn);
   };
   
   Appellations.count = function () {

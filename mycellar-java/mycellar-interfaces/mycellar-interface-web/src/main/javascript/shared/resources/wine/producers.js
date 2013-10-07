@@ -5,12 +5,8 @@ angular.module('resources.wine.producers').factory('Producers', ['$resource', '$
   var Producers = $resource('/api/domain/wine/producers');
   var Producer = $resource('/api/domain/wine/producer/:producerId');
   
-  Producer.deleteById = Producer.delete;
-  Producer.delete = function(fn) {
-    return Producer.deleteById({producerId: this.id}, fn);
-  };
   Producers.deleteById = function(id, fn) {
-    return Producer.deleteById({producerId: id}, fn);
+    return Producer.delete({producerId: id}, fn);
   };
   
   Producers.count = function () {

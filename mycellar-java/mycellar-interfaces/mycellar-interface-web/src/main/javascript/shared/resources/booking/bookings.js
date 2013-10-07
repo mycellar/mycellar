@@ -17,12 +17,8 @@ angular.module('resources.booking.bookings').factory('Bookings', [
       }
     });
     
-    Booking.deleteById = Booking.delete;
-    Booking.delete = function(fn) {
-      return Booking.deleteById({bookingId: this.id}, fn);
-    };
     Bookings.deleteById = function(id, fn) {
-      return Booking.deleteById({bookingId: id}, fn);
+      return Booking.delete({bookingId: id}, fn);
     };
     
     Bookings.count = function () {
