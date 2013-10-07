@@ -31,9 +31,9 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 
+import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.security.authentication.AnonymousAuthenticationToken;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -41,6 +41,7 @@ import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
 
+import fr.mycellar.interfaces.web.security.CurrentUserService;
 import fr.peralta.mycellar.domain.shared.exception.BusinessError;
 import fr.peralta.mycellar.domain.shared.exception.BusinessException;
 
@@ -56,18 +57,17 @@ public class SecurityWebService {
 
     private AuthenticationManager authenticationManager;
 
+    private CurrentUserService currentUserService;
+
     @GET
     @Produces(MediaType.APPLICATION_JSON)
     @Path("current-user")
     public UserDto getCurrentUser() {
-        SecurityContext context = SecurityContextHolder.getContext();
-        if (context != null) {
-            Authentication auth = context.getAuthentication();
-            if ((auth != null) && auth.isAuthenticated() && !(auth instanceof AnonymousAuthenticationToken)) {
-                UserDto user = new UserDto();
-                user.setEmail(auth.getName());
-                return user;
-            }
+        String email = currentUserService.getCurrentUserEmail();
+        if (StringUtils.isNotBlank(email)) {
+            UserDto userDto = new UserDto();
+            userDto.setEmail(email);
+            return userDto;
         }
 
         return null;
@@ -120,6 +120,15 @@ public class SecurityWebService {
     @Named("myCellarAuthenticationManager")
     public void setAuthenticationManager(AuthenticationManager authenticationManager) {
         this.authenticationManager = authenticationManager;
+    }
+
+    /**
+     * @param currentUserService
+     *            the currentUserService to set
+     */
+    @Inject
+    public void setCurrentUserService(CurrentUserService currentUserService) {
+        this.currentUserService = currentUserService;
     }
 
 }

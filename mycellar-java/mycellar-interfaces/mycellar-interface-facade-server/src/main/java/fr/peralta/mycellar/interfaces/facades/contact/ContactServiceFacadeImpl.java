@@ -20,8 +20,10 @@ package fr.peralta.mycellar.interfaces.facades.contact;
 
 import java.util.List;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
+import javax.inject.Inject;
+import javax.inject.Named;
+import javax.inject.Singleton;
+
 import org.springframework.transaction.annotation.Transactional;
 
 import fr.peralta.mycellar.application.contact.ContactService;
@@ -32,7 +34,8 @@ import fr.peralta.mycellar.domain.shared.repository.SearchParameters;
 /**
  * @author speralta
  */
-@Service
+@Named("contactServiceFacade")
+@Singleton
 public class ContactServiceFacadeImpl implements ContactServiceFacade {
 
     private ContactService contactService;
@@ -104,7 +107,7 @@ public class ContactServiceFacadeImpl implements ContactServiceFacade {
      * @param contactService
      *            the contactService to set
      */
-    @Autowired
+    @Inject
     public void setContactService(ContactService contactService) {
         this.contactService = contactService;
     }

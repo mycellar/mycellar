@@ -58,7 +58,7 @@
               <td>{{bookingBottle.bottle.wine | wineRenderer}}</td>
               <td>{{bookingBottle.bottle.format | formatRenderer}}</td>
               <td>{{bookingBottle.price | currency:"€"}}</td>
-              <td><input class="form-control" id="quantity-{{bookingBottle.id}}" name="quantity-{{bookingBottle.id}}" type="number" class="input-mini" ng-model="booking.quantities[booking.bookingEvent.id + '-' + bookingBottle.id]" /></td>
+              <td><input class="form-control input-mini" id="quantity-{{bookingBottle.id}}" name="quantity-{{bookingBottle.id}}" type="number" ng-model="booking.quantities[booking.bookingEvent.id + '-' + bookingBottle.id]" /></td>
               <td>{{bookingBottle.price * booking.quantities[booking.bookingEvent.id + '-' + bookingBottle.id] | currency:"€"}}</td>
             </tr>
           </tbody>

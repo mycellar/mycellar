@@ -16,39 +16,28 @@
  * You should have received a copy of the GNU General Public License
  * along with MyCellar. If not, see <http://www.gnu.org/licenses/>.
  */
-package fr.mycellar.interfaces.facade.web;
+package fr.mycellar.interfaces.web.services;
 
-import java.util.List;
 
 /**
  * @author speralta
  */
-public class ErrorHolder {
+public class InternalErrorHolder {
 
-    private final List<String> properties;
-    private final String errorKey;
+    private final String internalError;
 
     /**
-     * @param properties
-     * @param errorKey
+     * @param internalError
      */
-    public ErrorHolder(List<String> properties, String errorKey) {
-        this.properties = properties;
-        this.errorKey = errorKey;
+    public InternalErrorHolder(String internalError) {
+        this.internalError = internalError;
     }
 
     /**
-     * @return the properties
+     * @return the internalError
      */
-    public List<String> getProperties() {
-        return properties;
-    }
-
-    /**
-     * @return the errorKey
-     */
-    public String getErrorKey() {
-        return errorKey;
+    public String getInternalError() {
+        return internalError;
     }
 
 }

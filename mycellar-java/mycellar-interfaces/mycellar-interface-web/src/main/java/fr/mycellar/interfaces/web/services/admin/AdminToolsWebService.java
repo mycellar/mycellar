@@ -16,19 +16,19 @@
  * You should have received a copy of the GNU General Public License
  * along with MyCellar. If not, see <http://www.gnu.org/licenses/>.
  */
-package fr.mycellar.interfaces.facade.web.admin;
+package fr.mycellar.interfaces.web.services.admin;
 
 import java.util.List;
 
 import javax.inject.Inject;
+import javax.inject.Named;
+import javax.inject.Singleton;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.MediaType;
-
-import org.springframework.stereotype.Service;
 
 import fr.peralta.mycellar.domain.shared.exception.BusinessError;
 import fr.peralta.mycellar.domain.shared.exception.BusinessException;
@@ -38,7 +38,8 @@ import fr.peralta.mycellar.interfaces.facades.wine.WineServiceFacade;
 /**
  * @author speralta
  */
-@Service
+@Named
+@Singleton
 @Path("/admin/tools")
 public class AdminToolsWebService {
 

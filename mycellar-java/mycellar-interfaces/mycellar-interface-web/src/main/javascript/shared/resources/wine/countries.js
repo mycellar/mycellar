@@ -5,6 +5,14 @@ angular.module('resources.wine.countries').factory('Countries', ['$resource', '$
   var Countries = $resource('/api/domain/wine/countries');
   var Country = $resource('/api/domain/wine/country/:countryId');
   
+  Country.deleteById = Country.delete;
+  Country.delete = function(fn) {
+    return Country.deleteById({countryId: this.id}, fn);
+  };
+  Countries.deleteById = function(id, fn) {
+    return Country.deleteById({countryId: id}, fn);
+  };
+  
   Countries.count = function () {
     var deferred = $q.defer();
     Countries.get({count: 0}, function(result) {

@@ -131,11 +131,6 @@
       </dependency>
       <dependency>
         <groupId>${project.groupId}</groupId>
-        <artifactId>mycellar-interface-facade-web</artifactId>
-        <version>${project.version}</version>
-      </dependency>
-      <dependency>
-        <groupId>${project.groupId}</groupId>
         <artifactId>mycellar-interface-client-web</artifactId>
         <version>${project.version}</version>
       </dependency>

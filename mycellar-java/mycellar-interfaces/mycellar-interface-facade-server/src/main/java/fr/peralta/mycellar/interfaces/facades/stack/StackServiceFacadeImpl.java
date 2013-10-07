@@ -21,8 +21,9 @@ package fr.peralta.mycellar.interfaces.facades.stack;
 import java.util.List;
 
 import javax.inject.Inject;
+import javax.inject.Named;
+import javax.inject.Singleton;
 
-import org.springframework.stereotype.Service;
 import org.springframework.transaction.PlatformTransactionManager;
 import org.springframework.transaction.TransactionDefinition;
 import org.springframework.transaction.TransactionStatus;
@@ -38,7 +39,8 @@ import fr.peralta.mycellar.domain.stack.Stack;
 /**
  * @author speralta
  */
-@Service
+@Named("stackServiceFacade")
+@Singleton
 public class StackServiceFacadeImpl implements StackServiceFacade {
 
     private StackService stackService;

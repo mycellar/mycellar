@@ -16,12 +16,14 @@
  * You should have received a copy of the GNU General Public License
  * along with MyCellar. If not, see <http://www.gnu.org/licenses/>.
  */
-package fr.mycellar.interfaces.facade.web.admin.domain.user;
+package fr.mycellar.interfaces.web.services.domain;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import javax.inject.Inject;
+import javax.inject.Named;
+import javax.inject.Singleton;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
@@ -32,12 +34,12 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.MediaType;
 
-import org.springframework.stereotype.Service;
+import org.springframework.security.access.prepost.PreAuthorize;
 
-import fr.mycellar.interfaces.facade.web.FilterCouple;
-import fr.mycellar.interfaces.facade.web.ListWithCount;
-import fr.mycellar.interfaces.facade.web.OrderCouple;
-import fr.mycellar.interfaces.facade.web.SearchParametersUtil;
+import fr.mycellar.interfaces.web.services.FilterCouple;
+import fr.mycellar.interfaces.web.services.ListWithCount;
+import fr.mycellar.interfaces.web.services.OrderCouple;
+import fr.mycellar.interfaces.web.services.SearchParametersUtil;
 import fr.peralta.mycellar.domain.shared.exception.BusinessException;
 import fr.peralta.mycellar.domain.shared.repository.SearchParameters;
 import fr.peralta.mycellar.domain.user.User;
@@ -46,9 +48,10 @@ import fr.peralta.mycellar.interfaces.facades.user.UserServiceFacade;
 /**
  * @author speralta
  */
-@Service
+@Named
+@Singleton
 @Path("/domain/user")
-public class UserWebService {
+public class UserDomainWebService {
 
     private UserServiceFacade userServiceFacade;
 
@@ -61,6 +64,7 @@ public class UserWebService {
     @GET
     @Produces(MediaType.APPLICATION_JSON)
     @Path("users")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     public ListWithCount<User> getUsers(@QueryParam("first") int first, @QueryParam("count") int count, @QueryParam("filters") List<FilterCouple> filters, @QueryParam("sort") List<OrderCouple> orders) {
         SearchParameters searchParameters = searchParametersUtil.getSearchParametersForListWithCount(first, count, filters, orders, User.class);
         List<User> users;
@@ -75,12 +79,14 @@ public class UserWebService {
     @GET
     @Produces(MediaType.APPLICATION_JSON)
     @Path("user/{id}")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     public User getUserById(@PathParam("id") int userId) {
         return userServiceFacade.getUserById(userId);
     }
 
     @DELETE
     @Path("user/{id}")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     public void deleteUserById(@PathParam("id") int userId) throws BusinessException {
         userServiceFacade.deleteUser(userServiceFacade.getUserById(userId));
     }
@@ -89,6 +95,7 @@ public class UserWebService {
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
     @Path("user")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     public User saveUser(User user) throws BusinessException {
         return userServiceFacade.saveUser(user);
     }

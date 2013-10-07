@@ -20,8 +20,10 @@ package fr.peralta.mycellar.interfaces.facades.user;
 
 import java.util.List;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
+import javax.inject.Inject;
+import javax.inject.Named;
+import javax.inject.Singleton;
+
 import org.springframework.transaction.annotation.Transactional;
 
 import fr.peralta.mycellar.application.user.ResetPasswordRequestService;
@@ -36,7 +38,8 @@ import fr.peralta.mycellar.domain.user.User_;
 /**
  * @author speralta
  */
-@Service
+@Named("userServiceFacade")
+@Singleton
 public class UserServiceFacadeImpl implements UserServiceFacade {
 
     private UserService userService;
@@ -159,7 +162,7 @@ public class UserServiceFacadeImpl implements UserServiceFacade {
      * @param userService
      *            the userService to set
      */
-    @Autowired
+    @Inject
     public void setUserService(UserService userService) {
         this.userService = userService;
     }
@@ -168,7 +171,7 @@ public class UserServiceFacadeImpl implements UserServiceFacade {
      * @param resetPasswordRequestService
      *            the resetPasswordRequestService to set
      */
-    @Autowired
+    @Inject
     public void setResetPasswordRequestService(ResetPasswordRequestService resetPasswordRequestService) {
         this.resetPasswordRequestService = resetPasswordRequestService;
     }

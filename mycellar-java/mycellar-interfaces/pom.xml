@@ -36,7 +36,6 @@
   <modules>
     <module>mycellar-interface-facade-client</module>
     <module>mycellar-interface-facade-server</module>
-    <module>mycellar-interface-facade-web</module>
     <module>mycellar-interface-web</module>
   </modules>
   

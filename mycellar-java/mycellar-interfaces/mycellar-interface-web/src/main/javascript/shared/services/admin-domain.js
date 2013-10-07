@@ -33,7 +33,7 @@ angular.module('services.admin-domain').provider('adminDomainService', ['$routeP
       if (canDelete) {
         extension.delete = function(id) {
           var errors = this.errors;
-          resource.delete({id: id}, function (value, headers) {
+          resource.deleteById(id, function (value, headers) {
             if (value.errorKey != undefined) {
               errors.push({errorKey: value.errorKey});
             } else if (value.internalError != undefined) {

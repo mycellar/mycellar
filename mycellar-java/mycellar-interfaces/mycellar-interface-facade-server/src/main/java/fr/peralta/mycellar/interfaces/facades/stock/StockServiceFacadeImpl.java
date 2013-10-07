@@ -20,8 +20,10 @@ package fr.peralta.mycellar.interfaces.facades.stock;
 
 import java.util.List;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
+import javax.inject.Inject;
+import javax.inject.Named;
+import javax.inject.Singleton;
+
 import org.springframework.transaction.annotation.Transactional;
 
 import fr.peralta.mycellar.application.stock.BottleService;
@@ -44,7 +46,8 @@ import fr.peralta.mycellar.domain.wine.Wine;
 /**
  * @author speralta
  */
-@Service
+@Named("stockServiceFacade")
+@Singleton
 public class StockServiceFacadeImpl implements StockServiceFacade {
 
     private BottleService bottleService;
@@ -212,7 +215,7 @@ public class StockServiceFacadeImpl implements StockServiceFacade {
      * @param bottleService
      *            the bottleService to set
      */
-    @Autowired
+    @Inject
     public void setBottleService(BottleService bottleService) {
         this.bottleService = bottleService;
     }
@@ -221,7 +224,7 @@ public class StockServiceFacadeImpl implements StockServiceFacade {
      * @param cellarService
      *            the cellarService to set
      */
-    @Autowired
+    @Inject
     public void setCellarService(CellarService cellarService) {
         this.cellarService = cellarService;
     }
@@ -230,7 +233,7 @@ public class StockServiceFacadeImpl implements StockServiceFacade {
      * @param cellarShareService
      *            the cellarShareService to set
      */
-    @Autowired
+    @Inject
     public void setCellarShareService(CellarShareService cellarShareService) {
         this.cellarShareService = cellarShareService;
     }
@@ -239,7 +242,7 @@ public class StockServiceFacadeImpl implements StockServiceFacade {
      * @param movementService
      *            the movementService to set
      */
-    @Autowired
+    @Inject
     public void setMovementService(MovementService movementService) {
         this.movementService = movementService;
     }
@@ -248,7 +251,7 @@ public class StockServiceFacadeImpl implements StockServiceFacade {
      * @param stockService
      *            the stockService to set
      */
-    @Autowired
+    @Inject
     public void setStockService(StockService stockService) {
         this.stockService = stockService;
     }

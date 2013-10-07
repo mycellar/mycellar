@@ -16,28 +16,41 @@
  * You should have received a copy of the GNU General Public License
  * along with MyCellar. If not, see <http://www.gnu.org/licenses/>.
  */
-package fr.mycellar.interfaces.facade.web;
+package fr.mycellar.interfaces.web.services;
 
+import fr.peralta.mycellar.domain.shared.repository.OrderByDirection;
 
 /**
  * @author speralta
  */
-public class InternalErrorHolder {
+public class OrderCouple {
 
-    private final String internalError;
+    private final String property;
+    private final OrderByDirection direction;
 
     /**
-     * @param internalError
+     * Default constructor.
+     * 
+     * @param couple
      */
-    public InternalErrorHolder(String internalError) {
-        this.internalError = internalError;
+    public OrderCouple(String couple) {
+        property = couple.substring(0, couple.indexOf(","));
+        direction = OrderByDirection.valueOf(couple.substring(couple.indexOf(",") + 1)
+                .toUpperCase());
     }
 
     /**
-     * @return the internalError
+     * @return the property
      */
-    public String getInternalError() {
-        return internalError;
+    public String getProperty() {
+        return property;
+    }
+
+    /**
+     * @return the direction
+     */
+    public OrderByDirection getDirection() {
+        return direction;
     }
 
 }

@@ -5,6 +5,14 @@ angular.module('resources.wine.regions').factory('Regions', ['$resource', '$q', 
   var Regions = $resource('/api/domain/wine/regions');
   var Region = $resource('/api/domain/wine/region/:regionId');
   
+  Region.deleteById = Region.delete;
+  Region.delete = function(fn) {
+    return Region.deleteById({regionId: this.id}, fn);
+  };
+  Regions.deleteById = function(id, fn) {
+    return Region.deleteById({regionId: id}, fn);
+  };
+  
   Regions.count = function () {
     var deferred = $q.defer();
     Regions.get({count: 0}, function(result) {

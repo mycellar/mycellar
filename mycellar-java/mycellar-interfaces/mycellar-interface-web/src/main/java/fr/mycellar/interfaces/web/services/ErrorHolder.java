@@ -16,39 +16,39 @@
  * You should have received a copy of the GNU General Public License
  * along with MyCellar. If not, see <http://www.gnu.org/licenses/>.
  */
-package fr.mycellar.interfaces.facade.web;
+package fr.mycellar.interfaces.web.services;
 
 import java.util.List;
 
 /**
  * @author speralta
  */
-public class ListWithCount<T> {
+public class ErrorHolder {
 
-    private final long count;
-    private final List<T> list;
+    private final List<String> properties;
+    private final String errorKey;
 
     /**
-     * @param count
-     * @param list
+     * @param properties
+     * @param errorKey
      */
-    public ListWithCount(long count, List<T> list) {
-        this.count = count;
-        this.list = list;
+    public ErrorHolder(List<String> properties, String errorKey) {
+        this.properties = properties;
+        this.errorKey = errorKey;
     }
 
     /**
-     * @return the count
+     * @return the properties
      */
-    public long getCount() {
-        return count;
+    public List<String> getProperties() {
+        return properties;
     }
 
     /**
-     * @return the list
+     * @return the errorKey
      */
-    public List<T> getList() {
-        return list;
+    public String getErrorKey() {
+        return errorKey;
     }
 
 }

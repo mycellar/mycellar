@@ -2,9 +2,22 @@ angular.module('resources.booking.bookingEvents', ['ngResource']);
 
 angular.module('resources.booking.bookingEvents').factory('BookingEvents', ['$resource', '$q', function ($resource, $q) {
 
-  var BookingEvents = $resource('/api/domain/booking/bookingEvents');
+  var BookingEvents = $resource('/api/domain/booking/bookingEvents', {}, {
+    currents: {
+      url: '/api/booking/currentBookingEvents',
+      method: 'GET'
+    }
+  });
   var BookingEvent = $resource('/api/domain/booking/bookingEvent/:bookingEventId');
-  
+
+  BookingEvent.deleteById = BookingEvent.delete;
+  BookingEvent.delete = function(fn) {
+    return BookingEvent.deleteById({bookingEventId: this.id}, fn);
+  };
+  BookingEvents.deleteById = function(id, fn) {
+    return BookingEvent.deleteById({bookingEventId: id}, fn);
+  };
+
   BookingEvents.count = function () {
     var deferred = $q.defer();
     BookingEvents.get({count: 0}, function(result) {
@@ -36,6 +49,6 @@ angular.module('resources.booking.bookingEvents').factory('BookingEvents', ['$re
     });
     return deferred.promise;
   };
-
+  
   return BookingEvents;
 }]);

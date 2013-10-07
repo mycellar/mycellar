@@ -21,8 +21,10 @@ package fr.peralta.mycellar.interfaces.facades.booking;
 import java.util.List;
 import java.util.Map;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
+import javax.inject.Inject;
+import javax.inject.Named;
+import javax.inject.Singleton;
+
 import org.springframework.transaction.annotation.Transactional;
 
 import fr.peralta.mycellar.application.booking.BookingEventService;
@@ -37,7 +39,8 @@ import fr.peralta.mycellar.domain.user.User;
 /**
  * @author speralta
  */
-@Service
+@Named("bookingServiceFacade")
+@Singleton
 public class BookingServiceFacadeImpl implements BookingServiceFacade {
 
     private BookingEventService bookingEventService;
@@ -208,7 +211,7 @@ public class BookingServiceFacadeImpl implements BookingServiceFacade {
      * @param bookingEventService
      *            the bookingEventService to set
      */
-    @Autowired
+    @Inject
     public void setBookingEventService(BookingEventService bookingEventService) {
         this.bookingEventService = bookingEventService;
     }
@@ -217,7 +220,7 @@ public class BookingServiceFacadeImpl implements BookingServiceFacade {
      * @param bookingService
      *            the bookingService to set
      */
-    @Autowired
+    @Inject
     public void setBookingService(BookingService bookingService) {
         this.bookingService = bookingService;
     }

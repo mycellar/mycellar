@@ -42,7 +42,7 @@ public class BookingEventsPageDescriptor extends AbstractDescriptor implements I
      */
     @Override
     public String getRoute() {
-        return "/booking";
+        return "/booking/currents";
     }
 
     /**

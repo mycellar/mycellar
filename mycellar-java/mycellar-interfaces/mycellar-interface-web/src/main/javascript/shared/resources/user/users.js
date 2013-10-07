@@ -5,6 +5,14 @@ angular.module('resources.user.users').factory('Users', ['$resource', '$q', func
   var Users = $resource('/api/domain/user/users');
   var User = $resource('/api/domain/user/user/:userId');
   
+  User.deleteById = User.delete;
+  User.delete = function(fn) {
+    return User.deleteById({userId: this.id}, fn);
+  };
+  Users.deleteById = function(id, fn) {
+    return User.deleteById({userId: id}, fn);
+  };
+  
   Users.count = function () {
     var deferred = $q.defer();
     Users.get({count: 0}, function(result) {

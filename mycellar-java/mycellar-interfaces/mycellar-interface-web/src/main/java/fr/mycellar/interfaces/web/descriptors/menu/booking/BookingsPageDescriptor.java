@@ -41,7 +41,7 @@ public class BookingsPageDescriptor extends AbstractDescriptor implements IMenuD
      */
     @Override
     public String getRoute() {
-        return "/booking/myBookings";
+        return "/booking/mybookings";
     }
 
     /**

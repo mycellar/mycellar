@@ -21,8 +21,10 @@ package fr.peralta.mycellar.interfaces.facades.wine;
 import java.util.Iterator;
 import java.util.List;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
+import javax.inject.Inject;
+import javax.inject.Named;
+import javax.inject.Singleton;
+
 import org.springframework.transaction.annotation.Transactional;
 
 import fr.peralta.mycellar.application.wine.AppellationService;
@@ -46,7 +48,8 @@ import fr.peralta.mycellar.domain.wine.WineTypeEnum;
 /**
  * @author speralta
  */
-@Service
+@Named("wineServiceFacade")
+@Singleton
 public class WineServiceFacadeImpl implements WineServiceFacade {
 
     private AppellationService appellationService;
@@ -381,7 +384,7 @@ public class WineServiceFacadeImpl implements WineServiceFacade {
      * @param appellationService
      *            the appellationService to set
      */
-    @Autowired
+    @Inject
     public void setAppellationService(AppellationService appellationService) {
         this.appellationService = appellationService;
     }
@@ -390,7 +393,7 @@ public class WineServiceFacadeImpl implements WineServiceFacade {
      * @param countryService
      *            the countryService to set
      */
-    @Autowired
+    @Inject
     public void setCountryService(CountryService countryService) {
         this.countryService = countryService;
     }
@@ -399,7 +402,7 @@ public class WineServiceFacadeImpl implements WineServiceFacade {
      * @param formatService
      *            the formatService to set
      */
-    @Autowired
+    @Inject
     public void setFormatService(FormatService formatService) {
         this.formatService = formatService;
     }
@@ -408,7 +411,7 @@ public class WineServiceFacadeImpl implements WineServiceFacade {
      * @param producerService
      *            the producerService to set
      */
-    @Autowired
+    @Inject
     public void setProducerService(ProducerService producerService) {
         this.producerService = producerService;
     }
@@ -417,7 +420,7 @@ public class WineServiceFacadeImpl implements WineServiceFacade {
      * @param regionService
      *            the regionService to set
      */
-    @Autowired
+    @Inject
     public void setRegionService(RegionService regionService) {
         this.regionService = regionService;
     }
@@ -426,7 +429,7 @@ public class WineServiceFacadeImpl implements WineServiceFacade {
      * @param wineService
      *            the wineService to set
      */
-    @Autowired
+    @Inject
     public void setWineService(WineService wineService) {
         this.wineService = wineService;
     }

@@ -20,8 +20,10 @@ package fr.peralta.mycellar.interfaces.facades.admin;
 
 import java.util.List;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
+import javax.inject.Inject;
+import javax.inject.Named;
+import javax.inject.Singleton;
+
 import org.springframework.transaction.annotation.Transactional;
 
 import fr.peralta.mycellar.application.admin.ConfigurationService;
@@ -32,7 +34,8 @@ import fr.peralta.mycellar.domain.shared.repository.SearchParameters;
 /**
  * @author speralta
  */
-@Service
+@Named("administrationServiceFacade")
+@Singleton
 public class AdministrationServiceFacadeImpl implements AdministrationServiceFacade {
 
     private ConfigurationService configurationService;
@@ -77,7 +80,7 @@ public class AdministrationServiceFacadeImpl implements AdministrationServiceFac
      * @param configurationService
      *            the configurationService to set
      */
-    @Autowired
+    @Inject
     public void setConfigurationService(ConfigurationService configurationService) {
         this.configurationService = configurationService;
     }

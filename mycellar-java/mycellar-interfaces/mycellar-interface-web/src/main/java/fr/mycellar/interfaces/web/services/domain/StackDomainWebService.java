@@ -16,12 +16,14 @@
  * You should have received a copy of the GNU General Public License
  * along with MyCellar. If not, see <http://www.gnu.org/licenses/>.
  */
-package fr.mycellar.interfaces.facade.web.admin.domain.stack;
+package fr.mycellar.interfaces.web.services.domain;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import javax.inject.Inject;
+import javax.inject.Named;
+import javax.inject.Singleton;
 import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
@@ -30,12 +32,12 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.MediaType;
 
-import org.springframework.stereotype.Service;
+import org.springframework.security.access.prepost.PreAuthorize;
 
-import fr.mycellar.interfaces.facade.web.FilterCouple;
-import fr.mycellar.interfaces.facade.web.ListWithCount;
-import fr.mycellar.interfaces.facade.web.OrderCouple;
-import fr.mycellar.interfaces.facade.web.SearchParametersUtil;
+import fr.mycellar.interfaces.web.services.FilterCouple;
+import fr.mycellar.interfaces.web.services.ListWithCount;
+import fr.mycellar.interfaces.web.services.OrderCouple;
+import fr.mycellar.interfaces.web.services.SearchParametersUtil;
 import fr.peralta.mycellar.domain.shared.exception.BusinessException;
 import fr.peralta.mycellar.domain.shared.repository.SearchParameters;
 import fr.peralta.mycellar.domain.stack.Stack;
@@ -44,9 +46,10 @@ import fr.peralta.mycellar.interfaces.facades.stack.StackServiceFacade;
 /**
  * @author speralta
  */
-@Service
+@Named
+@Singleton
 @Path("/domain/stack")
-public class StackWebService {
+public class StackDomainWebService {
 
     private StackServiceFacade stackServiceFacade;
 
@@ -55,6 +58,7 @@ public class StackWebService {
     @GET
     @Produces(MediaType.APPLICATION_JSON)
     @Path("stacks")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     public ListWithCount<Stack> getStacks(@QueryParam("first") int first, @QueryParam("count") int count, @QueryParam("filters") List<FilterCouple> filters,
             @QueryParam("sort") List<OrderCouple> orders) {
         SearchParameters searchParameters = searchParametersUtil.getSearchParametersForListWithCount(first, count, filters, orders, Stack.class);
@@ -70,18 +74,21 @@ public class StackWebService {
     @GET
     @Produces(MediaType.APPLICATION_JSON)
     @Path("stack/{id}")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     public Stack getStackById(@PathParam("id") int stackId) {
         return stackServiceFacade.getStackById(stackId);
     }
 
     @DELETE
     @Path("stack/{id}")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     public void deleteStackById(@PathParam("id") int stackId) throws BusinessException {
         stackServiceFacade.deleteStack(stackServiceFacade.getStackById(stackId));
     }
 
     @DELETE
     @Path("stacks")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     public void deleteAllStacks() throws BusinessException {
         stackServiceFacade.deleteAllStacks();
     }

@@ -16,41 +16,46 @@
  * You should have received a copy of the GNU General Public License
  * along with MyCellar. If not, see <http://www.gnu.org/licenses/>.
  */
-package fr.mycellar.interfaces.facade.web;
+package fr.mycellar.interfaces.web.services;
 
-import fr.peralta.mycellar.domain.shared.repository.OrderByDirection;
+import java.util.List;
 
 /**
  * @author speralta
  */
-public class OrderCouple {
+public class ListWithCount<T> {
 
-    private final String property;
-    private final OrderByDirection direction;
+    private final long count;
+    private final List<T> list;
 
     /**
-     * Default constructor.
-     * 
-     * @param couple
+     * @param count
+     * @param list
      */
-    public OrderCouple(String couple) {
-        property = couple.substring(0, couple.indexOf(","));
-        direction = OrderByDirection.valueOf(couple.substring(couple.indexOf(",") + 1)
-                .toUpperCase());
+    public ListWithCount(long count, List<T> list) {
+        this.count = count;
+        this.list = list;
     }
 
     /**
-     * @return the property
+     * @param list
      */
-    public String getProperty() {
-        return property;
+    public ListWithCount(List<T> list) {
+        this(list.size(), list);
     }
 
     /**
-     * @return the direction
+     * @return the count
      */
-    public OrderByDirection getDirection() {
-        return direction;
+    public long getCount() {
+        return count;
+    }
+
+    /**
+     * @return the list
+     */
+    public List<T> getList() {
+        return list;
     }
 
 }

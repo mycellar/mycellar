@@ -15,7 +15,8 @@ angular.module('mycellar', [
   'directives.bootstrap',
   'home',
   'login',
-  'admin'
+  'admin',
+  'booking'
 ]);
 
 angular.module('mycellar').config(['$routeProvider', '$locationProvider', function ($routeProvider, $locationProvider) {
