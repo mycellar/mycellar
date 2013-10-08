@@ -18,11 +18,14 @@
  */
 package fr.mycellar.interfaces.web.services.booking;
 
+import java.util.Map;
+
 import javax.inject.Inject;
 import javax.inject.Named;
 import javax.inject.Singleton;
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
+import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.MediaType;
@@ -32,6 +35,7 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import fr.mycellar.interfaces.web.security.CurrentUserService;
 import fr.mycellar.interfaces.web.services.ListWithCount;
 import fr.peralta.mycellar.domain.booking.Booking;
+import fr.peralta.mycellar.domain.booking.BookingBottle;
 import fr.peralta.mycellar.domain.booking.BookingEvent;
 import fr.peralta.mycellar.interfaces.facades.booking.BookingServiceFacade;
 
@@ -46,6 +50,14 @@ public class BookingWebService {
     private BookingServiceFacade bookingServiceFacade;
 
     private CurrentUserService currentUserService;
+
+    @GET
+    @Produces(MediaType.APPLICATION_JSON)
+    @Path("quantities/{bookingEventId}")
+    @PreAuthorize(value = "hasRole('ROLE_ADMIN')")
+    public Map<BookingBottle, Long> getQuantities(@PathParam(value = "bookingEventId") Integer bookingEventId) {
+        return bookingServiceFacade.getBookingsQuantities(bookingServiceFacade.getBookingEventById(bookingEventId));
+    }
 
     @GET
     @Produces(MediaType.APPLICATION_JSON)

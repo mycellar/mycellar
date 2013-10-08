@@ -27,6 +27,7 @@
     <js>./app/booking/booking-parent.js</js>
     <js>./app/booking/currents.js</js>
     <js>./app/booking/mybookings.js</js>
+    <js>./app/booking/reports.js</js>
   </group>
   
   <group name="shared">

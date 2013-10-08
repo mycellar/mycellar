@@ -8,7 +8,12 @@ angular.module('resources.booking.bookingEvents').factory('BookingEvents', ['$re
       method: 'GET'
     }
   });
-  var BookingEvent = $resource('/api/domain/booking/bookingEvent/:bookingEventId');
+  var BookingEvent = $resource('/api/domain/booking/bookingEvent/:bookingEventId', {}, {
+    getQuantities: {
+      url: '/api/booking/quantities/:bookingEventId',
+      method: 'GET'
+    }
+  });
 
   BookingEvent.deleteById = BookingEvent.delete;
   BookingEvent.delete = function(fn) {
@@ -48,6 +53,10 @@ angular.module('resources.booking.bookingEvents').factory('BookingEvents', ['$re
       });
     });
     return deferred.promise;
+  };
+  
+  BookingEvents.getQuantities = function(bookingEvent, fn) {
+    return BookingEvent.getQuantities({bookingEventId: bookingEvent.id}, fn);
   };
   
   return BookingEvents;
