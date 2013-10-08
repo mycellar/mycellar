@@ -16,28 +16,38 @@
  * You should have received a copy of the GNU General Public License
  * along with MyCellar. If not, see <http://www.gnu.org/licenses/>.
  */
-package fr.peralta.mycellar.domain.shared.repository;
-
-import static com.google.common.collect.Lists.newArrayList;
-import static com.google.common.collect.Maps.newHashMap;
+package fr.peralta.mycellar.infrastructure.shared.repository;
 
 import java.lang.reflect.Field;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import javax.inject.Named;
+import javax.inject.Singleton;
 import javax.persistence.metamodel.Attribute;
 import javax.persistence.metamodel.PluralAttribute;
 import javax.persistence.metamodel.SingularAttribute;
 
 import com.google.common.base.Splitter;
 
-public class MetamodelUtil {
-    private static Map<Class<?>, Class<?>> metamodelCache = newHashMap();
+import fr.peralta.mycellar.domain.shared.repository.Path;
 
-    public static SingularAttribute<?, ?> toAttribute(String property, Class<?> from) {
+@Named
+@Singleton
+public class MetamodelUtil {
+
+    private final Map<Class<?>, Class<?>> metamodelCache = new HashMap<>();
+
+    public SingularAttribute<?, ?> toAttribute(Path path) {
+        return toAttribute(path.getFrom(), path.getPath());
+    }
+
+    public SingularAttribute<?, ?> toAttribute(Class<?> from, String path) {
         try {
             Class<?> metamodelClass = getCachedClass(from);
-            Field field = metamodelClass.getField(property);
+            Field field = metamodelClass.getField(path);
             Attribute<?, ?> attribute = (Attribute<?, ?>) field.get(null);
             return (SingularAttribute<?, ?>) attribute;
         } catch (Exception e) {
@@ -45,9 +55,13 @@ public class MetamodelUtil {
         }
     }
 
-    public static List<Attribute<?, ?>> toAttributes(String path, Class<?> from) {
+    public List<Attribute<?, ?>> toAttributes(Path path) {
+        return toAttributes(path.getFrom(), path.getPath());
+    }
+
+    public List<Attribute<?, ?>> toAttributes(Class<?> from, String path) {
         try {
-            List<Attribute<?, ?>> attributes = newArrayList();
+            List<Attribute<?, ?>> attributes = new ArrayList<>();
             Class<?> current = from;
             for (String pathItem : Splitter.on(".").split(path)) {
                 Class<?> metamodelClass = getCachedClass(current);
@@ -66,7 +80,35 @@ public class MetamodelUtil {
         }
     }
 
-    private static Class<?> getCachedClass(Class<?> current) throws ClassNotFoundException {
+    public String toPath(List<Attribute<?, ?>> attributes) {
+        StringBuilder path = new StringBuilder();
+        for (Attribute<?, ?> attribute : attributes) {
+            if (path.length() > 0) {
+                path.append(".");
+            }
+            path.append(attribute.getName());
+        }
+        return path.toString();
+    }
+
+    public boolean isBoolean(Path path) {
+        return isType(Boolean.class, path);
+    }
+
+    public boolean isString(Path path) {
+        return isType(String.class, path);
+    }
+
+    public boolean isNumber(Path path) {
+        return isType(Number.class, path);
+    }
+
+    public boolean isType(Class<?> type, Path path) {
+        List<Attribute<?, ?>> attributes = toAttributes(path);
+        return type.isAssignableFrom(attributes.get(attributes.size() - 1).getJavaType());
+    }
+
+    private Class<?> getCachedClass(Class<?> current) throws ClassNotFoundException {
         if (metamodelCache.containsKey(current)) {
             return metamodelCache.get(current);
         }
@@ -74,4 +116,5 @@ public class MetamodelUtil {
         metamodelCache.put(current, metamodelClass);
         return metamodelClass;
     }
+
 }

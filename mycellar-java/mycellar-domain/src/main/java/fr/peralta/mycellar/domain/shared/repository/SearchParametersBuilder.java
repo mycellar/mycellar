@@ -18,9 +18,6 @@
  */
 package fr.peralta.mycellar.domain.shared.repository;
 
-import java.util.Arrays;
-import java.util.List;
-
 import javax.persistence.metamodel.Attribute;
 import javax.persistence.metamodel.SingularAttribute;
 
@@ -82,7 +79,7 @@ public class SearchParametersBuilder {
 
     private SearchParametersBuilder addTermsToTermSelector(TermSelector termSelector, String... terms) {
         for (String term : terms) {
-            termSelector.getTerms().add(term);
+            termSelector.getSelected().add(term);
         }
         return term(termSelector);
     }
@@ -126,11 +123,11 @@ public class SearchParametersBuilder {
     }
 
     public SearchParametersBuilder orderBy(OrderByDirection direction, Attribute<?, ?>... attributes) {
-        return orderBy(direction, Arrays.asList(attributes));
+        return orderBy(new OrderBy(direction, attributes));
     }
 
-    public SearchParametersBuilder orderBy(OrderByDirection direction, List<Attribute<?, ?>> attributes) {
-        return orderBy(new OrderBy(direction, attributes));
+    public SearchParametersBuilder orderBy(OrderByDirection direction, Class<?> from, String path) {
+        return orderBy(new OrderBy(direction, from, path));
     }
 
     // -----------------------------------
@@ -144,12 +141,12 @@ public class SearchParametersBuilder {
         return this;
     }
 
-    public <E, D extends Comparable<D>> SearchParametersBuilder range(SingularAttribute<E, D> attribute, D from, D to) {
-        return range(new Range<E, D>(attribute, from, to));
+    public <E, D extends Comparable<D>> SearchParametersBuilder range(D from, D to, Attribute<?, ?> attributes) {
+        return range(new Range<E, D>(from, to, attributes));
     }
 
-    public <E, D extends Comparable<D>> SearchParametersBuilder range(SingularAttribute<E, D> attribute, D from, D to, boolean includeNull) {
-        return range(new Range<E, D>(attribute, from, to, includeNull));
+    public <E, D extends Comparable<D>> SearchParametersBuilder range(D from, D to, boolean includeNull, Attribute<?, ?>... attributes) {
+        return range(new Range<E, D>(from, to, includeNull, attributes));
     }
 
     // -----------------------------------
@@ -164,12 +161,14 @@ public class SearchParametersBuilder {
     }
 
     public <E> SearchParametersBuilder propertyWithValue(E value, Attribute<?, ?>... attributes) {
-        return propertyWithValue(value, Arrays.asList(attributes));
+        PropertySelector<?, E> propertySelector = new PropertySelector<>(attributes);
+        propertySelector.getSelected().add(value);
+        return property(propertySelector);
     }
 
-    public <E> SearchParametersBuilder propertyWithValue(E value, List<Attribute<?, ?>> attributes) {
-        PropertySelector<?, E> propertySelector = new PropertySelector<>(attributes);
-        propertySelector.getValues().add(value);
+    public <E> SearchParametersBuilder propertyWithValue(E value, Class<?> from, String path) {
+        PropertySelector<?, E> propertySelector = new PropertySelector<>(from, path);
+        propertySelector.getSelected().add(value);
         return property(propertySelector);
     }
 
@@ -191,10 +190,8 @@ public class SearchParametersBuilder {
     // Fetch associated entity using a LEFT Join
     // -----------------------------------------
 
-    public SearchParametersBuilder leftJoin(SingularAttribute<?, ?>... attributes) {
-        for (SingularAttribute<?, ?> attribute : attributes) {
-            searchParameters.getLeftJoins().add(attribute);
-        }
+    public SearchParametersBuilder fetch(Attribute<?, ?>... attributes) {
+        searchParameters.getFetches().add(new Path(attributes));
         return this;
     }
 
@@ -233,16 +230,16 @@ public class SearchParametersBuilder {
     // Use and in NN Search
     // -----------------------------------
 
-    public SearchParametersBuilder useANDInManyToMany() {
-        return useANDInManyToMany(true);
+    public SearchParametersBuilder useAndInXToMany() {
+        return useAndInXToMany(true);
     }
 
-    public SearchParametersBuilder useORInManyToMany() {
-        return useANDInManyToMany(false);
+    public SearchParametersBuilder useOrInXToMany() {
+        return useAndInXToMany(false);
     }
 
-    private SearchParametersBuilder useANDInManyToMany(boolean useANDInManyToMany) {
-        searchParameters.setUseANDInManyToMany(useANDInManyToMany);
+    private SearchParametersBuilder useAndInXToMany(boolean useAndInXToMany) {
+        searchParameters.setUseAndInXToMany(useAndInXToMany);
         return this;
     }
 

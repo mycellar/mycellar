@@ -23,13 +23,20 @@ import static com.google.common.base.Throwables.propagate;
 import static com.google.common.collect.Iterables.filter;
 import static com.google.common.collect.Iterables.toArray;
 import static com.google.common.collect.Lists.newArrayList;
+import static java.lang.reflect.Modifier.isPublic;
+import static org.apache.commons.lang.StringUtils.isBlank;
+import static org.hibernate.proxy.HibernateProxyHelper.getClassWithoutInitializingProxy;
 
+import java.beans.PropertyDescriptor;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
-import java.lang.reflect.Modifier;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import javax.inject.Inject;
+import javax.inject.Named;
+import javax.inject.Singleton;
 import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -38,29 +45,35 @@ import javax.persistence.Query;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.Expression;
 import javax.persistence.criteria.Fetch;
+import javax.persistence.criteria.FetchParent;
+import javax.persistence.criteria.From;
 import javax.persistence.criteria.Join;
+import javax.persistence.criteria.JoinType;
 import javax.persistence.criteria.Path;
 import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
 import javax.persistence.metamodel.Attribute;
 import javax.persistence.metamodel.ManagedType;
+import javax.persistence.metamodel.PluralAttribute;
 import javax.persistence.metamodel.SingularAttribute;
 
+import org.apache.commons.beanutils.PropertyUtils;
 import org.apache.commons.lang.WordUtils;
 import org.apache.commons.lang3.StringUtils;
-import org.hibernate.proxy.HibernateProxyHelper;
-import org.springframework.beans.BeanUtils;
+import org.apache.commons.lang3.reflect.MethodUtils;
 import org.springframework.context.i18n.LocaleContextHolder;
-import org.springframework.core.annotation.AnnotationUtils;
-import org.springframework.util.ReflectionUtils;
 
 import fr.peralta.mycellar.domain.shared.Identifiable;
 import fr.peralta.mycellar.domain.shared.repository.SearchMode;
 import fr.peralta.mycellar.domain.shared.repository.SearchParameters;
 
+@Named
+@Singleton
 public class JpaUtil {
 
-    public static boolean isEntityIdManuallyAssigned(Class<?> type) {
+    private MetamodelUtil metamodelUtil;
+
+    public boolean isEntityIdManuallyAssigned(Class<?> type) {
         for (Method method : type.getMethods()) {
             if (isPrimaryKey(method)) {
                 return isManuallyAssigned(method);
@@ -69,11 +82,11 @@ public class JpaUtil {
         return false; // no pk found, should not happen
     }
 
-    private static boolean isPrimaryKey(Method method) {
-        return Modifier.isPublic(method.getModifiers()) && ((method.getAnnotation(Id.class) != null) || (method.getAnnotation(EmbeddedId.class) != null));
+    private boolean isPrimaryKey(Method method) {
+        return isPublic(method.getModifiers()) && ((method.getAnnotation(Id.class) != null) || (method.getAnnotation(EmbeddedId.class) != null));
     }
 
-    private static boolean isManuallyAssigned(Method method) {
+    private boolean isManuallyAssigned(Method method) {
         if (method.getAnnotation(Id.class) != null) {
             return method.getAnnotation(GeneratedValue.class) == null;
         } else if (method.getAnnotation(EmbeddedId.class) != null) {
@@ -83,11 +96,11 @@ public class JpaUtil {
         }
     }
 
-    public static Predicate concatPredicate(SearchParameters sp, CriteriaBuilder builder, Predicate... predicatesNullAllowed) {
+    public Predicate concatPredicate(SearchParameters sp, CriteriaBuilder builder, Predicate... predicatesNullAllowed) {
         return concatPredicate(sp, builder, Arrays.asList(predicatesNullAllowed));
     }
 
-    public static Predicate concatPredicate(SearchParameters sp, CriteriaBuilder builder, Iterable<Predicate> predicatesNullAllowed) {
+    public Predicate concatPredicate(SearchParameters sp, CriteriaBuilder builder, Iterable<Predicate> predicatesNullAllowed) {
         if (sp.isAndMode()) {
             return andPredicate(builder, predicatesNullAllowed);
         } else {
@@ -95,15 +108,15 @@ public class JpaUtil {
         }
     }
 
-    public static Predicate andPredicate(CriteriaBuilder builder, Predicate... predicatesNullAllowed) {
+    public Predicate andPredicate(CriteriaBuilder builder, Predicate... predicatesNullAllowed) {
         return andPredicate(builder, Arrays.asList(predicatesNullAllowed));
     }
 
-    public static Predicate orPredicate(CriteriaBuilder builder, Predicate... predicatesNullAllowed) {
+    public Predicate orPredicate(CriteriaBuilder builder, Predicate... predicatesNullAllowed) {
         return orPredicate(builder, Arrays.asList(predicatesNullAllowed));
     }
 
-    public static Predicate andPredicate(CriteriaBuilder builder, Iterable<Predicate> predicatesNullAllowed) {
+    public Predicate andPredicate(CriteriaBuilder builder, Iterable<Predicate> predicatesNullAllowed) {
         List<Predicate> predicates = newArrayList(filter(predicatesNullAllowed, notNull()));
         if ((predicates == null) || predicates.isEmpty()) {
             return null;
@@ -114,7 +127,7 @@ public class JpaUtil {
         }
     }
 
-    public static Predicate orPredicate(CriteriaBuilder builder, Iterable<Predicate> predicatesNullAllowed) {
+    public Predicate orPredicate(CriteriaBuilder builder, Iterable<Predicate> predicatesNullAllowed) {
         List<Predicate> predicates = newArrayList(filter(predicatesNullAllowed, notNull()));
         if ((predicates == null) || predicates.isEmpty()) {
             return null;
@@ -125,7 +138,7 @@ public class JpaUtil {
         }
     }
 
-    public static <E> Predicate stringPredicate(Expression<String> path, Object attrValue, SearchMode searchMode, SearchParameters sp, CriteriaBuilder builder) {
+    public <E> Predicate stringPredicate(Expression<String> path, Object attrValue, SearchMode searchMode, SearchParameters sp, CriteriaBuilder builder) {
         if (!sp.isCaseSensitive()) {
             path = builder.lower(path);
             attrValue = ((String) attrValue).toLowerCase(LocaleContextHolder.getLocale());
@@ -149,8 +162,12 @@ public class JpaUtil {
         }
     }
 
-    public static <E> Predicate stringPredicate(Expression<String> path, Object attrValue, SearchParameters sp, CriteriaBuilder builder) {
+    public <E> Predicate stringPredicate(Expression<String> path, Object attrValue, SearchParameters sp, CriteriaBuilder builder) {
         return stringPredicate(path, attrValue, null, sp, builder);
+    }
+
+    public <E, F> Path<F> getPath(Root<E> root, fr.peralta.mycellar.domain.shared.repository.Path path) {
+        return getPath(root, path.getFrom(), path.getPath());
     }
 
     /**
@@ -159,44 +176,46 @@ public class JpaUtil {
      * Note: JPA will do joins if the property is in an associated entity.
      */
     @SuppressWarnings("unchecked")
-    public static <E, F> Path<F> getPath(Root<E> root, List<Attribute<?, ?>> attributes) {
-        Path<?> path = root;
-        for (Attribute<?, ?> attribute : attributes) {
+    public <E, F> Path<F> getPath(Root<E> root, Class<?> from, String path) {
+        Path<?> result = root;
+        for (Attribute<?, ?> attribute : metamodelUtil.toAttributes(from, path)) {
             boolean found = false;
-            // handle case when order on already fetched attribute
-            for (Fetch<E, ?> fetch : root.getFetches()) {
-                if (attribute.getName().equals(fetch.getAttribute().getName()) && (fetch instanceof Join<?, ?>)) {
-                    path = (Join<E, ?>) fetch;
-                    found = true;
-                    break;
-                }
-            }
-            for (Join<E, ?> join : root.getJoins()) {
-                if (attribute.getName().equals(join.getAttribute().getName())) {
-                    path = join;
-                    found = true;
-                    break;
+            if (result instanceof FetchParent) {
+                for (Fetch<E, ?> fetch : ((FetchParent<?, E>) result).getFetches()) {
+                    if (attribute.getName().equals(fetch.getAttribute().getName()) && (fetch instanceof Join<?, ?>)) {
+                        result = (Join<E, ?>) fetch;
+                        found = true;
+                        break;
+                    }
                 }
             }
             if (!found) {
-                path = path.get(attribute.getName());
+                if (attribute instanceof PluralAttribute) {
+                    result = ((From<?, ?>) result).join(attribute.getName(), JoinType.LEFT);
+                } else {
+                    result = result.get(attribute.getName());
+                }
             }
         }
-        return (Path<F>) path;
+        return (Path<F>) result;
     }
 
-    public static String getPath(List<Attribute<?, ?>> attributes) {
-        StringBuilder builder = new StringBuilder();
+    public void verifyPath(Attribute<?, ?>... path) {
+        List<Attribute<?, ?>> attributes = Arrays.asList(path);
+        Class<?> from = attributes.get(0).getJavaType();
+        attributes.remove(0);
         for (Attribute<?, ?> attribute : attributes) {
-            builder.append(attribute.getName()).append(".");
+            if (!attribute.getDeclaringType().getJavaType().isAssignableFrom(from)) {
+                throw new IllegalStateException("Wrong path.");
+            }
+            from = attribute.getJavaType();
         }
-        return builder.substring(0, builder.length() - 1);
     }
 
-    public static <T extends Identifiable<?>> String compositePkPropertyName(T entity) {
+    public <T extends Identifiable<?>> String compositePkPropertyName(T entity) {
         for (Method m : entity.getClass().getMethods()) {
             if (m.getAnnotation(EmbeddedId.class) != null) {
-                return BeanUtils.findPropertyForMethod(m).getName();
+                return methodToProperty(m);
             }
         }
         for (Field f : entity.getClass().getFields()) {
@@ -207,9 +226,9 @@ public class JpaUtil {
         return null;
     }
 
-    public static <T> boolean isPk(ManagedType<T> mt, SingularAttribute<? super T, ?> attr) {
+    public <T> boolean isPk(ManagedType<T> mt, SingularAttribute<? super T, ?> attr) {
         try {
-            Method m = BeanUtils.findMethod(mt.getJavaType(), "get" + WordUtils.capitalize(attr.getName()));
+            Method m = MethodUtils.getAccessibleMethod(mt.getJavaType(), "get" + WordUtils.capitalize(attr.getName()), (Class<?>) null);
             if ((m != null) && (m.getAnnotation(Id.class) != null)) {
                 return true;
             }
@@ -221,27 +240,27 @@ public class JpaUtil {
         }
     }
 
-    public static <T> Object getValue(T example, Attribute<? super T, ?> attr) {
+    public <T> Object getValue(T example, Attribute<? super T, ?> attr) {
         try {
             if (attr.getJavaMember() instanceof Method) {
-                return ReflectionUtils.invokeMethod((Method) attr.getJavaMember(), example);
+                return ((Method) attr.getJavaMember()).invoke(example);
             } else {
-                return ReflectionUtils.getField((Field) attr.getJavaMember(), example);
+                return ((Field) attr.getJavaMember()).get(example);
             }
         } catch (Exception e) {
             throw propagate(e);
         }
     }
 
-    public static <T, A> SingularAttribute<? super T, A> attribute(ManagedType<? super T> mt, Attribute<? super T, A> attr) {
+    public <T, A> SingularAttribute<? super T, A> attribute(ManagedType<? super T> mt, Attribute<? super T, A> attr) {
         return mt.getSingularAttribute(attr.getName(), attr.getJavaType());
     }
 
-    public static <T> SingularAttribute<? super T, String> stringAttribute(ManagedType<? super T> mt, Attribute<? super T, ?> attr) {
+    public <T> SingularAttribute<? super T, String> stringAttribute(ManagedType<? super T> mt, Attribute<? super T, ?> attr) {
         return mt.getSingularAttribute(attr.getName(), String.class);
     }
 
-    public static <T extends Identifiable<?>> boolean hasSimplePk(Class<T> entityClass) {
+    public <T extends Identifiable<?>> boolean hasSimplePk(Class<T> entityClass) {
         for (Method m : entityClass.getMethods()) {
             if (m.getAnnotation(Id.class) != null) {
                 return true;
@@ -255,44 +274,46 @@ public class JpaUtil {
         return false;
     }
 
-    public static String[] toNames(SingularAttribute<?, ?>... attributes) {
-        List<String> ret = newArrayList();
-        for (SingularAttribute<?, ?> attribute : attributes) {
-            ret.add(attribute.getName());
-        }
-        return ret.toArray(new String[ret.size()]);
+    public String[] toNames(Attribute<?, ?>... attributes) {
+        return toNamesList(Arrays.asList(attributes)).toArray(new String[0]);
     }
 
-    public static List<String> toNamesList(List<SingularAttribute<?, ?>> attributes) {
-        List<String> ret = newArrayList();
-        for (SingularAttribute<?, ?> attribute : attributes) {
+    public List<String> toNamesList(List<Attribute<?, ?>> attributes) {
+        List<String> ret = new ArrayList<>();
+        for (Attribute<?, ?> attribute : attributes) {
             ret.add(attribute.getName());
         }
         return ret;
     }
 
-    public static String getEntityName(Identifiable<?> entity) {
-        Entity entityAnnotation = AnnotationUtils.findAnnotation(entity.getClass(), Entity.class);
-        if (StringUtils.isBlank(entityAnnotation.name())) {
-            return HibernateProxyHelper.getClassWithoutInitializingProxy(entity).getSimpleName();
+    public String getEntityName(Identifiable<?> entity) {
+        Entity entityAnnotation = entity.getClass().getAnnotation(Entity.class);
+        if (isBlank(entityAnnotation.name())) {
+            return getClassWithoutInitializingProxy(entity).getSimpleName();
         }
         return entityAnnotation.name();
     }
 
-    public static String methodToProperty(Method m) {
-        return BeanUtils.findPropertyForMethod(m).getName();
+    public String methodToProperty(Method m) {
+        PropertyDescriptor[] pds = PropertyUtils.getPropertyDescriptors(m.getDeclaringClass());
+        for (PropertyDescriptor pd : pds) {
+            if (m.equals(pd.getReadMethod()) || m.equals(pd.getWriteMethod())) {
+                return pd.getName();
+            }
+        }
+        return null;
     }
 
-    public static Object getValueFromField(Field field, Object object) {
+    public Object getValueFromField(Field field, Object object) {
         boolean accessible = field.isAccessible();
         try {
-            return ReflectionUtils.getField(field, object);
+            return getField(field, object);
         } finally {
             field.setAccessible(accessible);
         }
     }
 
-    public static void applyPagination(Query query, SearchParameters sp) {
+    public void applyPagination(Query query, SearchParameters sp) {
         if (sp.getFirstResult() > 0) {
             query.setFirstResult(sp.getFirstResult());
         }
@@ -301,7 +322,7 @@ public class JpaUtil {
         }
     }
 
-    public static void applyCacheHints(Query query, SearchParameters sp, Class<? extends Identifiable<?>> type) {
+    public void applyCacheHints(Query query, SearchParameters sp, Class<? extends Identifiable<?>> type) {
         if (sp.isCacheable()) {
             query.setHint("org.hibernate.cacheable", true);
 
@@ -312,4 +333,47 @@ public class JpaUtil {
             }
         }
     }
+
+    @SuppressWarnings({ "unchecked", "rawtypes" })
+    public void fetches(SearchParameters sp, Root<?> root) {
+        for (fr.peralta.mycellar.domain.shared.repository.Path args : sp.getFetches()) {
+            FetchParent<?, ?> from = root;
+            for (Attribute<?, ?> arg : metamodelUtil.toAttributes(args)) {
+                boolean found = false;
+                for (Fetch<?, ?> fetch : from.getFetches()) {
+                    if (arg.equals(fetch.getAttribute())) {
+                        from = fetch;
+                        found = true;
+                        break;
+                    }
+                }
+                if (!found) {
+                    if (arg instanceof PluralAttribute) {
+                        from = from.fetch((PluralAttribute) arg, JoinType.LEFT);
+                    } else {
+                        from = from.fetch((SingularAttribute) arg, JoinType.LEFT);
+                    }
+                }
+            }
+        }
+    }
+
+    @SuppressWarnings("unchecked")
+    private <T> T getField(Field field, Object target) {
+        try {
+            return (T) field.get(target);
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    /**
+     * @param metamodelUtil
+     *            the metamodelUtil to set
+     */
+    @Inject
+    public void setMetamodelUtil(MetamodelUtil metamodelUtil) {
+        this.metamodelUtil = metamodelUtil;
+    }
+
 }

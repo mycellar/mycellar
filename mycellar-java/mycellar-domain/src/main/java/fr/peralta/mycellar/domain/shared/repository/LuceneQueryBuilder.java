@@ -18,6 +18,7 @@
  */
 package fr.peralta.mycellar.domain.shared.repository;
 
+import java.io.Serializable;
 import java.util.List;
 
 import javax.persistence.metamodel.SingularAttribute;
@@ -25,7 +26,7 @@ import javax.persistence.metamodel.SingularAttribute;
 import org.apache.lucene.search.Query;
 import org.hibernate.search.jpa.FullTextEntityManager;
 
-public interface LuceneQueryBuilder {
+public interface LuceneQueryBuilder extends Serializable {
 
     Query build(FullTextEntityManager fullTextEntityManager, SearchParameters searchParameters, List<SingularAttribute<?, ?>> availableProperties);
 }

@@ -22,6 +22,7 @@ import static com.google.common.collect.Lists.newArrayList;
 import static java.util.Collections.emptyList;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.inject.Inject;
@@ -39,6 +40,7 @@ import javax.persistence.metamodel.SingularAttribute;
 
 import fr.peralta.mycellar.domain.shared.Identifiable;
 import fr.peralta.mycellar.domain.shared.repository.SearchParameters;
+import fr.peralta.mycellar.domain.shared.repository.TermSelector;
 
 /**
  * Helper to create a predicate out of full search.
@@ -46,21 +48,29 @@ import fr.peralta.mycellar.domain.shared.repository.SearchParameters;
 @Named
 @Singleton
 public class ByFullTextUtil {
-
     private EntityManager entityManager;
-
     private HibernateSearchUtil hibernateSearchUtil;
+    private JpaUtil jpaUtil;
 
     public <T extends Identifiable<?>> Predicate byFullText(Root<T> root, CriteriaBuilder builder, SearchParameters sp, Class<T> type, List<SingularAttribute<?, ?>> indexedAttributes) {
-        if (sp.getTerms().isEmpty()) {
+        if (!hasNonEmptyTerms(sp)) {
             return null;
         }
 
-        if (JpaUtil.hasSimplePk(type)) {
+        if (jpaUtil.hasSimplePk(type)) {
             return onSimplePrimaryKey(root, builder, sp, indexedAttributes);
         } else {
             return onCompositePrimaryKeys(root, builder, sp, indexedAttributes);
         }
+    }
+
+    private boolean hasNonEmptyTerms(SearchParameters sp) {
+        for (TermSelector termSelector : sp.getTerms()) {
+            if (termSelector.isNotEmpty()) {
+                return true;
+            }
+        }
+        return false;
     }
 
     private <T extends Identifiable<?>> Predicate onCompositePrimaryKeys(Root<T> root, CriteriaBuilder builder, SearchParameters sp, List<SingularAttribute<?, ?>> properties) {
@@ -71,11 +81,11 @@ public class ByFullTextUtil {
             return builder.disjunction();
         }
 
-        List<Predicate> predicates = newArrayList();
+        List<Predicate> predicates = new ArrayList<>();
         for (T t : found) {
             predicates.add(byExampleOnEntity(root, t, sp, builder));
         }
-        return JpaUtil.concatPredicate(sp, builder, JpaUtil.orPredicate(builder, predicates));
+        return jpaUtil.concatPredicate(sp, builder, jpaUtil.orPredicate(builder, predicates));
     }
 
     private <T> Predicate onSimplePrimaryKey(Root<T> root, CriteriaBuilder builder, SearchParameters sp, List<SingularAttribute<?, ?>> properties) {
@@ -86,7 +96,7 @@ public class ByFullTextUtil {
             return builder.disjunction();
         }
 
-        return JpaUtil.concatPredicate(sp, builder, root.get("id").in(ids));
+        return jpaUtil.concatPredicate(sp, builder, root.get("id").in(ids));
     }
 
     public <T extends Identifiable<?>> Predicate byExampleOnEntity(Root<T> rootPath, T entityValue, SearchParameters sp, CriteriaBuilder builder) {
@@ -97,14 +107,14 @@ public class ByFullTextUtil {
         Class<T> type = rootPath.getModel().getBindableJavaType();
         ManagedType<T> mt = entityManager.getMetamodel().entity(type);
 
-        List<Predicate> predicates = newArrayList();
+        List<Predicate> predicates = new ArrayList<>();
         predicates.addAll(byExample(mt, rootPath, entityValue, sp, builder));
         predicates.addAll(byExampleOnCompositePk(rootPath, entityValue, sp, builder));
-        return JpaUtil.orPredicate(builder, predicates);
+        return jpaUtil.orPredicate(builder, predicates);
     }
 
     protected <T extends Identifiable<?>> List<Predicate> byExampleOnCompositePk(Root<T> root, T entity, SearchParameters sp, CriteriaBuilder builder) {
-        String compositePropertyName = JpaUtil.compositePkPropertyName(entity);
+        String compositePropertyName = jpaUtil.compositePkPropertyName(entity);
         if (compositePropertyName == null) {
             return emptyList();
         } else {
@@ -120,22 +130,22 @@ public class ByFullTextUtil {
         Class<E> type = embeddablePath.getModel().getBindableJavaType();
         ManagedType<E> mt = entityManager.getMetamodel().embeddable(type);
         // note: calling .managedType() does not work
-        return JpaUtil.orPredicate(builder, byExample(mt, embeddablePath, embeddableValue, sp, builder));
+        return jpaUtil.orPredicate(builder, byExample(mt, embeddablePath, embeddableValue, sp, builder));
     }
 
     /**
      * Add a predicate for each simple property whose value is not null.
      */
     public <T> List<Predicate> byExample(ManagedType<T> mt, Path<T> mtPath, T mtValue, SearchParameters sp, CriteriaBuilder builder) {
-        List<Predicate> predicates = newArrayList();
+        List<Predicate> predicates = new ArrayList<>();
         for (SingularAttribute<? super T, ?> attr : mt.getSingularAttributes()) {
             if (!isPrimaryKey(mt, attr)) {
                 continue;
             }
 
-            Object attrValue = JpaUtil.getValue(mtValue, attr);
+            Object attrValue = jpaUtil.getValue(mtValue, attr);
             if (attrValue != null) {
-                predicates.add(builder.equal(mtPath.get(JpaUtil.attribute(mt, attr)), attrValue));
+                predicates.add(builder.equal(mtPath.get(jpaUtil.attribute(mt, attr)), attrValue));
             }
         }
         return predicates;
@@ -145,7 +155,7 @@ public class ByFullTextUtil {
         if (mt.getJavaType().getAnnotation(Embeddable.class) != null) {
             return true;
         }
-        return JpaUtil.isPk(mt, attr);
+        return jpaUtil.isPk(mt, attr);
     }
 
     /**
@@ -164,6 +174,15 @@ public class ByFullTextUtil {
     @Inject
     public void setHibernateSearchUtil(HibernateSearchUtil hibernateSearchUtil) {
         this.hibernateSearchUtil = hibernateSearchUtil;
+    }
+
+    /**
+     * @param jpaUtil
+     *            the jpaUtil to set
+     */
+    @Inject
+    public void setJpaUtil(JpaUtil jpaUtil) {
+        this.jpaUtil = jpaUtil;
     }
 
 }

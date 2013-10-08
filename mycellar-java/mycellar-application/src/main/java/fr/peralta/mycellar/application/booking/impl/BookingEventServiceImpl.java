@@ -56,8 +56,8 @@ public class BookingEventServiceImpl extends AbstractSimpleService<BookingEvent,
     @Override
     public List<BookingEvent> getCurrentBookingEvents() {
         return bookingEventRepository.find(new SearchParametersBuilder() //
-                .range(new Range<BookingEvent, LocalDate>(BookingEvent_.start, null, new LocalDate()), //
-                        new Range<BookingEvent, LocalDate>(BookingEvent_.end, new LocalDate(), null)) //
+                .range(new Range<BookingEvent, LocalDate>(null, new LocalDate(), BookingEvent_.start), //
+                        new Range<BookingEvent, LocalDate>(new LocalDate(), null, BookingEvent_.end)) //
                 .toSearchParameters());
     }
 

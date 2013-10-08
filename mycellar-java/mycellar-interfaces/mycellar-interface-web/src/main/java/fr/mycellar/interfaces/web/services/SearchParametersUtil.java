@@ -23,7 +23,6 @@ import java.util.List;
 import javax.inject.Named;
 import javax.inject.Singleton;
 
-import fr.peralta.mycellar.domain.shared.repository.MetamodelUtil;
 import fr.peralta.mycellar.domain.shared.repository.SearchMode;
 import fr.peralta.mycellar.domain.shared.repository.SearchParameters;
 import fr.peralta.mycellar.domain.shared.repository.SearchParametersBuilder;
@@ -47,12 +46,12 @@ public class SearchParametersUtil {
         searchParametersBuilder.searchMode(SearchMode.ANYWHERE);
         for (FilterCouple filter : filters) {
             if (filter.isFilterSet()) {
-                searchParametersBuilder.propertyWithValue(filter.getFilter(), MetamodelUtil.toAttributes(filter.getProperty(), clazz));
+                searchParametersBuilder.propertyWithValue(filter.getFilter(), clazz, filter.getProperty());
             }
         }
         searchParametersBuilder.firstResult(first).maxResults(count);
         for (OrderCouple order : orders) {
-            searchParametersBuilder.orderBy(order.getDirection(), MetamodelUtil.toAttributes(order.getProperty(), clazz));
+            searchParametersBuilder.orderBy(order.getDirection(), clazz, order.getProperty());
         }
         return searchParametersBuilder.toSearchParameters();
     }

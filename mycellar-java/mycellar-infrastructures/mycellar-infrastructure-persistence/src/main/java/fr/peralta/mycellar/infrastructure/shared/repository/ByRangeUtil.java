@@ -18,15 +18,17 @@
  */
 package fr.peralta.mycellar.infrastructure.shared.repository;
 
-import static com.google.common.collect.Lists.newArrayList;
 import static java.lang.Boolean.FALSE;
 import static java.lang.Boolean.TRUE;
 
+import java.util.ArrayList;
 import java.util.List;
 
+import javax.inject.Inject;
 import javax.inject.Named;
 import javax.inject.Singleton;
 import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.Path;
 import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
 
@@ -40,42 +42,59 @@ import fr.peralta.mycellar.domain.shared.repository.SearchParameters;
 @Singleton
 public class ByRangeUtil {
 
+    private JpaUtil jpaUtil;
+
+    @SuppressWarnings("unchecked")
     public <E> Predicate byRanges(Root<E> root, CriteriaBuilder builder, SearchParameters sp, Class<E> type) {
-        List<Predicate> predicates = newArrayList();
+        List<Predicate> predicates = new ArrayList<>();
         for (Range<?, ?> r : sp.getRanges()) {
-            @SuppressWarnings("unchecked")
             Range<E, ?> range = (Range<E, ?>) r;
             if (range.isSet()) {
                 Predicate rangePredicate = buildRangePredicate(range, root, builder);
-
                 if (rangePredicate != null) {
-                    if (!range.isIncludeNullSet() || (range.getIncludeNull() == FALSE)) {
-                        predicates.add(rangePredicate);
-                    } else {
-                        predicates.add(builder.or(rangePredicate, builder.isNull(root.get(range.getField()))));
-                    }
-                } else {
-                    // no from/to is set, but include null or not could be:
-                    if (TRUE == range.getIncludeNull()) {
-                        predicates.add(builder.isNull(root.get(range.getField())));
-                    } else if (FALSE == range.getIncludeNull()) {
-                        predicates.add(builder.isNotNull(root.get(range.getField())));
-                    }
+                    predicates.add(rangePredicate);
                 }
             }
         }
 
-        return JpaUtil.andPredicate(builder, predicates);
+        return jpaUtil.concatPredicate(sp, builder, predicates);
     }
 
     private <D extends Comparable<? super D>, E> Predicate buildRangePredicate(Range<E, D> range, Root<E> root, CriteriaBuilder builder) {
+        Predicate rangePredicate = null;
+        Path<D> path = jpaUtil.getPath(root, range.getPath());
         if (range.isBetween()) {
-            return builder.between(root.get(range.getField()), range.getFrom(), range.getTo());
+            rangePredicate = builder.between(path, range.getFrom(), range.getTo());
         } else if (range.isFromSet()) {
-            return builder.greaterThanOrEqualTo(root.get(range.getField()), range.getFrom());
+            rangePredicate = builder.greaterThanOrEqualTo(path, range.getFrom());
         } else if (range.isToSet()) {
-            return builder.lessThanOrEqualTo(root.get(range.getField()), range.getTo());
+            rangePredicate = builder.lessThanOrEqualTo(path, range.getTo());
+        }
+
+        if (rangePredicate != null) {
+            if (!range.isIncludeNullSet() || (range.getIncludeNull() == FALSE)) {
+                return rangePredicate;
+            } else {
+                return builder.or(rangePredicate, builder.isNull(path));
+            }
+        } else {
+            // no from/to is set, but include null or not could be:
+            if (TRUE == range.getIncludeNull()) {
+                return builder.isNull(path);
+            } else if (FALSE == range.getIncludeNull()) {
+                return builder.isNotNull(path);
+            }
         }
         return null;
     }
+
+    /**
+     * @param jpaUtil
+     *            the jpaUtil to set
+     */
+    @Inject
+    public void setJpaUtil(JpaUtil jpaUtil) {
+        this.jpaUtil = jpaUtil;
+    }
+
 }

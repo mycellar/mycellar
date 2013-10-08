@@ -18,7 +18,7 @@
  */
 package fr.peralta.mycellar.infrastructure.shared.search;
 
-import static org.hibernate.search.jpa.Search.*;
+import static org.hibernate.search.jpa.Search.getFullTextEntityManager;
 
 import java.util.Arrays;
 
@@ -34,6 +34,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Lazy;
 
 import fr.peralta.mycellar.domain.booking.BookingEvent;
+import fr.peralta.mycellar.domain.contact.Contact;
 import fr.peralta.mycellar.domain.stock.Cellar;
 import fr.peralta.mycellar.domain.user.User;
 import fr.peralta.mycellar.domain.wine.Appellation;
@@ -51,7 +52,7 @@ public class MassIndexerService {
 
     protected static final Class<?>[] CLASSES_TO_BE_INDEXED = { BookingEvent.class, //
             Cellar.class, User.class, Appellation.class, Country.class, Format.class, //
-            Producer.class, Region.class, Wine.class //
+            Producer.class, Region.class, Wine.class, Contact.class //
     };
 
     @PersistenceContext
@@ -71,15 +72,34 @@ public class MassIndexerService {
         StopWatch stopWatch = new StopWatch();
         stopWatch.start();
         try {
-            getFullTextEntityManager(entityManager) //
-                    .createIndexer(CLASSES_TO_BE_INDEXED) //
-                    .batchSizeToLoadObjects(batchSizeToLoadObjects) //
-                    .threadsToLoadObjects(threadsToLoadObjects) //
-                    .threadsForSubsequentFetching(threadsForSubsequentFetching) //
-                    .start();
+            for (Class<?> classToBeIndexed : CLASSES_TO_BE_INDEXED) {
+                indexClass(classToBeIndexed);
+            }
         } finally {
             stopWatch.stop();
             logger.info("Indexed {} in {}", Arrays.toString(CLASSES_TO_BE_INDEXED), stopWatch.toString());
+        }
+    }
+
+    /**
+     * 
+     */
+    private void indexClass(Class<?> classToBeIndexed) {
+        StopWatch stopWatch = new StopWatch();
+        stopWatch.start();
+        try {
+            getFullTextEntityManager(entityManager) //
+                    .createIndexer(classToBeIndexed) //
+                    .batchSizeToLoadObjects(batchSizeToLoadObjects) //
+                    .threadsToLoadObjects(threadsToLoadObjects) //
+                    .threadsForSubsequentFetching(threadsForSubsequentFetching) //
+                    .startAndWait();
+        } catch (InterruptedException e) {
+            logger.warn("Interrupted while indexing " + classToBeIndexed.getSimpleName(), e);
+            Thread.currentThread().interrupt();
+        } finally {
+            stopWatch.stop();
+            logger.info("Indexed {} in {}", classToBeIndexed.getSimpleName(), stopWatch.toString());
         }
     }
 }

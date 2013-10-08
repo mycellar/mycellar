@@ -20,36 +20,91 @@ package fr.peralta.mycellar.domain.shared.repository;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import javax.persistence.metamodel.SingularAttribute;
 
+import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 
 public class TermSelector implements Serializable {
     private static final long serialVersionUID = 201308010800L;
 
-    private final SingularAttribute<?, ?> attribute;
-    private final List<String> terms = new ArrayList<>();
-
-    public TermSelector(SingularAttribute<?, ?> attribute) {
-        this.attribute = attribute;
-    }
+    private final Path path;
+    private List<String> selected = new ArrayList<>();
+    private boolean orMode = true;
 
     public TermSelector() {
-        this(null);
+        path = null;
     }
 
-    public SingularAttribute<?, ?> getAttribute() {
-        return attribute;
+    public TermSelector(SingularAttribute<?, ?> attribute) {
+        path = new Path(attribute);
+    }
+
+    public Path getPath() {
+        return path;
+    }
+
+    public boolean isOrMode() {
+        return orMode;
+    }
+
+    public void setOrMode(boolean orMode) {
+        this.orMode = orMode;
+    }
+
+    public TermSelector or() {
+        setOrMode(true);
+        return this;
+    }
+
+    public TermSelector and() {
+        setOrMode(false);
+        return this;
     }
 
     /**
-     * @return the terms
+     * Get the possible candidates for property.
      */
-    public List<String> getTerms() {
-        return terms;
+    public List<String> getSelected() {
+        return selected;
+    }
+
+    public void setSelected(String selected) {
+        this.selected = Arrays.asList(selected);
+    }
+
+    /**
+     * Set the possible candidates for property.
+     */
+    public void setSelected(List<String> selected) {
+        this.selected = selected;
+    }
+
+    public TermSelector selected(String... selected) {
+        setSelected(Arrays.asList(selected));
+        return this;
+    }
+
+    public boolean isNotEmpty() {
+        if ((selected == null) || selected.isEmpty()) {
+            return false;
+        }
+        for (String word : selected) {
+            if (StringUtils.isNotBlank(word)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public void clearSelected() {
+        if (selected != null) {
+            selected.clear();
+        }
     }
 
     /**
@@ -57,14 +112,7 @@ public class TermSelector implements Serializable {
      */
     @Override
     public String toString() {
-        ToStringBuilder toStringBuilder = new ToStringBuilder(this, ToStringStyle.SHORT_PREFIX_STYLE).append("terms", terms);
-        StringBuilder builder = new StringBuilder("{");
-        builder.append(
-                new ToStringBuilder(attribute, ToStringStyle.SHORT_PREFIX_STYLE).append("declaringType", attribute.getDeclaringType().getJavaType()).append("javaType", attribute.getJavaType())
-                        .append("name", attribute.getName()).build()).append(",");
-        builder.append("}");
-        toStringBuilder.append("attribute", builder.toString());
-        return toStringBuilder.build();
+        return ToStringBuilder.reflectionToString(this, ToStringStyle.SHORT_PREFIX_STYLE);
     }
 
 }

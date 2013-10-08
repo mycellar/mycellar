@@ -33,7 +33,6 @@ import javax.persistence.PersistenceContext;
 import javax.persistence.TypedQuery;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
-import javax.persistence.criteria.JoinType;
 import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
 import javax.persistence.metamodel.SingularAttribute;
@@ -46,7 +45,6 @@ import org.springframework.beans.BeanUtils;
 
 import fr.peralta.mycellar.domain.shared.Identifiable;
 import fr.peralta.mycellar.domain.shared.repository.GenericRepository;
-import fr.peralta.mycellar.domain.shared.repository.MetamodelUtil;
 import fr.peralta.mycellar.domain.shared.repository.SearchParameters;
 
 /**
@@ -61,11 +59,14 @@ public abstract class JpaGenericRepository<E extends Identifiable<PK>, PK extend
     private ByRangeUtil byRangeUtil;
     private NamedQueryUtil namedQueryUtil;
     private OrderByUtil orderByUtil;
+    private JpaUtil jpaUtil;
+    private MetamodelUtil metamodelUtil;
 
     private EntityManager entityManager;
 
     private final Class<E> type;
     private final List<SingularAttribute<?, ?>> indexedAttributes;
+    protected String cacheRegion;
 
     /**
      * This constructor needs the real type of the generic type E so it can be
@@ -84,7 +85,6 @@ public abstract class JpaGenericRepository<E extends Identifiable<PK>, PK extend
      * {@inheritDoc}
      */
     @Override
-    @SuppressWarnings("unchecked")
     public List<E> find(SearchParameters sp) {
         checkNotNull(sp, "The searchParameters cannot be null");
 
@@ -104,22 +104,15 @@ public abstract class JpaGenericRepository<E extends Identifiable<PK>, PK extend
             criteriaQuery = criteriaQuery.where(predicate);
         }
 
-        // left join
-        if (!sp.getLeftJoins().isEmpty()) {
-            for (SingularAttribute<?, ?> arg : sp.getLeftJoins()) {
-                root.fetch((SingularAttribute<E, ?>) arg, JoinType.LEFT);
-            }
-        }
+        // fetches
+        jpaUtil.fetches(sp, root);
 
         // order by
         criteriaQuery.orderBy(orderByUtil.buildJpaOrders(root, builder, sp));
 
         TypedQuery<E> typedQuery = entityManager.createQuery(criteriaQuery);
-
-        JpaUtil.applyCacheHints(typedQuery, sp, type);
-        JpaUtil.applyPagination(typedQuery, sp);
-
-        // execution
+        jpaUtil.applyCacheHints(typedQuery, sp, type);
+        jpaUtil.applyPagination(typedQuery, sp);
         List<E> entities = typedQuery.getResultList();
         logger.trace("Returned {} elements for {}.", entities.size(), sp);
 
@@ -153,15 +146,12 @@ public abstract class JpaGenericRepository<E extends Identifiable<PK>, PK extend
             criteriaQuery = criteriaQuery.where(predicate);
         }
 
-        TypedQuery<Long> typedQuery = entityManager.createQuery(criteriaQuery);
-
         // construct order by to fetch or joins if needed
         orderByUtil.buildJpaOrders(root, builder, sp);
 
-        // cache
-        JpaUtil.applyCacheHints(typedQuery, sp, type);
+        TypedQuery<Long> typedQuery = entityManager.createQuery(criteriaQuery);
 
-        // execution
+        jpaUtil.applyCacheHints(typedQuery, sp, type);
         return typedQuery.getSingleResult().intValue();
     }
 
@@ -201,13 +191,13 @@ public abstract class JpaGenericRepository<E extends Identifiable<PK>, PK extend
     }
 
     protected <R> Predicate getPredicate(Root<E> root, CriteriaBuilder builder, SearchParameters sp) {
-        return JpaUtil.andPredicate(builder, //
+        return jpaUtil.andPredicate(builder, //
                 bySearchPredicate(root, builder, sp), //
                 byMandatoryPredicate(root, builder, sp));
     }
 
     protected <R> Predicate bySearchPredicate(Root<E> root, CriteriaBuilder builder, SearchParameters sp) {
-        return JpaUtil.concatPredicate(sp, builder, //
+        return jpaUtil.concatPredicate(sp, builder, //
                 byFullText(root, builder, sp, type, indexedAttributes), //
                 byRanges(root, builder, sp, type), //
                 byPropertySelectors(root, builder, sp));
@@ -237,7 +227,7 @@ public abstract class JpaGenericRepository<E extends Identifiable<PK>, PK extend
         List<SingularAttribute<?, ?>> ret = new ArrayList<>();
         for (Method m : type.getMethods()) {
             if (m.getAnnotation(Field.class) != null) {
-                ret.add(MetamodelUtil.toAttribute(BeanUtils.findPropertyForMethod(m).getName(), type));
+                ret.add(metamodelUtil.toAttribute(type, BeanUtils.findPropertyForMethod(m).getName()));
             }
         }
         return ret;
@@ -339,6 +329,38 @@ public abstract class JpaGenericRepository<E extends Identifiable<PK>, PK extend
     @Inject
     public final void setOrderByUtil(OrderByUtil orderByUtil) {
         this.orderByUtil = orderByUtil;
+    }
+
+    /**
+     * @return the jpaUtil
+     */
+    protected final JpaUtil getJpaUtil() {
+        return jpaUtil;
+    }
+
+    /**
+     * @param jpaUtil
+     *            the jpaUtil to set
+     */
+    @Inject
+    public final void setJpaUtil(JpaUtil jpaUtil) {
+        this.jpaUtil = jpaUtil;
+    }
+
+    /**
+     * @return the metamodelUtil
+     */
+    protected final MetamodelUtil getMetamodelUtil() {
+        return metamodelUtil;
+    }
+
+    /**
+     * @param metamodelUtil
+     *            the metamodelUtil to set
+     */
+    @Inject
+    public final void setMetamodelUtil(MetamodelUtil metamodelUtil) {
+        this.metamodelUtil = metamodelUtil;
     }
 
 }

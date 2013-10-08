@@ -29,7 +29,6 @@ import javax.persistence.EntityManager;
 import javax.persistence.Parameter;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
-import javax.persistence.metamodel.Attribute;
 
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
@@ -69,7 +68,7 @@ public class NamedQueryUtil {
                 if (!first) {
                     orderClausis.append(", ");
                 }
-                orderClausis.append(getPath(orderBy.getAttributes()));
+                orderClausis.append(orderBy.getPath().getPath());
                 orderClausis.append(orderBy.isOrderDesc() ? " desc" : " asc");
                 first = false;
             }
@@ -99,18 +98,6 @@ public class NamedQueryUtil {
         }
 
         return result;
-    }
-
-    /**
-     * @param attributes
-     * @return
-     */
-    private String getPath(List<Attribute<?, ?>> attributes) {
-        StringBuilder builder = new StringBuilder();
-        for (Attribute<?, ?> attribute : attributes) {
-            builder.append(attribute.getName()).append(".");
-        }
-        return builder.substring(0, builder.length() - 1);
     }
 
     @SuppressWarnings("unchecked")

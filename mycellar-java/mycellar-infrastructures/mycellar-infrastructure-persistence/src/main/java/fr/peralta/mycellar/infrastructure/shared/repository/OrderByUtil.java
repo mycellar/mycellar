@@ -21,6 +21,7 @@ package fr.peralta.mycellar.infrastructure.shared.repository;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.inject.Inject;
 import javax.inject.Named;
 import javax.inject.Singleton;
 import javax.persistence.criteria.CriteriaBuilder;
@@ -38,13 +39,24 @@ import fr.peralta.mycellar.domain.shared.repository.SearchParameters;
 @Singleton
 public class OrderByUtil {
 
+    private JpaUtil jpaUtil;
+
     public <E> List<Order> buildJpaOrders(Root<E> root, CriteriaBuilder builder, SearchParameters sp) {
         List<Order> jpaOrders = new ArrayList<>();
         for (OrderBy ob : sp.getOrders()) {
-            Path<?> path = JpaUtil.getPath(root, ob.getAttributes());
+            Path<?> path = jpaUtil.getPath(root, ob.getPath());
             jpaOrders.add(ob.isOrderDesc() ? builder.desc(path) : builder.asc(path));
         }
         return jpaOrders;
+    }
+
+    /**
+     * @param jpaUtil
+     *            the jpaUtil to set
+     */
+    @Inject
+    public void setJpaUtil(JpaUtil jpaUtil) {
+        this.jpaUtil = jpaUtil;
     }
 
 }

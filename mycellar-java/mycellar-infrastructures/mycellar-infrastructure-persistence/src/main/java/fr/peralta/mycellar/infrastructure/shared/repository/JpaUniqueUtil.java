@@ -18,24 +18,22 @@
  */
 package fr.peralta.mycellar.infrastructure.shared.repository;
 
-import static com.google.common.collect.Iterables.*;
-import static com.google.common.collect.Lists.*;
-import static com.google.common.collect.Maps.*;
-import static java.util.Collections.*;
-import static org.apache.commons.lang.StringUtils.*;
-import static org.hibernate.proxy.HibernateProxyHelper.*;
-import static org.springframework.core.annotation.AnnotationUtils.*;
-import static org.springframework.util.ReflectionUtils.*;
+import static com.google.common.collect.Iterables.concat;
+import static com.google.common.collect.Lists.newArrayList;
+import static com.google.common.collect.Maps.newHashMap;
+import static java.util.Collections.emptyList;
+import static org.apache.commons.lang.StringUtils.equalsIgnoreCase;
+import static org.hibernate.proxy.HibernateProxyHelper.getClassWithoutInitializingProxy;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.util.List;
 import java.util.Map;
 
+import javax.inject.Inject;
 import javax.inject.Named;
 import javax.inject.Singleton;
 import javax.persistence.Column;
-import javax.persistence.Entity;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Table;
@@ -43,8 +41,7 @@ import javax.persistence.TypedQuery;
 import javax.persistence.UniqueConstraint;
 
 import org.apache.commons.lang.WordUtils;
-import org.springframework.beans.BeanUtils;
-import org.springframework.util.ReflectionUtils;
+import org.springframework.context.i18n.LocaleContextHolder;
 
 import fr.peralta.mycellar.domain.shared.Identifiable;
 
@@ -55,6 +52,7 @@ import fr.peralta.mycellar.domain.shared.Identifiable;
 @Singleton
 public class JpaUniqueUtil {
     private EntityManager entityManager;
+    private JpaUtil jpaUtil;
 
     /**
      * Return the error code if the given property is already present in the
@@ -63,8 +61,7 @@ public class JpaUniqueUtil {
     public String validateSimpleUnique(Identifiable<?> entity, String property, Object value) {
         Map<String, Object> values = newHashMap();
         values.put(property, value);
-        return existsInDatabaseOnAllObjects(entity, values) ? simpleUniqueConstraintError(entity,
-                property) : null;
+        return existsInDatabaseOnAllObjects(entity, values) ? simpleUniqueConstraintError(entity, property) : null;
     }
 
     /**
@@ -91,7 +88,7 @@ public class JpaUniqueUtil {
             Column column = field.getAnnotation(Column.class);
             if ((column != null) && column.unique()) {
                 Map<String, Object> values = newHashMap();
-                values.put(field.getName(), getValueFromField(field, entity));
+                values.put(field.getName(), jpaUtil.getValueFromField(field, entity));
                 if (existsInDatabaseOnAllObjects(entity, values)) {
                     errors.add(simpleUniqueConstraintError(entity, field.getName()));
                 }
@@ -104,10 +101,10 @@ public class JpaUniqueUtil {
         Class<?> entityClass = getClassWithoutInitializingProxy(entity);
         List<String> errors = newArrayList();
         for (Method method : entityClass.getMethods()) {
-            Column column = findAnnotation(method, Column.class);
+            Column column = entityClass.getAnnotation(Column.class);
             if ((column != null) && column.unique()) {
                 Map<String, Object> values = newHashMap();
-                String property = methodToProperty(method);
+                String property = jpaUtil.methodToProperty(method);
                 values.put(property, invokeMethod(method, entity));
                 if (existsInDatabaseOnAllObjects(entity, values)) {
                     errors.add(simpleUniqueConstraintError(entity, property));
@@ -118,12 +115,12 @@ public class JpaUniqueUtil {
     }
 
     private String simpleUniqueConstraintError(Identifiable<?> entity, String property) {
-        return WordUtils.uncapitalize(getEntityName(entity)) + "_" + property + "_already_exists";
+        return WordUtils.uncapitalize(jpaUtil.getEntityName(entity)) + "_" + property + "_already_exists";
     }
 
     private List<String> validateCompositeUniqueConstraints(Identifiable<?> entity) {
         Class<?> entityClass = getClassWithoutInitializingProxy(entity);
-        Table table = findAnnotation(entityClass, Table.class);
+        Table table = entityClass.getAnnotation(Table.class);
         if (table == null) {
             return emptyList();
         }
@@ -136,32 +133,26 @@ public class JpaUniqueUtil {
         return errors;
     }
 
-    private String compositeUniqueConstraintErrorCode(Identifiable<?> entity,
-            UniqueConstraint uniqueConstraint) {
-        return WordUtils.uncapitalize(getEntityName(entity))
-                + "_"
-                + (uniqueConstraint.name() == null ? "composite_unique_constraint_error"
-                        : uniqueConstraint.name().toLowerCase());
+    private String compositeUniqueConstraintErrorCode(Identifiable<?> entity, UniqueConstraint uniqueConstraint) {
+        return WordUtils.uncapitalize(jpaUtil.getEntityName(entity)) + "_" + (uniqueConstraint.name() == null ? "composite_unique_constraint_error" : uniqueConstraint.name().toLowerCase());
     }
 
-    private boolean checkCompositeUniqueConstraint(Identifiable<?> entity, Class<?> entityClass,
-            UniqueConstraint u) {
+    private boolean checkCompositeUniqueConstraint(Identifiable<?> entity, Class<?> entityClass, UniqueConstraint u) {
         Map<String, Object> values = newHashMap();
         values.putAll(getPropertyConstraints(entity, entityClass, u, ""));
         return !existsInDatabaseOnAllObjects(entity, values);
     }
 
-    private Map<String, Object> getPropertyConstraints(Object entity, Class<?> entityClass,
-            UniqueConstraint u, String prefix) {
+    private Map<String, Object> getPropertyConstraints(Object entity, Class<?> entityClass, UniqueConstraint u, String prefix) {
         Map<String, Object> values = newHashMap();
         for (String column : u.columnNames()) {
             Method method = columnNameToMethod(entityClass, column);
             if (method != null) {
-                values.put(prefix + methodToProperty(method), invokeMethod(method, entity));
+                values.put(prefix + jpaUtil.methodToProperty(method), invokeMethod(method, entity));
             } else {
                 Field field = columnNameToField(entityClass, column);
                 if (field != null) {
-                    values.put(prefix + field.getName(), getValueFromField(field, entity));
+                    values.put(prefix + field.getName(), jpaUtil.getValueFromField(field, entity));
                 }
             }
         }
@@ -192,11 +183,16 @@ public class JpaUniqueUtil {
         if ((entity == null) || (values == null) || values.isEmpty()) {
             return false;
         }
-        String entityName = getEntityName(entity);
+        String entityName = jpaUtil.getEntityName(entity);
         String sqlQuery = "select count(c) from " + entityName + " c where";
         boolean first = true;
-        for (String propertyName : values.keySet()) {
-            sqlQuery += (!first ? " and " : " ") + propertyName + "=:" + propertyName;
+        for (Map.Entry<String, Object> property : values.entrySet()) {
+            sqlQuery += !first ? " and " : " ";
+            if (property.getValue() instanceof String) {
+                sqlQuery += "upper(" + property.getKey() + ")=:" + property.getKey();
+            } else {
+                sqlQuery += property.getKey() + "=:" + property.getKey();
+            }
             first = false;
         }
         if (entity.isIdSet()) {
@@ -206,8 +202,13 @@ public class JpaUniqueUtil {
             sqlQuery += " id<>:id";
         }
         TypedQuery<Long> query = entityManager.createQuery(sqlQuery, Long.class);
-        for (String propertyName : values.keySet()) {
-            query.setParameter(propertyName, values.get(propertyName));
+        for (Map.Entry<String, Object> property : values.entrySet()) {
+            String propertyName = property.getKey();
+            Object value = property.getValue();
+            if (value instanceof String) {
+                value = ((String) value).toUpperCase(LocaleContextHolder.getLocale());
+            }
+            query.setParameter(propertyName, value);
         }
         if (entity.isIdSet()) {
             query.setParameter("id", entity.getId());
@@ -215,25 +216,22 @@ public class JpaUniqueUtil {
         return query.getSingleResult() > 0;
     }
 
-    private String getEntityName(Identifiable<?> entity) {
-        Entity entityAnnotation = findAnnotation(entity.getClass(), Entity.class);
-        if (isBlank(entityAnnotation.name())) {
-            return getClassWithoutInitializingProxy(entity).getSimpleName();
-        }
-        return entityAnnotation.name();
-    }
-
-    private String methodToProperty(Method m) {
-        return BeanUtils.findPropertyForMethod(m).getName();
-    }
-
-    private Object getValueFromField(Field field, Object object) {
-        boolean accessible = field.isAccessible();
+    @SuppressWarnings("unchecked")
+    private <T> T invokeMethod(Method method, Object target) {
         try {
-            return ReflectionUtils.getField(field, object);
-        } finally {
-            field.setAccessible(accessible);
+            return (T) method.invoke(target);
+        } catch (Exception e) {
+            throw new RuntimeException(e);
         }
+    }
+
+    /**
+     * @param jpaUtil
+     *            the jpaUtil to set
+     */
+    @Inject
+    public void setJpaUtil(JpaUtil jpaUtil) {
+        this.jpaUtil = jpaUtil;
     }
 
     /**

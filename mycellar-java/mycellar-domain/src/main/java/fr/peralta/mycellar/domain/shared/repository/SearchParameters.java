@@ -23,10 +23,10 @@ import static com.google.common.base.Preconditions.checkNotNull;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
-
-import javax.persistence.metamodel.SingularAttribute;
+import java.util.Set;
 
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
@@ -72,17 +72,17 @@ public class SearchParameters implements Serializable {
     private String namedQuery;
     private final Map<String, Object> parameters = new HashMap<>();
 
-    private final List<OrderBy> orders = new ArrayList<>();
+    private final Set<OrderBy> orders = new HashSet<>();
 
     // technical parameters
     private boolean caseSensitive = false;
 
-    // Pagination
-    private int maxResults = 500;
+    // pagination
+    private int maxResults = -1;
     private int firstResult = 0;
 
-    // Joins
-    private final List<SingularAttribute<?, ?>> leftJoins = new ArrayList<>();
+    // fetches
+    private final Set<Path> fetches = new HashSet<>();
 
     // ranges
     private final List<Range<?, ?>> ranges = new ArrayList<>();
@@ -93,7 +93,7 @@ public class SearchParameters implements Serializable {
     // hibernate search terms
     private final List<TermSelector> terms = new ArrayList<>();
     private Float searchSimilarity = 0.5f;
-    private LuceneQueryBuilder luceneQueryBuilder = new DefaultLuceneQueryBuilder();
+    private LuceneQueryBuilder luceneQueryBuilder;
 
     // Warn: before enabling cache for queries,
     // check this: https://hibernate.atlassian.net/browse/HHH-1523
@@ -103,28 +103,16 @@ public class SearchParameters implements Serializable {
     // extra parameters
     private final Map<String, Object> extraParameters = new HashMap<>();
 
-    private boolean useANDInManyToMany = true;
+    private boolean useAndInXToMany = true;
 
     private boolean useDistinct = false;
-
-    // -----------------------------------
-    // Predicate mode
-    // -----------------------------------
-
-    public boolean isAndMode() {
-        return andMode;
-    }
-
-    public void setAndMode(boolean andMode) {
-        this.andMode = andMode;
-    }
 
     // -----------------------------------
     // SearchMode
     // -----------------------------------
 
     /**
-     * It defaults to EQUALS.
+     * Fluently set the @{link SearchMode}. It defaults to EQUALS.
      * 
      * @see SearchMode#EQUALS
      */
@@ -139,6 +127,18 @@ public class SearchParameters implements Serializable {
      */
     public SearchMode getSearchMode() {
         return searchMode;
+    }
+
+    // -----------------------------------
+    // Predicate mode
+    // -----------------------------------
+
+    public void setAndMode(boolean andMode) {
+        this.andMode = andMode;
+    }
+
+    public boolean isAndMode() {
+        return andMode;
     }
 
     // -----------------------------------
@@ -182,22 +182,12 @@ public class SearchParameters implements Serializable {
         this.searchSimilarity = searchSimilarity;
     }
 
-    /**
-     * @See {@link DefaultLuceneQueryBuilder}
-     * 
-     * @return
-     */
     public LuceneQueryBuilder getLuceneQueryBuilder() {
         return luceneQueryBuilder;
     }
 
-    /**
-     * @See {@link DefaultLuceneQueryBuilder}
-     * 
-     * @param luceneQueryBuilder
-     */
     public void setLuceneQueryBuilder(LuceneQueryBuilder luceneQueryBuilder) {
-        this.luceneQueryBuilder = luceneQueryBuilder;
+        this.luceneQueryBuilder = checkNotNull(luceneQueryBuilder);
     }
 
     // -----------------------------------
@@ -222,7 +212,7 @@ public class SearchParameters implements Serializable {
     // -----------------------------------
 
     public List<OrderBy> getOrders() {
-        return orders;
+        return new ArrayList<OrderBy>(orders);
     }
 
     // -----------------------------------
@@ -269,11 +259,11 @@ public class SearchParameters implements Serializable {
     // -----------------------------------------
 
     /**
-     * Returns the attribute (x-to-one association) which must be fetched with a
-     * left join.
+     * Returns the attributes (x-to-one association) which must be fetched with
+     * a left join.
      */
-    public List<SingularAttribute<?, ?>> getLeftJoins() {
-        return leftJoins;
+    public List<Path> getFetches() {
+        return new ArrayList<Path>(fetches);
     }
 
     // -----------------------------------
@@ -309,16 +299,15 @@ public class SearchParameters implements Serializable {
     }
 
     // -----------------------------------
-    // Use and in NN Search
+    // Use and in XToMany Search
     // -----------------------------------
 
-    public SearchParameters setUseANDInManyToMany(boolean useANDInManyToMany) {
-        this.useANDInManyToMany = useANDInManyToMany;
-        return this;
+    public void setUseAndInXToMany(boolean useAndInXToMany) {
+        this.useAndInXToMany = useAndInXToMany;
     }
 
-    public boolean getUseANDInManyToMany() {
-        return useANDInManyToMany;
+    public boolean getUseAndInXToMany() {
+        return useAndInXToMany;
     }
 
     // -----------------------------------

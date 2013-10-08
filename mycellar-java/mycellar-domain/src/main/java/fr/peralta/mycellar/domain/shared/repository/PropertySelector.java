@@ -39,43 +39,78 @@ public class PropertySelector<E, F> implements Serializable {
 
     private static final long serialVersionUID = 201308010800L;
 
-    private final List<Attribute<?, ?>> attributes;
-    private final List<F> values = new ArrayList<>();
+    private final Path path;
+    private List<F> selected = new ArrayList<>();
     private SearchMode searchMode; // for string property only.
+    private Boolean notIncludingNull;
+    private boolean orMode = true;
 
     public PropertySelector(Attribute<?, ?>... attributes) {
-        this(Arrays.asList(checkNotNull(attributes)));
+        this.path = new Path(checkNotNull(attributes));
     }
 
-    public PropertySelector(List<Attribute<?, ?>> attributes) {
-        this.attributes = checkNotNull(attributes);
-        verifyPath(new ArrayList<>(attributes));
+    public PropertySelector(Class<E> from, String path) {
+        this.path = new Path(from, path);
     }
 
-    private void verifyPath(List<Attribute<?, ?>> attributes) {
-        Class<?> from = attributes.get(0).getJavaType();
-        attributes.remove(0);
-        for (Attribute<?, ?> attribute : attributes) {
-            if (!attribute.getDeclaringType().getJavaType().isAssignableFrom(from)) {
-                throw new IllegalStateException("Wrong path.");
-            }
-            from = attribute.getJavaType();
-        }
+    public Path getPath() {
+        return path;
     }
 
-    public List<Attribute<?, ?>> getAttributes() {
-        return attributes;
+    public boolean isNotIncludingNullSet() {
+        return notIncludingNull != null;
+    }
+
+    public Boolean isNotIncludingNull() {
+        return notIncludingNull;
+    }
+
+    public PropertySelector<E, F> withoutNull() {
+        this.notIncludingNull = true;
+        return this;
     }
 
     /**
      * Get the possible candidates for property.
      */
-    public List<F> getValues() {
-        return values;
+    public List<F> getSelected() {
+        return selected;
     }
 
-    public boolean isType(Class<?> type) {
-        return attributes.get(attributes.size() - 1).getJavaType().isAssignableFrom(type);
+    public PropertySelector<E, F> add(F object) {
+        this.selected.add(object);
+        return this;
+    }
+
+    /**
+     * Set the possible candidates for property.
+     */
+    public void setSelected(List<F> selected) {
+        this.selected = selected;
+    }
+
+    @SuppressWarnings("unchecked")
+    public PropertySelector<E, F> selected(F... selected) {
+        setSelected(Arrays.asList(selected));
+        return this;
+    }
+
+    public boolean isNotEmpty() {
+        return (selected != null) && !selected.isEmpty();
+    }
+
+    public void clearSelected() {
+        if (selected != null) {
+            selected.clear();
+        }
+    }
+
+    public void setValue(F value) {
+        this.selected = Arrays.asList(value);
+    }
+
+    public F getValue() {
+        return isNotEmpty() ? selected.get(0) : null;
     }
 
     public SearchMode getSearchMode() {
@@ -90,21 +125,30 @@ public class PropertySelector<E, F> implements Serializable {
         this.searchMode = searchMode;
     }
 
+    public PropertySelector<E, F> searchMode(SearchMode searchMode) {
+        setSearchMode(searchMode);
+        return this;
+    }
+
+    public boolean isOrMode() {
+        return orMode;
+    }
+
+    public void setOrMode(boolean orMode) {
+        this.orMode = orMode;
+    }
+
+    public PropertySelector<E, F> orMode(boolean orMode) {
+        setOrMode(orMode);
+        return this;
+    }
+
     /**
      * {@inheritDoc}
      */
     @Override
     public String toString() {
-        ToStringBuilder toStringBuilder = new ToStringBuilder(this, ToStringStyle.SHORT_PREFIX_STYLE).append("searchMode", searchMode).append("values", values);
-        StringBuilder builder = new StringBuilder("{");
-        for (Attribute<?, ?> attribute : attributes) {
-            builder.append(
-                    new ToStringBuilder(attribute, ToStringStyle.SHORT_PREFIX_STYLE).append("declaringType", attribute.getDeclaringType().getJavaType()).append("javaType", attribute.getJavaType())
-                            .append("name", attribute.getName()).build()).append(",");
-        }
-        builder.deleteCharAt(builder.length() - 1).append("}");
-        toStringBuilder.append("attributes", builder.toString());
-        return toStringBuilder.build();
+        return ToStringBuilder.reflectionToString(this, ToStringStyle.SHORT_PREFIX_STYLE);
     }
 
 }

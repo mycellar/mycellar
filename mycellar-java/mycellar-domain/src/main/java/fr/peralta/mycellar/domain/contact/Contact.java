@@ -33,6 +33,9 @@ import javax.validation.Valid;
 import org.apache.commons.lang3.ObjectUtils;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.hibernate.annotations.Type;
+import org.hibernate.search.annotations.Analyzer;
+import org.hibernate.search.annotations.Field;
+import org.hibernate.search.annotations.Indexed;
 import org.joda.time.LocalDate;
 
 import fr.peralta.mycellar.domain.shared.IdentifiedEntity;
@@ -42,6 +45,7 @@ import fr.peralta.mycellar.domain.wine.Producer;
  * @author speralta
  */
 @Entity
+@Indexed
 @Table(name = "CONTACT", uniqueConstraints = @UniqueConstraint(columnNames = { "PRODUCER", "CURRENT" }))
 @SequenceGenerator(name = "CONTACT_ID_GENERATOR", allocationSize = 1)
 public class Contact extends IdentifiedEntity {
@@ -59,6 +63,7 @@ public class Contact extends IdentifiedEntity {
     private Producer producer;
 
     @Column(name = "TEXT", length = 10000)
+    @Field(analyzer = @Analyzer(definition = "custom"))
     private String text;
 
     @Column(name = "CURRENT", nullable = false)

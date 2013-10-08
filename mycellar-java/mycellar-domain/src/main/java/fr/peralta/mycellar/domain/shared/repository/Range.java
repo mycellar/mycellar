@@ -20,9 +20,10 @@ package fr.peralta.mycellar.domain.shared.repository;
 
 import java.io.Serializable;
 
-import javax.persistence.metamodel.SingularAttribute;
+import javax.persistence.metamodel.Attribute;
 
 import org.apache.commons.lang3.builder.ToStringBuilder;
+import org.apache.commons.lang3.builder.ToStringStyle;
 
 /**
  * Range support for {@link Comparable} types.
@@ -30,7 +31,7 @@ import org.apache.commons.lang3.builder.ToStringBuilder;
 public class Range<E, D extends Comparable<? super D>> implements Serializable {
     private static final long serialVersionUID = 1L;
 
-    private final SingularAttribute<E, D> field;
+    private final Path path;
     private D from;
     private D to;
     private Boolean includeNull;
@@ -39,27 +40,27 @@ public class Range<E, D extends Comparable<? super D>> implements Serializable {
      * Constructs a new {@link Range} with no boundaries and no restrictions on
      * field's nullability.
      * 
-     * @param field
-     *            the attribute of an existing entity.
+     * @param attributes
+     *            the path to the attribute of an existing entity.
      */
-    public Range(SingularAttribute<E, D> field) {
-        this.field = field;
+    public Range(Attribute<?, ?>... attributes) {
+        path = new Path(attributes);
     }
 
     /**
      * Constructs a new Range.
      * 
-     * @param field
-     *            the property's name of an existing entity.
      * @param from
      *            the lower boundary of this range. Null means no lower
      *            boundary.
      * @param to
      *            the upper boundary of this range. Null means no upper
      *            boundary.
+     * @param attributes
+     *            the path to the attribute of an existing entity.
      */
-    public Range(SingularAttribute<E, D> field, D from, D to) {
-        this.field = field;
+    public Range(D from, D to, Attribute<?, ?>... attributes) {
+        this(attributes);
         this.from = from;
         this.to = to;
     }
@@ -67,8 +68,6 @@ public class Range<E, D extends Comparable<? super D>> implements Serializable {
     /**
      * Constructs a new Range.
      * 
-     * @param field
-     *            an entity's attribute
      * @param from
      *            the lower boundary of this range. Null means no lower
      *            boundary.
@@ -77,11 +76,11 @@ public class Range<E, D extends Comparable<? super D>> implements Serializable {
      *            boundary.
      * @param includeNull
      *            tells whether null should be filtered out or not.
+     * @param attributes
+     *            the path to the attribute of an existing entity.
      */
-    public Range(SingularAttribute<E, D> field, D from, D to, Boolean includeNull) {
-        this.field = field;
-        this.from = from;
-        this.to = to;
+    public Range(D from, D to, Boolean includeNull, Attribute<?, ?>... attributes) {
+        this(from, to, attributes);
         this.includeNull = includeNull;
     }
 
@@ -89,17 +88,14 @@ public class Range<E, D extends Comparable<? super D>> implements Serializable {
      * Constructs a new Range by copy.
      */
     public Range(Range<E, D> other) {
-        this.field = other.getField();
-        this.from = other.getFrom();
-        this.to = other.getTo();
-        this.includeNull = other.getIncludeNull();
+        this.path = other.path;
+        this.from = other.from;
+        this.to = other.to;
+        this.includeNull = other.includeNull;
     }
 
-    /**
-     * @return the entity's attribute this {@link Range} refers to.
-     */
-    public SingularAttribute<E, D> getField() {
-        return field;
+    public Path getPath() {
+        return path;
     }
 
     /**
@@ -116,6 +112,11 @@ public class Range<E, D extends Comparable<? super D>> implements Serializable {
         this.from = from;
     }
 
+    public Range<E, D> from(D from) {
+        setFrom(from);
+        return this;
+    }
+
     public boolean isFromSet() {
         return getFrom() != null;
     }
@@ -125,6 +126,11 @@ public class Range<E, D extends Comparable<? super D>> implements Serializable {
      */
     public D getTo() {
         return to;
+    }
+
+    public Range<E, D> to(D to) {
+        setTo(from);
+        return this;
     }
 
     /**
@@ -140,6 +146,11 @@ public class Range<E, D extends Comparable<? super D>> implements Serializable {
 
     public void setIncludeNull(Boolean includeNull) {
         this.includeNull = includeNull;
+    }
+
+    public Range<E, D> includeNull(Boolean includeNull) {
+        setIncludeNull(includeNull);
+        return this;
     }
 
     public Boolean getIncludeNull() {
@@ -162,7 +173,6 @@ public class Range<E, D extends Comparable<? super D>> implements Serializable {
         if (isBetween()) {
             return getFrom().compareTo(getTo()) <= 0;
         }
-
         return true;
     }
 
@@ -177,6 +187,6 @@ public class Range<E, D extends Comparable<? super D>> implements Serializable {
      */
     @Override
     public String toString() {
-        return ToStringBuilder.reflectionToString(this);
+        return ToStringBuilder.reflectionToString(this, ToStringStyle.SHORT_PREFIX_STYLE);
     }
 }

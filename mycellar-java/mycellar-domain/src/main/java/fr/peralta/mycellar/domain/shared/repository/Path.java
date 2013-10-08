@@ -18,8 +18,6 @@
  */
 package fr.peralta.mycellar.domain.shared.repository;
 
-import static com.google.common.base.Preconditions.checkNotNull;
-
 import java.io.Serializable;
 
 import javax.persistence.metamodel.Attribute;
@@ -28,45 +26,65 @@ import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 
 /**
- * Holder class for search ordering used by the {@link SearchParameters}. When
- * used with {@link NamedQueryUtil}, you pass column name. For other usage, pass
- * the property name.
+ * @author speralta
  */
-public class OrderBy implements Serializable {
-    private static final long serialVersionUID = 1L;
-    private final Path path;
-    private OrderByDirection direction = OrderByDirection.ASC;
+public class Path implements Serializable {
 
-    public OrderBy(OrderByDirection direction, Attribute<?, ?>... attributes) {
-        this.direction = checkNotNull(direction);
-        path = new Path(checkNotNull(attributes));
+    private static final long serialVersionUID = 201310081741L;
+
+    private static String toPath(Attribute<?, ?>... attributes) {
+        StringBuilder path = new StringBuilder();
+        for (Attribute<?, ?> attribute : attributes) {
+            if (path.length() > 0) {
+                path.append(".");
+            }
+            path.append(attribute.getName());
+        }
+        return path.toString();
     }
 
-    public OrderBy(OrderByDirection direction, Class<?> from, String path) {
-        this.direction = checkNotNull(direction);
-        this.path = new Path(checkNotNull(from), checkNotNull(path));
+    private final Class<?> from;
+    private final String path;
+
+    public Path(Attribute<?, ?>... attributes) {
+        from = attributes[0].getDeclaringType().getJavaType();
+        path = toPath(attributes);
     }
 
-    public Path getPath() {
+    public Path(Class<?> from, String path) {
+        this.from = from;
+        this.path = path;
+    }
+
+    /**
+     * @return the path
+     */
+    public String getPath() {
         return path;
     }
 
-    public OrderByDirection getDirection() {
-        return direction;
+    /**
+     * @return the from
+     */
+    public Class<?> getFrom() {
+        return from;
     }
 
-    public boolean isOrderDesc() {
-        return OrderByDirection.DESC == direction;
-    }
-
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public int hashCode() {
         final int prime = 31;
         int result = 1;
+        result = (prime * result) + ((from == null) ? 0 : from.hashCode());
         result = (prime * result) + ((path == null) ? 0 : path.hashCode());
         return result;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public boolean equals(Object obj) {
         if (this == obj) {
@@ -78,7 +96,14 @@ public class OrderBy implements Serializable {
         if (getClass() != obj.getClass()) {
             return false;
         }
-        OrderBy other = (OrderBy) obj;
+        Path other = (Path) obj;
+        if (from == null) {
+            if (other.from != null) {
+                return false;
+            }
+        } else if (!from.equals(other.from)) {
+            return false;
+        }
         if (path == null) {
             if (other.path != null) {
                 return false;
@@ -89,9 +114,6 @@ public class OrderBy implements Serializable {
         return true;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public String toString() {
         return ToStringBuilder.reflectionToString(this, ToStringStyle.SHORT_PREFIX_STYLE);
