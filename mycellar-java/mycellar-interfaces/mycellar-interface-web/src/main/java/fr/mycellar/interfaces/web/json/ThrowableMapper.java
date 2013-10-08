@@ -29,6 +29,7 @@ import javax.ws.rs.ext.Provider;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.security.access.AccessDeniedException;
 
 import fr.mycellar.interfaces.web.services.InternalErrorHolder;
 import fr.peralta.mycellar.interfaces.facades.stack.StackServiceFacade;
@@ -50,6 +51,9 @@ public class ThrowableMapper implements ExceptionMapper<Throwable> {
      */
     @Override
     public Response toResponse(Throwable throwable) {
+        if (throwable instanceof AccessDeniedException) {
+            return Response.status(Status.UNAUTHORIZED).build();
+        }
         stackServiceFacade.onThrowable(throwable);
         logger.error("Throwable thrown in web service.", throwable);
         return Response.status(Status.INTERNAL_SERVER_ERROR).type(MediaType.APPLICATION_JSON)

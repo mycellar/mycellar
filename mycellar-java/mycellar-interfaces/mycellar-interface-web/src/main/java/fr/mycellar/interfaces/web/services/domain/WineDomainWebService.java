@@ -243,6 +243,7 @@ public class WineDomainWebService {
     @GET
     @Produces(MediaType.APPLICATION_JSON)
     @Path("wines")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     public ListWithCount<Wine> getWines(@QueryParam("first") int first, @QueryParam("count") int count, @QueryParam("filters") List<FilterCouple> filters, @QueryParam("sort") List<OrderCouple> orders) {
         SearchParameters searchParameters = searchParametersUtil.getSearchParametersForListWithCount(first, count, filters, orders, Wine.class);
         List<Wine> wines;
