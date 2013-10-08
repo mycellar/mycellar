@@ -90,8 +90,8 @@ public class ContactServiceFacadeImpl implements ContactServiceFacade {
      */
     @Override
     @Transactional(readOnly = false)
-    public void saveContact(Contact contact) throws BusinessException {
-        contactService.save(contact);
+    public Contact saveContact(Contact contact) throws BusinessException {
+        return contactService.save(contact);
     }
 
     /**

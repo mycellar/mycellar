@@ -1,6 +1,7 @@
 angular.module('admin.domain', [
     'admin.domain.admin',
     'admin.domain.booking',
+    'admin.domain.contact',
     'admin.domain.stack',
     'admin.domain.user',
     'admin.domain.wine',

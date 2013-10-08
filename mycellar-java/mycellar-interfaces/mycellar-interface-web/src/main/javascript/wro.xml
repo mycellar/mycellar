@@ -18,6 +18,7 @@
     <js>./app/admin/tools.js</js>
     <js>./app/admin/domain/admin/*.js</js>
     <js>./app/admin/domain/booking/*.js</js>
+    <js>./app/admin/domain/contact/*.js</js>
     <js>./app/admin/domain/stack/*.js</js>
     <js>./app/admin/domain/user/*.js</js>
     <js>./app/admin/domain/wine/*.js</js>
@@ -51,6 +52,7 @@
   <group name="resources">
     <js>./shared/resources/admin/*.js</js>
     <js>./shared/resources/booking/*.js</js>
+    <js>./shared/resources/contact/*.js</js>
     <js>./shared/resources/stack/*.js</js>
     <js>./shared/resources/user/*.js</js>
     <js>./shared/resources/wine/*.js</js>

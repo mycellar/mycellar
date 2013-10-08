@@ -62,7 +62,7 @@ public interface ContactServiceFacade {
      * @param contact
      * @throws BusinessException
      */
-    void saveContact(Contact contact) throws BusinessException;
+    Contact saveContact(Contact contact) throws BusinessException;
 
     /**
      * @param object

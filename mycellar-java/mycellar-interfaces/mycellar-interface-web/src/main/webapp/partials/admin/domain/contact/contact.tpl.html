@@ -1,0 +1,54 @@
+<div class="row">
+  <div class="col-md-2">
+    <nav role="secondary">
+      <data-mycellar-admin-nav></data-mycellar-admin-nav>
+    </nav>
+  </div>
+  <div class="col-md-10">
+    <header class="page-header"><h1>Contact</h1></header>
+    <form name="form" class="form">
+      <error-form form="form"></error-form>
+      <fieldset>
+        <legend>Details</legend>
+        <div class="form-group" ng-class="{error: form.producer.$invalid}">
+          <label class="control-label" for="producer">Producer</label>
+          <input 
+              id="producer" 
+              name="producer" 
+              type="text" 
+              class="form-control"
+              ng-model="contact.producer" 
+              placeholder="Producer" 
+              typeahead="producer as producer.name for producer in producers($viewValue)"
+              typeahead-editable="false"  
+              typeahead-min-length="2" 
+              typeahead-wait-ms="200" />
+          <error-ctrl ctrl="form.producer"></error-ctrl>
+        </div>
+        <div class="form-group" ng-class="{error: form.current.$invalid}">
+          <label class="control-label" for="current">Current</label>
+          <input class="form-control" id="current" name="current" type="date" ng-model="contact.current" placeholder="Current" />
+          <error-ctrl ctrl="form.current"></error-ctrl>
+        </div>
+        <div class="form-group" ng-class="{error: form.next.$invalid}">
+          <label class="control-label" for="next">Next</label>
+          <input class="form-control" id="next" name="next" type="date" ng-model="contact.next" placeholder="Next" />
+          <error-ctrl ctrl="form.next"></error-ctrl>
+        </div>
+        <div class="form-group" ng-class="{error: form.text.$invalid}">
+          <label class="control-label" for="text">Text</label>
+          <textarea 
+              id="text" 
+              name="text" 
+              ng-model="contact.text" 
+              placeholder="Text" 
+              class="form-control"
+              rows="5"></textarea>
+          <error-ctrl ctrl="form.text"></error-ctrl>
+        </div>
+      </fieldset>
+      <input type="submit" class="btn btn-primary" value="Save" ng-click="save()" />
+      <input type="submit" class="btn btn-default" value="Cancel" ng-click="cancel()" />
+    </form>
+  </div>
+</div>
