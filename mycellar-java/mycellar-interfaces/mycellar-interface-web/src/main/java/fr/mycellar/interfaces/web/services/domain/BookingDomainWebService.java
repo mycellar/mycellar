@@ -65,7 +65,7 @@ public class BookingDomainWebService {
     @GET
     @Produces(MediaType.APPLICATION_JSON)
     @Path("bookings")
-    @PreAuthorize(value = "hasRole('ROLE_ADMIN')")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     public ListWithCount<Booking> getBookings(@QueryParam("first") int first, @QueryParam("count") int count, @QueryParam("filters") List<FilterCouple> filters,
             @QueryParam("sort") List<OrderCouple> orders) {
         SearchParameters searchParameters = searchParametersUtil.getSearchParametersForListWithCount(first, count, filters, orders, Booking.class);
@@ -81,14 +81,14 @@ public class BookingDomainWebService {
     @GET
     @Produces(MediaType.APPLICATION_JSON)
     @Path("booking/{id}")
-    @PreAuthorize(value = "hasRole('ROLE_ADMIN')")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     public Booking getBookingById(@PathParam("id") int bookingId) {
         return bookingServiceFacade.getBookingById(bookingId);
     }
 
     @DELETE
     @Path("booking/{id}")
-    @PreAuthorize(value = "hasRole('ROLE_ADMIN') or (hasRole('ROLE_BOOKING') and @currentUserService.isCurrentUser(@bookingServiceFacade.getBookingById(#bookingId).customer))")
+    @PreAuthorize("hasRole('ROLE_ADMIN') or (hasRole('ROLE_BOOKING') and @currentUserService.isCurrentUser(@bookingServiceFacade.getBookingById(#bookingId).customer))")
     public void deleteBookingById(@PathParam("id") int bookingId) throws BusinessException {
         bookingServiceFacade.deleteBooking(bookingServiceFacade.getBookingById(bookingId));
     }
@@ -97,7 +97,7 @@ public class BookingDomainWebService {
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
     @Path("booking")
-    @PreAuthorize(value = "hasRole('ROLE_ADMIN') or (hasRole('ROLE_BOOKING') and @currentUserService.isCurrentUser(#booking.customer))")
+    @PreAuthorize("hasRole('ROLE_ADMIN') or (hasRole('ROLE_BOOKING') and @currentUserService.isCurrentUser(#booking.customer))")
     public Booking saveBooking(Booking booking) throws BusinessException {
         return bookingServiceFacade.saveBooking(booking);
     }

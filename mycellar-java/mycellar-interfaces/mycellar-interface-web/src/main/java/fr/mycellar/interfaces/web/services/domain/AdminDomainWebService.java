@@ -63,7 +63,7 @@ public class AdminDomainWebService {
     @GET
     @Produces(MediaType.APPLICATION_JSON)
     @Path("configurations")
-    @PreAuthorize(value = "hasRole('ROLE_ADMIN')")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     public ListWithCount<Configuration> getConfigurations(@QueryParam("first") int first, @QueryParam("count") int count, @QueryParam("filters") List<FilterCouple> filters,
             @QueryParam("sort") List<OrderCouple> orders) {
         SearchParameters searchParameters = searchParametersUtil.getSearchParametersForListWithCount(first, count, filters, orders, Configuration.class);
@@ -79,7 +79,7 @@ public class AdminDomainWebService {
     @GET
     @Produces(MediaType.APPLICATION_JSON)
     @Path("configuration/{id}")
-    @PreAuthorize(value = "hasRole('ROLE_ADMIN')")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     public Configuration getConfigurationById(@PathParam("id") int configurationId) {
         return administrationServiceFacade.getConfigurationById(configurationId);
     }
@@ -88,7 +88,7 @@ public class AdminDomainWebService {
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
     @Path("configuration")
-    @PreAuthorize(value = "hasRole('ROLE_ADMIN')")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     public Configuration saveConfiguration(Configuration configuration) throws BusinessException {
         return administrationServiceFacade.saveConfiguration(configuration);
     }

@@ -64,7 +64,7 @@ public class ContactDomainWebService {
     @GET
     @Produces(MediaType.APPLICATION_JSON)
     @Path("contacts")
-    @PreAuthorize(value = "hasRole('ROLE_ADMIN')")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     public ListWithCount<Contact> getContacts(@QueryParam("first") int first, @QueryParam("count") int count, @QueryParam("filters") List<FilterCouple> filters,
             @QueryParam("sort") List<OrderCouple> orders) {
         SearchParameters searchParameters = searchParametersUtil.getSearchParametersForListWithCount(first, count, filters, orders, Contact.class);
@@ -80,14 +80,14 @@ public class ContactDomainWebService {
     @GET
     @Produces(MediaType.APPLICATION_JSON)
     @Path("contact/{id}")
-    @PreAuthorize(value = "hasRole('ROLE_ADMIN')")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     public Contact getContactById(@PathParam("id") int contactId) {
         return contactServiceFacade.getContactById(contactId);
     }
 
     @DELETE
     @Path("contact/{id}")
-    @PreAuthorize(value = "hasRole('ROLE_ADMIN')")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     public void deleteContactById(@PathParam("id") int contactId) throws BusinessException {
         contactServiceFacade.deleteContact(contactServiceFacade.getContactById(contactId));
     }
@@ -96,7 +96,7 @@ public class ContactDomainWebService {
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
     @Path("contact")
-    @PreAuthorize(value = "hasRole('ROLE_ADMIN')")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     public Contact saveContact(Contact contact) throws BusinessException {
         return contactServiceFacade.saveContact(contact);
     }

@@ -54,15 +54,15 @@ public class BookingWebService {
     @GET
     @Produces(MediaType.APPLICATION_JSON)
     @Path("quantities/{bookingEventId}")
-    @PreAuthorize(value = "hasRole('ROLE_ADMIN')")
-    public Map<BookingBottle, Long> getQuantities(@PathParam(value = "bookingEventId") Integer bookingEventId) {
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    public Map<BookingBottle, Long> getQuantities(@PathParam("bookingEventId") Integer bookingEventId) {
         return bookingServiceFacade.getBookingsQuantities(bookingServiceFacade.getBookingEventById(bookingEventId));
     }
 
     @GET
     @Produces(MediaType.APPLICATION_JSON)
     @Path("currentBookingEvents")
-    @PreAuthorize(value = "hasRole('ROLE_BOOKING')")
+    @PreAuthorize("hasRole('ROLE_BOOKING')")
     public ListWithCount<BookingEvent> getCurrentBookingEvents() {
         return new ListWithCount<>(bookingServiceFacade.getCurrentBookingEvents());
     }
@@ -70,15 +70,15 @@ public class BookingWebService {
     @GET
     @Produces(MediaType.APPLICATION_JSON)
     @Path("booking")
-    @PreAuthorize(value = "hasRole('ROLE_BOOKING')")
-    public Booking getBooking(@QueryParam(value = "bookingEventId") Integer bookingEventId) {
+    @PreAuthorize("hasRole('ROLE_BOOKING')")
+    public Booking getBooking(@QueryParam("bookingEventId") Integer bookingEventId) {
         return bookingServiceFacade.getBooking(bookingServiceFacade.getBookingEventById(bookingEventId), currentUserService.getCurrentUser());
     }
 
     @GET
     @Produces(MediaType.APPLICATION_JSON)
     @Path("bookings")
-    @PreAuthorize(value = "hasRole('ROLE_BOOKING')")
+    @PreAuthorize("hasRole('ROLE_BOOKING')")
     public ListWithCount<Booking> getBookings() {
         return new ListWithCount<>(bookingServiceFacade.getBookings(currentUserService.getCurrentUser()));
     }
