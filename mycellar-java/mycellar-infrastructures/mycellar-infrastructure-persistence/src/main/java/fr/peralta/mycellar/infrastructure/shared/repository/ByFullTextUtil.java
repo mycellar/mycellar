@@ -52,15 +52,15 @@ public class ByFullTextUtil {
     private HibernateSearchUtil hibernateSearchUtil;
     private JpaUtil jpaUtil;
 
-    public <T extends Identifiable<?>> Predicate byFullText(Root<T> root, CriteriaBuilder builder, SearchParameters sp, Class<T> type, List<SingularAttribute<?, ?>> indexedAttributes) {
+    public <T extends Identifiable<?>> Predicate byFullText(Root<T> root, CriteriaBuilder builder, SearchParameters sp, Class<T> type) {
         if (!hasNonEmptyTerms(sp)) {
             return null;
         }
 
         if (jpaUtil.hasSimplePk(type)) {
-            return onSimplePrimaryKey(root, builder, sp, indexedAttributes);
+            return onSimplePrimaryKey(root, builder, sp);
         } else {
-            return onCompositePrimaryKeys(root, builder, sp, indexedAttributes);
+            return onCompositePrimaryKeys(root, builder, sp);
         }
     }
 
@@ -73,8 +73,8 @@ public class ByFullTextUtil {
         return false;
     }
 
-    private <T extends Identifiable<?>> Predicate onCompositePrimaryKeys(Root<T> root, CriteriaBuilder builder, SearchParameters sp, List<SingularAttribute<?, ?>> properties) {
-        List<? extends T> found = hibernateSearchUtil.find(root.getJavaType(), sp, properties);
+    private <T extends Identifiable<?>> Predicate onCompositePrimaryKeys(Root<T> root, CriteriaBuilder builder, SearchParameters sp) {
+        List<? extends T> found = hibernateSearchUtil.find(root.getJavaType(), sp);
         if (found == null) {
             return null;
         } else if (found.isEmpty()) {
@@ -88,8 +88,8 @@ public class ByFullTextUtil {
         return jpaUtil.concatPredicate(sp, builder, jpaUtil.orPredicate(builder, predicates));
     }
 
-    private <T> Predicate onSimplePrimaryKey(Root<T> root, CriteriaBuilder builder, SearchParameters sp, List<SingularAttribute<?, ?>> properties) {
-        List<Serializable> ids = hibernateSearchUtil.findId(root.getJavaType(), sp, properties);
+    private <T> Predicate onSimplePrimaryKey(Root<T> root, CriteriaBuilder builder, SearchParameters sp) {
+        List<Serializable> ids = hibernateSearchUtil.findId(root.getJavaType(), sp);
         if (ids == null) {
             return null;
         } else if (ids.isEmpty()) {

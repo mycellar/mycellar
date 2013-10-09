@@ -69,10 +69,6 @@ public class SearchParametersBuilder {
         return this;
     }
 
-    public SearchParametersBuilder term(String... terms) {
-        return addTermsToTermSelector(new TermSelector(), terms);
-    }
-
     public SearchParametersBuilder term(SingularAttribute<?, ?> attribute, String... terms) {
         return addTermsToTermSelector(new TermSelector(attribute), terms);
     }
@@ -86,11 +82,6 @@ public class SearchParametersBuilder {
 
     public SearchParametersBuilder searchSimilarity(float searchSimilarity) {
         searchParameters.setSearchSimilarity(searchSimilarity);
-        return this;
-    }
-
-    public SearchParametersBuilder luceneQueryBuilder(LuceneQueryBuilder luceneQueryBuilder) {
-        searchParameters.setLuceneQueryBuilder(luceneQueryBuilder);
         return this;
     }
 

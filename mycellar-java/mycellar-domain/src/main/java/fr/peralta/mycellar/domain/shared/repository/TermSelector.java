@@ -36,10 +36,6 @@ public class TermSelector implements Serializable {
     private List<String> selected = new ArrayList<>();
     private boolean orMode = true;
 
-    public TermSelector() {
-        path = null;
-    }
-
     public TermSelector(SingularAttribute<?, ?> attribute) {
         path = new Path(attribute);
     }

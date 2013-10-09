@@ -30,8 +30,7 @@ import fr.peralta.mycellar.infrastructure.shared.repository.JpaSimpleRepository;
  */
 @Named
 @Singleton
-public class JpaProducerRepository extends JpaSimpleRepository<Producer> implements
-        ProducerRepository {
+public class JpaProducerRepository extends JpaSimpleRepository<Producer> implements ProducerRepository {
 
     /**
      * Default constructor.

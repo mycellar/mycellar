@@ -24,11 +24,11 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.inject.Inject;
 import javax.inject.Named;
 import javax.inject.Singleton;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
-import javax.persistence.metamodel.SingularAttribute;
 
 import org.apache.lucene.search.Query;
 import org.hibernate.search.jpa.FullTextEntityManager;
@@ -48,11 +48,13 @@ public class HibernateSearchUtil {
 
     private EntityManager entityManager;
 
+    private LuceneQueryBuilder luceneQueryBuilder;
+
     @SuppressWarnings("unchecked")
-    public <T> List<T> find(Class<T> clazz, SearchParameters sp, List<SingularAttribute<?, ?>> availableProperties) {
-        logger.info("Searching {} with terms : {} with available Properties: {}", new Object[] { clazz.getSimpleName(), sp.getTerms(), availableProperties });
+    public <T> List<T> find(Class<T> clazz, SearchParameters sp) {
+        logger.debug("Searching {} with terms : {}.", new Object[] { clazz.getSimpleName(), sp.getTerms() });
         FullTextEntityManager fullTextEntityManager = getFullTextEntityManager(entityManager);
-        Query query = sp.getLuceneQueryBuilder().build(fullTextEntityManager, sp, availableProperties);
+        Query query = luceneQueryBuilder.build(fullTextEntityManager, sp);
 
         if (query == null) {
             return null;
@@ -71,10 +73,10 @@ public class HibernateSearchUtil {
      * only the id
      */
     @SuppressWarnings("unchecked")
-    public <T> List<Serializable> findId(Class<T> clazz, SearchParameters sp, List<SingularAttribute<?, ?>> availableProperties) {
-        logger.info("Searching {} with terms : {} with available Properties: {}", new Object[] { clazz.getSimpleName(), sp.getTerms(), availableProperties });
+    public <T> List<Serializable> findId(Class<T> clazz, SearchParameters sp) {
+        logger.debug("Searching {} with terms : {}.", new Object[] { clazz.getSimpleName(), sp.getTerms() });
         FullTextEntityManager fullTextEntityManager = getFullTextEntityManager(entityManager);
-        Query query = sp.getLuceneQueryBuilder().build(fullTextEntityManager, sp, availableProperties);
+        Query query = luceneQueryBuilder.build(fullTextEntityManager, sp);
 
         if (query == null) {
             return null;
@@ -101,6 +103,15 @@ public class HibernateSearchUtil {
     @PersistenceContext
     public void setEntityManager(EntityManager entityManager) {
         this.entityManager = entityManager;
+    }
+
+    /**
+     * @param luceneQueryBuilder
+     *            the luceneQueryBuilder to set
+     */
+    @Inject
+    public void setBuilder(LuceneQueryBuilder luceneQueryBuilder) {
+        this.luceneQueryBuilder = luceneQueryBuilder;
     }
 
 }

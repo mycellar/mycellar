@@ -21,8 +21,6 @@ package fr.peralta.mycellar.infrastructure.shared.repository;
 import static com.google.common.base.Preconditions.checkNotNull;
 
 import java.io.Serializable;
-import java.lang.reflect.Method;
-import java.util.ArrayList;
 import java.util.List;
 
 import javax.inject.Inject;
@@ -35,13 +33,10 @@ import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
-import javax.persistence.metamodel.SingularAttribute;
 
 import org.apache.commons.lang3.StringUtils;
-import org.hibernate.search.annotations.Field;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.BeanUtils;
 
 import fr.peralta.mycellar.domain.shared.Identifiable;
 import fr.peralta.mycellar.domain.shared.repository.GenericRepository;
@@ -65,7 +60,6 @@ public abstract class JpaGenericRepository<E extends Identifiable<PK>, PK extend
     private EntityManager entityManager;
 
     private final Class<E> type;
-    private final List<SingularAttribute<?, ?>> indexedAttributes;
     protected String cacheRegion;
 
     /**
@@ -74,7 +68,6 @@ public abstract class JpaGenericRepository<E extends Identifiable<PK>, PK extend
      */
     public JpaGenericRepository(Class<E> type) {
         this.type = type;
-        this.indexedAttributes = buildIndexedAttributes(type);
     }
 
     public final Class<E> getType() {
@@ -198,13 +191,13 @@ public abstract class JpaGenericRepository<E extends Identifiable<PK>, PK extend
 
     protected <R> Predicate bySearchPredicate(Root<E> root, CriteriaBuilder builder, SearchParameters sp) {
         return jpaUtil.concatPredicate(sp, builder, //
-                byFullText(root, builder, sp, type, indexedAttributes), //
+                byFullText(root, builder, sp, type), //
                 byRanges(root, builder, sp, type), //
                 byPropertySelectors(root, builder, sp));
     }
 
-    protected Predicate byFullText(Root<E> root, CriteriaBuilder builder, SearchParameters sp, Class<E> type, List<SingularAttribute<?, ?>> indexedAttributes) {
-        return byFullTextUtil.byFullText(root, builder, sp, type, indexedAttributes);
+    protected Predicate byFullText(Root<E> root, CriteriaBuilder builder, SearchParameters sp, Class<E> type) {
+        return byFullTextUtil.byFullText(root, builder, sp, type);
     }
 
     protected Predicate byPropertySelectors(Root<E> root, CriteriaBuilder builder, SearchParameters sp) {
@@ -221,16 +214,6 @@ public abstract class JpaGenericRepository<E extends Identifiable<PK>, PK extend
      */
     protected Predicate byMandatoryPredicate(Root<E> root, CriteriaBuilder builder, SearchParameters sp) {
         return null;
-    }
-
-    protected List<SingularAttribute<?, ?>> buildIndexedAttributes(Class<E> type) {
-        List<SingularAttribute<?, ?>> ret = new ArrayList<>();
-        for (Method m : type.getMethods()) {
-            if (m.getAnnotation(Field.class) != null) {
-                ret.add(metamodelUtil.toAttribute(type, BeanUtils.findPropertyForMethod(m).getName()));
-            }
-        }
-        return ret;
     }
 
     // BEANS METHODS

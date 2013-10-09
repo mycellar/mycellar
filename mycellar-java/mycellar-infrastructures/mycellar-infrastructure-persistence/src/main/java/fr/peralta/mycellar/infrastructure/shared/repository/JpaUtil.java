@@ -23,7 +23,6 @@ import static com.google.common.base.Throwables.propagate;
 import static com.google.common.collect.Iterables.filter;
 import static com.google.common.collect.Iterables.toArray;
 import static com.google.common.collect.Lists.newArrayList;
-import static java.lang.reflect.Modifier.isPublic;
 import static org.apache.commons.lang.StringUtils.isBlank;
 import static org.hibernate.proxy.HibernateProxyHelper.getClassWithoutInitializingProxy;
 
@@ -39,7 +38,6 @@ import javax.inject.Named;
 import javax.inject.Singleton;
 import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.Query;
 import javax.persistence.criteria.CriteriaBuilder;
@@ -72,29 +70,6 @@ import fr.peralta.mycellar.domain.shared.repository.SearchParameters;
 public class JpaUtil {
 
     private MetamodelUtil metamodelUtil;
-
-    public boolean isEntityIdManuallyAssigned(Class<?> type) {
-        for (Method method : type.getMethods()) {
-            if (isPrimaryKey(method)) {
-                return isManuallyAssigned(method);
-            }
-        }
-        return false; // no pk found, should not happen
-    }
-
-    private boolean isPrimaryKey(Method method) {
-        return isPublic(method.getModifiers()) && ((method.getAnnotation(Id.class) != null) || (method.getAnnotation(EmbeddedId.class) != null));
-    }
-
-    private boolean isManuallyAssigned(Method method) {
-        if (method.getAnnotation(Id.class) != null) {
-            return method.getAnnotation(GeneratedValue.class) == null;
-        } else if (method.getAnnotation(EmbeddedId.class) != null) {
-            return true;
-        } else {
-            return false;
-        }
-    }
 
     public Predicate concatPredicate(SearchParameters sp, CriteriaBuilder builder, Predicate... predicatesNullAllowed) {
         return concatPredicate(sp, builder, Arrays.asList(predicatesNullAllowed));
@@ -154,9 +129,8 @@ public class JpaUtil {
         case ANYWHERE:
             return builder.like(path, "%" + attrValue + "%");
         case LIKE:
-            return builder.like(path, (String) attrValue); // assume user
-                                                           // provide the wild
-                                                           // cards
+            return builder.like(path, (String) attrValue);
+            // assume user provide the wild cards
         default:
             throw new IllegalStateException("expecting a search mode!");
         }

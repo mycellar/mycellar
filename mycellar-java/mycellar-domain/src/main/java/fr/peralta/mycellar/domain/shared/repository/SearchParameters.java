@@ -93,7 +93,6 @@ public class SearchParameters implements Serializable {
     // hibernate search terms
     private final List<TermSelector> terms = new ArrayList<>();
     private Float searchSimilarity = 0.5f;
-    private LuceneQueryBuilder luceneQueryBuilder;
 
     // Warn: before enabling cache for queries,
     // check this: https://hibernate.atlassian.net/browse/HHH-1523
@@ -180,14 +179,6 @@ public class SearchParameters implements Serializable {
 
     public void setSearchSimilarity(Float searchSimilarity) {
         this.searchSimilarity = searchSimilarity;
-    }
-
-    public LuceneQueryBuilder getLuceneQueryBuilder() {
-        return luceneQueryBuilder;
-    }
-
-    public void setLuceneQueryBuilder(LuceneQueryBuilder luceneQueryBuilder) {
-        this.luceneQueryBuilder = checkNotNull(luceneQueryBuilder);
     }
 
     // -----------------------------------

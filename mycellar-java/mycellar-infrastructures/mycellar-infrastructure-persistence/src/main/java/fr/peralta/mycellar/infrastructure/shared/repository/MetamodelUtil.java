@@ -80,17 +80,6 @@ public class MetamodelUtil {
         }
     }
 
-    public String toPath(List<Attribute<?, ?>> attributes) {
-        StringBuilder path = new StringBuilder();
-        for (Attribute<?, ?> attribute : attributes) {
-            if (path.length() > 0) {
-                path.append(".");
-            }
-            path.append(attribute.getName());
-        }
-        return path.toString();
-    }
-
     public boolean isBoolean(Path path) {
         return isType(Boolean.class, path);
     }

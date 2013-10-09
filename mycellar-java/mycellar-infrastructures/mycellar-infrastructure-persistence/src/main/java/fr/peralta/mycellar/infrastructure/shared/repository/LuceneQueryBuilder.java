@@ -16,17 +16,14 @@
  * You should have received a copy of the GNU General Public License
  * along with MyCellar. If not, see <http://www.gnu.org/licenses/>.
  */
-package fr.peralta.mycellar.domain.shared.repository;
-
-import java.io.Serializable;
-import java.util.List;
-
-import javax.persistence.metamodel.SingularAttribute;
+package fr.peralta.mycellar.infrastructure.shared.repository;
 
 import org.apache.lucene.search.Query;
 import org.hibernate.search.jpa.FullTextEntityManager;
 
-public interface LuceneQueryBuilder extends Serializable {
+import fr.peralta.mycellar.domain.shared.repository.SearchParameters;
 
-    Query build(FullTextEntityManager fullTextEntityManager, SearchParameters searchParameters, List<SingularAttribute<?, ?>> availableProperties);
+public interface LuceneQueryBuilder {
+
+    Query build(FullTextEntityManager fullTextEntityManager, SearchParameters searchParameters);
 }

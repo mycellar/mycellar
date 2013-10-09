@@ -18,7 +18,6 @@
  */
 package fr.peralta.mycellar.infrastructure.shared.repository;
 
-import static com.google.common.base.Preconditions.checkArgument;
 import static com.google.common.base.Throwables.propagate;
 import static com.google.common.collect.Lists.newArrayList;
 import static org.apache.commons.lang.StringUtils.isBlank;
@@ -29,6 +28,8 @@ import static org.apache.lucene.util.Version.LUCENE_36;
 import java.util.List;
 
 import javax.inject.Inject;
+import javax.inject.Named;
+import javax.inject.Singleton;
 import javax.persistence.metamodel.SingularAttribute;
 
 import org.apache.lucene.analysis.ASCIIFoldingFilter;
@@ -38,13 +39,13 @@ import org.hibernate.search.jpa.FullTextEntityManager;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import fr.peralta.mycellar.domain.shared.repository.LuceneQueryBuilder;
 import fr.peralta.mycellar.domain.shared.repository.SearchParameters;
 import fr.peralta.mycellar.domain.shared.repository.TermSelector;
 
+@Named
+@Singleton
 public class DefaultLuceneQueryBuilder implements LuceneQueryBuilder {
 
-    private static final long serialVersionUID = 201310081805L;
     private static final Logger logger = LoggerFactory.getLogger(DefaultLuceneQueryBuilder.class);
 
     private static final String SPACES_OR_PUNCTUATION = "\\p{Punct}|\\p{Blank}";
@@ -52,8 +53,8 @@ public class DefaultLuceneQueryBuilder implements LuceneQueryBuilder {
     private MetamodelUtil metamodelUtil;
 
     @Override
-    public Query build(FullTextEntityManager fullTextEntityManager, SearchParameters searchParameters, List<SingularAttribute<?, ?>> availableProperties) {
-        List<String> clauses = getAllClauses(searchParameters, searchParameters.getTerms(), availableProperties);
+    public Query build(FullTextEntityManager fullTextEntityManager, SearchParameters searchParameters) {
+        List<String> clauses = getAllClauses(searchParameters, searchParameters.getTerms());
 
         StringBuilder query = new StringBuilder();
         query.append("+(");
@@ -70,17 +71,18 @@ public class DefaultLuceneQueryBuilder implements LuceneQueryBuilder {
         }
         logger.debug("Lucene query: {}", query);
         try {
-            return new QueryParser(LUCENE_36, availableProperties.get(0).getName(), fullTextEntityManager.getSearchFactory().getAnalyzer("custom")).parse(query.toString());
+            return new QueryParser(LUCENE_36, null, fullTextEntityManager.getSearchFactory().getAnalyzer("custom")).parse(query.toString());
         } catch (Exception e) {
             throw propagate(e);
         }
     }
 
-    private List<String> getAllClauses(SearchParameters sp, List<TermSelector> terms, List<SingularAttribute<?, ?>> availableProperties) {
+    private List<String> getAllClauses(SearchParameters sp, List<TermSelector> terms) {
         List<String> clauses = newArrayList();
         for (TermSelector term : terms) {
             if (term.isNotEmpty()) {
-                String clause = getClause(sp, term.getSelected(), metamodelUtil.toAttribute(term.getPath()), term.isOrMode(), availableProperties);
+                String clause = getClause(sp, term.getSelected(), metamodelUtil.toAttribute(term.getPath()), term.isOrMode());
+
                 if (isNotBlank(clause)) {
                     clauses.add(clause);
                 }
@@ -89,36 +91,31 @@ public class DefaultLuceneQueryBuilder implements LuceneQueryBuilder {
         return clauses;
     }
 
-    private String getClause(SearchParameters sp, List<String> terms, SingularAttribute<?, ?> property, boolean orMode, List<SingularAttribute<?, ?>> availableProperties) {
-        if (property != null) {
-            checkArgument(availableProperties.contains(property), property + " is not indexed");
-            StringBuilder subQuery = new StringBuilder();
-            if (terms != null) {
-                subQuery.append("(");
-                for (String wordWithSpacesOrPunctuation : terms) {
-                    if (isBlank(wordWithSpacesOrPunctuation)) {
-                        continue;
-                    }
-                    List<String> wordElements = newArrayList();
-                    for (String str : wordWithSpacesOrPunctuation.split(SPACES_OR_PUNCTUATION)) {
-                        if (isNotBlank(str)) {
-                            wordElements.add(str);
-                        }
-                    }
-                    if (!wordElements.isEmpty()) {
-                        if (subQuery.length() > 1) {
-                            subQuery.append(" ").append(orMode ? "OR" : "AND").append(" ");
-                        }
-                        subQuery.append(buildSubQuery(property, wordElements, sp));
+    private String getClause(SearchParameters sp, List<String> terms, SingularAttribute<?, ?> property, boolean orMode) {
+        StringBuilder subQuery = new StringBuilder();
+        if (terms != null) {
+            subQuery.append("(");
+            for (String wordWithSpacesOrPunctuation : terms) {
+                if (isBlank(wordWithSpacesOrPunctuation)) {
+                    continue;
+                }
+                List<String> wordElements = newArrayList();
+                for (String str : wordWithSpacesOrPunctuation.split(SPACES_OR_PUNCTUATION)) {
+                    if (isNotBlank(str)) {
+                        wordElements.add(str);
                     }
                 }
-                subQuery.append(")");
+                if (!wordElements.isEmpty()) {
+                    if (subQuery.length() > 1) {
+                        subQuery.append(" ").append(orMode ? "OR" : "AND").append(" ");
+                    }
+                    subQuery.append(buildSubQuery(property, wordElements, sp));
+                }
             }
-            if (subQuery.length() > 2) {
-                return subQuery.toString();
-            }
-        } else {
-            return getOnAnyClause(sp, terms, availableProperties, orMode, availableProperties);
+            subQuery.append(")");
+        }
+        if (subQuery.length() > 2) {
+            return subQuery.toString();
         }
         return null;
     }
@@ -138,33 +135,6 @@ public class DefaultLuceneQueryBuilder implements LuceneQueryBuilder {
         }
         subQuery.append(")");
         return subQuery.toString();
-    }
-
-    private String getOnAnyClause(SearchParameters sp, List<String> terms, List<SingularAttribute<?, ?>> properties, boolean orMode, List<SingularAttribute<?, ?>> availableProperties) {
-        List<String> subClauses = newArrayList();
-        for (SingularAttribute<?, ?> property : properties) {
-            String clause = getClause(sp, terms, property, orMode, availableProperties);
-            if (isNotBlank(clause)) {
-                subClauses.add(clause);
-            }
-        }
-        if (subClauses.isEmpty()) {
-            return null;
-        }
-        if (subClauses.size() > 1) {
-            StringBuilder subQuery = new StringBuilder();
-            subQuery.append("(");
-            for (String subClause : subClauses) {
-                if (subQuery.length() > 1) {
-                    subQuery.append(" OR ");
-                }
-                subQuery.append(subClause);
-            }
-            subQuery.append(")");
-            return subQuery.toString();
-        } else {
-            return subClauses.get(0);
-        }
     }
 
     /**

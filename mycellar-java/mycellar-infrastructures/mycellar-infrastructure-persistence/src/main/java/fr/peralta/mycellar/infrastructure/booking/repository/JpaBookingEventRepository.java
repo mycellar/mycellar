@@ -30,8 +30,7 @@ import fr.peralta.mycellar.infrastructure.shared.repository.JpaSimpleRepository;
  */
 @Named
 @Singleton
-public class JpaBookingEventRepository extends JpaSimpleRepository<BookingEvent> implements
-        BookingEventRepository {
+public class JpaBookingEventRepository extends JpaSimpleRepository<BookingEvent> implements BookingEventRepository {
 
     /**
      * Default constructor.
