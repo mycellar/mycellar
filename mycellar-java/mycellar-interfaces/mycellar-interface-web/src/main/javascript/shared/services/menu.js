@@ -9,6 +9,8 @@ angular.module('services.menu').factory('menuService', ['$resource', '$rootScope
     var path = $location.path();
     if (path.match("/admin/domain")) {
       path = "/admin/domains";
+    } else if (path.match("/booking/contact")) {
+      path = "/booking/contacts";
     }
     angular.forEach(menu, function(item) {
       if (item.route == undefined) {

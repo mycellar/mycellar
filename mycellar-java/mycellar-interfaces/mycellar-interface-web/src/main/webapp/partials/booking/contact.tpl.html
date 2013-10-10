@@ -1,0 +1,122 @@
+<header class="page-header"><h1>Contact: {{producer.name}}</h1></header>
+<section>
+  <form name="producerForm" class="form">
+    <error-form form="producerForm"></error-form>
+    <div class="row">
+      <div class="col-md-3">
+        <div class="form-group" ng-class="{error: producerForm.phone.$invalid}">
+          <label class="control-label" for="phone">Phone</label>
+          <input class="form-control" id="phone" name="phone" type="text" ng-model="producer.phone" placeholder="Phone" />
+          <error-ctrl ctrl="producerForm.phone"></error-ctrl>
+        </div>
+      </div>
+      <div class="col-md-3">
+        <div class="form-group" ng-class="{error: producerForm.fax.$invalid}">
+          <label class="control-label" for="fax">Fax</label>
+          <input class="form-control" id="fax" name="fax" type="text" ng-model="producer.fax" placeholder="Fax" />
+          <error-ctrl ctrl="producerForm.fax"></error-ctrl>
+        </div>
+      </div>
+      <div class="col-md-6">
+        <div class="form-group" ng-class="{error: producerForm.email.$invalid}">
+          <label class="control-label" for="email">Email</label>
+          <input class="form-control" id="email" name="email" type="text" ng-model="producer.email" placeholder="Email" />
+          <error-ctrl ctrl="producerForm.email"></error-ctrl>
+        </div>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-md-6">
+        <div class="form-group" ng-class="{error: producerForm.description.$invalid}">
+          <label class="control-label" for="description">Description</label>
+          <textarea 
+              id="description" 
+              name="description" 
+              ng-model="producer.description" 
+              placeholder="Description" 
+              class="form-control"
+              rows="3"></textarea>
+          <error-ctrl ctrl="producerForm.description"></error-ctrl>
+        </div>
+      </div>
+      <div class="col-md-6">
+        <div class="form-group" ng-class="{error: producerForm.contactInformation.$invalid}">
+          <label class="control-label" for="contactInformation">Contact information</label>
+          <textarea 
+              id="contactInformation" 
+              name="contactInformation" 
+              ng-model="producer.contactInformation" 
+              placeholder="Contact information" 
+              class="form-control"
+              rows="3"></textarea>
+          <error-ctrl ctrl="producerForm.contactInformation"></error-ctrl>
+        </div>
+      </div>
+    </div>
+    <div class="text-center">
+      <input type="submit" class="btn btn-primary" value="Save" ng-click="saveProducer()" />
+      <a href class="btn btn-info" ng-click="addContact()"><i class="glyphicon glyphicon-plus-sign"></i> Add contact</a>
+    </div>
+  </form>
+  <br />
+  <form id="contactForm" class="form" ui-if="contact != null">
+    <error-form form="contactForm"></error-form>
+    <fieldset>
+      <legend>New contact</legend>
+      <div class="row">
+        <div class="col-md-6">
+          <div class="form-group" ng-class="{error: contactForm.current.$invalid}">
+            <label class="control-label" for="current">Current</label>
+            <input class="form-control" id="current" name="current" type="date" ng-model="contact.current" placeholder="Current" />
+            <error-ctrl ctrl="contactForm.current"></error-ctrl>
+          </div>
+        </div>
+        <div class="col-md-6">
+          <div class="form-group" ng-class="{error: contactForm.next.$invalid}">
+            <label class="control-label" for="next">Next</label>
+            <input class="form-control" id="next" name="next" type="date" ng-model="contact.next" placeholder="Next" />
+            <error-ctrl ctrl="contactForm.next"></error-ctrl>
+          </div>
+        </div>
+      </div>
+      <div class="form-group" ng-class="{error: contactForm.text.$invalid}">
+        <label class="control-label" for="text">Text</label>
+        <textarea 
+            id="text" 
+            name="text" 
+            ng-model="contact.text" 
+            placeholder="Text" 
+            class="form-control"
+            rows="5"></textarea>
+        <error-ctrl ctrl="contactForm.text"></error-ctrl>
+      </div>
+    </fieldset>
+    <input type="submit" class="btn btn-primary" value="Save" ng-click="saveContact()" />
+    <input type="submit" class="btn btn-warning" value="Cancel" ng-click="cancelContact()" />
+  </form>
+  <br />
+  <div class="panel panel-default" ng-repeat="contact in contacts">
+    <div class="panel-heading">
+      <div class="row">
+        <div class="col-md-5">
+          <dl class="dl-horizontal">
+            <dt>Current date</dt>
+            <dd>{{contact.current}}</dd>
+          </dl>
+        </div>
+        <div class="col-md-5">
+          <dl class="dl-horizontal">
+            <dt>Next date</dt>
+            <dd>{{contact.next}}</dd>
+          </dl>
+        </div>
+        <div class="col-md-2">
+          <a href ng-click="editContact(contact)" class="btn btn-info btn-xs"><i class="glyphicon glyphicon-pencil"></i> Edit contact</a>
+        </div>
+      </div>
+    </div>
+    <div class="panel-body">
+      <p>{{contact.text}}</p>
+    </div>
+  </div>
+</section>

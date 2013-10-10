@@ -54,8 +54,8 @@ public class ContactServiceFacadeImpl implements ContactServiceFacade {
      */
     @Override
     @Transactional(readOnly = true)
-    public long countLastContacts() {
-        return contactService.countLastContacts();
+    public long countLastContacts(SearchParameters searchParameters) {
+        return contactService.countLastContacts(searchParameters);
     }
 
     /**

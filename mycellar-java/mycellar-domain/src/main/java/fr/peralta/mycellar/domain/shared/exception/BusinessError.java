@@ -76,6 +76,8 @@ public enum BusinessError {
      * Contact
      */
     CONTACT_00001(Contact_.producer), //
+    CONTACT_00002(Contact_.producer), //
+    CONTACT_00003(Contact_.current), //
 
     /*
      * Country

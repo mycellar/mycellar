@@ -36,9 +36,10 @@ public interface ContactServiceFacade {
     long countContacts(SearchParameters searchParameters);
 
     /**
+     * @param searchParameters
      * @return
      */
-    long countLastContacts();
+    long countLastContacts(SearchParameters searchParameters);
 
     /**
      * @param objectId

@@ -24,10 +24,13 @@ import javax.inject.Named;
 import javax.inject.Singleton;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
 import javax.persistence.criteria.Subquery;
 
 import org.joda.time.LocalDate;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import fr.peralta.mycellar.domain.contact.Contact;
 import fr.peralta.mycellar.domain.contact.repository.ContactRepository;
@@ -41,6 +44,8 @@ import fr.peralta.mycellar.infrastructure.shared.repository.JpaSimpleRepository;
 @Singleton
 public class JpaContactRepository extends JpaSimpleRepository<Contact> implements ContactRepository {
 
+    private final static Logger logger = LoggerFactory.getLogger(JpaContactRepository.class);
+
     /**
      * Default constructor.
      */
@@ -52,7 +57,7 @@ public class JpaContactRepository extends JpaSimpleRepository<Contact> implement
      * {@inheritDoc}
      */
     @Override
-    public long countLastContacts() {
+    public long countLastContacts(SearchParameters searchParameters) {
         CriteriaBuilder criteriaBuilder = getEntityManager().getCriteriaBuilder();
         CriteriaQuery<Long> query = criteriaBuilder.createQuery(Long.class);
         Root<Contact> root = query.from(Contact.class);
@@ -61,8 +66,13 @@ public class JpaContactRepository extends JpaSimpleRepository<Contact> implement
         Root<Contact> subroot = subquery.from(Contact.class);
         subquery.select(subroot).where(criteriaBuilder.equal(root.get("producer"), subroot.get("producer")),
                 criteriaBuilder.greaterThan(subroot.<LocalDate> get("current"), root.<LocalDate> get("current")));
-
-        return getEntityManager().createQuery(query.select(criteriaBuilder.count(root)).where(criteriaBuilder.not(criteriaBuilder.exists(subquery)))).getSingleResult();
+        Predicate predicate = getPredicate(root, criteriaBuilder, searchParameters);
+        if (predicate == null) {
+            predicate = criteriaBuilder.not(criteriaBuilder.exists(subquery));
+        } else {
+            predicate = criteriaBuilder.and(predicate, criteriaBuilder.not(criteriaBuilder.exists(subquery)));
+        }
+        return getEntityManager().createQuery(query.select(criteriaBuilder.count(root)).where(predicate)).getSingleResult();
     }
 
     /**
@@ -79,12 +89,22 @@ public class JpaContactRepository extends JpaSimpleRepository<Contact> implement
         subquery.select(subroot).where(criteriaBuilder.equal(root.get("producer"), subroot.get("producer")),
                 criteriaBuilder.greaterThan(subroot.<LocalDate> get("current"), root.<LocalDate> get("current")));
 
-        return getEntityManager().createQuery( //
+        Predicate predicate = getPredicate(root, criteriaBuilder, searchParameters);
+        if (predicate == null) {
+            predicate = criteriaBuilder.not(criteriaBuilder.exists(subquery));
+        } else {
+            predicate = criteriaBuilder.and(predicate, criteriaBuilder.not(criteriaBuilder.exists(subquery)));
+        }
+
+        List<Contact> result = getEntityManager().createQuery( //
                 query.orderBy(getOrderByUtil().buildJpaOrders(root, criteriaBuilder, searchParameters)) //
                         .select(root) //
-                        .where(criteriaBuilder.not(criteriaBuilder.exists(subquery)))) //
+                        .where(predicate)) //
                 .setFirstResult(searchParameters.getFirstResult()). //
                 setMaxResults(searchParameters.getMaxResults()).getResultList();
+        logger.trace("Returned {} lastContacts for {}.", result.size(), searchParameters);
+
+        return result;
     }
 
     /**

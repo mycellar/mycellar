@@ -4,7 +4,12 @@ angular.module('resources.contact.contacts').factory('Contacts', [
   '$resource', '$q', 
   function ($resource, $q) {
 
-    var Contacts = $resource('/api/domain/contact/contacts');
+    var Contacts = $resource('/api/domain/contact/contacts', {}, {
+      getLastContacts: {
+        url: '/api/contact/lastcontacts',
+        method: 'GET'
+      }
+    });
     var Contact = $resource('/api/domain/contact/contact/:contactId');
     
     Contacts.deleteById = function(id, fn) {

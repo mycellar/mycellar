@@ -29,7 +29,7 @@ angular.module('booking.currents').controller('CurrentBookingsController', [
     };
     
     $scope.save = function(booking) {
-      var errors = this.errors;
+      var errors = $scope.errors;
       $scope.backup = {};
       angular.copy($scope.booking, $scope.backup);
       $scope.booking.$save(function (value, headers) {
@@ -47,7 +47,7 @@ angular.module('booking.currents').controller('CurrentBookingsController', [
     };
     
     $scope.delete = function(booking) {
-      var errors = this.errors;
+      var errors = $scope.errors;
       $scope.backup = {};
       angular.copy($scope.booking, $scope.backup);
       Bookings.deleteById($scope.booking.id, function (value, headers) {
@@ -64,6 +64,7 @@ angular.module('booking.currents').controller('CurrentBookingsController', [
       });
     };
     
+    $scope.errors = [];
     $scope.total = 0;
     $scope.$watch('booking.quantities', function (value) {
       if ($scope.booking != null && $scope.booking.quantities != undefined) {

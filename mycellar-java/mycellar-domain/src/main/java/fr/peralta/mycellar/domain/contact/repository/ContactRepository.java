@@ -37,7 +37,7 @@ public interface ContactRepository extends SimpleRepository<Contact> {
     /**
      * @return
      */
-    long countLastContacts();
+    long countLastContacts(SearchParameters searchParameters);
 
     /**
      * @param orders

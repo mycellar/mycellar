@@ -202,8 +202,8 @@ public class SearchParameters implements Serializable {
     // Order by support
     // -----------------------------------
 
-    public List<OrderBy> getOrders() {
-        return new ArrayList<OrderBy>(orders);
+    public Set<OrderBy> getOrders() {
+        return orders;
     }
 
     // -----------------------------------
@@ -253,8 +253,8 @@ public class SearchParameters implements Serializable {
      * Returns the attributes (x-to-one association) which must be fetched with
      * a left join.
      */
-    public List<Path> getFetches() {
-        return new ArrayList<Path>(fetches);
+    public Set<Path> getFetches() {
+        return fetches;
     }
 
     // -----------------------------------

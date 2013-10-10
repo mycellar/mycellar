@@ -29,7 +29,7 @@ import fr.peralta.mycellar.domain.shared.repository.SimpleRepository;
  */
 public abstract class JpaSimpleRepository<E extends IdentifiedEntity> extends JpaGenericRepository<E, Integer> implements SimpleRepository<E> {
 
-    private static final Logger logger = LoggerFactory.getLogger(JpaSimpleRepository.class);
+    private final Logger logger = LoggerFactory.getLogger(getClass());
 
     /**
      * @param type

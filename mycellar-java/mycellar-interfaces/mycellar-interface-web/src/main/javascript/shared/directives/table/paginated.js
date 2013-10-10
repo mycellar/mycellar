@@ -60,7 +60,7 @@ angular.module('directives.table.paginated').directive('paginated', ['$timeout',
         for (var t in $scope.tableContext.filters) {
           filters.push(t + ',' + $scope.tableContext.filters[t]);
         }
-        $scope.result = $scope.itemResource.get({
+        $scope.result = $scope.itemResource({
           first: $scope.firstItem,
           count: $scope.itemsPerPage,
           sort: sort,

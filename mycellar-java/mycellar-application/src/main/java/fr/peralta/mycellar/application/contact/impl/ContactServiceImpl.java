@@ -42,7 +42,6 @@ import fr.peralta.mycellar.domain.shared.exception.BusinessException;
 import fr.peralta.mycellar.domain.shared.repository.SearchParameters;
 import fr.peralta.mycellar.domain.shared.repository.SearchParametersBuilder;
 import fr.peralta.mycellar.domain.wine.Producer;
-import fr.peralta.mycellar.domain.wine.Producer_;
 
 /**
  * @author speralta
@@ -61,8 +60,8 @@ public class ContactServiceImpl extends AbstractSimpleService<Contact, ContactRe
      * {@inheritDoc}
      */
     @Override
-    public long countLastContacts() {
-        return contactRepository.countLastContacts();
+    public long countLastContacts(SearchParameters searchParameters) {
+        return contactRepository.countLastContacts(searchParameters);
     }
 
     /**
@@ -110,6 +109,12 @@ public class ContactServiceImpl extends AbstractSimpleService<Contact, ContactRe
      */
     @Override
     public void validate(Contact entity) throws BusinessException {
+        if (entity.getProducer() == null) {
+            throw new BusinessException(BusinessError.CONTACT_00002);
+        }
+        if (entity.getCurrent() == null) {
+            throw new BusinessException(BusinessError.CONTACT_00003);
+        }
         Contact existing = find(entity.getProducer(), entity.getCurrent());
         if ((existing != null) && ((entity.getId() == null) || !existing.getId().equals(entity.getId()))) {
             throw new BusinessException(BusinessError.CONTACT_00001);
@@ -123,8 +128,8 @@ public class ContactServiceImpl extends AbstractSimpleService<Contact, ContactRe
      */
     @Override
     public Contact find(Producer producer, LocalDate current) {
-        return contactRepository.findUnique(new SearchParametersBuilder()//
-                .propertyWithValue(producer, Contact_.producer, Producer_.id) //
+        return contactRepository.findUniqueOrNone(new SearchParametersBuilder()//
+                .propertyWithValue(producer, Contact_.producer) //
                 .propertyWithValue(current, Contact_.current)//
                 .toSearchParameters());
     }

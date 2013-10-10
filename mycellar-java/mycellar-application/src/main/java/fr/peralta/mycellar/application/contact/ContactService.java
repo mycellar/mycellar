@@ -45,9 +45,10 @@ public interface ContactService extends SimpleService<Contact> {
     void sendReminders();
 
     /**
+     * @param searchParameters
      * @return
      */
-    long countLastContacts();
+    long countLastContacts(SearchParameters searchParameters);
 
     /**
      * @param searchParameters

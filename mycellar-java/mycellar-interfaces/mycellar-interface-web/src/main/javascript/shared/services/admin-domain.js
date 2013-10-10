@@ -16,7 +16,7 @@ angular.module('services.admin-domain').provider('adminDomainService', ['$routeP
       canDelete = (canDelete != undefined ? canDelete : true);
       var extension = {
         'tableOptions': {
-          itemResource: resource,
+          itemResource: resource.get,
           defaultSort: defaultSort
         },
         tableContext: tableService.createTableContext(),
