@@ -12,7 +12,7 @@
   <import resource="classpath:context-encryptor.xml" />
   <import resource="classpath:context-mail.xml" />
 
-  <context:component-scan base-package="fr.peralta.mycellar.application">
+  <context:component-scan base-package="fr.mycellar.application">
   </context:component-scan>
   
   <task:annotation-driven scheduler="myScheduler"/>

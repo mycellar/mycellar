@@ -41,9 +41,9 @@ import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
 
+import fr.mycellar.domain.shared.exception.BusinessError;
+import fr.mycellar.domain.shared.exception.BusinessException;
 import fr.mycellar.interfaces.web.security.CurrentUserService;
-import fr.peralta.mycellar.domain.shared.exception.BusinessError;
-import fr.peralta.mycellar.domain.shared.exception.BusinessException;
 
 /**
  * @author speralta

@@ -30,10 +30,10 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.MediaType;
 
-import fr.peralta.mycellar.domain.shared.exception.BusinessError;
-import fr.peralta.mycellar.domain.shared.exception.BusinessException;
-import fr.peralta.mycellar.domain.wine.Wine;
-import fr.peralta.mycellar.interfaces.facades.wine.WineServiceFacade;
+import fr.mycellar.domain.shared.exception.BusinessError;
+import fr.mycellar.domain.shared.exception.BusinessException;
+import fr.mycellar.domain.wine.Wine;
+import fr.mycellar.interfaces.facades.wine.WineServiceFacade;
 
 /**
  * @author speralta

@@ -9,7 +9,7 @@
     http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-3.2.xsd 
     http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-3.2.xsd">
 
-  <context:component-scan base-package="fr.peralta.mycellar.infrastructure" />
+  <context:component-scan base-package="fr.mycellar.infrastructure" />
 
   <context:property-placeholder location="classpath:datasource.properties" />
 
@@ -32,7 +32,7 @@
     <property name="jpaPropertyMap">
       <map>
         <entry key="hibernate.search.model_mapping"
-          value="fr.peralta.mycellar.infrastructure.shared.search.SearchMappingFactory" />
+          value="fr.mycellar.infrastructure.shared.search.SearchMappingFactory" />
         <entry key="hibernate.search.default.directory_provider" value="ram" />
         <entry key="hibernate.search.worker.execution" value="async" />
         <entry key="hibernate.search.worker.thread_pool.size" value="3" />

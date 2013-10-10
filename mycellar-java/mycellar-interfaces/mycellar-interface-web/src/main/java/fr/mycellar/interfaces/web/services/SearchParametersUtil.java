@@ -23,9 +23,9 @@ import java.util.List;
 import javax.inject.Named;
 import javax.inject.Singleton;
 
-import fr.peralta.mycellar.domain.shared.repository.SearchMode;
-import fr.peralta.mycellar.domain.shared.repository.SearchParameters;
-import fr.peralta.mycellar.domain.shared.repository.SearchParametersBuilder;
+import fr.mycellar.domain.shared.repository.SearchMode;
+import fr.mycellar.domain.shared.repository.SearchParameters;
+import fr.mycellar.domain.shared.repository.SearchParametersBuilder;
 
 /**
  * @author speralta

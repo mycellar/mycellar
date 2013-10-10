@@ -36,8 +36,8 @@ import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 
-import fr.peralta.mycellar.domain.user.ProfileEnum;
-import fr.peralta.mycellar.interfaces.facades.user.UserServiceFacade;
+import fr.mycellar.domain.user.ProfileEnum;
+import fr.mycellar.interfaces.facades.user.UserServiceFacade;
 
 /**
  * @author speralta
@@ -53,7 +53,7 @@ public class MyCellarAuthenticationProvider extends AbstractUserDetailsAuthentic
      */
     @Override
     protected void additionalAuthenticationChecks(UserDetails userDetails, UsernamePasswordAuthenticationToken authentication) throws AuthenticationException {
-        fr.peralta.mycellar.domain.user.User user = userServiceFacade.authenticateUser(userDetails.getUsername(), (String) authentication.getCredentials());
+        fr.mycellar.domain.user.User user = userServiceFacade.authenticateUser(userDetails.getUsername(), (String) authentication.getCredentials());
         if (user == null) {
             throw new BadCredentialsException("Bad credentials for username '" + userDetails.getUsername() + "'.");
         }
@@ -69,7 +69,7 @@ public class MyCellarAuthenticationProvider extends AbstractUserDetailsAuthentic
         }
         logger.debug("Security verification for username '{}'.", username);
 
-        fr.peralta.mycellar.domain.user.User user = userServiceFacade.getUserByEmail(username);
+        fr.mycellar.domain.user.User user = userServiceFacade.getUserByEmail(username);
         if (user == null) {
             throw new UsernameNotFoundException("Username '" + username + "' not found.");
         }

@@ -7,7 +7,7 @@
     </encoder>
   </appender>
 
-  <logger name="fr.peralta.mycellar" level="debug" />
+  <logger name="fr.mycellar" level="debug" />
 
   <root level="warn">
     <appender-ref ref="STDOUT" />

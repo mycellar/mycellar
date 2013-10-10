@@ -18,7 +18,7 @@
  */
 package fr.mycellar.interfaces.web.services;
 
-import fr.peralta.mycellar.domain.shared.repository.OrderByDirection;
+import fr.mycellar.domain.shared.repository.OrderByDirection;
 
 /**
  * @author speralta

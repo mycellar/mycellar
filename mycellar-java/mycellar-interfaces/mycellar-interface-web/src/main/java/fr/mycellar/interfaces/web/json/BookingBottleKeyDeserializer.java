@@ -28,9 +28,9 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.DeserializationContext;
 import com.fasterxml.jackson.databind.KeyDeserializer;
 
-import fr.peralta.mycellar.domain.booking.BookingBottle;
-import fr.peralta.mycellar.domain.booking.BookingEvent;
-import fr.peralta.mycellar.interfaces.facades.booking.BookingServiceFacade;
+import fr.mycellar.domain.booking.BookingBottle;
+import fr.mycellar.domain.booking.BookingEvent;
+import fr.mycellar.interfaces.facades.booking.BookingServiceFacade;
 
 /**
  * @author speralta

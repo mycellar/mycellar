@@ -28,8 +28,8 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
 
-import fr.peralta.mycellar.domain.user.User;
-import fr.peralta.mycellar.interfaces.facades.user.UserServiceFacade;
+import fr.mycellar.domain.user.User;
+import fr.mycellar.interfaces.facades.user.UserServiceFacade;
 
 /**
  * @author speralta

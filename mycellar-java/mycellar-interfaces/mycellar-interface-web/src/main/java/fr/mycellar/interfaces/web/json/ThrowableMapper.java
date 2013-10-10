@@ -31,8 +31,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.security.access.AccessDeniedException;
 
+import fr.mycellar.interfaces.facades.stack.StackServiceFacade;
 import fr.mycellar.interfaces.web.services.InternalErrorHolder;
-import fr.peralta.mycellar.interfaces.facades.stack.StackServiceFacade;
 
 /**
  * @author speralta

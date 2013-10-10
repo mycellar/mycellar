@@ -28,7 +28,7 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonSerializer;
 import com.fasterxml.jackson.databind.SerializerProvider;
 
-import fr.peralta.mycellar.domain.booking.BookingBottle;
+import fr.mycellar.domain.booking.BookingBottle;
 
 /**
  * @author speralta

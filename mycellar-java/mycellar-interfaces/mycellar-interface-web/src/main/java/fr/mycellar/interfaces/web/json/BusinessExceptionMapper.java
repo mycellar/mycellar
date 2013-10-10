@@ -33,8 +33,8 @@ import javax.ws.rs.ext.Provider;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import fr.mycellar.domain.shared.exception.BusinessException;
 import fr.mycellar.interfaces.web.services.ErrorHolder;
-import fr.peralta.mycellar.domain.shared.exception.BusinessException;
 
 /**
  * @author speralta

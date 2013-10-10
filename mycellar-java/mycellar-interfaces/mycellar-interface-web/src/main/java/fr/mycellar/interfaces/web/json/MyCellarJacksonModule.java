@@ -24,7 +24,7 @@ import javax.inject.Singleton;
 
 import com.fasterxml.jackson.databind.module.SimpleModule;
 
-import fr.peralta.mycellar.domain.booking.BookingBottle;
+import fr.mycellar.domain.booking.BookingBottle;
 
 /**
  * @author speralta

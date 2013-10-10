@@ -7,7 +7,6 @@
     </encoder>
   </appender>
 
-  <logger name="fr.peralta.mycellar" level="trace" />
   <logger name="fr.mycellar" level="trace" />
   
   <!-- URLRWRITE -->

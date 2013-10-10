@@ -32,12 +32,12 @@ import javax.ws.rs.core.MediaType;
 
 import org.springframework.security.access.prepost.PreAuthorize;
 
+import fr.mycellar.domain.booking.Booking;
+import fr.mycellar.domain.booking.BookingBottle;
+import fr.mycellar.domain.booking.BookingEvent;
+import fr.mycellar.interfaces.facades.booking.BookingServiceFacade;
 import fr.mycellar.interfaces.web.security.CurrentUserService;
 import fr.mycellar.interfaces.web.services.ListWithCount;
-import fr.peralta.mycellar.domain.booking.Booking;
-import fr.peralta.mycellar.domain.booking.BookingBottle;
-import fr.peralta.mycellar.domain.booking.BookingEvent;
-import fr.peralta.mycellar.interfaces.facades.booking.BookingServiceFacade;
 
 /**
  * @author speralta
