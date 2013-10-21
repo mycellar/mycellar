@@ -14,9 +14,9 @@
     <ul class="nav navbar-nav">
       <li class="divider-vertical"></li>
       <li ng-repeat="menu in menuService.getAll()" ng-class="{dropdown: menu.pages, active: menu.active}">
-        <a ng-href="{{menu.route}}" ui-if="!menu.pages" ng-click="$emit('collapse')"><i ui-if="menu.icon" class="glyphicon glyphicon-{{menu.icon}}"></i> {{menu.label}}</a>
-        <a href class="dropdown-toggle" ui-if="menu.pages"><i ui-if="menu.icon" class="glyphicon glyphicon-{{menu.icon}}"></i> {{menu.label}} <b class="caret"></b></a>
-        <ul class="dropdown-menu" ui-if="menu.pages">
+        <a ng-href="{{menu.route}}" ng-if="!menu.pages" ng-click="$emit('collapse')"><i ng-if="menu.icon" class="glyphicon glyphicon-{{menu.icon}}"></i> {{menu.label}}</a>
+        <a href class="dropdown-toggle" ng-if="menu.pages"><i ng-if="menu.icon" class="glyphicon glyphicon-{{menu.icon}}"></i> {{menu.label}} <b class="caret"></b></a>
+        <ul class="dropdown-menu" ng-if="menu.pages">
           <li ng-repeat="sub in menu.pages" ng-class="{active: sub.active}"><a ng-href="{{sub.route}}" ng-click="$emit('collapse')">{{sub.label}}</a></li>
         </ul>
       </li>

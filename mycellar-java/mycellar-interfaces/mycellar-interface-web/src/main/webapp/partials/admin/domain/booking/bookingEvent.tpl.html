@@ -50,7 +50,7 @@
               <td>{{bookingBottle.bottle.wine.color}}</td>
               <td>{{bookingBottle.bottle.wine.type}}</td>
             </tr>
-            <tr ui-if="!loading && items.length == 0">
+            <tr ng-if="!loading && items.length == 0">
               <td colspan="4">No items to display.</td>
             </tr>
           </tbody>

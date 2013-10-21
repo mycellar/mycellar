@@ -29,7 +29,7 @@
               <a href ng-click="delete(item.id)" class="btn btn-danger btn-xs"><i class="glyphicon glyphicon-remove-sign"></i></a>
             </td>
           </tr>
-          <tr ui-if="!loading && items.length == 0">
+          <tr ng-if="!loading && items.length == 0">
             <td colspan="2">No items to display.</td>
           </tr>
         </tbody>

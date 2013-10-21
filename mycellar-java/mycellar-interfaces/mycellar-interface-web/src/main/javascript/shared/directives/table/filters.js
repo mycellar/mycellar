@@ -1,4 +1,4 @@
-angular.module('directives.table.filters', ['services.table']);
+angular.module('directives.table.filters', ['mycellar.services.table']);
 
 angular.module('directives.table.filters').directive('tableFilters', [function() {
   return {

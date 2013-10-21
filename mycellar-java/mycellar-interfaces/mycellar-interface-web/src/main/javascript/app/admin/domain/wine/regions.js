@@ -4,7 +4,7 @@ angular.module('admin.domain.wine.regions', [
   'directives.table',
   'directives.error',
   'directives.admin-domain-nav',
-  'services.admin-domain'
+  'mycellar.services.admin-domain'
 ], [
   'adminDomainServiceProvider', 
   function(adminDomainServiceProvider){

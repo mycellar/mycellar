@@ -1,6 +1,6 @@
 angular.module('admin.domain.user.user', [
   'resources.user.users', 
-  'services.admin-domain',
+  'mycellar.services.admin-domain',
   'directives.admin-domain-nav'
 ]);
 

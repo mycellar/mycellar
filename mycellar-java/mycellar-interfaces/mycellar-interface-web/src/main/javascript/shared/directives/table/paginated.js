@@ -1,4 +1,4 @@
-angular.module('directives.table.paginated', ['services.table', 'directives.bootstrap.pagination']);
+angular.module('directives.table.paginated', ['mycellar.services.table', 'directives.bootstrap.pagination']);
 
 angular.module('directives.table.paginated').directive('paginated', ['$timeout', function($timeout) {
   return {

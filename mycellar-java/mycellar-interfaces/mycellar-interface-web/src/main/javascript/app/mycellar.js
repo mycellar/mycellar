@@ -7,7 +7,7 @@ angular.extend(mycellar, {
 });
 
 angular.module('mycellar', [
-  'ui',
+  'ngRoute',
   'loading',
   'services.bootstrap',
   'services.menu',

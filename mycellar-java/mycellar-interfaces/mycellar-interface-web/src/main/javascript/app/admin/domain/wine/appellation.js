@@ -1,7 +1,7 @@
 angular.module('admin.domain.wine.appellation', [
   'resources.wine.appellations',
   'resources.wine.countries',
-  'services.admin-domain',
+  'mycellar.services.admin-domain',
   'directives.admin-domain-nav'
 ]);
 

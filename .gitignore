@@ -3,3 +3,6 @@
 .classpath
 target
 /mycellar-java/mycellar-interfaces/mycellar-interface-web/src/main/webapp/js/mycellar.js
+/mycellar-java/mycellar-interfaces/mycellar-interface-web/src/main/webapp/css/mycellar.css
+node_modules
+bower_components

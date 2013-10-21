@@ -1,4 +1,4 @@
-angular.module('directives.table.iconSort', ['services.table']);
+angular.module('directives.table.iconSort', ['mycellar.services.table']);
 
 angular.module('directives.table.iconSort').directive('iconSort', [function() {
   return {

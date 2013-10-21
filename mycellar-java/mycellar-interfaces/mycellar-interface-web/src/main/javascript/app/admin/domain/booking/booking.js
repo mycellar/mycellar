@@ -2,7 +2,7 @@ angular.module('admin.domain.booking.booking', [
   'resources.booking.bookings', 
   'resources.booking.bookingEvents',
   'resources.user.users',
-  'services.admin-domain',
+  'mycellar.services.admin-domain',
   'directives.admin-domain-nav'
 ]);
 

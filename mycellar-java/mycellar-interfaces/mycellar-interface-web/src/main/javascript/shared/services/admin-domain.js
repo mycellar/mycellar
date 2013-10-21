@@ -1,6 +1,6 @@
-angular.module('services.admin-domain', ['services.table']);
+angular.module('mycellar.services.admin-domain', ['mycellar.services.table', 'ngRoute']);
 
-angular.module('services.admin-domain').provider('adminDomainService', ['$routeProvider', function ($routeProvider) {
+angular.module('mycellar.services.admin-domain').provider('adminDomainService', ['$routeProvider', function ($routeProvider) {
   var menu = [];
   var resourcePath = [];
   var resourcesPath = [];
@@ -82,7 +82,7 @@ angular.module('services.admin-domain').provider('adminDomainService', ['$routeP
   
   this.forDomain = function(group, resourceName, resourcesName, groupLabel, resourcesLabel) {
     var baseUrl = function(name) {
-      return '/admin/domain/' + group + '/' + name.charAt(0).toLowerCase() + name.substr(1)
+      return '/admin/domain/' + group + '/' + name.charAt(0).toLowerCase() + name.substr(1);
     };
     
     var templateUrl = function(name) {

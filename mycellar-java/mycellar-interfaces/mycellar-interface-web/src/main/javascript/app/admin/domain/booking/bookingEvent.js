@@ -1,6 +1,6 @@
 angular.module('admin.domain.booking.bookingEvent', [
   'resources.booking.bookingEvents',
-  'services.admin-domain',
+  'mycellar.services.admin-domain',
   'directives.admin-domain-nav'
 ]);
 

@@ -1,6 +1,6 @@
-angular.module('services.table', []);
+angular.module('mycellar.services.table', []);
 
-angular.module('services.table').provider('tableService', [function () {
+angular.module('mycellar.services.table').provider('tableService', [function () {
   this.$get = function() {
     return {
       createTableContext: function() {

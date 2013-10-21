@@ -23,7 +23,7 @@
               <a href ng-click="edit(item.id)" class="btn btn-default btn-xs"><i class="glyphicon glyphicon-edit"></i></a>
             </td>
           </tr>
-          <tr ui-if="!loading && items.length == 0">
+          <tr ng-if="!loading && items.length == 0">
             <td colspan="3">No items to display.</td>
           </tr>
         </tbody>

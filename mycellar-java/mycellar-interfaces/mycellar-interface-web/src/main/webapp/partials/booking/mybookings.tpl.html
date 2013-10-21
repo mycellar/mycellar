@@ -12,7 +12,7 @@
   </div>
   <div class="col-md-10">
     <section>
-      <div ui-if="booking != null">
+      <div ng-if="booking != null">
         <h2>{{booking.bookingEvent.name}} du {{booking.bookingEvent.start}} au {{booking.bookingEvent.end}}</h2>
         <table class="table table-bordered table-striped table-condensed">
           <thead>
@@ -42,7 +42,7 @@
           </tfoot>
         </table>
       </div>
-      <p ui-if="booking == null">Pas de réservation en cours</p>
+      <p ng-if="booking == null">Pas de réservation en cours</p>
     </section>
   </div>
 </div>

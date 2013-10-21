@@ -38,7 +38,6 @@
     <hibernate.search.version>4.3.0.Final</hibernate.search.version>
     <jersey.version>1.16</jersey.version>
     <jackson.version>2.2.2</jackson.version>
-    <wro4j.version>1.6.3</wro4j.version>
   </properties>
 
   <developers>
@@ -109,9 +108,14 @@
           <version>9.0.3.v20130506</version>
         </plugin>
         <plugin>
-          <groupId>ro.isdc.wro4j</groupId>
-          <artifactId>wro4j-maven-plugin</artifactId>
-          <version>${wro4j.version}</version>
+          <groupId>org.codehaus.mojo</groupId>
+          <artifactId>exec-maven-plugin</artifactId>
+          <version>1.2.1</version>
+        </plugin>
+        <plugin>
+          <groupId>org.apache.maven.plugins</groupId>
+          <artifactId>maven-antrun-plugin</artifactId>
+          <version>1.7</version>
         </plugin>
       </plugins>
     </pluginManagement>
@@ -505,13 +509,6 @@
         <version>1.45.0</version>
       </dependency>
       
-      <!-- wro4j -->
-      <dependency>
-        <groupId>ro.isdc.wro4j</groupId>
-        <artifactId>wro4j-extensions</artifactId>
-        <version>${wro4j.version}</version>
-      </dependency>
-
       <dependency>
         <groupId>junit</groupId>
         <artifactId>junit</artifactId>

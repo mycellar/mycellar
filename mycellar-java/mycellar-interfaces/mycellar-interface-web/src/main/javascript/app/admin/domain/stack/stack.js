@@ -1,6 +1,6 @@
 angular.module('admin.domain.stack.stack', [
   'resources.stack.stacks', 
-  'services.admin-domain',
+  'mycellar.services.admin-domain',
   'directives.admin-domain-nav'
 ], [
   '$routeProvider', 

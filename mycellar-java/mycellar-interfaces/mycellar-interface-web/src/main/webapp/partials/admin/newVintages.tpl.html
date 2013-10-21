@@ -118,7 +118,7 @@
                 <td>{{wine.color}}</td>
                 <td>{{wine.type}}</td>
               </tr>
-              <tr ui-if="!loading && wines.length == 0">
+              <tr ng-if="!loading && wines.length == 0">
                 <td colspan="8">No wines match.</td>
               </tr>
             </tbody>

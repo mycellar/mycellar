@@ -1,7 +1,7 @@
 angular.module('booking.contacts', [
   'resources.contact.contacts',
   'directives.table',
-  'services.table',
+  'mycellar.services.table',
   'booking.contact',
 ], [
   '$routeProvider',

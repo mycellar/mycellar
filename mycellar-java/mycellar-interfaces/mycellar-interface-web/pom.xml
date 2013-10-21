@@ -187,32 +187,65 @@
         </dependencies>
       </plugin>
       <plugin>
-        <groupId>ro.isdc.wro4j</groupId>
-        <artifactId>wro4j-maven-plugin</artifactId>
+        <artifactId>maven-antrun-plugin</artifactId>
         <executions>
           <execution>
-            <phase>compile</phase>
+            <id>npm installation</id>
+            <phase>initialize</phase>
             <goals>
               <goal>run</goal>
             </goals>
+            <configuration>
+              <target name="building">
+                <echo>
+                  NPM INSTALL
+                </echo>
+                <exec executable="cmd" dir="${basedir}" osfamily="windows" failonerror="true">
+                  <arg line="/c npm install"/>
+                </exec>
+                <exec executable="bash" dir="${basedir}" osfamily="unix" failonerror="true">
+                  <arg line="npm install"/>
+                </exec>
+              </target>
+            </configuration>
           </execution>
         </executions>
-        <configuration>
-          <targetGroups>mycellar</targetGroups>
-          <minimize>false</minimize>
-          <wroManagerFactory>fr.mycellar.tools.wro4j.MyCellarWroManagerFactory</wroManagerFactory>
-          <jsDestinationFolder>${basedir}/src/main/webapp/js/</jsDestinationFolder>
-          <contextFolder>${basedir}/src/main/webapp/</contextFolder>
-          <wroFile>${basedir}/src/main/javascript/wro.xml</wroFile>
-          <ignoreMissingResources>false</ignoreMissingResources>
-        </configuration>
-        <dependencies>
-          <dependency>
-            <groupId>mycellar</groupId>
-            <artifactId>mycellar-tool-wro4j</artifactId>
-            <version>${project.version}</version>
-          </dependency>
-        </dependencies>
+      </plugin>
+      <plugin>
+        <groupId>org.codehaus.mojo</groupId>
+        <artifactId>exec-maven-plugin</artifactId>
+        <executions>
+          <execution>
+            <id>Bower</id>
+            <phase>generate-sources</phase>
+            <goals>
+              <goal>exec</goal>
+            </goals>
+            <configuration>
+              <executable>node</executable>
+              <arguments>
+                <argument>node_modules/bower/bin/bower</argument>
+                <argument>--no-color</argument>
+                <argument>install</argument>
+              </arguments>
+            </configuration>
+          </execution>
+          <execution>
+            <id>Grunt</id>
+            <phase>generate-sources</phase>
+            <goals>
+              <goal>exec</goal>
+            </goals>
+            <configuration>
+              <executable>node</executable>
+              <arguments>
+                <argument>node_modules/grunt-cli/bin/grunt</argument>
+                <argument>--no-color</argument>
+                <argument>install</argument>
+              </arguments>
+            </configuration>
+          </execution>
+        </executions>
       </plugin>
     </plugins>
   </build>
@@ -231,6 +264,74 @@
         <db.user>mycellar</db.user>
         <db.pass>pswcellar</db.pass>
       </properties>
+    </profile>
+    <profile>
+      <id>gruntUTs</id>
+      <activation>
+        <activeByDefault>true</activeByDefault>
+        <property>
+          <name>!skipTests</name>
+        </property>
+      </activation>
+      <build>
+        <plugins>
+          <plugin>
+            <groupId>org.codehaus.mojo</groupId>
+            <artifactId>exec-maven-plugin</artifactId>
+            <executions>
+              <execution>
+                <id>Grunt unit test</id>
+                <phase>test</phase>
+                <goals>
+                  <goal>exec</goal>
+                </goals>
+                <configuration>
+                  <executable>node</executable>
+                  <arguments>
+                    <argument>node_modules/grunt-cli/bin/grunt</argument>
+                    <argument>--no-color</argument>
+                    <argument>test:unit</argument>
+                  </arguments>
+                </configuration>
+              </execution>
+            </executions>
+          </plugin>
+        </plugins>
+      </build>
+    </profile>
+    <profile>
+      <id>gruntITs</id>
+      <activation>
+        <activeByDefault>true</activeByDefault>
+        <property>
+          <name>!skipTests</name>
+        </property>
+      </activation>
+      <build>
+        <plugins>
+          <plugin>
+            <groupId>org.codehaus.mojo</groupId>
+            <artifactId>exec-maven-plugin</artifactId>
+            <executions>
+              <execution>
+                <id>Grunt e2e test</id>
+                <phase>integration-test</phase>
+                <goals>
+                  <goal>exec</goal>
+                </goals>
+                <configuration>
+                  <executable>node</executable>
+                  <arguments>
+                    <argument>node_modules/grunt-cli/bin/grunt</argument>
+                    <argument>--no-color</argument>
+                    <argument>test:e2e</argument>
+                  </arguments>
+                </configuration>
+              </execution>
+            </executions>
+          </plugin>
+        </plugins>
+      </build>
     </profile>
   </profiles>
 

@@ -1,7 +1,7 @@
 angular.module('admin.domain.contact.contact', [
   'resources.contact.contacts', 
   'resources.wine.producers',
-  'services.admin-domain',
+  'mycellar.services.admin-domain',
   'directives.admin-domain-nav'
 ]);
 

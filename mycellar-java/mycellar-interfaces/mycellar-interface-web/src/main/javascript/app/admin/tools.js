@@ -5,7 +5,7 @@ angular.module('admin.tools', [
   'resources.wine.appellations',
   'resources.wine.producers',
   'directives.table',
-  'services.table'
+  'mycellar.services.table'
 ], [
   '$routeProvider', 
   function($routeProvider){

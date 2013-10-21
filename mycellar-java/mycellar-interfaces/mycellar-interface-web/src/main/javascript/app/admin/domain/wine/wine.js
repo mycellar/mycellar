@@ -2,7 +2,7 @@ angular.module('admin.domain.wine.wine', [
   'resources.wine.wines',
   'resources.wine.appellations',
   'resources.wine.producers',
-  'services.admin-domain',
+  'mycellar.services.admin-domain',
   'directives.admin-domain-nav'
 ]);
 
