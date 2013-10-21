@@ -60,6 +60,7 @@ footer {
   position: absolute;
   text-align: center;
   width: 100px;
+  z-index: 1000;
 }
 
 .table th.stackCount, .table td.stackCount {
