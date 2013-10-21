@@ -1,9 +1,10 @@
-angular.module('admin.domain.booking.bookings', [
-  'admin.domain.booking.booking', 
-  'resources.booking.bookings', 
-  'directives.table', 
-  'directives.error',
-  'directives.admin-domain-nav',
+angular.module('mycellar.controllers.admin.domain.booking.bookings', [
+  'ngRoute',
+  'mycellar.controllers.admin.domain.booking.booking', 
+  'mycellar.resources.booking.bookings', 
+  'mycellar.directives.table', 
+  'mycellar.directives.error',
+  'mycellar.directives.admin-domain-nav',
   'mycellar.services.admin-domain'
 ], [
   'adminDomainServiceProvider', 
@@ -23,7 +24,7 @@ angular.module('admin.domain.booking.bookings', [
   }
 ]);
 
-angular.module('admin.domain.booking.bookings').controller('AdminDomainBookingsController', [
+angular.module('mycellar.controllers.admin.domain.booking.bookings').controller('AdminDomainBookingsController', [
   '$scope', 'Bookings', 'adminDomainService',
   function ($scope, Bookings, adminDomainService) {
     angular.extend($scope, adminDomainService.listMethods('booking', 'Booking', Bookings, ['bookingEvent.start', 'bookingEvent.start', 'customer.lastname']));

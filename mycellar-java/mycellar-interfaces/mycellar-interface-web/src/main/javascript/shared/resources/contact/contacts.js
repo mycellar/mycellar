@@ -1,6 +1,6 @@
-angular.module('resources.contact.contacts', ['ngResource']);
+angular.module('mycellar.resources.contact.contacts', ['ngResource']);
 
-angular.module('resources.contact.contacts').factory('Contacts', [
+angular.module('mycellar.resources.contact.contacts').factory('Contacts', [
   '$resource', '$q', 
   function ($resource, $q) {
 

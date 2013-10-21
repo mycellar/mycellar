@@ -1,6 +1,6 @@
-angular.module('directives.error.ctrl', []);
+angular.module('mycellar.directives.error.ctrl', []);
 
-angular.module('directives.error.ctrl').directive('errorCtrl', [function() {
+angular.module('mycellar.directives.error.ctrl').directive('errorCtrl', [function() {
   return {
     restrict: 'E',
     replace: true,

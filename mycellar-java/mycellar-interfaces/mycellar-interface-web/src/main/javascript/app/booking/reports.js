@@ -1,4 +1,7 @@
-angular.module('booking.reports', [], [
+angular.module('mycellar.controllers.booking.reports', [
+  'ngRoute',
+  'mycellar.resources.booking.bookingEvents'
+], [
   '$routeProvider',
   function($routeProvider) {
     $routeProvider.when('/booking/reports', {
@@ -10,7 +13,7 @@ angular.module('booking.reports', [], [
   }
 ]);
 
-angular.module('booking.reports').controller('BookingReportsController', [
+angular.module('mycellar.controllers.booking.reports').controller('BookingReportsController', [
   '$scope', 'BookingEvents', 
   function($scope, BookingEvents) {
     $scope.setPage = function(page) {

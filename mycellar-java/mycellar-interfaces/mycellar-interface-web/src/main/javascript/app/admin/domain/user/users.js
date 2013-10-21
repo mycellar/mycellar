@@ -1,9 +1,10 @@
-angular.module('admin.domain.user.users', [
-  'admin.domain.user.user', 
-  'resources.user.users', 
-  'directives.table', 
-  'directives.error',
-  'directives.admin-domain-nav',
+angular.module('mycellar.controllers.admin.domain.user.users', [
+  'ngRoute',
+  'mycellar.controllers.admin.domain.user.user', 
+  'mycellar.resources.user.users', 
+  'mycellar.directives.table', 
+  'mycellar.directives.error',
+  'mycellar.directives.admin-domain-nav',
   'mycellar.services.admin-domain'
 ], [
   'adminDomainServiceProvider', 
@@ -23,7 +24,7 @@ angular.module('admin.domain.user.users', [
   }
 ]);
 
-angular.module('admin.domain.user.users').controller('AdminDomainUsersController', [
+angular.module('mycellar.controllers.admin.domain.user.users').controller('AdminDomainUsersController', [
   '$scope', 'Users', 'adminDomainService',
   function ($scope, Users, adminDomainService) {
     angular.extend($scope, adminDomainService.listMethods('user', 'User', Users, ['lastname', 'firstname'], true, false));

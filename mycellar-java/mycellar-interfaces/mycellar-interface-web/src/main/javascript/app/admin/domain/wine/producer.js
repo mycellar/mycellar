@@ -1,10 +1,10 @@
-angular.module('admin.domain.wine.producer', [
-  'resources.wine.producers',
+angular.module('mycellar.controllers.admin.domain.wine.producer', [
+  'mycellar.resources.wine.producers',
   'mycellar.services.admin-domain',
-  'directives.admin-domain-nav'
+  'mycellar.directives.admin-domain-nav'
 ]);
 
-angular.module('admin.domain.wine.producer').controller('AdminDomainProducerController', [
+angular.module('mycellar.controllers.admin.domain.wine.producer').controller('AdminDomainProducerController', [
   '$scope', 'producer', 'adminDomainService',
   function ($scope, producer, adminDomainService) {
     $scope.producer = producer;

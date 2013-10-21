@@ -1,5 +1,5 @@
-angular.module('directives.table', [
-  'directives.table.paginated', 
-  'directives.table.iconSort', 
-  'directives.table.filters'
+angular.module('mycellar.directives.table', [
+  'mycellar.directives.table.paginated', 
+  'mycellar.directives.table.iconSort', 
+  'mycellar.directives.table.filters'
 ]);

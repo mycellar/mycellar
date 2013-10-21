@@ -1,6 +1,6 @@
-angular.module('resources.stack.stacks', ['ngResource']);
+angular.module('mycellar.resources.stack.stacks', ['ngResource']);
 
-angular.module('resources.stack.stacks').factory('Stacks', ['$resource', '$q', function ($resource, $q) {
+angular.module('mycellar.resources.stack.stacks').factory('Stacks', ['$resource', '$q', function ($resource, $q) {
 
   var Stacks = $resource('/api/domain/stack/stacks');
   var Stack = $resource('/api/domain/stack/stack/:stackId');

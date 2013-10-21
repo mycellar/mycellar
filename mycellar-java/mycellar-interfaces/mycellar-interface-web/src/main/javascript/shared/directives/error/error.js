@@ -1,5 +1,5 @@
-angular.module('directives.error', [
-  'directives.error.ctrl', 
-  'directives.error.form', 
-  'directives.error.div'
+angular.module('mycellar.directives.error', [
+  'mycellar.directives.error.ctrl', 
+  'mycellar.directives.error.form', 
+  'mycellar.directives.error.div'
 ]);

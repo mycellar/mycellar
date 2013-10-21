@@ -1,6 +1,6 @@
-angular.module('directives.table.iconSort', ['mycellar.services.table']);
+angular.module('mycellar.directives.table.iconSort', ['mycellar.services.table']);
 
-angular.module('directives.table.iconSort').directive('iconSort', [function() {
+angular.module('mycellar.directives.table.iconSort').directive('iconSort', [function() {
   return {
     restrict: 'E',
     replace: true,

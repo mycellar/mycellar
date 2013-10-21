@@ -1,6 +1,6 @@
-angular.module('resources.booking.bookingEvents', ['ngResource']);
+angular.module('mycellar.resources.booking.bookingEvents', ['ngResource']);
 
-angular.module('resources.booking.bookingEvents').factory('BookingEvents', ['$resource', '$q', function ($resource, $q) {
+angular.module('mycellar.resources.booking.bookingEvents').factory('BookingEvents', ['$resource', '$q', function ($resource, $q) {
 
   var BookingEvents = $resource('/api/domain/booking/bookingEvents', {}, {
     currents: {

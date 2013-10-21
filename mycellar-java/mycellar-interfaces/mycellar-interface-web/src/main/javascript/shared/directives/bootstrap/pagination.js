@@ -1,6 +1,6 @@
-angular.module('directives.bootstrap.pagination', []);
+angular.module('mycellar.directives.bootstrap.pagination', []);
 
-angular.module('directives.bootstrap.pagination').constant('paginationConfig', {
+angular.module('mycellar.directives.bootstrap.pagination').constant('paginationConfig', {
   boundaryLinks: false,
   directionLinks: true,
   firstText: 'First',
@@ -10,7 +10,7 @@ angular.module('directives.bootstrap.pagination').constant('paginationConfig', {
   rotate: true
 });
 
-angular.module('directives.bootstrap.pagination').directive('pagination', [
+angular.module('mycellar.directives.bootstrap.pagination').directive('pagination', [
   'paginationConfig',
   function (config) {
     return {

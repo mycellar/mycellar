@@ -1,9 +1,10 @@
-angular.module('admin.domain.stack.stacks', [
-  'admin.domain.stack.stack', 
-  'resources.stack.stacks', 
-  'directives.table',
-  'directives.error', 
-  'directives.admin-domain-nav',
+angular.module('mycellar.controllers.admin.domain.stack.stacks', [
+  'ngRoute',
+  'mycellar.controllers.admin.domain.stack.stack', 
+  'mycellar.resources.stack.stacks', 
+  'mycellar.directives.table',
+  'mycellar.directives.error', 
+  'mycellar.directives.admin-domain-nav',
   'mycellar.services.admin-domain'
 ], [
   'adminDomainServiceProvider', 
@@ -18,7 +19,7 @@ angular.module('admin.domain.stack.stacks', [
   }
 ]);
 
-angular.module('admin.domain.stack.stacks').controller('AdminDomainStacksController', [
+angular.module('mycellar.controllers.admin.domain.stack.stacks').controller('AdminDomainStacksController', [
   '$scope', '$route', 'Stacks', 'adminDomainService', 
   function ($scope, $route, Stacks, adminDomainService) {
     angular.extend($scope, adminDomainService.listMethods('stack', 'Stack', Stacks, ['count', 'count'], true, false));

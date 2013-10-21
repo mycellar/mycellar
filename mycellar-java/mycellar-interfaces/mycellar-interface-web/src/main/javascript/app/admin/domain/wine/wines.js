@@ -1,9 +1,10 @@
-angular.module('admin.domain.wine.wines', [
-  'admin.domain.wine.wine', 
-  'resources.wine.wines', 
-  'directives.table',
-  'directives.error',
-  'directives.admin-domain-nav',
+angular.module('mycellar.controllers.admin.domain.wine.wines', [
+  'ngRoute',
+  'mycellar.controllers.admin.domain.wine.wine', 
+  'mycellar.resources.wine.wines', 
+  'mycellar.directives.table',
+  'mycellar.directives.error',
+  'mycellar.directives.admin-domain-nav',
   'mycellar.services.admin-domain'
 ], [
   'adminDomainServiceProvider', 
@@ -23,7 +24,7 @@ angular.module('admin.domain.wine.wines', [
   }
 ]);
 
-angular.module('admin.domain.wine.wines').controller('AdminDomainWinesController', [
+angular.module('mycellar.controllers.admin.domain.wine.wines').controller('AdminDomainWinesController', [
   '$scope', 'Wines', 'adminDomainService',
   function ($scope, Wines, adminDomainService) {
     angular.extend($scope, adminDomainService.listMethods('wine', 'Wine', Wines, ['appellation.region.country.name',

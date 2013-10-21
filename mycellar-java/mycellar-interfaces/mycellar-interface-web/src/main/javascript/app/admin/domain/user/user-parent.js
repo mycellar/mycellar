@@ -1,3 +1,3 @@
-angular.module('admin.domain.user', [
-  'admin.domain.user.users'
+angular.module('mycellar.controllers.admin.domain.user', [
+  'mycellar.controllers.admin.domain.user.users'
 ]);

@@ -1,11 +1,17 @@
-angular.module('login', ['services.security.service'], ['$routeProvider', function($routeProvider){
-  $routeProvider.when('/login', {
-    templateUrl: 'partials/login.tpl.html',
-    controller: 'LoginController'
-  });
-}]);
+angular.module('mycellar.controllers.login', [
+  'ngRoute',
+  'mycellar.services.security.service'
+], [
+  '$routeProvider', 
+  function($routeProvider){
+    $routeProvider.when('/login', {
+      templateUrl: 'partials/login.tpl.html',
+      controller: 'LoginController'
+    });
+  }
+]);
 
-angular.module('login').controller('LoginController', [
+angular.module('mycellar.controllers.login').controller('LoginController', [
   '$scope', 'security',
   function ($scope, security) {
     $scope.email = '';

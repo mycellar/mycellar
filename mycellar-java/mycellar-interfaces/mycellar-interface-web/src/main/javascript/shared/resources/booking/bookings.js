@@ -1,6 +1,6 @@
-angular.module('resources.booking.bookings', ['ngResource']);
+angular.module('mycellar.resources.booking.bookings', ['ngResource']);
 
-angular.module('resources.booking.bookings').factory('Bookings', [
+angular.module('mycellar.resources.booking.bookings').factory('Bookings', [
   '$resource', '$q', 
   function ($resource, $q) {
 

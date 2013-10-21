@@ -1,6 +1,6 @@
-angular.module('services.security.interceptor', ['services.security.service']);
+angular.module('mycellar.services.security.interceptor', ['mycellar.services.security.service']);
 
-angular.module('services.security.interceptor').factory('securityInterceptor', ['$injector', function($injector) {
+angular.module('mycellar.services.security.interceptor').factory('securityInterceptor', ['$injector', function($injector) {
   return function(promise) {
     // Intercept failed requests
     return promise.then(function(originalResponse) {

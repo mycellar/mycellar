@@ -1,6 +1,6 @@
-angular.module('resources.wine.appellations', ['ngResource']);
+angular.module('mycellar.resources.wine.appellations', ['ngResource']);
 
-angular.module('resources.wine.appellations').factory('Appellations', ['$resource', '$q', function ($resource, $q) {
+angular.module('mycellar.resources.wine.appellations').factory('Appellations', ['$resource', '$q', function ($resource, $q) {
 
   var Appellations = $resource('/api/domain/wine/appellations');
   var Appellation = $resource('/api/domain/wine/appellation/:appellationId');

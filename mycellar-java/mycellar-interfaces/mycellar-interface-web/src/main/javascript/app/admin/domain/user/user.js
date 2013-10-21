@@ -1,10 +1,10 @@
-angular.module('admin.domain.user.user', [
-  'resources.user.users', 
+angular.module('mycellar.controllers.admin.domain.user.user', [
+  'mycellar.resources.user.users', 
   'mycellar.services.admin-domain',
-  'directives.admin-domain-nav'
+  'mycellar.directives.admin-domain-nav'
 ]);
 
-angular.module('admin.domain.user.user').controller('AdminDomainUserController', [
+angular.module('mycellar.controllers.admin.domain.user.user').controller('AdminDomainUserController', [
   '$scope', 'user', 'adminDomainService',
   function ($scope, user, adminDomainService) {
     $scope.user = user;

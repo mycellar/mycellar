@@ -1,4 +1,4 @@
-angular.module('admin.domain.booking', [
-  'admin.domain.booking.bookings',
-  'admin.domain.booking.bookingEvents'
+angular.module('mycellar.controllers.admin.domain.booking', [
+  'mycellar.controllers.admin.domain.booking.bookings',
+  'mycellar.controllers.admin.domain.booking.bookingEvents'
 ]);

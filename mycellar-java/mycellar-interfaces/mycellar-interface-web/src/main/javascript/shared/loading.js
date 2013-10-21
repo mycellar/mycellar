@@ -1,4 +1,4 @@
-angular.module('loading', []).factory('loadingService', function() {
+angular.module('mycellar.loading', []).factory('loadingService', function() {
   var service = {
     requestCount: 0,
     isLoading: function() {

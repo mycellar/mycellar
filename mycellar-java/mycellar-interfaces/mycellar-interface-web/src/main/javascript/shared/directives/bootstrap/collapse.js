@@ -1,8 +1,8 @@
-angular.module('directives.bootstrap.collapse', [
-  'services.bootstrap.transition'
+angular.module('mycellar.directives.bootstrap.collapse', [
+  'mycellar.services.bootstrap.transition'
 ]);
 
-angular.module('directives.bootstrap.collapse').directive('collapse', [
+angular.module('mycellar.directives.bootstrap.collapse').directive('collapse', [
   '$transition',
   function($transition) {
     var fixUpHeight = function (scope, element, height) {

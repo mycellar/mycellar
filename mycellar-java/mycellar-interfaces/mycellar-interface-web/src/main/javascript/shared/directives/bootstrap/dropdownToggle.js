@@ -1,6 +1,6 @@
-angular.module('directives.bootstrap.dropdownToggle', []);
+angular.module('mycellar.directives.bootstrap.dropdownToggle', []);
 
-angular.module('directives.bootstrap.dropdownToggle').directive('dropdownToggle', [
+angular.module('mycellar.directives.bootstrap.dropdownToggle').directive('dropdownToggle', [
   '$document', '$location',
   function($document, $location) {
     var openElement = null;

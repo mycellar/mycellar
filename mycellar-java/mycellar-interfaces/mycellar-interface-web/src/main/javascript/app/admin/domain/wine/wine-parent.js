@@ -1,7 +1,7 @@
-angular.module('admin.domain.wine', [
-  'admin.domain.wine.appellations',
-  'admin.domain.wine.countries',
-  'admin.domain.wine.producers',
-  'admin.domain.wine.regions',
-  'admin.domain.wine.wines'
+angular.module('mycellar.controllers.admin.domain.wine', [
+  'mycellar.controllers.admin.domain.wine.appellations',
+  'mycellar.controllers.admin.domain.wine.countries',
+  'mycellar.controllers.admin.domain.wine.producers',
+  'mycellar.controllers.admin.domain.wine.regions',
+  'mycellar.controllers.admin.domain.wine.wines'
 ]);

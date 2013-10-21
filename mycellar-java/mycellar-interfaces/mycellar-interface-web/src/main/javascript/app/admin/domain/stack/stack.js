@@ -1,23 +1,11 @@
-angular.module('admin.domain.stack.stack', [
-  'resources.stack.stacks', 
+angular.module('mycellar.controllers.admin.domain.stack.stack', [
+  'ngRoute',
+  'mycellar.resources.stack.stacks', 
   'mycellar.services.admin-domain',
-  'directives.admin-domain-nav'
-], [
-  '$routeProvider', 
-  function($routeProvider){
-    $routeProvider.when('/admin/domain/stack/stack/:stackId', {
-      templateUrl: 'partials/admin/domain/stack/stack.tpl.html',
-      controller: 'AdminDomainStackController',
-      resolve: {
-        stack: ['Stacks', '$route', function(Stacks, $route) {
-          return Stacks.getById($route.current.params.stackId);
-        }]
-      }
-    });
-  }
+  'mycellar.directives.admin-domain-nav'
 ]);
 
-angular.module('admin.domain.stack.stack').controller('AdminDomainStackController', [
+angular.module('mycellar.controllers.admin.domain.stack.stack').controller('AdminDomainStackController', [
   '$scope', 'stack', 'adminDomainService', 
   function ($scope, stack, adminDomainService) {
     $scope.stack = stack;

@@ -1,12 +1,12 @@
-angular.module('admin.domain.wine.wine', [
-  'resources.wine.wines',
-  'resources.wine.appellations',
-  'resources.wine.producers',
+angular.module('mycellar.controllers.admin.domain.wine.wine', [
+  'mycellar.resources.wine.wines',
+  'mycellar.resources.wine.appellations',
+  'mycellar.resources.wine.producers',
   'mycellar.services.admin-domain',
-  'directives.admin-domain-nav'
+  'mycellar.directives.admin-domain-nav'
 ]);
 
-angular.module('admin.domain.wine.wine').controller('AdminDomainWineController', [
+angular.module('mycellar.controllers.admin.domain.wine.wine').controller('AdminDomainWineController', [
   '$scope', 'wine', 'adminDomainService', 'Appellations', 'Producers',
   function ($scope, wine, adminDomainService, Appellations, Producers) {
     $scope.wine = wine;

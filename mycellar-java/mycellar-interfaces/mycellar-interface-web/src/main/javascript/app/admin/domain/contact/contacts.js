@@ -1,9 +1,10 @@
-angular.module('admin.domain.contact.contacts', [
-  'admin.domain.contact.contact', 
-  'resources.contact.contacts', 
-  'directives.table', 
-  'directives.error',
-  'directives.admin-domain-nav',
+angular.module('mycellar.controllers.admin.domain.contact.contacts', [
+  'ngRoute',
+  'mycellar.controllers.admin.domain.contact.contact', 
+  'mycellar.resources.contact.contacts', 
+  'mycellar.directives.table', 
+  'mycellar.directives.error',
+  'mycellar.directives.admin-domain-nav',
   'mycellar.services.admin-domain'
 ], [
   'adminDomainServiceProvider', 
@@ -23,7 +24,7 @@ angular.module('admin.domain.contact.contacts', [
   }
 ]);
 
-angular.module('admin.domain.contact.contacts').controller('AdminDomainContactsController', [
+angular.module('mycellar.controllers.admin.domain.contact.contacts').controller('AdminDomainContactsController', [
   '$scope', 'Contacts', 'adminDomainService',
   function ($scope, Contacts, adminDomainService) {
     angular.extend($scope, adminDomainService.listMethods('contact', 'Contact', Contacts, ['current', 'current', 'producer.name']));

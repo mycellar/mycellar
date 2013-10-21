@@ -1,4 +1,8 @@
-angular.module('booking.currents', [], [
+angular.module('mycellar.controllers.booking.currents', [
+  'ngRoute',
+  'mycellar.resources.booking.bookingEvents',
+  'mycellar.resources.booking.bookings'
+], [
   '$routeProvider',
   function($routeProvider) {
     $routeProvider.when('/booking/currents', {
@@ -13,7 +17,7 @@ angular.module('booking.currents', [], [
   }
 ]);
 
-angular.module('booking.currents').controller('CurrentBookingsController', [
+angular.module('mycellar.controllers.booking.currents').controller('CurrentBookingsController', [
   '$scope', 'bookingEvents', 'Bookings', '$location',
   function($scope, bookingEvents, Bookings, $location) {
     $scope.bookingEventsResource = bookingEvents;

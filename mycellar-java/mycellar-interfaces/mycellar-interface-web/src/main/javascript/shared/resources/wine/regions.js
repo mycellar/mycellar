@@ -1,6 +1,6 @@
-angular.module('resources.wine.regions', ['ngResource']);
+angular.module('mycellar.resources.wine.regions', ['ngResource']);
 
-angular.module('resources.wine.regions').factory('Regions', ['$resource', '$q', function ($resource, $q) {
+angular.module('mycellar.resources.wine.regions').factory('Regions', ['$resource', '$q', function ($resource, $q) {
 
   var Regions = $resource('/api/domain/wine/regions');
   var Region = $resource('/api/domain/wine/region/:regionId');

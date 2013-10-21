@@ -1,3 +1,3 @@
-angular.module('admin.domain.stack', [
-  'admin.domain.stack.stacks'
+angular.module('mycellar.controllers.admin.domain.stack', [
+  'mycellar.controllers.admin.domain.stack.stacks'
 ]);

@@ -1,6 +1,6 @@
-angular.module('services.bootstrap.transition', []);
+angular.module('mycellar.services.bootstrap.transition', []);
 
-angular.module('services.bootstrap.transition').factory('$transition', [
+angular.module('mycellar.services.bootstrap.transition').factory('$transition', [
   '$q', '$timeout', '$rootScope',
   function($q, $timeout, $rootScope) {
     var $transition = function (element, trigger, options) {

@@ -1,10 +1,11 @@
-angular.module('admin.tools', [
-  'resources.wine.wines',
-  'resources.wine.countries',
-  'resources.wine.regions',
-  'resources.wine.appellations',
-  'resources.wine.producers',
-  'directives.table',
+angular.module('mycellar.controllers.admin.tools', [
+  'ngRoute',
+  'mycellar.resources.wine.wines',
+  'mycellar.resources.wine.countries',
+  'mycellar.resources.wine.regions',
+  'mycellar.resources.wine.appellations',
+  'mycellar.resources.wine.producers',
+  'mycellar.directives.table',
   'mycellar.services.table'
 ], [
   '$routeProvider', 
@@ -16,7 +17,7 @@ angular.module('admin.tools', [
   }
 ]);
 
-angular.module('admin.tools').controller('AdminNewVintagesController', [
+angular.module('mycellar.controllers.admin.tools').controller('AdminNewVintagesController', [
   '$scope', 'Wines', 'Countries', 'Regions', 'Appellations', 'Producers', 'tableService', 
   function ($scope, Wines, Countries, Regions, Appellations, Producers, tableService) {
     $scope.tableOptions = {

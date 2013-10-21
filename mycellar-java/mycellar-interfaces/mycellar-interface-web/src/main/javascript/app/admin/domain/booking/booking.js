@@ -1,12 +1,12 @@
-angular.module('admin.domain.booking.booking', [
-  'resources.booking.bookings', 
-  'resources.booking.bookingEvents',
-  'resources.user.users',
+angular.module('mycellar.controllers.admin.domain.booking.booking', [
+  'mycellar.resources.booking.bookings', 
+  'mycellar.resources.booking.bookingEvents',
+  'mycellar.resources.user.users',
   'mycellar.services.admin-domain',
-  'directives.admin-domain-nav'
+  'mycellar.directives.admin-domain-nav'
 ]);
 
-angular.module('admin.domain.booking.booking').controller('AdminDomainBookingController', [
+angular.module('mycellar.controllers.admin.domain.booking.booking').controller('AdminDomainBookingController', [
   '$scope', 'booking', 'BookingEvents', 'adminDomainService', 'Users',
   function ($scope, booking, BookingEvents, adminDomainService, Users) {
     $scope.booking = booking;

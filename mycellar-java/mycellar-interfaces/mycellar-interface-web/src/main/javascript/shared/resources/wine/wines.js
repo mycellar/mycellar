@@ -1,6 +1,6 @@
-angular.module('resources.wine.wines', ['ngResource']);
+angular.module('mycellar.resources.wine.wines', ['ngResource']);
 
-angular.module('resources.wine.wines').factory('Wines', ['$resource', '$q', function ($resource, $q) {
+angular.module('mycellar.resources.wine.wines').factory('Wines', ['$resource', '$q', function ($resource, $q) {
 
   var Wines = $resource('/api/domain/wine/wines');
   var Wine = $resource('/api/domain/wine/wine/:wineId');

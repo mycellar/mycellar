@@ -1,6 +1,7 @@
-angular.module('booking.contact', [
-  'resources.contact.contacts',
-  'resources.wine.producers', 
+angular.module('mycellar.controllers.booking.contact', [
+  'ngRoute',
+  'mycellar.resources.contact.contacts',
+  'mycellar.resources.wine.producers', 
 ], [
   '$routeProvider',
   function($routeProvider) {
@@ -21,7 +22,7 @@ angular.module('booking.contact', [
   }
 ]);
 
-angular.module('booking.contact').controller('ContactController', [
+angular.module('mycellar.controllers.booking.contact').controller('ContactController', [
   '$scope', 'producer', 'Contacts',
   function($scope, producer, Contacts) {
     $scope.setPage = function(page) {

@@ -1,6 +1,6 @@
-angular.module('resources.user.users', ['ngResource']);
+angular.module('mycellar.resources.user.users', ['ngResource']);
 
-angular.module('resources.user.users').factory('Users', ['$resource', '$q', function ($resource, $q) {
+angular.module('mycellar.resources.user.users').factory('Users', ['$resource', '$q', function ($resource, $q) {
 
   var Users = $resource('/api/domain/user/users');
   var User = $resource('/api/domain/user/user/:userId');

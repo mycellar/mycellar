@@ -1,6 +1,6 @@
-angular.module('services.security.service', ['services.menu']);
+angular.module('mycellar.services.security.service', ['mycellar.services.menu']);
 
-angular.module('services.security.service').factory('security', [
+angular.module('mycellar.services.security.service').factory('security', [
   '$http', '$q', '$location', 'menuService',
   function($http, $q, $location, menuService) {
     // The public API of the service

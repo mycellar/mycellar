@@ -8,15 +8,16 @@ angular.extend(mycellar, {
 
 angular.module('mycellar', [
   'ngRoute',
-  'loading',
-  'services.bootstrap',
-  'services.menu',
-  'services.security',
-  'directives.bootstrap',
-  'home',
-  'login',
-  'admin',
-  'booking'
+  'mycellar.loading',
+  'mycellar.services.bootstrap',
+  'mycellar.services.menu',
+  'mycellar.services.security',
+  'mycellar.directives.bootstrap',
+  'mycellar.controllers.home',
+  'mycellar.controllers.login',
+  'mycellar.controllers.admin',
+  'mycellar.controllers.booking',
+  'mycellar.controllers.navigation'
 ]);
 
 angular.module('mycellar').config(['$routeProvider', '$locationProvider', function ($routeProvider, $locationProvider) {

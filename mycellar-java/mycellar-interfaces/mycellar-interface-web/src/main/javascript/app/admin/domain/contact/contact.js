@@ -1,11 +1,11 @@
-angular.module('admin.domain.contact.contact', [
-  'resources.contact.contacts', 
-  'resources.wine.producers',
+angular.module('mycellar.controllers.admin.domain.contact.contact', [
+  'mycellar.resources.contact.contacts', 
+  'mycellar.resources.wine.producers',
   'mycellar.services.admin-domain',
-  'directives.admin-domain-nav'
+  'mycellar.directives.admin-domain-nav'
 ]);
 
-angular.module('admin.domain.contact.contact').controller('AdminDomainContactController', [
+angular.module('mycellar.controllers.admin.domain.contact.contact').controller('AdminDomainContactController', [
   '$scope', 'contact', 'Producers', 'adminDomainService',
   function ($scope, contact, Producers, adminDomainService) {
     $scope.contact = contact;

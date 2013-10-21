@@ -1,23 +1,11 @@
-angular.module('admin.domain.admin.configuration', [
-  'resources.admin.configurations', 
+angular.module('mycellar.controllers.admin.domain.admin.configuration', [
+  'ngRoute',
+  'mycellar.resources.admin.configurations', 
   'mycellar.services.admin-domain',
-  'directives.admin-domain-nav'
-], [
-  '$routeProvider', 
-  function($routeProvider){
-    $routeProvider.when('/admin/domain/admin/configuration/:configurationId', {
-      templateUrl: 'partials/admin/domain/admin/configuration.tpl.html',
-      controller: 'AdminDomainConfigurationController',
-      resolve: {
-        configuration: ['Configurations', '$route', function(Configurations, $route) {
-          return Configurations.getById($route.current.params.configurationId);
-        }]
-      }
-    });
-  }
+  'mycellar.directives.admin-domain-nav'
 ]);
 
-angular.module('admin.domain.admin.configuration').controller('AdminDomainConfigurationController', [
+angular.module('mycellar.controllers.admin.domain.admin.configuration').controller('AdminDomainConfigurationController', [
   '$scope', 'configuration', 'adminDomainService', 
   function ($scope, configuration, adminDomainService) {
     $scope.configuration = configuration;

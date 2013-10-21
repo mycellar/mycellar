@@ -1,5 +1,5 @@
-angular.module('directives.bootstrap', [
-  'directives.bootstrap.collapse',
-  'directives.bootstrap.dropdownToggle',
-  'directives.bootstrap.pagination'
+angular.module('mycellar.directives.bootstrap', [
+  'mycellar.directives.bootstrap.collapse',
+  'mycellar.directives.bootstrap.dropdownToggle',
+  'mycellar.directives.bootstrap.pagination'
 ]);

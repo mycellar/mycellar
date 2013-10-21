@@ -1,9 +1,9 @@
-angular.module('admin.domain.admin.configurations', [
-  'admin.domain.admin.configuration', 
-  'resources.admin.configurations', 
-  'directives.table',
-  'directives.error', 
-  'directives.admin-domain-nav',
+angular.module('mycellar.controllers.admin.domain.admin.configurations', [
+  'mycellar.controllers.admin.domain.admin.configuration', 
+  'mycellar.resources.admin.configurations', 
+  'mycellar.directives.table',
+  'mycellar.directives.error', 
+  'mycellar.directives.admin-domain-nav',
   'mycellar.services.admin-domain'
 ], [
   'adminDomainServiceProvider', 
@@ -18,7 +18,7 @@ angular.module('admin.domain.admin.configurations', [
   }
 ]);
 
-angular.module('admin.domain.admin.configurations').controller('AdminDomainConfigurationsController', [
+angular.module('mycellar.controllers.admin.domain.admin.configurations').controller('AdminDomainConfigurationsController', [
   '$scope', 'Configurations', 'adminDomainService', 
   function ($scope, Configurations, adminDomainService) {
     angular.extend($scope, adminDomainService.listMethods('admin', 'Configuration', Configurations, ['key'], false, false));

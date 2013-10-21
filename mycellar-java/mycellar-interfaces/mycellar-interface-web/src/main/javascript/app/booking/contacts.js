@@ -1,8 +1,9 @@
-angular.module('booking.contacts', [
-  'resources.contact.contacts',
-  'directives.table',
+angular.module('mycellar.controllers.booking.contacts', [
+  'ngRoute',
+  'mycellar.resources.contact.contacts',
+  'mycellar.directives.table',
   'mycellar.services.table',
-  'booking.contact',
+  'mycellar.controllers.booking.contact',
 ], [
   '$routeProvider',
   function($routeProvider) {
@@ -15,7 +16,7 @@ angular.module('booking.contacts', [
   }
 ]);
 
-angular.module('booking.contacts').controller('ContactsController', [
+angular.module('mycellar.controllers.booking.contacts').controller('ContactsController', [
   '$scope', 'Contacts', 'tableService', '$location',
   function($scope, Contacts, tableService, $location) {
     $scope.tableOptions = {

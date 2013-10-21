@@ -1,6 +1,6 @@
-angular.module('directives.admin-domain-nav', ['mycellar.services.admin-domain']);
+angular.module('mycellar.directives.admin-domain-nav', ['mycellar.services.admin-domain']);
 
-angular.module('directives.admin-domain-nav').directive('mycellarAdminNav', [
+angular.module('mycellar.directives.admin-domain-nav').directive('mycellarAdminNav', [
   'adminDomainService', '$location', 
   function(adminDomainService, $location) {
     return {

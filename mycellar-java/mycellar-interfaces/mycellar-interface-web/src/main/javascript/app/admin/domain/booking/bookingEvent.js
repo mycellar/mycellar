@@ -1,10 +1,10 @@
-angular.module('admin.domain.booking.bookingEvent', [
-  'resources.booking.bookingEvents',
+angular.module('mycellar.controllers.admin.domain.booking.bookingEvent', [
+  'mycellar.resources.booking.bookingEvents',
   'mycellar.services.admin-domain',
-  'directives.admin-domain-nav'
+  'mycellar.directives.admin-domain-nav'
 ]);
 
-angular.module('admin.domain.booking.bookingEvent').controller('AdminDomainBookingEventController', [
+angular.module('mycellar.controllers.admin.domain.booking.bookingEvent').controller('AdminDomainBookingEventController', [
   '$scope', 'bookingEvent', 'adminDomainService',
   function ($scope, bookingEvent, adminDomainService) {
     $scope.bookingEvent = bookingEvent;

@@ -1,4 +1,4 @@
-angular.module('services.security', [
-  'services.security.service',
-  'services.security.interceptor'
+angular.module('mycellar.services.security', [
+  'mycellar.services.security.service',
+  'mycellar.services.security.interceptor'
 ]);

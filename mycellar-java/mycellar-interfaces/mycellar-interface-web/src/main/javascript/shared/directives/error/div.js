@@ -1,6 +1,6 @@
-angular.module('directives.error.div', []);
+angular.module('mycellar.directives.error.div', []);
 
-angular.module('directives.error.div').directive('errorDiv', [function() {
+angular.module('mycellar.directives.error.div').directive('errorDiv', [function() {
   return {
     restrict: 'E',
     replace: true,

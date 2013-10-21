@@ -1,11 +1,11 @@
-angular.module('admin.domain.wine.appellation', [
-  'resources.wine.appellations',
-  'resources.wine.countries',
+angular.module('mycellar.controllers.admin.domain.wine.appellation', [
+  'mycellar.resources.wine.appellations',
+  'mycellar.resources.wine.countries',
   'mycellar.services.admin-domain',
-  'directives.admin-domain-nav'
+  'mycellar.directives.admin-domain-nav'
 ]);
 
-angular.module('admin.domain.wine.appellation').controller('AdminDomainAppellationController', [
+angular.module('mycellar.controllers.admin.domain.wine.appellation').controller('AdminDomainAppellationController', [
   '$scope', 'appellation', 'adminDomainService', 'Countries',
   function ($scope, appellation, adminDomainService, Countries) {
     $scope.appellation = appellation;

@@ -1,3 +1,3 @@
-angular.module('services.bootstrap', [
-  'services.bootstrap.transition'
+angular.module('mycellar.services.bootstrap', [
+  'mycellar.services.bootstrap.transition'
 ]);

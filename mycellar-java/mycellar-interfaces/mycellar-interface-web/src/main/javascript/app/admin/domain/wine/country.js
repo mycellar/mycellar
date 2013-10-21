@@ -1,10 +1,10 @@
-angular.module('admin.domain.wine.country', [
-  'resources.wine.countries',
+angular.module('mycellar.controllers.admin.domain.wine.country', [
+  'mycellar.resources.wine.countries',
   'mycellar.services.admin-domain',
-  'directives.admin-domain-nav'
+  'mycellar.directives.admin-domain-nav'
 ]);
 
-angular.module('admin.domain.wine.country').controller('AdminDomainCountryController', [
+angular.module('mycellar.controllers.admin.domain.wine.country').controller('AdminDomainCountryController', [
   '$scope', 'country', 'adminDomainService',
   function ($scope, country, adminDomainService, Countries) {
     $scope.country = country;

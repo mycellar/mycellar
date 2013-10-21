@@ -1,6 +1,6 @@
-angular.module('resources.admin.configurations', ['ngResource']);
+angular.module('mycellar.resources.admin.configurations', ['ngResource']);
 
-angular.module('resources.admin.configurations').factory('Configurations', ['$resource', '$q', function ($resource, $q) {
+angular.module('mycellar.resources.admin.configurations').factory('Configurations', ['$resource', '$q', function ($resource, $q) {
 
   var Configurations = $resource('/api/domain/admin/configurations');
   var Configuration = $resource('/api/domain/admin/configuration/:configurationId');
