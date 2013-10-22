@@ -2,14 +2,14 @@
 <div class="row">
   <div class="col-md-3 col-lg-2">
     <nav>
-      <pagination num-pages="pageCount" current-page="currentPage" on-select-page="setPage" max-size="2" boundary-links="false" direction-links="true" previous-text="'‹'" next-text="'›'"></pagination>
+      <pagination num-pages="pageCount" current-page="currentPage" on-select-page="setPage(page)" max-size="2" boundary-links="false" direction-links="true" previous-text="'‹'" next-text="'›'"></pagination>
       <ul class="nav nav-pills nav-stacked">
         <li ng-repeat="bookingEvent in bookingEvents" ng-class="{active: bookingEvent.id == $parent.bookingEvent.id}">
           Du {{bookingEvent.start}} au {{bookingEvent.end}} :<br />
           <a href ng-click="selectBookingEvent(bookingEvent)">{{bookingEvent.name}}</a>
         </li>
       </ul>
-      <pagination num-pages="pageCount" current-page="currentPage" on-select-page="setPage" max-size="2" boundary-links="false" direction-links="true" previous-text="'‹'" next-text="'›'"></pagination>
+      <pagination num-pages="pageCount" current-page="currentPage" on-select-page="setPage(page)" max-size="2" boundary-links="false" direction-links="true" previous-text="'‹'" next-text="'›'"></pagination>
     </nav>
   </div>
   <div class="col-md-9 col-lg-10">
