@@ -21,7 +21,7 @@ angular.module('mycellar.controllers.admin.tools').controller('AdminNewVintagesC
   '$scope', 'Wines', 'Countries', 'Regions', 'Appellations', 'Producers', 'tableService', 
   function ($scope, Wines, Countries, Regions, Appellations, Producers, tableService) {
     $scope.tableOptions = {
-      itemResource: Wines,
+      itemResource: Wines.get,
       defaultSort: ['appellation.region.country.name',
                     'appellation.region.name',
                     'appellation.name',
