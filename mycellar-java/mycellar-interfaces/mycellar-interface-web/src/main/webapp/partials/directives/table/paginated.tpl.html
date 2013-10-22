@@ -1,7 +1,7 @@
 <div>
   <div ng-transclude></div>
   <div class="text-center">
-    <pagination num-pages="pageCount" current-page="currentPage" on-select-page="setPage" max-size="pageRange"></pagination>
+    <pagination page="currentPage" on-select-page="setPage" max-size="pageRange" total-items="result.count" items-per-page="itemsPerPage"></pagination>
   </div>
   <div class="row">
     <div class="col-md-6">

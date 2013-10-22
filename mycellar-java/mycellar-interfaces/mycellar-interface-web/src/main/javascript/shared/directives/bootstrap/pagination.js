@@ -10,63 +10,112 @@ angular.module('mycellar.directives.bootstrap.pagination').constant('paginationC
   rotate: true
 });
 
+angular.module('mycellar.directives.bootstrap.pagination').controller('PaginationController', [
+  '$scope', '$attrs', '$parse', '$interpolate', 
+  function ($scope, $attrs, $parse, $interpolate) {
+    var self = this;
+  
+    this.init = function(defaultItemsPerPage) {
+      if ($attrs.itemsPerPage) {
+        $scope.$parent.$watch($parse($attrs.itemsPerPage), function(value) {
+          self.itemsPerPage = parseInt(value, 10);
+          $scope.totalPages = self.calculateTotalPages();
+        });
+      } else {
+        this.itemsPerPage = defaultItemsPerPage;
+      }
+    };
+  
+    this.noPrevious = function() {
+      return this.page === 1;
+    };
+    this.noNext = function() {
+      return this.page === $scope.totalPages;
+    };
+  
+    this.isActive = function(page) {
+      return this.page === page;
+    };
+  
+    this.calculateTotalPages = function() {
+      return this.itemsPerPage < 1 ? 1 : Math.ceil($scope.totalItems / this.itemsPerPage);
+    };
+  
+    this.getAttributeValue = function(attribute, defaultValue, interpolate) {
+      return angular.isDefined(attribute) ? (interpolate ? $interpolate(attribute)($scope.$parent) : $scope.$parent.$eval(attribute)) : defaultValue;
+    };
+  
+    this.render = function() {
+      this.page = parseInt($scope.page, 10) || 1;
+      $scope.pages = this.getPages(this.page, $scope.totalPages);
+    };
+  
+    $scope.selectPage = function(page) {
+      if ( ! self.isActive(page) && page > 0 && page <= $scope.totalPages) {
+        $scope.page = page;
+        $scope.onSelectPage({ page: page });
+      }
+    };
+  
+    $scope.$watch('totalItems', function() {
+      $scope.totalPages = self.calculateTotalPages();
+    });
+  
+    $scope.$watch('totalPages', function(value) {
+      if ( $attrs.numPages ) {
+        $scope.numPages = value; // Readonly variable
+      }
+  
+      if ( self.page > value ) {
+        $scope.selectPage(value);
+      } else {
+        self.render();
+      }
+    });
+  
+    $scope.$watch('page', function() {
+      self.render();
+    });
+  }
+]);
+
 angular.module('mycellar.directives.bootstrap.pagination').directive('pagination', [
-  'paginationConfig',
-  function (config) {
+  '$parse', 'paginationConfig', 
+  function($parse, config) {
     return {
       restrict: 'EA',
       scope: {
-        numPages: '=',
-        currentPage: '=',
-        maxSize: '=',
-        onSelectPage: '&'
+        page: '=',
+        totalItems: '=',
+        onSelectPage:' &',
+        numPages: '='
       },
-      controller: function($scope, $interpolate) {
-        this.currentPage = 1;
-        
-        this.noPrevious = function () {
-          return this.currentPage === 1;
-        };
-        this.noNext = function () {
-          return this.currentPage === $scope.numPages;
-        };
-        this.isActive = function (page) {
-          return this.currentPage === page;
-        };
-        
-        this.reset = function () {
-          $scope.pages = [];
-          this.currentPage = parseInt($scope.currentPage, 10);
-          
-          if (this.currentPage > $scope.numPages) {
-            $scope.selectPage($scope.numPages);
-          }
-        };
-        
-        var self = this;
-        $scope.selectPage = function (page) {
-          if (!self.isActive(page) && page > 0 && page <= $scope.numPages) {
-            $scope.currentPage = page;
-            $scope.onSelectPage({page: page})(page); // WHY ?????
-          }
-        };
-        
-        this.getAttributeValue = function (attribute, defaultValue, interpolate) {
-          return angular.isDefined(attribute) ? (interpolate ? $interpolate(attribute)($scope.parent) : $scope.$parent.$eval(attribute)) : defaultValue;
-        };
-      },
+      controller: 'PaginationController',
       templateUrl: 'partials/directives/bootstrap/pagination.tpl.html',
       replace: true,
-      link: function (scope, element, attrs, controller) {
-        var boundaryLinks = controller.getAttributeValue(attrs.boundaryLinks, config.boundaryLinks),
-        directionLinks = controller.getAttributeValue(attrs.directionLinks, config.directionsLinks),
-        firstText = controller.getAttributeValue(attrs.firstText, config.firstText),
-        previousText = controller.getAttributeValue(attrs.previousText, config.previousText),
-        nextText = controller.getAttributeValue(attrs.nextText, config.nextText),
-        lastText = controller.getAttributeValue(attrs.lastText, config.lastText),
-        rotate = controller.getAttributeValue(attrs.rotate, config.rotate);
-        
-        function makePage (number, text, isActive, isDisabled) {
+      link: function(scope, element, attrs, paginationCtrl) {
+  
+        // Setup configuration parameters
+        var maxSize,
+        boundaryLinks  = paginationCtrl.getAttributeValue(attrs.boundaryLinks,  config.boundaryLinks      ),
+        directionLinks = paginationCtrl.getAttributeValue(attrs.directionLinks, config.directionLinks     ),
+        firstText      = paginationCtrl.getAttributeValue(attrs.firstText,      config.firstText,     true),
+        previousText   = paginationCtrl.getAttributeValue(attrs.previousText,   config.previousText,  true),
+        nextText       = paginationCtrl.getAttributeValue(attrs.nextText,       config.nextText,      true),
+        lastText       = paginationCtrl.getAttributeValue(attrs.lastText,       config.lastText,      true),
+        rotate         = paginationCtrl.getAttributeValue(attrs.rotate,         config.rotate);
+  
+        paginationCtrl.init(config.itemsPerPage);
+  
+        if (attrs.maxSize) {
+          scope.$parent.$watch($parse(attrs.maxSize), function(value) {
+            maxSize = parseInt(value, 10);
+            paginationCtrl.render();
+          });
+        }
+  
+        // Create page object used in template
+        function makePage(number, text, isActive, isDisabled) {
           return {
             number: number,
             text: text,
@@ -74,60 +123,74 @@ angular.module('mycellar.directives.bootstrap.pagination').directive('pagination
             disabled: isDisabled
           };
         }
-        
-        scope.$watch('numPages + currentPage + maxSize', function () {
-          controller.reset();
-          
-          var startPage = 1, endPage = scope.numPages;
-          var isMaxSized = (angular.isDefined(scope.maxSize) && scope.maxSize < scope.numPages);
-          
-          if (isMaxSized) {
-            if (rotate) {
-              startPage = Math.max(controller.currentPage - Math.floor(scope.maxSize/2), 1);
-              endPage = startPage + scope.maxSize + 1;
-              
-              if (endPage > scope.numPages) {
-                endPage = scope.numPages;
-                startPage = endPage - scope.maxSize + 1;
+  
+        paginationCtrl.getPages = function(currentPage, totalPages) {
+          var pages = [];
+  
+          // Default page limits
+          var startPage = 1, endPage = totalPages;
+          var isMaxSized = ( angular.isDefined(maxSize) && maxSize < totalPages );
+  
+          // recompute if maxSize
+          if ( isMaxSized ) {
+            if ( rotate ) {
+              // Current page is displayed in the middle of the visible ones
+              startPage = Math.max(currentPage - Math.floor(maxSize/2), 1);
+              endPage   = startPage + maxSize - 1;
+  
+              // Adjust if limit is exceeded
+              if (endPage > totalPages) {
+                endPage   = totalPages;
+                startPage = endPage - maxSize + 1;
               }
             } else {
-              startPage = ((Math.cell(controller.currentPage / scope.maxSize) - 1) * scope.maxSize) + 1;
-              endPage = Math.min(startPage + scope.maxSize - 1, scope.numPages);
+              // Visible pages are paginated with maxSize
+              startPage = ((Math.ceil(currentPage / maxSize) - 1) * maxSize) + 1;
+  
+              // Adjust last page if limit is exceeded
+              endPage = Math.min(startPage + maxSize - 1, totalPages);
             }
           }
-          
+  
+          // Add page number links
           for (var number = startPage; number <= endPage; number++) {
-            var page = makePage(number, number, controller.isActive(number), false);
-            scope.pages.push(page);
+            var page = makePage(number, number, paginationCtrl.isActive(number), false);
+            pages.push(page);
           }
-          
-          if (isMaxSized && !rotate) {
-            if (startPage > 1) {
+  
+          // Add links to move between page sets
+          if ( isMaxSized && ! rotate ) {
+            if ( startPage > 1 ) {
               var previousPageSet = makePage(startPage - 1, '...', false, false);
-              scope.pages.unshift(previousPageSet);
+              pages.unshift(previousPageSet);
             }
-            if (endPage < scope.numPages) {
+  
+            if ( endPage < totalPages ) {
               var nextPageSet = makePage(endPage + 1, '...', false, false);
-              scope.pages.push(nextPageSet);
+              pages.push(nextPageSet);
             }
           }
-          
+  
+          // Add previous & next links
           if (directionLinks) {
-            var previousPage = makePage(controller.currentPage - 1, previousText, false, controller.noPrevious());
-            scope.pages.unshift(previousPage);
-            
-            var nextPage = makePage(controller.currentPage + 1, nextText, false, controller.noNext());
-            scope.pages.push(nextPage);
+            var previousPage = makePage(currentPage - 1, previousText, false, paginationCtrl.noPrevious());
+            pages.unshift(previousPage);
+  
+            var nextPage = makePage(currentPage + 1, nextText, false, paginationCtrl.noNext());
+            pages.push(nextPage);
           }
-          
+  
+          // Add first & last links
           if (boundaryLinks) {
-            var firstPage = makePage(1, firstText, false, controller.noPrevious());
-            scope.pages.unshift(firstPage);
-            
-            var lastPage = makePage(scope.numPages, lastText, false, controller.noNext());
-            scope.pages.push(lastPage);
+            var firstPage = makePage(1, firstText, false, paginationCtrl.noPrevious());
+            pages.unshift(firstPage);
+  
+            var lastPage = makePage(totalPages, lastText, false, paginationCtrl.noNext());
+            pages.push(lastPage);
           }
-        });
+  
+          return pages;
+        };
       }
     };
   }

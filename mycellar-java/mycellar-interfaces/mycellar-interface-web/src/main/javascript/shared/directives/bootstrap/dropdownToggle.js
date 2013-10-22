@@ -7,11 +7,11 @@ angular.module('mycellar.directives.bootstrap.dropdownToggle').directive('dropdo
     var closeMenu = angular.noop;
     return {
       restrict: 'CA',
-      link: function (scope, element, attrs) {
+      link: function(scope, element, attrs) {
         scope.$watch('$location.path', function() { closeMenu(); });
         element.parent().bind('click', function() { closeMenu(); });
         element.bind('click', function (event) {
-          var elementWasOpen = (element == openElement);
+          var elementWasOpen = (element === openElement);
           
           event.preventDefault();
           event.stopPropagation();
