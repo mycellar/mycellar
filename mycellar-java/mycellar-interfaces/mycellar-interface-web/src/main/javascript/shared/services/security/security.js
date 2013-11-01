@@ -1,4 +1,6 @@
-angular.module('mycellar.services.security.service', ['mycellar.services.menu']);
+angular.module('mycellar.services.security.service', [
+  'mycellar.services.menu'
+]);
 
 angular.module('mycellar.services.security.service').factory('security', [
   '$http', '$q', '$location', 'menuService',

@@ -37,9 +37,10 @@ public interface UserService extends SimpleService<User> {
     /**
      * @param user
      * @param password
+     * @return
      * @throws BusinessException
      */
-    void saveUserPassword(User user, String password) throws BusinessException;
+    User saveUserPassword(User user, String password) throws BusinessException;
 
     /**
      * @param email

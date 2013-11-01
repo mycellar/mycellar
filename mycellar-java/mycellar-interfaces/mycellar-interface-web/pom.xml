@@ -216,21 +216,6 @@
         <artifactId>exec-maven-plugin</artifactId>
         <executions>
           <execution>
-            <id>Bower</id>
-            <phase>generate-sources</phase>
-            <goals>
-              <goal>exec</goal>
-            </goals>
-            <configuration>
-              <executable>node</executable>
-              <arguments>
-                <argument>node_modules/bower/bin/bower</argument>
-                <argument>--no-color</argument>
-                <argument>install</argument>
-              </arguments>
-            </configuration>
-          </execution>
-          <execution>
             <id>Grunt</id>
             <phase>generate-sources</phase>
             <goals>
@@ -241,7 +226,7 @@
               <arguments>
                 <argument>node_modules/grunt-cli/bin/grunt</argument>
                 <argument>--no-color</argument>
-                <argument>install</argument>
+                <argument>update</argument>
               </arguments>
             </configuration>
           </execution>

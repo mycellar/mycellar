@@ -59,9 +59,9 @@ public class UserServiceImpl extends AbstractSimpleService<User, UserRepository>
      * {@inheritDoc}
      */
     @Override
-    public void saveUserPassword(User user, String password) throws BusinessException {
+    public User saveUserPassword(User user, String password) throws BusinessException {
         user.setPassword(passwordEncryptor.encryptPassword(password));
-        save(user);
+        return save(user);
     }
 
     /**

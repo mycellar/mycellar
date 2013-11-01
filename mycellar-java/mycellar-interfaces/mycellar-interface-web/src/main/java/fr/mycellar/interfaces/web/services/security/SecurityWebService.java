@@ -43,6 +43,9 @@ import org.springframework.security.core.context.SecurityContextHolder;
 
 import fr.mycellar.domain.shared.exception.BusinessError;
 import fr.mycellar.domain.shared.exception.BusinessException;
+import fr.mycellar.domain.user.ProfileEnum;
+import fr.mycellar.domain.user.User;
+import fr.mycellar.interfaces.facades.user.UserServiceFacade;
 import fr.mycellar.interfaces.web.security.CurrentUserService;
 
 /**
@@ -58,6 +61,8 @@ public class SecurityWebService {
     private AuthenticationManager authenticationManager;
 
     private CurrentUserService currentUserService;
+
+    private UserServiceFacade userServiceFacade;
 
     @GET
     @Produces(MediaType.APPLICATION_JSON)
@@ -112,6 +117,25 @@ public class SecurityWebService {
         SecurityContextHolder.clearContext();
     }
 
+    @POST
+    @Produces(MediaType.APPLICATION_JSON)
+    @Consumes(MediaType.APPLICATION_JSON)
+    @Path("register")
+    public UserDto register(User userToRegister) throws BusinessException {
+        User user = new User();
+        user.setEmail(userToRegister.getEmail());
+        user.setFirstname(userToRegister.getFirstname());
+        user.setLastname(userToRegister.getLastname());
+        user.setProfile(ProfileEnum.BOOKING);
+
+        userServiceFacade.saveUserPassword(user, userToRegister.getPassword());
+
+        UserDto userDto = new UserDto();
+        userDto.setEmail(userToRegister.getEmail());
+        userDto.setPassword(userToRegister.getPassword());
+        return login(userDto);
+    }
+
     /**
      * @param authenticationManager
      *            the authenticationManager to set
@@ -129,6 +153,15 @@ public class SecurityWebService {
     @Inject
     public void setCurrentUserService(CurrentUserService currentUserService) {
         this.currentUserService = currentUserService;
+    }
+
+    /**
+     * @param userServiceFacade
+     *            the userServiceFacade to set
+     */
+    @Inject
+    public void setUserServiceFacade(UserServiceFacade userServiceFacade) {
+        this.userServiceFacade = userServiceFacade;
     }
 
 }

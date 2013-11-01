@@ -18,5 +18,6 @@ angular.module('mycellar.controllers.login').controller('LoginController', [
     $scope.password = '';
     $scope.login = security.login;
     $scope.logout = security.logout;
+    $scope.register = security.register;
   }
 ]);

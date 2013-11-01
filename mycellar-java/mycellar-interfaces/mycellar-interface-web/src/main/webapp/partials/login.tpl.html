@@ -7,12 +7,12 @@
       <form name="loginForm" class="form">
         <div class="form-group" ng-class="{error: loginForm.email.$invalid}">
           <label class="control-label" for="email">Email</label>
-          <input id="email" name="email" type="email" class="input-small form-control" size="18" placeholder="Email" ng-model="email" />
+          <input id="email" name="email" type="email" class="form-control" placeholder="Email" ng-model="email" />
           <error-ctrl ctrl="loginForm.email"></error-ctrl>
         </div>
         <div class="form-group" ng-class="{error: loginForm.password.$invalid}">
           <label class="control-label" for="password">Password</label>
-          <input type="password" id="password" class="input-small form-control" size="8" placeholder="Password" ng-model="password" />
+          <input type="password" id="password" class="form-control" placeholder="Password" ng-model="password" />
           <error-ctrl ctrl="loginForm.password"></error-ctrl>
         </div>
         <input type="submit" class="btn btn-primary" value="Sign-in" ng-click="login(email, password)" />
@@ -24,25 +24,32 @@
         <h1>Créer un compte <small>C'est gratuit !</small></h1>
       </header>
       <form name="newUserForm" class="form">
-        <fieldset>
-          <legend>User details</legend>
-          <div class="form-group">
-            <input id="lastname" type="text" value="" class="form-control" />
-          </div>
-          <div class="form-group">
-            <input id="firstname" type="text" value="" class="form-control" />
-          </div>
-          <div class="form-group">
-            <input id="email" type="email" value="" class="form-control" />
-          </div>
-          <div class="form-group">
-            <input id="password" type="password" value="" class="form-control" />
-          </div>
-          <div class="form-group">
-            <input id="password2" type="password" value="" class="form-control" />
-          </div>
-        </fieldset>
-        <input type="submit" class="btn btn-primary" value="save" />
+        <div class="form-group" ng-class="{error: newUserForm.lastname.$invalid}">
+          <label class="control-label" for="lastname">Lastname</label>
+          <input id="lastname" name="lastname" type="text" class="form-control" placeholder="Lastname" ng-model="user.lastname" />
+          <error-ctrl ctrl="newUserForm.lastname"></error-ctrl>
+        </div>
+        <div class="form-group" ng-class="{error: newUserForm.firstname.$invalid}">
+          <label class="control-label" for="firstname">Firstname</label>
+          <input id="firstname" name="firstname" type="text" class="form-control" placeholder="Firstname" ng-model="user.firstname" />
+          <error-ctrl ctrl="newUserForm.firstname"></error-ctrl>
+        </div>
+        <div class="form-group" ng-class="{error: newUserForm.email.$invalid}">
+          <label class="control-label" for="email">Email</label>
+          <input id="email" name="email" type="email" class="form-control" placeholder="Email" ng-model="user.email" />
+          <error-ctrl ctrl="newUserForm.email"></error-ctrl>
+        </div>
+        <div class="form-group" ng-class="{error: newUserForm.password.$invalid}">
+          <label class="control-label" for="password">Password</label>
+          <input type="password" id="password" name="password" class="form-control" placeholder="Password" ng-model="user.password" />
+          <error-ctrl ctrl="newUserForm.password"></error-ctrl>
+        </div>
+        <div class="form-group" ng-class="{error: newUserForm.password2.$invalid}">
+          <label class="control-label" for="password2">Password confirmation</label>
+          <input type="password" id="password2" name="password2" class="form-control" placeholder="Password" ng-model="password2" />
+          <error-ctrl ctrl="newUserForm.password2"></error-ctrl>
+        </div>
+        <input type="submit" class="btn btn-primary" value="Register" ng-click="register(user)" />
       </form>
     </div>
   </div>

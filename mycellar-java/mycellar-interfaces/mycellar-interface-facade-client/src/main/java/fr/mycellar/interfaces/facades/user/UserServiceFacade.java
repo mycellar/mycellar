@@ -69,6 +69,7 @@ public interface UserServiceFacade {
 
     /**
      * @param user
+     * @return
      * @throws BusinessException
      */
     User saveUser(User user) throws BusinessException;
@@ -76,9 +77,10 @@ public interface UserServiceFacade {
     /**
      * @param user
      * @param password
+     * @return
      * @throws BusinessException
      */
-    void saveUserPassword(User user, String password) throws BusinessException;
+    User saveUserPassword(User user, String password) throws BusinessException;
 
     /**
      * @param email

@@ -1,18 +1,34 @@
 module.exports = function(grunt) {
 
+  grunt.loadNpmTasks('grunt-open');
   grunt.loadNpmTasks('grunt-shell');
-  grunt.loadNpmTasks('grunt-contrib-copy');
+  grunt.loadNpmTasks('grunt-shell-spawn');
   grunt.loadNpmTasks('grunt-contrib-watch');
-  grunt.loadNpmTasks('grunt-contrib-uglify');
   grunt.loadNpmTasks('grunt-contrib-concat');
-  grunt.loadNpmTasks('grunt-contrib-connect');
+  grunt.loadNpmTasks('grunt-protractor-runner');
   grunt.loadNpmTasks('grunt-karma');
 
   grunt.initConfig({
     shell: {
-      install: {
+      options: {
+        stdout: true
+      },
+      selenium: {
+        command: './selenium/start',
+        options: {
+          stdout: false,
+          async: true
+        }
+      },
+      protractor_install: {
+        command: 'node ./node_modules/protractor/bin/install_selenium_standalone'
+      },
+      npm_install: {
+        command: 'npm install'
+      },
+      bower_install: {
         command: 'node ./node_modules/bower/bin/bower install'
-      }
+      },
     },
 
     karma: {
@@ -24,24 +40,49 @@ module.exports = function(grunt) {
       unit_auto: {
         configFile: './src/test/javascript/karma-unit.conf.js'
       },
-      e2e: {
-        configFile: './src/test/javascript/karma-e2e.conf.js',
+      unit_coverage: {
+        configFile: './src/test/javascript/karma-unit.conf.js',
         autoWatch: false,
-        singleRun: true
-      },
-      e2e_auto: {
-        configFile: './src/test/javascript/karma-e2e.conf.js'
+        singleRun: true,
+        reporters: ['progress', 'coverage'],
+        preprocessors: {
+          './src/main/javascript/**/*.js': ['coverage']
+        },
+        coverageReporter: {
+          type: 'html',
+          dir: 'coverage/'
+        }
       }
     },
 
     watch: {
-      scripts: {
-        files: ['./src/main/javascript/**/*.js','./src/main/css/**/*.css'],
-        tasks: ['concat'],
-        options: {
-          spawn: false
-        },
+      options : {
+        livereload: 7777
       },
+      assets: {
+        files: ['./src/main/javascript/**/*.js','./src/main/css/**/*.css'],
+        tasks: ['concat']
+      },
+      protractor: {
+        files: ['./src/main/javascript/**/*.js', './src/test/javascript/e2e/**/*.js'],
+        tasks: ['protractor:auto']
+      }
+    },
+    
+    protractor: {
+      options: {
+        keepAlive: false,
+        configFile: "./src/test/javascript/protractor.conf.js"
+      },
+      singlerun: {},
+      auto: {
+        keepAlive: true,
+        options: {
+          args: {
+            seleniumPort: 4444
+          }
+        }
+      }
     },
 
     concat: {
@@ -68,20 +109,22 @@ module.exports = function(grunt) {
     }
   });
 
-  grunt.registerTask('test:e2e', ['karma:e2e']);
-  grunt.registerTask('test:unit', ['karma:unit']);
   grunt.registerTask('test', ['test:unit', 'test:e2e']);
+  grunt.registerTask('test:unit', ['karma:unit']);
+  grunt.registerTask('test:e2e', ['protractor:singlerun']);
 
-  //keeping these around for legacy use
   grunt.registerTask('autotest:unit', ['karma:unit_auto']);
-  grunt.registerTask('autotest:e2e', ['karma:e2e_auto']);
+  grunt.registerTask('autotest:e2e', ['shell:selenium', 'watch:protractor']);
 
+  grunt.registerTask('test:coverage', ['karma:unit_coverage']);
+  
   //installation-related
-  grunt.registerTask('install', ['shell:install','concat']);
+  grunt.registerTask('install', ['update','shell:protractor_install']);
+  grunt.registerTask('update', ['shell:npm_install','shell:bower_install']);
 
   //defaults
   grunt.registerTask('default', ['dev']);
 
   //development
-  grunt.registerTask('dev', ['install','watch']);
+  grunt.registerTask('dev', ['install','watch:assets']);
 };

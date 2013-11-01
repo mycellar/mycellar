@@ -82,8 +82,8 @@ public class UserServiceFacadeImpl implements UserServiceFacade {
      */
     @Override
     @Transactional
-    public void saveUserPassword(User user, String password) throws BusinessException {
-        userService.saveUserPassword(user, password);
+    public User saveUserPassword(User user, String password) throws BusinessException {
+        return userService.saveUserPassword(user, password);
     }
 
     /**
