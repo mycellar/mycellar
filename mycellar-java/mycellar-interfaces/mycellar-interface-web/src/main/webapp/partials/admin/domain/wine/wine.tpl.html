@@ -10,7 +10,7 @@
       <error-form form="form"></error-form>
       <fieldset>
         <legend>Details</legend>
-        <div class="form-group" ng-class="{error: form.appellation.$invalid}">
+        <div class="form-group" ng-class="{'has-error': form.appellation.$invalid}">
           <label class="control-label" for="appellation">Appellation</label>
           <input 
               id="appellation" 
@@ -25,7 +25,7 @@
               typeahead-wait-ms="200" />
           <error-ctrl ctrl="form.appellation"></error-ctrl>
         </div>
-        <div class="form-group" ng-class="{error: form.producer.$invalid}">
+        <div class="form-group" ng-class="{'has-error': form.producer.$invalid}">
           <label class="control-label" for="producer">Producer</label>
           <input 
               id="producer" 
@@ -40,7 +40,7 @@
               typeahead-wait-ms="200" />
           <error-ctrl ctrl="form.producer"></error-ctrl>
         </div>
-        <div class="form-group" ng-class="{error: form.type.$invalid}">
+        <div class="form-group" ng-class="{'has-error': form.type.$invalid}">
           <label class="control-label" for="type">Type</label>
           <select id="type" name="type" ng-model="wine.type" class="form-control">
             <option label="Still">STILL</option>
@@ -50,7 +50,7 @@
           </select>
           <error-ctrl ctrl="form.type"></error-ctrl>
         </div>
-        <div class="form-group" ng-class="{error: form.color.$invalid}">
+        <div class="form-group" ng-class="{'has-error': form.color.$invalid}">
           <label class="control-label" for="color">Color</label>
           <select id="color" name="color" ng-model="wine.color" class="form-control">
             <option label="Red">RED</option>
@@ -60,23 +60,23 @@
           </select>
           <error-ctrl ctrl="form.color"></error-ctrl>
         </div>
-        <div class="form-group" ng-class="{error: form.name.$invalid}">
+        <div class="form-group" ng-class="{'has-error': form.name.$invalid}">
           <label class="control-label" for="name">Name</label>
           <input class="form-control" id="name" name="name" type="text" ng-model="wine.name" placeholder="Name" />
           <error-ctrl ctrl="form.name"></error-ctrl>
           </div>
         </div>
-        <div class="form-group" ng-class="{error: form.vintage.$invalid}">
+        <div class="form-group" ng-class="{'has-error': form.vintage.$invalid}">
           <label class="control-label" for="vintage">Vintage</label>
           <input class="form-control" id="vintage" name="vintage" type="number" ng-model="wine.vintage" placeholder="Vintage" />
           <error-ctrl ctrl="form.vintage"></error-ctrl>
         </div>
-        <div class="form-group" ng-class="{error: form.ranking.$invalid}">
+        <div class="form-group" ng-class="{'has-error': form.ranking.$invalid}">
           <label class="control-label" for="ranking">Ranking</label>
           <input class="form-control" id="ranking" name="ranking" type="text" ng-model="wine.ranking" placeholder="Ranking" />
           <error-ctrl ctrl="form.ranking"></error-ctrl>
         </div>
-        <div class="form-group" ng-class="{error: form.description.$invalid}">
+        <div class="form-group" ng-class="{'has-error': form.description.$invalid}">
           <label class="control-label" for="description">Description</label>
           <textarea 
               id="description" 

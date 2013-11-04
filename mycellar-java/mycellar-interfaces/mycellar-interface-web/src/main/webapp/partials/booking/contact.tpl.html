@@ -4,21 +4,21 @@
     <error-form form="producerForm"></error-form>
     <div class="row">
       <div class="col-md-3">
-        <div class="form-group" ng-class="{error: producerForm.phone.$invalid}">
+        <div class="form-group" ng-class="{'has-error': producerForm.phone.$invalid}">
           <label class="control-label" for="phone">Phone</label>
           <input class="form-control" id="phone" name="phone" type="text" ng-model="producer.phone" placeholder="Phone" />
           <error-ctrl ctrl="producerForm.phone"></error-ctrl>
         </div>
       </div>
       <div class="col-md-3">
-        <div class="form-group" ng-class="{error: producerForm.fax.$invalid}">
+        <div class="form-group" ng-class="{'has-error': producerForm.fax.$invalid}">
           <label class="control-label" for="fax">Fax</label>
           <input class="form-control" id="fax" name="fax" type="text" ng-model="producer.fax" placeholder="Fax" />
           <error-ctrl ctrl="producerForm.fax"></error-ctrl>
         </div>
       </div>
       <div class="col-md-6">
-        <div class="form-group" ng-class="{error: producerForm.email.$invalid}">
+        <div class="form-group" ng-class="{'has-error': producerForm.email.$invalid}">
           <label class="control-label" for="email">Email</label>
           <input class="form-control" id="email" name="email" type="text" ng-model="producer.email" placeholder="Email" />
           <error-ctrl ctrl="producerForm.email"></error-ctrl>
@@ -27,7 +27,7 @@
     </div>
     <div class="row">
       <div class="col-md-6">
-        <div class="form-group" ng-class="{error: producerForm.description.$invalid}">
+        <div class="form-group" ng-class="{'has-error': producerForm.description.$invalid}">
           <label class="control-label" for="description">Description</label>
           <textarea 
               id="description" 
@@ -40,7 +40,7 @@
         </div>
       </div>
       <div class="col-md-6">
-        <div class="form-group" ng-class="{error: producerForm.contactInformation.$invalid}">
+        <div class="form-group" ng-class="{'has-error': producerForm.contactInformation.$invalid}">
           <label class="control-label" for="contactInformation">Contact information</label>
           <textarea 
               id="contactInformation" 
@@ -65,21 +65,21 @@
       <legend>New contact</legend>
       <div class="row">
         <div class="col-md-6">
-          <div class="form-group" ng-class="{error: contactForm.current.$invalid}">
+          <div class="form-group" ng-class="{'has-error': contactForm.current.$invalid}">
             <label class="control-label" for="current">Current</label>
             <input class="form-control" id="current" name="current" type="date" ng-model="contact.current" placeholder="Current" />
             <error-ctrl ctrl="contactForm.current"></error-ctrl>
           </div>
         </div>
         <div class="col-md-6">
-          <div class="form-group" ng-class="{error: contactForm.next.$invalid}">
+          <div class="form-group" ng-class="{'has-error': contactForm.next.$invalid}">
             <label class="control-label" for="next">Next</label>
             <input class="form-control" id="next" name="next" type="date" ng-model="contact.next" placeholder="Next" />
             <error-ctrl ctrl="contactForm.next"></error-ctrl>
           </div>
         </div>
       </div>
-      <div class="form-group" ng-class="{error: contactForm.text.$invalid}">
+      <div class="form-group" ng-class="{'has-error': contactForm.text.$invalid}">
         <label class="control-label" for="text">Text</label>
         <textarea 
             id="text" 

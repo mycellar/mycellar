@@ -10,7 +10,7 @@
       <error-form form="form"></error-form>
       <fieldset>
         <legend>Details</legend>
-        <div class="form-group" ng-class="{error: form.producer.$invalid}">
+        <div class="form-group" ng-class="{'has-error': form.producer.$invalid}">
           <label class="control-label" for="producer">Producer</label>
           <input 
               id="producer" 
@@ -25,17 +25,17 @@
               typeahead-wait-ms="200" />
           <error-ctrl ctrl="form.producer"></error-ctrl>
         </div>
-        <div class="form-group" ng-class="{error: form.current.$invalid}">
+        <div class="form-group" ng-class="{'has-error': form.current.$invalid}">
           <label class="control-label" for="current">Current</label>
           <input class="form-control" id="current" name="current" type="date" ng-model="contact.current" placeholder="Current" />
           <error-ctrl ctrl="form.current"></error-ctrl>
         </div>
-        <div class="form-group" ng-class="{error: form.next.$invalid}">
+        <div class="form-group" ng-class="{'has-error': form.next.$invalid}">
           <label class="control-label" for="next">Next</label>
           <input class="form-control" id="next" name="next" type="date" ng-model="contact.next" placeholder="Next" />
           <error-ctrl ctrl="form.next"></error-ctrl>
         </div>
-        <div class="form-group" ng-class="{error: form.text.$invalid}">
+        <div class="form-group" ng-class="{'has-error': form.text.$invalid}">
           <label class="control-label" for="text">Text</label>
           <textarea 
               id="text" 

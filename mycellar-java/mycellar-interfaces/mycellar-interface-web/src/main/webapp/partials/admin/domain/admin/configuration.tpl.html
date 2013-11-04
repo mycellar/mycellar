@@ -10,7 +10,7 @@
       <error-form form="form"></error-form>
       <fieldset>
         <legend>Details</legend>
-        <div class="form-group" ng-class="{error: form.value.$invalid}">
+        <div class="form-group" ng-class="{'has-error': form.value.$invalid}">
           <label class="control-label" for="value">Value</label>
           <input id="value" name="value" type="text" ng-model="configuration.value" placeholder="Value" class="form-control" />
           <error-ctrl ctrl="form.value"></error-ctrl>

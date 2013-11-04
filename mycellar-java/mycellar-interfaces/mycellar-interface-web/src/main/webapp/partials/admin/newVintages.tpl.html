@@ -143,12 +143,12 @@
     <div class="col-md-2">
       <fieldset class="form">
         <legend>Vintages</legend>
-        <div class="form-group" ng-class="{error: form.from.$invalid}">
+        <div class="form-group" ng-class="{'has-error': form.from.$invalid}">
           <label class="control-label" for="from">From</label>
           <input id="from" name="from" type="number" ng-model="from" placeholder="From" class="form-control" />
           <error-ctrl ctrl="form.from"></error-ctrl>
         </div>
-        <div class="form-group" ng-class="{error: form.to.$invalid}">
+        <div class="form-group" ng-class="{'has-error': form.to.$invalid}">
           <label class="control-label" for="to">To</label>
           <input id="to" name="to" type="number" ng-model="to" placeholder="To" class="form-control" />
           <error-ctrl ctrl="form.to"></error-ctrl>

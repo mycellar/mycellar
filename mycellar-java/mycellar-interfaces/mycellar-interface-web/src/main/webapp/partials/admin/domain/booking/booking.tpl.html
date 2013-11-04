@@ -10,7 +10,7 @@
       <error-form form="form"></error-form>
       <fieldset>
         <legend>Details</legend>
-        <div class="form-group" ng-class="{error: form.bookingEvent.$invalid}">
+        <div class="form-group" ng-class="{'has-error': form.bookingEvent.$invalid}">
           <label class="control-label" for="bookingEvent">Booking event</label>
           <input 
               id="bookingEvent" 
@@ -25,7 +25,7 @@
               typeahead-wait-ms="200" />
           <error-ctrl ctrl="form.bookingEvent"></error-ctrl>
         </div>
-        <div class="form-group" ng-class="{error: form.customer.$invalid}">
+        <div class="form-group" ng-class="{'has-error': form.customer.$invalid}">
           <label class="control-label" for="customer">Customer</label>
           <input 
               id="customer" 

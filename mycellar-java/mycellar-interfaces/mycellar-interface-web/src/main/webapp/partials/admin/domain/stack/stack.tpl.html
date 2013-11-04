@@ -10,12 +10,12 @@
       <error-form form="form"></error-form>
       <fieldset>
         <legend>Stack</legend>
-        <div class="form-group" ng-class="{error: form.hashCode.$invalid}">
+        <div class="form-group" ng-class="{'has-error': form.hashCode.$invalid}">
           <label class="control-label" for="hashCode">HashCode</label>
           <input class="form-control" id="hashCode" name="hashCode" type="text" ng-model="stack.hashCode" placeholder="HashCode" />
           <error-ctrl ctrl="form.hashCode"></error-ctrl>
         </div>
-        <div class="form-group" ng-class="{error: form.stack.$invalid}">
+        <div class="form-group" ng-class="{'has-error': form.stack.$invalid}">
           <label class="control-label" for="stack">Stack</label>
           <textarea 
               id="stack" 
@@ -26,7 +26,7 @@
               rows="15"></textarea>
           <error-ctrl ctrl="form.stack"></error-ctrl>
         </div>
-        <div class="form-group" ng-class="{error: form.count.$invalid}">
+        <div class="form-group" ng-class="{'has-error': form.count.$invalid}">
           <label class="control-label" for="count">Count</label>
           <input class="form-control" id="count" name="count" type="number" ng-model="stack.count" placeholder="Count" />
           <error-ctrl ctrl="form.count"></error-ctrl>

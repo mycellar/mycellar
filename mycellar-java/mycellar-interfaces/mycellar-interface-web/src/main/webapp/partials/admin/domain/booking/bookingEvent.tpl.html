@@ -10,17 +10,17 @@
       <error-form form="form"></error-form>
       <fieldset>
         <legend>Details</legend>
-        <div class="form-group" ng-class="{error: form.name.$invalid}">
+        <div class="form-group" ng-class="{'has-error': form.name.$invalid}">
           <label class="control-label" for="name">Name</label>
           <input class="form-control" id="name" name="name" type="text" ng-model="bookingEvent.name" placeholder="Name" />
           <error-ctrl ctrl="form.name"></error-ctrl>
         </div>
-        <div class="form-group" ng-class="{error: form.start.$invalid}">
+        <div class="form-group" ng-class="{'has-error': form.start.$invalid}">
           <label class="control-label" for="start">Start</label>
           <input class="form-control" id="start" name="start" type="date" ng-model="bookingEvent.start" placeholder="Start" />
           <error-ctrl ctrl="form.start"></error-ctrl>
         </div>
-        <div class="form-group" ng-class="{error: form.end.$invalid}">
+        <div class="form-group" ng-class="{'has-error': form.end.$invalid}">
           <label class="control-label" for="end">End</label>
           <input class="form-control" id="end" name="end" type="date" ng-model="bookingEvent.end" placeholder="End" />
           <error-ctrl ctrl="form.end"></error-ctrl>
