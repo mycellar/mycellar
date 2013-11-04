@@ -38,7 +38,9 @@ module.exports = function(grunt) {
         singleRun: true
       },
       unit_auto: {
-        configFile: './src/test/javascript/karma-unit.conf.js'
+        configFile: './src/test/javascript/karma-unit.conf.js',
+        autoWatch: true,
+        singleRun: false
       },
       unit_coverage: {
         configFile: './src/test/javascript/karma-unit.conf.js',
@@ -126,5 +128,5 @@ module.exports = function(grunt) {
   grunt.registerTask('default', ['dev']);
 
   //development
-  grunt.registerTask('dev', ['install','watch:assets']);
+  grunt.registerTask('dev', ['watch:assets']);
 };

@@ -1,6 +1,8 @@
 angular.module('mycellar.controllers.login', [
   'ngRoute',
-  'mycellar.services.security.service'
+  'mycellar.resources.user.users',
+  'mycellar.services.security.service',
+  'mycellar.directives.password'
 ], [
   '$routeProvider', 
   function($routeProvider){
@@ -12,12 +14,15 @@ angular.module('mycellar.controllers.login', [
 ]);
 
 angular.module('mycellar.controllers.login').controller('LoginController', [
-  '$scope', 'security',
-  function ($scope, security) {
+  '$scope', 'security', 'Users',
+  function ($scope, security, Users) {
     $scope.email = '';
     $scope.password = '';
     $scope.login = security.login;
     $scope.logout = security.logout;
     $scope.register = security.register;
+    $scope.user = Users.new();
+    $scope.user.password = '';
+    $scope.password2 = '';
   }
 ]);
