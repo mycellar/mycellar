@@ -20,7 +20,7 @@
             <th>Début <icon-sort attribute="start" table-context="tableContext" /></th>
             <th>Fin <icon-sort attribute="end" table-context="tableContext" /></th>
             <th>Nom <icon-sort attribute="name" table-context="tableContext" /></th>
-            <th class="actions"><a href ng-click="new()" class="btn btn-default btn-xs"><i class="glyphicon glyphicon-plus-sign"></i></a></th>
+            <th class="actions"><a href ng-click="new()" class="btn btn-default btn-xs"><i class="fa fa-plus-circle"></i></a></th>
           </tr>
         </thead>
         <tbody ng-controller="LoadingCtrl">
@@ -29,8 +29,8 @@
             <td>{{item.end}}</td>
             <td>{{item.name}}</td>
             <td>
-              <a href ng-click="edit(item.id)" class="btn btn-default btn-xs"><i class="glyphicon glyphicon-edit"></i></a>
-              <a href ng-click="delete(item.id)" class="btn btn-danger btn-xs"><i class="glyphicon glyphicon-remove-sign"></i></a>
+              <a href ng-click="edit(item.id)" class="btn btn-default btn-xs"><i class="fa fa-pencil"></i></a>
+              <a href ng-click="delete(item.id)" class="btn btn-danger btn-xs"><i class="fa fa-minus-circle"></i></a>
             </td>
           </tr>
           <tr ng-if="!loading && items.length == 0">
@@ -42,7 +42,7 @@
             <th>Début <icon-sort attribute="start" table-context="tableContext" /></th>
             <th>Fin <icon-sort attribute="end" table-context="tableContext" /></th>
             <th>Nom <icon-sort attribute="name" table-context="tableContext" /></th>
-            <th class="actions"><a href ng-click="new()" class="btn btn-default btn-xs"><i class="glyphicon glyphicon-plus-sign"></i></a></th>
+            <th class="actions"><a href ng-click="new()" class="btn btn-default btn-xs"><i class="fa fa-plus-circle"></i></a></th>
           </tr>
         </tfoot>
       </table>

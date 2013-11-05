@@ -14,8 +14,8 @@
     <ul class="nav navbar-nav">
       <li class="divider-vertical"></li>
       <li ng-repeat="menu in menuService.getAll()" ng-class="{dropdown: menu.pages, active: menu.active}">
-        <a ng-href="{{menu.route}}" ng-if="!menu.pages" ng-click="$emit('collapse')"><i ng-if="menu.icon" class="glyphicon glyphicon-{{menu.icon}}"></i> {{menu.label}}</a>
-        <a href class="dropdown-toggle" ng-if="menu.pages"><i ng-if="menu.icon" class="glyphicon glyphicon-{{menu.icon}}"></i> {{menu.label}} <b class="caret"></b></a>
+        <a ng-href="{{menu.route}}" ng-if="!menu.pages" ng-click="$emit('collapse')"><i ng-if="menu.icon" class="fa fa-{{menu.icon}}"></i> {{menu.label}}</a>
+        <a href class="dropdown-toggle" ng-if="menu.pages"><i ng-if="menu.icon" class="fa fa-{{menu.icon}}"></i> {{menu.label}} <b class="caret"></b></a>
         <ul class="dropdown-menu" ng-if="menu.pages">
           <li ng-repeat="sub in menu.pages" ng-class="{active: sub.active}"><a ng-href="{{sub.route}}" ng-click="$emit('collapse')">{{sub.label}}</a></li>
         </ul>
@@ -36,10 +36,10 @@
     </form>
     <ul class="nav navbar-nav navbar-right" ng-show="isLoggedIn()">
       <li>
-        <a href="/account" title="Mon compte">{{currentUser.email}} <i class="glyphicon glyphicon-user"></i></a>
+        <a href="/account" title="Mon compte">{{currentUser.email}} <i class="fa fa-user"></i></a>
       </li>
       <li>
-        <a href title="Se déconnecter" ng-click="logout()"><span class="sr-only">Se déconnecter</span> <i class="glyphicon glyphicon-off"></i></a>
+        <a href title="Se déconnecter" ng-click="logout()"><span class="sr-only">Se déconnecter</span> <i class="fa fa-power-off"></i></a>
       </li>
     </ul>
   </div>

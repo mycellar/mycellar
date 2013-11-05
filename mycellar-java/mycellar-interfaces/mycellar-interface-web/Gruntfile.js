@@ -3,6 +3,7 @@ module.exports = function(grunt) {
   grunt.loadNpmTasks('grunt-open');
   grunt.loadNpmTasks('grunt-shell');
   grunt.loadNpmTasks('grunt-shell-spawn');
+  grunt.loadNpmTasks('grunt-contrib-copy');
   grunt.loadNpmTasks('grunt-contrib-watch');
   grunt.loadNpmTasks('grunt-contrib-concat');
   grunt.loadNpmTasks('grunt-protractor-runner');
@@ -87,12 +88,22 @@ module.exports = function(grunt) {
       }
     },
 
+    copy: {
+      fonts: {
+        expand: true,
+        cwd: './bower_components/font-awesome/fonts/',
+        src: '*',
+        dest: './src/main/webapp/fonts/'
+      }
+    },
+
     concat: {
       styles: {
         dest: './src/main/webapp/css/mycellar.css',
         src: [
           './bower_components/bootstrap/dist/css/bootstrap.css',
           './bower_components/bootstrap/dist/css/bootstrap-theme.css',
+          './bower_components/font-awesome/css/font-awesome.css',
           './src/main/css/mycellar.css'
         ]
       },
@@ -122,7 +133,7 @@ module.exports = function(grunt) {
   
   //installation-related
   grunt.registerTask('install', ['update','shell:protractor_install']);
-  grunt.registerTask('update', ['shell:npm_install','shell:bower_install']);
+  grunt.registerTask('update', ['shell:npm_install','shell:bower_install','concat','copy']);
 
   //defaults
   grunt.registerTask('default', ['dev']);
