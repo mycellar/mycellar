@@ -5,38 +5,38 @@
     </nav>
   </div>
   <div class="col-md-10">
-    <header class="page-header"><h1>Booking event: {{bookingEvent.name}}</h1></header>
+    <header class="page-header"><h1>Campagne de réservation : {{bookingEvent.name}}</h1></header>
     <form name="form" class="form">
       <error-form form="form"></error-form>
       <fieldset>
-        <legend>Details</legend>
+        <legend>Détails</legend>
         <div class="form-group" ng-class="{'has-error': form.name.$invalid}">
-          <label class="control-label" for="name">Name</label>
-          <input class="form-control" id="name" name="name" type="text" ng-model="bookingEvent.name" placeholder="Name" />
+          <label class="control-label" for="name">Nom</label>
+          <input class="form-control" id="name" name="name" type="text" ng-model="bookingEvent.name" placeholder="Nom" />
           <error-ctrl ctrl="form.name"></error-ctrl>
         </div>
         <div class="form-group" ng-class="{'has-error': form.start.$invalid}">
-          <label class="control-label" for="start">Start</label>
-          <input class="form-control" id="start" name="start" type="date" ng-model="bookingEvent.start" placeholder="Start" />
+          <label class="control-label" for="start">Début</label>
+          <input class="form-control" id="start" name="start" type="date" ng-model="bookingEvent.start" placeholder="Début" />
           <error-ctrl ctrl="form.start"></error-ctrl>
         </div>
         <div class="form-group" ng-class="{'has-error': form.end.$invalid}">
-          <label class="control-label" for="end">End</label>
-          <input class="form-control" id="end" name="end" type="date" ng-model="bookingEvent.end" placeholder="End" />
+          <label class="control-label" for="end">Fin</label>
+          <input class="form-control" id="end" name="end" type="date" ng-model="bookingEvent.end" placeholder="Fin" />
           <error-ctrl ctrl="form.end"></error-ctrl>
         </div>
       </fieldset>
       <fieldset>
-        <legend>Bottles</legend>
+        <legend>Bouteilles</legend>
         <table class="table table-bordered table-striped table-condensed">
           <thead>
             <tr>
-              <th>Order</th>
-              <th>Producer</th>
+              <th>Ordre</th>
+              <th>Producteur</th>
               <th>Appellation</th>
-              <th>Name</th>
-              <th>Vintage</th>
-              <th>Color</th>
+              <th>Nom</th>
+              <th>Millésime</th>
+              <th>Couleur</th>
               <th>Type</th>
             </tr>
           </thead>
@@ -51,24 +51,24 @@
               <td>{{bookingBottle.bottle.wine.type}}</td>
             </tr>
             <tr ng-if="!loading && items.length == 0">
-              <td colspan="4">No items to display.</td>
+              <td colspan="4">Aucune bouteille dans la campagne.</td>
             </tr>
           </tbody>
           <tfoot>
             <tr>
-              <th>Order</th>
-              <th>Producer</th>
+              <th>Ordre</th>
+              <th>Producteur</th>
               <th>Appellation</th>
-              <th>Name</th>
-              <th>Vintage</th>
-              <th>Color</th>
+              <th>Nom</th>
+              <th>Millésime</th>
+              <th>Couleur</th>
               <th>Type</th>
             </tr>
           </tfoot>
         </table>
       </fieldset>
-      <input type="submit" class="btn btn-primary" value="Save" ng-click="save()" />
-      <input type="submit" class="btn btn-default" value="Cancel" ng-click="cancel()" />
+      <input type="submit" class="btn btn-primary" value="Sauvegarder" ng-click="save()" />
+      <input type="submit" class="btn btn-default" value="Annuler" ng-click="cancel()" />
     </form>
   </div>
 </div>

@@ -1,17 +1,17 @@
-<header class="page-header"><h1>Create new vintages</h1></header>
+<header class="page-header"><h1>Création de nouveaux millésimes</h1></header>
 <form name="form" class="form">
   <div class="row">
     <div class="col-md-4">
       <fieldset>
-        <legend>Filters</legend>
+        <legend>Filtres</legend>
         <div class="form-group">
-          <label for="country" class="sr-only">Country name</label>
+          <label for="country" class="sr-only">Nom du pays</label>
           <input 
               id="country" 
               name="country" 
               type="text" 
               ng-model="tableContext.filters['appellation.region.country.name']" 
-              placeholder="Country" 
+              placeholder="Nom du pays" 
               typeahead="country.name for country in countries($viewValue)"
               typeahead-editable="false"  
               typeahead-min-length="2" 
@@ -19,13 +19,13 @@
               class="form-control" />
         </div>
         <div class="form-group">
-          <label for="region" class="sr-only">Region name</label>
+          <label for="region" class="sr-only">Nom de la région</label>
           <input 
               id="region" 
               name="region" 
               type="text" 
               ng-model="tableContext.filters['appellation.region.name']" 
-              placeholder="Region" 
+              placeholder="Nom de la région" 
               typeahead="region.name for region in regions($viewValue)"
               typeahead-editable="false"  
               typeahead-min-length="2" 
@@ -33,13 +33,13 @@
               class="form-control" />
         </div>
         <div class="form-group">
-          <label for="appellation" class="sr-only">Appellation name</label>
+          <label for="appellation" class="sr-only">Nom de l'appellation</label>
           <input 
               id="appellation" 
               name="appellation" 
               type="text" 
               ng-model="tableContext.filters['appellation.name']" 
-              placeholder="Appellation" 
+              placeholder="Nom de l'appellation" 
               typeahead="appellation.name for appellation in appellations($viewValue)"
               typeahead-editable="false"  
               typeahead-min-length="2" 
@@ -47,13 +47,13 @@
               class="form-control" />
         </div>
         <div class="form-group">
-          <label for="producer" class="sr-only">Producer name</label>
+          <label for="producer" class="sr-only">Nom du producteur</label>
           <input 
               id="producer" 
               name="producer" 
               type="text" 
               ng-model="tableContext.filters['producer.name']" 
-              placeholder="Producer" 
+              placeholder="Nom du producteur" 
               typeahead="producer.name for producer in producers($viewValue)"
               typeahead-editable="false" 
               typeahead-min-length="2" 
@@ -62,48 +62,48 @@
         </div>
         <div class="form-group">
           <label for="type" class="sr-only">Type</label>
-          <select id="type" name="type" ng-model="tableContext.filters['type']" placeholder="Type" class="form-control">
+          <select id="type" name="type" ng-model="tableContext.filters['type']" class="form-control">
             <option label="Type"></option>
-            <option label="Still">STILL</option>
-            <option label="Sparkling">SPARKLING</option>
-            <option label="Spirit">SPIRIT</option>
-            <option label="Other">OTHER</option>
+            <option label="Tranquille">STILL</option>
+            <option label="Pétillant">SPARKLING</option>
+            <option label="Spiritueux">SPIRIT</option>
+            <option label="Autre">OTHER</option>
           </select>
         </div>
         <div class="form-group">
-          <label for="color" class="sr-only">Color</label>
+          <label for="color" class="sr-only">Couleur</label>
           <select id="color" name="color" ng-model="tableContext.filters['color']" class="form-control">
-            <option label="Color"></option>
-            <option label="Red">RED</option>
-            <option label="White">WHITE</option>
+            <option label="Couleur"></option>
+            <option label="Rouge">RED</option>
+            <option label="Blanc">WHITE</option>
             <option label="Rosé">ROSE</option>
-            <option label="Other">OTHER</option>
+            <option label="Autre">OTHER</option>
           </select>
         </div>
         <div class="form-group">
-          <label for="name" class="sr-only">Name</label>
-          <input id="name" name="name" type="text" ng-model="tableContext.filters['name']" placeholder="Name" class="form-control" />
+          <label for="name" class="sr-only">Nom</label>
+          <input id="name" name="name" type="text" ng-model="tableContext.filters['name']" placeholder="Nom" class="form-control" />
         </div>
         <div class="form-group">
-          <label for="vintage" class="sr-only">Vintage</label>
-          <input id="vintage" name="vintage" type="number" ng-model="tableContext.filters['vintage']" placeholder="Vintage" class="form-control" />
+          <label for="vintage" class="sr-only">Millésime</label>
+          <input id="vintage" name="vintage" type="number" ng-model="tableContext.filters['vintage']" placeholder="Millésime" class="form-control" />
         </div>
       </fieldset>
     </div>
     <div class="col-md-8">
       <fieldset>
-        <legend>Wines</legend>
+        <legend>Vins à dupliquer</legend>
         <paginated options="tableOptions" items="wines" table-context="tableContext">
           <table class="table table-bordered table-striped table-condensed">
             <thead>
               <tr>
-                <th>Country <icon-sort attribute="appellation.region.country.name" table-context="tableContext" /></th>
-                <th>Region <icon-sort attribute="appellation.region.name" table-context="tableContext" /></th>
+                <th>Pays <icon-sort attribute="appellation.region.country.name" table-context="tableContext" /></th>
+                <th>Région <icon-sort attribute="appellation.region.name" table-context="tableContext" /></th>
                 <th>Appellation <icon-sort attribute="appellation.name" table-context="tableContext" /></th>
-                <th>Producer <icon-sort attribute="producer.name" table-context="tableContext" /></th>
-                <th>Name <icon-sort attribute="name" table-context="tableContext" /></th>
-                <th>Vintage <icon-sort attribute="vintage" table-context="tableContext" /></th>
-                <th>Color <icon-sort attribute="color" table-context="tableContext" /></th>
+                <th>Producteur <icon-sort attribute="producer.name" table-context="tableContext" /></th>
+                <th>Nom <icon-sort attribute="name" table-context="tableContext" /></th>
+                <th>Millésime <icon-sort attribute="vintage" table-context="tableContext" /></th>
+                <th>Couleur <icon-sort attribute="color" table-context="tableContext" /></th>
                 <th>Type <icon-sort attribute="type" table-context="tableContext" /></th>
               </tr>
             </thead>
@@ -119,18 +119,18 @@
                 <td>{{wine.type}}</td>
               </tr>
               <tr ng-if="!loading && wines.length == 0">
-                <td colspan="8">No wines match.</td>
+                <td colspan="8">Aucun vin ne correspond aux filtres</td>
               </tr>
             </tbody>
             <tfoot>
               <tr>
-                <th>Country <icon-sort attribute="appellation.region.country.name" table-context="tableContext" /></th>
-                <th>Region <icon-sort attribute="appellation.region.name" table-context="tableContext" /></th>
+                <th>Pays <icon-sort attribute="appellation.region.country.name" table-context="tableContext" /></th>
+                <th>Région <icon-sort attribute="appellation.region.name" table-context="tableContext" /></th>
                 <th>Appellation <icon-sort attribute="appellation.name" table-context="tableContext" /></th>
-                <th>Producer <icon-sort attribute="producer.name" table-context="tableContext" /></th>
-                <th>Name <icon-sort attribute="name" table-context="tableContext" /></th>
-                <th>Vintage <icon-sort attribute="vintage" table-context="tableContext" /></th>
-                <th>Color <icon-sort attribute="color" table-context="tableContext" /></th>
+                <th>Producteur <icon-sort attribute="producer.name" table-context="tableContext" /></th>
+                <th>Nom <icon-sort attribute="name" table-context="tableContext" /></th>
+                <th>Millésime <icon-sort attribute="vintage" table-context="tableContext" /></th>
+                <th>Couleur <icon-sort attribute="color" table-context="tableContext" /></th>
                 <th>Type <icon-sort attribute="type" table-context="tableContext" /></th>
               </tr>
             </tfoot>
@@ -142,22 +142,22 @@
   <div class="row">
     <div class="col-md-2">
       <fieldset class="form">
-        <legend>Vintages</legend>
+        <legend>Millésimes</legend>
         <div class="form-group" ng-class="{'has-error': form.from.$invalid}">
-          <label class="control-label" for="from">From</label>
-          <input id="from" name="from" type="number" ng-model="from" placeholder="From" class="form-control" />
+          <label class="control-label" for="from">Depuis</label>
+          <input id="from" name="from" type="number" ng-model="from" placeholder="Depuis" class="form-control" />
           <error-ctrl ctrl="form.from"></error-ctrl>
         </div>
         <div class="form-group" ng-class="{'has-error': form.to.$invalid}">
-          <label class="control-label" for="to">To</label>
-          <input id="to" name="to" type="number" ng-model="to" placeholder="To" class="form-control" />
+          <label class="control-label" for="to">Jusqu'en</label>
+          <input id="to" name="to" type="number" ng-model="to" placeholder="Jusqu'en" class="form-control" />
           <error-ctrl ctrl="form.to"></error-ctrl>
         </div>
       </fieldset>
     </div>
     <div class="col-md-10">
       <fieldset>
-        <legend>Result</legend>
+        <legend>Résultats</legend>
         <div class="progress progress-striped active" ng-class="{'progress-danger': errors.length > 0, 'progress-success': errors.length == 0}" ng-show="running">
           <div class="bar" ng-style="{'width': (count / wines.length * 100) + '%'}"></div>
         </div>
@@ -168,12 +168,12 @@
           </div>
           <div class="alert alert-success" ng-repeat="message in messages">
             <button type="button" class="close" ng-click="messages.splice(messages.indexOf(message), 1)">&times;</button>
-            Created {{message.count}} vintages.
+            {{message.count}} millésimes créés.
           </div>
         </div>
       </fieldset>
     </div>
   </div>
-  <input type="submit" ng-click="createVintages()" class="btn btn-primary" value="Create vintages" />
-  <input type="reset" ng-click="clearFilters()" class="btn btn" value="Reset filters" />
+  <input type="submit" ng-click="createVintages()" class="btn btn-primary" value="Créer les millésimes" />
+  <input type="reset" ng-click="clearFilters()" class="btn btn-default" value="Vider les filtres" />
 </form>

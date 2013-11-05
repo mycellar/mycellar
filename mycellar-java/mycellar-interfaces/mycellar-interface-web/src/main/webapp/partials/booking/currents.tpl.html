@@ -1,4 +1,4 @@
-<header class="page-header"><h1>Current booking events</h1></header>
+<header class="page-header"><h1>Campagne de réservations en cours</h1></header>
 <div class="row">
   <div class="col-md-2">
     <nav>
@@ -19,10 +19,10 @@
           <table class="table table-bordered table-striped table-condensed">
             <thead>
               <tr>
-                <th>Wine</th>
+                <th>Vin</th>
                 <th>Format</th>
-                <th>Price</th>
-                <th>Quantity</th>
+                <th>Prix</th>
+                <th>Quantité</th>
                 <th>Total</th>
               </tr>
             </thead>
@@ -44,8 +44,8 @@
             </tfoot>
           </table>
         </fieldset>
-        <input type="submit" class="btn btn-primary" value="Save" ng-click="save(booking)" />
-        <input type="submit" class="btn btn-primary" value="Cancel" ng-click="delete(booking)" />
+        <input type="submit" class="btn btn-primary" value="Réserver" ng-click="save(booking)" />
+        <input type="submit" class="btn btn-primary" value="Annuler la réservation" ng-click="delete(booking)" />
       </form>
       <p ng-if="booking == null">Pas de réservation en cours</p>
     </section>

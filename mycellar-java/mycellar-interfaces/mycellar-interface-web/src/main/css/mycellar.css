@@ -55,11 +55,11 @@ footer {
 }
 
 .loading {
-  top: 45%;
-  left: 45%;
+  top: 40%;
+  left: 40%;
   position: absolute;
   text-align: center;
-  width: 100px;
+  width: 200px;
   z-index: 1000;
 }
 

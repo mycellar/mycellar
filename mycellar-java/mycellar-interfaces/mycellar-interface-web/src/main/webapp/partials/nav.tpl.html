@@ -1,7 +1,7 @@
 <nav class="navbar navbar-inverse navbar-fixed-top" data-ng-controller="NavigationController" role="navigation">
   <div class="navbar-header">
     <button type="button" class="navbar-toggle" ng-click="isCollapsed = !isCollapsed">
-      <span class="sr-only">Toggle navigation</span>
+      <span class="sr-only">{{isCollapsed ? 'Afficher':'Masquer'}} la navigation</span>
       <span class="icon-bar"></span>
       <span class="icon-bar"></span>
       <span class="icon-bar"></span>
@@ -24,22 +24,22 @@
     </ul>
     <form class="navbar-form navbar-right" ng-hide="isLoggedIn()" role="login">
       <div class="form-group">
-        <label for="username" class="sr-only">Username</label>
-        <input type="email" id="username" class="form-control input-small" size="18" placeholder="Username" ng-model="email" />
+        <label for="email" class="sr-only">email</label>
+        <input type="email" id="email" class="form-control input-small" size="18" placeholder="email" ng-model="email" />
       </div>
       <div class="form-group">
-        <label for="password" class="sr-only">Password</label>
-        <input type="password" id="password" class="form-control input-small" size="8" placeholder="Password" ng-model="password" />
+        <label for="password" class="sr-only">Mot de passe</label>
+        <input type="password" id="password" class="form-control input-small" size="8" placeholder="Mot de passe" ng-model="password" />
       </div>
-      <button type="submit" class="btn btn-default btn-small" ng-click="login(email, password)">Sign-in</button>
-      <a href="/login" class="btn btn-default btn-small" title="New user">New user</a>
+      <button type="submit" class="btn btn-default btn-small" ng-click="login(email, password)">Se connecter</button>
+      <a href="/login" class="btn btn-default btn-small">Nouvel utilisateur</a>
     </form>
     <ul class="nav navbar-nav navbar-right" ng-show="isLoggedIn()">
       <li>
-        <a href="/account" title="My account">{{currentUser.email}} <i class="glyphicon glyphicon-user"></i></a>
+        <a href="/account" title="Mon compte">{{currentUser.email}} <i class="glyphicon glyphicon-user"></i></a>
       </li>
       <li>
-        <a href title="Logout" ng-click="logout()"><span class="sr-only">Logout</span> <i class="glyphicon glyphicon-off"></i></a>
+        <a href title="Se déconnecter" ng-click="logout()"><span class="sr-only">Se déconnecter</span> <i class="glyphicon glyphicon-off"></i></a>
       </li>
     </ul>
   </div>

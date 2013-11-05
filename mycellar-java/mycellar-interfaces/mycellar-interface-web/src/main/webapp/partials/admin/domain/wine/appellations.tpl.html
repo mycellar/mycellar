@@ -8,16 +8,16 @@
     <header class="page-header"><h1>Appellations</h1></header>
     <data-table-filters table-context="tableContext">
       <div class="form-group">
-        <label class="control-label sr-only" for="region.country.name">Country name</label>
-        <input class="form-control" id="region.country.name" name="region.country.name" placeholder="Country name" ng-model="tableContext.filters['region.country.name']" type="text" />
+        <label class="control-label sr-only" for="region.country.name">Nom du pays</label>
+        <input class="form-control" id="region.country.name" name="region.country.name" placeholder="Nom du pays" ng-model="tableContext.filters['region.country.name']" type="text" />
       </div>
       <div class="form-group">
-        <label class="control-label sr-only" for="region.name">Region name</label>
-        <input class="form-control" id="region.name" name="region.name" placeholder="Region name" ng-model="tableContext.filters['region.name']" type="text" />
+        <label class="control-label sr-only" for="region.name">Nom de la région</label>
+        <input class="form-control" id="region.name" name="region.name" placeholder="Nom de la région" ng-model="tableContext.filters['region.name']" type="text" />
       </div>
       <div class="form-group">
-        <label class="control-label sr-only" for="name">Name</label>
-        <input class="form-control" id="name" name="name" placeholder="Name" ng-model="tableContext.filters['name']" type="text" />
+        <label class="control-label sr-only" for="name">Nom</label>
+        <input class="form-control" id="name" name="name" placeholder="Nom" ng-model="tableContext.filters['name']" type="text" />
       </div>
     </data-table-filters>
     <data-error-div errors="errors"></data-error-div>
@@ -25,9 +25,9 @@
       <table class="table table-bordered table-striped table-condensed">
         <thead>
           <tr>
-            <th>Country <icon-sort attribute="region.country.name" table-context="tableContext" /></th>
-            <th>Region <icon-sort attribute="region.name" table-context="tableContext" /></th>
-            <th>Name <icon-sort attribute="name" table-context="tableContext" /></th>
+            <th>Pays <icon-sort attribute="region.country.name" table-context="tableContext" /></th>
+            <th>Région <icon-sort attribute="region.name" table-context="tableContext" /></th>
+            <th>Nom <icon-sort attribute="name" table-context="tableContext" /></th>
             <th class="actions"><a href ng-click="new()" class="btn btn-default btn-xs"><i class="glyphicon glyphicon-plus-sign"></i></a></th>
           </tr>
         </thead>
@@ -42,14 +42,14 @@
             </td>
           </tr>
           <tr ng-if="!loading && items.length == 0">
-            <td colspan="4">No items to display.</td>
+            <td colspan="4">Aucune appellation ne correspond aux filtres.</td>
           </tr>
         </tbody>
         <tfoot>
           <tr>
-            <th>Country <icon-sort attribute="region.country.name" table-context="tableContext" /></th>
-            <th>Region <icon-sort attribute="region.name" table-context="tableContext" /></th>
-            <th>Name <icon-sort attribute="name" table-context="tableContext" /></th>
+            <th>Pays <icon-sort attribute="region.country.name" table-context="tableContext" /></th>
+            <th>Région <icon-sort attribute="region.name" table-context="tableContext" /></th>
+            <th>Nom <icon-sort attribute="name" table-context="tableContext" /></th>
             <th class="actions"><a href ng-click="new()" class="btn btn-default btn-xs"><i class="glyphicon glyphicon-plus-sign"></i></a></th>
           </tr>
         </tfoot>

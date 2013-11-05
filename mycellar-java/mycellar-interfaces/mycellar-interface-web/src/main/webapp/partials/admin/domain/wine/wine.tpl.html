@@ -5,11 +5,11 @@
     </nav>
   </div>
   <div class="col-md-10">
-    <header class="page-header"><h1>Wine</h1></header>
+    <header class="page-header"><h1>Vin</h1></header>
     <form name="form" class="form">
       <error-form form="form"></error-form>
       <fieldset>
-        <legend>Details</legend>
+        <legend>Détails</legend>
         <div class="form-group" ng-class="{'has-error': form.appellation.$invalid}">
           <label class="control-label" for="appellation">Appellation</label>
           <input 
@@ -26,14 +26,14 @@
           <error-ctrl ctrl="form.appellation"></error-ctrl>
         </div>
         <div class="form-group" ng-class="{'has-error': form.producer.$invalid}">
-          <label class="control-label" for="producer">Producer</label>
+          <label class="control-label" for="producer">Producteur</label>
           <input 
               id="producer" 
               name="producer" 
               type="text"
               class="form-control" 
               ng-model="wine.producer" 
-              placeholder="Producer" 
+              placeholder="Producteur" 
               typeahead="producer as producer.name for producer in producers($viewValue)"
               typeahead-editable="false"  
               typeahead-min-length="2" 
@@ -43,20 +43,20 @@
         <div class="form-group" ng-class="{'has-error': form.type.$invalid}">
           <label class="control-label" for="type">Type</label>
           <select id="type" name="type" ng-model="wine.type" class="form-control">
-            <option label="Still">STILL</option>
-            <option label="Sparkling">SPARKLING</option>
-            <option label="Spirit">SPIRIT</option>
-            <option label="Other">OTHER</option>
+            <option label="Tranquille">STILL</option>
+            <option label="Pétillant">SPARKLING</option>
+            <option label="Spiritueux">SPIRIT</option>
+            <option label="Autre">OTHER</option>
           </select>
           <error-ctrl ctrl="form.type"></error-ctrl>
         </div>
         <div class="form-group" ng-class="{'has-error': form.color.$invalid}">
-          <label class="control-label" for="color">Color</label>
+          <label class="control-label" for="color">Couleur</label>
           <select id="color" name="color" ng-model="wine.color" class="form-control">
-            <option label="Red">RED</option>
-            <option label="White">WHITE</option>
+            <option label="Rouge">RED</option>
+            <option label="Blanc">WHITE</option>
             <option label="Rosé">ROSE</option>
-            <option label="Other">OTHER</option>
+            <option label="Autre">OTHER</option>
           </select>
           <error-ctrl ctrl="form.color"></error-ctrl>
         </div>
@@ -67,13 +67,13 @@
           </div>
         </div>
         <div class="form-group" ng-class="{'has-error': form.vintage.$invalid}">
-          <label class="control-label" for="vintage">Vintage</label>
-          <input class="form-control" id="vintage" name="vintage" type="number" ng-model="wine.vintage" placeholder="Vintage" />
+          <label class="control-label" for="vintage">Millésime</label>
+          <input class="form-control" id="vintage" name="vintage" type="number" ng-model="wine.vintage" placeholder="Millésime" />
           <error-ctrl ctrl="form.vintage"></error-ctrl>
         </div>
         <div class="form-group" ng-class="{'has-error': form.ranking.$invalid}">
-          <label class="control-label" for="ranking">Ranking</label>
-          <input class="form-control" id="ranking" name="ranking" type="text" ng-model="wine.ranking" placeholder="Ranking" />
+          <label class="control-label" for="ranking">Classement</label>
+          <input class="form-control" id="ranking" name="ranking" type="text" ng-model="wine.ranking" placeholder="Classement" />
           <error-ctrl ctrl="form.ranking"></error-ctrl>
         </div>
         <div class="form-group" ng-class="{'has-error': form.description.$invalid}">
@@ -88,8 +88,8 @@
           <error-ctrl ctrl="form.description"></error-ctrl>
         </div>
       </fieldset>
-      <input type="submit" class="btn btn-primary" value="Save" ng-click="save()" />
-      <input type="submit" class="btn btn-default" value="Cancel" ng-click="cancel()" />
+      <input type="submit" class="btn btn-primary" value="Sauvegarder" ng-click="save()" />
+      <input type="submit" class="btn btn-default" value="Annuler" ng-click="cancel()" />
     </form>
   </div>
 </div>

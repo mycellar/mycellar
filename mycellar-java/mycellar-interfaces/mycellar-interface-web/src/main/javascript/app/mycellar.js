@@ -37,9 +37,9 @@ angular.module('mycellar').run([
 angular.module('mycellar').constant('paginationConfig', {
   boundaryLinks: true,
   directionLinks: true,
-  firstText: '« First',
-  previousText: '‹ Previous',
-  nextText: 'Next ›',
-  lastText: 'Last »',
+  firstText: '«',
+  previousText: '‹',
+  nextText: '›',
+  lastText: '»',
   rotate: true
 });

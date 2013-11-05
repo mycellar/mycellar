@@ -5,31 +5,31 @@
     </nav>
   </div>
   <div class="col-md-10">
-    <header class="page-header"><h1>Wines</h1></header>
+    <header class="page-header"><h1>Vins</h1></header>
     <data-table-filters table-context="tableContext">
       <div class="form-group">
-        <label class="control-label sr-only" for="appellation.region.country.name">Country name</label>
-        <input class="form-control" id="appellation.region.country.name" name="appellation.region.country.name" placeholder="Country name" ng-model="tableContext.filters['appellation.region.country.name']" type="text" />
+        <label class="control-label sr-only" for="appellation.region.country.name">Nom du pays</label>
+        <input class="form-control" id="appellation.region.country.name" name="appellation.region.country.name" placeholder="Nom du pays" ng-model="tableContext.filters['appellation.region.country.name']" type="text" />
       </div>
       <div class="form-group">
-        <label class="control-label sr-only" for="appellation.region.name">Region name</label>
-        <input class="form-control" id="appellation.region.name" name="appellation.region.name" placeholder="Region name" ng-model="tableContext.filters['appellation.region.name']" type="text" />
+        <label class="control-label sr-only" for="appellation.region.name">Nom de la région</label>
+        <input class="form-control" id="appellation.region.name" name="appellation.region.name" placeholder="Nom de la région" ng-model="tableContext.filters['appellation.region.name']" type="text" />
       </div>
       <div class="form-group">
-        <label class="control-label sr-only" for="appellation.name">Appellation name</label>
-        <input class="form-control" id="appellation.name" name="appellation.name" placeholder="Appellation name" ng-model="tableContext.filters['appellation.name']" type="text" />
+        <label class="control-label sr-only" for="appellation.name">Nom de l'appellation</label>
+        <input class="form-control" id="appellation.name" name="appellation.name" placeholder="Nom de l'appellation" ng-model="tableContext.filters['appellation.name']" type="text" />
       </div>
       <div class="form-group">
-        <label class="control-label sr-only" for="producer.name">Producer name</label>
-        <input class="form-control" id="producer.name" name="producer.name" placeholder="Producer name" ng-model="tableContext.filters['producer.name']" type="text" />
+        <label class="control-label sr-only" for="producer.name">Nom du producteur</label>
+        <input class="form-control" id="producer.name" name="producer.name" placeholder="Nom du producteur" ng-model="tableContext.filters['producer.name']" type="text" />
       </div>
       <div class="form-group">
-        <label class="control-label sr-only" for="name">Name</label>
-        <input class="form-control" id="name" name="name" placeholder="Name" ng-model="tableContext.filters['name']" type="text" />
+        <label class="control-label sr-only" for="name">Nom</label>
+        <input class="form-control" id="name" name="name" placeholder="Nom" ng-model="tableContext.filters['name']" type="text" />
       </div>
       <div class="form-group">
-        <label class="control-label sr-only" for="vintage">Vintage</label>
-        <input class="form-control" id="vintage" name="vintage" placeholder="Vintage" ng-model="tableContext.filters['vintage']" type="text" />
+        <label class="control-label sr-only" for="vintage">Millésime</label>
+        <input class="form-control" id="vintage" name="vintage" placeholder="Millésime" ng-model="tableContext.filters['vintage']" type="text" />
       </div>
     </data-table-filters>
     <data-error-div errors="errors"></data-error-div>
@@ -37,13 +37,13 @@
       <table class="table table-bordered table-striped table-condensed">
         <thead>
           <tr>
-            <th>Country <icon-sort attribute="appellation.region.country.name" table-context="tableContext" /></th>
-            <th>Region <icon-sort attribute="appellation.region.name" table-context="tableContext" /></th>
+            <th>Pays <icon-sort attribute="appellation.region.country.name" table-context="tableContext" /></th>
+            <th>Région <icon-sort attribute="appellation.region.name" table-context="tableContext" /></th>
             <th>Appellation <icon-sort attribute="appellation.name" table-context="tableContext" /></th>
-            <th>Producer <icon-sort attribute="producer.name" table-context="tableContext" /></th>
-            <th>Name <icon-sort attribute="name" table-context="tableContext" /></th>
-            <th>Vintage <icon-sort attribute="vintage" table-context="tableContext" /></th>
-            <th>Color <icon-sort attribute="color" table-context="tableContext" /></th>
+            <th>Producteur <icon-sort attribute="producer.name" table-context="tableContext" /></th>
+            <th>Nom <icon-sort attribute="name" table-context="tableContext" /></th>
+            <th>Millésime <icon-sort attribute="vintage" table-context="tableContext" /></th>
+            <th>Couleur <icon-sort attribute="color" table-context="tableContext" /></th>
             <th>Type <icon-sort attribute="type" table-context="tableContext" /></th>
             <th class="actions"><a href ng-click="new()" class="btn btn-default btn-xs"><i class="glyphicon glyphicon-plus-sign"></i></a></th>
           </tr>
@@ -64,18 +64,18 @@
             </td>
           </tr>
           <tr ng-if="!loading && items.length == 0">
-            <td colspan="9">No items to display.</td>
+            <td colspan="9">Aucun vin ne correspond aux filtres.</td>
           </tr>
         </tbody>
         <tfoot>
           <tr>
-            <th>Country <icon-sort attribute="appellation.region.country.name" table-context="tableContext" /></th>
-            <th>Region <icon-sort attribute="appellation.region.name" table-context="tableContext" /></th>
+            <th>Pays <icon-sort attribute="appellation.region.country.name" table-context="tableContext" /></th>
+            <th>Région <icon-sort attribute="appellation.region.name" table-context="tableContext" /></th>
             <th>Appellation <icon-sort attribute="appellation.name" table-context="tableContext" /></th>
-            <th>Producer <icon-sort attribute="producer.name" table-context="tableContext" /></th>
-            <th>Name <icon-sort attribute="name" table-context="tableContext" /></th>
-            <th>Vintage <icon-sort attribute="vintage" table-context="tableContext" /></th>
-            <th>Color <icon-sort attribute="color" table-context="tableContext" /></th>
+            <th>Producteur <icon-sort attribute="producer.name" table-context="tableContext" /></th>
+            <th>Nom <icon-sort attribute="name" table-context="tableContext" /></th>
+            <th>Millésime <icon-sort attribute="vintage" table-context="tableContext" /></th>
+            <th>Couleur <icon-sort attribute="color" table-context="tableContext" /></th>
             <th>Type <icon-sort attribute="type" table-context="tableContext" /></th>
             <th class="actions"><a href ng-click="new()" class="btn btn-default btn-xs"><i class="glyphicon glyphicon-plus-sign"></i></a></th>
           </tr>

@@ -5,20 +5,20 @@
     </nav>
   </div>
   <div class="col-md-10">
-    <header class="page-header"><h1>Booking</h1></header>
+    <header class="page-header"><h1>Réservation</h1></header>
     <form name="form" class="form">
       <error-form form="form"></error-form>
       <fieldset>
-        <legend>Details</legend>
+        <legend>Détails</legend>
         <div class="form-group" ng-class="{'has-error': form.bookingEvent.$invalid}">
-          <label class="control-label" for="bookingEvent">Booking event</label>
+          <label class="control-label" for="bookingEvent">Campagne de réservation</label>
           <input 
               id="bookingEvent" 
               name="bookingEvent" 
               type="text" 
               class="form-control"
               ng-model="booking.bookingEvent" 
-              placeholder="Booking event" 
+              placeholder="Campagne de réservation" 
               typeahead="bookingEvent as (bookingEvent.name + ' (' + bookingEvent.start + ' to ' + bookingEvent.end + ')') for bookingEvent in bookingEvents($viewValue)"
               typeahead-editable="false"  
               typeahead-min-length="2" 
@@ -26,14 +26,14 @@
           <error-ctrl ctrl="form.bookingEvent"></error-ctrl>
         </div>
         <div class="form-group" ng-class="{'has-error': form.customer.$invalid}">
-          <label class="control-label" for="customer">Customer</label>
+          <label class="control-label" for="customer">Client</label>
           <input 
               id="customer" 
               name="customer" 
               type="text"
               class="form-control" 
               ng-model="booking.customer" 
-              placeholder="Customer" 
+              placeholder="Client" 
               typeahead="customer as (customer.lastname + ' ' + customer.firstname + ' (' + customer.email + ')') for customer in customers($viewValue)"
               typeahead-editable="false"  
               typeahead-min-length="2" 
@@ -42,14 +42,14 @@
         </div>
       </fieldset>
       <fieldset>
-        <legend>Booking</legend>
+        <legend>Réservation</legend>
         <table class="table table-bordered table-striped table-condensed">
           <thead>
             <tr>
-              <th>Wine</th>
+              <th>Vin</th>
               <th>Format</th>
-              <th>Price</th>
-              <th>Quantity</th>
+              <th>Prix</th>
+              <th>Quantité</th>
               <th>Total</th>
             </tr>
           </thead>
@@ -71,8 +71,8 @@
           </tfoot>
         </table>
       </fieldset>
-      <input type="submit" class="btn btn-primary" value="Save" ng-click="save()" />
-      <input type="submit" class="btn btn-default" value="Cancel" ng-click="cancel()" />
+      <input type="submit" class="btn btn-primary" value="Sauvegarder" ng-click="save()" />
+      <input type="submit" class="btn btn-default" value="Annuler" ng-click="cancel()" />
     </form>
   </div>
 </div>

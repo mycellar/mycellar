@@ -5,20 +5,20 @@
     </nav>
   </div>
   <div class="col-md-10">
-    <header class="page-header"><h1>Appellation: {{appellation.name}}</h1></header>
+    <header class="page-header"><h1>Appellation : {{appellation.name}}</h1></header>
     <form name="form" class="form">
       <error-form form="form"></error-form>
       <fieldset>
-        <legend>Details</legend>
+        <legend>Détails</legend>
         <div class="form-group" ng-class="{'has-error': form.region.$invalid}">
-          <label class="control-label" for="region">Region</label>
+          <label class="control-label" for="region">Région</label>
           <input 
               id="region" 
               name="region" 
               type="text" 
               class="form-control"
               ng-model="appellation.region" 
-              placeholder="Region" 
+              placeholder="Région" 
               typeahead="region as (region.name + ' - ' + region.country.name) for region in regions($viewValue)"
               typeahead-editable="false"  
               typeahead-min-length="2" 
@@ -26,8 +26,8 @@
           <error-ctrl ctrl="form.region"></error-ctrl>
         </div>
         <div class="form-group" ng-class="{'has-error': form.name.$invalid}">
-          <label class="control-label" for="name">Name</label>
-          <input class="form-control" id="name" name="name" type="text" ng-model="appellation.name" placeholder="Name" />
+          <label class="control-label" for="name">Nom</label>
+          <input class="form-control" id="name" name="name" type="text" ng-model="appellation.name" placeholder="Nom" />
           <error-ctrl ctrl="form.name"></error-ctrl>
         </div>
         <div class="form-group" ng-class="{'has-error': form.description.$invalid}">
@@ -42,8 +42,8 @@
           <error-ctrl ctrl="form.description"></error-ctrl>
         </div>
       </fieldset>
-      <input type="submit" class="btn btn-primary" value="Save" ng-click="save()" />
-      <input type="submit" class="btn btn-default" value="Cancel" ng-click="cancel()" />
+      <input type="submit" class="btn btn-primary" value="Sauvegarder" ng-click="save()" />
+      <input type="submit" class="btn btn-default" value="Annuler" ng-click="cancel()" />
     </form>
   </div>
 </div>

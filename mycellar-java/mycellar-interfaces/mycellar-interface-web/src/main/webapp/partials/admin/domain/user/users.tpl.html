@@ -5,15 +5,15 @@
     </nav>
   </div>
   <div class="col-md-10">
-    <header class="page-header"><h1>Users</h1></header>
+    <header class="page-header"><h1>Utilisateurs</h1></header>
     <data-table-filters table-context="tableContext">
       <div class="form-group">
-        <label class="control-label sr-only" for="lastname">Lastname</label>
-        <input class="form-control" id="lastname" name="lastname" placeholder="Lastname" ng-model="tableContext.filters['lastname']" type="text" />
+        <label class="control-label sr-only" for="lastname">Nom de famille</label>
+        <input class="form-control" id="lastname" name="lastname" placeholder="Nom de famille" ng-model="tableContext.filters['lastname']" type="text" />
       </div>
       <div class="form-group">
-        <label class="control-label sr-only" for="firstname">Firstname</label>
-        <input class="form-control" id="firstname" name="firstname" placeholder="Firstname" ng-model="tableContext.filters['firstname']" type="text" />
+        <label class="control-label sr-only" for="firstname">Prénom</label>
+        <input class="form-control" id="firstname" name="firstname" placeholder="Prénom" ng-model="tableContext.filters['firstname']" type="text" />
       </div>
       <div class="form-group">
         <label class="control-label sr-only" for="email">Email</label>
@@ -25,8 +25,8 @@
       <table class="table table-bordered table-striped table-condensed">
         <thead>
           <tr>
-            <th>Lastname <icon-sort attribute="lastname" table-context="tableContext" /></th>
-            <th>Firstname <icon-sort attribute="firstname" table-context="tableContext" /></th>
+            <th>Nom de famille <icon-sort attribute="lastname" table-context="tableContext" /></th>
+            <th>Prénom <icon-sort attribute="firstname" table-context="tableContext" /></th>
             <th>Email <icon-sort attribute="email" table-context="tableContext" /></th>
             <th class="actions"></th>
           </tr>
@@ -42,13 +42,13 @@
             </td>
           </tr>
           <tr ng-if="!loading && items.length == 0">
-            <td colspan="4">No items to display.</td>
+            <td colspan="4">Aucun utilisateur ne correspond aux filtres.</td>
           </tr>
         </tbody>
         <tfoot>
           <tr>
-            <th>Lastname <icon-sort attribute="lastname" table-context="tableContext" /></th>
-            <th>Firstname <icon-sort attribute="firstname" table-context="tableContext" /></th>
+            <th>Nom de famille <icon-sort attribute="lastname" table-context="tableContext" /></th>
+            <th>Prénom <icon-sort attribute="firstname" table-context="tableContext" /></th>
             <th>Email <icon-sort attribute="email" table-context="tableContext" /></th>
             <th class="actions"></th>
           </tr>

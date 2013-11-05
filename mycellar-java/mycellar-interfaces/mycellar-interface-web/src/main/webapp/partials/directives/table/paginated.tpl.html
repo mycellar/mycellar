@@ -5,12 +5,12 @@
   </div>
   <div class="row">
     <div class="col-md-6">
-      Showing {{count > 0 ? firstItem + 1 : 0}} to {{firstItem + count}} of {{result.count}} entries.
+      {{count > 0 ? firstItem + 1 : 0}} à {{firstItem + count}} des {{result.count}} entrées.
     </div>
     <div class="col-md-6 text-right">
       <form class="form-inline">
         <div class="form-group">
-          Showing 
+          Afficher 
           <select ng-model="itemsPerPage" class="form-control" style="width: auto;">
             <option>10</option>
             <option>20</option>
@@ -18,7 +18,7 @@
             <option>40</option>
             <option>50</option>
           </select>
-          entries per page.
+          entrées par page.
         </div>
       </form>
     </div>

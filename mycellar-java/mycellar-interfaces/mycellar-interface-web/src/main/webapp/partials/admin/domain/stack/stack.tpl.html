@@ -5,7 +5,7 @@
     </nav>
   </div>
   <div class="col-md-10">
-    <header class="page-header"><h1>Stack: {{stack.hashCode}}</h1></header>
+    <header class="page-header"><h1>Stack : {{stack.hashCode}}</h1></header>
     <form name="form" class="form">
       <error-form form="form"></error-form>
       <fieldset>
@@ -27,12 +27,12 @@
           <error-ctrl ctrl="form.stack"></error-ctrl>
         </div>
         <div class="form-group" ng-class="{'has-error': form.count.$invalid}">
-          <label class="control-label" for="count">Count</label>
-          <input class="form-control" id="count" name="count" type="number" ng-model="stack.count" placeholder="Count" />
+          <label class="control-label" for="count">Nombre</label>
+          <input class="form-control" id="count" name="count" type="number" ng-model="stack.count" placeholder="Nombre" />
           <error-ctrl ctrl="form.count"></error-ctrl>
         </div>
       </fieldset>
-      <input type="submit" class="btn btn-default" value="Cancel" ng-click="cancel()" />
+      <input type="submit" class="btn btn-default" value="Annuler" ng-click="cancel()" />
     </form>
   </div>
 </div>

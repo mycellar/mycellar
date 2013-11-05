@@ -20,6 +20,7 @@ package fr.mycellar.interfaces.web.services.nav;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.ResourceBundle;
 import java.util.SortedMap;
 import java.util.TreeMap;
 
@@ -54,6 +55,7 @@ public class NavigationWebService {
 
     @PostConstruct
     public void build() {
+        ResourceBundle resourceBundle = ResourceBundle.getBundle("Menu");
         List<IDescriptor> descriptors = descriptorServiceFacade.getDescriptors();
 
         SortedMap<Integer, NavDescriptor> menuPages = new TreeMap<Integer, NavDescriptor>();
@@ -62,14 +64,14 @@ public class NavigationWebService {
             if (descriptor instanceof IMenuDescriptor) {
                 IMenuDescriptor menuDescriptor = ((IMenuDescriptor) descriptor);
                 if (menuDescriptor.getParentKey() != null) {
-                    NavHeaderDescriptor header = getHeader(menuDescriptor.getParentKey(), menuPages);
+                    NavHeaderDescriptor header = getHeader(resourceBundle.getString(menuDescriptor.getParentKey()), menuPages);
                     if (header == null) {
-                        header = new NavHeaderDescriptor(menuDescriptor.getParentKey(), menuDescriptor.getIcon());
+                        header = new NavHeaderDescriptor(resourceBundle.getString(menuDescriptor.getParentKey()), menuDescriptor.getIcon());
                         menuPages.put(menuDescriptor.getWeight(), header);
                     }
-                    header.addPage(menuDescriptor.getWeight(), new NavPageDescriptor(menuDescriptor.getRoute(), menuDescriptor.getTitleKey(), menuDescriptor.getIcon()));
+                    header.addPage(menuDescriptor.getWeight(), new NavPageDescriptor(menuDescriptor.getRoute(), resourceBundle.getString(menuDescriptor.getTitleKey()), menuDescriptor.getIcon()));
                 } else {
-                    menuPages.put(menuDescriptor.getWeight(), new NavPageDescriptor(menuDescriptor.getRoute(), menuDescriptor.getTitleKey(), menuDescriptor.getIcon()));
+                    menuPages.put(menuDescriptor.getWeight(), new NavPageDescriptor(menuDescriptor.getRoute(), resourceBundle.getString(menuDescriptor.getTitleKey()), menuDescriptor.getIcon()));
                 }
             }
         }

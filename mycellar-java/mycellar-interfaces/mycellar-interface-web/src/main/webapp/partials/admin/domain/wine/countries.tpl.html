@@ -5,11 +5,11 @@
     </nav>
   </div>
   <div class="col-md-10">
-    <header class="page-header"><h1>Countries</h1></header>
+    <header class="page-header"><h1>Pays</h1></header>
     <data-table-filters table-context="tableContext">
       <div class="form-group">
-        <label class="control-label sr-only" for="name">Name</label> 
-        <input class="form-control" id="name" name="name" placeholder="Name" ng-model="tableContext.filters['name']" type="text" />
+        <label class="control-label sr-only" for="name">Nom</label> 
+        <input class="form-control" id="name" name="name" placeholder="Nom" ng-model="tableContext.filters['name']" type="text" />
       </div>
     </data-table-filters>
     <data-error-div errors="errors"></data-error-div>
@@ -17,7 +17,7 @@
       <table class="table table-bordered table-striped table-condensed">
         <thead>
           <tr>
-            <th>Name <icon-sort attribute="name" table-context="tableContext" /></th>
+            <th>Nom <icon-sort attribute="name" table-context="tableContext" /></th>
             <th class="actions"><a href ng-click="new()" class="btn btn-default btn-xs"><i class="glyphicon glyphicon-plus-sign"></i></a></th>
           </tr>
         </thead>
@@ -30,12 +30,12 @@
             </td>
           </tr>
           <tr ng-if="!loading && items.length == 0">
-            <td colspan="2">No items to display.</td>
+            <td colspan="2">Aucun pays ne correspond aux filtres</td>
           </tr>
         </tbody>
         <tfoot>
           <tr>
-            <th>Name <icon-sort attribute="name" table-context="tableContext" /></th>
+            <th>Nom <icon-sort attribute="name" table-context="tableContext" /></th>
             <th class="actions"><a href ng-click="new()" class="btn btn-default btn-xs"><i class="glyphicon glyphicon-plus-sign"></i></a></th>
           </tr>
         </tfoot>

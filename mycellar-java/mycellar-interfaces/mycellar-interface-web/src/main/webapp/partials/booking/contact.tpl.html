@@ -5,8 +5,8 @@
     <div class="row">
       <div class="col-md-3">
         <div class="form-group" ng-class="{'has-error': producerForm.phone.$invalid}">
-          <label class="control-label" for="phone">Phone</label>
-          <input class="form-control" id="phone" name="phone" type="text" ng-model="producer.phone" placeholder="Phone" />
+          <label class="control-label" for="phone">Téléphone</label>
+          <input class="form-control" id="phone" name="phone" type="text" ng-model="producer.phone" placeholder="Téléphone" />
           <error-ctrl ctrl="producerForm.phone"></error-ctrl>
         </div>
       </div>
@@ -41,12 +41,12 @@
       </div>
       <div class="col-md-6">
         <div class="form-group" ng-class="{'has-error': producerForm.contactInformation.$invalid}">
-          <label class="control-label" for="contactInformation">Contact information</label>
+          <label class="control-label" for="contactInformation">Informations</label>
           <textarea 
               id="contactInformation" 
               name="contactInformation" 
               ng-model="producer.contactInformation" 
-              placeholder="Contact information" 
+              placeholder="Informations" 
               class="form-control"
               rows="3"></textarea>
           <error-ctrl ctrl="producerForm.contactInformation"></error-ctrl>
@@ -54,38 +54,38 @@
       </div>
     </div>
     <div class="text-center">
-      <input type="submit" class="btn btn-primary" value="Save" ng-click="saveProducer()" />
-      <a href class="btn btn-info" ng-click="addContact()"><i class="glyphicon glyphicon-plus-sign"></i> Add contact</a>
+      <input type="submit" class="btn btn-primary" value="Sauvegarder le producteur" ng-click="saveProducer()" />
+      <a href class="btn btn-info" ng-click="addContact()"><i class="glyphicon glyphicon-plus-sign"></i> Ajouter un contact</a>
     </div>
   </form>
   <br />
   <form id="contactForm" class="form" ng-if="contact != null">
     <error-form form="contactForm"></error-form>
     <fieldset>
-      <legend>New contact</legend>
+      <legend>Nouveau contact</legend>
       <div class="row">
         <div class="col-md-6">
           <div class="form-group" ng-class="{'has-error': contactForm.current.$invalid}">
-            <label class="control-label" for="current">Current</label>
-            <input class="form-control" id="current" name="current" type="date" ng-model="contact.current" placeholder="Current" />
+            <label class="control-label" for="current">Date du contact</label>
+            <input class="form-control" id="current" name="current" type="date" ng-model="contact.current" placeholder="Date du contact" />
             <error-ctrl ctrl="contactForm.current"></error-ctrl>
           </div>
         </div>
         <div class="col-md-6">
           <div class="form-group" ng-class="{'has-error': contactForm.next.$invalid}">
-            <label class="control-label" for="next">Next</label>
-            <input class="form-control" id="next" name="next" type="date" ng-model="contact.next" placeholder="Next" />
+            <label class="control-label" for="next">Prochain contact</label>
+            <input class="form-control" id="next" name="next" type="date" ng-model="contact.next" placeholder="Prochain contact" />
             <error-ctrl ctrl="contactForm.next"></error-ctrl>
           </div>
         </div>
       </div>
       <div class="form-group" ng-class="{'has-error': contactForm.text.$invalid}">
-        <label class="control-label" for="text">Text</label>
+        <label class="control-label" for="text">Texte</label>
         <textarea 
             id="text" 
             name="text" 
             ng-model="contact.text" 
-            placeholder="Text" 
+            placeholder="Texte" 
             class="form-control"
             rows="5"></textarea>
         <error-ctrl ctrl="contactForm.text"></error-ctrl>
@@ -100,13 +100,13 @@
       <div class="row">
         <div class="col-md-5">
           <dl class="dl-horizontal">
-            <dt>Current date</dt>
+            <dt>Date du contact</dt>
             <dd>{{contact.current}}</dd>
           </dl>
         </div>
         <div class="col-md-5">
           <dl class="dl-horizontal">
-            <dt>Next date</dt>
+            <dt>Prochain contact date</dt>
             <dd>{{contact.next}}</dd>
           </dl>
         </div>

@@ -1,56 +1,56 @@
-<header class="page-header"><h1>Site administration</h1></header>
+<header class="page-header"><h1>Administration</h1></header>
 <section>
-  <header><h2>Dashboard</h2></header>
+  <header><h2>Tableau de bord</h2></header>
   <div class="row">
     <div class="col-md-4">
       <div class="panel panel-default">
         <div class="panel-heading"><h3 class="panel-title">MyCellar</h3></div>
         <div class="panel-body">
-          <ul>
-            <li>Version : {{mycellarVersion}}</li>
-          </ul>
+          <dl>
+            <dt>Version</dt><dd>{{mycellarVersion}}</dd>
+          </dl>
         </div>
       </div>
       <div class="panel panel-default">
         <div class="panel-heading"><h3 class="panel-title">angular</h3></div>
         <div class="panel-body">
-          <ul>
-            <li>Version : {{angularVersion}}</li>
-          </ul>
-        </div>
-      </div>
-    </div>
-    <div class="col-md-4">
-      <div class="panel panel-default">
-        <div class="panel-heading"><h3 class="panel-title">Counts</h3></div>
-        <div class="panel-body">
           <dl>
-            <dt>User count</dt><dd>{{usersCount}}</dd>
-            <dt>Wine count</dt><dd>{{winesCount}}</dd>
-            <dt>Stack count</dt><dd>{{stacksCount}}</dd>
+            <dt>Version</dt><dd>{{angularVersion}}</dd>
           </dl>
         </div>
       </div>
     </div>
     <div class="col-md-4">
       <div class="panel panel-default">
-        <div class="panel-heading"><h3 class="panel-title"><img title="Database" class="vam" /> DB</h3></div>
+        <div class="panel-heading"><h3 class="panel-title">Statistiques</h3></div>
         <div class="panel-body">
-          <ul>
-            <li>driver</li>
-            <li>url</li>
-            <li>login</li>
-          </ul>
+          <dl>
+            <dt>Nombre d'utilisateurs</dt><dd>{{usersCount}}</dd>
+            <dt>Nombre de vins</dt><dd>{{winesCount}}</dd>
+            <dt>Nombre de stacks</dt><dd>{{stacksCount}}</dd>
+          </dl>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-4">
+      <div class="panel panel-default">
+        <div class="panel-heading"><h3 class="panel-title"><img title="Base de données" class="vam" /> Base de données</h3></div>
+        <div class="panel-body">
+          <dl>
+            <dt>Driver</dt><dd>driver</dd>
+            <dt>URL</dt><dd>url</dd>
+            <dt>Login</dt><dd>login</dd>
+          </dl>
         </div>
       </div>
     </div>
   </div>
 </section>
 <section>
-  <header role="secondary"><h2>Tools</h2></header>
+  <header role="secondary"><h2>Outils</h2></header>
   <div class="well">
-    <a href ng-click="deleteAllStacks()" class="btn btn-warning">Clean stacks</a>
-    <a href="" class="btn btn-default">Create vintages</a>
+    <a href ng-click="deleteAllStacks()" class="btn btn-warning">Purger les stacks</a>
+    <a href="" class="btn btn-default">Créer des millésimes</a>
     <a href="/monitoring" target="_self" class="btn btn-default">Monitoring</a>
   </div>
 </section>

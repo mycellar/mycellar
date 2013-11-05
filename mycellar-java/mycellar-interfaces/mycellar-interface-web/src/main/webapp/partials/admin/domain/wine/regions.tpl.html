@@ -5,15 +5,15 @@
     </nav>
   </div>
   <div class="col-md-10">
-    <header class="page-header"><h1>Regions</h1></header>
+    <header class="page-header"><h1>Régions</h1></header>
     <data-table-filters table-context="tableContext">
       <div class="form-group">
-        <label class="control-label sr-only" for="country.name">Country name</label>
-        <input class="form-control" id="country.name" name="country.name" placeholder="Name" ng-model="tableContext.filters['country.name']" type="text" />
+        <label class="control-label sr-only" for="country.name">Nom du pays</label>
+        <input class="form-control" id="country.name" name="country.name" placeholder="Nom du pays" ng-model="tableContext.filters['country.name']" type="text" />
       </div>
       <div class="form-group">
-        <label class="control-label sr-only" for="name">Name</label>
-        <input class="form-control" id="name" name="name" placeholder="Name" ng-model="tableContext.filters['name']" type="text" />
+        <label class="control-label sr-only" for="name">Nom</label>
+        <input class="form-control" id="name" name="name" placeholder="Nom" ng-model="tableContext.filters['name']" type="text" />
       </div>
     </data-table-filters>
     <data-error-div errors="errors"></data-error-div>
@@ -21,8 +21,8 @@
       <table class="table table-bordered table-striped table-condensed">
         <thead>
           <tr>
-            <th>Country <icon-sort attribute="country.name" table-context="tableContext" /></th>
-            <th>Name <icon-sort attribute="name" table-context="tableContext" /></th>
+            <th>Pays <icon-sort attribute="country.name" table-context="tableContext" /></th>
+            <th>Nom <icon-sort attribute="name" table-context="tableContext" /></th>
             <th class="actions"><a href ng-click="new()" class="btn btn-default btn-xs"><i class="glyphicon glyphicon-plus-sign"></i></a></th>
           </tr>
         </thead>
@@ -36,13 +36,13 @@
             </td>
           </tr>
           <tr ng-if="!loading && items.length == 0">
-            <td colspan="3">No items to display.</td>
+            <td colspan="3">Aucune région ne correspond aux filtres.</td>
           </tr>
         </tbody>
         <tfoot>
           <tr>
-            <th>Country <icon-sort attribute="country.name" table-context="tableContext" /></th>
-            <th>Name <icon-sort attribute="name" table-context="tableContext" /></th>
+            <th>Pays <icon-sort attribute="country.name" table-context="tableContext" /></th>
+            <th>Nom <icon-sort attribute="name" table-context="tableContext" /></th>
             <th class="actions"><a href ng-click="new()" class="btn btn-default btn-xs"><i class="glyphicon glyphicon-plus-sign"></i></a></th>
           </tr>
         </tfoot>

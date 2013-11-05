@@ -13,8 +13,8 @@
           <tr>
             <th>HashCode</th>
             <th>Stack</th>
-            <th class="stackCount">Count <icon-sort attribute="count" table-context="tableContext" /></th>
-            <th class="actions"><a href ng-click="deleteAll()" class="btn btn-danger btn-xs" alt="Delete all stacks"><i class="glyphicon glyphicon-remove-sign"></i></a></th>
+            <th class="stackCount">Nombre <icon-sort attribute="count" table-context="tableContext" /></th>
+            <th class="actions"><a href ng-click="deleteAll()" class="btn btn-danger btn-xs" alt="Purger les stacks"><i class="glyphicon glyphicon-remove-sign"></i></a></th>
           </tr>
         </thead>
         <tbody ng-controller="LoadingCtrl">
@@ -28,14 +28,14 @@
             </td>
           </tr>
           <tr ng-if="!loading && items.length == 0">
-            <td colspan="4">No items to display.</td>
+            <td colspan="4">Aucune stack.</td>
           </tr>
         </tbody>
         <tfoot>
           <tr>
             <th>HashCode</th>
             <th>Stack</th>
-            <th class="stackCount">Count <icon-sort attribute="count" table-context="tableContext" /></th>
+            <th class="stackCount">Nombre <icon-sort attribute="count" table-context="tableContext" /></th>
             <th class="actions"><a href ng-click="deleteAll()" class="btn btn-danger btn-xs" alt="Delete all stacks"><i class="glyphicon glyphicon-remove-sign"></i></a></th>
           </tr>
         </tfoot>

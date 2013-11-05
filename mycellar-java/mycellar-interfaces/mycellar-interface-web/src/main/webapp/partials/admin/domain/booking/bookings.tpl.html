@@ -5,15 +5,15 @@
     </nav>
   </div>
   <div class="col-md-10">
-    <header class="page-header"><h1>Bookings</h1></header>
+    <header class="page-header"><h1>Réservations</h1></header>
     <data-table-filters table-context="tableContext">
       <div class="form-group">
-        <label class="control-label sr-only" for="bookingEvent.name">Booking event name</label>
-        <input class="form-control" id="bookingEvent.name" name="bookingEvent.name" placeholder="Booking event name" ng-model="tableContext.filters['bookingEvent.name']" type="text" />
+        <label class="control-label sr-only" for="bookingEvent.name">Nom de la compagne de réservation</label>
+        <input class="form-control" id="bookingEvent.name" name="bookingEvent.name" placeholder="Nom de la compagne de réservation" ng-model="tableContext.filters['bookingEvent.name']" type="text" />
       </div>
       <div class="form-group">
-        <label class="control-label sr-only" for="customer.lastname">Customer lastname</label>
-        <input class="form-control" id="customer.lastname" name="customer.lastname" placeholder="Customer lastname" ng-model="tableContext.filters['customer.lastname']" type="text" />
+        <label class="control-label sr-only" for="customer.lastname">Nom de famille du client</label>
+        <input class="form-control" id="customer.lastname" name="customer.lastname" placeholder="Nom de famille du client" ng-model="tableContext.filters['customer.lastname']" type="text" />
       </div>
     </data-table-filters>
     <data-error-div errors="errors"></data-error-div>
@@ -21,10 +21,10 @@
       <table class="table table-bordered table-striped table-condensed">
         <thead>
           <tr>
-            <th>Customer <icon-sort attribute="customer.lastname" table-context="tableContext" /></th>
-            <th>Name <icon-sort attribute="bookingEvent.name" table-context="tableContext" /></th>
-            <th>Start <icon-sort attribute="bookingEvent.start" table-context="tableContext" /></th>
-            <th>End <icon-sort attribute="bookingEvent.end" table-context="tableContext" /></th>
+            <th>Client <icon-sort attribute="customer.lastname" table-context="tableContext" /></th>
+            <th>Campagne <icon-sort attribute="bookingEvent.name" table-context="tableContext" /></th>
+            <th>Début <icon-sort attribute="bookingEvent.start" table-context="tableContext" /></th>
+            <th>Fin <icon-sort attribute="bookingEvent.end" table-context="tableContext" /></th>
             <th class="actions"><a href ng-click="new()" class="btn btn-default btn-xs"><i class="glyphicon glyphicon-plus-sign"></i></a></th>
           </tr>
         </thead>
@@ -40,15 +40,15 @@
             </td>
           </tr>
           <tr ng-if="!loading && items.length == 0">
-            <td colspan="5">No items to display.</td>
+            <td colspan="5">Aucune réservation ne correspond aux filtres.</td>
           </tr>
         </tbody>
         <tfoot>
           <tr>
-            <th>Customer <icon-sort attribute="customer.lastname" table-context="tableContext" /></th>
-            <th>Name <icon-sort attribute="bookingEvent.name" table-context="tableContext" /></th>
-            <th>Start <icon-sort attribute="bookingEvent.start" table-context="tableContext" /></th>
-            <th>End <icon-sort attribute="bookingEvent.end" table-context="tableContext" /></th>
+            <th>Client <icon-sort attribute="customer.lastname" table-context="tableContext" /></th>
+            <th>Campagne <icon-sort attribute="bookingEvent.name" table-context="tableContext" /></th>
+            <th>Début <icon-sort attribute="bookingEvent.start" table-context="tableContext" /></th>
+            <th>Fin <icon-sort attribute="bookingEvent.end" table-context="tableContext" /></th>
             <th class="actions"><a href ng-click="new()" class="btn btn-default btn-xs"><i class="glyphicon glyphicon-plus-sign"></i></a></th>
           </tr>
         </tfoot>
