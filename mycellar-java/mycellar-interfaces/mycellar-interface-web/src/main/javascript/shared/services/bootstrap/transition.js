@@ -43,10 +43,35 @@ angular.module('mycellar.services.bootstrap.transition').factory('$transition', 
         }
         deferred.reject('Transition cancelled');
       };
-  
+
+      // Emulate transitionend event, useful when support is assumed to be
+      // available, but may not actually be used due to a transition property
+      // not being used in CSS (for example, in versions of firefox prior to 16,
+      // only -moz-transition is supported -- and is not used in Bootstrap3's CSS
+      // -- As such, no transitionend event would be fired due to no transition
+      // ever taking place. This method allows a fallback for such browsers.)
+      deferred.promise.emulateTransitionEnd = function(duration) {
+        var called = false;
+        deferred.promise.then(
+          function() { called = true; },
+          function() { called = true; }
+        );
+
+        var callback = function() {
+          if ( !called ) {
+            // If we got here, we probably aren't going to get a real 
+            // transitionend event. Emit a dummy to the handler.
+            element.triggerHandler(endEventName);
+          }        
+        };
+
+        $timeout(callback, duration);
+        return deferred.promise;
+      };
+
       return deferred.promise;
     };
-  
+
     // Work out the name of the transitionEnd event
     var transElement = document.createElement('trans');
     var transitionEndEventNames = {
