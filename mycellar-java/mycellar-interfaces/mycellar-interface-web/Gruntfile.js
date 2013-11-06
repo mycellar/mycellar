@@ -59,12 +59,12 @@ module.exports = function(grunt) {
     },
 
     watch: {
-      options : {
-        livereload: 7777
-      },
       assets: {
         files: ['./src/main/javascript/**/*.js','./src/main/css/**/*.css'],
-        tasks: ['concat']
+        tasks: ['concat'],
+        options : {
+          livereload: 7777
+        }
       },
       protractor: {
         files: ['./src/main/javascript/**/*.js', './src/test/javascript/e2e/**/*.js'],
