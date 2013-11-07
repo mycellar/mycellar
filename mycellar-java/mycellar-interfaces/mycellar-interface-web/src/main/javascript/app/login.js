@@ -10,6 +10,10 @@ angular.module('mycellar.controllers.login', [
       templateUrl: 'partials/login.tpl.html',
       controller: 'LoginController'
     });
+    $routeProvider.when('/register', {
+      templateUrl: 'partials/login.tpl.html',
+      controller: 'LoginController'
+    });
   }
 ]);
 
