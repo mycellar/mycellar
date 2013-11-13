@@ -15,7 +15,7 @@ module.exports = function(grunt) {
         stdout: true
       },
       selenium: {
-        command: './selenium/start',
+        command: 'java -jar selenium/selenium-server-standalone-2.35.0.jar -Dwebdriver.chrome.driver=selenium/chromedriver.exe',
         options: {
           stdout: false,
           async: true
@@ -77,7 +77,9 @@ module.exports = function(grunt) {
         keepAlive: false,
         configFile: "./src/test/javascript/protractor.conf.js"
       },
-      singlerun: {},
+      singlerun: {
+        debug: true
+      },
       auto: {
         keepAlive: true,
         options: {
