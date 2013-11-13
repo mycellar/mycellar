@@ -22,7 +22,6 @@ import java.util.List;
 
 import fr.mycellar.domain.shared.exception.BusinessException;
 import fr.mycellar.domain.shared.repository.SearchParameters;
-import fr.mycellar.domain.user.ResetPasswordRequest;
 import fr.mycellar.domain.user.User;
 
 /**
@@ -92,17 +91,21 @@ public interface UserServiceFacade {
     /**
      * @param key
      * @return
+     * @throws BusinessException
      */
-    ResetPasswordRequest getResetPasswordRequestByKey(String key);
-
-    /**
-     * @param user
-     */
-    void deleteAllResetPasswordRequestsForUser(User user);
+    String getEmailFromResetPasswordRequestByKey(String key) throws BusinessException;
 
     /**
      * @param user
      * @throws BusinessException
      */
     void deleteUser(User user) throws BusinessException;
+
+    /**
+     * @param key
+     * @param password
+     * @return
+     * @throws BusinessException
+     */
+    User resetPassword(String key, String password) throws BusinessException;
 }

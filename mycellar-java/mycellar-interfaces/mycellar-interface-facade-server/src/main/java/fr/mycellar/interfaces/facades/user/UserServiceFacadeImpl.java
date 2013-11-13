@@ -28,6 +28,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import fr.mycellar.application.user.ResetPasswordRequestService;
 import fr.mycellar.application.user.UserService;
+import fr.mycellar.domain.shared.exception.BusinessError;
 import fr.mycellar.domain.shared.exception.BusinessException;
 import fr.mycellar.domain.shared.repository.SearchParameters;
 import fr.mycellar.domain.shared.repository.SearchParametersBuilder;
@@ -145,8 +146,12 @@ public class UserServiceFacadeImpl implements UserServiceFacade {
      */
     @Override
     @Transactional(readOnly = true)
-    public ResetPasswordRequest getResetPasswordRequestByKey(String key) {
-        return resetPasswordRequestService.getByKey(key);
+    public String getEmailFromResetPasswordRequestByKey(String key) throws BusinessException {
+        ResetPasswordRequest request = resetPasswordRequestService.getByKey(key);
+        if (request == null) {
+            throw new BusinessException(BusinessError.RESETPASSWORDREQUEST_00001);
+        }
+        return request.getUser().getEmail();
     }
 
     /**
@@ -154,8 +159,14 @@ public class UserServiceFacadeImpl implements UserServiceFacade {
      */
     @Override
     @Transactional(readOnly = false)
-    public void deleteAllResetPasswordRequestsForUser(User user) {
-        resetPasswordRequestService.deleteAllForUser(user);
+    public User resetPassword(String key, String password) throws BusinessException {
+        ResetPasswordRequest request = resetPasswordRequestService.getByKey(key);
+        if (request == null) {
+            throw new BusinessException(BusinessError.RESETPASSWORDREQUEST_00001);
+        }
+        User user = userService.saveUserPassword(request.getUser(), password);
+        resetPasswordRequestService.deleteAllForUser(request.getUser());
+        return user;
     }
 
     /**

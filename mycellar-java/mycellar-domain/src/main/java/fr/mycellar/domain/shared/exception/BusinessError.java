@@ -26,6 +26,7 @@ import fr.mycellar.domain.contact.Contact_;
 import fr.mycellar.domain.stock.Bottle_;
 import fr.mycellar.domain.stock.CellarShare_;
 import fr.mycellar.domain.stock.Cellar_;
+import fr.mycellar.domain.user.ResetPasswordRequest_;
 import fr.mycellar.domain.user.User_;
 import fr.mycellar.domain.wine.Appellation_;
 import fr.mycellar.domain.wine.Country_;
@@ -102,6 +103,11 @@ public enum BusinessError {
     REGION_00001(Region_.country), //
     REGION_00002(Region_.country, Region_.name), //
     REGION_00003(Region_.appellations), //
+
+    /*
+     * ResetPasswordRequest
+     */
+    RESETPASSWORDREQUEST_00001(ResetPasswordRequest_.key), //
 
     /*
      * User

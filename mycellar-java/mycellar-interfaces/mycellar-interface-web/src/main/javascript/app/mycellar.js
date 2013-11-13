@@ -17,7 +17,8 @@ angular.module('mycellar', [
   'mycellar.controllers.login',
   'mycellar.controllers.admin',
   'mycellar.controllers.booking',
-  'mycellar.controllers.navigation'
+  'mycellar.controllers.navigation',
+  'mycellar.controllers.password'
 ]);
 
 angular.module('mycellar').config(['$routeProvider', '$locationProvider', function ($routeProvider, $locationProvider) {

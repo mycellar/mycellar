@@ -28,6 +28,7 @@ import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
+import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 
@@ -63,6 +64,32 @@ public class SecurityWebService {
     private CurrentUserService currentUserService;
 
     private UserServiceFacade userServiceFacade;
+
+    @GET
+    @Produces(MediaType.APPLICATION_JSON)
+    @Path("requestedMail")
+    public String getMailFromRequestKey(@QueryParam("key") String key) throws BusinessException {
+        return userServiceFacade.getEmailFromResetPasswordRequestByKey(key);
+    }
+
+    @POST
+    @Consumes(MediaType.APPLICATION_JSON)
+    @Path("sendPasswordResetMail")
+    public void sendPasswordResetMail(String email, @Context HttpServletRequest httpServletRequest) {
+        userServiceFacade.resetPasswordRequest(email, httpServletRequest.getServletContext().getRealPath("reset-password"));
+    }
+
+    @POST
+    @Produces(MediaType.APPLICATION_JSON)
+    @Consumes(MediaType.APPLICATION_JSON)
+    @Path("resetPassword")
+    public UserDto resetPassword(ResetPasswordDto resetPasswordDto) throws BusinessException {
+        User user = userServiceFacade.resetPassword(resetPasswordDto.getKey(), resetPasswordDto.getPassword());
+        UserDto userDto = new UserDto();
+        userDto.setEmail(user.getEmail());
+        userDto.setPassword(resetPasswordDto.getPassword());
+        return login(userDto);
+    }
 
     @GET
     @Produces(MediaType.APPLICATION_JSON)

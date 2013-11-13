@@ -1,4 +1,4 @@
-describe("E2E: Testing home", function() {
+describe('E2E: Testing home', function() {
 
   it('should load the homepage', function() {
     var homePage = new HomePage();
@@ -7,23 +7,33 @@ describe("E2E: Testing home", function() {
     expect(homePage.getWineCount().isDisplayed()).toBe(true);
   });
 
-  it('should have an expand/collapse nav', function() {
-    // Reduce windows size to display collapse nav
-    browser.driver.manage().window().setSize(400,400);
+  describe('with a tiny window', function() {
+    beforeEach(function() {
+      // Reduce windows size to display collapse nav
+      browser.driver.manage().window().setSize(400,400);
+    });
 
-    var homePage = new HomePage();
-    homePage.get();
+    it('should have an expand/collapse nav', function() {
+      var homePage = new HomePage();
+      homePage.get();
 
-    expect(homePage.getNavToggle().isDisplayed()).toBe(true);
-    expect(homePage.getNav().isDisplayed()).toBe(false);
+      expect(homePage.getNavToggle().isDisplayed()).toBe(true);
+      expect(homePage.getNav().isDisplayed()).toBe(false);
 
-    // expand nav
-    homePage.getNavToggle().click();
-    expect(homePage.getNav().isDisplayed()).toBe(true);
+      // expand nav
+      homePage.getNavToggle().click();
+      expect(homePage.getNav().isDisplayed()).toBe(true);
 
-    // collapse nav
-    homePage.getNavToggle().click();
-    expect(homePage.getNav().isDisplayed()).toBe(false);
+      // collapse nav
+      homePage.getNavToggle().click();
+      expect(homePage.getNav().isDisplayed()).toBe(false);
+    });
+    
+    afterEach(function() {
+      // FIXME resize to oldSize (cannot re-uset getSize())
+      browser.driver.manage().window().setSize(800,800);
+    });
+    
   });
 
   it('should have a register button', function() {

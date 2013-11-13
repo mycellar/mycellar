@@ -18,13 +18,8 @@
  */
 package fr.mycellar.infrastructure.user.repository;
 
-import java.util.List;
-
 import javax.inject.Named;
 import javax.inject.Singleton;
-import javax.persistence.criteria.CriteriaBuilder;
-import javax.persistence.criteria.CriteriaQuery;
-import javax.persistence.criteria.Root;
 
 import org.joda.time.LocalDate;
 
@@ -38,8 +33,7 @@ import fr.mycellar.infrastructure.shared.repository.JpaSimpleRepository;
  */
 @Named
 @Singleton
-public class JpaResetPasswordRequestRepository extends JpaSimpleRepository<ResetPasswordRequest>
-        implements ResetPasswordRequestRepository {
+public class JpaResetPasswordRequestRepository extends JpaSimpleRepository<ResetPasswordRequest> implements ResetPasswordRequestRepository {
 
     /**
      * Default constructor.
@@ -53,18 +47,7 @@ public class JpaResetPasswordRequestRepository extends JpaSimpleRepository<Reset
      */
     @Override
     public void deleteOldRequests() {
-        CriteriaBuilder criteriaBuilder = getEntityManager().getCriteriaBuilder();
-        CriteriaQuery<ResetPasswordRequest> query = criteriaBuilder
-                .createQuery(ResetPasswordRequest.class);
-        Root<ResetPasswordRequest> root = query.from(ResetPasswordRequest.class);
-        query.select(root).where(
-                criteriaBuilder.lessThanOrEqualTo(root.<LocalDate> get("dateTime"),
-                        new LocalDate().minusDays(1)));
-
-        List<ResetPasswordRequest> requests = getEntityManager().createQuery(query).getResultList();
-        for (ResetPasswordRequest request : requests) {
-            getEntityManager().remove(request);
-        }
+        getEntityManager().createQuery("DELETE " + ResetPasswordRequest.class.getSimpleName() + " WHERE dateTime <= :dateTime").setParameter("dateTime", new LocalDate().minusDays(1)).executeUpdate();
     }
 
     /**
@@ -72,16 +55,6 @@ public class JpaResetPasswordRequestRepository extends JpaSimpleRepository<Reset
      */
     @Override
     public void deleteAllForUser(User user) {
-        CriteriaBuilder criteriaBuilder = getEntityManager().getCriteriaBuilder();
-        CriteriaQuery<ResetPasswordRequest> query = criteriaBuilder
-                .createQuery(ResetPasswordRequest.class);
-        Root<ResetPasswordRequest> root = query.from(ResetPasswordRequest.class);
-        query.select(root).where(criteriaBuilder.equal(root.get("user"), user));
-
-        List<ResetPasswordRequest> requests = getEntityManager().createQuery(query).getResultList();
-        for (ResetPasswordRequest request : requests) {
-            getEntityManager().remove(request);
-        }
+        getEntityManager().createQuery("DELETE " + ResetPasswordRequest.class.getSimpleName() + " WHERE user = :user").setParameter("user", user).executeUpdate();
     }
-
 }

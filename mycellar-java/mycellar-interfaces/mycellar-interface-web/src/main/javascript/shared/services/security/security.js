@@ -48,7 +48,20 @@ angular.module('mycellar.services.security.service').factory('security', [
       // Is the current user authenticated?
       isAuthenticated: function(){
         return !!service.currentUser && !!service.currentUser.email;
+      },
+      
+      sendPasswordResetMail: function(email) {
+        return $http.post('/api/sendPasswordResetMail', email);
+      },
+      
+      resetPassword: function(key, password) {
+        return $http.post('/api/resetPassword', {key: key, password: password});
+      },
+      
+      getMailFromRequestKey: function(key) {
+        return $http.get('/api/requestedMail?key='+key);
       }
+      
     };
   
     return service;
