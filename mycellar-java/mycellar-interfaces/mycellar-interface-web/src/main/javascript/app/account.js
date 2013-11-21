@@ -23,6 +23,9 @@ angular.module('mycellar.controllers.account').controller('AccountController', [
     $scope.$watch(function() {
       return security.currentUser;
     }, function(value) {
+      manageCurrentUser();
+    });
+    var manageCurrentUser = function() {
       if (security.currentUser != null) {
         $scope.hasProfile = security.currentUser.profile != null;
         if (security.currentUser.profile == 'BOOKING') {
@@ -40,8 +43,7 @@ angular.module('mycellar.controllers.account').controller('AccountController', [
         $scope.userEmail = security.currentUser.email;
         $scope.userName = security.currentUser.name;
       }
-    });
-    
+    };
     var resetScope = function() {
       $scope.email = '';
       $scope.email2 = '';
@@ -50,10 +52,11 @@ angular.module('mycellar.controllers.account').controller('AccountController', [
       $scope.password2 = '';
     };
     resetScope();
-    
+    manageCurrentUser();
+
     $scope.changePasswordFormDisplayed = false;
     $scope.changeEmailFormDisplayed = false;
-    
+
     $scope.hideForms = function() {
       $scope.changeEmailFormDisplayed = false;
       $scope.changePasswordFormDisplayed = false;
@@ -67,7 +70,7 @@ angular.module('mycellar.controllers.account').controller('AccountController', [
       $scope.hideForms();
       $scope.changeEmailFormDisplayed = true;
     };
-    
+
     $scope.changePassword = function() {
       security.changePassword($scope.oldPassword, $scope.password);
       $scope.hideForms();

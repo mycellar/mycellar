@@ -6,7 +6,7 @@ describe("Unit: Testing HomeController", function() {
     expect(mycellar.HomeController).not.to.equal(null);
   });
 
-  it('should have a properly working HomeController controller', inject(function($rootScope, $controller, $httpBackend) {
+  it('should have a properly working HomeController controller', inject(function($rootScope, $controller) {
     var $scope = $rootScope.$new();
     var ctrl = $controller('HomeController', {
       $scope : $scope,

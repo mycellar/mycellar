@@ -6,7 +6,7 @@ describe("Unit: Testing ResetPasswordRequestController", function() {
     expect(mycellar.ResetPasswordRequestController).not.to.equal(null);
   });
 
-  it('should have a properly working ResetPasswordRequestController controller', inject(function($rootScope, $controller, $httpBackend) {
+  it('should have a properly working ResetPasswordRequestController controller', inject(function($rootScope, $controller) {
     var $scope = $rootScope.$new();
     var ctrl = $controller('ResetPasswordRequestController', {
       $scope: $scope,
@@ -24,7 +24,7 @@ describe("Unit: Testing ResetPasswordController", function() {
     expect(mycellar.ResetPasswordController).not.to.equal(null);
   });
 
-  it('should have a properly working ResetPasswordController controller', inject(function($rootScope, $controller, $httpBackend) {
+  it('should have a properly working ResetPasswordController controller', inject(function($rootScope, $controller) {
     var $scope = $rootScope.$new();
     var ctrl = $controller('ResetPasswordController', {
       $scope: $scope,
