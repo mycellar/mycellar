@@ -15,6 +15,7 @@ angular.module('mycellar', [
   'mycellar.directives.bootstrap',
   'mycellar.controllers.home',
   'mycellar.controllers.login',
+  'mycellar.controllers.account',
   'mycellar.controllers.admin',
   'mycellar.controllers.booking',
   'mycellar.controllers.navigation',

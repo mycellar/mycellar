@@ -5,20 +5,21 @@ angular.module('mycellar.services.security.service', [
 angular.module('mycellar.services.security.service').factory('security', [
   '$http', '$q', '$location', 'menuService',
   function($http, $q, $location, menuService) {
+    var loginCallback = function(response) {
+      service.currentUser = response.data;
+      if (service.isAuthenticated()) {
+        $location.path(service.oldPath);
+      } else {
+        $location.path('/');
+      }
+      menuService.reloadMenus();
+    };
     // The public API of the service
     var service = {
       oldPath: '/',
       // Attempt to authenticate a user by the given email and password
       login: function(email, password) {
-        return $http.post('/api/login', {email: email, password: password}).then(function(response) {
-          service.currentUser = response.data;
-          if (service.isAuthenticated()) {
-            $location.path(service.oldPath);
-          } else {
-            $location.path('/');
-          }
-          menuService.reloadMenus();
-        });
+        return $http.post('/api/login', {email: email, password: password}).then(loginCallback);
       },
   
       // Logout the current user and redirect
@@ -28,6 +29,10 @@ angular.module('mycellar.services.security.service').factory('security', [
           $location.path('/');
           menuService.reloadMenus();
         });
+      },
+      
+      register: function(user) {
+        return $http.post('/api/register', user).then(loginCallback);
       },
   
       // Ask the backend to see if a user is already authenticated - this may be from a previous session.
@@ -60,6 +65,14 @@ angular.module('mycellar.services.security.service').factory('security', [
       
       getMailFromRequestKey: function(key) {
         return $http.get('/api/requestedMail?key='+key);
+      },
+      
+      changeEmail: function(email, password) {
+        return $http.post('/api/changeEmail', {email: email, password: password}).then(loginCallback); 
+      },
+      
+      changePassword: function(oldPassword, password) {
+        return $http.post('/api/changePassword', {oldPassword: oldPassword, password: password}).then(loginCallback);
       }
       
     };

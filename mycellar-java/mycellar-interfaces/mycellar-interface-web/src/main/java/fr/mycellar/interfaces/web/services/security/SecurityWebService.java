@@ -32,7 +32,6 @@ import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 
-import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -91,17 +90,54 @@ public class SecurityWebService {
         return login(userDto);
     }
 
+    @POST
+    @Produces(MediaType.APPLICATION_JSON)
+    @Consumes(MediaType.APPLICATION_JSON)
+    @Path("changePassword")
+    public UserDto changePassword(ChangePasswordDto changePasswordDto) throws BusinessException {
+        User currentUser = currentUserService.getCurrentUser();
+        User user = userServiceFacade.authenticateUser(currentUser.getEmail(), changePasswordDto.getOldPassword());
+
+        userServiceFacade.saveUserPassword(user, changePasswordDto.getPassword());
+
+        UserDto userDto = new UserDto();
+        userDto.setEmail(user.getEmail());
+        userDto.setPassword(changePasswordDto.getPassword());
+        return login(userDto);
+    }
+
+    @POST
+    @Produces(MediaType.APPLICATION_JSON)
+    @Consumes(MediaType.APPLICATION_JSON)
+    @Path("changeEmail")
+    public UserDto changeEmail(ChangeEmailDto changeEmailDto) throws BusinessException {
+        User currentUser = currentUserService.getCurrentUser();
+        User user = userServiceFacade.authenticateUser(currentUser.getEmail(), changeEmailDto.getPassword());
+        user.setEmail(changeEmailDto.getEmail());
+        userServiceFacade.saveUserPassword(user, changeEmailDto.getPassword());
+
+        SecurityContextHolder.clearContext();
+
+        UserDto userDto = new UserDto();
+        userDto.setEmail(user.getEmail());
+        userDto.setPassword(changeEmailDto.getPassword());
+        return login(userDto);
+    }
+
     @GET
     @Produces(MediaType.APPLICATION_JSON)
     @Path("current-user")
     public UserDto getCurrentUser() {
-        String email = currentUserService.getCurrentUserEmail();
-        if (StringUtils.isNotBlank(email)) {
+        User user = currentUserService.getCurrentUser();
+        if (user != null) {
             UserDto userDto = new UserDto();
-            userDto.setEmail(email);
+            userDto.setEmail(user.getEmail());
+            userDto.setName(user.getLastname() + " " + user.getFirstname());
+            if (user.getProfile() != null) {
+                userDto.setProfile(user.getProfile().toString());
+            }
             return userDto;
         }
-
         return null;
     }
 
@@ -122,9 +158,7 @@ public class SecurityWebService {
         if ((auth != null) && auth.isAuthenticated()) {
             logger.debug("Authentication success: {}", auth);
             SecurityContextHolder.getContext().setAuthentication(auth);
-            UserDto user = new UserDto();
-            user.setEmail(auth.getName());
-            return user;
+            return getCurrentUser();
         }
         SecurityContextHolder.clearContext();
         throw new BusinessException(BusinessError.OTHER_00002);

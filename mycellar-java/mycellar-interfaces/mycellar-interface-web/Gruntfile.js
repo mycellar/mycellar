@@ -67,7 +67,7 @@ module.exports = function(grunt) {
         }
       },
       protractor: {
-        files: ['./src/main/javascript/**/*.js', './src/test/javascript/e2e/**/*.js'],
+        files: ['./src/main/javascript/**/*.js', './src/test/javascript/e2e/**/*.js', './src/main/webapp/partials/**/*.html'],
         tasks: ['protractor:auto']
       }
     },

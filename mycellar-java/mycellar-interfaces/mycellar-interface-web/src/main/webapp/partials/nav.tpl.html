@@ -22,7 +22,7 @@
       </li>
       <li class="divider-vertical"></li>
     </ul>
-    <form name="login" class="navbar-form navbar-right" ng-hide="isLoggedIn()" role="login">
+    <form name="loginForm" class="navbar-form navbar-right" ng-hide="isLoggedIn()" role="login">
       <div class="form-group">
         <label for="email" class="sr-only">email</label>
         <input type="email" id="email" class="form-control input-small" size="18" placeholder="email" ng-model="email" />
@@ -31,7 +31,7 @@
         <label for="password" class="sr-only">Mot de passe</label>
         <input type="password" id="password" class="form-control input-small" size="8" placeholder="Mot de passe" ng-model="password" />
       </div>
-      <button type="submit" class="btn btn-default btn-small" ng-click="login(email, password)">Se connecter</button>
+      <input type="submit" class="btn btn-default btn-small" ng-click="login(email, password)" value="Se connecter" />
       <a href="/register" class="btn btn-default btn-small">Nouvel utilisateur</a>
     </form>
     <ul class="nav navbar-nav navbar-right" ng-show="isLoggedIn()">
