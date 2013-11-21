@@ -19,4 +19,12 @@ angular.module('mycellar').filter('firstLine', function () {
     }
     return collectionKeys;
   }
+}).filter('error', function() {
+  return function (input) {
+    if (input == 'email') {
+      return "Veuillez saisir une adresse mail correcte.";
+    } else if (input == 'equals') {
+      return "Les deux champs ne sont pas égaux.";
+    }
+  }
 });

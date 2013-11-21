@@ -18,8 +18,8 @@ angular.module('mycellar.controllers.admin.tools', [
 ]);
 
 angular.module('mycellar.controllers.admin.tools').controller('AdminNewVintagesController', [
-  '$scope', 'Wines', 'Countries', 'Regions', 'Appellations', 'Producers', 'tableService', 
-  function ($scope, Wines, Countries, Regions, Appellations, Producers, tableService) {
+  '$scope', 'Wines', 'Countries', 'Regions', 'Appellations', 'Producers', 'tableService', '$http', 
+  function ($scope, Wines, Countries, Regions, Appellations, Producers, tableService, $http) {
     $scope.tableOptions = {
       itemResource: Wines.get,
       defaultSort: ['appellation.region.country.name',
