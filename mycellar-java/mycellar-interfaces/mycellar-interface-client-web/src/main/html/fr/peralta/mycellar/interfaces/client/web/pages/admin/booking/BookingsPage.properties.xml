@@ -1,9 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<!DOCTYPE properties SYSTEM "http://java.sun.com/dtd/properties.dtd">
-<properties>
-  <entry key="header">Liste des réservations</entry>
-  <entry key="customer.email">Email du client</entry>
-  <entry key="bookingEvent.name">Nom de la campagne</entry>
-  <entry key="bookingEvent.start">Début de la campagne</entry>
-  <entry key="bookingEvent.end">Fin de la campagne</entry>
-</properties> 

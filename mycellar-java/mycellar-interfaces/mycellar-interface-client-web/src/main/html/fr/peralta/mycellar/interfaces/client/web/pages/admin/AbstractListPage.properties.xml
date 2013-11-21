@@ -1,7 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<!DOCTYPE properties SYSTEM "http://java.sun.com/dtd/properties.dtd">
-<properties>
-  <entry key="add">Ajouter une donnée</entry>
-  <entry key="remove">Supprimer une donnée</entry>
-  <entry key="edit">Modifier une donnée</entry>
-</properties> 

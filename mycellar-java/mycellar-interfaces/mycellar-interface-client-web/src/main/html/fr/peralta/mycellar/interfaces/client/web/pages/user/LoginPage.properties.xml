@@ -1,9 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<!DOCTYPE properties SYSTEM "http://java.sun.com/dtd/properties.dtd">
-<properties>
-  <entry key="loginHeader">Déjà membre ?</entry>
-  <entry key="loginText">Connectez-vous</entry>
-  <entry key="registerHeader">Créer un compte</entry>
-  <entry key="registerText">C'est gratuit !</entry>
-  <entry key="exception.login">Mauvais identifiant/mot de passe.</entry>
-</properties> 

@@ -1,8 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<!DOCTYPE properties SYSTEM "http://java.sun.com/dtd/properties.dtd">
-<properties>
-  <entry key="header">Réservations en cours</entry>
-  <entry key="period">Du {0} au {1}</entry>
-  <entry key="validateBooking">Valider la réservation</entry>
-  <entry key="noBooking">Aucune réservation en cours</entry>
-</properties> 

@@ -1,8 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<!DOCTYPE properties SYSTEM "http://java.sun.com/dtd/properties.dtd">
-<properties>
-  <entry key="header">Liste des contacts</entry>
-  <entry key="producer.name">Nom du producteur</entry>
-  <entry key="current">Date du contact</entry>
-  <entry key="next">Prochain contact</entry>
-</properties> 
