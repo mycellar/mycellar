@@ -1,6 +1,6 @@
 var mycellar  = window.mycellar || (window.mycellar = {});
 var version = {
-  full: '0.6.3-SNAPSHOT'
+  full: '0.7.0-SNAPSHOT'
 };
 angular.extend(mycellar, {
   'version': version

@@ -1,6 +1,6 @@
 {
   "name": "mycellar",
-  "version": "0.6.3-SNAPSHOT",
+  "version": "0.7.0-SNAPSHOT",
   "description": "Cellar management tool",
   "homepage": "http://mycellar.cave-et-terroirs.fr",
   "repository": {

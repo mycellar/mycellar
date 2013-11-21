@@ -26,7 +26,7 @@
   <parent>
     <groupId>mycellar</groupId>
     <artifactId>mycellar-parent</artifactId>
-    <version>0.6.3-SNAPSHOT</version>
+    <version>0.7.0-SNAPSHOT</version>
   </parent>
   <artifactId>mycellar-db</artifactId>
   <packaging>pom</packaging>
