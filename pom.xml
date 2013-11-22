@@ -1,13 +1,22 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!-- Copyright 2011, MyCellar This file is part of MyCellar. MyCellar is 
-  free software; you can redistribute it and/or modify it under the terms of 
-  the GNU General Public License as published by the Free Software Foundation; 
-  either version 3 of the License, or (at your option) any later version. MyCellar 
-  is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; 
-  without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR 
-  PURPOSE. See the GNU General Public License for more details. You should 
-  have received a copy of the GNU General Public License along with MyCellar. 
-  If not, see <http://www.gnu.org/licenses/>. -->
+<!--
+ Copyright 2011, MyCellar
+
+ This file is part of MyCellar.
+
+ MyCellar is free software; you can redistribute it and/or modify
+ it under the terms of the GNU General Public License as published by
+ the Free Software Foundation; either version 3 of the License, or
+ (at your option) any later version.
+
+ MyCellar is distributed in the hope that it will be useful,
+ but WITHOUT ANY WARRANTY; without even the implied warranty of
+ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ GNU General Public License for more details.
+
+ You should have received a copy of the GNU General Public License
+ along with MyCellar. If not, see <http://www.gnu.org/licenses/>.
+-->
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
   xsi:schemaLocation="http://maven.apache.org/POM/4.0.0
   http://maven.apache.org/xsd/maven-4.0.0.xsd">
@@ -15,30 +24,9 @@
 
   <groupId>mycellar</groupId>
   <version>0.7.0-SNAPSHOT</version>
-  <artifactId>mycellar-parent</artifactId>
-  <packaging>pom</packaging>
+  <artifactId>mycellar</artifactId>
+  <packaging>war</packaging>
   <name>MyCellar</name>
-
-  <modules>
-    <module>mycellar-db</module>
-    <module>mycellar-java</module>
-  </modules>
-
-  <properties>
-    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-
-    <!-- Versions -->
-    <slf4j.version>1.7.5</slf4j.version>
-    <wicket.version>6.3.0</wicket.version>
-    <wicketstuff.version>6.2.1</wicketstuff.version>
-    <spring.version>3.2.3.RELEASE</spring.version>
-    <spring.security.version>3.1.4.RELEASE</spring.security.version>
-    <hibernate.version>4.2.3.Final</hibernate.version>
-    <hibernate.validator.version>5.0.1.Final</hibernate.validator.version>
-    <hibernate.search.version>4.3.0.Final</hibernate.search.version>
-    <jersey.version>1.16</jersey.version>
-    <jackson.version>2.2.2</jackson.version>
-  </properties>
 
   <developers>
     <developer>
@@ -64,7 +52,31 @@
     </developer>
   </developers>
 
+  <properties>
+    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+
+    <!-- Versions -->
+    <slf4j.version>1.7.5</slf4j.version>
+    <spring.version>3.2.3.RELEASE</spring.version>
+    <spring.security.version>3.1.4.RELEASE</spring.security.version>
+    <hibernate.version>4.2.3.Final</hibernate.version>
+    <hibernate.validator.version>5.0.1.Final</hibernate.validator.version>
+    <hibernate.search.version>4.3.0.Final</hibernate.search.version>
+    <jersey.version>1.16</jersey.version>
+    <jackson.version>2.2.2</jackson.version>
+
+    <!-- MyCellar -->
+    <db.dialect>MYSQL</db.dialect>
+    <db.generate>true</db.generate>
+  </properties>
+
   <build>
+    <resources>
+      <resource>
+        <directory>src/main/resources</directory>
+        <filtering>true</filtering>
+      </resource>
+    </resources>
     <pluginManagement>
       <plugins>
         <plugin>
@@ -119,445 +131,150 @@
         </plugin>
       </plugins>
     </pluginManagement>
-  </build>
-
-  <dependencyManagement>
-    <dependencies>
-      <dependency>
-        <groupId>${project.groupId}</groupId>
-        <artifactId>mycellar-interface-facade-client</artifactId>
-        <version>${project.version}</version>
-      </dependency>
-      <dependency>
-        <groupId>${project.groupId}</groupId>
-        <artifactId>mycellar-interface-facade-server</artifactId>
-        <version>${project.version}</version>
-      </dependency>
-      <dependency>
-        <groupId>${project.groupId}</groupId>
-        <artifactId>mycellar-interface-client-web</artifactId>
-        <version>${project.version}</version>
-      </dependency>
-      <dependency>
-        <groupId>${project.groupId}</groupId>
-        <artifactId>mycellar-application</artifactId>
-        <version>${project.version}</version>
-      </dependency>
-      <dependency>
-        <groupId>${project.groupId}</groupId>
-        <artifactId>mycellar-infrastructure-mock</artifactId>
-        <version>${project.version}</version>
-      </dependency>
-      <dependency>
-        <groupId>${project.groupId}</groupId>
-        <artifactId>mycellar-infrastructure-persistence</artifactId>
-        <version>${project.version}</version>
-      </dependency>
-      <dependency>
-        <groupId>${project.groupId}</groupId>
-        <artifactId>mycellar-domain</artifactId>
-        <version>${project.version}</version>
-      </dependency>
-
-      <!-- APACHE COMMONS -->
-      <dependency>
-        <groupId>org.apache.commons</groupId>
-        <artifactId>commons-lang3</artifactId>
-        <version>3.1</version>
-      </dependency>
-      <dependency>
-        <groupId>commons-beanutils</groupId>
-        <artifactId>commons-beanutils</artifactId>
-        <version>1.8.3</version>
-        <exclusions>
-          <exclusion>
-            <groupId>commons-logging</groupId>
-            <artifactId>commons-logging</artifactId>
-          </exclusion>
-        </exclusions>
-      </dependency>
-
-      <!-- GOOGLE GUAVA -->
-      <dependency>
-        <groupId>com.google.guava</groupId>
-        <artifactId>guava</artifactId>
-        <version>14.0.1</version>
-      </dependency>
-
-      <!-- HIBERNATE -->
-      <dependency>
-        <groupId>org.hibernate</groupId>
-        <artifactId>hibernate-core</artifactId>
-        <version>${hibernate.version}</version>
-      </dependency>
-      <dependency>
-        <groupId>org.hibernate</groupId>
-        <artifactId>hibernate-entitymanager</artifactId>
-        <version>${hibernate.version}</version>
-      </dependency>
-      <dependency>
-        <groupId>org.hibernate</groupId>
-        <artifactId>hibernate-validator</artifactId>
-        <version>${hibernate.validator.version}</version>
-      </dependency>
-      <dependency>
-        <groupId>org.hibernate</groupId>
-        <artifactId>hibernate-search</artifactId>
-        <version>${hibernate.search.version}</version>
-        <exclusions>
-          <exclusion>
-            <groupId>org.codehaus.jackson</groupId>
-            <artifactId>jackson-core-asl</artifactId>
-          </exclusion>
-          <exclusion>
-            <groupId>org.codehaus.jackson</groupId>
-            <artifactId>jackson-mapper-asl</artifactId>
-          </exclusion>
-        </exclusions>
-      </dependency>
-      <dependency>
-        <groupId>org.hibernate</groupId>
-        <artifactId>hibernate-search-analyzers</artifactId>
-        <version>${hibernate.search.version}</version>
-      </dependency>
-      <dependency>
-        <groupId>org.apache.tika</groupId>
-        <artifactId>tika-parsers</artifactId>
-        <version>1.3</version>
-      </dependency>
-
-      <!-- JODA-TIME -->
-      <dependency>
-        <groupId>joda-time</groupId>
-        <artifactId>joda-time</artifactId>
-        <version>2.1</version>
-      </dependency>
-      <dependency>
-        <groupId>org.jadira.usertype</groupId>
-        <artifactId>usertype.core</artifactId>
-        <version>3.0.0.GA</version>
-        <exclusions>
-          <exclusion>
+    <plugins>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-compiler-plugin</artifactId>
+        <configuration>
+          <source>1.7</source>
+          <target>1.7</target>
+          <compilerArgument>-proc:none</compilerArgument>
+        </configuration>
+      </plugin>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-eclipse-plugin</artifactId>
+        <configuration>
+          <wtpversion>2.0</wtpversion>
+          <additionalProjectFacets>
+            <jst.web>3.0</jst.web>
+          </additionalProjectFacets>
+        </configuration>
+      </plugin>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-war-plugin</artifactId>
+        <configuration>
+          <filteringDeploymentDescriptors>true</filteringDeploymentDescriptors>
+          <archive>
+            <manifest>
+              <addDefaultImplementationEntries>true</addDefaultImplementationEntries>
+              <addDefaultSpecificationEntries>true</addDefaultSpecificationEntries>
+            </manifest>
+          </archive>
+          <archiveClasses>true</archiveClasses>
+        </configuration>
+      </plugin>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-resources-plugin</artifactId>
+        <executions>
+          <execution>
+            <id>jetty-conf</id>
+            <phase>process-resources</phase>
+            <goals>
+              <goal>copy-resources</goal>
+            </goals>
+            <configuration>
+              <outputDirectory>${basedir}/target/jetty</outputDirectory>
+              <resources>
+                <resource>
+                  <directory>src/main/jetty</directory>
+                  <filtering>true</filtering>
+                </resource>
+              </resources>
+            </configuration>
+          </execution>
+        </executions>
+      </plugin>
+      <plugin>
+        <groupId>org.eclipse.jetty</groupId>
+        <artifactId>jetty-maven-plugin</artifactId>
+        <configuration>
+          <jettyXml>${project.build.directory}/jetty/jetty.xml</jettyXml>
+          <webApp>
+            <defaultsDescriptor>${project.build.directory}/jetty/webdefault.xml</defaultsDescriptor>
+            <descriptor>${project.build.directory}/${project.build.finalName}/WEB-INF/web.xml</descriptor>
+          </webApp>
+          <stopKey>stopJetty</stopKey>
+          <stopPort>9999</stopPort>
+        </configuration>
+        <dependencies>
+          <dependency>
+            <groupId>commons-dbcp</groupId>
+            <artifactId>commons-dbcp</artifactId>
+            <version>1.4</version>
+          </dependency>
+          <dependency>
+            <groupId>mysql</groupId>
+            <artifactId>mysql-connector-java</artifactId>
+            <version>5.1.20</version>
+          </dependency>
+          <dependency>
+            <groupId>javax.mail</groupId>
+            <artifactId>mail</artifactId>
+            <version>1.4.5</version>
+          </dependency>
+        </dependencies>
+        <executions>
+          <execution>
+            <id>start-jetty-it</id>
+            <phase>pre-integration-test</phase>
+            <goals>
+              <goal>run</goal>
+            </goals>
+            <configuration>
+              <daemon>true</daemon>
+            </configuration>
+          </execution>
+          <execution>
+            <id>stop-jetty-it</id>
+            <phase>post-integration-test</phase>
+            <goals>
+              <goal>stop</goal>
+            </goals>
+          </execution>
+        </executions>
+      </plugin>
+      <plugin>
+        <groupId>org.bsc.maven</groupId>
+        <artifactId>maven-processor-plugin</artifactId>
+        <executions>
+          <execution>
+            <id>process</id>
+            <goals>
+              <goal>process</goal>
+            </goals>
+            <phase>generate-sources</phase>
+            <configuration>
+              <processors>
+                <processor>org.hibernate.jpamodelgen.JPAMetaModelEntityProcessor</processor>
+              </processors>
+            </configuration>
+          </execution>
+        </executions>
+        <dependencies>
+          <dependency>
             <groupId>org.hibernate</groupId>
-            <artifactId>hibernate</artifactId>
-          </exclusion>
-        </exclusions>
-      </dependency>
-
-      <!-- DATABASE -->
-      <dependency>
-        <groupId>mysql</groupId>
-        <artifactId>mysql-connector-java</artifactId>
-        <version>5.1.23</version>
-      </dependency>
-
-      <!-- SPRING -->
-      <dependency>
-        <groupId>org.springframework</groupId>
-        <artifactId>spring-context</artifactId>
-        <version>${spring.version}</version>
-      </dependency>
-      <dependency>
-        <groupId>org.springframework</groupId>
-        <artifactId>spring-context-support</artifactId>
-        <version>${spring.version}</version>
-      </dependency>
-      <dependency>
-        <groupId>org.springframework</groupId>
-        <artifactId>spring-tx</artifactId>
-        <version>${spring.version}</version>
-      </dependency>
-      <dependency>
-        <groupId>org.springframework</groupId>
-        <artifactId>spring-orm</artifactId>
-        <version>${spring.version}</version>
-      </dependency>
-      <dependency>
-        <groupId>org.springframework</groupId>
-        <artifactId>spring-jdbc</artifactId>
-        <version>${spring.version}</version>
-      </dependency>
-      <dependency>
-        <groupId>org.springframework</groupId>
-        <artifactId>spring-web</artifactId>
-        <version>${spring.version}</version>
-      </dependency>
-      <dependency>
-        <groupId>org.springframework.security</groupId>
-        <artifactId>spring-security-web</artifactId>
-        <version>${spring.security.version}</version>
-      </dependency>
-      <dependency>
-        <groupId>org.springframework.security</groupId>
-        <artifactId>spring-security-config</artifactId>
-        <version>${spring.security.version}</version>
-      </dependency>
-
-      <!-- WICKET -->
-      <dependency>
-        <groupId>org.apache.wicket</groupId>
-        <artifactId>wicket-core</artifactId>
-        <version>${wicket.version}</version>
-      </dependency>
-      <dependency>
-        <groupId>org.apache.wicket</groupId>
-        <artifactId>wicket-devutils</artifactId>
-        <version>${wicket.version}</version>
-      </dependency>
-      <dependency>
-        <groupId>org.apache.wicket</groupId>
-        <artifactId>wicket-spring</artifactId>
-        <version>${wicket.version}</version>
-      </dependency>
-      <dependency>
-        <groupId>org.wicketstuff</groupId>
-        <artifactId>wicketstuff-security-swarm</artifactId>
-        <version>${wicketstuff.version}</version>
-        <exclusions>
-          <exclusion>
-            <groupId>org.slf4j</groupId>
-            <artifactId>slf4j-log4j12</artifactId>
-          </exclusion>
-          <exclusion>
-            <groupId>log4j</groupId>
-            <artifactId>log4j</artifactId>
-          </exclusion>
-          <exclusion>
-            <groupId>org.apache.wicket</groupId>
-            <artifactId>wicket</artifactId>
-          </exclusion>
-          <exclusion>
-            <groupId>org.apache.wicket</groupId>
-            <artifactId>wicket-util</artifactId>
-          </exclusion>
-        </exclusions>
-      </dependency>
-
-      <!-- jackson -->
-      <dependency>
-        <groupId>com.fasterxml.jackson.core</groupId>
-        <artifactId>jackson-annotations</artifactId>
-        <version>${jackson.version}</version>
-      </dependency>
-      <dependency>
-        <groupId>com.fasterxml.jackson.core</groupId>
-        <artifactId>jackson-core</artifactId>
-        <version>${jackson.version}</version>
-      </dependency>
-      <dependency>
-        <groupId>com.fasterxml.jackson.core</groupId>
-        <artifactId>jackson-databind</artifactId>
-        <version>${jackson.version}</version>
-      </dependency>
-      <dependency>
-        <groupId>com.fasterxml.jackson.module</groupId>
-        <artifactId>jackson-module-jaxb-annotations</artifactId>
-        <version>${jackson.version}</version>
-      </dependency>
-      <dependency>
-        <groupId>com.fasterxml.jackson.jaxrs</groupId>
-        <artifactId>jackson-jaxrs-json-provider</artifactId>
-        <version>${jackson.version}</version>
-      </dependency>
-      <dependency>
-        <groupId>com.fasterxml.jackson.datatype</groupId>
-        <artifactId>jackson-datatype-joda</artifactId>
-        <version>${jackson.version}</version>
-      </dependency>
-
-      <!-- jersey -->
-      <dependency>
-        <groupId>com.sun.jersey</groupId>
-        <artifactId>jersey-server</artifactId>
-        <version>${jersey.version}</version>
-      </dependency>
-      <dependency>
-        <groupId>com.sun.jersey</groupId>
-        <artifactId>jersey-json</artifactId>
-        <version>${jersey.version}</version>
-        <exclusions>
-          <exclusion>
-            <groupId>org.codehaus.jackson</groupId>
-            <artifactId>jackson-core-asl</artifactId>
-          </exclusion>
-          <exclusion>
-            <groupId>org.codehaus.jackson</groupId>
-            <artifactId>jackson-mapper-asl</artifactId>
-          </exclusion>
-          <exclusion>
-            <groupId>org.codehaus.jackson</groupId>
-            <artifactId>jackson-jaxrs</artifactId>
-          </exclusion>
-          <exclusion>
-            <groupId>org.codehaus.jackson</groupId>
-            <artifactId>jackson-xc</artifactId>
-          </exclusion>
-        </exclusions>
-      </dependency>
-      <dependency>
-        <groupId>com.sun.jersey.contribs</groupId>
-        <artifactId>jersey-spring</artifactId>
-        <version>${jersey.version}</version>
-        <exclusions>
-          <exclusion>
-            <groupId>org.springframework</groupId>
-            <artifactId>spring</artifactId>
-          </exclusion>
-          <exclusion>
-            <groupId>org.springframework</groupId>
-            <artifactId>spring-core</artifactId>
-          </exclusion>
-          <exclusion>
-            <groupId>org.springframework</groupId>
-            <artifactId>spring-beans</artifactId>
-          </exclusion>
-          <exclusion>
-            <groupId>org.springframework</groupId>
-            <artifactId>spring-context</artifactId>
-          </exclusion>
-          <exclusion>
-            <groupId>org.springframework</groupId>
-            <artifactId>spring-web</artifactId>
-          </exclusion>
-          <exclusion>
-            <groupId>org.springframework</groupId>
-            <artifactId>spring-aop</artifactId>
-          </exclusion>
-        </exclusions>
-      </dependency>
-
-      <!-- SLF4J -->
-      <dependency>
-        <groupId>org.slf4j</groupId>
-        <artifactId>slf4j-api</artifactId>
-        <version>${slf4j.version}</version>
-      </dependency>
-      <dependency>
-        <groupId>org.slf4j</groupId>
-        <artifactId>jcl-over-slf4j</artifactId>
-        <version>${slf4j.version}</version>
-      </dependency>
-      <dependency>
-        <groupId>org.slf4j</groupId>
-        <artifactId>log4j-over-slf4j</artifactId>
-        <version>${slf4j.version}</version>
-      </dependency>
-      <dependency>
-        <groupId>ch.qos.logback</groupId>
-        <artifactId>logback-classic</artifactId>
-        <version>1.0.13</version>
-      </dependency>
-
-      <!-- JAVAX -->
-      <dependency>
-        <groupId>javax.servlet</groupId>
-        <artifactId>javax.servlet-api</artifactId>
-        <version>3.0.1</version>
-        <scope>provided</scope>
-      </dependency>
-      <dependency>
-        <groupId>javax.mail</groupId>
-        <artifactId>mail</artifactId>
-        <version>1.4.6</version>
-        <scope>provided</scope>
-        <exclusions>
-          <exclusion>
-            <groupId>javax.activation</groupId>
-            <artifactId>activation</artifactId>
-          </exclusion>
-        </exclusions>
-      </dependency>
-      <dependency>
-        <groupId>javax.validation</groupId>
-        <artifactId>validation-api</artifactId>
-        <version>1.1.0.Final</version>
-      </dependency>
-      <dependency>
-        <groupId>javax.ws.rs</groupId>
-        <artifactId>jsr311-api</artifactId>
-        <version>1.1.1</version>
-      </dependency>
-      <dependency>
-        <groupId>org.hibernate.javax.persistence</groupId>
-        <artifactId>hibernate-jpa-2.0-api</artifactId>
-        <version>1.0.1.Final</version>
-      </dependency>
-      <dependency>
-        <groupId>javax.inject</groupId>
-        <artifactId>javax.inject</artifactId>
-        <version>1</version>
-      </dependency>
-
-      <!-- UrlRewriteFilter -->
-      <dependency>
-        <groupId>org.tuckey</groupId>
-        <artifactId>urlrewritefilter</artifactId>
-        <version>4.0.4</version>
-      </dependency>
-
-      <!-- Jasypt -->
-      <dependency>
-        <groupId>org.jasypt</groupId>
-        <artifactId>jasypt</artifactId>
-        <version>1.9.0</version>
-      </dependency>
-
-      <!-- Monitoring -->
-      <dependency>
-        <groupId>net.bull.javamelody</groupId>
-        <artifactId>javamelody-core</artifactId>
-        <version>1.45.0</version>
-      </dependency>
-      
-      <dependency>
-        <groupId>junit</groupId>
-        <artifactId>junit</artifactId>
-        <version>4.11</version>
-      </dependency>
-      <dependency>
-        <groupId>org.hamcrest</groupId>
-        <artifactId>hamcrest-core</artifactId>
-        <version>1.3</version>
-      </dependency>
-      <dependency>
-        <groupId>org.mockito</groupId>
-        <artifactId>mockito-core</artifactId>
-        <version>1.9.5</version>
-      </dependency>
-      <dependency>
-        <groupId>com.h2database</groupId>
-        <artifactId>h2</artifactId>
-        <version>1.3.167</version>
-        <scope>test</scope>
-      </dependency>
-      <dependency>
-        <groupId>org.springframework</groupId>
-        <artifactId>spring-test</artifactId>
-        <version>${spring.version}</version>
-        <scope>test</scope>
-      </dependency>
-      <dependency>
-        <groupId>${project.groupId}</groupId>
-        <artifactId>mycellar-test</artifactId>
-        <version>${project.version}</version>
-        <scope>test</scope>
-      </dependency>
-      <dependency>
-        <groupId>${project.groupId}</groupId>
-        <artifactId>mycellar-interface-facade-client</artifactId>
-        <version>${project.version}</version>
-        <type>test-jar</type>
-        <scope>test</scope>
-      </dependency>
-      <dependency>
-        <groupId>${project.groupId}</groupId>
-        <artifactId>mycellar-domain</artifactId>
-        <version>${project.version}</version>
-        <type>test-jar</type>
-        <scope>test</scope>
-      </dependency>
-    </dependencies>
-  </dependencyManagement>
+            <artifactId>hibernate-jpamodelgen</artifactId>
+            <version>1.2.0.Final</version>
+          </dependency>
+        </dependencies>
+      </plugin>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-failsafe-plugin</artifactId>
+        <executions>
+          <execution>
+            <goals>
+              <goal>integration-test</goal>
+              <goal>verify</goal>
+            </goals>
+          </execution>
+        </executions>
+      </plugin>
+    </plugins>
+  </build>
 
   <repositories>
     <repository>
@@ -583,5 +300,476 @@
       </releases>
     </repository>
   </repositories>
+
+  <profiles>
+    <profile>
+      <id>db-maria</id>
+      <activation>
+        <property>
+          <name>!db</name>
+        </property>
+      </activation>
+      <properties>
+        <db.driver>com.mysql.jdbc.Driver</db.driver>
+        <db.url>jdbc:mysql://localhost:3306/mycellar</db.url>
+        <db.user>mycellar</db.user>
+        <db.pass>pswcellar</db.pass>
+      </properties>
+    </profile>
+    <profile>
+      <id>setupJS</id>
+      <build>
+        <plugins>
+          <plugin>
+            <artifactId>maven-antrun-plugin</artifactId>
+            <executions>
+              <execution>
+                <id>npm installation</id>
+                <phase>initialize</phase>
+                <goals>
+                  <goal>run</goal>
+                </goals>
+                <configuration>
+                  <target name="building">
+                    <echo>
+                      NPM INSTALL
+                    </echo>
+                    <exec executable="cmd" dir="${basedir}"
+                      osfamily="windows" failonerror="true">
+                      <arg line="/c npm install" />
+                    </exec>
+                    <exec executable="bash" dir="${basedir}"
+                      osfamily="unix" failonerror="true">
+                      <arg line="npm install" />
+                    </exec>
+                  </target>
+                </configuration>
+              </execution>
+            </executions>
+          </plugin>
+          <plugin>
+            <groupId>org.codehaus.mojo</groupId>
+            <artifactId>exec-maven-plugin</artifactId>
+            <executions>
+              <execution>
+                <id>Grunt</id>
+                <phase>generate-sources</phase>
+                <goals>
+                  <goal>exec</goal>
+                </goals>
+                <configuration>
+                  <executable>node</executable>
+                  <arguments>
+                    <argument>node_modules/grunt-cli/bin/grunt</argument>
+                    <argument>--no-color</argument>
+                    <argument>update</argument>
+                  </arguments>
+                </configuration>
+              </execution>
+            </executions>
+          </plugin>
+        </plugins>
+      </build>
+    </profile>
+    <profile>
+      <id>gruntUTs</id>
+      <activation>
+        <activeByDefault>true</activeByDefault>
+        <property>
+          <name>!skipTests</name>
+        </property>
+      </activation>
+      <build>
+        <plugins>
+          <plugin>
+            <groupId>org.codehaus.mojo</groupId>
+            <artifactId>exec-maven-plugin</artifactId>
+            <executions>
+              <execution>
+                <id>Grunt unit test</id>
+                <phase>test</phase>
+                <goals>
+                  <goal>exec</goal>
+                </goals>
+                <configuration>
+                  <executable>node</executable>
+                  <arguments>
+                    <argument>node_modules/grunt-cli/bin/grunt</argument>
+                    <argument>--no-color</argument>
+                    <argument>test:unit</argument>
+                  </arguments>
+                </configuration>
+              </execution>
+            </executions>
+          </plugin>
+        </plugins>
+      </build>
+    </profile>
+    <profile>
+      <id>gruntITs</id>
+      <activation>
+        <activeByDefault>true</activeByDefault>
+        <property>
+          <name>!skipTests</name>
+        </property>
+      </activation>
+      <build>
+        <plugins>
+          <plugin>
+            <groupId>org.codehaus.mojo</groupId>
+            <artifactId>exec-maven-plugin</artifactId>
+            <executions>
+              <execution>
+                <id>Grunt e2e test</id>
+                <phase>integration-test</phase>
+                <goals>
+                  <goal>exec</goal>
+                </goals>
+                <configuration>
+                  <executable>node</executable>
+                  <arguments>
+                    <argument>node_modules/grunt-cli/bin/grunt</argument>
+                    <argument>--no-color</argument>
+                    <argument>test:e2e</argument>
+                  </arguments>
+                </configuration>
+              </execution>
+            </executions>
+          </plugin>
+        </plugins>
+      </build>
+    </profile>
+  </profiles>
+
+  <dependencies>
+    <dependency>
+      <groupId>org.apache.commons</groupId>
+      <artifactId>commons-lang3</artifactId>
+      <version>3.1</version>
+    </dependency>
+    <dependency>
+      <groupId>commons-beanutils</groupId>
+      <artifactId>commons-beanutils</artifactId>
+      <version>1.8.3</version>
+      <exclusions>
+        <exclusion>
+          <groupId>commons-logging</groupId>
+          <artifactId>commons-logging</artifactId>
+        </exclusion>
+      </exclusions>
+    </dependency>
+
+    <!-- GOOGLE GUAVA -->
+    <dependency>
+      <groupId>com.google.guava</groupId>
+      <artifactId>guava</artifactId>
+      <version>14.0.1</version>
+    </dependency>
+
+    <!-- HIBERNATE -->
+    <dependency>
+      <groupId>org.hibernate</groupId>
+      <artifactId>hibernate-core</artifactId>
+      <version>${hibernate.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>org.hibernate</groupId>
+      <artifactId>hibernate-entitymanager</artifactId>
+      <version>${hibernate.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>org.hibernate</groupId>
+      <artifactId>hibernate-validator</artifactId>
+      <version>${hibernate.validator.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>org.hibernate</groupId>
+      <artifactId>hibernate-search</artifactId>
+      <version>${hibernate.search.version}</version>
+      <exclusions>
+        <exclusion>
+          <groupId>org.codehaus.jackson</groupId>
+          <artifactId>jackson-core-asl</artifactId>
+        </exclusion>
+        <exclusion>
+          <groupId>org.codehaus.jackson</groupId>
+          <artifactId>jackson-mapper-asl</artifactId>
+        </exclusion>
+      </exclusions>
+    </dependency>
+    <dependency>
+      <groupId>org.hibernate</groupId>
+      <artifactId>hibernate-search-analyzers</artifactId>
+      <version>${hibernate.search.version}</version>
+    </dependency>
+
+    <!-- JODA-TIME -->
+    <dependency>
+      <groupId>joda-time</groupId>
+      <artifactId>joda-time</artifactId>
+      <version>2.1</version>
+    </dependency>
+    <dependency>
+      <groupId>org.jadira.usertype</groupId>
+      <artifactId>usertype.core</artifactId>
+      <version>3.0.0.GA</version>
+      <exclusions>
+        <exclusion>
+          <groupId>org.hibernate</groupId>
+          <artifactId>hibernate</artifactId>
+        </exclusion>
+      </exclusions>
+    </dependency>
+
+    <!-- SPRING -->
+    <dependency>
+      <groupId>org.springframework</groupId>
+      <artifactId>spring-context</artifactId>
+      <version>${spring.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>org.springframework</groupId>
+      <artifactId>spring-context-support</artifactId>
+      <version>${spring.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>org.springframework</groupId>
+      <artifactId>spring-tx</artifactId>
+      <version>${spring.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>org.springframework</groupId>
+      <artifactId>spring-orm</artifactId>
+      <version>${spring.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>org.springframework</groupId>
+      <artifactId>spring-jdbc</artifactId>
+      <version>${spring.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>org.springframework</groupId>
+      <artifactId>spring-web</artifactId>
+      <version>${spring.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>org.springframework.security</groupId>
+      <artifactId>spring-security-web</artifactId>
+      <version>${spring.security.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>org.springframework.security</groupId>
+      <artifactId>spring-security-config</artifactId>
+      <version>${spring.security.version}</version>
+    </dependency>
+
+    <!-- jackson -->
+    <dependency>
+      <groupId>com.fasterxml.jackson.core</groupId>
+      <artifactId>jackson-annotations</artifactId>
+      <version>${jackson.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>com.fasterxml.jackson.core</groupId>
+      <artifactId>jackson-core</artifactId>
+      <version>${jackson.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>com.fasterxml.jackson.core</groupId>
+      <artifactId>jackson-databind</artifactId>
+      <version>${jackson.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>com.fasterxml.jackson.module</groupId>
+      <artifactId>jackson-module-jaxb-annotations</artifactId>
+      <version>${jackson.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>com.fasterxml.jackson.jaxrs</groupId>
+      <artifactId>jackson-jaxrs-json-provider</artifactId>
+      <version>${jackson.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>com.fasterxml.jackson.datatype</groupId>
+      <artifactId>jackson-datatype-joda</artifactId>
+      <version>${jackson.version}</version>
+    </dependency>
+
+    <!-- jersey -->
+    <dependency>
+      <groupId>com.sun.jersey</groupId>
+      <artifactId>jersey-server</artifactId>
+      <version>${jersey.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>com.sun.jersey</groupId>
+      <artifactId>jersey-json</artifactId>
+      <version>${jersey.version}</version>
+      <exclusions>
+        <exclusion>
+          <groupId>org.codehaus.jackson</groupId>
+          <artifactId>jackson-core-asl</artifactId>
+        </exclusion>
+        <exclusion>
+          <groupId>org.codehaus.jackson</groupId>
+          <artifactId>jackson-mapper-asl</artifactId>
+        </exclusion>
+        <exclusion>
+          <groupId>org.codehaus.jackson</groupId>
+          <artifactId>jackson-jaxrs</artifactId>
+        </exclusion>
+        <exclusion>
+          <groupId>org.codehaus.jackson</groupId>
+          <artifactId>jackson-xc</artifactId>
+        </exclusion>
+      </exclusions>
+    </dependency>
+    <dependency>
+      <groupId>com.sun.jersey.contribs</groupId>
+      <artifactId>jersey-spring</artifactId>
+      <version>${jersey.version}</version>
+      <exclusions>
+        <exclusion>
+          <groupId>org.springframework</groupId>
+          <artifactId>spring</artifactId>
+        </exclusion>
+        <exclusion>
+          <groupId>org.springframework</groupId>
+          <artifactId>spring-core</artifactId>
+        </exclusion>
+        <exclusion>
+          <groupId>org.springframework</groupId>
+          <artifactId>spring-beans</artifactId>
+        </exclusion>
+        <exclusion>
+          <groupId>org.springframework</groupId>
+          <artifactId>spring-context</artifactId>
+        </exclusion>
+        <exclusion>
+          <groupId>org.springframework</groupId>
+          <artifactId>spring-web</artifactId>
+        </exclusion>
+        <exclusion>
+          <groupId>org.springframework</groupId>
+          <artifactId>spring-aop</artifactId>
+        </exclusion>
+      </exclusions>
+    </dependency>
+
+    <!-- SLF4J -->
+    <dependency>
+      <groupId>org.slf4j</groupId>
+      <artifactId>slf4j-api</artifactId>
+      <version>${slf4j.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>org.slf4j</groupId>
+      <artifactId>jcl-over-slf4j</artifactId>
+      <version>${slf4j.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>org.slf4j</groupId>
+      <artifactId>log4j-over-slf4j</artifactId>
+      <version>${slf4j.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>ch.qos.logback</groupId>
+      <artifactId>logback-classic</artifactId>
+      <version>1.0.13</version>
+    </dependency>
+
+    <!-- JAVAX -->
+    <dependency>
+      <groupId>javax.servlet</groupId>
+      <artifactId>javax.servlet-api</artifactId>
+      <version>3.0.1</version>
+      <scope>provided</scope>
+    </dependency>
+    <dependency>
+      <groupId>javax.mail</groupId>
+      <artifactId>mail</artifactId>
+      <version>1.4.6</version>
+      <scope>provided</scope>
+      <exclusions>
+        <exclusion>
+          <groupId>javax.activation</groupId>
+          <artifactId>activation</artifactId>
+        </exclusion>
+      </exclusions>
+    </dependency>
+    <dependency>
+      <groupId>javax.validation</groupId>
+      <artifactId>validation-api</artifactId>
+      <version>1.1.0.Final</version>
+    </dependency>
+    <dependency>
+      <groupId>javax.ws.rs</groupId>
+      <artifactId>jsr311-api</artifactId>
+      <version>1.1.1</version>
+    </dependency>
+    <dependency>
+      <groupId>org.hibernate.javax.persistence</groupId>
+      <artifactId>hibernate-jpa-2.0-api</artifactId>
+      <version>1.0.1.Final</version>
+    </dependency>
+    <dependency>
+      <groupId>javax.inject</groupId>
+      <artifactId>javax.inject</artifactId>
+      <version>1</version>
+    </dependency>
+
+    <!-- UrlRewriteFilter -->
+    <dependency>
+      <groupId>org.tuckey</groupId>
+      <artifactId>urlrewritefilter</artifactId>
+      <version>4.0.4</version>
+    </dependency>
+
+    <!-- Jasypt -->
+    <dependency>
+      <groupId>org.jasypt</groupId>
+      <artifactId>jasypt</artifactId>
+      <version>1.9.0</version>
+    </dependency>
+
+    <!-- Monitoring -->
+    <dependency>
+      <groupId>net.bull.javamelody</groupId>
+      <artifactId>javamelody-core</artifactId>
+      <version>1.45.0</version>
+    </dependency>
+
+    <!-- Test -->
+    <dependency>
+      <groupId>junit</groupId>
+      <artifactId>junit</artifactId>
+      <version>4.11</version>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.hamcrest</groupId>
+      <artifactId>hamcrest-core</artifactId>
+      <version>1.3</version>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.mockito</groupId>
+      <artifactId>mockito-core</artifactId>
+      <version>1.9.5</version>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>com.h2database</groupId>
+      <artifactId>h2</artifactId>
+      <version>1.3.167</version>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.springframework</groupId>
+      <artifactId>spring-test</artifactId>
+      <version>${spring.version}</version>
+      <scope>test</scope>
+    </dependency>
+  </dependencies>
 
 </project>
