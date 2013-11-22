@@ -4,4 +4,5 @@ branches:
     - master
 install: 
   - mvn install -DskipTests
-  - grunt update
+  - npm install
+  - node_modules/grunt-cli/bin/grunt --no-color update
