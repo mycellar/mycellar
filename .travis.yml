@@ -5,5 +5,5 @@ branches:
 install: 
   - mvn install -DskipTests
   - npm install
-  - node_modules/grunt-cli/bin/grunt --no-color update
+  - node_modules/grunt-cli/bin/grunt --no-color install
 script: "mvn verify"

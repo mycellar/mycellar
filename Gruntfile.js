@@ -1,3 +1,5 @@
+var os = require('os');
+
 module.exports = function(grunt) {
 
   grunt.loadNpmTasks('grunt-open');
@@ -15,7 +17,7 @@ module.exports = function(grunt) {
         stdout: true
       },
       selenium: {
-        command: 'java -jar selenium/selenium-server-standalone-2.35.0.jar -Dwebdriver.chrome.driver=selenium/chromedriver.exe',
+        command: os.type() == 'Windows_NT' ? './selenium/start.bat' : './selenium/start',
         options: {
           stdout: false,
           async: true
@@ -23,6 +25,15 @@ module.exports = function(grunt) {
       },
       protractor_install: {
         command: 'node ./node_modules/protractor/bin/install_selenium_standalone'
+      },
+      selenium_install: {
+        command: 'copy .\\selenium\\start .\\selenium\\start.bat'
+      },
+      selenium_install2: {
+        command: 'echo .exe>>.\\selenium\\start.bat',
+        options: {
+          stdout: true
+        }
       },
       npm_install: {
         command: 'npm install'
@@ -144,7 +155,11 @@ module.exports = function(grunt) {
   grunt.registerTask('test:coverage', ['karma:unit_coverage']);
   
   //installation-related
-  grunt.registerTask('install', ['update','shell:protractor_install']);
+  if (os.type() == 'Windows_NT') {
+    grunt.registerTask('install', ['update','shell:protractor_install', 'shell:selenium_install', 'shell:selenium_install2']);
+  } else {
+    grunt.registerTask('install', ['update','shell:protractor_install']);
+  }
   grunt.registerTask('update', ['shell:npm_install','shell:bower_install','concat','copy']);
 
   //defaults
