@@ -6,3 +6,4 @@ install:
   - mvn install -DskipTests
   - npm install
   - node_modules/grunt-cli/bin/grunt --no-color update
+script: "mvn verify"
