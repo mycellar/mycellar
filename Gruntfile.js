@@ -38,6 +38,11 @@ module.exports = function(grunt) {
         autoWatch: false,
         singleRun: true
       },
+      unit_browsers: {
+        configFile: './src/test/javascript/karma-browsers.conf.js',
+        autoWatch: false,
+        singleRun: true
+      },
       unit_auto: {
         configFile: './src/test/javascript/karma-unit.conf.js',
         autoWatch: true,
@@ -129,6 +134,7 @@ module.exports = function(grunt) {
   grunt.registerTask('test', ['test:unit', 'test:e2e']);
   grunt.registerTask('test:unit', ['karma:unit']);
   grunt.registerTask('test:e2e', ['protractor:singlerun']);
+  grunt.registerTask('test:unit_browsers', ['karma:unit_browsers']);
 
   grunt.registerTask('debug:e2e', ['protractor:debug']);
 

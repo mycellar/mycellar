@@ -1,6 +1,5 @@
 var shared = require('./karma-shared.conf');
-shared.browsers = ['PhantomJS'];
-shared.colors = false;
+shared.browsers = ['Chrome', 'Firefox'];
 
 module.exports = function(config) {
   config.set(shared);
