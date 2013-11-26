@@ -30,10 +30,7 @@ module.exports = function(grunt) {
         command: 'copy .\\selenium\\start .\\selenium\\start.bat'
       },
       selenium_install2: {
-        command: 'echo .exe>>.\\selenium\\start.bat',
-        options: {
-          stdout: true
-        }
+        command: 'echo .exe>>.\\selenium\\start.bat'
       },
       npm_install: {
         command: 'npm install'
