@@ -20,6 +20,7 @@ package fr.mycellar.interfaces.web.services.nav;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 import java.util.ResourceBundle;
 import java.util.SortedMap;
 import java.util.TreeMap;
@@ -55,7 +56,7 @@ public class NavigationWebService {
 
     @PostConstruct
     public void build() {
-        ResourceBundle resourceBundle = ResourceBundle.getBundle("Menu");
+        ResourceBundle resourceBundle = ResourceBundle.getBundle("Menu", Locale.FRENCH);
         List<IDescriptor> descriptors = descriptorServiceFacade.getDescriptors();
 
         SortedMap<Integer, NavDescriptor> menuPages = new TreeMap<Integer, NavDescriptor>();
