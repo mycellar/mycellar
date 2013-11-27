@@ -7,3 +7,9 @@ install:
   - npm install
   - node_modules/grunt-cli/bin/grunt --no-color install
 script: "mvn verify"
+addons:
+  sauce_connect:
+    username: 
+      secure: "TxbrgN5uZ/Gj77u5+5h1F/elW/96TuWWLmYrqtMmxHpUiQlkRNlBFmCL+4xOV4kjGHrrt+XJfbOYCt1eQU+vqA/FycO2N2zzWgTOPTJRnMvcJLR1LRtyuvtAWYZXwZXWmW2EcxwVipU8WLyv/NcKZeJAzzlMrH39B2n/Sc/Oppc="
+    access_key: 
+      secure: "ONhGTbgopNwDc+0qlgEZLqLlXoBdKD+yb9ASQ4R+8/8EIw+Ha8yT5viKlIFJDDERb1D3bYU2nGdY5W+EKAcIfjiy3u8Y74Jv51Tqt13MdMPDN2MULTky2Ap8RHVJGIBz1jIw4EsaAKI8Rhgavh48e5XoQNy4T4pVzcJr//St3l4="

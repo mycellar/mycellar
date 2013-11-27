@@ -26,10 +26,10 @@ module.exports = function(grunt) {
       protractor_install: {
         command: 'node ./node_modules/protractor/bin/install_selenium_standalone'
       },
-      selenium_install: {
+      selenium__win_install: {
         command: 'copy .\\selenium\\start .\\selenium\\start.bat'
       },
-      selenium_install2: {
+      selenium_win_install2: {
         command: 'echo .exe>>.\\selenium\\start.bat'
       },
       npm_install: {
@@ -147,17 +147,30 @@ module.exports = function(grunt) {
   grunt.registerTask('debug:e2e', ['protractor:debug']);
 
   grunt.registerTask('autotest:unit', ['karma:unit_auto']);
-  grunt.registerTask('autotest:e2e', ['shell:selenium', 'watch:protractor']);
+  grunt.registerTask('autotest:e2e', ['shell:selenium','watch:protractor']);
 
   grunt.registerTask('test:coverage', ['karma:unit_coverage']);
   
   //installation-related
   if (os.type() == 'Windows_NT') {
-    grunt.registerTask('install', ['update','shell:protractor_install', 'shell:selenium_install', 'shell:selenium_install2']);
+    grunt.registerTask('install', [
+      'update',
+      'shell:protractor_install', 
+      'shell:selenium_win_install', 
+      'shell:selenium_win_install2'
+    ]);
   } else {
-    grunt.registerTask('install', ['update','shell:protractor_install']);
+    grunt.registerTask('install', [
+      'update',
+      'shell:protractor_install'
+    ]);
   }
-  grunt.registerTask('update', ['shell:npm_install','shell:bower_install','concat','copy']);
+  grunt.registerTask('update', [
+    'shell:npm_install',
+    'shell:bower_install',
+    'concat',
+    'copy'
+  ]);
 
   //defaults
   grunt.registerTask('default', ['dev']);

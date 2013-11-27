@@ -1,3 +1,5 @@
+var os = require('os');
+
 // A reference configuration file.
 exports.config = {
   // ----- How to setup Selenium -----
@@ -27,8 +29,8 @@ exports.config = {
 
   // If sauceUser and sauceKey are specified, seleniumServerJar will be ignored.
   // The tests will be run remotely using SauceLabs.
-  sauceUser: null,
-  sauceKey: null,
+  sauceUser: os.environ('SAUCE_USERNAME'),
+  sauceKey: os.environ('SAUCE_ACCESS_KEY'),
 
   // ----- What tests to run -----
   //
@@ -62,7 +64,7 @@ exports.config = {
     // If true, display spec names.
     isVerbose: false,
     // If true, print colors to the terminal.
-    showColors: true,
+    showColors: !os.environ('TRAVIS'),
     // If true, include stack traces in failures.
     includeStackTrace: true,
     // Default time to wait in ms before a test fails.
