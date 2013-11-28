@@ -26,7 +26,7 @@ module.exports = function(grunt) {
       protractor_install: {
         command: 'node ./node_modules/protractor/bin/install_selenium_standalone'
       },
-      selenium__win_install: {
+      selenium_win_install: {
         command: 'copy .\\selenium\\start .\\selenium\\start.bat'
       },
       selenium_win_install2: {

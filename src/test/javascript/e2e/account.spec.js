@@ -1,19 +1,21 @@
 describe('E2E: Testing account', function() {
 
-  it('should login', function() {
-    login('test@test.com', 'test');
-  });
-
   it('should load the account page', function() {
+    login('test@test.com', 'test');
+    
     var page = new AccountPage();
     page.get();
 
     expect(browser.driver.getCurrentUrl()).toMatch(/account/);
     expect(page.title.isDisplayed()).toBe(true);
     expect(page.title.getText()).toEqual('Mon compte');
+    
+    logout();
   });
 
   it('should change email', function() {
+    login('test@test.com', 'test');
+    
     var page = new AccountPage();
     page.get();
 
@@ -37,9 +39,13 @@ describe('E2E: Testing account', function() {
     page.doChangeEmail.click();
     page.get();
     expect(page.email.getText()).toEqual('test@test.com');
+    
+    logout();
   });
 
   it('should change password', function() {
+    login('test@test.com', 'test');
+    
     var page = new AccountPage();
     page.get();
 
@@ -62,11 +68,6 @@ describe('E2E: Testing account', function() {
     page.password1.sendKeys('test');
     page.password2.sendKeys('test');
     page.doChangePassword.click();
-    logout();
-    login('test@test.com', 'test');
-  });
-
-  it('should logout', function() {
     logout();
   });
 
