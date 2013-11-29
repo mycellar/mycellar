@@ -1,11 +1,11 @@
 <div>
   <div ng-transclude></div>
   <div class="text-center">
-    <pagination page="currentPage" on-select-page="setPage(page)" max-size="pageRange" total-items="result.count" items-per-page="itemsPerPage"></pagination>
+    <pagination page="currentPage" on-select-page="setPage(page)" max-size="pageRange" total-items="total" items-per-page="itemsPerPage"></pagination>
   </div>
   <div class="row">
     <div class="col-md-6">
-      {{count > 0 ? firstItem + 1 : 0}} à {{firstItem + count}} des {{result.count}} entrées.
+      {{count > 0 ? firstItem + 1 : 0}} à {{firstItem + count}} des {{total}} entrées.
     </div>
     <div class="col-md-6 text-right">
       <form class="form-inline">

@@ -35,6 +35,11 @@ angular.module('mycellar.directives.table.paginated').directive('paginated', ['$
           scope.setPage(scope.currentPage);
         }
       });
+      scope.$watch('result.count', function (value) {
+        if (scope.result != undefined && scope.result.count != undefined) {
+          scope.total = scope.result.count;
+        }
+      });
       scope.$watch('result.list', function (value) {
         if (scope.result != undefined && scope.result.list != undefined) {
           started = true;
@@ -66,6 +71,7 @@ angular.module('mycellar.directives.table.paginated').directive('paginated', ['$
       $scope.pageRange = $scope.options.pageRange || 6;
       $scope.itemResource = $scope.options.itemResource;
       $scope.itemsPerPage = 10;
+      $scope.total = 0;
       $scope.result = {
           list: [],
           count: $scope.itemsPerPage
