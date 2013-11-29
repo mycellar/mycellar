@@ -57,7 +57,7 @@ footer {
 .loading {
   top: 40%;
   left: 40%;
-  position: absolute;
+  position: fixed;
   text-align: center;
   width: 200px;
   z-index: 1000;
