@@ -71,6 +71,9 @@
       <resource>
         <directory>src/main/resources</directory>
         <filtering>true</filtering>
+        <excludes>
+          <exclude>**/*.properties</exclude>
+        </excludes>
       </resource>
     </resources>
     <pluginManagement>
@@ -177,6 +180,26 @@
                 <resource>
                   <directory>src/main/jetty</directory>
                   <filtering>true</filtering>
+                </resource>
+              </resources>
+            </configuration>
+          </execution>
+          <execution>
+            <id>java-properties</id>
+            <phase>process-resources</phase>
+            <goals>
+              <goal>copy-resources</goal>
+            </goals>
+            <configuration>
+              <outputDirectory>${project.build.outputDirectory}</outputDirectory>
+              <encoding>ISO-8859-1</encoding>
+              <resources>
+                <resource>
+                  <directory>src/main/resources</directory>
+                  <filtering>true</filtering>
+                  <includes>
+                    <include>**/*.properties</include>
+                  </includes>
                 </resource>
               </resources>
             </configuration>
