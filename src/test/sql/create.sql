@@ -402,4 +402,4 @@ alter table WINE_VARIETAL
 INSERT INTO CONFIGURATION (key, value, version) values('MAIL_ADDRESS_SENDER', 'toto@test.com', 0);
 INSERT INTO CONFIGURATION (key, value, version) values('REMINDER_ADDRESS_RECEIVERS', 'titi@test.com', 0);
 
-INSERT INTO USER (VERSION, EMAIL, FIRSTNAME, LASTNAME, PASSWORD, PROFILE) values (0, 'test@test.com', 'Test', 'Test', 'CF8Orkbts9yiF+FMj0gAR65NmEk8ycq5/ueJKw==', 'BOOKING');
+INSERT INTO USER (VERSION, EMAIL, FIRSTNAME, LASTNAME, PASSWORD, PROFILE) values (0, 'test@test.com', 'Test', 'Test', 'CF8Orkbts9yiF+FMj0gAR65NmEk8ycq5/ueJKw==', 'ADMIN');
