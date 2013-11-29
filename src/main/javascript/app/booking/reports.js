@@ -6,9 +6,7 @@ angular.module('mycellar.controllers.booking.reports', [
   function($routeProvider) {
     $routeProvider.when('/booking/reports', {
       templateUrl: 'partials/booking/reports.tpl.html',
-      controller: 'BookingReportsController',
-      resolve: {
-      }
+      controller: 'BookingReportsController'
     });
   }
 ]);
@@ -27,6 +25,7 @@ angular.module('mycellar.controllers.booking.reports').controller('BookingReport
         $scope.pageCount = Math.ceil(value.count / $scope.itemsPerPage);
         $scope.bookingEvents = value.list;
         $scope.selectBookingEvent($scope.bookingEvents[0]);
+        $scope.totalItems = value.count;
       });
     };
 

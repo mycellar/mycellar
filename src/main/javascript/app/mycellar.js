@@ -43,5 +43,6 @@ angular.module('mycellar').constant('paginationConfig', {
   previousText: '‹',
   nextText: '›',
   lastText: '»',
-  rotate: true
+  rotate: true,
+  itemsPerPage: 10
 });

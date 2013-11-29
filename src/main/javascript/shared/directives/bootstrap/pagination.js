@@ -7,7 +7,8 @@ angular.module('mycellar.directives.bootstrap.pagination').constant('paginationC
   previousText: 'Previous',
   nextText: 'Next',
   lastText: 'Last',
-  rotate: true
+  rotate: true,
+  itemsPerPage: 10
 });
 
 angular.module('mycellar.directives.bootstrap.pagination').controller('PaginationController', [
@@ -62,10 +63,6 @@ angular.module('mycellar.directives.bootstrap.pagination').controller('Paginatio
     });
   
     $scope.$watch('totalPages', function(value) {
-      if ( $attrs.numPages ) {
-        $scope.numPages = value; // Readonly variable
-      }
-  
       if ( self.page > value ) {
         $scope.selectPage(value);
       } else {
@@ -87,8 +84,7 @@ angular.module('mycellar.directives.bootstrap.pagination').directive('pagination
       scope: {
         page: '=',
         totalItems: '=',
-        onSelectPage:' &',
-        numPages: '='
+        onSelectPage: '&'
       },
       controller: 'PaginationController',
       templateUrl: 'partials/directives/bootstrap/pagination.tpl.html',
