@@ -27,10 +27,10 @@ import fr.mycellar.application.wine.FormatService;
 import fr.mycellar.domain.shared.NamedEntity_;
 import fr.mycellar.domain.shared.exception.BusinessError;
 import fr.mycellar.domain.shared.exception.BusinessException;
-import fr.mycellar.domain.shared.repository.SearchParametersBuilder;
 import fr.mycellar.domain.wine.Format;
 import fr.mycellar.domain.wine.Format_;
 import fr.mycellar.domain.wine.repository.FormatRepository;
+import fr.mycellar.infrastructure.shared.repository.SearchParameters;
 
 /**
  * @author speralta
@@ -46,10 +46,9 @@ public class FormatServiceImpl extends AbstractSimpleService<Format, FormatRepos
      */
     @Override
     public void validate(Format entity) throws BusinessException {
-        Format existing = formatRepository.findUniqueOrNone(new SearchParametersBuilder() //
-                .propertyWithValue(entity.getCapacity(), Format_.capacity) //
-                .propertyWithValue(entity.getName(), NamedEntity_.name) //
-                .toSearchParameters());
+        Format existing = formatRepository.findUniqueOrNone(new SearchParameters() //
+                .property(Format_.capacity, entity.getCapacity()) //
+                .property(NamedEntity_.name, entity.getName()));
         if ((existing != null) && ((entity.getId() == null) || !existing.getId().equals(entity.getId()))) {
             throw new BusinessException(BusinessError.FORMAT_00001);
         }

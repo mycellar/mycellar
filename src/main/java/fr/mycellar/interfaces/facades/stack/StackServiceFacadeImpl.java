@@ -33,8 +33,8 @@ import org.springframework.transaction.support.TransactionTemplate;
 
 import fr.mycellar.application.stack.StackService;
 import fr.mycellar.domain.shared.exception.BusinessException;
-import fr.mycellar.domain.shared.repository.SearchParameters;
 import fr.mycellar.domain.stack.Stack;
+import fr.mycellar.infrastructure.shared.repository.SearchParameters;
 
 /**
  * @author speralta

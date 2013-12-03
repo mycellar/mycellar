@@ -28,12 +28,11 @@ import fr.mycellar.application.wine.WineService;
 import fr.mycellar.domain.shared.NamedEntity_;
 import fr.mycellar.domain.shared.exception.BusinessError;
 import fr.mycellar.domain.shared.exception.BusinessException;
-import fr.mycellar.domain.shared.repository.SearchParametersBuilder;
 import fr.mycellar.domain.wine.Appellation;
 import fr.mycellar.domain.wine.Appellation_;
-import fr.mycellar.domain.wine.Region_;
 import fr.mycellar.domain.wine.Wine_;
 import fr.mycellar.domain.wine.repository.AppellationRepository;
+import fr.mycellar.infrastructure.shared.repository.SearchParameters;
 
 /**
  * @author speralta
@@ -54,10 +53,9 @@ public class AppellationServiceImpl extends AbstractSimpleService<Appellation, A
         if (entity.getRegion() == null) {
             throw new BusinessException(BusinessError.APPELLATION_00001);
         }
-        Appellation existing = appellationRepository.findUniqueOrNone(new SearchParametersBuilder() //
-                .propertyWithValue(entity.getRegion().getId(), Appellation_.region, Region_.id) //
-                .propertyWithValue(entity.getName(), NamedEntity_.name) //
-                .toSearchParameters());
+        Appellation existing = appellationRepository.findUniqueOrNone(new SearchParameters() //
+                .property(Appellation_.region, entity.getRegion()) //
+                .property(NamedEntity_.name, entity.getName()));
         if ((existing != null) && ((entity.getId() == null) || !existing.getId().equals(entity.getId()))) {
             throw new BusinessException(BusinessError.APPELLATION_00002);
         }
@@ -68,9 +66,7 @@ public class AppellationServiceImpl extends AbstractSimpleService<Appellation, A
      */
     @Override
     protected void validateDelete(Appellation entity) throws BusinessException {
-        if (wineService.count(new SearchParametersBuilder() //
-                .propertyWithValue(entity, Wine_.appellation) //
-                .toSearchParameters()) > 0) {
+        if (wineService.count(new SearchParameters().property(Wine_.appellation, entity)) > 0) {
             throw new BusinessException(BusinessError.APPELLATION_00003);
         }
     }

@@ -35,7 +35,6 @@ import fr.mycellar.application.wine.RegionService;
 import fr.mycellar.application.wine.WineService;
 import fr.mycellar.domain.shared.exception.BusinessError;
 import fr.mycellar.domain.shared.exception.BusinessException;
-import fr.mycellar.domain.shared.repository.SearchParameters;
 import fr.mycellar.domain.wine.Appellation;
 import fr.mycellar.domain.wine.Country;
 import fr.mycellar.domain.wine.Format;
@@ -44,6 +43,7 @@ import fr.mycellar.domain.wine.Region;
 import fr.mycellar.domain.wine.Wine;
 import fr.mycellar.domain.wine.WineColorEnum;
 import fr.mycellar.domain.wine.WineTypeEnum;
+import fr.mycellar.infrastructure.shared.repository.SearchParameters;
 
 /**
  * @author speralta

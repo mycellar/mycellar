@@ -1,5 +1,5 @@
 /*
- * Copyright 2011, MyCellar
+ * Copyright 2013, MyCellar
  *
  * This file is part of MyCellar.
  *
@@ -16,9 +16,14 @@
  * You should have received a copy of the GNU General Public License
  * along with MyCellar. If not, see <http://www.gnu.org/licenses/>.
  */
-package fr.mycellar.domain.shared.repository;
+package fr.mycellar.infrastructure.shared.repository;
+
+import static com.google.common.base.Preconditions.checkNotNull;
 
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 import javax.persistence.metamodel.Attribute;
 
@@ -26,65 +31,52 @@ import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 
 /**
- * @author speralta
+ * Holder class for path used by the {@link OrderBy}, {@link PropertySelector},
+ * {@link TermSelector} and {@link SearchParameters}.
  */
 public class Path implements Serializable {
-
-    private static final long serialVersionUID = 201310081741L;
-
-    private static String toPath(Attribute<?, ?>... attributes) {
-        StringBuilder path = new StringBuilder();
-        for (Attribute<?, ?> attribute : attributes) {
-            if (path.length() > 0) {
-                path.append(".");
-            }
-            path.append(attribute.getName());
-        }
-        return path.toString();
-    }
-
-    private final Class<?> from;
+    private static final long serialVersionUID = 1L;
     private final String path;
+    private final Class<?> from;
+    private transient List<Attribute<?, ?>> attributes;
 
     public Path(Attribute<?, ?>... attributes) {
-        from = attributes[0].getDeclaringType().getJavaType();
-        path = toPath(attributes);
+        this(Arrays.asList(attributes));
     }
 
-    public Path(Class<?> from, String path) {
-        this.from = from;
+    public Path(List<Attribute<?, ?>> attributes) {
+        JpaUtil.getInstance().verifyPath(checkNotNull(attributes));
+        this.attributes = new ArrayList<>(attributes);
+        path = MetamodelUtil.getInstance().toPath(attributes);
+        from = attributes.get(0).getDeclaringType().getJavaType();
+    }
+
+    public Path(String path, Class<?> from) {
         this.path = path;
+        this.from = from;
+        // to verify path
+        getAttributes();
     }
 
-    /**
-     * @return the path
-     */
+    public List<Attribute<?, ?>> getAttributes() {
+        if (attributes == null) {
+            attributes = MetamodelUtil.getInstance().toAttributes(path, from);
+        }
+        return attributes;
+    }
+
     public String getPath() {
         return path;
     }
 
-    /**
-     * @return the from
-     */
-    public Class<?> getFrom() {
-        return from;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public int hashCode() {
         final int prime = 31;
         int result = 1;
-        result = (prime * result) + ((from == null) ? 0 : from.hashCode());
         result = (prime * result) + ((path == null) ? 0 : path.hashCode());
         return result;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public boolean equals(Object obj) {
         if (this == obj) {
@@ -97,13 +89,6 @@ public class Path implements Serializable {
             return false;
         }
         Path other = (Path) obj;
-        if (from == null) {
-            if (other.from != null) {
-                return false;
-            }
-        } else if (!from.equals(other.from)) {
-            return false;
-        }
         if (path == null) {
             if (other.path != null) {
                 return false;

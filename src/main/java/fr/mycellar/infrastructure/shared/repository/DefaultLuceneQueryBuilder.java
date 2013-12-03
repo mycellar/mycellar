@@ -1,5 +1,5 @@
 /*
- * Copyright 2011, MyCellar
+ * Copyright 2013, MyCellar
  *
  * This file is part of MyCellar.
  *
@@ -22,12 +22,12 @@ import static com.google.common.base.Throwables.propagate;
 import static com.google.common.collect.Lists.newArrayList;
 import static org.apache.commons.lang.StringUtils.isBlank;
 import static org.apache.commons.lang.StringUtils.isNotBlank;
+import static org.apache.commons.lang.StringUtils.lowerCase;
 import static org.apache.lucene.queryParser.QueryParser.escape;
 import static org.apache.lucene.util.Version.LUCENE_36;
 
 import java.util.List;
 
-import javax.inject.Inject;
 import javax.inject.Named;
 import javax.inject.Singleton;
 import javax.persistence.metamodel.SingularAttribute;
@@ -39,9 +39,6 @@ import org.hibernate.search.jpa.FullTextEntityManager;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import fr.mycellar.domain.shared.repository.SearchParameters;
-import fr.mycellar.domain.shared.repository.TermSelector;
-
 @Named
 @Singleton
 public class DefaultLuceneQueryBuilder implements LuceneQueryBuilder {
@@ -49,8 +46,6 @@ public class DefaultLuceneQueryBuilder implements LuceneQueryBuilder {
     private static final Logger logger = LoggerFactory.getLogger(DefaultLuceneQueryBuilder.class);
 
     private static final String SPACES_OR_PUNCTUATION = "\\p{Punct}|\\p{Blank}";
-
-    private MetamodelUtil metamodelUtil;
 
     @Override
     public Query build(FullTextEntityManager fullTextEntityManager, SearchParameters searchParameters) {
@@ -81,8 +76,7 @@ public class DefaultLuceneQueryBuilder implements LuceneQueryBuilder {
         List<String> clauses = newArrayList();
         for (TermSelector term : terms) {
             if (term.isNotEmpty()) {
-                String clause = getClause(sp, term.getSelected(), metamodelUtil.toAttribute(term.getPath()), term.isOrMode());
-
+                String clause = getClause(sp, term.getSelected(), term.getAttribute(), term.isOrMode());
                 if (isNotBlank(clause)) {
                     clauses.add(clause);
                 }
@@ -128,9 +122,9 @@ public class DefaultLuceneQueryBuilder implements LuceneQueryBuilder {
                 subQuery.append(" AND ");
             }
             if (sp.getSearchSimilarity() != null) {
-                subQuery.append(property.getName() + ":" + escapeForFuzzy(term) + "~" + sp.getSearchSimilarity());
+                subQuery.append(property.getName() + ":" + escapeForFuzzy(lowerCase(term)) + "~" + sp.getSearchSimilarity());
             } else {
-                subQuery.append(property.getName() + ":" + escape(term));
+                subQuery.append(property.getName() + ":" + escape(lowerCase(term)));
             }
         }
         subQuery.append(")");
@@ -149,15 +143,6 @@ public class DefaultLuceneQueryBuilder implements LuceneQueryBuilder {
         char[] tmp = new char[length * 4];
         length = ASCIIFoldingFilter.foldToASCII(word.toCharArray(), 0, tmp, 0, length);
         return new String(tmp, 0, length);
-    }
-
-    /**
-     * @param metamodelUtil
-     *            the metamodelUtil to set
-     */
-    @Inject
-    public void setMetamodelUtil(MetamodelUtil metamodelUtil) {
-        this.metamodelUtil = metamodelUtil;
     }
 
 }

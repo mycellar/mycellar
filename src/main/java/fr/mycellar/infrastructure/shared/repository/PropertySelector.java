@@ -1,5 +1,5 @@
 /*
- * Copyright 2011, MyCellar
+ * Copyright 2013, MyCellar
  *
  * This file is part of MyCellar.
  *
@@ -16,7 +16,7 @@
  * You should have received a copy of the GNU General Public License
  * along with MyCellar. If not, see <http://www.gnu.org/licenses/>.
  */
-package fr.mycellar.domain.shared.repository;
+package fr.mycellar.infrastructure.shared.repository;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 
@@ -32,7 +32,7 @@ import org.apache.commons.lang3.builder.ToStringStyle;
 
 /**
  * Used to construct OR predicate for a property value. In other words you can
- * search all entities E having a given property set to one of the values
+ * search all entities E having a given property set to one of the selected
  * values.
  */
 public class PropertySelector<E, F> implements Serializable {
@@ -44,17 +44,19 @@ public class PropertySelector<E, F> implements Serializable {
     private SearchMode searchMode; // for string property only.
     private Boolean notIncludingNull;
     private boolean orMode = true;
+    private Boolean caseSensitive = null;
+    private boolean notMode = false;
 
     public PropertySelector(Attribute<?, ?>... attributes) {
         this.path = new Path(checkNotNull(attributes));
     }
 
-    public PropertySelector(Class<E> from, String path) {
-        this.path = new Path(from, path);
+    public PropertySelector(String path, Class<E> from) {
+        this.path = new Path(path, from);
     }
 
-    public Path getPath() {
-        return path;
+    public List<Attribute<?, ?>> getAttributes() {
+        return path.getAttributes();
     }
 
     public boolean isNotIncludingNullSet() {
@@ -67,6 +69,24 @@ public class PropertySelector<E, F> implements Serializable {
 
     public PropertySelector<E, F> withoutNull() {
         this.notIncludingNull = true;
+        return this;
+    }
+
+    public boolean isCaseSensitiveSet() {
+        return caseSensitive != null;
+    }
+
+    public Boolean isCaseSensitive() {
+        return caseSensitive;
+    }
+
+    public PropertySelector<E, F> caseSensitive() {
+        this.caseSensitive = true;
+        return this;
+    }
+
+    public PropertySelector<E, F> caseInsensitive() {
+        this.caseSensitive = false;
         return this;
     }
 
@@ -143,12 +163,21 @@ public class PropertySelector<E, F> implements Serializable {
         return this;
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    public boolean isNotMode() {
+        return notMode;
+    }
+
+    public void setNotMode(boolean notMode) {
+        this.notMode = notMode;
+    }
+
+    public PropertySelector<E, F> notMode(boolean notMode) {
+        setNotMode(notMode);
+        return this;
+    }
+
     @Override
     public String toString() {
         return ToStringBuilder.reflectionToString(this, ToStringStyle.SHORT_PREFIX_STYLE);
     }
-
 }

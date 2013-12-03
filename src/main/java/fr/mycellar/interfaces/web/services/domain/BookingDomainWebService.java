@@ -39,7 +39,7 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import fr.mycellar.domain.booking.Booking;
 import fr.mycellar.domain.booking.BookingEvent;
 import fr.mycellar.domain.shared.exception.BusinessException;
-import fr.mycellar.domain.shared.repository.SearchParameters;
+import fr.mycellar.infrastructure.shared.repository.SearchParameters;
 import fr.mycellar.interfaces.facades.booking.BookingServiceFacade;
 import fr.mycellar.interfaces.web.services.FilterCouple;
 import fr.mycellar.interfaces.web.services.ListWithCount;

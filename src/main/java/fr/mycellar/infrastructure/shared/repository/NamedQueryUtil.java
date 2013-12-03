@@ -1,5 +1,5 @@
 /*
- * Copyright 2011, MyCellar
+ * Copyright 2013, MyCellar
  *
  * This file is part of MyCellar.
  *
@@ -18,24 +18,19 @@
  */
 package fr.mycellar.infrastructure.shared.repository;
 
-import java.util.Calendar;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 
+import javax.inject.Inject;
 import javax.inject.Named;
 import javax.inject.Singleton;
 import javax.persistence.EntityManager;
-import javax.persistence.Parameter;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 
-import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import fr.mycellar.domain.shared.repository.OrderBy;
-import fr.mycellar.domain.shared.repository.SearchParameters;
 
 /**
  * Helper class to create named query supporting dynamic sort order and
@@ -46,13 +41,12 @@ import fr.mycellar.domain.shared.repository.SearchParameters;
 public class NamedQueryUtil {
     private static final Logger logger = LoggerFactory.getLogger(NamedQueryUtil.class);
 
-    private static final String NAMED_PARAMETER_CURRENT_USER_ID = "currentUserId";
-    private static final String NAMED_PARAMETER_NOW = "now";
-
     private EntityManager entityManager;
 
+    private JpaUtil jpaUtil;
+
     public <T> List<T> findByNamedQuery(SearchParameters sp) {
-        if ((sp == null) || StringUtils.isBlank(sp.getNamedQuery())) {
+        if ((sp == null) || !sp.hasNamedQuery()) {
             throw new IllegalArgumentException("searchParameters must be non null and must have a namedQuery");
         }
 
@@ -60,7 +54,7 @@ public class NamedQueryUtil {
         String queryString = getQueryString(query);
 
         // append order by if needed
-        if ((queryString != null) && !sp.getOrders().isEmpty()) {
+        if ((queryString != null) && sp.hasOrders()) {
             // create the sql restriction clausis
             StringBuilder orderClausis = new StringBuilder("order by ");
             boolean first = true;
@@ -68,23 +62,18 @@ public class NamedQueryUtil {
                 if (!first) {
                     orderClausis.append(", ");
                 }
-                orderClausis.append(orderBy.getPath().getPath());
+                orderClausis.append(orderBy.getPath());
                 orderClausis.append(orderBy.isOrderDesc() ? " desc" : " asc");
                 first = false;
             }
 
-            logger.trace("appending: [{}] to {}", orderClausis, queryString);
+            logger.debug("appending: [{}] to {}", orderClausis, queryString);
 
             query = recreateQuery(query, queryString + " " + orderClausis.toString());
         }
 
         // pagination
-        if (sp.getFirstResult() >= 0) {
-            query.setFirstResult(sp.getFirstResult());
-        }
-        if (sp.getMaxResults() > 0) {
-            query.setMaxResults(sp.getMaxResults());
-        }
+        jpaUtil.applyPagination(query, sp);
 
         // named parameters
         setQueryParameters(query, sp);
@@ -94,7 +83,7 @@ public class NamedQueryUtil {
         List<T> result = query.getResultList();
 
         if (result != null) {
-            logger.trace("{} returned a List of size: {}", sp.getNamedQuery(), result.size());
+            logger.debug("{} returned a List of size: {}", sp.getNamedQuery(), result.size());
         }
 
         return result;
@@ -110,7 +99,7 @@ public class NamedQueryUtil {
     }
 
     public Object objectByNamedQuery(SearchParameters sp) {
-        if ((sp == null) || StringUtils.isBlank(sp.getNamedQuery())) {
+        if ((sp == null) || !sp.hasNamedQuery()) {
             throw new IllegalStateException("Invalid search template provided: could not determine which namedQuery to use");
         }
 
@@ -140,16 +129,6 @@ public class NamedQueryUtil {
     }
 
     private void setQueryParameters(Query query, SearchParameters sp) {
-        // add default parameter if specified in the named query
-        for (Parameter<?> p : query.getParameters()) {
-            if (NAMED_PARAMETER_CURRENT_USER_ID.equals(p.getName())) {
-                // query.setParameter(NAMED_PARAMETER_CURRENT_USER_ID,
-                // UserContext.getId());
-            } else if (NAMED_PARAMETER_NOW.equals(p.getName())) {
-                query.setParameter(NAMED_PARAMETER_NOW, Calendar.getInstance().getTime());
-            }
-        }
-
         // add parameters for the named query
         for (Entry<String, Object> entrySet : sp.getNamedQueryParameters().entrySet()) {
             query.setParameter(entrySet.getKey(), entrySet.getValue());
@@ -174,13 +153,14 @@ public class NamedQueryUtil {
         return result;
     }
 
-    /**
-     * @param entityManager
-     *            the entityManager to set
-     */
     @PersistenceContext
     public void setEntityManager(EntityManager entityManager) {
         this.entityManager = entityManager;
+    }
+
+    @Inject
+    public void setJpaUtil(JpaUtil jpaUtil) {
+        this.jpaUtil = jpaUtil;
     }
 
 }

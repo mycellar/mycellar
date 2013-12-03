@@ -18,8 +18,8 @@
  */
 package fr.mycellar.domain.wine.repository;
 
-import fr.mycellar.domain.shared.repository.SimpleRepository;
 import fr.mycellar.domain.wine.Producer;
+import fr.mycellar.infrastructure.shared.repository.SimpleRepository;
 
 /**
  * @author speralta

@@ -1,5 +1,5 @@
 /*
- * Copyright 2011, MyCellar
+ * Copyright 2013, MyCellar
  *
  * This file is part of MyCellar.
  *
@@ -29,9 +29,6 @@ import javax.persistence.criteria.Order;
 import javax.persistence.criteria.Path;
 import javax.persistence.criteria.Root;
 
-import fr.mycellar.domain.shared.repository.OrderBy;
-import fr.mycellar.domain.shared.repository.SearchParameters;
-
 /**
  * Helper to create list of {@link Order} out of {@link OrderBy}s.
  */
@@ -41,19 +38,15 @@ public class OrderByUtil {
 
     private JpaUtil jpaUtil;
 
-    public <E> List<Order> buildJpaOrders(Root<E> root, CriteriaBuilder builder, SearchParameters sp) {
+    public <E> List<Order> buildJpaOrders(Iterable<OrderBy> orders, Root<E> root, CriteriaBuilder builder, SearchParameters sp) {
         List<Order> jpaOrders = new ArrayList<>();
-        for (OrderBy ob : sp.getOrders()) {
-            Path<?> path = jpaUtil.getPath(root, ob.getPath());
+        for (OrderBy ob : orders) {
+            Path<?> path = jpaUtil.getPath(root, ob.getAttributes());
             jpaOrders.add(ob.isOrderDesc() ? builder.desc(path) : builder.asc(path));
         }
         return jpaOrders;
     }
 
-    /**
-     * @param jpaUtil
-     *            the jpaUtil to set
-     */
     @Inject
     public void setJpaUtil(JpaUtil jpaUtil) {
         this.jpaUtil = jpaUtil;

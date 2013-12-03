@@ -21,8 +21,8 @@ package fr.mycellar.domain.contact.repository;
 import java.util.List;
 
 import fr.mycellar.domain.contact.Contact;
-import fr.mycellar.domain.shared.repository.SearchParameters;
-import fr.mycellar.domain.shared.repository.SimpleRepository;
+import fr.mycellar.infrastructure.shared.repository.SearchParameters;
+import fr.mycellar.infrastructure.shared.repository.SimpleRepository;
 
 /**
  * @author speralta

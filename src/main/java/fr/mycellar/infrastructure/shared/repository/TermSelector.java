@@ -1,5 +1,5 @@
 /*
- * Copyright 2011, MyCellar
+ * Copyright 2013, MyCellar
  *
  * This file is part of MyCellar.
  *
@@ -16,7 +16,7 @@
  * You should have received a copy of the GNU General Public License
  * along with MyCellar. If not, see <http://www.gnu.org/licenses/>.
  */
-package fr.mycellar.domain.shared.repository;
+package fr.mycellar.infrastructure.shared.repository;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -31,17 +31,20 @@ import org.apache.commons.lang3.builder.ToStringStyle;
 
 public class TermSelector implements Serializable {
     private static final long serialVersionUID = 201308010800L;
-
     private final Path path;
     private List<String> selected = new ArrayList<>();
     private boolean orMode = true;
+
+    public TermSelector() {
+        path = null;
+    }
 
     public TermSelector(SingularAttribute<?, ?> attribute) {
         path = new Path(attribute);
     }
 
-    public Path getPath() {
-        return path;
+    public SingularAttribute<?, ?> getAttribute() {
+        return path != null ? (SingularAttribute<?, ?>) path.getAttributes().get(0) : null;
     }
 
     public boolean isOrMode() {
@@ -103,12 +106,8 @@ public class TermSelector implements Serializable {
         }
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public String toString() {
         return ToStringBuilder.reflectionToString(this, ToStringStyle.SHORT_PREFIX_STYLE);
     }
-
 }

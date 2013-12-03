@@ -1,5 +1,5 @@
 /*
- * Copyright 2011, MyCellar
+ * Copyright 2013, MyCellar
  *
  * This file is part of MyCellar.
  *
@@ -18,10 +18,10 @@
  */
 package fr.mycellar.infrastructure.shared.repository;
 
+import static com.google.common.collect.Lists.newArrayList;
 import static java.lang.Boolean.FALSE;
 import static java.lang.Boolean.TRUE;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import javax.inject.Inject;
@@ -32,22 +32,21 @@ import javax.persistence.criteria.Path;
 import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
 
-import fr.mycellar.domain.shared.repository.Range;
-import fr.mycellar.domain.shared.repository.SearchParameters;
-
 /**
  * Helper to create a predicate out of {@link Range}s.
  */
+@SuppressWarnings("unchecked")
 @Named
 @Singleton
 public class ByRangeUtil {
 
+    @Inject
     private JpaUtil jpaUtil;
 
-    @SuppressWarnings("unchecked")
     public <E> Predicate byRanges(Root<E> root, CriteriaBuilder builder, SearchParameters sp, Class<E> type) {
-        List<Predicate> predicates = new ArrayList<>();
-        for (Range<?, ?> r : sp.getRanges()) {
+        List<Range<?, ?>> ranges = sp.getRanges();
+        List<Predicate> predicates = newArrayList();
+        for (Range<?, ?> r : ranges) {
             Range<E, ?> range = (Range<E, ?>) r;
             if (range.isSet()) {
                 Predicate rangePredicate = buildRangePredicate(range, root, builder);
@@ -60,15 +59,23 @@ public class ByRangeUtil {
         return jpaUtil.concatPredicate(sp, builder, predicates);
     }
 
-    private <D extends Comparable<? super D>, E> Predicate buildRangePredicate(Range<E, D> range, Root<E> root, CriteriaBuilder builder) {
+    private static <D extends Comparable<? super D>, E> Predicate buildRangePredicate(Range<E, D> range, Root<E> root, CriteriaBuilder builder) {
         Predicate rangePredicate = null;
-        Path<D> path = jpaUtil.getPath(root, range.getPath());
+        Path<D> path = JpaUtil.getInstance().getPath(root, range.getAttributes());
         if (range.isBetween()) {
             rangePredicate = builder.between(path, range.getFrom(), range.getTo());
         } else if (range.isFromSet()) {
-            rangePredicate = builder.greaterThanOrEqualTo(path, range.getFrom());
+            if (range.isIncludeFrom()) {
+                rangePredicate = builder.greaterThanOrEqualTo(path, range.getFrom());
+            } else {
+                rangePredicate = builder.greaterThan(path, range.getFrom());
+            }
         } else if (range.isToSet()) {
-            rangePredicate = builder.lessThanOrEqualTo(path, range.getTo());
+            if (range.isIncludeTo()) {
+                rangePredicate = builder.lessThanOrEqualTo(path, range.getTo());
+            } else {
+                rangePredicate = builder.lessThan(path, range.getTo());
+            }
         }
 
         if (rangePredicate != null) {
@@ -87,14 +94,4 @@ public class ByRangeUtil {
         }
         return null;
     }
-
-    /**
-     * @param jpaUtil
-     *            the jpaUtil to set
-     */
-    @Inject
-    public void setJpaUtil(JpaUtil jpaUtil) {
-        this.jpaUtil = jpaUtil;
-    }
-
 }

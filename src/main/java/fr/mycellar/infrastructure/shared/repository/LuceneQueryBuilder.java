@@ -1,5 +1,5 @@
 /*
- * Copyright 2011, MyCellar
+ * Copyright 2013, MyCellar
  *
  * This file is part of MyCellar.
  *
@@ -20,8 +20,6 @@ package fr.mycellar.infrastructure.shared.repository;
 
 import org.apache.lucene.search.Query;
 import org.hibernate.search.jpa.FullTextEntityManager;
-
-import fr.mycellar.domain.shared.repository.SearchParameters;
 
 public interface LuceneQueryBuilder {
 

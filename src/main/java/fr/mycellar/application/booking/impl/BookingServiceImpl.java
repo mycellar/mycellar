@@ -31,14 +31,11 @@ import fr.mycellar.application.shared.AbstractSimpleService;
 import fr.mycellar.domain.booking.Booking;
 import fr.mycellar.domain.booking.BookingBottle;
 import fr.mycellar.domain.booking.BookingEvent;
-import fr.mycellar.domain.booking.BookingEvent_;
 import fr.mycellar.domain.booking.Booking_;
 import fr.mycellar.domain.booking.repository.BookingRepository;
 import fr.mycellar.domain.shared.exception.BusinessException;
-import fr.mycellar.domain.shared.repository.PropertySelector;
-import fr.mycellar.domain.shared.repository.SearchParametersBuilder;
 import fr.mycellar.domain.user.User;
-import fr.mycellar.domain.user.User_;
+import fr.mycellar.infrastructure.shared.repository.SearchParameters;
 
 /**
  * @author speralta
@@ -83,9 +80,8 @@ public class BookingServiceImpl extends AbstractSimpleService<Booking, BookingRe
      */
     @Override
     public List<Booking> getBookings(User customer) {
-        return bookingRepository.find(new SearchParametersBuilder() //
-                .propertyWithValue(customer.getId(), Booking_.customer, User_.id) //
-                .toSearchParameters());
+        return bookingRepository.find(new SearchParameters() //
+                .property(Booking_.customer, customer));
     }
 
     /**
@@ -93,10 +89,9 @@ public class BookingServiceImpl extends AbstractSimpleService<Booking, BookingRe
      */
     @Override
     public Booking getBooking(BookingEvent bookingEvent, User customer) {
-        Booking booking = bookingRepository.findUniqueOrNone(new SearchParametersBuilder() //
-                .propertyWithValue(bookingEvent.getId(), Booking_.bookingEvent, BookingEvent_.id) //
-                .propertyWithValue(customer.getId(), Booking_.customer, User_.id) //
-                .toSearchParameters());
+        Booking booking = bookingRepository.findUniqueOrNone(new SearchParameters() //
+                .property(Booking_.bookingEvent, bookingEvent) //
+                .property(Booking_.customer, customer));
         if (booking == null) {
             booking = new Booking();
             booking.setCustomer(customer);
@@ -118,9 +113,8 @@ public class BookingServiceImpl extends AbstractSimpleService<Booking, BookingRe
      */
     @Override
     public List<Booking> getAllByBookingEventId(Integer bookingEventId) {
-        return bookingRepository.find(new SearchParametersBuilder() //
-                .property(new PropertySelector<Booking, Integer>(Booking_.bookingEvent, BookingEvent_.id).selected(bookingEventId)) //
-                .toSearchParameters());
+        return bookingRepository.find(new SearchParameters() //
+                .property(Booking_.bookingEvent, bookingEventId));
     }
 
     /**

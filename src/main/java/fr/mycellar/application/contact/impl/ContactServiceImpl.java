@@ -39,9 +39,8 @@ import fr.mycellar.domain.contact.Contact_;
 import fr.mycellar.domain.contact.repository.ContactRepository;
 import fr.mycellar.domain.shared.exception.BusinessError;
 import fr.mycellar.domain.shared.exception.BusinessException;
-import fr.mycellar.domain.shared.repository.SearchParameters;
-import fr.mycellar.domain.shared.repository.SearchParametersBuilder;
 import fr.mycellar.domain.wine.Producer;
+import fr.mycellar.infrastructure.shared.repository.SearchParameters;
 
 /**
  * @author speralta
@@ -128,10 +127,9 @@ public class ContactServiceImpl extends AbstractSimpleService<Contact, ContactRe
      */
     @Override
     public Contact find(Producer producer, LocalDate current) {
-        return contactRepository.findUniqueOrNone(new SearchParametersBuilder()//
-                .propertyWithValue(producer, Contact_.producer) //
-                .propertyWithValue(current, Contact_.current)//
-                .toSearchParameters());
+        return contactRepository.findUniqueOrNone(new SearchParameters()//
+                .property(Contact_.producer, producer) //
+                .property(Contact_.current, current));
     }
 
     /**

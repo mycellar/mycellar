@@ -20,7 +20,7 @@ package fr.mycellar.application.shared;
 
 import fr.mycellar.domain.shared.IdentifiedEntity;
 import fr.mycellar.domain.shared.exception.BusinessException;
-import fr.mycellar.domain.shared.repository.SimpleRepository;
+import fr.mycellar.infrastructure.shared.repository.SimpleRepository;
 
 /**
  * @author speralta

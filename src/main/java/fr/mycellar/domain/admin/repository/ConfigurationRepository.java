@@ -19,7 +19,7 @@
 package fr.mycellar.domain.admin.repository;
 
 import fr.mycellar.domain.admin.Configuration;
-import fr.mycellar.domain.shared.repository.SimpleRepository;
+import fr.mycellar.infrastructure.shared.repository.SimpleRepository;
 
 /**
  * @author speralta

@@ -1,5 +1,5 @@
 /*
- * Copyright 2011, MyCellar
+ * Copyright 2013, MyCellar
  *
  * This file is part of MyCellar.
  *
@@ -16,11 +16,12 @@
  * You should have received a copy of the GNU General Public License
  * along with MyCellar. If not, see <http://www.gnu.org/licenses/>.
  */
-package fr.mycellar.domain.shared.repository;
+package fr.mycellar.infrastructure.shared.repository;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 
 import java.io.Serializable;
+import java.util.List;
 
 import javax.persistence.metamodel.Attribute;
 
@@ -42,13 +43,17 @@ public class OrderBy implements Serializable {
         path = new Path(checkNotNull(attributes));
     }
 
-    public OrderBy(OrderByDirection direction, Class<?> from, String path) {
+    public OrderBy(OrderByDirection direction, String path, Class<?> from) {
         this.direction = checkNotNull(direction);
-        this.path = new Path(checkNotNull(from), checkNotNull(path));
+        this.path = new Path(checkNotNull(path), checkNotNull(from));
     }
 
-    public Path getPath() {
-        return path;
+    public List<Attribute<?, ?>> getAttributes() {
+        return path.getAttributes();
+    }
+
+    public String getPath() {
+        return path.getPath();
     }
 
     public OrderByDirection getDirection() {
@@ -89,12 +94,8 @@ public class OrderBy implements Serializable {
         return true;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public String toString() {
         return ToStringBuilder.reflectionToString(this, ToStringStyle.SHORT_PREFIX_STYLE);
     }
-
 }

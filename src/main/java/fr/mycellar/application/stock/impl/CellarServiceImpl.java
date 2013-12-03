@@ -29,13 +29,12 @@ import fr.mycellar.application.stock.StockService;
 import fr.mycellar.domain.shared.NamedEntity_;
 import fr.mycellar.domain.shared.exception.BusinessError;
 import fr.mycellar.domain.shared.exception.BusinessException;
-import fr.mycellar.domain.shared.repository.SearchParametersBuilder;
 import fr.mycellar.domain.stock.Cellar;
 import fr.mycellar.domain.stock.CellarShare_;
 import fr.mycellar.domain.stock.Cellar_;
 import fr.mycellar.domain.stock.Stock_;
 import fr.mycellar.domain.stock.repository.CellarRepository;
-import fr.mycellar.domain.user.User_;
+import fr.mycellar.infrastructure.shared.repository.SearchParameters;
 
 /**
  * @author speralta
@@ -55,10 +54,9 @@ public class CellarServiceImpl extends AbstractSimpleService<Cellar, CellarRepos
      */
     @Override
     public void validate(Cellar entity) throws BusinessException {
-        Cellar existing = cellarRepository.findUniqueOrNone(new SearchParametersBuilder() //
-                .propertyWithValue(entity.getOwner().getId(), Cellar_.owner, User_.id) //
-                .propertyWithValue(entity.getName(), NamedEntity_.name) //
-                .toSearchParameters());
+        Cellar existing = cellarRepository.findUniqueOrNone(new SearchParameters() //
+                .property(Cellar_.owner, entity.getOwner()) //
+                .property(NamedEntity_.name, entity.getName()));
         if ((existing != null) && ((entity.getId() == null) || !existing.getId().equals(entity.getId()))) {
             throw new BusinessException(BusinessError.CELLAR_00001);
         }
@@ -69,14 +67,12 @@ public class CellarServiceImpl extends AbstractSimpleService<Cellar, CellarRepos
      */
     @Override
     protected void validateDelete(Cellar entity) throws BusinessException {
-        if (stockService.count(new SearchParametersBuilder() //
-                .propertyWithValue(entity, Stock_.cellar) //
-                .toSearchParameters()) > 0) {
+        if (stockService.count(new SearchParameters() //
+                .property(Stock_.cellar, entity)) > 0) {
             throw new BusinessException(BusinessError.CELLAR_00002);
         }
-        if (cellarShareService.count(new SearchParametersBuilder() //
-                .propertyWithValue(entity, CellarShare_.cellar) //
-                .toSearchParameters()) > 0) {
+        if (cellarShareService.count(new SearchParameters() //
+                .property(CellarShare_.cellar, entity)) > 0) {
             throw new BusinessException(BusinessError.CELLAR_00003);
         }
     }

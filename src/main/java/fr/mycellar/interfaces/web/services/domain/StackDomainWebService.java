@@ -35,8 +35,8 @@ import javax.ws.rs.core.MediaType;
 import org.springframework.security.access.prepost.PreAuthorize;
 
 import fr.mycellar.domain.shared.exception.BusinessException;
-import fr.mycellar.domain.shared.repository.SearchParameters;
 import fr.mycellar.domain.stack.Stack;
+import fr.mycellar.infrastructure.shared.repository.SearchParameters;
 import fr.mycellar.interfaces.facades.stack.StackServiceFacade;
 import fr.mycellar.interfaces.web.services.FilterCouple;
 import fr.mycellar.interfaces.web.services.ListWithCount;

@@ -1,5 +1,5 @@
 /*
- * Copyright 2011, MyCellar
+ * Copyright 2013, MyCellar
  *
  * This file is part of MyCellar.
  *
@@ -16,29 +16,8 @@
  * You should have received a copy of the GNU General Public License
  * along with MyCellar. If not, see <http://www.gnu.org/licenses/>.
  */
-package fr.mycellar.domain.shared.repository;
+package fr.mycellar.infrastructure.shared.repository;
 
-import fr.mycellar.domain.shared.IdentifiedEntity;
-
-/**
- * @author speralta
- */
-public interface SimpleRepository<E extends IdentifiedEntity> extends GenericRepository<E, Integer> {
-
-    /**
-     * @param id
-     * @return
-     */
-    E getById(Integer id);
-
-    /**
-     * @param entity
-     * @return
-     */
-    E save(E entity);
-
-    /**
-     * @param entity
-     */
-    void delete(E entity);
+public enum OrderByDirection {
+    ASC, DESC;
 }

@@ -29,7 +29,7 @@ import org.springframework.transaction.annotation.Transactional;
 import fr.mycellar.application.admin.ConfigurationService;
 import fr.mycellar.domain.admin.Configuration;
 import fr.mycellar.domain.shared.exception.BusinessException;
-import fr.mycellar.domain.shared.repository.SearchParameters;
+import fr.mycellar.infrastructure.shared.repository.SearchParameters;
 
 /**
  * @author speralta

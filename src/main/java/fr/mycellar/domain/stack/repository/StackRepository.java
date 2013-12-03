@@ -18,8 +18,8 @@
  */
 package fr.mycellar.domain.stack.repository;
 
-import fr.mycellar.domain.shared.repository.SimpleRepository;
 import fr.mycellar.domain.stack.Stack;
+import fr.mycellar.infrastructure.shared.repository.SimpleRepository;
 
 /**
  * @author speralta

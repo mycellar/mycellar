@@ -21,7 +21,6 @@ package fr.mycellar.interfaces.facades.stock;
 import java.util.List;
 
 import fr.mycellar.domain.shared.exception.BusinessException;
-import fr.mycellar.domain.shared.repository.SearchParameters;
 import fr.mycellar.domain.stock.Arrival;
 import fr.mycellar.domain.stock.Bottle;
 import fr.mycellar.domain.stock.Cellar;
@@ -31,6 +30,7 @@ import fr.mycellar.domain.stock.Movement;
 import fr.mycellar.domain.stock.Stock;
 import fr.mycellar.domain.wine.Format;
 import fr.mycellar.domain.wine.Wine;
+import fr.mycellar.infrastructure.shared.repository.SearchParameters;
 
 /**
  * @author speralta

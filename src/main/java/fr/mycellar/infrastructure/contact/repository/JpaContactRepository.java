@@ -34,8 +34,8 @@ import org.slf4j.LoggerFactory;
 
 import fr.mycellar.domain.contact.Contact;
 import fr.mycellar.domain.contact.repository.ContactRepository;
-import fr.mycellar.domain.shared.repository.SearchParameters;
 import fr.mycellar.infrastructure.shared.repository.JpaSimpleRepository;
+import fr.mycellar.infrastructure.shared.repository.SearchParameters;
 
 /**
  * @author speralta
@@ -66,7 +66,7 @@ public class JpaContactRepository extends JpaSimpleRepository<Contact> implement
         Root<Contact> subroot = subquery.from(Contact.class);
         subquery.select(subroot).where(criteriaBuilder.equal(root.get("producer"), subroot.get("producer")),
                 criteriaBuilder.greaterThan(subroot.<LocalDate> get("current"), root.<LocalDate> get("current")));
-        Predicate predicate = getPredicate(root, criteriaBuilder, searchParameters);
+        Predicate predicate = getPredicate(query, root, criteriaBuilder, searchParameters);
         if (predicate == null) {
             predicate = criteriaBuilder.not(criteriaBuilder.exists(subquery));
         } else {
@@ -89,7 +89,7 @@ public class JpaContactRepository extends JpaSimpleRepository<Contact> implement
         subquery.select(subroot).where(criteriaBuilder.equal(root.get("producer"), subroot.get("producer")),
                 criteriaBuilder.greaterThan(subroot.<LocalDate> get("current"), root.<LocalDate> get("current")));
 
-        Predicate predicate = getPredicate(root, criteriaBuilder, searchParameters);
+        Predicate predicate = getPredicate(query, root, criteriaBuilder, searchParameters);
         if (predicate == null) {
             predicate = criteriaBuilder.not(criteriaBuilder.exists(subquery));
         } else {
@@ -97,7 +97,7 @@ public class JpaContactRepository extends JpaSimpleRepository<Contact> implement
         }
 
         List<Contact> result = getEntityManager().createQuery( //
-                query.orderBy(getOrderByUtil().buildJpaOrders(root, criteriaBuilder, searchParameters)) //
+                query.orderBy(getOrderByUtil().buildJpaOrders(searchParameters.getOrders(), root, criteriaBuilder, searchParameters)) //
                         .select(root) //
                         .where(predicate)) //
                 .setFirstResult(searchParameters.getFirstResult()). //

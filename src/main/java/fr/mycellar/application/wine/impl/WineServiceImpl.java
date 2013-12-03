@@ -31,17 +31,15 @@ import fr.mycellar.application.wine.WineService;
 import fr.mycellar.domain.shared.NamedEntity_;
 import fr.mycellar.domain.shared.exception.BusinessError;
 import fr.mycellar.domain.shared.exception.BusinessException;
-import fr.mycellar.domain.shared.repository.SearchParametersBuilder;
 import fr.mycellar.domain.stock.Bottle_;
 import fr.mycellar.domain.wine.Appellation;
-import fr.mycellar.domain.wine.Appellation_;
 import fr.mycellar.domain.wine.Producer;
-import fr.mycellar.domain.wine.Producer_;
 import fr.mycellar.domain.wine.Wine;
 import fr.mycellar.domain.wine.WineColorEnum;
 import fr.mycellar.domain.wine.WineTypeEnum;
 import fr.mycellar.domain.wine.Wine_;
 import fr.mycellar.domain.wine.repository.WineRepository;
+import fr.mycellar.infrastructure.shared.repository.SearchParameters;
 
 /**
  * @author speralta
@@ -66,14 +64,13 @@ public class WineServiceImpl extends AbstractSimpleService<Wine, WineRepository>
         model.setColor(color);
         model.setName(name);
         model.setVintage(vintage);
-        return wineRepository.findUniqueOrNone(new SearchParametersBuilder() //
-                .propertyWithValue(producer.getId(), Wine_.producer, Producer_.id) //
-                .propertyWithValue(appellation.getId(), Wine_.appellation, Appellation_.id) //
-                .propertyWithValue(type, Wine_.type) //
-                .propertyWithValue(color, Wine_.color) //
-                .propertyWithValue(name, NamedEntity_.name) //
-                .propertyWithValue(vintage, Wine_.vintage) //
-                .toSearchParameters());
+        return wineRepository.findUniqueOrNone(new SearchParameters() //
+                .property(Wine_.producer, producer) //
+                .property(Wine_.appellation, appellation) //
+                .property(Wine_.type, type) //
+                .property(Wine_.color, color) //
+                .property(NamedEntity_.name, name) //
+                .property(Wine_.vintage, vintage));
     }
 
     /**
@@ -92,9 +89,8 @@ public class WineServiceImpl extends AbstractSimpleService<Wine, WineRepository>
      */
     @Override
     protected void validateDelete(Wine entity) throws BusinessException {
-        if (bottleService.count(new SearchParametersBuilder() //
-                .propertyWithValue(entity, Bottle_.wine) //
-                .toSearchParameters()) > 0) {
+        if (bottleService.count(new SearchParameters() //
+                .property(Bottle_.wine, entity)) > 0) {
             throw new BusinessException(BusinessError.WINE_00002);
         }
     }

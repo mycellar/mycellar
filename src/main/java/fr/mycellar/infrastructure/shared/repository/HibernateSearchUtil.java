@@ -1,5 +1,5 @@
 /*
- * Copyright 2011, MyCellar
+ * Copyright 2013, MyCellar
  *
  * This file is part of MyCellar.
  *
@@ -36,11 +36,6 @@ import org.hibernate.search.jpa.FullTextQuery;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import fr.mycellar.domain.shared.repository.SearchParameters;
-
-/**
- * 
- */
 @Named
 @Singleton
 public class HibernateSearchUtil {
@@ -96,19 +91,11 @@ public class HibernateSearchUtil {
         return ids;
     }
 
-    /**
-     * @param entityManager
-     *            the entityManager to set
-     */
     @PersistenceContext
     public void setEntityManager(EntityManager entityManager) {
         this.entityManager = entityManager;
     }
 
-    /**
-     * @param luceneQueryBuilder
-     *            the luceneQueryBuilder to set
-     */
     @Inject
     public void setBuilder(LuceneQueryBuilder luceneQueryBuilder) {
         this.luceneQueryBuilder = luceneQueryBuilder;

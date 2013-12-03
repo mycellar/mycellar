@@ -16,12 +16,13 @@
  * You should have received a copy of the GNU General Public License
  * along with MyCellar. If not, see <http://www.gnu.org/licenses/>.
  */
-package fr.mycellar.domain.shared.repository;
+package fr.mycellar.infrastructure.shared.repository;
 
 import java.io.Serializable;
 import java.util.List;
 
 import javax.persistence.NonUniqueResultException;
+import javax.persistence.metamodel.Attribute;
 
 import fr.mycellar.domain.shared.Identifiable;
 
@@ -50,6 +51,36 @@ public interface GenericRepository<E extends Identifiable<PK>, PK extends Serial
      * @return the number of entities matching the search.
      */
     long findCount(SearchParameters searchParameters);
+
+    /**
+     * Find a list of E property.
+     * 
+     * @param propertyType
+     *            type of the property
+     * @param entity
+     *            a sample entity whose non-null properties may be used as
+     *            search hints
+     * @param searchParameters
+     *            carries additional search information
+     * @param attributes
+     *            the list of attributes to the property
+     * @return the entities property matching the search.
+     */
+    <T> List<T> findProperty(Class<T> propertyType, SearchParameters sp, List<Attribute<?, ?>> attributes);
+
+    /**
+     * Count the number of E instances.
+     * 
+     * @param entity
+     *            a sample entity whose non-null properties may be used as
+     *            search hint
+     * @param searchParameters
+     *            carries additional search information
+     * @param attributes
+     *            the list of attributes to the property
+     * @return the number of entities matching the search.
+     */
+    long findPropertyCount(SearchParameters sp, List<Attribute<?, ?>> attributes);
 
     /**
      * @param searchParameters

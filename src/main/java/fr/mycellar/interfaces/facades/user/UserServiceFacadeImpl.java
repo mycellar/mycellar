@@ -30,11 +30,10 @@ import fr.mycellar.application.user.ResetPasswordRequestService;
 import fr.mycellar.application.user.UserService;
 import fr.mycellar.domain.shared.exception.BusinessError;
 import fr.mycellar.domain.shared.exception.BusinessException;
-import fr.mycellar.domain.shared.repository.SearchParameters;
-import fr.mycellar.domain.shared.repository.SearchParametersBuilder;
 import fr.mycellar.domain.user.ResetPasswordRequest;
 import fr.mycellar.domain.user.User;
 import fr.mycellar.domain.user.User_;
+import fr.mycellar.infrastructure.shared.repository.SearchParameters;
 
 /**
  * @author speralta
@@ -53,11 +52,10 @@ public class UserServiceFacadeImpl implements UserServiceFacade {
     @Override
     @Transactional(readOnly = true)
     public List<User> getUsersLike(String term) {
-        return userService.find(new SearchParametersBuilder() //
+        return userService.find(new SearchParameters() //
                 .term(User_.email, term) //
                 .term(User_.firstname, term) //
-                .term(User_.lastname, term) //
-                .toSearchParameters());
+                .term(User_.lastname, term));
     }
 
     /**

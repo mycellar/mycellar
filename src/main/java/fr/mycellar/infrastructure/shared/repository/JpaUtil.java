@@ -1,5 +1,5 @@
 /*
- * Copyright 2011, MyCellar
+ * Copyright 2013, MyCellar
  *
  * This file is part of MyCellar.
  *
@@ -22,7 +22,9 @@ import static com.google.common.base.Predicates.notNull;
 import static com.google.common.base.Throwables.propagate;
 import static com.google.common.collect.Iterables.filter;
 import static com.google.common.collect.Iterables.toArray;
+import static com.google.common.collect.Iterables.transform;
 import static com.google.common.collect.Lists.newArrayList;
+import static java.lang.reflect.Modifier.isPublic;
 import static org.apache.commons.lang.StringUtils.isBlank;
 import static org.hibernate.proxy.HibernateProxyHelper.getClassWithoutInitializingProxy;
 
@@ -31,13 +33,16 @@ import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Locale;
+import java.util.Map;
 
-import javax.inject.Inject;
 import javax.inject.Named;
 import javax.inject.Singleton;
 import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.Query;
 import javax.persistence.criteria.CriteriaBuilder;
@@ -55,21 +60,52 @@ import javax.persistence.metamodel.ManagedType;
 import javax.persistence.metamodel.PluralAttribute;
 import javax.persistence.metamodel.SingularAttribute;
 
+import org.apache.commons.beanutils.MethodUtils;
 import org.apache.commons.beanutils.PropertyUtils;
 import org.apache.commons.lang.WordUtils;
 import org.apache.commons.lang3.StringUtils;
-import org.apache.commons.lang3.reflect.MethodUtils;
-import org.springframework.context.i18n.LocaleContextHolder;
+import org.springframework.context.annotation.Lazy;
+
+import com.google.common.base.Function;
 
 import fr.mycellar.domain.shared.Identifiable;
-import fr.mycellar.domain.shared.repository.SearchMode;
-import fr.mycellar.domain.shared.repository.SearchParameters;
 
 @Named
 @Singleton
+@Lazy(false)
 public class JpaUtil {
 
-    private MetamodelUtil metamodelUtil;
+    private final Map<Class<?>, String> compositePkCache = new HashMap<>();
+    private static JpaUtil instance;
+
+    public static JpaUtil getInstance() {
+        return instance;
+    }
+
+    public JpaUtil() {
+        instance = this;
+    }
+
+    public boolean isEntityIdManuallyAssigned(Class<?> type) {
+        for (Method method : type.getMethods()) {
+            if (isPrimaryKey(method)) {
+                return isManuallyAssigned(method);
+            }
+        }
+        return false; // no pk found, should not happen
+    }
+
+    private boolean isPrimaryKey(Method method) {
+        return isPublic(method.getModifiers()) && ((method.getAnnotation(Id.class) != null) || (method.getAnnotation(EmbeddedId.class) != null));
+    }
+
+    private boolean isManuallyAssigned(Method method) {
+        if (method.getAnnotation(Id.class) != null) {
+            return method.getAnnotation(GeneratedValue.class) == null;
+        }
+
+        return method.getAnnotation(EmbeddedId.class) != null;
+    }
 
     public Predicate concatPredicate(SearchParameters sp, CriteriaBuilder builder, Predicate... predicatesNullAllowed) {
         return concatPredicate(sp, builder, Arrays.asList(predicatesNullAllowed));
@@ -87,12 +123,33 @@ public class JpaUtil {
         return andPredicate(builder, Arrays.asList(predicatesNullAllowed));
     }
 
+    public Predicate andNotPredicate(CriteriaBuilder builder, Predicate... predicatesNullAllowed) {
+        return andNotPredicate(builder, Arrays.asList(predicatesNullAllowed));
+    }
+
     public Predicate orPredicate(CriteriaBuilder builder, Predicate... predicatesNullAllowed) {
         return orPredicate(builder, Arrays.asList(predicatesNullAllowed));
     }
 
     public Predicate andPredicate(CriteriaBuilder builder, Iterable<Predicate> predicatesNullAllowed) {
         List<Predicate> predicates = newArrayList(filter(predicatesNullAllowed, notNull()));
+        if ((predicates == null) || predicates.isEmpty()) {
+            return null;
+        } else if (predicates.size() == 1) {
+            return predicates.get(0);
+        } else {
+            return builder.and(toArray(predicates, Predicate.class));
+        }
+    }
+
+    public Predicate andNotPredicate(final CriteriaBuilder builder, Iterable<Predicate> predicatesNullAllowed) {
+        List<Predicate> predicates = newArrayList(transform(filter(predicatesNullAllowed, notNull()), new Function<Predicate, Predicate>() {
+            @Override
+            public Predicate apply(Predicate input) {
+                return builder.not(input);
+            }
+
+        }));
         if ((predicates == null) || predicates.isEmpty()) {
             return null;
         } else if (predicates.size() == 1) {
@@ -113,10 +170,10 @@ public class JpaUtil {
         }
     }
 
-    public <E> Predicate stringPredicate(Expression<String> path, Object attrValue, SearchMode searchMode, SearchParameters sp, CriteriaBuilder builder) {
-        if (!sp.isCaseSensitive()) {
+    public <E> Predicate stringPredicate(Expression<String> path, Object attrValue, SearchMode searchMode, Boolean caseSensitive, SearchParameters sp, CriteriaBuilder builder) {
+        if (caseSensitive != null ? !caseSensitive : sp.isCaseInsensitive()) {
             path = builder.lower(path);
-            attrValue = ((String) attrValue).toLowerCase(LocaleContextHolder.getLocale());
+            attrValue = ((String) attrValue).toLowerCase(Locale.FRANCE);
         }
 
         switch (searchMode != null ? searchMode : sp.getSearchMode()) {
@@ -129,19 +186,16 @@ public class JpaUtil {
         case ANYWHERE:
             return builder.like(path, "%" + attrValue + "%");
         case LIKE:
-            return builder.like(path, (String) attrValue);
-            // assume user provide the wild cards
+            return builder.like(path, (String) attrValue); // assume user
+                                                           // provide the wild
+                                                           // cards
         default:
             throw new IllegalStateException("expecting a search mode!");
         }
     }
 
     public <E> Predicate stringPredicate(Expression<String> path, Object attrValue, SearchParameters sp, CriteriaBuilder builder) {
-        return stringPredicate(path, attrValue, null, sp, builder);
-    }
-
-    public <E, F> Path<F> getPath(Root<E> root, fr.mycellar.domain.shared.repository.Path path) {
-        return getPath(root, path.getFrom(), path.getPath());
+        return stringPredicate(path, attrValue, null, null, sp, builder);
     }
 
     /**
@@ -150,14 +204,14 @@ public class JpaUtil {
      * Note: JPA will do joins if the property is in an associated entity.
      */
     @SuppressWarnings("unchecked")
-    public <E, F> Path<F> getPath(Root<E> root, Class<?> from, String path) {
-        Path<?> result = root;
-        for (Attribute<?, ?> attribute : metamodelUtil.toAttributes(from, path)) {
+    public <E, F> Path<F> getPath(Root<E> root, List<Attribute<?, ?>> attributes) {
+        Path<?> path = root;
+        for (Attribute<?, ?> attribute : attributes) {
             boolean found = false;
-            if (result instanceof FetchParent) {
-                for (Fetch<E, ?> fetch : ((FetchParent<?, E>) result).getFetches()) {
+            if (path instanceof FetchParent) {
+                for (Fetch<E, ?> fetch : ((FetchParent<?, E>) path).getFetches()) {
                     if (attribute.getName().equals(fetch.getAttribute().getName()) && (fetch instanceof Join<?, ?>)) {
-                        result = (Join<E, ?>) fetch;
+                        path = (Join<E, ?>) fetch;
                         found = true;
                         break;
                     }
@@ -165,18 +219,27 @@ public class JpaUtil {
             }
             if (!found) {
                 if (attribute instanceof PluralAttribute) {
-                    result = ((From<?, ?>) result).join(attribute.getName(), JoinType.LEFT);
+                    path = ((From<?, ?>) path).join(attribute.getName(), JoinType.LEFT);
                 } else {
-                    result = result.get(attribute.getName());
+                    path = path.get(attribute.getName());
                 }
             }
         }
-        return (Path<F>) result;
+        return (Path<F>) path;
     }
 
     public void verifyPath(Attribute<?, ?>... path) {
-        List<Attribute<?, ?>> attributes = Arrays.asList(path);
-        Class<?> from = attributes.get(0).getJavaType();
+        verifyPath(newArrayList(path));
+    }
+
+    public void verifyPath(List<Attribute<?, ?>> path) {
+        List<Attribute<?, ?>> attributes = new ArrayList<>(path);
+        Class<?> from = null;
+        if (attributes.get(0).isCollection()) {
+            from = ((PluralAttribute<?, ?, ?>) attributes.get(0)).getElementType().getJavaType();
+        } else {
+            from = attributes.get(0).getJavaType();
+        }
         attributes.remove(0);
         for (Attribute<?, ?> attribute : attributes) {
             if (!attribute.getDeclaringType().getJavaType().isAssignableFrom(from)) {
@@ -187,16 +250,26 @@ public class JpaUtil {
     }
 
     public <T extends Identifiable<?>> String compositePkPropertyName(T entity) {
+        Class<?> entityClass = entity.getClass();
+        if (compositePkCache.containsKey(entityClass)) {
+            return compositePkCache.get(entityClass);
+        }
+
         for (Method m : entity.getClass().getMethods()) {
             if (m.getAnnotation(EmbeddedId.class) != null) {
-                return methodToProperty(m);
+                String propertyName = methodToProperty(m);
+                compositePkCache.put(entityClass, propertyName);
+                return propertyName;
             }
         }
         for (Field f : entity.getClass().getFields()) {
             if (f.getAnnotation(EmbeddedId.class) != null) {
-                return f.getName();
+                String propertyName = f.getName();
+                compositePkCache.put(entityClass, propertyName);
+                return propertyName;
             }
         }
+        compositePkCache.put(entityClass, null);
         return null;
     }
 
@@ -309,10 +382,10 @@ public class JpaUtil {
     }
 
     @SuppressWarnings({ "unchecked", "rawtypes" })
-    public void fetches(SearchParameters sp, Root<?> root) {
-        for (fr.mycellar.domain.shared.repository.Path args : sp.getFetches()) {
+    protected void fetches(SearchParameters sp, Root<?> root) {
+        for (List<Attribute<?, ?>> args : sp.getFetches()) {
             FetchParent<?, ?> from = root;
-            for (Attribute<?, ?> arg : metamodelUtil.toAttributes(args)) {
+            for (Attribute<?, ?> arg : args) {
                 boolean found = false;
                 for (Fetch<?, ?> fetch : from.getFetches()) {
                     if (arg.equals(fetch.getAttribute())) {
@@ -340,14 +413,4 @@ public class JpaUtil {
             throw new RuntimeException(e);
         }
     }
-
-    /**
-     * @param metamodelUtil
-     *            the metamodelUtil to set
-     */
-    @Inject
-    public void setMetamodelUtil(MetamodelUtil metamodelUtil) {
-        this.metamodelUtil = metamodelUtil;
-    }
-
 }

@@ -22,8 +22,8 @@ import java.io.Serializable;
 import java.util.List;
 
 import fr.mycellar.domain.shared.Identifiable;
-import fr.mycellar.domain.shared.repository.GenericRepository;
-import fr.mycellar.domain.shared.repository.SearchParameters;
+import fr.mycellar.infrastructure.shared.repository.GenericRepository;
+import fr.mycellar.infrastructure.shared.repository.SearchParameters;
 
 /**
  * @author speralta

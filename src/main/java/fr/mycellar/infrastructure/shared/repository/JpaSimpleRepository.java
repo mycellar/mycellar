@@ -1,5 +1,5 @@
 /*
- * Copyright 2011, MyCellar
+ * Copyright 2013, MyCellar
  *
  * This file is part of MyCellar.
  *
@@ -22,7 +22,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import fr.mycellar.domain.shared.IdentifiedEntity;
-import fr.mycellar.domain.shared.repository.SimpleRepository;
 
 /**
  * @author speralta
@@ -31,24 +30,15 @@ public abstract class JpaSimpleRepository<E extends IdentifiedEntity> extends Jp
 
     private final Logger logger = LoggerFactory.getLogger(getClass());
 
-    /**
-     * @param type
-     */
     public JpaSimpleRepository(Class<E> type) {
         super(type);
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public final E getById(Integer id) {
         return getEntityManager().find(getType(), id);
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public final E save(E entity) {
         E result = getEntityManager().merge(entity);
@@ -57,9 +47,6 @@ public abstract class JpaSimpleRepository<E extends IdentifiedEntity> extends Jp
         return result;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public final void delete(E entity) {
         E toRemove = getEntityManager().find(getType(), entity.getId());
@@ -70,16 +57,10 @@ public abstract class JpaSimpleRepository<E extends IdentifiedEntity> extends Jp
 
     // Could be overriden
 
-    /**
-     * @param entity
-     */
     protected void postSave(E entity) {
 
     }
 
-    /**
-     * @param entity
-     */
     protected void postDelete(E entity) {
 
     }

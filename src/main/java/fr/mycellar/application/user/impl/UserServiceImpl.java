@@ -32,11 +32,11 @@ import fr.mycellar.application.user.UserService;
 import fr.mycellar.domain.booking.Booking_;
 import fr.mycellar.domain.shared.exception.BusinessError;
 import fr.mycellar.domain.shared.exception.BusinessException;
-import fr.mycellar.domain.shared.repository.SearchParametersBuilder;
 import fr.mycellar.domain.stock.Cellar_;
 import fr.mycellar.domain.user.User;
 import fr.mycellar.domain.user.User_;
 import fr.mycellar.domain.user.repository.UserRepository;
+import fr.mycellar.infrastructure.shared.repository.SearchParameters;
 
 /**
  * @author speralta
@@ -70,9 +70,7 @@ public class UserServiceImpl extends AbstractSimpleService<User, UserRepository>
     @Override
     public void resetPasswordRequest(String email, String url) {
         User user = userRepository.findUniqueOrNone( //
-                new SearchParametersBuilder() //
-                        .propertyWithValue(email, User_.email) //
-                        .toSearchParameters());
+                new SearchParameters().property(User_.email, email));
         if (user != null) {
             resetPasswordRequestService.createAndSendEmail(user, url);
         }
@@ -85,9 +83,7 @@ public class UserServiceImpl extends AbstractSimpleService<User, UserRepository>
     @Override
     public void validate(User entity) throws BusinessException {
         User existing = userRepository.findUniqueOrNone( //
-                new SearchParametersBuilder() //
-                        .propertyWithValue(entity.getEmail(), User_.email)//
-                        .toSearchParameters());
+                new SearchParameters().property(User_.email, entity.getEmail()));
         if ((existing != null) && ((entity.getId() == null) || !existing.getId().equals(entity.getId()))) {
             throw new BusinessException(BusinessError.USER_00001);
         }
@@ -98,14 +94,12 @@ public class UserServiceImpl extends AbstractSimpleService<User, UserRepository>
      */
     @Override
     protected void validateDelete(User entity) throws BusinessException {
-        if (bookingService.count(new SearchParametersBuilder() //
-                .propertyWithValue(entity, Booking_.customer) //
-                .toSearchParameters()) > 0) {
+        if (bookingService.count(new SearchParameters() //
+                .property(Booking_.customer, entity)) > 0) {
             throw new BusinessException(BusinessError.USER_00002);
         }
-        if (cellarService.count(new SearchParametersBuilder() //
-                .propertyWithValue(entity, Cellar_.owner) //
-                .toSearchParameters()) > 0) {
+        if (cellarService.count(new SearchParameters() //
+                .property(Cellar_.owner, entity)) > 0) {
             throw new BusinessException(BusinessError.USER_00003);
         }
     }
@@ -127,10 +121,7 @@ public class UserServiceImpl extends AbstractSimpleService<User, UserRepository>
      */
     @Override
     public User getByEmail(String email) {
-        return userRepository.findUniqueOrNone( //
-                new SearchParametersBuilder() //
-                        .propertyWithValue(email, User_.email) //
-                        .toSearchParameters());
+        return userRepository.findUniqueOrNone(new SearchParameters().property(User_.email, email));
     }
 
     /**

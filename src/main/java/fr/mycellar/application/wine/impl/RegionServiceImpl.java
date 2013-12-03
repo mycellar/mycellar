@@ -28,12 +28,11 @@ import fr.mycellar.application.wine.RegionService;
 import fr.mycellar.domain.shared.NamedEntity_;
 import fr.mycellar.domain.shared.exception.BusinessError;
 import fr.mycellar.domain.shared.exception.BusinessException;
-import fr.mycellar.domain.shared.repository.SearchParametersBuilder;
 import fr.mycellar.domain.wine.Appellation_;
-import fr.mycellar.domain.wine.Country_;
 import fr.mycellar.domain.wine.Region;
 import fr.mycellar.domain.wine.Region_;
 import fr.mycellar.domain.wine.repository.RegionRepository;
+import fr.mycellar.infrastructure.shared.repository.SearchParameters;
 
 /**
  * @author speralta
@@ -54,10 +53,9 @@ public class RegionServiceImpl extends AbstractSimpleService<Region, RegionRepos
         if (entity.getCountry() == null) {
             throw new BusinessException(BusinessError.REGION_00001);
         }
-        Region existing = regionRepository.findUniqueOrNone(new SearchParametersBuilder() //
-                .propertyWithValue(entity.getCountry().getId(), Region_.country, Country_.id) //
-                .propertyWithValue(entity.getName(), NamedEntity_.name) //
-                .toSearchParameters());
+        Region existing = regionRepository.findUniqueOrNone(new SearchParameters() //
+                .property(Region_.country, entity.getCountry()) //
+                .property(NamedEntity_.name, entity.getName()));
         if ((existing != null) && ((entity.getId() == null) || !existing.getId().equals(entity.getId()))) {
             throw new BusinessException(BusinessError.REGION_00002);
         }
@@ -68,9 +66,8 @@ public class RegionServiceImpl extends AbstractSimpleService<Region, RegionRepos
      */
     @Override
     protected void validateDelete(Region entity) throws BusinessException {
-        if (appellationService.count(new SearchParametersBuilder() //
-                .propertyWithValue(entity, Appellation_.region) //
-                .toSearchParameters()) > 0) {
+        if (appellationService.count(new SearchParameters() //
+                .property(Appellation_.region, entity)) > 0) {
             throw new BusinessException(BusinessError.REGION_00003);
         }
     }

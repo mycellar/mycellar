@@ -24,8 +24,8 @@ import org.joda.time.LocalDate;
 
 import fr.mycellar.application.shared.SimpleService;
 import fr.mycellar.domain.contact.Contact;
-import fr.mycellar.domain.shared.repository.SearchParameters;
 import fr.mycellar.domain.wine.Producer;
+import fr.mycellar.infrastructure.shared.repository.SearchParameters;
 
 /**
  * @author speralta

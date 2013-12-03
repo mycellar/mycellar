@@ -38,7 +38,7 @@ import org.springframework.security.access.prepost.PreAuthorize;
 
 import fr.mycellar.domain.contact.Contact;
 import fr.mycellar.domain.shared.exception.BusinessException;
-import fr.mycellar.domain.shared.repository.SearchParameters;
+import fr.mycellar.infrastructure.shared.repository.SearchParameters;
 import fr.mycellar.interfaces.facades.contact.ContactServiceFacade;
 import fr.mycellar.interfaces.web.services.FilterCouple;
 import fr.mycellar.interfaces.web.services.ListWithCount;

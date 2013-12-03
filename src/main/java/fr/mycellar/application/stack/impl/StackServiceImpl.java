@@ -28,10 +28,10 @@ import javax.inject.Singleton;
 import fr.mycellar.application.shared.AbstractSimpleService;
 import fr.mycellar.application.stack.StackService;
 import fr.mycellar.domain.shared.exception.BusinessException;
-import fr.mycellar.domain.shared.repository.SearchParametersBuilder;
 import fr.mycellar.domain.stack.Stack;
 import fr.mycellar.domain.stack.Stack_;
 import fr.mycellar.domain.stack.repository.StackRepository;
+import fr.mycellar.infrastructure.shared.repository.SearchParameters;
 
 /**
  * @author speralta
@@ -66,9 +66,8 @@ public class StackServiceImpl extends AbstractSimpleService<Stack, StackReposito
         StringWriter stringWriter = new StringWriter();
         throwable.printStackTrace(new PrintWriter(stringWriter));
         String stackContent = stringWriter.toString();
-        Stack stack = stackRepository.findUniqueOrNone(new SearchParametersBuilder() //
-                .propertyWithValue(stackContent.hashCode(), Stack_.hashCode) //
-                .toSearchParameters());
+        Stack stack = stackRepository.findUniqueOrNone(new SearchParameters() //
+                .property(Stack_.hashCode, stackContent.hashCode()));
         if (stack == null) {
             stack = new Stack();
             stack.setStack(stackContent);

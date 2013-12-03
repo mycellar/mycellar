@@ -18,8 +18,8 @@
  */
 package fr.mycellar.domain.stock.repository;
 
-import fr.mycellar.domain.shared.repository.SimpleRepository;
 import fr.mycellar.domain.stock.Movement;
+import fr.mycellar.infrastructure.shared.repository.SimpleRepository;
 
 /**
  * @author speralta

@@ -1,5 +1,5 @@
 /*
- * Copyright 2011, MyCellar
+ * Copyright 2013, MyCellar
  *
  * This file is part of MyCellar.
  *
@@ -18,11 +18,9 @@
  */
 package fr.mycellar.infrastructure.shared.repository;
 
-import static com.google.common.collect.Lists.newArrayList;
-import static java.util.Collections.emptyList;
-
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import javax.inject.Inject;
@@ -39,12 +37,7 @@ import javax.persistence.metamodel.ManagedType;
 import javax.persistence.metamodel.SingularAttribute;
 
 import fr.mycellar.domain.shared.Identifiable;
-import fr.mycellar.domain.shared.repository.SearchParameters;
-import fr.mycellar.domain.shared.repository.TermSelector;
 
-/**
- * Helper to create a predicate out of full search.
- */
 @Named
 @Singleton
 public class ByFullTextUtil {
@@ -116,9 +109,9 @@ public class ByFullTextUtil {
     protected <T extends Identifiable<?>> List<Predicate> byExampleOnCompositePk(Root<T> root, T entity, SearchParameters sp, CriteriaBuilder builder) {
         String compositePropertyName = jpaUtil.compositePkPropertyName(entity);
         if (compositePropertyName == null) {
-            return emptyList();
+            return new ArrayList<>();
         } else {
-            return newArrayList(byExampleOnEmbeddable(root.get(compositePropertyName), entity.getId(), sp, builder));
+            return Arrays.asList(byExampleOnEmbeddable(root.get(compositePropertyName), entity.getId(), sp, builder));
         }
     }
 
@@ -158,28 +151,16 @@ public class ByFullTextUtil {
         return jpaUtil.isPk(mt, attr);
     }
 
-    /**
-     * @param entityManager
-     *            the entityManager to set
-     */
     @PersistenceContext
     public void setEntityManager(EntityManager entityManager) {
         this.entityManager = entityManager;
     }
 
-    /**
-     * @param hibernateSearchUtil
-     *            the hibernateSearchUtil to set
-     */
     @Inject
     public void setHibernateSearchUtil(HibernateSearchUtil hibernateSearchUtil) {
         this.hibernateSearchUtil = hibernateSearchUtil;
     }
 
-    /**
-     * @param jpaUtil
-     *            the jpaUtil to set
-     */
     @Inject
     public void setJpaUtil(JpaUtil jpaUtil) {
         this.jpaUtil = jpaUtil;

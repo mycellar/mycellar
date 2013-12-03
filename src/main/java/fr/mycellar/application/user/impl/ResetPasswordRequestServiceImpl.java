@@ -38,11 +38,11 @@ import fr.mycellar.application.admin.ConfigurationService;
 import fr.mycellar.application.shared.AbstractSimpleService;
 import fr.mycellar.application.user.ResetPasswordRequestService;
 import fr.mycellar.domain.shared.exception.BusinessException;
-import fr.mycellar.domain.shared.repository.SearchParametersBuilder;
 import fr.mycellar.domain.user.ResetPasswordRequest;
 import fr.mycellar.domain.user.ResetPasswordRequest_;
 import fr.mycellar.domain.user.User;
 import fr.mycellar.domain.user.repository.ResetPasswordRequestRepository;
+import fr.mycellar.infrastructure.shared.repository.SearchParameters;
 
 /**
  * @author speralta
@@ -110,9 +110,7 @@ public class ResetPasswordRequestServiceImpl extends AbstractSimpleService<Reset
     @Override
     public ResetPasswordRequest getByKey(String key) {
         ResetPasswordRequest request = resetPasswordRequestRepository.findUniqueOrNone( //
-                new SearchParametersBuilder() //
-                        .propertyWithValue(key, ResetPasswordRequest_.key) //
-                        .toSearchParameters());
+                new SearchParameters().property(ResetPasswordRequest_.key, key));
         return (request != null) && request.getDateTime().isAfter(new LocalDateTime().minusHours(1)) ? request : null;
     }
 

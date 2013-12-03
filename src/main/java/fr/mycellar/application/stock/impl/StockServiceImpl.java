@@ -28,18 +28,16 @@ import fr.mycellar.application.shared.AbstractSimpleService;
 import fr.mycellar.application.stock.MovementService;
 import fr.mycellar.application.stock.StockService;
 import fr.mycellar.domain.shared.exception.BusinessException;
-import fr.mycellar.domain.shared.repository.SearchParametersBuilder;
 import fr.mycellar.domain.stock.Arrival;
 import fr.mycellar.domain.stock.ArrivalBottle;
 import fr.mycellar.domain.stock.Bottle;
-import fr.mycellar.domain.stock.Bottle_;
 import fr.mycellar.domain.stock.Cellar;
-import fr.mycellar.domain.stock.Cellar_;
 import fr.mycellar.domain.stock.Drink;
 import fr.mycellar.domain.stock.DrinkBottle;
 import fr.mycellar.domain.stock.Stock;
 import fr.mycellar.domain.stock.Stock_;
 import fr.mycellar.domain.stock.repository.StockRepository;
+import fr.mycellar.infrastructure.shared.repository.SearchParameters;
 
 /**
  * @author speralta
@@ -118,10 +116,9 @@ public class StockServiceImpl extends AbstractSimpleService<Stock, StockReposito
      */
     @Override
     public Stock findStock(Bottle bottle, Cellar cellar) {
-        return stockRepository.findUniqueOrNone(new SearchParametersBuilder() //
-                .propertyWithValue(bottle.getId(), Stock_.bottle, Bottle_.id) //
-                .propertyWithValue(cellar.getId(), Stock_.cellar, Cellar_.id) //
-                .toSearchParameters());
+        return stockRepository.findUniqueOrNone(new SearchParameters() //
+                .property(Stock_.bottle, bottle) //
+                .property(Stock_.cellar, cellar));
     }
 
     /**

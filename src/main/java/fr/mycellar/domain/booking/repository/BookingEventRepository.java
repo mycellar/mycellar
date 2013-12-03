@@ -19,7 +19,7 @@
 package fr.mycellar.domain.booking.repository;
 
 import fr.mycellar.domain.booking.BookingEvent;
-import fr.mycellar.domain.shared.repository.SimpleRepository;
+import fr.mycellar.infrastructure.shared.repository.SimpleRepository;
 
 /**
  * @author speralta

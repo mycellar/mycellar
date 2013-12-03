@@ -36,8 +36,8 @@ import fr.mycellar.domain.booking.repository.BookingEventRepository;
 import fr.mycellar.domain.shared.NamedEntity_;
 import fr.mycellar.domain.shared.exception.BusinessError;
 import fr.mycellar.domain.shared.exception.BusinessException;
-import fr.mycellar.domain.shared.repository.Range;
-import fr.mycellar.domain.shared.repository.SearchParametersBuilder;
+import fr.mycellar.infrastructure.shared.repository.Range;
+import fr.mycellar.infrastructure.shared.repository.SearchParameters;
 
 /**
  * @author speralta
@@ -55,10 +55,9 @@ public class BookingEventServiceImpl extends AbstractSimpleService<BookingEvent,
      */
     @Override
     public List<BookingEvent> getCurrentBookingEvents() {
-        return bookingEventRepository.find(new SearchParametersBuilder() //
+        return bookingEventRepository.find(new SearchParameters() //
                 .range(new Range<BookingEvent, LocalDate>(null, new LocalDate(), BookingEvent_.start), //
-                        new Range<BookingEvent, LocalDate>(new LocalDate(), null, BookingEvent_.end)) //
-                .toSearchParameters());
+                        new Range<BookingEvent, LocalDate>(new LocalDate(), null, BookingEvent_.end)));
     }
 
     /**
@@ -68,7 +67,7 @@ public class BookingEventServiceImpl extends AbstractSimpleService<BookingEvent,
     public List<BookingEvent> getAllLike(String term) {
         BookingEvent bookingEvent = new BookingEvent();
         bookingEvent.setName(term);
-        return bookingEventRepository.find(new SearchParametersBuilder().term(NamedEntity_.name, term).toSearchParameters());
+        return bookingEventRepository.find(new SearchParameters().term(NamedEntity_.name, term));
     }
 
     /**
@@ -84,9 +83,8 @@ public class BookingEventServiceImpl extends AbstractSimpleService<BookingEvent,
      */
     @Override
     protected void validateDelete(BookingEvent entity) throws BusinessException {
-        if (bookingService.count(new SearchParametersBuilder() //
-                .propertyWithValue(entity, Booking_.bookingEvent) //
-                .toSearchParameters()) > 0) {
+        if (bookingService.count(new SearchParameters() //
+                .property(Booking_.bookingEvent, entity)) > 0) {
             throw new BusinessException(BusinessError.BOOKINGEVENT_00001);
         }
     }

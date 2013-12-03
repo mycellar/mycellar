@@ -1,5 +1,5 @@
 /*
- * Copyright 2011, MyCellar
+ * Copyright 2013, MyCellar
  *
  * This file is part of MyCellar.
  *
@@ -16,24 +16,25 @@
  * You should have received a copy of the GNU General Public License
  * along with MyCellar. If not, see <http://www.gnu.org/licenses/>.
  */
-package fr.mycellar.domain.shared.repository;
+package fr.mycellar.infrastructure.shared.repository;
 
 import java.io.Serializable;
+import java.util.List;
 
 import javax.persistence.metamodel.Attribute;
-
-import org.apache.commons.lang3.builder.ToStringBuilder;
-import org.apache.commons.lang3.builder.ToStringStyle;
 
 /**
  * Range support for {@link Comparable} types.
  */
-public class Range<E, D extends Comparable<? super D>> implements Serializable {
-    private static final long serialVersionUID = 1L;
+@SuppressWarnings("rawtypes")
+public class Range<E, D extends Comparable> implements Serializable {
+    private static final long serialVersionUID = 201312031754L;
 
     private final Path path;
     private D from;
+    private boolean includeFrom = true;
     private D to;
+    private boolean includeTo = true;
     private Boolean includeNull;
 
     /**
@@ -94,8 +95,11 @@ public class Range<E, D extends Comparable<? super D>> implements Serializable {
         this.includeNull = other.includeNull;
     }
 
-    public Path getPath() {
-        return path;
+    /**
+     * @return the entity's attribute this {@link Range} refers to.
+     */
+    public List<Attribute<?, ?>> getAttributes() {
+        return path.getAttributes();
     }
 
     /**
@@ -129,7 +133,7 @@ public class Range<E, D extends Comparable<? super D>> implements Serializable {
     }
 
     public Range<E, D> to(D to) {
-        setTo(from);
+        setTo(to);
         return this;
     }
 
@@ -169,6 +173,7 @@ public class Range<E, D extends Comparable<? super D>> implements Serializable {
         return isFromSet() || isToSet() || isIncludeNullSet();
     }
 
+    @SuppressWarnings("unchecked")
     public boolean isValid() {
         if (isBetween()) {
             return getFrom().compareTo(getTo()) <= 0;
@@ -180,13 +185,39 @@ public class Range<E, D extends Comparable<? super D>> implements Serializable {
         from = null;
         to = null;
         includeNull = null;
+        includeFrom = true;
+        includeTo = true;
     }
 
     /**
-     * {@inheritDoc}
+     * @return whether from bound should included or not. Default is true.
      */
-    @Override
-    public String toString() {
-        return ToStringBuilder.reflectionToString(this, ToStringStyle.SHORT_PREFIX_STYLE);
+    public boolean isIncludeFrom() {
+        return includeFrom;
+    }
+
+    public void setIncludeFrom(boolean includeFrom) {
+        this.includeFrom = includeFrom;
+    }
+
+    public Range includeFrom(boolean includeFrom) {
+        setIncludeFrom(includeFrom);
+        return this;
+    }
+
+    /**
+     * @return whether to bound should included or not. Default is true.
+     */
+    public boolean isIncludeTo() {
+        return includeTo;
+    }
+
+    public void setIncludeTo(boolean includeTo) {
+        this.includeTo = includeTo;
+    }
+
+    public Range includeTo(boolean includeTo) {
+        setIncludeTo(includeTo);
+        return this;
     }
 }

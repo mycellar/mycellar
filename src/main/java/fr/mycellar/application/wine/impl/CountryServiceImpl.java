@@ -28,10 +28,10 @@ import fr.mycellar.application.wine.RegionService;
 import fr.mycellar.domain.shared.NamedEntity_;
 import fr.mycellar.domain.shared.exception.BusinessError;
 import fr.mycellar.domain.shared.exception.BusinessException;
-import fr.mycellar.domain.shared.repository.SearchParametersBuilder;
 import fr.mycellar.domain.wine.Country;
 import fr.mycellar.domain.wine.Region_;
 import fr.mycellar.domain.wine.repository.CountryRepository;
+import fr.mycellar.infrastructure.shared.repository.SearchParameters;
 
 /**
  * @author speralta
@@ -49,10 +49,7 @@ public class CountryServiceImpl extends AbstractSimpleService<Country, CountryRe
      */
     @Override
     public Country find(String name) {
-        return countryRepository.findUniqueOrNone( //
-                new SearchParametersBuilder() //
-                        .propertyWithValue(name, NamedEntity_.name) //
-                        .toSearchParameters());
+        return countryRepository.findUniqueOrNone(new SearchParameters().property(NamedEntity_.name, name));
     }
 
     /**
@@ -71,9 +68,7 @@ public class CountryServiceImpl extends AbstractSimpleService<Country, CountryRe
      */
     @Override
     protected void validateDelete(Country entity) throws BusinessException {
-        if (regionService.count(new SearchParametersBuilder() //
-                .propertyWithValue(entity, Region_.country) //
-                .toSearchParameters()) > 0) {
+        if (regionService.count(new SearchParameters().property(Region_.country, entity)) > 0) {
             throw new BusinessException(BusinessError.COUNTRY_00002);
         }
     }

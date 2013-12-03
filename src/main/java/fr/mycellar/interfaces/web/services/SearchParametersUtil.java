@@ -23,9 +23,9 @@ import java.util.List;
 import javax.inject.Named;
 import javax.inject.Singleton;
 
-import fr.mycellar.domain.shared.repository.SearchMode;
-import fr.mycellar.domain.shared.repository.SearchParameters;
-import fr.mycellar.domain.shared.repository.SearchParametersBuilder;
+import fr.mycellar.infrastructure.shared.repository.MetamodelUtil;
+import fr.mycellar.infrastructure.shared.repository.SearchMode;
+import fr.mycellar.infrastructure.shared.repository.SearchParameters;
 
 /**
  * @author speralta
@@ -33,6 +33,8 @@ import fr.mycellar.domain.shared.repository.SearchParametersBuilder;
 @Named
 @Singleton
 public class SearchParametersUtil {
+
+    private MetamodelUtil metamodelUtil;
 
     /**
      * @param first
@@ -42,18 +44,18 @@ public class SearchParametersUtil {
      * @return
      */
     public SearchParameters getSearchParametersForListWithCount(int first, int count, List<FilterCouple> filters, List<OrderCouple> orders, Class<?> clazz) {
-        SearchParametersBuilder searchParametersBuilder = new SearchParametersBuilder();
-        searchParametersBuilder.searchMode(SearchMode.ANYWHERE);
+        SearchParameters searchParameters = new SearchParameters();
+        searchParameters.searchMode(SearchMode.ANYWHERE);
         for (FilterCouple filter : filters) {
             if (filter.isFilterSet()) {
-                searchParametersBuilder.propertyWithValue(filter.getFilter(), clazz, filter.getProperty());
+                searchParameters.property(metamodelUtil.toAttribute(filter.getProperty(), clazz), filter.getFilter());
             }
         }
-        searchParametersBuilder.firstResult(first).maxResults(count);
+        searchParameters.firstResult(first).maxResults(count);
         for (OrderCouple order : orders) {
-            searchParametersBuilder.orderBy(order.getDirection(), clazz, order.getProperty());
+            searchParameters.orderBy(order.getDirection(), order.getProperty(), clazz);
         }
-        return searchParametersBuilder.toSearchParameters();
+        return searchParameters;
     }
 
 }

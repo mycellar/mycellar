@@ -34,8 +34,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import fr.mycellar.domain.admin.ConfigurationKeyEnum;
 import fr.mycellar.domain.admin.Configuration_;
-import fr.mycellar.domain.shared.repository.SearchParameters;
-import fr.mycellar.domain.shared.repository.SearchParametersBuilder;
+import fr.mycellar.infrastructure.shared.repository.SearchParameters;
 
 /**
  * @author speralta
@@ -63,9 +62,8 @@ public class JpaConfigurationRepositoryIT {
     @Rollback
     public void byPropertySelector() {
         assertThat(jpaConfigurationRepository.find( //
-                new SearchParametersBuilder() //
-                        .propertyWithValue(ConfigurationKeyEnum.MAIL_ADDRESS_SENDER, Configuration_.key) //
-                        .toSearchParameters()) //
+                new SearchParameters() //
+                        .property(Configuration_.key, ConfigurationKeyEnum.MAIL_ADDRESS_SENDER)) //
                 .size(), equalTo(1));
     }
 

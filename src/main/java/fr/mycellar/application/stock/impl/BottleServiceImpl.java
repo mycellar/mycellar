@@ -26,14 +26,12 @@ import fr.mycellar.application.shared.AbstractSimpleService;
 import fr.mycellar.application.stock.BottleService;
 import fr.mycellar.domain.shared.exception.BusinessError;
 import fr.mycellar.domain.shared.exception.BusinessException;
-import fr.mycellar.domain.shared.repository.SearchParametersBuilder;
 import fr.mycellar.domain.stock.Bottle;
 import fr.mycellar.domain.stock.Bottle_;
 import fr.mycellar.domain.stock.repository.BottleRepository;
 import fr.mycellar.domain.wine.Format;
-import fr.mycellar.domain.wine.Format_;
 import fr.mycellar.domain.wine.Wine;
-import fr.mycellar.domain.wine.Wine_;
+import fr.mycellar.infrastructure.shared.repository.SearchParameters;
 
 /**
  * @author speralta
@@ -60,10 +58,9 @@ public class BottleServiceImpl extends AbstractSimpleService<Bottle, BottleRepos
      */
     @Override
     public Bottle find(Wine wine, Format format) {
-        return bottleRepository.findUniqueOrNone(new SearchParametersBuilder() //
-                .propertyWithValue(format.getId(), Bottle_.format, Format_.id) //
-                .propertyWithValue(wine.getId(), Bottle_.wine, Wine_.id)//
-                .toSearchParameters());
+        return bottleRepository.findUniqueOrNone(new SearchParameters() //
+                .property(Bottle_.format, format) //
+                .property(Bottle_.wine, wine));
     }
 
     /**

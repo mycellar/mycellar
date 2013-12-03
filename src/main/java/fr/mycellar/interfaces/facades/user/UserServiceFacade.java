@@ -21,8 +21,8 @@ package fr.mycellar.interfaces.facades.user;
 import java.util.List;
 
 import fr.mycellar.domain.shared.exception.BusinessException;
-import fr.mycellar.domain.shared.repository.SearchParameters;
 import fr.mycellar.domain.user.User;
+import fr.mycellar.infrastructure.shared.repository.SearchParameters;
 
 /**
  * @author speralta

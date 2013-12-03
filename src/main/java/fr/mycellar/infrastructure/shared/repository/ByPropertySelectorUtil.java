@@ -1,5 +1,5 @@
 /*
- * Copyright 2011, MyCellar
+ * Copyright 2013, MyCellar
  *
  * This file is part of MyCellar.
  *
@@ -18,8 +18,6 @@
  */
 package fr.mycellar.infrastructure.shared.repository;
 
-import static com.google.common.collect.Lists.newArrayList;
-
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
@@ -32,9 +30,9 @@ import javax.persistence.criteria.Path;
 import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
 
+import org.springframework.util.CollectionUtils;
+
 import fr.mycellar.domain.shared.Identifiable;
-import fr.mycellar.domain.shared.repository.PropertySelector;
-import fr.mycellar.domain.shared.repository.SearchParameters;
 
 /**
  * Helper to create a predicate out of {@link PropertySelector}s.
@@ -49,12 +47,12 @@ public class ByPropertySelectorUtil {
 
     @SuppressWarnings("unchecked")
     public <E> Predicate byPropertySelectors(Root<E> root, CriteriaBuilder builder, SearchParameters sp) {
-        List<Predicate> predicates = newArrayList();
+        List<Predicate> predicates = new ArrayList<>();
 
         for (PropertySelector<?, ?> selector : sp.getProperties()) {
-            if (metamodelUtil.isBoolean(selector.getPath())) {
+            if (metamodelUtil.isBoolean(selector.getAttributes())) {
                 byBooleanSelector(root, builder, predicates, sp, (PropertySelector<? super E, Boolean>) selector);
-            } else if (metamodelUtil.isString(selector.getPath())) {
+            } else if (metamodelUtil.isString(selector.getAttributes())) {
                 byStringSelector(root, builder, predicates, sp, (PropertySelector<? super E, String>) selector);
             } else {
                 byObjectSelector(root, builder, predicates, sp, (PropertySelector<? super E, ?>) selector);
@@ -65,10 +63,10 @@ public class ByPropertySelectorUtil {
 
     private <E> void byBooleanSelector(Root<E> root, CriteriaBuilder builder, List<Predicate> predicates, SearchParameters sp, PropertySelector<? super E, Boolean> selector) {
         if (selector.isNotEmpty()) {
-            List<Predicate> selectorPredicates = newArrayList();
+            List<Predicate> selectorPredicates = new ArrayList<>();
 
             for (Boolean selection : selector.getSelected()) {
-                Path<Boolean> path = jpaUtil.getPath(root, selector.getPath());
+                Path<Boolean> path = jpaUtil.getPath(root, selector.getAttributes());
                 if (selection == null) {
                     selectorPredicates.add(builder.isNull(path));
                 } else {
@@ -76,25 +74,41 @@ public class ByPropertySelectorUtil {
                 }
             }
             if (selector.isOrMode()) {
-                predicates.add(jpaUtil.orPredicate(builder, selectorPredicates));
+                if (selector.isNotMode()) {
+                    predicates.add(builder.not(jpaUtil.orPredicate(builder, selectorPredicates)));
+                } else {
+                    predicates.add(jpaUtil.orPredicate(builder, selectorPredicates));
+                }
             } else {
-                predicates.add(jpaUtil.andPredicate(builder, selectorPredicates));
+                if (selector.isNotMode()) {
+                    predicates.add(jpaUtil.andNotPredicate(builder, selectorPredicates));
+                } else {
+                    predicates.add(jpaUtil.andPredicate(builder, selectorPredicates));
+                }
             }
         }
     }
 
     private <E> void byStringSelector(Root<E> root, CriteriaBuilder builder, List<Predicate> predicates, SearchParameters sp, PropertySelector<? super E, String> selector) {
         if (selector.isNotEmpty()) {
-            List<Predicate> selectorPredicates = newArrayList();
+            List<Predicate> selectorPredicates = new ArrayList<>();
 
             for (String selection : selector.getSelected()) {
-                Path<String> path = jpaUtil.getPath(root, selector.getPath());
-                selectorPredicates.add(jpaUtil.stringPredicate(path, selection, selector.getSearchMode(), sp, builder));
+                Path<String> path = jpaUtil.getPath(root, selector.getAttributes());
+                selectorPredicates.add(jpaUtil.stringPredicate(path, selection, selector.getSearchMode(), selector.isCaseSensitive(), sp, builder));
             }
             if (selector.isOrMode()) {
-                predicates.add(jpaUtil.orPredicate(builder, selectorPredicates));
+                if (selector.isNotMode()) {
+                    predicates.add(builder.not(jpaUtil.orPredicate(builder, selectorPredicates)));
+                } else {
+                    predicates.add(jpaUtil.orPredicate(builder, selectorPredicates));
+                }
             } else {
-                predicates.add(jpaUtil.andPredicate(builder, selectorPredicates));
+                if (selector.isNotMode()) {
+                    predicates.add(jpaUtil.andNotPredicate(builder, selectorPredicates));
+                } else {
+                    predicates.add(jpaUtil.andPredicate(builder, selectorPredicates));
+                }
             }
         }
     }
@@ -107,63 +121,65 @@ public class ByPropertySelectorUtil {
                 byObjectAndModeSelector(root, builder, predicates, sp, selector);
             }
         } else if (selector.isNotIncludingNullSet()) {
-            predicates.add(builder.isNotNull(jpaUtil.getPath(root, selector.getPath())));
+            predicates.add(builder.isNotNull(jpaUtil.getPath(root, selector.getAttributes())));
         }
     }
 
     private <E> void byObjectOrModeSelector(Root<E> root, CriteriaBuilder builder, List<Predicate> predicates, SearchParameters sp, PropertySelector<? super E, ?> selector) {
         List<Predicate> selectorPredicates = new ArrayList<>();
-        Path<?> path = jpaUtil.getPath(root, selector.getPath());
+        Path<?> path = jpaUtil.getPath(root, selector.getAttributes());
         List<?> selected = selector.getSelected();
         if (selector.getSelected().contains(null)) {
-            selected = newArrayList(selector.getSelected());
+            selected = new ArrayList<>(selector.getSelected());
             selected.remove(null);
             selectorPredicates.add(builder.isNull(path));
         }
-        if (selected.get(0) instanceof Identifiable) {
-            List<Serializable> ids = new ArrayList<>();
-            for (Object selection : selected) {
-                ids.add(((Identifiable<?>) selection).getId());
+        if (!CollectionUtils.isEmpty(selected)) {
+            if (selected.get(0) instanceof Identifiable) {
+                List<Serializable> ids = new ArrayList<>();
+                for (Object selection : selected) {
+                    ids.add(((Identifiable<?>) selection).getId());
+                }
+                selectorPredicates.add(path.get("id").in(ids));
+            } else {
+                selectorPredicates.add(path.in(selected));
             }
-            selectorPredicates.add(path.get("id").in(ids));
-        } else {
-            selectorPredicates.add(path.in(selected));
         }
-        predicates.add(jpaUtil.orPredicate(builder, selectorPredicates));
+        if (selector.isNotMode()) {
+            predicates.add(builder.not(jpaUtil.orPredicate(builder, selectorPredicates)));
+        } else {
+            predicates.add(jpaUtil.orPredicate(builder, selectorPredicates));
+        }
     }
 
     private <E> void byObjectAndModeSelector(Root<E> root, CriteriaBuilder builder, List<Predicate> predicates, SearchParameters sp, PropertySelector<? super E, ?> selector) {
-        List<Predicate> selectorPredicates = newArrayList();
+        List<Predicate> selectorPredicates = new ArrayList<>();
         List<?> selected = selector.getSelected();
         if (selector.getSelected().contains(null)) {
-            selected = newArrayList(selector.getSelected());
+            selected = new ArrayList<>(selector.getSelected());
             selected.remove(null);
-            selectorPredicates.add(builder.isNull(jpaUtil.getPath(root, selector.getPath())));
+            selectorPredicates.add(builder.isNull(jpaUtil.getPath(root, selector.getAttributes())));
         }
         for (Object selection : selector.getSelected()) {
-            Path<?> path = jpaUtil.getPath(root, selector.getPath());
+            Path<?> path = jpaUtil.getPath(root, selector.getAttributes());
             if (selection instanceof Identifiable) {
                 selectorPredicates.add(builder.equal(path.get("id"), ((Identifiable<?>) selection).getId()));
             } else {
                 selectorPredicates.add(builder.equal(path, selection));
             }
         }
-        predicates.add(jpaUtil.andPredicate(builder, selectorPredicates));
+        if (selector.isNotMode()) {
+            predicates.add(jpaUtil.andNotPredicate(builder, selectorPredicates));
+        } else {
+            predicates.add(jpaUtil.andPredicate(builder, selectorPredicates));
+        }
     }
 
-    /**
-     * @param jpaUtil
-     *            the jpaUtil to set
-     */
     @Inject
     public void setJpaUtil(JpaUtil jpaUtil) {
         this.jpaUtil = jpaUtil;
     }
 
-    /**
-     * @param metamodelUtil
-     *            the metamodelUtil to set
-     */
     @Inject
     public void setMetamodelUtil(MetamodelUtil metamodelUtil) {
         this.metamodelUtil = metamodelUtil;

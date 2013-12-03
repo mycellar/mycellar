@@ -19,9 +19,6 @@
 package fr.mycellar.infrastructure.shared.search;
 
 import org.apache.solr.analysis.ASCIIFoldingFilterFactory;
-import org.apache.solr.analysis.DoubleMetaphoneFilterFactory;
-import org.apache.solr.analysis.EdgeNGramFilterFactory;
-import org.apache.solr.analysis.FrenchLightStemFilterFactory;
 import org.apache.solr.analysis.LowerCaseFilterFactory;
 import org.apache.solr.analysis.NGramTokenizerFactory;
 import org.hibernate.search.annotations.Factory;
@@ -36,13 +33,9 @@ public class SearchMappingFactory {
     @Factory
     public SearchMapping getSearchMapping() {
         SearchMapping mapping = new SearchMapping();
-        mapping.analyzerDef("custom", NGramTokenizerFactory.class)
-                .tokenizerParam("maxGramSize", "40") //
+        mapping.analyzerDef("custom", NGramTokenizerFactory.class).tokenizerParam("maxGramSize", "40") //
                 .filter(ASCIIFoldingFilterFactory.class) //
-                .filter(LowerCaseFilterFactory.class) //
-                .filter(DoubleMetaphoneFilterFactory.class) //
-                .filter(FrenchLightStemFilterFactory.class) //
-                .filter(EdgeNGramFilterFactory.class).param("maxGramSize", "40");
+                .filter(LowerCaseFilterFactory.class);
         return mapping;
     }
 }

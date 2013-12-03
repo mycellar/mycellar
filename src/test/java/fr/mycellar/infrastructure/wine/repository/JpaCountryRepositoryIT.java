@@ -35,8 +35,8 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.transaction.annotation.Transactional;
 
 import fr.mycellar.domain.shared.NamedEntity_;
-import fr.mycellar.domain.shared.repository.SearchParametersBuilder;
 import fr.mycellar.domain.wine.Country;
+import fr.mycellar.infrastructure.shared.repository.SearchParameters;
 
 /**
  * @author speralta
@@ -62,9 +62,8 @@ public class JpaCountryRepositoryIT {
         fullTextEntityManager.flushToIndexes();
 
         assertThat(jpaCountryRepository.find( //
-                new SearchParametersBuilder() //
-                        .term(NamedEntity_.name, "Fiance") //
-                        .toSearchParameters()) //
+                new SearchParameters() //
+                        .term(NamedEntity_.name, "Fiance")) //
                 .size(), equalTo(1));
     }
 
