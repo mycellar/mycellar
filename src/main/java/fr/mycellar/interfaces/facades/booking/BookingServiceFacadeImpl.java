@@ -162,6 +162,32 @@ public class BookingServiceFacadeImpl implements BookingServiceFacade {
      * {@inheritDoc}
      */
     @Override
+    @Transactional(readOnly = true)
+    public List<Booking> getBookingsByBookingBottleId(Integer bookingBottleId) {
+        List<Booking> bookings = bookingService.getAllByBookingBottleId(bookingBottleId);
+        for (Booking booking : bookings) {
+            updateBooking(booking);
+        }
+        return bookings;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    @Transactional(readOnly = true)
+    public List<Booking> getBookingsByBookingEventId(Integer bookingEventId) {
+        List<Booking> bookings = bookingService.getAllByBookingEventId(bookingEventId);
+        for (Booking booking : bookings) {
+            updateBooking(booking);
+        }
+        return bookings;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
     @Transactional
     public Booking saveBooking(Booking booking) throws BusinessException {
         return bookingService.saveOrDelete(booking);

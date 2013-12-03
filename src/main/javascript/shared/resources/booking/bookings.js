@@ -8,6 +8,16 @@ angular.module('mycellar.resources.booking.bookings').factory('Bookings', [
       getAllForCurrentUser: {
         url: '/api/booking/bookings',
         method: 'GET'
+      },
+      getByBookingBottleId: {
+        url: '/api/booking/bookingsByBottle?bookingBottleId=:bookingBottleId',
+        method: 'GET',
+        isArray: true
+      },
+      getByBookingEventId: {
+        url: '/api/booking/bookingsByEvent?bookingEventId=:bookingEventId',
+        method: 'GET',
+        isArray: true
       }
     });
     var Booking = $resource('/api/domain/booking/booking/:bookingId', {}, {
@@ -16,11 +26,11 @@ angular.module('mycellar.resources.booking.bookings').factory('Bookings', [
         method: 'GET'
       }
     });
-    
+
     Bookings.deleteById = function(id, fn) {
       return Booking.delete({bookingId: id}, fn);
     };
-    
+
     Bookings.count = function () {
       var deferred = $q.defer();
       Bookings.get({count: 0}, function(result) {
@@ -36,11 +46,11 @@ angular.module('mycellar.resources.booking.bookings').factory('Bookings', [
     Bookings.getByBookingEventForCurrentUser = function(bookingEvent) {
       return Booking.getByBookingEventForCurrentUser({'bookingEventId': bookingEvent.id});
     };
-    
+
     Bookings.getById = function(id) {
       return Booking.get({bookingId: id});
     };
-    
+
     Bookings.new = function() {
       return new Booking();
     };

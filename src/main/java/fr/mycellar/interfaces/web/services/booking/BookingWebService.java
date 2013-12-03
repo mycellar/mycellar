@@ -18,6 +18,7 @@
  */
 package fr.mycellar.interfaces.web.services.booking;
 
+import java.util.List;
 import java.util.Map;
 
 import javax.inject.Inject;
@@ -61,6 +62,14 @@ public class BookingWebService {
 
     @GET
     @Produces(MediaType.APPLICATION_JSON)
+    @Path("bookingsByEvent")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    public List<Booking> getBookingsByBookingEvent(@QueryParam("bookingEventId") Integer bookingEventId) {
+        return bookingServiceFacade.getBookingsByBookingEventId(bookingEventId);
+    }
+
+    @GET
+    @Produces(MediaType.APPLICATION_JSON)
     @Path("currentBookingEvents")
     @PreAuthorize("hasRole('ROLE_BOOKING')")
     public ListWithCount<BookingEvent> getCurrentBookingEvents() {
@@ -73,6 +82,14 @@ public class BookingWebService {
     @PreAuthorize("hasRole('ROLE_BOOKING')")
     public Booking getBooking(@QueryParam("bookingEventId") Integer bookingEventId) {
         return bookingServiceFacade.getBooking(bookingServiceFacade.getBookingEventById(bookingEventId), currentUserService.getCurrentUser());
+    }
+
+    @GET
+    @Produces(MediaType.APPLICATION_JSON)
+    @Path("bookingsByBottle")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    public List<Booking> getBookingsByBookingBottle(@QueryParam("bookingBottleId") Integer bookingBottleId) {
+        return bookingServiceFacade.getBookingsByBookingBottleId(bookingBottleId);
     }
 
     @GET

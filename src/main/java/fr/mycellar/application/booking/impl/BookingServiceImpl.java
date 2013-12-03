@@ -35,6 +35,7 @@ import fr.mycellar.domain.booking.BookingEvent_;
 import fr.mycellar.domain.booking.Booking_;
 import fr.mycellar.domain.booking.repository.BookingRepository;
 import fr.mycellar.domain.shared.exception.BusinessException;
+import fr.mycellar.domain.shared.repository.PropertySelector;
 import fr.mycellar.domain.shared.repository.SearchParametersBuilder;
 import fr.mycellar.domain.user.User;
 import fr.mycellar.domain.user.User_;
@@ -102,6 +103,24 @@ public class BookingServiceImpl extends AbstractSimpleService<Booking, BookingRe
             booking.setBookingEvent(bookingEvent);
         }
         return booking;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public List<Booking> getAllByBookingBottleId(Integer bookingBottleId) {
+        return bookingRepository.getAllByBookingBottleId(bookingBottleId);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public List<Booking> getAllByBookingEventId(Integer bookingEventId) {
+        return bookingRepository.find(new SearchParametersBuilder() //
+                .property(new PropertySelector<Booking, Integer>(Booking_.bookingEvent, BookingEvent_.id).selected(bookingEventId)) //
+                .toSearchParameters());
     }
 
     /**

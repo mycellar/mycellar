@@ -122,4 +122,16 @@ public interface BookingServiceFacade {
      */
     Map<BookingBottle, Long> getBookingsQuantities(BookingEvent bookingEvent);
 
+    /**
+     * @param bookingBottleId
+     * @return
+     */
+    List<Booking> getBookingsByBookingBottleId(Integer bookingBottleId);
+
+    /**
+     * @param bookingEventId
+     * @return
+     */
+    List<Booking> getBookingsByBookingEventId(Integer bookingEventId);
+
 }

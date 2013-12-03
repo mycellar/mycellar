@@ -10,4 +10,8 @@ angular.module('mycellar').filter('wineRenderer', function() {
   return function(format) {
     return format.name + ' (' + format.capacity + 'L)';
   }
+}).filter('customerRenderer', function() {
+  return function(customer) {
+    return customer.lastname + ' ' + customer.firstname;
+  }
 });

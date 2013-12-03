@@ -18,6 +18,7 @@
  */
 package fr.mycellar.domain.booking.repository;
 
+import java.util.List;
 import java.util.Map;
 
 import fr.mycellar.domain.booking.Booking;
@@ -35,5 +36,11 @@ public interface BookingRepository extends SimpleRepository<Booking> {
      * @return
      */
     Map<BookingBottle, Long> getQuantities(BookingEvent bookingEvent);
+
+    /**
+     * @param bookingBottleId
+     * @return
+     */
+    List<Booking> getAllByBookingBottleId(Integer bookingBottleId);
 
 }

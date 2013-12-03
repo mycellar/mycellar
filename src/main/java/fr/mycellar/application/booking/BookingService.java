@@ -58,4 +58,16 @@ public interface BookingService extends SimpleService<Booking> {
      */
     Map<BookingBottle, Long> getQuantities(BookingEvent bookingEvent);
 
+    /**
+     * @param bookingBottleId
+     * @return
+     */
+    List<Booking> getAllByBookingBottleId(Integer bookingBottleId);
+
+    /**
+     * @param bookingEventId
+     * @return
+     */
+    List<Booking> getAllByBookingEventId(Integer bookingEventId);
+
 }

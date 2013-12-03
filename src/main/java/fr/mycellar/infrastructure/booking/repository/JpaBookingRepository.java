@@ -27,11 +27,13 @@ import javax.inject.Named;
 import javax.inject.Singleton;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.MapJoin;
 import javax.persistence.criteria.Root;
 
 import fr.mycellar.domain.booking.Booking;
 import fr.mycellar.domain.booking.BookingBottle;
 import fr.mycellar.domain.booking.BookingEvent;
+import fr.mycellar.domain.booking.Booking_;
 import fr.mycellar.domain.booking.repository.BookingRepository;
 import fr.mycellar.infrastructure.shared.repository.JpaSimpleRepository;
 
@@ -57,20 +59,33 @@ public class JpaBookingRepository extends JpaSimpleRepository<Booking> implement
         CriteriaBuilder criteriaBuilder = getEntityManager().getCriteriaBuilder();
         CriteriaQuery<Booking> query = criteriaBuilder.createQuery(Booking.class);
         Root<Booking> root = query.from(Booking.class);
-        List<Booking> bookings = getEntityManager().createQuery(
-                query.where(criteriaBuilder.equal(root.get("bookingEvent"), bookingEvent)))
-                .getResultList();
+        List<Booking> bookings = getEntityManager().createQuery(query.where(criteriaBuilder.equal(root.get(Booking_.bookingEvent), bookingEvent))).getResultList();
         Map<BookingBottle, Long> result = new LinkedHashMap<BookingBottle, Long>();
         for (BookingBottle bottle : bookingEvent.getBottles()) {
             result.put(bottle, 0l);
         }
         for (Booking booking : bookings) {
             for (Entry<BookingBottle, Integer> quantities : booking.getQuantities().entrySet()) {
-                result.put(quantities.getKey(),
-                        result.get(quantities.getKey()) + quantities.getValue());
+                result.put(quantities.getKey(), result.get(quantities.getKey()) + quantities.getValue());
             }
         }
         return result;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public List<Booking> getAllByBookingBottleId(Integer bookingBottleId) {
+        BookingBottle bookingBottle = getEntityManager().find(BookingBottle.class, bookingBottleId);
+        CriteriaBuilder criteriaBuilder = getEntityManager().getCriteriaBuilder();
+        CriteriaQuery<Booking> query = criteriaBuilder.createQuery(Booking.class);
+        Root<Booking> root = query.from(Booking.class);
+        MapJoin<Booking, BookingBottle, Integer> quantities = root.join(Booking_.quantities);
+        return getEntityManager().createQuery(query.where( //
+                criteriaBuilder.equal(quantities.key(), bookingBottle), //
+                criteriaBuilder.notEqual(quantities.value(), 0) //
+                )).getResultList();
     }
 
 }

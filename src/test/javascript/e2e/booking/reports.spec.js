@@ -12,6 +12,33 @@ describe('E2E: Testing booking reports', function() {
     logout();
   });
 
+  it('should display the report of the selected booking event', function() {
+    login('test@test.com', 'test');
+
+    var page = new BookingReportsPage();
+    page.get();
+
+    expect(page.eventName.getText()).toMatch(page.firstLine.getText());
+    page.secondLine.click();
+    expect(page.eventName.getText()).toMatch(page.secondLine.getText());
+    page.firstLine.click();
+    expect(page.eventName.getText()).toMatch(page.firstLine.getText());
+
+    logout();
+  });
+
+  it('should display the customers of the selected booking line', function() {
+    login('test@test.com', 'test');
+
+    var page = new BookingReportsPage();
+    page.get();
+
+    page.firstBottleButton.click();
+    expect(page.bottleName.getText()).toMatch(page.firstBottleText.getText());
+
+    logout();
+  });
+
 });
 
 var BookingReportsPage = function() {
@@ -20,7 +47,12 @@ var BookingReportsPage = function() {
   };
 
   this.title = element(by.xpath('//header/h1'));
-
+  this.firstLine = element(by.xpath('/html/body/div[2]/div[2]/div/div[1]/nav/ul[2]/li[1]/a'));
+  this.secondLine = element(by.xpath('/html/body/div[2]/div[2]/div/div[1]/nav/ul[2]/li[2]/a'));
+  this.eventName = element(by.xpath('//section//h2'));
+  this.firstBottleButton = element(by.xpath('//section/table/tbody/tr[1]/td[1]/a'));
+  this.firstBottleText = element(by.xpath('//section[1]/table/tbody/tr[1]/td[2]'));
+  this.bottleName = element(by.xpath('//section[2]/h3'));
 };
 
 function login(mail, password) {
