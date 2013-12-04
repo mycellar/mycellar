@@ -1,21 +1,23 @@
+var LoginTool = require('./tools/login.tool');
+
 describe('E2E: Testing account', function() {
 
   it('should load the account page', function() {
-    login('test@test.com', 'test');
-    
+    LoginTool.login();
+
     var page = new AccountPage();
     page.get();
 
     expect(browser.driver.getCurrentUrl()).toMatch(/account/);
     expect(page.title.isDisplayed()).toBe(true);
     expect(page.title.getText()).toEqual('Mon compte');
-    
-    logout();
+
+    LoginTool.logout();
   });
 
   it('should change email', function() {
-    login('test@test.com', 'test');
-    
+    LoginTool.loginWith('test@test.com', 'test');
+
     var page = new AccountPage();
     page.get();
 
@@ -39,13 +41,13 @@ describe('E2E: Testing account', function() {
     page.doChangeEmail.click();
     page.get();
     expect(page.email.getText()).toEqual('test@test.com');
-    
-    logout();
+
+    LoginTool.logout();
   });
 
   it('should change password', function() {
-    login('test@test.com', 'test');
-    
+    LoginTool.loginWith('test@test.com', 'test');
+
     var page = new AccountPage();
     page.get();
 
@@ -58,8 +60,9 @@ describe('E2E: Testing account', function() {
     page.password1.sendKeys('test2');
     page.password2.sendKeys('test2');
     page.doChangePassword.click();
-    logout();
-    login('test@test.com', 'test2');
+
+    LoginTool.logout();
+    LoginTool.loginWith('test@test.com', 'test2');
 
     // rollback change
     page.get();
@@ -68,7 +71,8 @@ describe('E2E: Testing account', function() {
     page.password1.sendKeys('test');
     page.password2.sendKeys('test');
     page.doChangePassword.click();
-    logout();
+
+    LoginTool.logout();
   });
 
 });
@@ -91,17 +95,3 @@ var AccountPage = function() {
   this.password2 = element(by.xpath('//form[@name="changePasswordForm"]//input[@id="password2"]'));
   this.doChangePassword = element(by.xpath('//form[@name="changePasswordForm"]//input[@type="submit"]'));
 };
-
-function login(mail, password) {
-  browser.get('/');
-  element(by.xpath('//form[@name="loginForm"]//input[@id="email"]')).sendKeys(mail);
-  element(by.xpath('//form[@name="loginForm"]//input[@id="password"]')).sendKeys(password);
-  element(by.xpath('//form[@name="loginForm"]//input[@type="submit"]')).click();
-  expect(element(by.xpath('//a[@title="Mon compte"]')).getText()).toEqual(mail);
-}
-
-function logout() {
-  browser.get('/');
-  element(by.xpath('//a[@title="Se déconnecter"]')).click();
-  expect(element(by.xpath('//a[@title="Se déconnecter"]')).isDisplayed()).toBe(false);
-}

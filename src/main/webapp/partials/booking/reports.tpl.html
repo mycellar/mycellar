@@ -113,7 +113,7 @@
         </tfoot>
       </table>
     </section>
-    <section>
+    <section ng-if="!loading && allBookings != null && allBookings.length != 0">
       <h3>Réservations</h3>
       <table class="table table-bordered table-striped table-condensed">
         <thead>

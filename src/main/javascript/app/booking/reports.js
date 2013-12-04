@@ -22,9 +22,12 @@ angular.module('mycellar.controllers.booking.reports').controller('BookingReport
         count: $scope.itemsPerPage,
         sort: ['start,desc']
       }, function(value) {
+        if (value.list != null && value.list.length > 0) {
+          $scope.selectBookingEvent(value.list[0]);
+        }
+
         $scope.pageCount = Math.ceil(value.count / $scope.itemsPerPage);
         $scope.bookingEvents = value.list;
-        $scope.selectBookingEvent($scope.bookingEvents[0]);
         $scope.totalItems = value.count;
       });
     };
