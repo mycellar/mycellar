@@ -46,9 +46,6 @@ public class BusinessExceptionMapper implements ExceptionMapper<BusinessExceptio
 
     private static Logger logger = LoggerFactory.getLogger(BusinessExceptionMapper.class);
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public Response toResponse(BusinessException exception) {
         logger.debug("BusinessException thrown in web service.", exception);
@@ -56,8 +53,7 @@ public class BusinessExceptionMapper implements ExceptionMapper<BusinessExceptio
         for (Attribute<?, ?> attribute : exception.getBusinessError().getProperties()) {
             properties.add(attribute.getName());
         }
-        return Response.status(Status.BAD_REQUEST).type(MediaType.APPLICATION_JSON)
-                .entity(new ErrorHolder(properties, exception.getBusinessError().getKey())).build();
+        return Response.status(Status.BAD_REQUEST).type(MediaType.APPLICATION_JSON).entity(new ErrorHolder(properties, exception.getBusinessError().getKey())).build();
     }
 
 }

@@ -46,9 +46,6 @@ public class ThrowableMapper implements ExceptionMapper<Throwable> {
 
     private StackServiceFacade stackServiceFacade;
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public Response toResponse(Throwable throwable) {
         if (throwable instanceof AccessDeniedException) {
@@ -60,10 +57,6 @@ public class ThrowableMapper implements ExceptionMapper<Throwable> {
                 .entity(new InternalErrorHolder(throwable.getMessage() != null ? throwable.getMessage() : "Internal error.")).build();
     }
 
-    /**
-     * @param stackServiceFacade
-     *            the stackServiceFacade to set
-     */
     @Inject
     public void setStackServiceFacade(StackServiceFacade stackServiceFacade) {
         this.stackServiceFacade = stackServiceFacade;

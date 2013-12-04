@@ -30,9 +30,6 @@ public class BookingBottlePositionComparator implements Comparator<BookingBottle
 
     private static final long serialVersionUID = 201205301634L;
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public int compare(BookingBottle o1, BookingBottle o2) {
         if ((o1 == null) && (o2 == null)) {

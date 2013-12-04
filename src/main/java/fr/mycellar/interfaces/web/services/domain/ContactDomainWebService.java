@@ -103,19 +103,11 @@ public class ContactDomainWebService {
 
     // BEANS Methods
 
-    /**
-     * @param contactServiceFacade
-     *            the contactServiceFacade to set
-     */
     @Inject
     public void setContactServiceFacade(ContactServiceFacade contactServiceFacade) {
         this.contactServiceFacade = contactServiceFacade;
     }
 
-    /**
-     * @param searchParametersUtil
-     *            the searchParametersUtil to set
-     */
     @Inject
     public void setSearchParametersUtil(SearchParametersUtil searchParametersUtil) {
         this.searchParametersUtil = searchParametersUtil;

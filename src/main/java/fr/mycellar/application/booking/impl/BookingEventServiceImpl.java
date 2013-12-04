@@ -50,9 +50,6 @@ public class BookingEventServiceImpl extends AbstractSimpleService<BookingEvent,
 
     private BookingService bookingService;
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public List<BookingEvent> getCurrentBookingEvents() {
         return bookingEventRepository.find(new SearchParameters() //
@@ -60,9 +57,6 @@ public class BookingEventServiceImpl extends AbstractSimpleService<BookingEvent,
                         new Range<BookingEvent, LocalDate>(new LocalDate(), null, BookingEvent_.end)));
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public List<BookingEvent> getAllLike(String term) {
         BookingEvent bookingEvent = new BookingEvent();
@@ -70,17 +64,11 @@ public class BookingEventServiceImpl extends AbstractSimpleService<BookingEvent,
         return bookingEventRepository.find(new SearchParameters().term(NamedEntity_.name, term));
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public void validate(BookingEvent entity) throws BusinessException {
 
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     protected void validateDelete(BookingEvent entity) throws BusinessException {
         if (bookingService.count(new SearchParameters() //
@@ -89,27 +77,16 @@ public class BookingEventServiceImpl extends AbstractSimpleService<BookingEvent,
         }
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     protected BookingEventRepository getRepository() {
         return bookingEventRepository;
     }
 
-    /**
-     * @param bookingEventRepository
-     *            the bookingEventRepository to set
-     */
     @Inject
     public void setBookingEventRepository(BookingEventRepository bookingEventRepository) {
         this.bookingEventRepository = bookingEventRepository;
     }
 
-    /**
-     * @param bookingService
-     *            the bookingService to set
-     */
     @Inject
     public void setBookingService(BookingService bookingService) {
         this.bookingService = bookingService;

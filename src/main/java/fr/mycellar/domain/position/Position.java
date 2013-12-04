@@ -52,18 +52,10 @@ public class Position implements Serializable {
         return longitude;
     }
 
-    /**
-     * @param latitude
-     *            the latitude to set
-     */
     public void setLatitude(float latitude) {
         this.latitude = latitude;
     }
 
-    /**
-     * @param longitude
-     *            the longitude to set
-     */
     public void setLongitude(float longitude) {
         this.longitude = longitude;
     }

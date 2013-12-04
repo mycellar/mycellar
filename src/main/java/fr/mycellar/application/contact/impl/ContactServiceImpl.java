@@ -55,25 +55,16 @@ public class ContactServiceImpl extends AbstractSimpleService<Contact, ContactRe
 
     private JavaMailSender javaMailSender;
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public long countLastContacts(SearchParameters searchParameters) {
         return contactRepository.countLastContacts(searchParameters);
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public List<Contact> getLastContacts(SearchParameters searchParameters) {
         return contactRepository.getLastContacts(searchParameters);
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     @Scheduled(cron = "0 0 0 * * *")
     public void sendReminders() {
@@ -103,9 +94,6 @@ public class ContactServiceImpl extends AbstractSimpleService<Contact, ContactRe
         }
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public void validate(Contact entity) throws BusinessException {
         if (entity.getProducer() == null) {
@@ -132,36 +120,21 @@ public class ContactServiceImpl extends AbstractSimpleService<Contact, ContactRe
                 .property(Contact_.current, current));
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     protected ContactRepository getRepository() {
         return contactRepository;
     }
 
-    /**
-     * @param contactRepository
-     *            the contactRepository to set
-     */
     @Inject
     public void setContactRepository(ContactRepository contactRepository) {
         this.contactRepository = contactRepository;
     }
 
-    /**
-     * @param javaMailSender
-     *            the javaMailSender to set
-     */
     @Inject
     public void setJavaMailSender(JavaMailSender javaMailSender) {
         this.javaMailSender = javaMailSender;
     }
 
-    /**
-     * @param configurationService
-     *            the configurationService to set
-     */
     @Inject
     public void setConfigurationService(ConfigurationService configurationService) {
         this.configurationService = configurationService;

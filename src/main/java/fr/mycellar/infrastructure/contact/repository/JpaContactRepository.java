@@ -53,9 +53,6 @@ public class JpaContactRepository extends JpaSimpleRepository<Contact> implement
         super(Contact.class);
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public long countLastContacts(SearchParameters searchParameters) {
         CriteriaBuilder criteriaBuilder = getEntityManager().getCriteriaBuilder();
@@ -75,9 +72,6 @@ public class JpaContactRepository extends JpaSimpleRepository<Contact> implement
         return getEntityManager().createQuery(query.select(criteriaBuilder.count(root)).where(predicate)).getSingleResult();
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public List<Contact> getLastContacts(SearchParameters searchParameters) {
         CriteriaBuilder criteriaBuilder = getEntityManager().getCriteriaBuilder();
@@ -107,9 +101,6 @@ public class JpaContactRepository extends JpaSimpleRepository<Contact> implement
         return result;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public List<Contact> getAllToContact() {
         CriteriaBuilder criteriaBuilder = getEntityManager().getCriteriaBuilder();

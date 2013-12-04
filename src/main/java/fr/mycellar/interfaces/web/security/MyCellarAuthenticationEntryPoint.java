@@ -41,9 +41,6 @@ public class MyCellarAuthenticationEntryPoint extends LoginUrlAuthenticationEntr
         super(loginFormUrl);
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public void commence(HttpServletRequest request, HttpServletResponse response, AuthenticationException authException) throws IOException, ServletException {
         if (request.getServletPath().startsWith("/partials") || request.getServletPath().startsWith("/api")) {

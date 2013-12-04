@@ -51,26 +51,14 @@ public class ArrivalBottle implements Serializable {
         return quantity;
     }
 
-    /**
-     * @param bottle
-     *            the bottle to set
-     */
     public void setBottle(Bottle bottle) {
         this.bottle = bottle;
     }
 
-    /**
-     * @param price
-     *            the price to set
-     */
     public void setPrice(float price) {
         this.price = price;
     }
 
-    /**
-     * @param quantity
-     *            the quantity to set
-     */
     public void setQuantity(Integer quantity) {
         this.quantity = quantity;
     }

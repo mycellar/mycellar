@@ -45,9 +45,6 @@ public class RegionServiceImpl extends AbstractSimpleService<Region, RegionRepos
 
     private AppellationService appellationService;
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public void validate(Region entity) throws BusinessException {
         if (entity.getCountry() == null) {
@@ -61,9 +58,6 @@ public class RegionServiceImpl extends AbstractSimpleService<Region, RegionRepos
         }
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     protected void validateDelete(Region entity) throws BusinessException {
         if (appellationService.count(new SearchParameters() //
@@ -72,27 +66,16 @@ public class RegionServiceImpl extends AbstractSimpleService<Region, RegionRepos
         }
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     protected RegionRepository getRepository() {
         return regionRepository;
     }
 
-    /**
-     * @param regionRepository
-     *            the regionRepository to set
-     */
     @Inject
     public void setRegionRepository(RegionRepository regionRepository) {
         this.regionRepository = regionRepository;
     }
 
-    /**
-     * @param appellationService
-     *            the appellationService to set
-     */
     @Inject
     public void setAppellationService(AppellationService appellationService) {
         this.appellationService = appellationService;

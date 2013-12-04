@@ -18,7 +18,6 @@
  */
 package fr.mycellar.interfaces.web.services;
 
-
 /**
  * @author speralta
  */

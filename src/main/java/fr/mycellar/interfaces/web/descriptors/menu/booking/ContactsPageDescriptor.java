@@ -28,41 +28,26 @@ import fr.mycellar.interfaces.web.descriptors.shared.AbstractDescriptor;
  */
 @Component
 public class ContactsPageDescriptor extends AbstractDescriptor implements IMenuDescriptor {
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public String getIcon() {
         return "shopping-cart";
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public String getRoute() {
         return "/booking/contacts";
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public String getTitleKey() {
         return "manageContacts";
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public String getParentKey() {
         return "bookingMenuHeader";
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public int getWeight() {
         return 6600;

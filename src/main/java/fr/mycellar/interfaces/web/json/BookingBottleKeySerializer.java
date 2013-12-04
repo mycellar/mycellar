@@ -37,9 +37,6 @@ import fr.mycellar.domain.booking.BookingBottle;
 @Singleton
 public class BookingBottleKeySerializer extends JsonSerializer<BookingBottle> {
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public void serialize(BookingBottle value, JsonGenerator jgen, SerializerProvider provider) throws IOException, JsonProcessingException {
         jgen.writeFieldName(value.getBookingEvent().getId().toString() + "-" + value.getId().toString());

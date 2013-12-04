@@ -47,18 +47,12 @@ public class BookingServiceFacadeImpl implements BookingServiceFacade {
 
     private BookingService bookingService;
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     @Transactional(readOnly = true)
     public Map<BookingBottle, Long> getBookingsQuantities(BookingEvent bookingEvent) {
         return bookingService.getQuantities(bookingEvent);
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     @Transactional(readOnly = true)
     public Booking getBooking(BookingEvent bookingEvent, User customer) {
@@ -67,18 +61,12 @@ public class BookingServiceFacadeImpl implements BookingServiceFacade {
         return booking;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     @Transactional(readOnly = true)
     public List<BookingEvent> getCurrentBookingEvents() {
         return bookingEventService.getCurrentBookingEvents();
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     @Transactional(readOnly = true)
     public List<Booking> getBookings(User customer) {
@@ -89,36 +77,24 @@ public class BookingServiceFacadeImpl implements BookingServiceFacade {
         return bookings;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     @Transactional(readOnly = true)
     public List<BookingEvent> getBookingEventsLike(String term) {
         return bookingEventService.getAllLike(term);
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     @Transactional(readOnly = true)
     public long countBookingEvents(SearchParameters searchParameters) {
         return bookingEventService.count(searchParameters);
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     @Transactional(readOnly = true)
     public long countBookings(SearchParameters searchParameters) {
         return bookingService.count(searchParameters);
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     @Transactional(readOnly = true)
     public Booking getBookingById(Integer bookingId) {
@@ -127,27 +103,18 @@ public class BookingServiceFacadeImpl implements BookingServiceFacade {
         return booking;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     @Transactional(readOnly = true)
     public BookingEvent getBookingEventById(Integer bookingEventId) {
         return bookingEventService.getById(bookingEventId);
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     @Transactional(readOnly = true)
     public List<BookingEvent> getBookingEvents(SearchParameters searchParameters) {
         return bookingEventService.find(searchParameters);
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     @Transactional(readOnly = true)
     public List<Booking> getBookings(SearchParameters searchParameters) {
@@ -158,9 +125,6 @@ public class BookingServiceFacadeImpl implements BookingServiceFacade {
         return bookings;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     @Transactional(readOnly = true)
     public List<Booking> getBookingsByBookingBottleId(Integer bookingBottleId) {
@@ -171,9 +135,6 @@ public class BookingServiceFacadeImpl implements BookingServiceFacade {
         return bookings;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     @Transactional(readOnly = true)
     public List<Booking> getBookingsByBookingEventId(Integer bookingEventId) {
@@ -184,36 +145,24 @@ public class BookingServiceFacadeImpl implements BookingServiceFacade {
         return bookings;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     @Transactional
     public Booking saveBooking(Booking booking) throws BusinessException {
         return bookingService.saveOrDelete(booking);
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     @Transactional
     public BookingEvent saveBookingEvent(BookingEvent bookingEvent) throws BusinessException {
         return bookingEventService.save(bookingEvent);
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     @Transactional
     public void deleteBooking(Booking booking) throws BusinessException {
         bookingService.delete(booking);
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     @Transactional
     public void deleteBookingEvent(BookingEvent bookingEvent) throws BusinessException {
@@ -233,19 +182,11 @@ public class BookingServiceFacadeImpl implements BookingServiceFacade {
         }
     }
 
-    /**
-     * @param bookingEventService
-     *            the bookingEventService to set
-     */
     @Inject
     public void setBookingEventService(BookingEventService bookingEventService) {
         this.bookingEventService = bookingEventService;
     }
 
-    /**
-     * @param bookingService
-     *            the bookingService to set
-     */
     @Inject
     public void setBookingService(BookingService bookingService) {
         this.bookingService = bookingService;

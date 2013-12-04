@@ -61,10 +61,6 @@ public class Configuration extends IdentifiedEntity {
         return key;
     }
 
-    /**
-     * @param key
-     *            the key to set
-     */
     public void setKey(ConfigurationKeyEnum key) {
         this.key = key;
     }
@@ -76,42 +72,26 @@ public class Configuration extends IdentifiedEntity {
         return value;
     }
 
-    /**
-     * @param value
-     *            the value to set
-     */
     public void setValue(String value) {
         this.value = value;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public Integer getId() {
         return id;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     protected boolean dataEquals(IdentifiedEntity other) {
         Configuration configuration = (Configuration) other;
         return ObjectUtils.equals(getKey(), configuration.getKey());
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     protected Object[] getHashCodeData() {
         return new Object[] { getKey() };
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public String toString() {
         return new ToStringBuilder(this).appendSuper(super.toString()).append("key", key).append("value", value).build();

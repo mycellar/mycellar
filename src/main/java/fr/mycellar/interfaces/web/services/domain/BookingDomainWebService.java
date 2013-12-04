@@ -144,19 +144,11 @@ public class BookingDomainWebService {
 
     // BEANS Methods
 
-    /**
-     * @param bookingServiceFacade
-     *            the bookingServiceFacade to set
-     */
     @Inject
     public void setBookingServiceFacade(BookingServiceFacade bookingServiceFacade) {
         this.bookingServiceFacade = bookingServiceFacade;
     }
 
-    /**
-     * @param searchParametersUtil
-     *            the searchParametersUtil to set
-     */
     @Inject
     public void setSearchParametersUtil(SearchParametersUtil searchParametersUtil) {
         this.searchParametersUtil = searchParametersUtil;

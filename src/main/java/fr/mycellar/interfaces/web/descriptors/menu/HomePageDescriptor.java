@@ -29,41 +29,26 @@ import fr.mycellar.interfaces.web.descriptors.shared.AbstractDescriptor;
 @Component
 public class HomePageDescriptor extends AbstractDescriptor implements IMenuDescriptor {
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public String getIcon() {
         return "home";
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public String getRoute() {
         return "/home";
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public String getTitleKey() {
         return "home";
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public String getParentKey() {
         return null;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public int getWeight() {
         return 1000;

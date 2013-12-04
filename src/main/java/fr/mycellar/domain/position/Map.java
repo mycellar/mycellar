@@ -56,18 +56,10 @@ public class Map implements Serializable {
         return position;
     }
 
-    /**
-     * @param image
-     *            the image to set
-     */
     public void setImage(Image image) {
         this.image = image;
     }
 
-    /**
-     * @param position
-     *            the position to set
-     */
     public void setPosition(Position position) {
         this.position = position;
     }

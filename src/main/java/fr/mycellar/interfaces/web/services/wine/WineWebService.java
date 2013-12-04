@@ -63,19 +63,11 @@ public class WineWebService {
         return new ListWithCount<>(wineServiceFacade.countWines(searchParameters), wines);
     }
 
-    /**
-     * @param searchParametersUtil
-     *            the searchParametersUtil to set
-     */
     @Inject
     public void setSearchParametersUtil(SearchParametersUtil searchParametersUtil) {
         this.searchParametersUtil = searchParametersUtil;
     }
 
-    /**
-     * @param wineServiceFacade
-     *            the wineServiceFacade to set
-     */
     @Inject
     public void setWineServiceFacade(WineServiceFacade wineServiceFacade) {
         this.wineServiceFacade = wineServiceFacade;

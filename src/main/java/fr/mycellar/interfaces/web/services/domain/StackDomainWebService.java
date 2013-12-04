@@ -95,19 +95,11 @@ public class StackDomainWebService {
 
     // BEAN METHODS
 
-    /**
-     * @param stackServiceFacade
-     *            the stackServiceFacade to set
-     */
     @Inject
     public void setStackServiceFacade(StackServiceFacade stackServiceFacade) {
         this.stackServiceFacade = stackServiceFacade;
     }
 
-    /**
-     * @param searchParametersUtil
-     *            the searchParametersUtil to set
-     */
     @Inject
     public void setSearchParametersUtil(SearchParametersUtil searchParametersUtil) {
         this.searchParametersUtil = searchParametersUtil;

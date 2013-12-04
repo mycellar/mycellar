@@ -41,9 +41,6 @@ public class FormatServiceImpl extends AbstractSimpleService<Format, FormatRepos
 
     private FormatRepository formatRepository;
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public void validate(Format entity) throws BusinessException {
         Format existing = formatRepository.findUniqueOrNone(new SearchParameters() //
@@ -54,18 +51,11 @@ public class FormatServiceImpl extends AbstractSimpleService<Format, FormatRepos
         }
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     protected FormatRepository getRepository() {
         return formatRepository;
     }
 
-    /**
-     * @param formatRepository
-     *            the formatRepository to set
-     */
     @Inject
     public void setFormatRepository(FormatRepository formatRepository) {
         this.formatRepository = formatRepository;

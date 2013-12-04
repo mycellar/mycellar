@@ -38,10 +38,6 @@ public class DrinkBottle implements Serializable {
         return cellar;
     }
 
-    /**
-     * @param cellar
-     *            the cellar to set
-     */
     public void setCellar(Cellar cellar) {
         this.cellar = cellar;
     }
@@ -53,10 +49,6 @@ public class DrinkBottle implements Serializable {
         return bottle;
     }
 
-    /**
-     * @param bottle
-     *            the bottle to set
-     */
     public void setBottle(Bottle bottle) {
         this.bottle = bottle;
     }
@@ -68,10 +60,6 @@ public class DrinkBottle implements Serializable {
         return quantity;
     }
 
-    /**
-     * @param quantity
-     *            the quantity to set
-     */
     public void setQuantity(Integer quantity) {
         this.quantity = quantity;
     }

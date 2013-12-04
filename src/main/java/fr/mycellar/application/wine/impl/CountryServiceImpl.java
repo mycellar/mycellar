@@ -44,17 +44,11 @@ public class CountryServiceImpl extends AbstractSimpleService<Country, CountryRe
 
     private RegionService regionService;
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public Country find(String name) {
         return countryRepository.findUniqueOrNone(new SearchParameters().property(NamedEntity_.name, name));
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public void validate(Country entity) throws BusinessException {
         Country existing = find(entity.getName());
@@ -63,9 +57,6 @@ public class CountryServiceImpl extends AbstractSimpleService<Country, CountryRe
         }
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     protected void validateDelete(Country entity) throws BusinessException {
         if (regionService.count(new SearchParameters().property(Region_.country, entity)) > 0) {
@@ -73,27 +64,16 @@ public class CountryServiceImpl extends AbstractSimpleService<Country, CountryRe
         }
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     protected CountryRepository getRepository() {
         return countryRepository;
     }
 
-    /**
-     * @param countryRepository
-     *            the countryRepository to set
-     */
     @Inject
     public void setCountryRepository(CountryRepository countryRepository) {
         this.countryRepository = countryRepository;
     }
 
-    /**
-     * @param regionService
-     *            the regionService to set
-     */
     @Inject
     public void setRegionService(RegionService regionService) {
         this.regionService = regionService;

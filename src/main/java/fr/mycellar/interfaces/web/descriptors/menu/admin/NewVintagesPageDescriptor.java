@@ -28,41 +28,26 @@ import fr.mycellar.interfaces.web.descriptors.shared.AbstractDescriptor;
  */
 @Component
 public class NewVintagesPageDescriptor extends AbstractDescriptor implements IMenuDescriptor {
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public String getIcon() {
         return "wrench";
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public String getRoute() {
         return "/admin/newVintages";
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public String getTitleKey() {
         return "newVintages";
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public String getParentKey() {
         return "adminMenuHeader";
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public int getWeight() {
         return 10400;

@@ -197,29 +197,17 @@ public class SecurityWebService {
         return login(userDto);
     }
 
-    /**
-     * @param authenticationManager
-     *            the authenticationManager to set
-     */
     @Inject
     @Named("myCellarAuthenticationManager")
     public void setAuthenticationManager(AuthenticationManager authenticationManager) {
         this.authenticationManager = authenticationManager;
     }
 
-    /**
-     * @param currentUserService
-     *            the currentUserService to set
-     */
     @Inject
     public void setCurrentUserService(CurrentUserService currentUserService) {
         this.currentUserService = currentUserService;
     }
 
-    /**
-     * @param userServiceFacade
-     *            the userServiceFacade to set
-     */
     @Inject
     public void setUserServiceFacade(UserServiceFacade userServiceFacade) {
         this.userServiceFacade = userServiceFacade;

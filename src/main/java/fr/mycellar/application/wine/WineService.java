@@ -21,6 +21,7 @@ package fr.mycellar.application.wine;
 import java.util.List;
 
 import fr.mycellar.application.shared.SimpleService;
+import fr.mycellar.domain.shared.exception.BusinessException;
 import fr.mycellar.domain.wine.Appellation;
 import fr.mycellar.domain.wine.Producer;
 import fr.mycellar.domain.wine.Wine;
@@ -32,20 +33,8 @@ import fr.mycellar.domain.wine.WineTypeEnum;
  */
 public interface WineService extends SimpleService<Wine> {
 
-    /**
-     * @param producer
-     * @param appellation
-     * @param type
-     * @param color
-     * @param name
-     * @param vintage
-     * @return
-     */
-    Wine find(Producer producer, Appellation appellation, WineTypeEnum type, WineColorEnum color,
-            String name, Integer vintage);
+    Wine find(Producer producer, Appellation appellation, WineTypeEnum type, WineColorEnum color, String name, Integer vintage);
 
-    List<Wine> createVintages(Wine wine, int from, int to);
-
-    Wine createVintage(Wine wine, int year);
+    List<Wine> createVintages(Wine wine, int from, int to) throws BusinessException;
 
 }

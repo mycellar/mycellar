@@ -51,10 +51,6 @@ public abstract class AbstractDescriptor implements IDescriptor {
         return descriptorServiceFacade;
     }
 
-    /**
-     * @param descriptorServiceFacade
-     *            the descriptorServiceFacade to set
-     */
     @Resource
     public void setDescriptorServiceFacade(DescriptorServiceFacade descriptorServiceFacade) {
         this.descriptorServiceFacade = descriptorServiceFacade;

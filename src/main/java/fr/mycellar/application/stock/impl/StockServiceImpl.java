@@ -50,9 +50,6 @@ public class StockServiceImpl extends AbstractSimpleService<Stock, StockReposito
 
     private MovementService movementService;
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public void drink(Drink drink) {
         for (DrinkBottle drinkBottle : drink.getDrinkBottles()) {
@@ -60,9 +57,6 @@ public class StockServiceImpl extends AbstractSimpleService<Stock, StockReposito
         }
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public void stock(Arrival arrival) {
         Cellar cellar = arrival.getCellar();
@@ -73,9 +67,6 @@ public class StockServiceImpl extends AbstractSimpleService<Stock, StockReposito
         }
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public void addToStock(Cellar cellar, Bottle bottle, Integer quantity, LocalDate date, float charges, float price, String source) {
         Stock stock = updateStock(cellar, bottle, quantity);
@@ -83,9 +74,6 @@ public class StockServiceImpl extends AbstractSimpleService<Stock, StockReposito
         movementService.createInput(stock.getCellar(), stock.getBottle(), quantity, date, charges, price, source);
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public void removeFromStock(Cellar cellar, Bottle bottle, Integer quantity, LocalDate date, String destination, float price) {
         Stock stock = updateStock(cellar, bottle, -quantity);
@@ -111,9 +99,6 @@ public class StockServiceImpl extends AbstractSimpleService<Stock, StockReposito
         return stockRepository.save(stock);
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public Stock findStock(Bottle bottle, Cellar cellar) {
         return stockRepository.findUniqueOrNone(new SearchParameters() //
@@ -121,35 +106,21 @@ public class StockServiceImpl extends AbstractSimpleService<Stock, StockReposito
                 .property(Stock_.cellar, cellar));
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public void validate(Stock entity) throws BusinessException {
 
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     protected StockRepository getRepository() {
         return stockRepository;
     }
 
-    /**
-     * @param stockRepository
-     *            the stockRepository to set
-     */
     @Inject
     public void setStockRepository(StockRepository stockRepository) {
         this.stockRepository = stockRepository;
     }
 
-    /**
-     * @param movementService
-     *            the movementService to set
-     */
     @Inject
     public void setMovementService(MovementService movementService) {
         this.movementService = movementService;

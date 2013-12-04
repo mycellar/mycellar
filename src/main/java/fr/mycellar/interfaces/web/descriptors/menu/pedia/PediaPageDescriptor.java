@@ -29,41 +29,26 @@ import fr.mycellar.interfaces.web.descriptors.shared.AbstractDescriptor;
 @Component
 public class PediaPageDescriptor extends AbstractDescriptor implements IMenuDescriptor {
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public String getIcon() {
         return "book";
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public String getRoute() {
         return "/pedia";
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public String getTitleKey() {
         return "vinopedia";
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public String getParentKey() {
         return null;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public int getWeight() {
         return 8000;

@@ -66,10 +66,6 @@ public class ResetPasswordRequest extends IdentifiedEntity {
         return dateTime;
     }
 
-    /**
-     * @param dateTime
-     *            the dateTime to set
-     */
     public void setDateTime(LocalDateTime dateTime) {
         this.dateTime = dateTime;
     }
@@ -81,10 +77,6 @@ public class ResetPasswordRequest extends IdentifiedEntity {
         return user;
     }
 
-    /**
-     * @param user
-     *            the user to set
-     */
     public void setUser(User user) {
         this.user = user;
     }
@@ -96,34 +88,21 @@ public class ResetPasswordRequest extends IdentifiedEntity {
         return key;
     }
 
-    /**
-     * @param key
-     *            the key to set
-     */
     public void setKey(String key) {
         this.key = key;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public Integer getId() {
         return id;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     protected boolean dataEquals(IdentifiedEntity other) {
         ResetPasswordRequest resetPasswordRequest = (ResetPasswordRequest) other;
         return ObjectUtils.equals(key, resetPasswordRequest.getKey());
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     protected Object[] getHashCodeData() {
         return new Object[] { getKey() };

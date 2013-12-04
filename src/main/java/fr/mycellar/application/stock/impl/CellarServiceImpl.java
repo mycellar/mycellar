@@ -49,9 +49,6 @@ public class CellarServiceImpl extends AbstractSimpleService<Cellar, CellarRepos
 
     private StockService stockService;
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public void validate(Cellar entity) throws BusinessException {
         Cellar existing = cellarRepository.findUniqueOrNone(new SearchParameters() //
@@ -62,9 +59,6 @@ public class CellarServiceImpl extends AbstractSimpleService<Cellar, CellarRepos
         }
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     protected void validateDelete(Cellar entity) throws BusinessException {
         if (stockService.count(new SearchParameters() //
@@ -77,36 +71,21 @@ public class CellarServiceImpl extends AbstractSimpleService<Cellar, CellarRepos
         }
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     protected CellarRepository getRepository() {
         return cellarRepository;
     }
 
-    /**
-     * @param cellarRepository
-     *            the cellarRepository to set
-     */
     @Inject
     public void setCellarRepository(CellarRepository cellarRepository) {
         this.cellarRepository = cellarRepository;
     }
 
-    /**
-     * @param cellarShareService
-     *            the cellarShareService to set
-     */
     @Inject
     public void setCellarShareService(CellarShareService cellarShareService) {
         this.cellarShareService = cellarShareService;
     }
 
-    /**
-     * @param stockService
-     *            the stockService to set
-     */
     @Inject
     public void setStockService(StockService stockService) {
         this.stockService = stockService;

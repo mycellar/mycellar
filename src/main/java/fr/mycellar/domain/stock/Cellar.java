@@ -68,9 +68,6 @@ public class Cellar extends NamedEntity {
     @OneToMany(mappedBy = "cellar")
     private final Set<CellarShare> shares = new HashSet<CellarShare>();
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public Integer getId() {
         return id;
@@ -83,10 +80,6 @@ public class Cellar extends NamedEntity {
         return owner;
     }
 
-    /**
-     * @param owner
-     *            the owner to set
-     */
     public void setOwner(User owner) {
         this.owner = owner;
     }
@@ -98,26 +91,17 @@ public class Cellar extends NamedEntity {
         return Collections.unmodifiableSet(shares);
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     protected boolean dataEquals(IdentifiedEntity other) {
         Cellar cellar = (Cellar) other;
         return ObjectUtils.equals(getName(), cellar.getName()) && ObjectUtils.equals(getOwner(), cellar.getOwner());
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     protected Object[] getHashCodeData() {
         return new Object[] { getName(), getOwner() };
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public String toString() {
         return new ToStringBuilder(this).appendSuper(super.toString()).append("owner", owner).build();

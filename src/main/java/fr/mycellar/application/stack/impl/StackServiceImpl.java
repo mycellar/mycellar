@@ -42,25 +42,16 @@ public class StackServiceImpl extends AbstractSimpleService<Stack, StackReposito
 
     private StackRepository stackRepository;
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public void validate(Stack entity) throws BusinessException {
 
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public void deleteAllStacks() {
         stackRepository.deleteAllStacks();
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public void onThrowable(Throwable throwable) {
         StringWriter stringWriter = new StringWriter();
@@ -77,18 +68,11 @@ public class StackServiceImpl extends AbstractSimpleService<Stack, StackReposito
         stackRepository.save(stack);
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     protected StackRepository getRepository() {
         return stackRepository;
     }
 
-    /**
-     * @param stackRepository
-     *            the stackRepository to set
-     */
     @Inject
     public void setStackRepository(StackRepository stackRepository) {
         this.stackRepository = stackRepository;

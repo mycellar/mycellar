@@ -27,17 +27,11 @@ import fr.mycellar.infrastructure.shared.repository.SimpleRepository;
  */
 public abstract class AbstractSimpleService<E extends IdentifiedEntity, R extends SimpleRepository<E>> extends AbstractGenericService<R, E, Integer> implements SimpleService<E> {
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public final E getById(Integer id) {
         return getRepository().getById(id);
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public final void delete(E entity) throws BusinessException {
         validateDelete(entity);
@@ -51,9 +45,6 @@ public abstract class AbstractSimpleService<E extends IdentifiedEntity, R extend
 
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public final E save(E entity) throws BusinessException {
         validate(entity);

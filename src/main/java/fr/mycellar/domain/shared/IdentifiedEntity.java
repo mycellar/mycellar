@@ -41,9 +41,6 @@ public abstract class IdentifiedEntity implements Identifiable<Integer>, Seriali
     @Column(name = "VERSION")
     private int version;
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public final boolean equals(final Object other) {
         if (this == other) {
@@ -72,9 +69,6 @@ public abstract class IdentifiedEntity implements Identifiable<Integer>, Seriali
         return dataEquals((IdentifiedEntity) other);
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @XmlTransient
     @Override
     public boolean isIdSet() {
@@ -88,17 +82,11 @@ public abstract class IdentifiedEntity implements Identifiable<Integer>, Seriali
         return version;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public int hashCode() {
         return calculateHashCode(getHashCodeData());
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public String toString() {
         return new ToStringBuilder(this).append("id", getId()).append("version", version).toString();

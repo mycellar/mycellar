@@ -77,10 +77,6 @@ public class Stack extends IdentifiedEntity {
         return stack;
     }
 
-    /**
-     * @param stack
-     *            the stack to set
-     */
     public void setStack(String stack) {
         this.stack = stack;
         hashCode = stack.hashCode();
@@ -93,34 +89,22 @@ public class Stack extends IdentifiedEntity {
         return hashCode;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public Integer getId() {
         return id;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     protected boolean dataEquals(IdentifiedEntity other) {
         Stack stack = (Stack) other;
         return ObjectUtils.equals(getStack(), stack.getStack());
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     protected Object[] getHashCodeData() {
         return new Object[] { getStack() };
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public String toString() {
         return new ToStringBuilder(this).appendSuper(super.toString()).append("count", count).append("hashCode", hashCode).build();

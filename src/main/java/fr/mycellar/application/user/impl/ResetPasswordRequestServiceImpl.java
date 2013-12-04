@@ -37,6 +37,7 @@ import org.springframework.scheduling.annotation.Scheduled;
 import fr.mycellar.application.admin.ConfigurationService;
 import fr.mycellar.application.shared.AbstractSimpleService;
 import fr.mycellar.application.user.ResetPasswordRequestService;
+import fr.mycellar.domain.shared.exception.BusinessError;
 import fr.mycellar.domain.shared.exception.BusinessException;
 import fr.mycellar.domain.user.ResetPasswordRequest;
 import fr.mycellar.domain.user.ResetPasswordRequest_;
@@ -57,18 +58,12 @@ public class ResetPasswordRequestServiceImpl extends AbstractSimpleService<Reset
     private ConfigurationService configurationService;
     private JavaMailSender javaMailSender;
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     @Scheduled(cron = "0 0 0 * * *")
     public void cleanOldRequests() {
         resetPasswordRequestRepository.deleteOldRequests();
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public void createAndSendEmail(User user, String url) {
         // Create request
@@ -104,9 +99,6 @@ public class ResetPasswordRequestServiceImpl extends AbstractSimpleService<Reset
         }
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public ResetPasswordRequest getByKey(String key) {
         ResetPasswordRequest request = resetPasswordRequestRepository.findUniqueOrNone( //
@@ -114,52 +106,40 @@ public class ResetPasswordRequestServiceImpl extends AbstractSimpleService<Reset
         return (request != null) && request.getDateTime().isAfter(new LocalDateTime().minusHours(1)) ? request : null;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public void deleteAllForUser(User user) {
         resetPasswordRequestRepository.deleteAllForUser(user);
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    @Override
+    public String getEmailFromResetPasswordRequestByKey(String key) throws BusinessException {
+        ResetPasswordRequest request = getByKey(key);
+        if (request == null) {
+            throw new BusinessException(BusinessError.RESETPASSWORDREQUEST_00001);
+        }
+        return request.getUser().getEmail();
+    }
+
     @Override
     public void validate(ResetPasswordRequest entity) throws BusinessException {
 
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     protected ResetPasswordRequestRepository getRepository() {
         return resetPasswordRequestRepository;
     }
 
-    /**
-     * @param resetPasswordRequestRepository
-     *            the resetPasswordRequestRepository to set
-     */
     @Inject
     public void setResetPasswordRequestRepository(ResetPasswordRequestRepository resetPasswordRequestRepository) {
         this.resetPasswordRequestRepository = resetPasswordRequestRepository;
     }
 
-    /**
-     * @param javaMailSender
-     *            the javaMailSender to set
-     */
     @Inject
     public void setJavaMailSender(JavaMailSender javaMailSender) {
         this.javaMailSender = javaMailSender;
     }
 
-    /**
-     * @param configurationService
-     *            the configurationService to set
-     */
     @Inject
     public void setConfigurationService(ConfigurationService configurationService) {
         this.configurationService = configurationService;

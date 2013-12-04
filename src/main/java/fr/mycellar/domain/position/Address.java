@@ -98,50 +98,26 @@ public class Address implements Serializable {
         return zipCode;
     }
 
-    /**
-     * @param city
-     *            the city to set
-     */
     public void setCity(String city) {
         this.city = city;
     }
 
-    /**
-     * @param country
-     *            the country to set
-     */
     public void setCountry(Country country) {
         this.country = country;
     }
 
-    /**
-     * @param line1
-     *            the line1 to set
-     */
     public void setLine1(String line1) {
         this.line1 = line1;
     }
 
-    /**
-     * @param line2
-     *            the line2 to set
-     */
     public void setLine2(String line2) {
         this.line2 = line2;
     }
 
-    /**
-     * @param position
-     *            the position to set
-     */
     public void setPosition(Position position) {
         this.position = position;
     }
 
-    /**
-     * @param zipCode
-     *            the zipCode to set
-     */
     public void setZipCode(String zipCode) {
         this.zipCode = zipCode;
     }

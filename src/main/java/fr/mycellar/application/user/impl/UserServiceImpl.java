@@ -18,6 +18,8 @@
  */
 package fr.mycellar.application.user.impl;
 
+import java.util.List;
+
 import javax.inject.Inject;
 import javax.inject.Named;
 import javax.inject.Singleton;
@@ -33,6 +35,7 @@ import fr.mycellar.domain.booking.Booking_;
 import fr.mycellar.domain.shared.exception.BusinessError;
 import fr.mycellar.domain.shared.exception.BusinessException;
 import fr.mycellar.domain.stock.Cellar_;
+import fr.mycellar.domain.user.ResetPasswordRequest;
 import fr.mycellar.domain.user.User;
 import fr.mycellar.domain.user.User_;
 import fr.mycellar.domain.user.repository.UserRepository;
@@ -55,18 +58,12 @@ public class UserServiceImpl extends AbstractSimpleService<User, UserRepository>
 
     private CellarService cellarService;
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public User saveUserPassword(User user, String password) throws BusinessException {
         user.setPassword(passwordEncryptor.encryptPassword(password));
         return save(user);
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public void resetPasswordRequest(String email, String url) {
         User user = userRepository.findUniqueOrNone( //
@@ -77,9 +74,6 @@ public class UserServiceImpl extends AbstractSimpleService<User, UserRepository>
 
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public void validate(User entity) throws BusinessException {
         User existing = userRepository.findUniqueOrNone( //
@@ -89,9 +83,6 @@ public class UserServiceImpl extends AbstractSimpleService<User, UserRepository>
         }
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     protected void validateDelete(User entity) throws BusinessException {
         if (bookingService.count(new SearchParameters() //
@@ -104,9 +95,6 @@ public class UserServiceImpl extends AbstractSimpleService<User, UserRepository>
         }
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public User authenticate(String email, String password) {
         User user = getByEmail(email);
@@ -116,62 +104,55 @@ public class UserServiceImpl extends AbstractSimpleService<User, UserRepository>
         return user;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public User getByEmail(String email) {
         return userRepository.findUniqueOrNone(new SearchParameters().property(User_.email, email));
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    @Override
+    public List<User> getUsersLike(String term) {
+        return userRepository.find(new SearchParameters() //
+                .term(User_.email, term) //
+                .term(User_.firstname, term) //
+                .term(User_.lastname, term));
+    }
+
+    @Override
+    public User resetPassword(String key, String password) throws BusinessException {
+        ResetPasswordRequest request = resetPasswordRequestService.getByKey(key);
+        if (request == null) {
+            throw new BusinessException(BusinessError.RESETPASSWORDREQUEST_00001);
+        }
+        User user = saveUserPassword(request.getUser(), password);
+        resetPasswordRequestService.deleteAllForUser(request.getUser());
+        return user;
+    }
+
     @Override
     protected UserRepository getRepository() {
         return userRepository;
     }
 
-    /**
-     * @param userRepository
-     *            the userRepository to set
-     */
     @Inject
     public void setUserRepository(UserRepository userRepository) {
         this.userRepository = userRepository;
     }
 
-    /**
-     * @param passwordEncryptor
-     *            the passwordEncryptor to set
-     */
     @Inject
     public void setPasswordEncryptor(PasswordEncryptor passwordEncryptor) {
         this.passwordEncryptor = passwordEncryptor;
     }
 
-    /**
-     * @param resetPasswordRequestService
-     *            the resetPasswordRequestService to set
-     */
     @Inject
     public void setResetPasswordRequestService(ResetPasswordRequestService resetPasswordRequestService) {
         this.resetPasswordRequestService = resetPasswordRequestService;
     }
 
-    /**
-     * @param bookingService
-     *            the bookingService to set
-     */
     @Inject
     public void setBookingService(BookingService bookingService) {
         this.bookingService = bookingService;
     }
 
-    /**
-     * @param cellarService
-     *            the cellarService to set
-     */
     @Inject
     public void setCellarService(CellarService cellarService) {
         this.cellarService = cellarService;

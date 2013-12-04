@@ -46,17 +46,11 @@ public class BookingServiceImpl extends AbstractSimpleService<Booking, BookingRe
 
     private BookingRepository bookingRepository;
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public Map<BookingBottle, Long> getQuantities(BookingEvent bookingEvent) {
         return bookingRepository.getQuantities(bookingEvent);
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public Booking saveOrDelete(Booking booking) throws BusinessException {
         int sum = 0;
@@ -75,18 +69,12 @@ public class BookingServiceImpl extends AbstractSimpleService<Booking, BookingRe
         return null;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public List<Booking> getBookings(User customer) {
         return bookingRepository.find(new SearchParameters() //
                 .property(Booking_.customer, customer));
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public Booking getBooking(BookingEvent bookingEvent, User customer) {
         Booking booking = bookingRepository.findUniqueOrNone(new SearchParameters() //
@@ -100,43 +88,27 @@ public class BookingServiceImpl extends AbstractSimpleService<Booking, BookingRe
         return booking;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public List<Booking> getAllByBookingBottleId(Integer bookingBottleId) {
         return bookingRepository.getAllByBookingBottleId(bookingBottleId);
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public List<Booking> getAllByBookingEventId(Integer bookingEventId) {
         return bookingRepository.find(new SearchParameters() //
                 .property(Booking_.bookingEvent, bookingEventId));
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public void validate(Booking entity) throws BusinessException {
 
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     protected BookingRepository getRepository() {
         return bookingRepository;
     }
 
-    /**
-     * @param bookingRepository
-     *            the bookingRepository to set
-     */
     @Inject
     public void setBookingRepository(BookingRepository bookingRepository) {
         this.bookingRepository = bookingRepository;

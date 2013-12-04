@@ -100,19 +100,11 @@ public class BookingWebService {
         return new ListWithCount<>(bookingServiceFacade.getBookings(currentUserService.getCurrentUser()));
     }
 
-    /**
-     * @param bookingServiceFacade
-     *            the bookingServiceFacade to set
-     */
     @Inject
     public void setBookingServiceFacade(BookingServiceFacade bookingServiceFacade) {
         this.bookingServiceFacade = bookingServiceFacade;
     }
 
-    /**
-     * @param currentUserService
-     *            the currentUserService to set
-     */
     @Inject
     public void setCurrentUserService(CurrentUserService currentUserService) {
         this.currentUserService = currentUserService;

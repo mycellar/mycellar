@@ -47,52 +47,34 @@ public class StackServiceFacadeImpl implements StackServiceFacade {
 
     private PlatformTransactionManager transactionManager;
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public Stack getStackById(Integer stackId) {
         return stackService.getById(stackId);
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     @Transactional(readOnly = false)
     public void deleteAllStacks() throws BusinessException {
         stackService.deleteAllStacks();
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public void deleteStack(Stack stack) throws BusinessException {
         stackService.delete(stack);
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     @Transactional(readOnly = true)
     public long countStacks(SearchParameters searchParameters) {
         return stackService.count(searchParameters);
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     @Transactional(readOnly = true)
     public List<Stack> getStacks(SearchParameters searchParameters) {
         return stackService.find(searchParameters);
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public synchronized void onThrowable(final Throwable throwable) {
         // The transaction must be inside the lock. So we must use a transaction
@@ -111,19 +93,11 @@ public class StackServiceFacadeImpl implements StackServiceFacade {
 
     // METHODS BEAN
 
-    /**
-     * @param stackService
-     *            the stackService to set
-     */
     @Inject
     public void setStackService(StackService stackService) {
         this.stackService = stackService;
     }
 
-    /**
-     * @param transactionManager
-     *            the transactionManager to set
-     */
     @Inject
     public void setTransactionManager(PlatformTransactionManager transactionManager) {
         this.transactionManager = transactionManager;

@@ -39,9 +39,6 @@ public class JpaStackRepository extends JpaSimpleRepository<Stack> implements St
         super(Stack.class);
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public void deleteAllStacks() {
         getEntityManager().createQuery("DELETE " + Stack.class.getSimpleName()).executeUpdate();

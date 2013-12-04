@@ -56,9 +56,6 @@ public class ObjectMapperProvider implements ContextResolver<ObjectMapper> {
         objectMapper.setAnnotationIntrospector(new AnnotationIntrospectorPair(new JacksonAnnotationIntrospector(), new JaxbAnnotationIntrospector(TypeFactory.defaultInstance())));
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public ObjectMapper getContext(Class<?> type) {
         return objectMapper;

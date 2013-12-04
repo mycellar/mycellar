@@ -280,19 +280,11 @@ public class WineDomainWebService {
 
     // BEANS Methods
 
-    /**
-     * @param wineServiceFacade
-     *            the wineServiceFacade to set
-     */
     @Inject
     public void setWineServiceFacade(WineServiceFacade wineServiceFacade) {
         this.wineServiceFacade = wineServiceFacade;
     }
 
-    /**
-     * @param searchParametersUtil
-     *            the searchParametersUtil to set
-     */
     @Inject
     public void setSearchParametersUtil(SearchParametersUtil searchParametersUtil) {
         this.searchParametersUtil = searchParametersUtil;

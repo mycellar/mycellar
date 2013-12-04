@@ -79,10 +79,6 @@ public class CellarShare extends IdentifiedEntity {
         return email;
     }
 
-    /**
-     * @param email
-     *            the email to set
-     */
     public void setEmail(String email) {
         this.email = email;
     }
@@ -94,10 +90,6 @@ public class CellarShare extends IdentifiedEntity {
         return accessRight;
     }
 
-    /**
-     * @param accessRight
-     *            the accessRight to set
-     */
     public void setAccessRight(AccessRightEnum accessRight) {
         this.accessRight = accessRight;
     }
@@ -109,34 +101,21 @@ public class CellarShare extends IdentifiedEntity {
         return cellar;
     }
 
-    /**
-     * @param cellar
-     *            the cellar to set
-     */
     public void setCellar(Cellar cellar) {
         this.cellar = cellar;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     protected boolean dataEquals(IdentifiedEntity other) {
         CellarShare cellarShare = (CellarShare) other;
         return ObjectUtils.equals(getEmail(), cellarShare.getEmail()) && ObjectUtils.equals(getAccessRight(), cellarShare.getAccessRight()) && ObjectUtils.equals(getCellar(), cellarShare.getCellar());
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     protected Object[] getHashCodeData() {
         return new Object[] { getCellar(), getEmail(), getAccessRight() };
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public String toString() {
         return new ToStringBuilder(this).appendSuper(super.toString()).append("accessRight", accessRight).append("cellar", cellar).append("email", email).build();

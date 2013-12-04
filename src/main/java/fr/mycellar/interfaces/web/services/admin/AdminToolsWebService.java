@@ -58,10 +58,6 @@ public class AdminToolsWebService {
 
     // BEANS METHODS
 
-    /**
-     * @param wineServiceFacade
-     *            the wineServiceFacade to set
-     */
     @Inject
     public void setWineServiceFacade(WineServiceFacade wineServiceFacade) {
         this.wineServiceFacade = wineServiceFacade;

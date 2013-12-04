@@ -40,73 +40,48 @@ public class ContactServiceFacadeImpl implements ContactServiceFacade {
 
     private ContactService contactService;
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     @Transactional(readOnly = true)
     public long countContacts(SearchParameters searchParameters) {
         return contactService.count(searchParameters);
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     @Transactional(readOnly = true)
     public long countLastContacts(SearchParameters searchParameters) {
         return contactService.countLastContacts(searchParameters);
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     @Transactional(readOnly = true)
     public Contact getContactById(Integer objectId) {
         return contactService.getById(objectId);
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     @Transactional(readOnly = true)
     public List<Contact> getContacts(SearchParameters searchParameters) {
         return contactService.find(searchParameters);
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     @Transactional(readOnly = true)
     public List<Contact> getLastContacts(SearchParameters searchParameters) {
         return contactService.getLastContacts(searchParameters);
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     @Transactional(readOnly = false)
     public Contact saveContact(Contact contact) throws BusinessException {
         return contactService.save(contact);
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     @Transactional(readOnly = false)
     public void deleteContact(Contact contact) throws BusinessException {
         contactService.delete(contact);
     }
 
-    /**
-     * @param contactService
-     *            the contactService to set
-     */
     @Inject
     public void setContactService(ContactService contactService) {
         this.contactService = contactService;

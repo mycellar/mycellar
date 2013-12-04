@@ -98,9 +98,6 @@ public class BookingEvent extends NamedEntity {
     @Type(type = "org.jadira.usertype.dateandtime.joda.PersistentLocalDate")
     private LocalDate end;
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public Integer getId() {
         return id;
@@ -113,10 +110,6 @@ public class BookingEvent extends NamedEntity {
         return start;
     }
 
-    /**
-     * @param start
-     *            the start to set
-     */
     public void setStart(LocalDate start) {
         this.start = start;
     }
@@ -128,10 +121,6 @@ public class BookingEvent extends NamedEntity {
         return end;
     }
 
-    /**
-     * @param end
-     *            the end to set
-     */
     public void setEnd(LocalDate end) {
         this.end = end;
     }
@@ -143,26 +132,17 @@ public class BookingEvent extends NamedEntity {
         return bottles;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     protected boolean dataEquals(IdentifiedEntity other) {
         BookingEvent bookingEvent = (BookingEvent) other;
         return ObjectUtils.equals(getStart(), bookingEvent.getStart()) && ObjectUtils.equals(getEnd(), bookingEvent.getEnd()) && ObjectUtils.equals(getName(), bookingEvent.getName());
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     protected Object[] getHashCodeData() {
         return new Object[] { getName(), getStart(), getEnd() };
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public String toString() {
         return new ToStringBuilder(this).appendSuper(super.toString()).append("start", start).append("end", end).build();

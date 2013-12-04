@@ -42,9 +42,6 @@ public class BottleServiceImpl extends AbstractSimpleService<Bottle, BottleRepos
 
     private BottleRepository bottleRepository;
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public void validate(Bottle entity) throws BusinessException {
         Bottle existing = find(entity.getWine(), entity.getFormat());
@@ -53,9 +50,6 @@ public class BottleServiceImpl extends AbstractSimpleService<Bottle, BottleRepos
         }
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public Bottle find(Wine wine, Format format) {
         return bottleRepository.findUniqueOrNone(new SearchParameters() //
@@ -63,18 +57,11 @@ public class BottleServiceImpl extends AbstractSimpleService<Bottle, BottleRepos
                 .property(Bottle_.wine, wine));
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     protected BottleRepository getRepository() {
         return bottleRepository;
     }
 
-    /**
-     * @param bottleRepository
-     *            the bottleRepository to set
-     */
     @Inject
     public void setBottleRepository(BottleRepository bottleRepository) {
         this.bottleRepository = bottleRepository;

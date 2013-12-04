@@ -89,42 +89,25 @@ public class Country extends NamedEntity {
         return map;
     }
 
-    /**
-     * @param description
-     *            the description to set
-     */
     public void setDescription(String description) {
         this.description = description;
     }
 
-    /**
-     * @param map
-     *            the map to set
-     */
     public void setMap(Map map) {
         this.map = map;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     protected boolean dataEquals(IdentifiedEntity other) {
         Country country = (Country) other;
         return ObjectUtils.equals(getName(), country.getName());
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     protected Object[] getHashCodeData() {
         return new Object[] { getName() };
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public String toString() {
         return new ToStringBuilder(this).appendSuper(super.toString()).append("description", description).append("map", map).build();

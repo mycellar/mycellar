@@ -74,9 +74,6 @@ public class Stock extends IdentifiedEntity {
         return cellar;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public Integer getId() {
         return id;
@@ -89,50 +86,29 @@ public class Stock extends IdentifiedEntity {
         return quantity;
     }
 
-    /**
-     * @param bottle
-     *            the bottle to set
-     */
     public void setBottle(Bottle bottle) {
         this.bottle = bottle;
     }
 
-    /**
-     * @param cellar
-     *            the cellar to set
-     */
     public void setCellar(Cellar cellar) {
         this.cellar = cellar;
     }
 
-    /**
-     * @param quantity
-     *            the quantity to set
-     */
     public void setQuantity(Integer quantity) {
         this.quantity = quantity;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     protected boolean dataEquals(IdentifiedEntity other) {
         Stock stock = (Stock) other;
         return ObjectUtils.equals(getBottle(), stock.getBottle());
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     protected Object[] getHashCodeData() {
         return new Object[] { getBottle() };
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public String toString() {
         return new ToStringBuilder(this).appendSuper(super.toString()).append("bottle", bottle).append("cellar", cellar).append("quantity", quantity).build();

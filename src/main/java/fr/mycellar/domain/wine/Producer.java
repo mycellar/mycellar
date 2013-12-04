@@ -92,10 +92,6 @@ public class Producer extends NamedEntity {
         return contactInformation;
     }
 
-    /**
-     * @param contactInformation
-     *            the contactInformation to set
-     */
     public void setContactInformation(String contactInformation) {
         this.contactInformation = contactInformation;
     }
@@ -107,10 +103,6 @@ public class Producer extends NamedEntity {
         return phone;
     }
 
-    /**
-     * @param phone
-     *            the phone to set
-     */
     public void setPhone(String phone) {
         this.phone = phone;
     }
@@ -122,10 +114,6 @@ public class Producer extends NamedEntity {
         return fax;
     }
 
-    /**
-     * @param fax
-     *            the fax to set
-     */
     public void setFax(String fax) {
         this.fax = fax;
     }
@@ -137,10 +125,6 @@ public class Producer extends NamedEntity {
         return email;
     }
 
-    /**
-     * @param email
-     *            the email to set
-     */
     public void setEmail(String email) {
         this.email = email;
     }
@@ -174,50 +158,29 @@ public class Producer extends NamedEntity {
         return websiteUrl;
     }
 
-    /**
-     * @param address
-     *            the address to set
-     */
     public void setAddress(Address address) {
         this.address = address;
     }
 
-    /**
-     * @param description
-     *            the description to set
-     */
     public void setDescription(String description) {
         this.description = description;
     }
 
-    /**
-     * @param websiteUrl
-     *            the websiteUrl to set
-     */
     public void setWebsiteUrl(String websiteUrl) {
         this.websiteUrl = websiteUrl;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     protected boolean dataEquals(IdentifiedEntity other) {
         Producer producer = (Producer) other;
         return ObjectUtils.equals(getName(), producer.getName());
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     protected Object[] getHashCodeData() {
         return new Object[] { getName() };
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public String toString() {
         return new ToStringBuilder(this).appendSuper(super.toString()).append("address", address).append("description", description).append("websiteUrl", websiteUrl).build();

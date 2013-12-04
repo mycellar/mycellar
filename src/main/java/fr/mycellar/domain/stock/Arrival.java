@@ -56,10 +56,6 @@ public class Arrival implements Serializable {
         return cellar;
     }
 
-    /**
-     * @param cellar
-     *            the cellar to set
-     */
     public void setCellar(Cellar cellar) {
         this.cellar = cellar;
     }
@@ -92,26 +88,14 @@ public class Arrival implements Serializable {
         return source;
     }
 
-    /**
-     * @param date
-     *            the date to set
-     */
     public void setDate(LocalDate date) {
         this.date = date;
     }
 
-    /**
-     * @param otherCharges
-     *            the otherCharges to set
-     */
     public void setOtherCharges(Float otherCharges) {
         this.otherCharges = otherCharges;
     }
 
-    /**
-     * @param source
-     *            the source to set
-     */
     public void setSource(String source) {
         this.source = source;
     }

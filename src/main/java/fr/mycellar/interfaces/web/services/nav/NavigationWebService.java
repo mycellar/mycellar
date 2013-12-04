@@ -122,19 +122,11 @@ public class NavigationWebService {
         return filtered;
     }
 
-    /**
-     * @param descriptorServiceFacade
-     *            the descriptorServiceFacade to set
-     */
     @Inject
     public void setDescriptorServiceFacade(DescriptorServiceFacade descriptorServiceFacade) {
         this.descriptorServiceFacade = descriptorServiceFacade;
     }
 
-    /**
-     * @param webInvocationPrivilegeEvaluator
-     *            the webInvocationPrivilegeEvaluator to set
-     */
     @Inject
     public void setWebInvocationPrivilegeEvaluator(WebInvocationPrivilegeEvaluator webInvocationPrivilegeEvaluator) {
         this.webInvocationPrivilegeEvaluator = webInvocationPrivilegeEvaluator;

@@ -40,46 +40,30 @@ public class AdministrationServiceFacadeImpl implements AdministrationServiceFac
 
     private ConfigurationService configurationService;
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     @Transactional(readOnly = true)
     public long countConfigurations(SearchParameters searchParameters) {
         return configurationService.count(searchParameters);
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     @Transactional(readOnly = true)
     public Configuration getConfigurationById(Integer configurationId) {
         return configurationService.getById(configurationId);
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     @Transactional(readOnly = true)
     public List<Configuration> getConfigurations(SearchParameters searchParameters) {
         return configurationService.find(searchParameters);
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     @Transactional
     public Configuration saveConfiguration(Configuration configuration) throws BusinessException {
         return configurationService.save(configuration);
     }
 
-    /**
-     * @param configurationService
-     *            the configurationService to set
-     */
     @Inject
     public void setConfigurationService(ConfigurationService configurationService) {
         this.configurationService = configurationService;

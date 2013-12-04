@@ -89,42 +89,25 @@ public class Bottle extends IdentifiedEntity {
         return wine;
     }
 
-    /**
-     * @param format
-     *            the format to set
-     */
     public void setFormat(Format format) {
         this.format = format;
     }
 
-    /**
-     * @param wine
-     *            the wine to set
-     */
     public void setWine(Wine wine) {
         this.wine = wine;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     protected boolean dataEquals(IdentifiedEntity other) {
         Bottle bottle = (Bottle) other;
         return ObjectUtils.equals(getFormat(), bottle.getFormat()) && ObjectUtils.equals(getWine(), bottle.getWine());
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     protected Object[] getHashCodeData() {
         return new Object[] { getFormat(), getWine() };
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public String toString() {
         return new ToStringBuilder(this).appendSuper(super.toString()).append("format", format).append("wine", wine).build();

@@ -106,50 +106,29 @@ public class Region extends NamedEntity {
         return map;
     }
 
-    /**
-     * @param country
-     *            the country to set
-     */
     public void setCountry(Country country) {
         this.country = country;
     }
 
-    /**
-     * @param description
-     *            the description to set
-     */
     public void setDescription(String description) {
         this.description = description;
     }
 
-    /**
-     * @param map
-     *            the map to set
-     */
     public void setMap(Map map) {
         this.map = map;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     protected boolean dataEquals(IdentifiedEntity other) {
         Region region = (Region) other;
         return ObjectUtils.equals(getName(), region.getName()) && ObjectUtils.equals(getCountry(), region.getCountry());
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     protected Object[] getHashCodeData() {
         return new Object[] { getName() };
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public String toString() {
         return new ToStringBuilder(this).appendSuper(super.toString()).append("country", country).append("description", description).append("map", map).build();

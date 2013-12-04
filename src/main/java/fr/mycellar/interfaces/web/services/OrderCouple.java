@@ -35,8 +35,7 @@ public class OrderCouple {
      */
     public OrderCouple(String couple) {
         property = couple.substring(0, couple.indexOf(","));
-        direction = OrderByDirection.valueOf(couple.substring(couple.indexOf(",") + 1)
-                .toUpperCase());
+        direction = OrderByDirection.valueOf(couple.substring(couple.indexOf(",") + 1).toUpperCase());
     }
 
     /**

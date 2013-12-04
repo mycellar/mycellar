@@ -45,9 +45,6 @@ public class AppellationServiceImpl extends AbstractSimpleService<Appellation, A
 
     private WineService wineService;
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public void validate(Appellation entity) throws BusinessException {
         if (entity.getRegion() == null) {
@@ -61,9 +58,6 @@ public class AppellationServiceImpl extends AbstractSimpleService<Appellation, A
         }
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     protected void validateDelete(Appellation entity) throws BusinessException {
         if (wineService.count(new SearchParameters().property(Wine_.appellation, entity)) > 0) {
@@ -71,27 +65,16 @@ public class AppellationServiceImpl extends AbstractSimpleService<Appellation, A
         }
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     protected AppellationRepository getRepository() {
         return appellationRepository;
     }
 
-    /**
-     * @param appellationRepository
-     *            the appellationRepository to set
-     */
     @Inject
     public void setAppellationRepository(AppellationRepository appellationRepository) {
         this.appellationRepository = appellationRepository;
     }
 
-    /**
-     * @param wineService
-     *            the wineService to set
-     */
     @Inject
     public void setWineService(WineService wineService) {
         this.wineService = wineService;

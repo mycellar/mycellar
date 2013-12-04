@@ -41,34 +41,22 @@ public class ConfigurationServiceImpl extends AbstractSimpleService<Configuratio
 
     private ConfigurationRepository configurationRepository;
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public String[] getReminderAddressReceivers() {
         return find(ConfigurationKeyEnum.REMINDER_ADDRESS_RECEIVERS).getValue().split(",");
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public String getMailAddressSender() {
         return find(ConfigurationKeyEnum.MAIL_ADDRESS_SENDER).getValue();
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public Configuration find(ConfigurationKeyEnum key) {
         return configurationRepository.findUniqueOrNone(new SearchParameters() //
                 .property(Configuration_.key, key));
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public void validate(Configuration entity) throws BusinessException {
         Configuration existing = find(entity.getKey());
@@ -77,18 +65,11 @@ public class ConfigurationServiceImpl extends AbstractSimpleService<Configuratio
         }
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     protected ConfigurationRepository getRepository() {
         return configurationRepository;
     }
 
-    /**
-     * @param configurationRepository
-     *            the configurationRepository to set
-     */
     @Inject
     public void setConfigurationRepository(ConfigurationRepository configurationRepository) {
         this.configurationRepository = configurationRepository;

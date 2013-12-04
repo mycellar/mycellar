@@ -48,9 +48,6 @@ public class MyCellarAuthenticationProvider extends AbstractUserDetailsAuthentic
 
     private UserServiceFacade userServiceFacade;
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     protected void additionalAuthenticationChecks(UserDetails userDetails, UsernamePasswordAuthenticationToken authentication) throws AuthenticationException {
         fr.mycellar.domain.user.User user = userServiceFacade.authenticateUser(userDetails.getUsername(), (String) authentication.getCredentials());
@@ -59,9 +56,6 @@ public class MyCellarAuthenticationProvider extends AbstractUserDetailsAuthentic
         }
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     protected UserDetails retrieveUser(String username, UsernamePasswordAuthenticationToken authentication) throws AuthenticationException {
         if (StringUtils.isBlank(username)) {
@@ -103,10 +97,6 @@ public class MyCellarAuthenticationProvider extends AbstractUserDetailsAuthentic
         return authorities;
     }
 
-    /**
-     * @param userServiceFacade
-     *            the userServiceFacade to set
-     */
     @Inject
     public void setUserServiceFacade(UserServiceFacade userServiceFacade) {
         this.userServiceFacade = userServiceFacade;

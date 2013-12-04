@@ -34,26 +34,16 @@ public class StringPasswordEncryptor implements PasswordEncryptor {
 
     private StringDigester stringDigester;
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public String encryptPassword(String password) {
         return stringDigester.digest(password);
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public boolean checkPassword(String plainPassword, String encryptedPassword) {
         return stringDigester.matches(plainPassword, encryptedPassword);
     }
 
-    /**
-     * @param stringDigester
-     *            the stringDigester to set
-     */
     @Inject
     public void setStringDigester(StringDigester stringDigester) {
         this.stringDigester = stringDigester;

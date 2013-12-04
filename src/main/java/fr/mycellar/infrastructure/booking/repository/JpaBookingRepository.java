@@ -51,9 +51,6 @@ public class JpaBookingRepository extends JpaSimpleRepository<Booking> implement
         super(Booking.class);
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public Map<BookingBottle, Long> getQuantities(BookingEvent bookingEvent) {
         CriteriaBuilder criteriaBuilder = getEntityManager().getCriteriaBuilder();
@@ -72,9 +69,6 @@ public class JpaBookingRepository extends JpaSimpleRepository<Booking> implement
         return result;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public List<Booking> getAllByBookingBottleId(Integer bookingBottleId) {
         BookingBottle bookingBottle = getEntityManager().find(BookingBottle.class, bookingBottleId);

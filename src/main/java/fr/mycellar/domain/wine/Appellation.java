@@ -104,50 +104,29 @@ public class Appellation extends NamedEntity {
         return region;
     }
 
-    /**
-     * @param description
-     *            the description to set
-     */
     public void setDescription(String description) {
         this.description = description;
     }
 
-    /**
-     * @param map
-     *            the map to set
-     */
     public void setMap(Map map) {
         this.map = map;
     }
 
-    /**
-     * @param region
-     *            the region to set
-     */
     public void setRegion(Region region) {
         this.region = region;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     protected boolean dataEquals(IdentifiedEntity other) {
         Appellation appellation = (Appellation) other;
         return ObjectUtils.equals(getName(), appellation.getName()) && ObjectUtils.equals(getRegion(), appellation.getRegion());
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     protected Object[] getHashCodeData() {
         return new Object[] { getName() };
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public String toString() {
         return new ToStringBuilder(this).appendSuper(super.toString()).append("description", description).append("map", map).append("region", region).build();

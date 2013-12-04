@@ -79,10 +79,6 @@ public abstract class Movement extends IdentifiedEntity {
         return date;
     }
 
-    /**
-     * @param date
-     *            the date to set
-     */
     public void setDate(LocalDate date) {
         this.date = date;
     }
@@ -94,10 +90,6 @@ public abstract class Movement extends IdentifiedEntity {
         return bottle;
     }
 
-    /**
-     * @param bottle
-     *            the bottle to set
-     */
     public void setBottle(Bottle bottle) {
         this.bottle = bottle;
     }
@@ -109,10 +101,6 @@ public abstract class Movement extends IdentifiedEntity {
         return cellar;
     }
 
-    /**
-     * @param cellar
-     *            the cellar to set
-     */
     public void setCellar(Cellar cellar) {
         this.cellar = cellar;
     }
@@ -132,17 +120,10 @@ public abstract class Movement extends IdentifiedEntity {
         return number;
     }
 
-    /**
-     * @param number
-     *            the number to set
-     */
     public void setNumber(int number) {
         this.number = number;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public String toString() {
         return new ToStringBuilder(this).appendSuper(super.toString()).append("bottle", bottle).append("cellar", cellar).append("date", date).append("number", number).build();

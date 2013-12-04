@@ -95,19 +95,11 @@ public class AdminDomainWebService {
 
     // BEANS Methods
 
-    /**
-     * @param administrationServiceFacade
-     *            the administrationServiceFacade to set
-     */
     @Inject
     public void setAdministrationServiceFacade(AdministrationServiceFacade administrationServiceFacade) {
         this.administrationServiceFacade = administrationServiceFacade;
     }
 
-    /**
-     * @param searchParametersUtil
-     *            the searchParametersUtil to set
-     */
     @Inject
     public void setSearchParametersUtil(SearchParametersUtil searchParametersUtil) {
         this.searchParametersUtil = searchParametersUtil;

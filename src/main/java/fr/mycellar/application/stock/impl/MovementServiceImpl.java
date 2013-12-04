@@ -39,25 +39,17 @@ import fr.mycellar.domain.stock.repository.MovementRepository;
  */
 @Named
 @Singleton
-public class MovementServiceImpl extends AbstractSimpleService<Movement, MovementRepository>
-        implements MovementService {
+public class MovementServiceImpl extends AbstractSimpleService<Movement, MovementRepository> implements MovementService {
 
     private MovementRepository movementRepository;
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public void validate(Movement entity) throws BusinessException {
 
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
-    public void createOutput(Cellar cellar, Bottle bottle, Integer quantity, LocalDate date,
-            String destination, float price) {
+    public void createOutput(Cellar cellar, Bottle bottle, Integer quantity, LocalDate date, String destination, float price) {
         Output output = new Output();
         output.setBottle(bottle);
         output.setCellar(cellar);
@@ -68,12 +60,8 @@ public class MovementServiceImpl extends AbstractSimpleService<Movement, Movemen
         movementRepository.save(output);
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
-    public void createInput(Cellar cellar, Bottle bottle, Integer quantity, LocalDate date,
-            float charges, float price, String source) {
+    public void createInput(Cellar cellar, Bottle bottle, Integer quantity, LocalDate date, float charges, float price, String source) {
         Input input = new Input();
         input.setDate(date);
         input.setBottle(bottle);
@@ -85,18 +73,11 @@ public class MovementServiceImpl extends AbstractSimpleService<Movement, Movemen
         movementRepository.save(input);
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     protected MovementRepository getRepository() {
         return movementRepository;
     }
 
-    /**
-     * @param movementRepository
-     *            the movementRepository to set
-     */
     @Inject
     public void setMovementRepository(MovementRepository movementRepository) {
         this.movementRepository = movementRepository;

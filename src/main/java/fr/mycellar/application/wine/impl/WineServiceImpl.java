@@ -19,6 +19,7 @@
 package fr.mycellar.application.wine.impl;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 import javax.inject.Inject;
@@ -52,9 +53,6 @@ public class WineServiceImpl extends AbstractSimpleService<Wine, WineRepository>
 
     private BottleService bottleService;
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public Wine find(Producer producer, Appellation appellation, WineTypeEnum type, WineColorEnum color, String name, Integer vintage) {
         Wine model = new Wine();
@@ -73,9 +71,6 @@ public class WineServiceImpl extends AbstractSimpleService<Wine, WineRepository>
                 .property(Wine_.vintage, vintage));
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public void validate(Wine entity) throws BusinessException {
         Wine existing = find(entity.getProducer(), entity.getAppellation(), entity.getType(), entity.getColor(), entity.getName(), entity.getVintage());
@@ -84,9 +79,6 @@ public class WineServiceImpl extends AbstractSimpleService<Wine, WineRepository>
         }
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     protected void validateDelete(Wine entity) throws BusinessException {
         if (bottleService.count(new SearchParameters() //
@@ -95,26 +87,30 @@ public class WineServiceImpl extends AbstractSimpleService<Wine, WineRepository>
         }
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
-    public List<Wine> createVintages(Wine wine, int from, int to) {
+    public List<Wine> createVintages(Wine wine, int from, int to) throws BusinessException {
         if (from > to) {
             throw new IllegalArgumentException("From (" + from + ") must be before to (" + to + ").");
         }
-        List<Wine> copies = new ArrayList<Wine>();
+        List<Wine> wines = new ArrayList<Wine>();
         for (int i = from; i <= to; i++) {
-            copies.add(createVintage(wine, i));
+            wines.add(createVintage(wine, i));
         }
-        return copies;
+        for (Iterator<Wine> iterator = wines.iterator(); iterator.hasNext();) {
+            try {
+                save(iterator.next());
+            } catch (BusinessException e) {
+                if (e.getBusinessError() != BusinessError.WINE_00001) {
+                    throw e;
+                } else {
+                    iterator.remove();
+                }
+            }
+        }
+        return wines;
     }
 
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public Wine createVintage(Wine wine, int year) {
+    private Wine createVintage(Wine wine, int year) {
         Wine copy = new Wine();
         copy.setAppellation(wine.getAppellation());
         copy.setColor(wine.getColor());
@@ -127,27 +123,16 @@ public class WineServiceImpl extends AbstractSimpleService<Wine, WineRepository>
         return copy;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     protected WineRepository getRepository() {
         return wineRepository;
     }
 
-    /**
-     * @param wineRepository
-     *            the wineRepository to set
-     */
     @Inject
     public void setWineRepository(WineRepository wineRepository) {
         this.wineRepository = wineRepository;
     }
 
-    /**
-     * @param bottleService
-     *            the bottleService to set
-     */
     @Inject
     public void setBottleService(BottleService bottleService) {
         this.bottleService = bottleService;

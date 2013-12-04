@@ -19,6 +19,7 @@
 package fr.mycellar.application.user;
 
 import fr.mycellar.application.shared.SimpleService;
+import fr.mycellar.domain.shared.exception.BusinessException;
 import fr.mycellar.domain.user.ResetPasswordRequest;
 import fr.mycellar.domain.user.User;
 
@@ -27,26 +28,14 @@ import fr.mycellar.domain.user.User;
  */
 public interface ResetPasswordRequestService extends SimpleService<ResetPasswordRequest> {
 
-    /**
-     * 
-     */
     void cleanOldRequests();
 
-    /**
-     * @param user
-     * @param url
-     */
     void createAndSendEmail(User user, String url);
 
-    /**
-     * @param key
-     * @return
-     */
     ResetPasswordRequest getByKey(String key);
 
-    /**
-     * @param user
-     */
     void deleteAllForUser(User user);
+
+    String getEmailFromResetPasswordRequestByKey(String key) throws BusinessException;
 
 }

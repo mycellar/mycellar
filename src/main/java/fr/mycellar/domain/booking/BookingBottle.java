@@ -78,9 +78,6 @@ public class BookingBottle extends IdentifiedEntity {
     @Column(name = "POSITION", nullable = false)
     private Integer position;
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public Integer getId() {
         return id;
@@ -93,10 +90,6 @@ public class BookingBottle extends IdentifiedEntity {
         return position;
     }
 
-    /**
-     * @param position
-     *            the position to set
-     */
     public void setPosition(Integer position) {
         this.position = position;
     }
@@ -108,10 +101,6 @@ public class BookingBottle extends IdentifiedEntity {
         return max;
     }
 
-    /**
-     * @param max
-     *            the max to set
-     */
     public void setMax(Integer max) {
         this.max = max;
     }
@@ -123,10 +112,6 @@ public class BookingBottle extends IdentifiedEntity {
         return bottle;
     }
 
-    /**
-     * @param bottle
-     *            the bottle to set
-     */
     public void setBottle(Bottle bottle) {
         this.bottle = bottle;
     }
@@ -138,10 +123,6 @@ public class BookingBottle extends IdentifiedEntity {
         return bookingEvent;
     }
 
-    /**
-     * @param bookingEvent
-     *            the bookingEvent to set
-     */
     public void setBookingEvent(BookingEvent bookingEvent) {
         this.bookingEvent = bookingEvent;
     }
@@ -153,10 +134,6 @@ public class BookingBottle extends IdentifiedEntity {
         return price;
     }
 
-    /**
-     * @param price
-     *            the price to set
-     */
     public void setPrice(Float price) {
         this.price = price;
     }
@@ -168,26 +145,16 @@ public class BookingBottle extends IdentifiedEntity {
         return url;
     }
 
-    /**
-     * @param url
-     *            the url to set
-     */
     public void setUrl(String url) {
         this.url = url;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     protected boolean dataEquals(IdentifiedEntity other) {
         BookingBottle bookingBottle = (BookingBottle) other;
         return ObjectUtils.equals(getBookingEvent(), bookingBottle.getBookingEvent()) && ObjectUtils.equals(getBottle(), bookingBottle.getBottle());
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     protected Object[] getHashCodeData() {
         return new Object[] { getBookingEvent(), getBottle() };

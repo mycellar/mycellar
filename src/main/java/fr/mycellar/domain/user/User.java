@@ -93,10 +93,6 @@ public class User extends IdentifiedEntity {
         return profile;
     }
 
-    /**
-     * @param profile
-     *            the profile to set
-     */
     public void setProfile(ProfileEnum profile) {
         this.profile = profile;
     }
@@ -137,58 +133,33 @@ public class User extends IdentifiedEntity {
         return password;
     }
 
-    /**
-     * @param email
-     *            the email to set
-     */
     public void setEmail(String email) {
         this.email = email;
     }
 
-    /**
-     * @param firstname
-     *            the firstname to set
-     */
     public void setFirstname(String firstname) {
         this.firstname = firstname;
     }
 
-    /**
-     * @param lastname
-     *            the lastname to set
-     */
     public void setLastname(String lastname) {
         this.lastname = lastname;
     }
 
-    /**
-     * @param password
-     *            the password to set
-     */
     public void setPassword(String password) {
         this.password = password;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     protected boolean dataEquals(IdentifiedEntity other) {
         User user = (User) other;
         return ObjectUtils.equals(getEmail(), user.getEmail());
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     protected Object[] getHashCodeData() {
         return new Object[] { getEmail() };
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public String toString() {
         return new ToStringBuilder(this).appendSuper(super.toString()).append("email", email).append("firstname", firstname).append("lastname", lastname).append("profile", profile).build();

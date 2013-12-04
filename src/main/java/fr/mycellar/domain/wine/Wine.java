@@ -175,73 +175,38 @@ public class Wine extends NamedEntity {
         return vintage;
     }
 
-    /**
-     * @param appellation
-     *            the appellation to set
-     */
     public void setAppellation(Appellation appellation) {
         this.appellation = appellation;
     }
 
-    /**
-     * @param color
-     *            the color to set
-     */
     public void setColor(WineColorEnum color) {
         this.color = color;
     }
 
-    /**
-     * @param description
-     *            the description to set
-     */
     public void setDescription(String description) {
         this.description = description;
     }
 
-    /**
-     * @param photoUrl
-     *            the photoUrl to set
-     */
     public void setPhotoUrl(String photoUrl) {
         this.photoUrl = photoUrl;
     }
 
-    /**
-     * @param producer
-     *            the producer to set
-     */
     public void setProducer(Producer producer) {
         this.producer = producer;
     }
 
-    /**
-     * @param ranking
-     *            the ranking to set
-     */
     public void setRanking(String ranking) {
         this.ranking = ranking;
     }
 
-    /**
-     * @param type
-     *            the type to set
-     */
     public void setType(WineTypeEnum type) {
         this.type = type;
     }
 
-    /**
-     * @param vintage
-     *            the vintage to set
-     */
     public void setVintage(Integer vintage) {
         this.vintage = vintage;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     protected boolean dataEquals(IdentifiedEntity other) {
         Wine wine = (Wine) other;
@@ -249,17 +214,11 @@ public class Wine extends NamedEntity {
                 && ObjectUtils.equals(getColor(), wine.getColor()) && ObjectUtils.equals(getAppellation(), wine.getAppellation()) && ObjectUtils.equals(getProducer(), wine.getProducer());
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     protected Object[] getHashCodeData() {
         return new Object[] { getName(), getVintage(), getColor(), getType() };
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public String toString() {
         return new ToStringBuilder(this).appendSuper(super.toString()).append("description", description).append("photoUrl", photoUrl).append("producer", producer).append("ranking", ranking)

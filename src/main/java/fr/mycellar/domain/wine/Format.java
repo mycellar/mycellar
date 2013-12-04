@@ -78,34 +78,21 @@ public class Format extends NamedEntity {
         return id;
     }
 
-    /**
-     * @param capacity
-     *            the capacity to set
-     */
     public void setCapacity(float capacity) {
         this.capacity = capacity;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     protected boolean dataEquals(IdentifiedEntity other) {
         Format format = (Format) other;
         return ObjectUtils.equals(getName(), format.getName());
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     protected Object[] getHashCodeData() {
         return new Object[] { getName() };
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public String toString() {
         return new ToStringBuilder(this).appendSuper(super.toString()).append("capacity", capacity).build();

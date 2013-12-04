@@ -92,50 +92,29 @@ public class Varietal extends NamedEntity {
         return skin;
     }
 
-    /**
-     * @param description
-     *            the description to set
-     */
     public void setDescription(String description) {
         this.description = description;
     }
 
-    /**
-     * @param flesh
-     *            the flesh to set
-     */
     public void setFlesh(VarietalColorEnum flesh) {
         this.flesh = flesh;
     }
 
-    /**
-     * @param skin
-     *            the skin to set
-     */
     public void setSkin(VarietalColorEnum skin) {
         this.skin = skin;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     protected boolean dataEquals(IdentifiedEntity other) {
         Varietal varietal = (Varietal) other;
         return ObjectUtils.equals(getName(), varietal.getName());
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     protected Object[] getHashCodeData() {
         return new Object[] { getName() };
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public String toString() {
         return new ToStringBuilder(this).appendSuper(super.toString()).append("description", description).append("flesh", flesh).append("skin", skin).build();

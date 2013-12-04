@@ -72,9 +72,6 @@ public class Booking extends IdentifiedEntity {
     @MapKeyJoinColumn(name = "BOOKING_BOTTLE")
     private final Map<BookingBottle, Integer> quantities = new HashMap<BookingBottle, Integer>();
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public Integer getId() {
         return id;
@@ -87,10 +84,6 @@ public class Booking extends IdentifiedEntity {
         return customer;
     }
 
-    /**
-     * @param customer
-     *            the customer to set
-     */
     public void setCustomer(User user) {
         customer = user;
     }
@@ -102,10 +95,6 @@ public class Booking extends IdentifiedEntity {
         return bookingEvent;
     }
 
-    /**
-     * @param bookingEvent
-     *            the bookingEvent to set
-     */
     public void setBookingEvent(BookingEvent bookingEvent) {
         this.bookingEvent = bookingEvent;
     }
@@ -117,18 +106,12 @@ public class Booking extends IdentifiedEntity {
         return quantities;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     protected boolean dataEquals(IdentifiedEntity other) {
         Booking booking = (Booking) other;
         return ObjectUtils.equals(getCustomer(), booking.getCustomer()) && ObjectUtils.equals(getBookingEvent(), booking.getBookingEvent());
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     protected Object[] getHashCodeData() {
         return new Object[] { getCustomer(), getBookingEvent() };

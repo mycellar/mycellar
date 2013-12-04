@@ -94,41 +94,22 @@ public class Image extends NamedEntity {
         return width;
     }
 
-    /**
-     * @param content
-     *            the content to set
-     */
     public void setContent(byte[] content) {
         this.content = content;
     }
 
-    /**
-     * @param contentType
-     *            the contentType to set
-     */
     public void setContentType(String contentType) {
         this.contentType = contentType;
     }
 
-    /**
-     * @param height
-     *            the height to set
-     */
     public void setHeight(int height) {
         this.height = height;
     }
 
-    /**
-     * @param width
-     *            the width to set
-     */
     public void setWidth(int width) {
         this.width = width;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     protected boolean dataEquals(IdentifiedEntity other) {
         Image image = (Image) other;
@@ -141,17 +122,11 @@ public class Image extends NamedEntity {
         return result;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     protected Object[] getHashCodeData() {
         return new Object[] { getName() };
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public String toString() {
         return new ToStringBuilder(this).appendSuper(super.toString()).append("contentType", contentType).append("height", height).append("width", width).build();

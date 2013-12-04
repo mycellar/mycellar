@@ -41,8 +41,7 @@ public interface StockService extends SimpleService<Stock> {
      * @param price
      * @param source
      */
-    void addToStock(Cellar cellar, Bottle bottle, Integer quantity, LocalDate date, float charges,
-            float price, String source);
+    void addToStock(Cellar cellar, Bottle bottle, Integer quantity, LocalDate date, float charges, float price, String source);
 
     /**
      * @param cellar
@@ -52,8 +51,7 @@ public interface StockService extends SimpleService<Stock> {
      * @param destination
      * @param price
      */
-    void removeFromStock(Cellar cellar, Bottle bottle, Integer quantity, LocalDate date,
-            String destination, float price);
+    void removeFromStock(Cellar cellar, Bottle bottle, Integer quantity, LocalDate date, String destination, float price);
 
     /**
      * @param bottle

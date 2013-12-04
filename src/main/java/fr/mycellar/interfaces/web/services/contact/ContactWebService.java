@@ -68,19 +68,11 @@ public class ContactWebService {
         return new ListWithCount<>(contactServiceFacade.countLastContacts(searchParameters), contacts);
     }
 
-    /**
-     * @param contactServiceFacade
-     *            the contactServiceFacade to set
-     */
     @Inject
     public void setContactServiceFacade(ContactServiceFacade contactServiceFacade) {
         this.contactServiceFacade = contactServiceFacade;
     }
 
-    /**
-     * @param searchParametersUtil
-     *            the searchParametersUtil to set
-     */
     @Inject
     public void setSearchParametersUtil(SearchParametersUtil searchParametersUtil) {
         this.searchParametersUtil = searchParametersUtil;

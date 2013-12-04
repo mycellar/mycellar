@@ -102,19 +102,11 @@ public class UserDomainWebService {
 
     // BEAN METHODS
 
-    /**
-     * @param userServiceFacade
-     *            the userServiceFacade to set
-     */
     @Inject
     public void setUserServiceFacade(UserServiceFacade userServiceFacade) {
         this.userServiceFacade = userServiceFacade;
     }
 
-    /**
-     * @param searchParametersUtil
-     *            the searchParametersUtil to set
-     */
     @Inject
     public void setSearchParametersUtil(SearchParametersUtil searchParametersUtil) {
         this.searchParametersUtil = searchParametersUtil;

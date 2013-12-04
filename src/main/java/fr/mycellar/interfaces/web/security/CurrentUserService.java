@@ -72,10 +72,6 @@ public final class CurrentUserService {
         return (email != null) && (user != null) && email.equals(user.getEmail());
     }
 
-    /**
-     * @param userServiceFacade
-     *            the userServiceFacade to set
-     */
     @Inject
     public void setUserServiceFacade(UserServiceFacade userServiceFacade) {
         this.userServiceFacade = userServiceFacade;

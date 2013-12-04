@@ -44,9 +44,6 @@ public class ProducerServiceImpl extends AbstractSimpleService<Producer, Produce
 
     private WineService wineService;
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public void validate(Producer entity) throws BusinessException {
         Producer existing = producerRepository.findUniqueOrNone( //
@@ -56,9 +53,6 @@ public class ProducerServiceImpl extends AbstractSimpleService<Producer, Produce
         }
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     protected void validateDelete(Producer entity) throws BusinessException {
         if (wineService.count(new SearchParameters().property(Wine_.producer, entity)) > 0) {
@@ -74,19 +68,11 @@ public class ProducerServiceImpl extends AbstractSimpleService<Producer, Produce
         return producerRepository;
     }
 
-    /**
-     * @param producerRepository
-     *            the producerRepository to set
-     */
     @Inject
     public void setProducerRepository(ProducerRepository producerRepository) {
         this.producerRepository = producerRepository;
     }
 
-    /**
-     * @param wineService
-     *            the wineService to set
-     */
     @Inject
     public void setWineService(WineService wineService) {
         this.wineService = wineService;

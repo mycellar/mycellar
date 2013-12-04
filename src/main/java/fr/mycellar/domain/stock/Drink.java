@@ -51,10 +51,6 @@ public class Drink implements Serializable {
         return drinkWith;
     }
 
-    /**
-     * @param drinkWith
-     *            the drinkWith to set
-     */
     public void setDrinkWith(String drinkWith) {
         this.drinkWith = drinkWith;
     }
@@ -66,10 +62,6 @@ public class Drink implements Serializable {
         return date;
     }
 
-    /**
-     * @param date
-     *            the date to set
-     */
     public void setDate(LocalDate date) {
         this.date = date;
     }

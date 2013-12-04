@@ -41,9 +41,6 @@ public class BookingBottleKeyDeserializer extends KeyDeserializer {
 
     private BookingServiceFacade bookingServiceFacade;
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public Object deserializeKey(String key, DeserializationContext ctxt) throws IOException, JsonProcessingException {
         String[] values = key.split("-");
@@ -61,10 +58,6 @@ public class BookingBottleKeyDeserializer extends KeyDeserializer {
         throw ctxt.mappingException("Cannot deserialize booking bottle key.");
     }
 
-    /**
-     * @param bookingServiceFacade
-     *            the bookingServiceFacade to set
-     */
     @Inject
     public void setBookingServiceFacade(BookingServiceFacade bookingServiceFacade) {
         this.bookingServiceFacade = bookingServiceFacade;

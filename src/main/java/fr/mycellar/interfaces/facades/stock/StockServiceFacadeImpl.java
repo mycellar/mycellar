@@ -60,197 +60,126 @@ public class StockServiceFacadeImpl implements StockServiceFacade {
 
     private StockService stockService;
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     @Transactional
     public void arrival(Arrival arrival) {
         stockService.stock(arrival);
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     @Transactional(readOnly = true)
     public long countCellars(SearchParameters searchParameters) {
         return cellarService.count(searchParameters);
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     @Transactional(readOnly = true)
     public long countCellarShares(SearchParameters searchParameters) {
         return cellarShareService.count(searchParameters);
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     @Transactional(readOnly = true)
     public long countMovements(SearchParameters searchParameters) {
         return movementService.count(searchParameters);
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     @Transactional(readOnly = true)
     public long countStocks(SearchParameters searchParameters) {
         return stockService.count(searchParameters);
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     @Transactional
     public void deleteCellar(Cellar cellar) throws BusinessException {
         cellarService.delete(cellar);
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     @Transactional
     public void deleteCellarShare(CellarShare cellarShare) throws BusinessException {
         cellarShareService.delete(cellarShare);
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     @Transactional
     public void drink(Drink drink) {
         stockService.drink(drink);
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     @Transactional(readOnly = true)
     public Bottle findBottle(Wine wine, Format format) {
         return bottleService.find(wine, format);
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     @Transactional(readOnly = true)
     public Cellar getCellarById(Integer cellarId) {
         return cellarService.getById(cellarId);
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public CellarShare getCellarShareById(Integer cellarShareId) {
         return cellarShareService.getById(cellarShareId);
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     @Transactional(readOnly = true)
     public List<Cellar> getCellars(SearchParameters searchParameters) {
         return cellarService.find(searchParameters);
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public List<CellarShare> getCellarShares(SearchParameters searchParameters) {
         return cellarShareService.find(searchParameters);
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     @Transactional(readOnly = true)
     public List<Movement> getMovements(SearchParameters searchParameters) {
         return movementService.find(searchParameters);
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     @Transactional(readOnly = true)
     public List<Stock> getStocks(SearchParameters searchParameters) {
         return stockService.find(searchParameters);
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     @Transactional
     public void saveCellar(Cellar cellar) throws BusinessException {
         cellarService.save(cellar);
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     @Transactional
     public void saveCellarShare(CellarShare cellarShare) throws BusinessException {
         cellarShareService.save(cellarShare);
     }
 
-    /**
-     * @param bottleService
-     *            the bottleService to set
-     */
     @Inject
     public void setBottleService(BottleService bottleService) {
         this.bottleService = bottleService;
     }
 
-    /**
-     * @param cellarService
-     *            the cellarService to set
-     */
     @Inject
     public void setCellarService(CellarService cellarService) {
         this.cellarService = cellarService;
     }
 
-    /**
-     * @param cellarShareService
-     *            the cellarShareService to set
-     */
     @Inject
     public void setCellarShareService(CellarShareService cellarShareService) {
         this.cellarShareService = cellarShareService;
     }
 
-    /**
-     * @param movementService
-     *            the movementService to set
-     */
     @Inject
     public void setMovementService(MovementService movementService) {
         this.movementService = movementService;
     }
 
-    /**
-     * @param stockService
-     *            the stockService to set
-     */
     @Inject
     public void setStockService(StockService stockService) {
         this.stockService = stockService;

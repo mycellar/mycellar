@@ -28,41 +28,26 @@ import fr.mycellar.interfaces.web.descriptors.shared.AbstractDescriptor;
  */
 @Component
 public class DomainPageDescriptor extends AbstractDescriptor implements IMenuDescriptor {
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public String getIcon() {
         return "wrench";
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public String getRoute() {
         return "/admin/domains";
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public String getTitleKey() {
         return "domains";
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public String getParentKey() {
         return "adminMenuHeader";
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public int getWeight() {
         return 10200;

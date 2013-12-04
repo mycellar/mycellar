@@ -80,10 +80,6 @@ public class Contact extends IdentifiedEntity {
         return producer;
     }
 
-    /**
-     * @param producer
-     *            the producer to set
-     */
     public void setProducer(Producer producer) {
         this.producer = producer;
     }
@@ -95,10 +91,6 @@ public class Contact extends IdentifiedEntity {
         return text;
     }
 
-    /**
-     * @param text
-     *            the text to set
-     */
     public void setText(String text) {
         this.text = text;
     }
@@ -110,10 +102,6 @@ public class Contact extends IdentifiedEntity {
         return current;
     }
 
-    /**
-     * @param current
-     *            the current to set
-     */
     public void setCurrent(LocalDate current) {
         this.current = current;
     }
@@ -125,42 +113,26 @@ public class Contact extends IdentifiedEntity {
         return next;
     }
 
-    /**
-     * @param next
-     *            the next to set
-     */
     public void setNext(LocalDate next) {
         this.next = next;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public Integer getId() {
         return id;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     protected boolean dataEquals(IdentifiedEntity other) {
         Contact contact = (Contact) other;
         return ObjectUtils.equals(producer, contact.producer) && ObjectUtils.equals(current, contact.current);
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     protected Object[] getHashCodeData() {
         return new Object[] { producer, current };
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public String toString() {
         return new ToStringBuilder(this).appendSuper(super.toString()).append("next", next).append("producer", producer).append("text", text).build();

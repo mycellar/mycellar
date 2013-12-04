@@ -66,33 +66,18 @@ public class Input extends Movement {
         return source;
     }
 
-    /**
-     * @param charges
-     *            the charges to set
-     */
     public void setCharges(float charges) {
         this.charges = charges;
     }
 
-    /**
-     * @param price
-     *            the price to set
-     */
     public void setPrice(float price) {
         this.price = price;
     }
 
-    /**
-     * @param source
-     *            the source to set
-     */
     public void setSource(String source) {
         this.source = source;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     protected boolean dataEquals(IdentifiedEntity other) {
         Input input = (Input) other;
@@ -101,17 +86,11 @@ public class Input extends Movement {
                 && ObjectUtils.equals(getBottle(), input.getBottle());
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     protected Object[] getHashCodeData() {
         return new Object[] { getDate(), getCellar(), getBottle() };
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public String toString() {
         return new ToStringBuilder(this).appendSuper(super.toString()).append("charges", charges).append("price", price).append("source", source).build();

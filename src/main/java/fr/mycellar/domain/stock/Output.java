@@ -56,25 +56,14 @@ public class Output extends Movement {
         return price;
     }
 
-    /**
-     * @param destination
-     *            the destination to set
-     */
     public void setDestination(String destination) {
         this.destination = destination;
     }
 
-    /**
-     * @param price
-     *            the price to set
-     */
     public void setPrice(float price) {
         this.price = price;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     protected boolean dataEquals(IdentifiedEntity other) {
         Output output = (Output) other;
@@ -82,17 +71,11 @@ public class Output extends Movement {
                 && ObjectUtils.equals(getPrice(), output.getPrice()) && ObjectUtils.equals(getDestination(), output.getDestination()) && ObjectUtils.equals(getBottle(), output.getBottle());
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     protected Object[] getHashCodeData() {
         return new Object[] { getDate(), getCellar(), getBottle() };
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public String toString() {
         return new ToStringBuilder(this).appendSuper(super.toString()).append("destination", destination).append("price", price).build();

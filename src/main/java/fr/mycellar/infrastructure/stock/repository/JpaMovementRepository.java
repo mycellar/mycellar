@@ -30,8 +30,7 @@ import fr.mycellar.infrastructure.shared.repository.JpaSimpleRepository;
  */
 @Named
 @Singleton
-public class JpaMovementRepository extends JpaSimpleRepository<Movement> implements
-        MovementRepository {
+public class JpaMovementRepository extends JpaSimpleRepository<Movement> implements MovementRepository {
 
     /**
      * Default constructor.

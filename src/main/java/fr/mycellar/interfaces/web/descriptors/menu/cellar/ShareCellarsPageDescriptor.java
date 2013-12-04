@@ -28,41 +28,26 @@ import fr.mycellar.interfaces.web.descriptors.shared.AbstractDescriptor;
  */
 @Component
 public class ShareCellarsPageDescriptor extends AbstractDescriptor implements IMenuDescriptor {
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public String getIcon() {
         return "folder-open";
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public String getRoute() {
         return "/cellar/shares";
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public String getTitleKey() {
         return "shareCellars";
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public String getParentKey() {
         return "cellarsHeader";
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public int getWeight() {
         return 3500;

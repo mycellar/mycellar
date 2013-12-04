@@ -39,8 +39,7 @@ public interface MovementService extends SimpleService<Movement> {
      * @param price
      * @param source
      */
-    void createInput(Cellar cellar, Bottle bottle, Integer quantity, LocalDate date, float charges,
-            float price, String source);
+    void createInput(Cellar cellar, Bottle bottle, Integer quantity, LocalDate date, float charges, float price, String source);
 
     /**
      * @param cellar
@@ -50,7 +49,6 @@ public interface MovementService extends SimpleService<Movement> {
      * @param destination
      * @param price
      */
-    void createOutput(Cellar cellar, Bottle bottle, Integer quantity, LocalDate date,
-            String destination, float price);
+    void createOutput(Cellar cellar, Bottle bottle, Integer quantity, LocalDate date, String destination, float price);
 
 }

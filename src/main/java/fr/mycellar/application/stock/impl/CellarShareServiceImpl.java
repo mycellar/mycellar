@@ -40,9 +40,6 @@ public class CellarShareServiceImpl extends AbstractSimpleService<CellarShare, C
 
     private CellarShareRepository cellarShareRepository;
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public void validate(CellarShare entity) throws BusinessException {
         CellarShare existing = cellarShareRepository.findUniqueOrNone(new SearchParameters() //
@@ -53,18 +50,11 @@ public class CellarShareServiceImpl extends AbstractSimpleService<CellarShare, C
         }
     }
 
-    /**
-     * @param cellarShareRepository
-     *            the cellarShareRepository to set
-     */
     @Inject
     public void setCellarShareRepository(CellarShareRepository cellarShareRepository) {
         this.cellarShareRepository = cellarShareRepository;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     protected CellarShareRepository getRepository() {
         return cellarShareRepository;

@@ -42,17 +42,11 @@ public class JpaResetPasswordRequestRepository extends JpaSimpleRepository<Reset
         super(ResetPasswordRequest.class);
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public void deleteOldRequests() {
         getEntityManager().createQuery("DELETE " + ResetPasswordRequest.class.getSimpleName() + " WHERE dateTime <= :dateTime").setParameter("dateTime", new LocalDate().minusDays(1)).executeUpdate();
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public void deleteAllForUser(User user) {
         getEntityManager().createQuery("DELETE " + ResetPasswordRequest.class.getSimpleName() + " WHERE user = :user").setParameter("user", user).executeUpdate();
