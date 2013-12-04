@@ -93,7 +93,7 @@ angular.module('mycellar.services.admin-domain').provider('adminDomainService', 
       return 'AdminDomain' + name + 'Controller';
     };
     
-    var resourceRoute = baseUrl(resourceName) + '/:id';
+    var resourceRoute = baseUrl(resourceName) + '/:id?';
     var resourcesRoute = baseUrl(resourcesName);
     
     // This is the object that our `forDomain()` function returns.  It decorates `$routeProvider`,
