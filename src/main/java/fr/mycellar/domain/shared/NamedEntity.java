@@ -22,7 +22,6 @@ import javax.persistence.Column;
 import javax.persistence.MappedSuperclass;
 
 import org.apache.commons.lang3.builder.ToStringBuilder;
-import org.hibernate.search.annotations.Analyzer;
 import org.hibernate.search.annotations.Field;
 import org.hibernate.search.annotations.Indexed;
 
@@ -36,7 +35,7 @@ public abstract class NamedEntity extends IdentifiedEntity {
     private static final long serialVersionUID = 201111181451L;
 
     @Column(name = "NAME", nullable = false)
-    @Field(analyzer = @Analyzer(definition = "custom"))
+    @Field
     private String name;
 
     /**

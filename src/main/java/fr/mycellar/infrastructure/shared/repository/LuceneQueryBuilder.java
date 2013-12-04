@@ -23,5 +23,5 @@ import org.hibernate.search.jpa.FullTextEntityManager;
 
 public interface LuceneQueryBuilder {
 
-    Query build(FullTextEntityManager fullTextEntityManager, SearchParameters searchParameters);
+    Query build(FullTextEntityManager fullTextEntityManager, SearchParameters searchParameters, Class<?> type);
 }

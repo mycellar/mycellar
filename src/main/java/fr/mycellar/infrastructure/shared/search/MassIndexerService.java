@@ -81,9 +81,6 @@ public class MassIndexerService {
         }
     }
 
-    /**
-     * 
-     */
     private void indexClass(Class<?> classToBeIndexed) {
         StopWatch stopWatch = new StopWatch();
         stopWatch.start();

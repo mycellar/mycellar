@@ -33,7 +33,6 @@ import javax.validation.Valid;
 import org.apache.commons.lang3.ObjectUtils;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.hibernate.annotations.Type;
-import org.hibernate.search.annotations.Analyzer;
 import org.hibernate.search.annotations.Field;
 import org.hibernate.search.annotations.Indexed;
 import org.joda.time.LocalDate;
@@ -63,7 +62,7 @@ public class Contact extends IdentifiedEntity {
     private Producer producer;
 
     @Column(name = "TEXT", length = 10000)
-    @Field(analyzer = @Analyzer(definition = "custom"))
+    @Field
     private String text;
 
     @Column(name = "CURRENT", nullable = false)

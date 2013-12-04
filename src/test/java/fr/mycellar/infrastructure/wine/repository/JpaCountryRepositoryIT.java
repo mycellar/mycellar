@@ -35,14 +35,13 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.transaction.annotation.Transactional;
 
 import fr.mycellar.domain.shared.NamedEntity_;
-import fr.mycellar.domain.wine.Country;
 import fr.mycellar.infrastructure.shared.repository.SearchParameters;
 
 /**
  * @author speralta
  */
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(locations = { "classpath*:context-infrastructure-test.xml" })
+@ContextConfiguration(locations = { "classpath:context-infrastructure-test.xml" })
 @Transactional
 public class JpaCountryRepositoryIT {
     @PersistenceContext
@@ -54,16 +53,13 @@ public class JpaCountryRepositoryIT {
     @Test
     @Rollback
     public void byTermSelector() {
-        Country country = new Country();
-        country.setName("France");
-        jpaCountryRepository.save(country);
-
         FullTextEntityManager fullTextEntityManager = getFullTextEntityManager(entityManager);
         fullTextEntityManager.flushToIndexes();
 
         assertThat(jpaCountryRepository.find( //
                 new SearchParameters() //
-                        .term(NamedEntity_.name, "Fiance")) //
+                        .searchSimilarity(null) //
+                        .term(NamedEntity_.name, "France")) //
                 .size(), equalTo(1));
     }
 

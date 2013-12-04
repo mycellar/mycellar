@@ -49,7 +49,7 @@ public class HibernateSearchUtil {
     public <T> List<T> find(Class<T> clazz, SearchParameters sp) {
         logger.debug("Searching {} with terms : {}.", new Object[] { clazz.getSimpleName(), sp.getTerms() });
         FullTextEntityManager fullTextEntityManager = getFullTextEntityManager(entityManager);
-        Query query = luceneQueryBuilder.build(fullTextEntityManager, sp);
+        Query query = luceneQueryBuilder.build(fullTextEntityManager, sp, clazz);
 
         if (query == null) {
             return null;
@@ -65,13 +65,13 @@ public class HibernateSearchUtil {
 
     /**
      * Same as {@link #find(Class, SearchParameters, String[])} but will return
-     * only the id
+     * only the id.
      */
     @SuppressWarnings("unchecked")
     public <T> List<Serializable> findId(Class<T> clazz, SearchParameters sp) {
         logger.debug("Searching {} with terms : {}.", new Object[] { clazz.getSimpleName(), sp.getTerms() });
         FullTextEntityManager fullTextEntityManager = getFullTextEntityManager(entityManager);
-        Query query = luceneQueryBuilder.build(fullTextEntityManager, sp);
+        Query query = luceneQueryBuilder.build(fullTextEntityManager, sp, clazz);
 
         if (query == null) {
             return null;

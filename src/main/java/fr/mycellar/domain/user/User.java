@@ -35,7 +35,6 @@ import javax.xml.bind.annotation.XmlTransient;
 
 import org.apache.commons.lang3.ObjectUtils;
 import org.apache.commons.lang3.builder.ToStringBuilder;
-import org.hibernate.search.annotations.Analyzer;
 import org.hibernate.search.annotations.Field;
 import org.hibernate.search.annotations.Indexed;
 
@@ -63,11 +62,11 @@ public class User extends IdentifiedEntity {
     private final Set<Booking> bookings = new HashSet<Booking>();
 
     @Column(name = "EMAIL", nullable = false)
-    @Field(analyzer = @Analyzer(definition = "custom"))
+    @Field
     private String email;
 
     @Column(name = "FIRSTNAME", nullable = false)
-    @Field(analyzer = @Analyzer(definition = "custom"))
+    @Field
     private String firstname;
 
     @Id
@@ -76,7 +75,7 @@ public class User extends IdentifiedEntity {
     private Integer id;
 
     @Column(name = "LASTNAME", nullable = false)
-    @Field(analyzer = @Analyzer(definition = "custom"))
+    @Field
     private String lastname;
 
     @Column(name = "PASSWORD", nullable = false, length = 40)

@@ -48,7 +48,7 @@ public class DefaultLuceneQueryBuilder implements LuceneQueryBuilder {
     private static final String SPACES_OR_PUNCTUATION = "\\p{Punct}|\\p{Blank}";
 
     @Override
-    public Query build(FullTextEntityManager fullTextEntityManager, SearchParameters searchParameters) {
+    public Query build(FullTextEntityManager fullTextEntityManager, SearchParameters searchParameters, Class<?> type) {
         List<String> clauses = getAllClauses(searchParameters, searchParameters.getTerms());
 
         StringBuilder query = new StringBuilder();
@@ -66,7 +66,7 @@ public class DefaultLuceneQueryBuilder implements LuceneQueryBuilder {
         }
         logger.debug("Lucene query: {}", query);
         try {
-            return new QueryParser(LUCENE_36, null, fullTextEntityManager.getSearchFactory().getAnalyzer("custom")).parse(query.toString());
+            return new QueryParser(LUCENE_36, null, fullTextEntityManager.getSearchFactory().getAnalyzer(type)).parse(query.toString());
         } catch (Exception e) {
             throw propagate(e);
         }
@@ -116,7 +116,9 @@ public class DefaultLuceneQueryBuilder implements LuceneQueryBuilder {
 
     private String buildSubQuery(SingularAttribute<?, ?> property, List<String> terms, SearchParameters sp) {
         StringBuilder subQuery = new StringBuilder();
-        subQuery.append("(");
+        if (terms.size() > 1) {
+            subQuery.append("(");
+        }
         for (String term : terms) {
             if (subQuery.length() > 1) {
                 subQuery.append(" AND ");
@@ -127,7 +129,9 @@ public class DefaultLuceneQueryBuilder implements LuceneQueryBuilder {
                 subQuery.append(property.getName() + ":" + escape(lowerCase(term)));
             }
         }
-        subQuery.append(")");
+        if (terms.size() > 1) {
+            subQuery.append(")");
+        }
         return subQuery.toString();
     }
 

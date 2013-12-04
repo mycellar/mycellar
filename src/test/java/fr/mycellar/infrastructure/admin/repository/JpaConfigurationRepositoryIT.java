@@ -40,7 +40,7 @@ import fr.mycellar.infrastructure.shared.repository.SearchParameters;
  * @author speralta
  */
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(locations = { "classpath*:context-infrastructure-test.xml" })
+@ContextConfiguration(locations = { "classpath:context-infrastructure-test.xml" })
 @Transactional
 public class JpaConfigurationRepositoryIT {
     @PersistenceContext

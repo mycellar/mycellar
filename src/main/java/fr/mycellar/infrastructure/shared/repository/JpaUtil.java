@@ -19,31 +19,23 @@
 package fr.mycellar.infrastructure.shared.repository;
 
 import static com.google.common.base.Predicates.notNull;
-import static com.google.common.base.Throwables.propagate;
 import static com.google.common.collect.Iterables.filter;
 import static com.google.common.collect.Iterables.toArray;
 import static com.google.common.collect.Iterables.transform;
 import static com.google.common.collect.Lists.newArrayList;
-import static java.lang.reflect.Modifier.isPublic;
 import static org.apache.commons.lang.StringUtils.isBlank;
 import static org.hibernate.proxy.HibernateProxyHelper.getClassWithoutInitializingProxy;
 
 import java.beans.PropertyDescriptor;
-import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
-import java.util.Map;
 
 import javax.inject.Named;
 import javax.inject.Singleton;
-import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
 import javax.persistence.Query;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.Expression;
@@ -60,9 +52,7 @@ import javax.persistence.metamodel.ManagedType;
 import javax.persistence.metamodel.PluralAttribute;
 import javax.persistence.metamodel.SingularAttribute;
 
-import org.apache.commons.beanutils.MethodUtils;
 import org.apache.commons.beanutils.PropertyUtils;
-import org.apache.commons.lang.WordUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.context.annotation.Lazy;
 
@@ -75,7 +65,6 @@ import fr.mycellar.domain.shared.Identifiable;
 @Lazy(false)
 public class JpaUtil {
 
-    private final Map<Class<?>, String> compositePkCache = new HashMap<>();
     private static JpaUtil instance;
 
     public static JpaUtil getInstance() {
@@ -84,27 +73,6 @@ public class JpaUtil {
 
     public JpaUtil() {
         instance = this;
-    }
-
-    public boolean isEntityIdManuallyAssigned(Class<?> type) {
-        for (Method method : type.getMethods()) {
-            if (isPrimaryKey(method)) {
-                return isManuallyAssigned(method);
-            }
-        }
-        return false; // no pk found, should not happen
-    }
-
-    private boolean isPrimaryKey(Method method) {
-        return isPublic(method.getModifiers()) && ((method.getAnnotation(Id.class) != null) || (method.getAnnotation(EmbeddedId.class) != null));
-    }
-
-    private boolean isManuallyAssigned(Method method) {
-        if (method.getAnnotation(Id.class) != null) {
-            return method.getAnnotation(GeneratedValue.class) == null;
-        }
-
-        return method.getAnnotation(EmbeddedId.class) != null;
     }
 
     public Predicate concatPredicate(SearchParameters sp, CriteriaBuilder builder, Predicate... predicatesNullAllowed) {
@@ -249,76 +217,12 @@ public class JpaUtil {
         }
     }
 
-    public <T extends Identifiable<?>> String compositePkPropertyName(T entity) {
-        Class<?> entityClass = entity.getClass();
-        if (compositePkCache.containsKey(entityClass)) {
-            return compositePkCache.get(entityClass);
-        }
-
-        for (Method m : entity.getClass().getMethods()) {
-            if (m.getAnnotation(EmbeddedId.class) != null) {
-                String propertyName = methodToProperty(m);
-                compositePkCache.put(entityClass, propertyName);
-                return propertyName;
-            }
-        }
-        for (Field f : entity.getClass().getFields()) {
-            if (f.getAnnotation(EmbeddedId.class) != null) {
-                String propertyName = f.getName();
-                compositePkCache.put(entityClass, propertyName);
-                return propertyName;
-            }
-        }
-        compositePkCache.put(entityClass, null);
-        return null;
-    }
-
-    public <T> boolean isPk(ManagedType<T> mt, SingularAttribute<? super T, ?> attr) {
-        try {
-            Method m = MethodUtils.getAccessibleMethod(mt.getJavaType(), "get" + WordUtils.capitalize(attr.getName()), (Class<?>) null);
-            if ((m != null) && (m.getAnnotation(Id.class) != null)) {
-                return true;
-            }
-
-            Field field = mt.getJavaType().getField(attr.getName());
-            return field.getAnnotation(Id.class) != null;
-        } catch (Exception e) {
-            return false;
-        }
-    }
-
-    public <T> Object getValue(T example, Attribute<? super T, ?> attr) {
-        try {
-            if (attr.getJavaMember() instanceof Method) {
-                return ((Method) attr.getJavaMember()).invoke(example);
-            } else {
-                return ((Field) attr.getJavaMember()).get(example);
-            }
-        } catch (Exception e) {
-            throw propagate(e);
-        }
-    }
-
     public <T, A> SingularAttribute<? super T, A> attribute(ManagedType<? super T> mt, Attribute<? super T, A> attr) {
         return mt.getSingularAttribute(attr.getName(), attr.getJavaType());
     }
 
     public <T> SingularAttribute<? super T, String> stringAttribute(ManagedType<? super T> mt, Attribute<? super T, ?> attr) {
         return mt.getSingularAttribute(attr.getName(), String.class);
-    }
-
-    public <T extends Identifiable<?>> boolean hasSimplePk(Class<T> entityClass) {
-        for (Method m : entityClass.getMethods()) {
-            if (m.getAnnotation(Id.class) != null) {
-                return true;
-            }
-        }
-        for (Field f : entityClass.getFields()) {
-            if (f.getAnnotation(Id.class) != null) {
-                return true;
-            }
-        }
-        return false;
     }
 
     public String[] toNames(Attribute<?, ?>... attributes) {
@@ -349,15 +253,6 @@ public class JpaUtil {
             }
         }
         return null;
-    }
-
-    public Object getValueFromField(Field field, Object object) {
-        boolean accessible = field.isAccessible();
-        try {
-            return getField(field, object);
-        } finally {
-            field.setAccessible(accessible);
-        }
     }
 
     public void applyPagination(Query query, SearchParameters sp) {
@@ -405,12 +300,4 @@ public class JpaUtil {
         }
     }
 
-    @SuppressWarnings("unchecked")
-    private <T> T getField(Field field, Object target) {
-        try {
-            return (T) field.get(target);
-        } catch (Exception e) {
-            throw new RuntimeException(e);
-        }
-    }
 }

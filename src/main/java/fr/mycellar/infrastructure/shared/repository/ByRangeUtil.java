@@ -59,9 +59,9 @@ public class ByRangeUtil {
         return jpaUtil.concatPredicate(sp, builder, predicates);
     }
 
-    private static <D extends Comparable<? super D>, E> Predicate buildRangePredicate(Range<E, D> range, Root<E> root, CriteriaBuilder builder) {
+    private <D extends Comparable<? super D>, E> Predicate buildRangePredicate(Range<E, D> range, Root<E> root, CriteriaBuilder builder) {
         Predicate rangePredicate = null;
-        Path<D> path = JpaUtil.getInstance().getPath(root, range.getAttributes());
+        Path<D> path = jpaUtil.getPath(root, range.getAttributes());
         if (range.isBetween()) {
             rangePredicate = builder.between(path, range.getFrom(), range.getTo());
         } else if (range.isFromSet()) {

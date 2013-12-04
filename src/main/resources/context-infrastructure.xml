@@ -31,8 +31,7 @@
     p:persistenceUnitName="pu">
     <property name="jpaPropertyMap">
       <map>
-        <entry key="hibernate.search.model_mapping"
-          value="fr.mycellar.infrastructure.shared.search.SearchMappingFactory" />
+        <entry key="hibernate.search.analyzer" value="org.apache.lucene.analysis.fr.FrenchAnalyzer" />
         <entry key="hibernate.search.default.directory_provider" value="ram" />
         <entry key="hibernate.search.worker.execution" value="async" />
         <entry key="hibernate.search.worker.thread_pool.size" value="3" />
