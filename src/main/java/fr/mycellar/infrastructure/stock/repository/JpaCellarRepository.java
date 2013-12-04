@@ -22,7 +22,6 @@ import javax.inject.Named;
 import javax.inject.Singleton;
 
 import fr.mycellar.domain.stock.Cellar;
-import fr.mycellar.domain.stock.repository.CellarRepository;
 import fr.mycellar.infrastructure.shared.repository.JpaSimpleRepository;
 
 /**

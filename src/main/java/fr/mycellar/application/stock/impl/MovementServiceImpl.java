@@ -32,7 +32,7 @@ import fr.mycellar.domain.stock.Cellar;
 import fr.mycellar.domain.stock.Input;
 import fr.mycellar.domain.stock.Movement;
 import fr.mycellar.domain.stock.Output;
-import fr.mycellar.domain.stock.repository.MovementRepository;
+import fr.mycellar.infrastructure.stock.repository.MovementRepository;
 
 /**
  * @author speralta

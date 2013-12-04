@@ -16,19 +16,14 @@
  * You should have received a copy of the GNU General Public License
  * along with MyCellar. If not, see <http://www.gnu.org/licenses/>.
  */
-package fr.mycellar.domain.stack.repository;
+package fr.mycellar.infrastructure.booking.repository;
 
-import fr.mycellar.domain.stack.Stack;
+import fr.mycellar.domain.booking.BookingEvent;
 import fr.mycellar.infrastructure.shared.repository.SimpleRepository;
 
 /**
  * @author speralta
  */
-public interface StackRepository extends SimpleRepository<Stack> {
-
-    /**
-     * 
-     */
-    void deleteAllStacks();
+public interface BookingEventRepository extends SimpleRepository<BookingEvent> {
 
 }

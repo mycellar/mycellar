@@ -22,7 +22,6 @@ import javax.inject.Named;
 import javax.inject.Singleton;
 
 import fr.mycellar.domain.wine.Wine;
-import fr.mycellar.domain.wine.repository.WineRepository;
 import fr.mycellar.infrastructure.shared.repository.JpaSimpleRepository;
 
 /**

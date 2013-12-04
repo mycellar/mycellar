@@ -16,14 +16,31 @@
  * You should have received a copy of the GNU General Public License
  * along with MyCellar. If not, see <http://www.gnu.org/licenses/>.
  */
-package fr.mycellar.domain.stock.repository;
+package fr.mycellar.infrastructure.booking.repository;
 
-import fr.mycellar.domain.stock.Cellar;
+import java.util.List;
+import java.util.Map;
+
+import fr.mycellar.domain.booking.Booking;
+import fr.mycellar.domain.booking.BookingBottle;
+import fr.mycellar.domain.booking.BookingEvent;
 import fr.mycellar.infrastructure.shared.repository.SimpleRepository;
 
 /**
  * @author speralta
  */
-public interface CellarRepository extends SimpleRepository<Cellar> {
+public interface BookingRepository extends SimpleRepository<Booking> {
+
+    /**
+     * @param bookingEvent
+     * @return
+     */
+    Map<BookingBottle, Long> getQuantities(BookingEvent bookingEvent);
+
+    /**
+     * @param bookingBottleId
+     * @return
+     */
+    List<Booking> getAllByBookingBottleId(Integer bookingBottleId);
 
 }

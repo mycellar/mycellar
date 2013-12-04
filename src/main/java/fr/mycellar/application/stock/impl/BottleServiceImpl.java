@@ -28,10 +28,10 @@ import fr.mycellar.domain.shared.exception.BusinessError;
 import fr.mycellar.domain.shared.exception.BusinessException;
 import fr.mycellar.domain.stock.Bottle;
 import fr.mycellar.domain.stock.Bottle_;
-import fr.mycellar.domain.stock.repository.BottleRepository;
 import fr.mycellar.domain.wine.Format;
 import fr.mycellar.domain.wine.Wine;
 import fr.mycellar.infrastructure.shared.repository.SearchParameters;
+import fr.mycellar.infrastructure.stock.repository.BottleRepository;
 
 /**
  * @author speralta

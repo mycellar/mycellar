@@ -16,14 +16,14 @@
  * You should have received a copy of the GNU General Public License
  * along with MyCellar. If not, see <http://www.gnu.org/licenses/>.
  */
-package fr.mycellar.domain.admin.repository;
+package fr.mycellar.infrastructure.stock.repository;
 
-import fr.mycellar.domain.admin.Configuration;
+import fr.mycellar.domain.stock.CellarShare;
 import fr.mycellar.infrastructure.shared.repository.SimpleRepository;
 
 /**
  * @author speralta
  */
-public interface ConfigurationRepository extends SimpleRepository<Configuration> {
+public interface CellarShareRepository extends SimpleRepository<CellarShare> {
 
 }

@@ -27,9 +27,9 @@ import fr.mycellar.application.shared.AbstractSimpleService;
 import fr.mycellar.domain.admin.Configuration;
 import fr.mycellar.domain.admin.ConfigurationKeyEnum;
 import fr.mycellar.domain.admin.Configuration_;
-import fr.mycellar.domain.admin.repository.ConfigurationRepository;
 import fr.mycellar.domain.shared.exception.BusinessError;
 import fr.mycellar.domain.shared.exception.BusinessException;
+import fr.mycellar.infrastructure.admin.repository.ConfigurationRepository;
 import fr.mycellar.infrastructure.shared.repository.SearchParameters;
 
 /**

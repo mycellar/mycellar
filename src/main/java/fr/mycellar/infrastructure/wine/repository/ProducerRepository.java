@@ -16,14 +16,14 @@
  * You should have received a copy of the GNU General Public License
  * along with MyCellar. If not, see <http://www.gnu.org/licenses/>.
  */
-package fr.mycellar.domain.booking.repository;
+package fr.mycellar.infrastructure.wine.repository;
 
-import fr.mycellar.domain.booking.BookingEvent;
+import fr.mycellar.domain.wine.Producer;
 import fr.mycellar.infrastructure.shared.repository.SimpleRepository;
 
 /**
  * @author speralta
  */
-public interface BookingEventRepository extends SimpleRepository<BookingEvent> {
+public interface ProducerRepository extends SimpleRepository<Producer> {
 
 }

@@ -25,7 +25,6 @@ import org.joda.time.LocalDate;
 
 import fr.mycellar.domain.user.ResetPasswordRequest;
 import fr.mycellar.domain.user.User;
-import fr.mycellar.domain.user.repository.ResetPasswordRequestRepository;
 import fr.mycellar.infrastructure.shared.repository.JpaSimpleRepository;
 
 /**

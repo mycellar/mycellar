@@ -38,8 +38,8 @@ import fr.mycellar.domain.stock.Cellar_;
 import fr.mycellar.domain.user.ResetPasswordRequest;
 import fr.mycellar.domain.user.User;
 import fr.mycellar.domain.user.User_;
-import fr.mycellar.domain.user.repository.UserRepository;
 import fr.mycellar.infrastructure.shared.repository.SearchParameters;
+import fr.mycellar.infrastructure.user.repository.UserRepository;
 
 /**
  * @author speralta

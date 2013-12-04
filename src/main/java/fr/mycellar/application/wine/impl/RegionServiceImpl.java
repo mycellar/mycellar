@@ -31,8 +31,8 @@ import fr.mycellar.domain.shared.exception.BusinessException;
 import fr.mycellar.domain.wine.Appellation_;
 import fr.mycellar.domain.wine.Region;
 import fr.mycellar.domain.wine.Region_;
-import fr.mycellar.domain.wine.repository.RegionRepository;
 import fr.mycellar.infrastructure.shared.repository.SearchParameters;
+import fr.mycellar.infrastructure.wine.repository.RegionRepository;
 
 /**
  * @author speralta

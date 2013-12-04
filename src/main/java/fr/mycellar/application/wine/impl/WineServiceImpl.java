@@ -39,8 +39,8 @@ import fr.mycellar.domain.wine.Wine;
 import fr.mycellar.domain.wine.WineColorEnum;
 import fr.mycellar.domain.wine.WineTypeEnum;
 import fr.mycellar.domain.wine.Wine_;
-import fr.mycellar.domain.wine.repository.WineRepository;
 import fr.mycellar.infrastructure.shared.repository.SearchParameters;
+import fr.mycellar.infrastructure.wine.repository.WineRepository;
 
 /**
  * @author speralta

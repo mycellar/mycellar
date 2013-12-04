@@ -33,7 +33,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import fr.mycellar.domain.contact.Contact;
-import fr.mycellar.domain.contact.repository.ContactRepository;
 import fr.mycellar.infrastructure.shared.repository.JpaSimpleRepository;
 import fr.mycellar.infrastructure.shared.repository.SearchParameters;
 

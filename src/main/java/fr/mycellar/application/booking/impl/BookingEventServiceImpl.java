@@ -32,10 +32,10 @@ import fr.mycellar.application.shared.AbstractSimpleService;
 import fr.mycellar.domain.booking.BookingEvent;
 import fr.mycellar.domain.booking.BookingEvent_;
 import fr.mycellar.domain.booking.Booking_;
-import fr.mycellar.domain.booking.repository.BookingEventRepository;
 import fr.mycellar.domain.shared.NamedEntity_;
 import fr.mycellar.domain.shared.exception.BusinessError;
 import fr.mycellar.domain.shared.exception.BusinessException;
+import fr.mycellar.infrastructure.booking.repository.BookingEventRepository;
 import fr.mycellar.infrastructure.shared.repository.Range;
 import fr.mycellar.infrastructure.shared.repository.SearchParameters;
 

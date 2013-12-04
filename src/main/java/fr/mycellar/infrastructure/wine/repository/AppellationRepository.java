@@ -16,14 +16,14 @@
  * You should have received a copy of the GNU General Public License
  * along with MyCellar. If not, see <http://www.gnu.org/licenses/>.
  */
-package fr.mycellar.domain.wine.repository;
+package fr.mycellar.infrastructure.wine.repository;
 
-import fr.mycellar.domain.wine.Country;
+import fr.mycellar.domain.wine.Appellation;
 import fr.mycellar.infrastructure.shared.repository.SimpleRepository;
 
 /**
  * @author speralta
  */
-public interface CountryRepository extends SimpleRepository<Country> {
+public interface AppellationRepository extends SimpleRepository<Appellation> {
 
 }

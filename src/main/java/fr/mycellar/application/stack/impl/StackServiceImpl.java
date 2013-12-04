@@ -30,8 +30,8 @@ import fr.mycellar.application.stack.StackService;
 import fr.mycellar.domain.shared.exception.BusinessException;
 import fr.mycellar.domain.stack.Stack;
 import fr.mycellar.domain.stack.Stack_;
-import fr.mycellar.domain.stack.repository.StackRepository;
 import fr.mycellar.infrastructure.shared.repository.SearchParameters;
+import fr.mycellar.infrastructure.stack.repository.StackRepository;
 
 /**
  * @author speralta

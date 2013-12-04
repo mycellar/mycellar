@@ -36,8 +36,8 @@ import fr.mycellar.domain.stock.Drink;
 import fr.mycellar.domain.stock.DrinkBottle;
 import fr.mycellar.domain.stock.Stock;
 import fr.mycellar.domain.stock.Stock_;
-import fr.mycellar.domain.stock.repository.StockRepository;
 import fr.mycellar.infrastructure.shared.repository.SearchParameters;
+import fr.mycellar.infrastructure.stock.repository.StockRepository;
 
 /**
  * @author speralta

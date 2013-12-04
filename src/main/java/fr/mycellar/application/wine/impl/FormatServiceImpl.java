@@ -29,8 +29,8 @@ import fr.mycellar.domain.shared.exception.BusinessError;
 import fr.mycellar.domain.shared.exception.BusinessException;
 import fr.mycellar.domain.wine.Format;
 import fr.mycellar.domain.wine.Format_;
-import fr.mycellar.domain.wine.repository.FormatRepository;
 import fr.mycellar.infrastructure.shared.repository.SearchParameters;
+import fr.mycellar.infrastructure.wine.repository.FormatRepository;
 
 /**
  * @author speralta

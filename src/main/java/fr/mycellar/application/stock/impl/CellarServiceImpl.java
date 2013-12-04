@@ -33,8 +33,8 @@ import fr.mycellar.domain.stock.Cellar;
 import fr.mycellar.domain.stock.CellarShare_;
 import fr.mycellar.domain.stock.Cellar_;
 import fr.mycellar.domain.stock.Stock_;
-import fr.mycellar.domain.stock.repository.CellarRepository;
 import fr.mycellar.infrastructure.shared.repository.SearchParameters;
+import fr.mycellar.infrastructure.stock.repository.CellarRepository;
 
 /**
  * @author speralta

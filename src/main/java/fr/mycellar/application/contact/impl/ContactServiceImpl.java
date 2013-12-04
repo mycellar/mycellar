@@ -36,10 +36,10 @@ import fr.mycellar.application.contact.ContactService;
 import fr.mycellar.application.shared.AbstractSimpleService;
 import fr.mycellar.domain.contact.Contact;
 import fr.mycellar.domain.contact.Contact_;
-import fr.mycellar.domain.contact.repository.ContactRepository;
 import fr.mycellar.domain.shared.exception.BusinessError;
 import fr.mycellar.domain.shared.exception.BusinessException;
 import fr.mycellar.domain.wine.Producer;
+import fr.mycellar.infrastructure.contact.repository.ContactRepository;
 import fr.mycellar.infrastructure.shared.repository.SearchParameters;
 
 /**

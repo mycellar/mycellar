@@ -29,8 +29,8 @@ import org.mockito.Mock;
 
 import fr.mycellar.domain.booking.Booking;
 import fr.mycellar.domain.booking.BookingBottle;
-import fr.mycellar.domain.booking.repository.BookingRepository;
 import fr.mycellar.domain.shared.exception.BusinessException;
+import fr.mycellar.infrastructure.booking.repository.BookingRepository;
 import fr.mycellar.test.FieldUtils;
 
 /**

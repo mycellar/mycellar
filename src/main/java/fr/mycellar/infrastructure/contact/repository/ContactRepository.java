@@ -16,14 +16,35 @@
  * You should have received a copy of the GNU General Public License
  * along with MyCellar. If not, see <http://www.gnu.org/licenses/>.
  */
-package fr.mycellar.domain.stock.repository;
+package fr.mycellar.infrastructure.contact.repository;
 
-import fr.mycellar.domain.stock.CellarShare;
+import java.util.List;
+
+import fr.mycellar.domain.contact.Contact;
+import fr.mycellar.infrastructure.shared.repository.SearchParameters;
 import fr.mycellar.infrastructure.shared.repository.SimpleRepository;
 
 /**
  * @author speralta
  */
-public interface CellarShareRepository extends SimpleRepository<CellarShare> {
+public interface ContactRepository extends SimpleRepository<Contact> {
+
+    /**
+     * @return
+     */
+    List<Contact> getAllToContact();
+
+    /**
+     * @return
+     */
+    long countLastContacts(SearchParameters searchParameters);
+
+    /**
+     * @param orders
+     * @param first
+     * @param count
+     * @return
+     */
+    List<Contact> getLastContacts(SearchParameters searchParameters);
 
 }

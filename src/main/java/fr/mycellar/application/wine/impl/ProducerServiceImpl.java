@@ -30,8 +30,8 @@ import fr.mycellar.domain.shared.exception.BusinessError;
 import fr.mycellar.domain.shared.exception.BusinessException;
 import fr.mycellar.domain.wine.Producer;
 import fr.mycellar.domain.wine.Wine_;
-import fr.mycellar.domain.wine.repository.ProducerRepository;
 import fr.mycellar.infrastructure.shared.repository.SearchParameters;
+import fr.mycellar.infrastructure.wine.repository.ProducerRepository;
 
 /**
  * @author speralta

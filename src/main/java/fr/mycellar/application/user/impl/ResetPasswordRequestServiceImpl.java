@@ -42,8 +42,8 @@ import fr.mycellar.domain.shared.exception.BusinessException;
 import fr.mycellar.domain.user.ResetPasswordRequest;
 import fr.mycellar.domain.user.ResetPasswordRequest_;
 import fr.mycellar.domain.user.User;
-import fr.mycellar.domain.user.repository.ResetPasswordRequestRepository;
 import fr.mycellar.infrastructure.shared.repository.SearchParameters;
+import fr.mycellar.infrastructure.user.repository.ResetPasswordRequestRepository;
 
 /**
  * @author speralta

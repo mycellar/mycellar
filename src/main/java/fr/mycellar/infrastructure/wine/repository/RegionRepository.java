@@ -16,14 +16,14 @@
  * You should have received a copy of the GNU General Public License
  * along with MyCellar. If not, see <http://www.gnu.org/licenses/>.
  */
-package fr.mycellar.domain.stock.repository;
+package fr.mycellar.infrastructure.wine.repository;
 
-import fr.mycellar.domain.stock.Movement;
+import fr.mycellar.domain.wine.Region;
 import fr.mycellar.infrastructure.shared.repository.SimpleRepository;
 
 /**
  * @author speralta
  */
-public interface MovementRepository extends SimpleRepository<Movement> {
+public interface RegionRepository extends SimpleRepository<Region> {
 
 }
