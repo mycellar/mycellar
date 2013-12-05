@@ -27,6 +27,7 @@ import fr.mycellar.domain.wine.Producer;
 import fr.mycellar.domain.wine.Wine;
 import fr.mycellar.domain.wine.WineColorEnum;
 import fr.mycellar.domain.wine.WineTypeEnum;
+import fr.mycellar.infrastructure.shared.repository.SearchParameters;
 
 /**
  * @author speralta
@@ -36,5 +37,9 @@ public interface WineService extends SimpleService<Wine> {
     Wine find(Producer producer, Appellation appellation, WineTypeEnum type, WineColorEnum color, String name, Integer vintage);
 
     List<Wine> createVintages(Wine wine, int from, int to) throws BusinessException;
+
+    long countWinesLike(String input, SearchParameters searchParameters);
+
+    List<Wine> getWinesLike(String input, SearchParameters searchParameters);
 
 }

@@ -115,8 +115,8 @@
                 <td>{{wine.producer.name}}</td>
                 <td>{{wine.name}}</td>
                 <td>{{wine.vintage}}</td>
-                <td>{{wine.color}}</td>
-                <td>{{wine.type}}</td>
+                <td>{{wine.color | wineColorRenderer}}</td>
+                <td>{{wine.type | wineTypeRenderer}}</td>
               </tr>
               <tr ng-if="!loading && wines.length == 0">
                 <td colspan="8" class="text-center">Aucun vin ne correspond aux filtres</td>

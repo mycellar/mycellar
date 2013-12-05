@@ -38,6 +38,12 @@
               <th>Millésime</th>
               <th>Couleur</th>
               <th>Type</th>
+              <th>Format</th>
+              <th>Max</th>
+              <th>Prix</th>
+              <th>
+                <a href ng-click="addBookingBottle()" class="btn btn-default btn-xs"><i class="fa fa-plus-circle"></i></a>
+              </th>
             </tr>
           </thead>
           <tbody ng-controller="LoadingCtrl">
@@ -47,11 +53,20 @@
               <td>{{bookingBottle.bottle.wine.appellation.name}}</td>
               <td>{{bookingBottle.bottle.wine.name}}</td>
               <td>{{bookingBottle.bottle.wine.vintage}}</td>
-              <td>{{bookingBottle.bottle.wine.color}}</td>
-              <td>{{bookingBottle.bottle.wine.type}}</td>
+              <td>{{bookingBottle.bottle.wine.color | wineColorRenderer}}</td>
+              <td>{{bookingBottle.bottle.wine.type | wineTypeRenderer}}</td>
+              <td>{{bookingBottle.bottle.format | formatRenderer}}</td>
+              <td>{{bookingBottle.max}}</td>
+              <td>{{bookingBottle.price}}</td>
+              <td>
+                <a href ng-click="edit(bookingBottle)" class="btn btn-default btn-xs"><i class="fa fa-pencil"></i></a>
+                <a href ng-click="moveUp(bookingBottle)" class="btn btn-default btn-xs" ng-disabled="bookingBottle.position == 0"><i class="fa fa-arrow-up"></i></a>
+                <a href ng-click="moveDown(bookingBottle)" class="btn btn-default btn-xs" ng-disabled="bookingBottle.position == (bookingEvent.bottles.length - 1)"><i class="fa fa-arrow-down"></i></a>
+                <a href ng-click="removeBookingBottle(bookingBottle)" class="btn btn-danger btn-xs"><i class="fa fa-minus-circle"></i></a>
+              </td>
             </tr>
             <tr ng-if="!loading && items.length == 0">
-              <td colspan="4" class="text-center">Aucune bouteille dans la campagne.</td>
+              <td colspan="11" class="text-center">Aucune bouteille dans la campagne.</td>
             </tr>
           </tbody>
           <tfoot>
@@ -63,9 +78,64 @@
               <th>Millésime</th>
               <th>Couleur</th>
               <th>Type</th>
+              <th>Format</th>
+              <th>Max</th>
+              <th>Prix</th>
+              <th>
+                <a href ng-click="addBookingBottle()" class="btn btn-default btn-xs"><i class="fa fa-plus-circle"></i></a>
+              </th>
             </tr>
           </tfoot>
         </table>
+      </fieldset>
+      <fieldset ng-if="bookingBottle != null">
+        <legend>{{isNew() ? 'Ajouter une bouteille à la campagne' : 'Modifier une bouteille de la campagne' }}</legend>
+        <div class="form-group" ng-class="{'has-error': form.wine.$invalid}">
+          <label class="control-label" for="appellation">Vin</label>
+          <input 
+              id="wine" 
+              name="wine" 
+              type="text"
+              class="form-control" 
+              ng-model="bookingBottle.bottle.wine" 
+              placeholder="Vin" 
+              typeahead="wine as wineLabel(wine) for wine in wines($viewValue)"
+              typeahead-editable="false" 
+              typeahead-min-length="2" 
+              typeahead-wait-ms="200" />
+          <error-ctrl ctrl="form.wine"></error-ctrl>
+        </div>
+        <div class="form-group" ng-class="{'has-error': form.format.$invalid}">
+          <label class="control-label" for="format">Format</label>
+          <input 
+              id="format" 
+              name="format" 
+              type="text"
+              class="form-control" 
+              ng-model="bookingBottle.bottle.format" 
+              placeholder="Format" 
+              typeahead="format as formatLabel(format) for format in formats($viewValue)"
+              typeahead-editable="false" 
+              typeahead-min-length="2" 
+              typeahead-wait-ms="200" />
+          <error-ctrl ctrl="form.format"></error-ctrl>
+        </div>
+        <div class="form-group" ng-class="{'has-error': form.price.$invalid}">
+          <label class="control-label" for="price">Prix</label>
+          <input class="form-control" id="price" name="price" type="number" ng-model="bookingBottle.price" placeholder="Prix" />
+          <error-ctrl ctrl="form.price"></error-ctrl>
+        </div>
+        <div class="form-group" ng-class="{'has-error': form.max.$invalid}">
+          <label class="control-label" for="max">Nombre maximum de bouteilles par client</label>
+          <input class="form-control" id="max" name="max" type="number" ng-model="bookingBottle.max" placeholder="Nombre maximum de bouteilles par client" />
+          <error-ctrl ctrl="form.max"></error-ctrl>
+        </div>
+        <div class="form-group" ng-class="{'has-error': form.url.$invalid}">
+          <label class="control-label" for="url">URL de la fiche sur cave-et-terroirs.fr</label>
+          <input class="form-control" id="url" name="url" type="text" ng-model="bookingBottle.url" placeholder="URL de la fiche sur cave-et-terroirs.fr" />
+          <error-ctrl ctrl="form.url"></error-ctrl>
+        </div>
+        <input type="submit" class="btn btn-default" value="{{isNew() ? 'Ajouter' : 'Modifier'}}" ng-click="addBottle()" />
       </fieldset>
       <input type="submit" class="btn btn-primary" value="Sauvegarder" ng-click="save()" />
       <input type="submit" class="btn btn-default" value="Annuler" ng-click="cancel()" />

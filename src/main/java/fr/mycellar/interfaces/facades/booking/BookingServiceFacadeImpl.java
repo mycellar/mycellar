@@ -154,7 +154,7 @@ public class BookingServiceFacadeImpl implements BookingServiceFacade {
     @Override
     @Transactional
     public BookingEvent saveBookingEvent(BookingEvent bookingEvent) throws BusinessException {
-        return bookingEventService.save(bookingEvent);
+        return bookingEventService.cleanSaveForBottles(bookingEvent);
     }
 
     @Override

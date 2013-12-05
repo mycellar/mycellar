@@ -56,8 +56,8 @@
             <td>{{item.producer.name}}</td>
             <td>{{item.name}}</td>
             <td>{{item.vintage}}</td>
-            <td>{{item.color}}</td>
-            <td>{{item.type}}</td>
+            <td>{{item.color | wineColorRenderer}}</td>
+            <td>{{item.type | wineTypeRenderer}}</td>
             <td>
               <a href ng-click="edit(item.id)" class="btn btn-default btn-xs"><i class="fa fa-pencil"></i></a>
               <a href ng-click="delete(item.id)" class="btn btn-danger btn-xs"><i class="fa fa-minus-circle"></i></a>

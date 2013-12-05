@@ -63,6 +63,20 @@ public class WineWebService {
         return new ListWithCount<>(wineServiceFacade.countWines(searchParameters), wines);
     }
 
+    @GET
+    @Produces(MediaType.APPLICATION_JSON)
+    @Path("wines/like")
+    public ListWithCount<Wine> getWinesLike(@QueryParam("first") int first, @QueryParam("count") int count, @QueryParam("input") String input, @QueryParam("sort") List<OrderCouple> orders) {
+        SearchParameters searchParameters = searchParametersUtil.getSearchParametersForListWithCount(first, count, new ArrayList<FilterCouple>(), orders, Wine.class);
+        List<Wine> wines;
+        if (count == 0) {
+            wines = new ArrayList<>();
+        } else {
+            wines = wineServiceFacade.getWinesLike(input, searchParameters);
+        }
+        return new ListWithCount<>(wineServiceFacade.countWinesLike(input, searchParameters), wines);
+    }
+
     @Inject
     public void setSearchParametersUtil(SearchParametersUtil searchParametersUtil) {
         this.searchParametersUtil = searchParametersUtil;

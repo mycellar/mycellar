@@ -65,6 +65,12 @@ public class BookingEventServiceImpl extends AbstractSimpleService<BookingEvent,
     }
 
     @Override
+    public BookingEvent cleanSaveForBottles(BookingEvent bookingEvent) throws BusinessException {
+        validate(bookingEvent);
+        return bookingEventRepository.cleanSaveForBottles(bookingEvent);
+    }
+
+    @Override
     public void validate(BookingEvent entity) throws BusinessException {
 
     }

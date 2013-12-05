@@ -26,13 +26,17 @@ import javax.inject.Inject;
 import javax.inject.Named;
 import javax.inject.Singleton;
 
+import fr.mycellar.application.booking.BookingEventService;
 import fr.mycellar.application.shared.AbstractSimpleService;
-import fr.mycellar.application.stock.BottleService;
+import fr.mycellar.application.stock.StockService;
 import fr.mycellar.application.wine.WineService;
+import fr.mycellar.domain.booking.BookingBottle_;
+import fr.mycellar.domain.booking.BookingEvent_;
 import fr.mycellar.domain.shared.NamedEntity_;
 import fr.mycellar.domain.shared.exception.BusinessError;
 import fr.mycellar.domain.shared.exception.BusinessException;
 import fr.mycellar.domain.stock.Bottle_;
+import fr.mycellar.domain.stock.Stock_;
 import fr.mycellar.domain.wine.Appellation;
 import fr.mycellar.domain.wine.Producer;
 import fr.mycellar.domain.wine.Wine;
@@ -51,7 +55,8 @@ public class WineServiceImpl extends AbstractSimpleService<Wine, WineRepository>
 
     private WineRepository wineRepository;
 
-    private BottleService bottleService;
+    private BookingEventService bookingEventService;
+    private StockService stockService;
 
     @Override
     public Wine find(Producer producer, Appellation appellation, WineTypeEnum type, WineColorEnum color, String name, Integer vintage) {
@@ -81,10 +86,24 @@ public class WineServiceImpl extends AbstractSimpleService<Wine, WineRepository>
 
     @Override
     protected void validateDelete(Wine entity) throws BusinessException {
-        if (bottleService.count(new SearchParameters() //
-                .property(Bottle_.wine, entity)) > 0) {
+        if (stockService.count(new SearchParameters() //
+                .property(Stock_.bottle, Bottle_.wine, entity)) > 0) {
             throw new BusinessException(BusinessError.WINE_00002);
         }
+        if (bookingEventService.count(new SearchParameters() //
+                .property(BookingEvent_.bottles, BookingBottle_.bottle, Bottle_.wine, entity)) > 0) {
+            throw new BusinessException(BusinessError.WINE_00003);
+        }
+    }
+
+    @Override
+    public long countWinesLike(String input, SearchParameters searchParameters) {
+        return wineRepository.countWinesLike(input, searchParameters);
+    }
+
+    @Override
+    public List<Wine> getWinesLike(String input, SearchParameters searchParameters) {
+        return wineRepository.getWinesLike(input, searchParameters);
     }
 
     @Override
@@ -134,8 +153,13 @@ public class WineServiceImpl extends AbstractSimpleService<Wine, WineRepository>
     }
 
     @Inject
-    public void setBottleService(BottleService bottleService) {
-        this.bottleService = bottleService;
+    public void setBookingEventService(BookingEventService bookingEventService) {
+        this.bookingEventService = bookingEventService;
+    }
+
+    @Inject
+    public void setStockService(StockService stockService) {
+        this.stockService = stockService;
     }
 
 }

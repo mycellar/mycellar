@@ -35,9 +35,10 @@ import org.apache.commons.lang3.ObjectUtils;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.hibernate.search.annotations.Indexed;
 
+import fr.mycellar.domain.booking.BookingBottle;
 import fr.mycellar.domain.shared.IdentifiedEntity;
 import fr.mycellar.domain.shared.NamedEntity;
-import fr.mycellar.domain.stock.Bottle;
+import fr.mycellar.domain.stock.Stock;
 
 /**
  * @author speralta
@@ -59,9 +60,13 @@ public class Format extends NamedEntity {
     @Column(name = "ID", nullable = false)
     private Integer id;
 
-    @OneToMany(mappedBy = "format")
+    @OneToMany(mappedBy = "bottle.format")
     @XmlTransient
-    private final Set<Bottle> bottles = new HashSet<Bottle>();
+    private final Set<BookingBottle> bookingBottles = new HashSet<BookingBottle>();
+
+    @OneToMany(mappedBy = "bottle.format")
+    @XmlTransient
+    private final Set<Stock> stocks = new HashSet<Stock>();
 
     /**
      * @return the capacity

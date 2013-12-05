@@ -26,4 +26,6 @@ import fr.mycellar.infrastructure.shared.repository.SimpleRepository;
  */
 public interface BookingEventRepository extends SimpleRepository<BookingEvent> {
 
+    BookingEvent cleanSaveForBottles(BookingEvent bookingEvent);
+
 }

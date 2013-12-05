@@ -48,10 +48,11 @@ import org.apache.commons.lang3.ObjectUtils;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.hibernate.search.annotations.Indexed;
 
+import fr.mycellar.domain.booking.BookingBottle;
 import fr.mycellar.domain.shared.IdentifiedEntity;
 import fr.mycellar.domain.shared.NamedEntity;
 import fr.mycellar.domain.shared.ValidationPattern;
-import fr.mycellar.domain.stock.Bottle;
+import fr.mycellar.domain.stock.Stock;
 
 /**
  * @author speralta
@@ -64,9 +65,13 @@ public class Wine extends NamedEntity {
 
     private static final long serialVersionUID = 201111181451L;
 
-    @OneToMany(mappedBy = "wine")
+    @OneToMany(mappedBy = "bottle.wine")
     @XmlTransient
-    private final Set<Bottle> bottles = new HashSet<Bottle>();
+    private final Set<BookingBottle> bookingBottles = new HashSet<BookingBottle>();
+
+    @OneToMany(mappedBy = "bottle.wine")
+    @XmlTransient
+    private final Set<Stock> stocks = new HashSet<Stock>();
 
     @Valid
     @ManyToOne(cascade = { CascadeType.PERSIST, CascadeType.MERGE })
@@ -221,7 +226,7 @@ public class Wine extends NamedEntity {
 
     @Override
     public String toString() {
-        return new ToStringBuilder(this).appendSuper(super.toString()).append("description", description).append("photoUrl", photoUrl).append("producer", producer).append("ranking", ranking)
-                .append("type", type).append("vintage", vintage).build();
+        return new ToStringBuilder(this).appendSuper(super.toString()).append("appellation", appellation).append("description", description).append("photoUrl", photoUrl).append("producer", producer)
+                .append("ranking", ranking).append("type", type).append("vintage", vintage).build();
     }
 }

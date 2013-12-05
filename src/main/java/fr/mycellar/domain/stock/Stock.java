@@ -20,6 +20,7 @@ package fr.mycellar.domain.stock;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
+import javax.persistence.Embedded;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
@@ -38,14 +39,13 @@ import fr.mycellar.domain.shared.IdentifiedEntity;
  * @author bperalta
  */
 @Entity
-@Table(name = "STOCK", uniqueConstraints = @UniqueConstraint(columnNames = { "BOTTLE", "CELLAR" }))
+@Table(name = "STOCK", uniqueConstraints = @UniqueConstraint(columnNames = { "WINE", "FORMAT", "CELLAR" }))
 @SequenceGenerator(name = "STOCK_ID_GENERATOR", allocationSize = 1)
 public class Stock extends IdentifiedEntity {
 
     private static final long serialVersionUID = 201111181451L;
 
-    @ManyToOne(cascade = { CascadeType.PERSIST, CascadeType.MERGE })
-    @JoinColumn(name = "BOTTLE", nullable = false)
+    @Embedded
     private Bottle bottle;
 
     @ManyToOne(cascade = { CascadeType.PERSIST, CascadeType.MERGE })
@@ -60,16 +60,10 @@ public class Stock extends IdentifiedEntity {
     @Column(name = "QUANTITY")
     private Integer quantity;
 
-    /**
-     * @return the bottle
-     */
     public Bottle getBottle() {
         return bottle;
     }
 
-    /**
-     * @return the cellar
-     */
     public Cellar getCellar() {
         return cellar;
     }
@@ -79,9 +73,6 @@ public class Stock extends IdentifiedEntity {
         return id;
     }
 
-    /**
-     * @return the quantity
-     */
     public Integer getQuantity() {
         return quantity;
     }

@@ -22,14 +22,11 @@ import java.util.List;
 
 import fr.mycellar.domain.shared.exception.BusinessException;
 import fr.mycellar.domain.stock.Arrival;
-import fr.mycellar.domain.stock.Bottle;
 import fr.mycellar.domain.stock.Cellar;
 import fr.mycellar.domain.stock.CellarShare;
 import fr.mycellar.domain.stock.Drink;
 import fr.mycellar.domain.stock.Movement;
 import fr.mycellar.domain.stock.Stock;
-import fr.mycellar.domain.wine.Format;
-import fr.mycellar.domain.wine.Wine;
 import fr.mycellar.infrastructure.shared.repository.SearchParameters;
 
 /**
@@ -82,13 +79,6 @@ public interface StockServiceFacade {
      * @param drink
      */
     void drink(Drink drink);
-
-    /**
-     * @param wine
-     * @param format
-     * @return
-     */
-    Bottle findBottle(Wine wine, Format format);
 
     /**
      * @param cellarId

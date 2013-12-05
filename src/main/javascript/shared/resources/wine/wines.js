@@ -2,7 +2,12 @@ angular.module('mycellar.resources.wine.wines', ['ngResource']);
 
 angular.module('mycellar.resources.wine.wines').factory('Wines', ['$resource', '$q', function ($resource, $q) {
 
-  var Wines = $resource('/api/wine/wines');
+  var Wines = $resource('/api/wine/wines', {}, {
+    _like: {
+      url: '/api/wine/wines/like',
+      method: 'GET'
+    }
+  });
   var Wine = $resource('/api/domain/wine/wine/:wineId');
   
   Wines.deleteById = function(id, fn) {
@@ -27,6 +32,18 @@ angular.module('mycellar.resources.wine.wines').factory('Wines', ['$resource', '
   
   Wines.new = function() {
     return new Wine();
+  };
+
+  Wines.like = function(input) {
+    var deferred = $q.defer();
+    Wines._like(input, function(result) {
+      $q.when(result.list).then(function(value) {
+        deferred.resolve(value);
+      }, function(value) {
+        deferred.reject(value);
+      });
+    });
+    return deferred.promise;
   };
 
   return Wines;

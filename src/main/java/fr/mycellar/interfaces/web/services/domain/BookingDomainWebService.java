@@ -109,6 +109,7 @@ public class BookingDomainWebService {
     @GET
     @Produces(MediaType.APPLICATION_JSON)
     @Path("bookingEvents")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     public ListWithCount<BookingEvent> getBookingEvents(@QueryParam("first") int first, @QueryParam("count") int count, @QueryParam("filters") List<FilterCouple> filters,
             @QueryParam("sort") List<OrderCouple> orders) {
         SearchParameters searchParameters = searchParametersUtil.getSearchParametersForListWithCount(first, count, filters, orders, BookingEvent.class);
@@ -124,12 +125,14 @@ public class BookingDomainWebService {
     @GET
     @Produces(MediaType.APPLICATION_JSON)
     @Path("bookingEvent/{id}")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     public BookingEvent getBookingEventById(@PathParam("id") int bookingEventId) {
         return bookingServiceFacade.getBookingEventById(bookingEventId);
     }
 
     @DELETE
     @Path("bookingEvent/{id}")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     public void deleteBookingEventById(@PathParam("id") int bookingEventId) throws BusinessException {
         bookingServiceFacade.deleteBookingEvent(bookingServiceFacade.getBookingEventById(bookingEventId));
     }
@@ -138,6 +141,7 @@ public class BookingDomainWebService {
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
     @Path("bookingEvent")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     public BookingEvent saveBookingEvent(BookingEvent bookingEvent) throws BusinessException {
         return bookingServiceFacade.saveBookingEvent(bookingEvent);
     }

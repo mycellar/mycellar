@@ -39,6 +39,7 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import fr.mycellar.domain.shared.exception.BusinessException;
 import fr.mycellar.domain.wine.Appellation;
 import fr.mycellar.domain.wine.Country;
+import fr.mycellar.domain.wine.Format;
 import fr.mycellar.domain.wine.Producer;
 import fr.mycellar.domain.wine.Region;
 import fr.mycellar.domain.wine.Wine;
@@ -103,6 +104,49 @@ public class WineDomainWebService {
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     public Country saveCountry(Country country) throws BusinessException {
         return wineServiceFacade.saveCountry(country);
+    }
+
+    // --------------
+    // FORMAT
+    // --------------
+
+    @GET
+    @Produces(MediaType.APPLICATION_JSON)
+    @Path("formats")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    public ListWithCount<Format> getFormats(@QueryParam("first") int first, @QueryParam("count") int count, @QueryParam("filters") List<FilterCouple> filters,
+            @QueryParam("sort") List<OrderCouple> orders) {
+        SearchParameters searchParameters = searchParametersUtil.getSearchParametersForListWithCount(first, count, filters, orders, Format.class);
+        List<Format> formats;
+        if (count == 0) {
+            formats = new ArrayList<>();
+        } else {
+            formats = wineServiceFacade.getFormats(searchParameters);
+        }
+        return new ListWithCount<>(wineServiceFacade.countFormats(searchParameters), formats);
+    }
+
+    @GET
+    @Produces(MediaType.APPLICATION_JSON)
+    @Path("format/{id}")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    public Format getFormatById(@PathParam("id") int formatId) {
+        return wineServiceFacade.getFormatById(formatId);
+    }
+
+    @DELETE
+    @Path("format/{id}")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    public void deleteFormatById(@PathParam("id") int formatId) throws BusinessException {
+        wineServiceFacade.deleteFormat(wineServiceFacade.getFormatById(formatId));
+    }
+
+    @POST
+    @Consumes(MediaType.APPLICATION_JSON)
+    @Path("format")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    public void saveFormat(Format format) throws BusinessException {
+        wineServiceFacade.saveFormat(format);
     }
 
     // --------------

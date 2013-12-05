@@ -18,50 +18,24 @@
  */
 package fr.mycellar.domain.stock;
 
-import java.util.HashSet;
-import java.util.Set;
-
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
+import javax.persistence.Embeddable;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
-import javax.persistence.SequenceGenerator;
-import javax.persistence.Table;
-import javax.persistence.UniqueConstraint;
-import javax.xml.bind.annotation.XmlTransient;
 
-import org.apache.commons.lang3.ObjectUtils;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 
-import fr.mycellar.domain.shared.IdentifiedEntity;
 import fr.mycellar.domain.wine.Format;
 import fr.mycellar.domain.wine.Wine;
 
 /**
  * @author speralta
  */
-@Entity
-@Table(name = "BOTTLE", uniqueConstraints = @UniqueConstraint(columnNames = { "WINE", "FORMAT" }))
-@SequenceGenerator(name = "BOTTLE_ID_GENERATOR", allocationSize = 1)
-public class Bottle extends IdentifiedEntity {
-
-    private static final long serialVersionUID = 201111181451L;
-
-    @OneToMany(mappedBy = "bottle")
-    @XmlTransient
-    private final Set<Stock> stocks = new HashSet<Stock>();
+@Embeddable
+public class Bottle {
 
     @ManyToOne
     @JoinColumn(name = "FORMAT", nullable = false)
     private Format format;
-
-    @Id
-    @GeneratedValue(generator = "BOTTLE_ID_GENERATOR")
-    @Column(name = "ID", nullable = false)
-    private Integer id;
 
     @ManyToOne
     @JoinColumn(name = "WINE", nullable = false)
@@ -72,14 +46,6 @@ public class Bottle extends IdentifiedEntity {
      */
     public Format getFormat() {
         return format;
-    }
-
-    /**
-     * @return the id
-     */
-    @Override
-    public Integer getId() {
-        return id;
     }
 
     /**
@@ -98,14 +64,41 @@ public class Bottle extends IdentifiedEntity {
     }
 
     @Override
-    protected boolean dataEquals(IdentifiedEntity other) {
-        Bottle bottle = (Bottle) other;
-        return ObjectUtils.equals(getFormat(), bottle.getFormat()) && ObjectUtils.equals(getWine(), bottle.getWine());
+    public int hashCode() {
+        final int prime = 31;
+        int result = 1;
+        result = (prime * result) + ((format == null) ? 0 : format.hashCode());
+        result = (prime * result) + ((wine == null) ? 0 : wine.hashCode());
+        return result;
     }
 
     @Override
-    protected Object[] getHashCodeData() {
-        return new Object[] { getFormat(), getWine() };
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
+        if (obj == null) {
+            return false;
+        }
+        if (getClass() != obj.getClass()) {
+            return false;
+        }
+        Bottle other = (Bottle) obj;
+        if (format == null) {
+            if (other.format != null) {
+                return false;
+            }
+        } else if (!format.equals(other.format)) {
+            return false;
+        }
+        if (wine == null) {
+            if (other.wine != null) {
+                return false;
+            }
+        } else if (!wine.equals(other.wine)) {
+            return false;
+        }
+        return true;
     }
 
     @Override

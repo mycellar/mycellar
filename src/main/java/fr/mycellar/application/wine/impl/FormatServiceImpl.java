@@ -22,11 +22,17 @@ import javax.inject.Inject;
 import javax.inject.Named;
 import javax.inject.Singleton;
 
+import fr.mycellar.application.booking.BookingEventService;
 import fr.mycellar.application.shared.AbstractSimpleService;
+import fr.mycellar.application.stock.StockService;
 import fr.mycellar.application.wine.FormatService;
+import fr.mycellar.domain.booking.BookingBottle_;
+import fr.mycellar.domain.booking.BookingEvent_;
 import fr.mycellar.domain.shared.NamedEntity_;
 import fr.mycellar.domain.shared.exception.BusinessError;
 import fr.mycellar.domain.shared.exception.BusinessException;
+import fr.mycellar.domain.stock.Bottle_;
+import fr.mycellar.domain.stock.Stock_;
 import fr.mycellar.domain.wine.Format;
 import fr.mycellar.domain.wine.Format_;
 import fr.mycellar.infrastructure.shared.repository.SearchParameters;
@@ -41,6 +47,9 @@ public class FormatServiceImpl extends AbstractSimpleService<Format, FormatRepos
 
     private FormatRepository formatRepository;
 
+    private BookingEventService bookingEventService;
+    private StockService stockService;
+
     @Override
     public void validate(Format entity) throws BusinessException {
         Format existing = formatRepository.findUniqueOrNone(new SearchParameters() //
@@ -52,6 +61,18 @@ public class FormatServiceImpl extends AbstractSimpleService<Format, FormatRepos
     }
 
     @Override
+    protected void validateDelete(Format entity) throws BusinessException {
+        if (stockService.count(new SearchParameters() //
+                .property(Stock_.bottle, Bottle_.format, entity)) > 0) {
+            throw new BusinessException(BusinessError.FORMAT_00003);
+        }
+        if (bookingEventService.count(new SearchParameters() //
+                .property(BookingEvent_.bottles, BookingBottle_.bottle, Bottle_.format, entity)) > 0) {
+            throw new BusinessException(BusinessError.FORMAT_00002);
+        }
+    }
+
+    @Override
     protected FormatRepository getRepository() {
         return formatRepository;
     }
@@ -59,6 +80,16 @@ public class FormatServiceImpl extends AbstractSimpleService<Format, FormatRepos
     @Inject
     public void setFormatRepository(FormatRepository formatRepository) {
         this.formatRepository = formatRepository;
+    }
+
+    @Inject
+    public void setBookingEventService(BookingEventService bookingEventService) {
+        this.bookingEventService = bookingEventService;
+    }
+
+    @Inject
+    public void setStockService(StockService stockService) {
+        this.stockService = stockService;
     }
 
 }

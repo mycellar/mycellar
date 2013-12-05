@@ -264,6 +264,20 @@ public class WineServiceFacadeImpl implements WineServiceFacade {
         return wineService.createVintages(toCopy, from, to);
     }
 
+    @Override
+    @Transactional(readOnly = false)
+    public List<Wine> getWinesLike(String input, SearchParameters searchParameters) {
+        return wineService.getWinesLike(input, searchParameters);
+    }
+
+    @Override
+    @Transactional(readOnly = false)
+    public long countWinesLike(String input, SearchParameters searchParameters) {
+        return wineService.countWinesLike(input, searchParameters);
+    }
+
+    // BEANS METHODS
+
     @Inject
     public void setAppellationService(AppellationService appellationService) {
         this.appellationService = appellationService;

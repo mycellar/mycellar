@@ -10,7 +10,7 @@ angular.module('mycellar.services.security.service').factory('security', [
       if (service.isAuthenticated()) {
         $location.path(service.oldPath);
       } else {
-        $location.path('/');
+        $location.path($location.path());
       }
       menuService.reloadMenus();
     };

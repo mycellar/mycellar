@@ -90,6 +90,8 @@ public enum BusinessError {
      * Format
      */
     FORMAT_00001(Format_.name), //
+    FORMAT_00002(Format_.bookingBottles), //
+    FORMAT_00003(Format_.stocks), //
 
     /*
      * Producer
@@ -120,7 +122,8 @@ public enum BusinessError {
      * Wine
      */
     WINE_00001(Wine_.name), //
-    WINE_00002(Wine_.bottles), //
+    WINE_00002(Wine_.stocks), //
+    WINE_00003(Wine_.bookingBottles), //
 
     /*
      * Other

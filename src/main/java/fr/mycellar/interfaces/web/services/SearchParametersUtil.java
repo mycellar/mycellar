@@ -20,6 +20,7 @@ package fr.mycellar.interfaces.web.services;
 
 import java.util.List;
 
+import javax.inject.Inject;
 import javax.inject.Named;
 import javax.inject.Singleton;
 
@@ -56,6 +57,11 @@ public class SearchParametersUtil {
             searchParameters.orderBy(order.getDirection(), order.getProperty(), clazz);
         }
         return searchParameters;
+    }
+
+    @Inject
+    public void setMetamodelUtil(MetamodelUtil metamodelUtil) {
+        this.metamodelUtil = metamodelUtil;
     }
 
 }

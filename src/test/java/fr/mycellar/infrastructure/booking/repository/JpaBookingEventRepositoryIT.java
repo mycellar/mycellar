@@ -16,10 +16,7 @@
  * You should have received a copy of the GNU General Public License
  * along with MyCellar. If not, see <http://www.gnu.org/licenses/>.
  */
-package fr.mycellar.infrastructure.wine.repository;
-
-import static org.hamcrest.CoreMatchers.equalTo;
-import static org.junit.Assert.assertThat;
+package fr.mycellar.infrastructure.booking.repository;
 
 import javax.inject.Inject;
 import javax.persistence.EntityManager;
@@ -32,8 +29,8 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.transaction.annotation.Transactional;
 
-import fr.mycellar.domain.shared.NamedEntity_;
-import fr.mycellar.infrastructure.shared.repository.SearchParameters;
+import fr.mycellar.domain.booking.BookingBottle;
+import fr.mycellar.domain.booking.BookingEvent;
 
 /**
  * @author speralta
@@ -41,21 +38,38 @@ import fr.mycellar.infrastructure.shared.repository.SearchParameters;
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = { "classpath:context-infrastructure-test.xml" })
 @Transactional
-public class JpaCountryRepositoryIT {
+public class JpaBookingEventRepositoryIT {
+
     @PersistenceContext
     private EntityManager entityManager;
 
     @Inject
-    private JpaCountryRepository jpaCountryRepository;
+    private JpaBookingEventRepository jpaBookingEventRepository;
 
     @Test
     @Rollback
-    public void byTermSelector() {
-        assertThat(jpaCountryRepository.find( //
-                new SearchParameters() //
-                        .searchSimilarity(null) //
-                        .term(NamedEntity_.name, "France")) //
-                .size(), equalTo(1));
+    public void cleanSave() {
+        BookingEvent bookingEvent = jpaBookingEventRepository.getById(1);
+
+        entityManager.detach(bookingEvent);
+
+        for (BookingBottle bottle : bookingEvent.getBottles()) {
+            entityManager.detach(bottle);
+            switch (bottle.getPosition()) {
+            case 0:
+                bottle.setPosition(1);
+                break;
+            case 1:
+                bottle.setPosition(0);
+                break;
+            default:
+                // do nothing
+                break;
+            }
+        }
+        entityManager.flush();
+        jpaBookingEventRepository.cleanSaveForBottles(bookingEvent);
+        entityManager.flush();
     }
 
 }

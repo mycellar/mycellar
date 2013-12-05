@@ -21,6 +21,7 @@ package fr.mycellar.infrastructure.booking.repository;
 import javax.inject.Named;
 import javax.inject.Singleton;
 
+import fr.mycellar.domain.booking.BookingBottle;
 import fr.mycellar.domain.booking.BookingEvent;
 import fr.mycellar.infrastructure.shared.repository.JpaSimpleRepository;
 
@@ -36,6 +37,31 @@ public class JpaBookingEventRepository extends JpaSimpleRepository<BookingEvent>
      */
     public JpaBookingEventRepository() {
         super(BookingEvent.class);
+    }
+
+    /**
+     * Hack to change position from bottles with the unique key on position and
+     * bookingEvent.
+     */
+    @Override
+    public BookingEvent cleanSaveForBottles(BookingEvent bookingEvent) {
+        BookingEvent bookingEventInDb = getById(bookingEvent.getId());
+        int offset = bookingEventInDb.getBottles().size() + bookingEvent.getBottles().size();
+
+        // we move bottles to position out of range
+        for (BookingBottle bottle : bookingEvent.getBottles()) {
+            bottle.setPosition(bottle.getPosition() + offset);
+        }
+
+        // we save the booking event and flush the modifications
+        BookingEvent saved = save(bookingEvent);
+        getEntityManager().flush();
+
+        // then we move the bottles to the real positions
+        for (BookingBottle bottle : saved.getBottles()) {
+            bottle.setPosition(bottle.getPosition() - offset);
+        }
+        return saved;
     }
 
 }

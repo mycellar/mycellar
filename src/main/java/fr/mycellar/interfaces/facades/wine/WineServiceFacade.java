@@ -36,216 +36,76 @@ import fr.mycellar.infrastructure.shared.repository.SearchParameters;
  */
 public interface WineServiceFacade {
 
-    /**
-     * @param searchParameters
-     * @return
-     */
     long countAppellations(SearchParameters searchParameters);
 
-    /**
-     * @param searchParameters
-     * @return
-     */
     long countCountries(SearchParameters searchParameters);
 
-    /**
-     * @param searchParameters
-     * @return
-     */
     long countFormats(SearchParameters searchParameters);
 
-    /**
-     * @param searchParameters
-     * @return
-     */
     long countProducers(SearchParameters searchParameters);
 
-    /**
-     * @param searchParameters
-     * @return
-     */
     long countRegions(SearchParameters searchParameters);
 
-    /**
-     * @param searchParameters
-     * @return
-     */
     long countWines(SearchParameters searchParameters);
 
-    /**
-     * @param toCopy
-     * @param from
-     * @param to
-     * @throws BusinessException
-     */
     List<Wine> createVintages(Wine toCopy, int from, int to) throws BusinessException;
 
-    /**
-     * @param appellation
-     * @throws BusinessException
-     */
     void deleteAppellation(Appellation appellation) throws BusinessException;
 
-    /**
-     * @param country
-     * @throws BusinessException
-     */
     void deleteCountry(Country country) throws BusinessException;
 
-    /**
-     * @param format
-     * @throws BusinessException
-     */
     void deleteFormat(Format format) throws BusinessException;
 
-    /**
-     * @param producer
-     * @throws BusinessException
-     */
     void deleteProducer(Producer producer) throws BusinessException;
 
-    /**
-     * @param region
-     * @throws BusinessException
-     */
     void deleteRegion(Region region) throws BusinessException;
 
-    /**
-     * @param wine
-     * @throws BusinessException
-     */
     void deleteWine(Wine wine) throws BusinessException;
 
-    /**
-     * @param name
-     * @return
-     */
     Country findCountry(String name);
 
-    /**
-     * @param producer
-     * @param appellation
-     * @param type
-     * @param color
-     * @param name
-     * @param vintage
-     * @return
-     */
     Wine findWine(Producer producer, Appellation appellation, WineTypeEnum type, WineColorEnum color, String name, Integer vintage);
 
-    /**
-     * @param appellationId
-     * @return
-     */
     Appellation getAppellationById(Integer appellationId);
 
-    /**
-     * @param searchParameters
-     * @return
-     */
     List<Appellation> getAppellations(SearchParameters searchParameters);
 
-    /**
-     * @param searchParameters
-     * @return
-     */
     List<Country> getCountries(SearchParameters searchParameters);
 
-    /**
-     * @param countryId
-     * @return
-     */
     Country getCountryById(Integer countryId);
 
-    /**
-     * @param formatId
-     * @return
-     */
     Format getFormatById(Integer formatId);
 
-    /**
-     * @param searchParameters
-     * @return
-     */
     List<Format> getFormats(SearchParameters searchParameters);
 
-    /**
-     * @param producerId
-     * @return
-     */
     Producer getProducerById(Integer producerId);
 
-    /**
-     * @param searchParameters
-     * @return
-     */
     List<Producer> getProducers(SearchParameters searchParameters);
 
-    /**
-     * @param regionId
-     * @return
-     */
     Region getRegionById(Integer regionId);
 
-    /**
-     * @param searchParameters
-     * @return
-     */
     List<Region> getRegions(SearchParameters searchParameters);
 
-    /**
-     * @param wineId
-     * @return
-     */
     Wine getWineById(Integer wineId);
 
-    /**
-     * @param searchParameters
-     * @return
-     */
     List<Wine> getWines(SearchParameters searchParameters);
 
-    /**
-     * @param appellation
-     * @throws BusinessException
-     */
     Appellation saveAppellation(Appellation appellation) throws BusinessException;
 
-    /**
-     * @param country
-     * @return
-     * @throws BusinessException
-     */
     Country saveCountry(Country country) throws BusinessException;
 
-    /**
-     * @param format
-     * @throws BusinessException
-     */
     void saveFormat(Format format) throws BusinessException;
 
-    /**
-     * @param producer
-     * @throws BusinessException
-     */
     Producer saveProducer(Producer producer) throws BusinessException;
 
-    /**
-     * @param region
-     * @throws BusinessException
-     */
     void saveRegion(Region region) throws BusinessException;
 
-    /**
-     * @param wine
-     * @throws BusinessException
-     */
     void saveWine(Wine wine) throws BusinessException;
 
-    /**
-     * @param country
-     * @throws BusinessException
-     */
     void validateCountry(Country country) throws BusinessException;
+
+    List<Wine> getWinesLike(String input, SearchParameters searchParameters);
+
+    long countWinesLike(String input, SearchParameters searchParameters);
 
 }

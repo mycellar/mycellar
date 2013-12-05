@@ -23,6 +23,7 @@ import javax.persistence.Column;
 import javax.persistence.DiscriminatorColumn;
 import javax.persistence.DiscriminatorType;
 import javax.persistence.DiscriminatorValue;
+import javax.persistence.Embedded;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
@@ -52,8 +53,7 @@ public abstract class Movement extends IdentifiedEntity {
 
     private static final long serialVersionUID = 201111181451L;
 
-    @ManyToOne(cascade = { CascadeType.PERSIST, CascadeType.MERGE })
-    @JoinColumn(name = "BOTTLE", nullable = false)
+    @Embedded
     private Bottle bottle;
 
     @ManyToOne(cascade = { CascadeType.PERSIST, CascadeType.MERGE })

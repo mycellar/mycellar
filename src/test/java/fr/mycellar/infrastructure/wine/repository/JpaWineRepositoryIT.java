@@ -32,7 +32,6 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.transaction.annotation.Transactional;
 
-import fr.mycellar.domain.shared.NamedEntity_;
 import fr.mycellar.infrastructure.shared.repository.SearchParameters;
 
 /**
@@ -41,21 +40,26 @@ import fr.mycellar.infrastructure.shared.repository.SearchParameters;
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = { "classpath:context-infrastructure-test.xml" })
 @Transactional
-public class JpaCountryRepositoryIT {
+public class JpaWineRepositoryIT {
     @PersistenceContext
     private EntityManager entityManager;
 
     @Inject
-    private JpaCountryRepository jpaCountryRepository;
+    private JpaWineRepository jpaWineRepository;
 
     @Test
     @Rollback
-    public void byTermSelector() {
-        assertThat(jpaCountryRepository.find( //
-                new SearchParameters() //
-                        .searchSimilarity(null) //
-                        .term(NamedEntity_.name, "France")) //
-                .size(), equalTo(1));
-    }
+    public void like() {
+        assertThat(jpaWineRepository.getWinesLike("saint", new SearchParameters()) //
+                .size(), equalTo(2));
 
+        assertThat(jpaWineRepository.getWinesLike("emilion", new SearchParameters()) //
+                .size(), equalTo(1));
+
+        assertThat(jpaWineRepository.getWinesLike("2005", new SearchParameters()) //
+                .size(), equalTo(3));
+
+        assertThat(jpaWineRepository.getWinesLike("", new SearchParameters()) //
+                .size(), equalTo(4));
+    }
 }

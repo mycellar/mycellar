@@ -26,21 +26,17 @@ import javax.inject.Singleton;
 
 import org.springframework.transaction.annotation.Transactional;
 
-import fr.mycellar.application.stock.BottleService;
 import fr.mycellar.application.stock.CellarService;
 import fr.mycellar.application.stock.CellarShareService;
 import fr.mycellar.application.stock.MovementService;
 import fr.mycellar.application.stock.StockService;
 import fr.mycellar.domain.shared.exception.BusinessException;
 import fr.mycellar.domain.stock.Arrival;
-import fr.mycellar.domain.stock.Bottle;
 import fr.mycellar.domain.stock.Cellar;
 import fr.mycellar.domain.stock.CellarShare;
 import fr.mycellar.domain.stock.Drink;
 import fr.mycellar.domain.stock.Movement;
 import fr.mycellar.domain.stock.Stock;
-import fr.mycellar.domain.wine.Format;
-import fr.mycellar.domain.wine.Wine;
 import fr.mycellar.infrastructure.shared.repository.SearchParameters;
 
 /**
@@ -49,8 +45,6 @@ import fr.mycellar.infrastructure.shared.repository.SearchParameters;
 @Named("stockServiceFacade")
 @Singleton
 public class StockServiceFacadeImpl implements StockServiceFacade {
-
-    private BottleService bottleService;
 
     private CellarService cellarService;
 
@@ -110,12 +104,6 @@ public class StockServiceFacadeImpl implements StockServiceFacade {
 
     @Override
     @Transactional(readOnly = true)
-    public Bottle findBottle(Wine wine, Format format) {
-        return bottleService.find(wine, format);
-    }
-
-    @Override
-    @Transactional(readOnly = true)
     public Cellar getCellarById(Integer cellarId) {
         return cellarService.getById(cellarId);
     }
@@ -158,11 +146,6 @@ public class StockServiceFacadeImpl implements StockServiceFacade {
     @Transactional
     public void saveCellarShare(CellarShare cellarShare) throws BusinessException {
         cellarShareService.save(cellarShare);
-    }
-
-    @Inject
-    public void setBottleService(BottleService bottleService) {
-        this.bottleService = bottleService;
     }
 
     @Inject

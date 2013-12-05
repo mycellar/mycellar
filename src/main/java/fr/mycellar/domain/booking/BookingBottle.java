@@ -18,8 +18,8 @@
  */
 package fr.mycellar.domain.booking;
 
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
+import javax.persistence.Embedded;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
@@ -43,7 +43,7 @@ import fr.mycellar.domain.stock.Bottle;
  * @author speralta
  */
 @Entity
-@Table(name = "BOOKING_BOTTLE", uniqueConstraints = { @UniqueConstraint(columnNames = { "BOTTLE", "BOOKING_EVENT" }), @UniqueConstraint(columnNames = { "BOOKING_EVENT", "POSITION" }) })
+@Table(name = "BOOKING_BOTTLE", uniqueConstraints = { @UniqueConstraint(columnNames = { "FORMAT", "WINE", "BOOKING_EVENT" }), @UniqueConstraint(columnNames = { "BOOKING_EVENT", "POSITION" }) })
 @SequenceGenerator(name = "BOOKING_BOTTLE_ID_GENERATOR", allocationSize = 1)
 public class BookingBottle extends IdentifiedEntity {
 
@@ -61,8 +61,7 @@ public class BookingBottle extends IdentifiedEntity {
     private BookingEvent bookingEvent;
 
     @Valid
-    @ManyToOne(cascade = { CascadeType.MERGE, CascadeType.PERSIST })
-    @JoinColumn(name = "BOTTLE")
+    @Embedded
     private Bottle bottle;
 
     @Column(name = "PRICE", precision = 2, length = 6, nullable = false)
