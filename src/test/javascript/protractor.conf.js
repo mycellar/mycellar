@@ -47,7 +47,8 @@ exports.config = {
     'browserName': 'chrome',
     'build': process.env.TRAVIS_BUILD_NUMBER,
     'name': 'Travis #' + process.env.TRAVIS_BUILD_NUMBER,
-    'tunnel-identifier': process.env.TRAVIS_JOB_NUMBER
+    'tunnel-identifier': process.env.TRAVIS_JOB_NUMBER,
+    'screen-resolution': '1280x1024'
   },
 
   // A base URL for your application under test. Calls to protractor.get()
