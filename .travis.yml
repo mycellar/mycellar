@@ -1,15 +1,15 @@
 language: java
 branches:
   only:
-  - master
-install:
-- mvn install -DskipTests
-- npm install
-- node_modules/grunt-cli/bin/grunt --no-color install
-script: mvn verify
+    - master
+install: 
+  - mvn install -DskipTests
+  - npm install
+  - node_modules/grunt-cli/bin/grunt --no-color install
+script: "mvn verify"
 addons:
-  sauce_connect: true
-env:
-  global:
-  - secure: eRY/RT7ck1FDfF7hOVLd2gfCbAJseozcU5hXu3HbeDJLzvfoLeCxQGAzBK5j07vRTIwYTa0Hknv3vMUmWneZLAwIn0MtQMdK3eTet6yfqcPgXQKe0J8RGmafp0tubVvWTcGNrqKZkVR+X99p1Nbn49j38ApL2wS2oozXmlQz2Jw=
-  - secure: SoCr2OPDLX7v+ZV7+BkMZ32kJALmxtZrDspll69VkdtEwUywAgVJdMt0hg6fkHO9v6H/5IDzJ4AbUY3t/MCQo2xkLDwag93SFkyYExUuv8IuTDN/EV/OBTVi/yxCsLHGdbbkiMfvDu2RrbMDlbxxPmRQnFhE8zIf3tCmA6YoBCQ=
+  sauce_connect:
+    username: mycellar
+    access_key:
+      secure: "KSHoqJWTbru0RKo3YZg3gxcgk0xltsG18pBvnl54d0cY1lPc3w7ZFkt9fTofaIuaWrg7zBj00/tORCsCFxltJh06VHLC0QlBL5mJZim0u3mJJ+kuK09belsBAvvZpMRa8mSpMTnew9loXDMM/SSxKapgi/ZLQp+koGA2i50f56M="
+    
