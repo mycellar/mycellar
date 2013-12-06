@@ -45,6 +45,7 @@ exports.config = {
   // https://code.google.com/p/selenium/source/browse/javascript/webdriver/capabilities.js
   capabilities: {
     'browserName': 'chrome',
+    'platform': 'Windows 8.1',
     'build': process.env.TRAVIS_BUILD_NUMBER,
     'name': 'Travis #' + process.env.TRAVIS_BUILD_NUMBER,
     'tunnel-identifier': process.env.TRAVIS_JOB_NUMBER,

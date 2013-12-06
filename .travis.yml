@@ -7,9 +7,9 @@ install:
   - npm install
   - node_modules/grunt-cli/bin/grunt --no-color install
 script: "mvn verify"
+env:
+  global:
+    - secure: Y0S8iOsGoEOF3+XbtqqcKqLvBL1QaDtQ4Yfj60M51NfYkJYWq3W1pL1+JdqS23cbK0noZTd4IFxdrWCOJHXFVCK23Ps8SStkJrXwb/HAOjWOk18oDIiq3MkzKXrA6Vh4te836CmqIjcVZeX3mzmqWG1QAULdganpyPKXcAayTUE=
+    - secure: XYM+ZKzVzfd/BZuZQMxWrbp0VZj/oxl85EqduIl6Hi92SdrDaaPaUUdZ6UyDFylpigKrf2N5pum0rp4KfoX42K1nFayc2fp7nkLAyS1MTj+WfeFjjIZoOprsf9Csqq82JQvBXqXVN3xvAWEKdYTlogj9cvdVv+BXh37G35QpIO4=
 addons:
-  sauce_connect:
-    username: 
-      secure: "TxbrgN5uZ/Gj77u5+5h1F/elW/96TuWWLmYrqtMmxHpUiQlkRNlBFmCL+4xOV4kjGHrrt+XJfbOYCt1eQU+vqA/FycO2N2zzWgTOPTJRnMvcJLR1LRtyuvtAWYZXwZXWmW2EcxwVipU8WLyv/NcKZeJAzzlMrH39B2n/Sc/Oppc="
-    access_key: 
-      secure: "ONhGTbgopNwDc+0qlgEZLqLlXoBdKD+yb9ASQ4R+8/8EIw+Ha8yT5viKlIFJDDERb1D3bYU2nGdY5W+EKAcIfjiy3u8Y74Jv51Tqt13MdMPDN2MULTky2Ap8RHVJGIBz1jIw4EsaAKI8Rhgavh48e5XoQNy4T4pVzcJr//St3l4="
+  sauce_connect: true
