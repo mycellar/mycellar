@@ -6,10 +6,10 @@ install:
 - mvn install -DskipTests
 - npm install
 - node_modules/grunt-cli/bin/grunt --no-color install
-script: mvn verify
+script: mvn verify jacoco:report
 after_script:
 - node_modules/grunt-cli/bin/grunt coverage
-- mvn jacoco:report coveralls:jacoco
+- mvn coveralls:jacoco
 addons:
   sauce_connect: true
 env:
