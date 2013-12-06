@@ -168,4 +168,7 @@ module.exports = function(grunt) {
 
   //development
   grunt.registerTask('dev', ['watch:assets']);
+
+  //coverage
+  grunt.registerTask('coverage', ['test:coverage', 'coveralls']);
 };
