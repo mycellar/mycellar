@@ -10,6 +10,7 @@ module.exports = function(grunt) {
   grunt.loadNpmTasks('grunt-contrib-concat');
   grunt.loadNpmTasks('grunt-protractor-runner');
   grunt.loadNpmTasks('grunt-karma');
+  grunt.loadNpmTasks('grunt-karma-coveralls');
 
   grunt.initConfig({
     shell: {
@@ -17,20 +18,14 @@ module.exports = function(grunt) {
         stdout: true
       },
       selenium: {
-        command: os.type() == 'Windows_NT' ? './selenium/start.bat' : './selenium/start',
+        command: 'node ./node_modules/protractor/bin/webdriver-manager start',
         options: {
           stdout: false,
           async: true
         }
       },
       protractor_install: {
-        command: 'node ./node_modules/protractor/bin/install_selenium_standalone'
-      },
-      selenium_win_install: {
-        command: 'copy .\\selenium\\start .\\selenium\\start.bat'
-      },
-      selenium_win_install2: {
-        command: 'echo .exe>>.\\selenium\\start.bat'
+        command: 'node ./node_modules/protractor/bin/webdriver-manager update'
       },
       npm_install: {
         command: 'npm install'
@@ -43,13 +38,12 @@ module.exports = function(grunt) {
     karma: {
       unit: {
         configFile: './src/test/javascript/karma-unit.conf.js',
-        autoWatch: false,
-        singleRun: true
+        colors: false
       },
       unit_browsers: {
-        configFile: './src/test/javascript/karma-browsers.conf.js',
-        autoWatch: false,
-        singleRun: true
+        configFile: './src/test/javascript/karma-unit.conf.js',
+        browsers: ['Chrome', 'Firefox'],
+        colors: false
       },
       unit_auto: {
         configFile: './src/test/javascript/karma-unit.conf.js',
@@ -58,16 +52,21 @@ module.exports = function(grunt) {
       },
       unit_coverage: {
         configFile: './src/test/javascript/karma-unit.conf.js',
-        autoWatch: false,
-        singleRun: true,
-        reporters: ['progress', 'coverage'],
+        colors: false,
+        reporters: ['coverage'],
         preprocessors: {
           './src/main/javascript/**/*.js': ['coverage']
         },
         coverageReporter: {
-          type: 'html',
-          dir: 'coverage/'
+          type: 'lcov',
+          dir: 'target/coverage/'
         }
+      }
+    },
+
+    coveralls: {
+      options: {
+        coverage_dir: 'target/coverage'
       }
     },
 
@@ -153,19 +152,10 @@ module.exports = function(grunt) {
   grunt.registerTask('test:coverage', ['karma:unit_coverage']);
   
   //installation-related
-  if (os.type() == 'Windows_NT') {
-    grunt.registerTask('install', [
-      'update',
-      'shell:protractor_install', 
-      'shell:selenium_win_install', 
-      'shell:selenium_win_install2'
-    ]);
-  } else {
-    grunt.registerTask('install', [
-      'update',
-      'shell:protractor_install'
-    ]);
-  }
+  grunt.registerTask('install', [
+    'update',
+    'shell:protractor_install'
+  ]);
   grunt.registerTask('update', [
     'shell:npm_install',
     'shell:bower_install',

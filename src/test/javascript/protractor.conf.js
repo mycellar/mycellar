@@ -11,7 +11,7 @@ exports.config = {
   // 3. sauceUser/sauceKey - to use remote Selenium servers via SauceLabs.
 
   // The location of the selenium standalone server .jar file.
-  seleniumServerJar: './selenium/selenium-server-standalone-2.37.0.jar',
+  seleniumServerJar: '../../../node_modules/protractor/selenium/selenium-server-standalone-2.37.0.jar',
   // The port to start the selenium server on, or null if the server should
   // find its own unused port.
   seleniumPort: null,
@@ -19,7 +19,7 @@ exports.config = {
   // find chromedriver. This will be passed to the selenium jar as
   // the system property webdriver.chrome.driver. If null, selenium will
   // attempt to find chromedriver using PATH.
-  chromeDriver: './selenium/chromedriver',
+  chromeDriver: '../../../node_modules/protractor/selenium/chromedriver',
   // Additional command line options to pass to selenium. For example,
   // if you need to change the browser timeout, use
   // seleniumArgs: ['-browserTimeout=60'],
@@ -45,11 +45,9 @@ exports.config = {
   // https://code.google.com/p/selenium/source/browse/javascript/webdriver/capabilities.js
   capabilities: {
     'browserName': 'chrome',
-    'platform': 'Windows 8.1',
     'build': process.env.TRAVIS_BUILD_NUMBER,
     'name': 'Travis #' + process.env.TRAVIS_BUILD_NUMBER,
-    'tunnel-identifier': process.env.TRAVIS_JOB_NUMBER,
-    'screen-resolution': '1280x1024'
+    'tunnel-identifier': process.env.TRAVIS_JOB_NUMBER
   },
 
   // A base URL for your application under test. Calls to protractor.get()
