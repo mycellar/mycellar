@@ -9,7 +9,7 @@ install:
 script: "mvn verify"
 env:
   global:
-    - secure: Y0S8iOsGoEOF3+XbtqqcKqLvBL1QaDtQ4Yfj60M51NfYkJYWq3W1pL1+JdqS23cbK0noZTd4IFxdrWCOJHXFVCK23Ps8SStkJrXwb/HAOjWOk18oDIiq3MkzKXrA6Vh4te836CmqIjcVZeX3mzmqWG1QAULdganpyPKXcAayTUE=
-    - secure: XYM+ZKzVzfd/BZuZQMxWrbp0VZj/oxl85EqduIl6Hi92SdrDaaPaUUdZ6UyDFylpigKrf2N5pum0rp4KfoX42K1nFayc2fp7nkLAyS1MTj+WfeFjjIZoOprsf9Csqq82JQvBXqXVN3xvAWEKdYTlogj9cvdVv+BXh37G35QpIO4=
+    - secure: Aqza1ue7fhjSkwrHrY3QrAOFcrP+l2Psk9Cvr/WwzFgKhZ6p4vdIqvm1tb7Pjs2niDurZ4QucWtNt4pPVboX0Xs4TrNwKOkcV+b8QshXiXJbG4l5t2w0dj8H9Nepy7eCCPDJKtk5Ts2UanijVwrmlHLjRaJ4wA4YBcQQ61qwwNA=
+    - secure: YerFM9ixD31W3BLOwZI3uf1JWSs/+7nZQvRWq5lpn3Q11P7IlcEPwJhW9K1gBoLlVCQSDZdqsSxeizjqtGO0B/FWoo5aOqS9J+A/C6Yz1XyuNiVzWdPkHrLDO3htVA8rzlFhJmFmvXFcgp+drF6k+bRRT/8MWczOfsL9nRm0dlw=
 addons:
   sauce_connect: true
