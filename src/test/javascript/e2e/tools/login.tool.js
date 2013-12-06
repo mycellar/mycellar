@@ -1,14 +1,14 @@
 module.exports = {
 
   loginWith: function(mail, password) {
-    var homePage = new HomePage();
-    homePage.get();
+    var loginPage = new LoginPage();
+    loginPage.get();
 
-    homePage.emailInput.sendKeys(mail);
-    homePage.passwordInput.sendKeys(password);
-    homePage.loginButton.click();
+    loginPage.emailInput.sendKeys(mail);
+    loginPage.passwordInput.sendKeys(password);
+    loginPage.loginButton.click();
 
-    expect(homePage.accountLink.getText()).toEqual(mail);
+    expect(loginPage.accountLink.getText()).toEqual(mail);
   },
 
   login: function() {
@@ -16,19 +16,19 @@ module.exports = {
   },
 
   logout: function() {
-    var homePage = new HomePage();
-    homePage.get();
+    var loginPage = new LoginPage();
+    loginPage.get();
 
-    homePage.logoutButton.click();
+    loginPage.logoutButton.click();
 
-    expect(homePage.logoutButton.isDisplayed()).toBe(false);
+    expect(loginPage.logoutButton.isDisplayed()).toBe(false);
   }
 
 };
 
-var HomePage = function() {
+var LoginPage = function() {
   this.get = function() {
-    browser.get('/');
+    browser.get('/login');
   }
 
   this.emailInput = element(by.xpath('//form[@name="loginForm"]//input[@id="email"]'));
