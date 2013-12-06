@@ -7,6 +7,8 @@ install:
   - npm install
   - node_modules/grunt-cli/bin/grunt --no-color install
 script: "mvn verify"
+env:
+  global:
     - secure: kcEe9ei4m/EE4AMi7T4jmkuSFt6hhFGOsgOyHrlt0hoUdGWttk0LKlwSlC0Yj3D5gMYqdp/Zsluv5SoG37H+Rj5oE3QcvRHHdEWKw1nZ+IM6DVwnjgMv3A5PZgvM+Kfhx1Yl+CvdTskiAfX+qPC3Zy00Uaoi3R81saTCijD6HFA=
     - secure: j/LsuOWYoYYvrW9C4aK5waKXjoM46iP0a926OEsCd4hyZ+Fj6Tx59Z9re2VUtXPFM1qrj493fAgEzf4SYozdPlyFftsP2oO8tx1cxd2d40Pty1SNlcRJUqdyjoya2D1mUNJm8N7v7EMnB4nC8pXUmvZ/HSP1cAZKEWrDnHa7K1o=
 addons:
