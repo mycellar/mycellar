@@ -7,5 +7,6 @@
 /src/main/webapp/fonts
 /node_modules
 /bower_components
+/coverage
 /startDev.bat
 /startE2E.bat

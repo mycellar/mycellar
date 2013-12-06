@@ -59,14 +59,14 @@ module.exports = function(grunt) {
         },
         coverageReporter: {
           type: 'lcov',
-          dir: 'target/coverage/'
+          dir: 'coverage/'
         }
       }
     },
 
     coveralls: {
       options: {
-        coverage_dir: 'target/coverage'
+        coverage_dir: 'coverage'
       }
     },
 
