@@ -16,12 +16,8 @@ module.exports = {
   },
 
   logout: function() {
-    var loginPage = new LoginPage();
-    loginPage.get();
-
-    loginPage.logoutButton.click();
-
-    expect(loginPage.logoutButton.isDisplayed()).toBe(false);
+    element(by.xpath('//a[@title="Se déconnecter"]')).click();
+    expect(element(by.xpath('//a[@title="Se déconnecter"]')).isDisplayed()).toBe(false);
   }
 
 };
@@ -34,6 +30,5 @@ var LoginPage = function() {
   this.emailInput = element(by.xpath('//form[@name="loginForm"]//input[@id="email"]'));
   this.passwordInput = element(by.xpath('//form[@name="loginForm"]//input[@id="password"]'));
   this.loginButton = element(by.xpath('//form[@name="loginForm"]//input[@type="submit"]'));
-  this.logoutButton = element(by.xpath('//a[@title="Se déconnecter"]'));
   this.accountLink = element(by.xpath('//a[@title="Mon compte"]'));
 };
