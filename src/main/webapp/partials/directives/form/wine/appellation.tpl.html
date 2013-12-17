@@ -1,0 +1,27 @@
+<div class="form-group" ng-class="{'has-error': form.appellation.$invalid}">
+  <label class="control-label" for="appellation">Appellation{{postLabel}}</label>
+  <div class="input-group" ng-show="!showSub">
+    <input 
+      id="appellation"
+      name="appellation"
+      type="text"
+      class="form-control"
+      ng-model="appellation"
+      placeholder="Appellation{{postLabel}}"
+      typeahead="appellation as appellation.name for appellation in appellations($viewValue)"
+      typeahead-editable="false"
+      typeahead-min-length="2"
+      typeahead-wait-ms="200" />
+    <span class="input-group-btn">
+      <a class="btn btn-default" ng-click="new()"><i class="fa fa-plus"></i></a>
+    </span>
+  </div>
+  <div ng-show="showSub" class="sub-entity">
+    <ng-form name="subAppellationForm">
+      <appellation-form form="subAppellationForm" appellation="newAppellation" post-label=" de l'appellation"></appellation-form>
+      <a class="btn btn-success" ng-click="ok()">Valider</a>
+      <a class="btn btn-warning" ng-click="cancel()">Annuler</a>
+    </ng-form>
+  </div>
+  <error-ctrl ctrl="form.appellation"></error-ctrl>
+</div>

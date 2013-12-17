@@ -1,0 +1,51 @@
+<fieldset>
+  <legend>Détails</legend>
+  <appellation form="form" appellation="wine.appellation"></appellation>
+  <producer form="form" producer="producer"></producer>
+  <div class="form-group" ng-class="{'has-error': form.type.$invalid}">
+    <label class="control-label" for="type">Type{{postLabel}}</label>
+    <select id="type" name="type" ng-model="wine.type" class="form-control">
+      <option label="Tranquille">STILL</option>
+      <option label="Pétillant">SPARKLING</option>
+      <option label="Spiritueux">SPIRIT</option>
+      <option label="Autre">OTHER</option>
+    </select>
+    <error-ctrl ctrl="form.type"></error-ctrl>
+  </div>
+  <div class="form-group" ng-class="{'has-error': form.color.$invalid}">
+    <label class="control-label" for="color">Couleur{{postLabel}}</label>
+    <select id="color" name="color" ng-model="wine.color" class="form-control">
+      <option label="Rouge">RED</option>
+      <option label="Blanc">WHITE</option>
+      <option label="Rosé">ROSE</option>
+      <option label="Autre">OTHER</option>
+    </select>
+    <error-ctrl ctrl="form.color"></error-ctrl>
+  </div>
+  <div class="form-group" ng-class="{'has-error': form.name.$invalid}">
+    <label class="control-label" for="name">Name{{postLabel}}</label>
+    <input class="form-control" id="name" name="name" type="text" ng-model="wine.name" placeholder="Name{{postLabel}}" />
+    <error-ctrl ctrl="form.name"></error-ctrl>
+  </div>
+  <div class="form-group" ng-class="{'has-error': form.vintage.$invalid}">
+    <label class="control-label" for="vintage">Millésime{{postLabel}}</label>
+    <input class="form-control" id="vintage" name="vintage" type="number" ng-model="wine.vintage" placeholder="Millésime{{postLabel}}" />
+    <error-ctrl ctrl="form.vintage"></error-ctrl>
+  </div>
+  <div class="form-group" ng-class="{'has-error': form.ranking.$invalid}">
+    <label class="control-label" for="ranking">Classement{{postLabel}}</label>
+    <input class="form-control" id="ranking" name="ranking" type="text" ng-model="wine.ranking" placeholder="Classement{{postLabel}}" />
+    <error-ctrl ctrl="form.ranking"></error-ctrl>
+  </div>
+  <div class="form-group" ng-class="{'has-error': form.description.$invalid}">
+    <label class="control-label" for="description">Description{{postLabel}}</label>
+    <textarea 
+        id="description"
+        name="description"
+        ng-model="wine.description"
+        placeholder="Description{{postLabel}}"
+        class="form-control"
+        rows="5"></textarea>
+    <error-ctrl ctrl="form.description"></error-ctrl>
+  </div>
+</fieldset>
