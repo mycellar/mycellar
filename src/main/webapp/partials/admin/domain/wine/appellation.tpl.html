@@ -14,15 +14,15 @@
           <label class="control-label" for="region">Région</label>
             <div class="input-group" ng-show="!showSubRegion">
               <input 
-                id="region" 
-                name="region" 
+                id="region"
+                name="region"
                 type="text"
-                class="form-control" 
-                ng-model="appellation.region" 
-                placeholder="Région" 
+                class="form-control"
+                ng-model="appellation.region"
+                placeholder="Région"
                 typeahead="region as region.name for region in regions($viewValue)"
-                typeahead-editable="false"  
-                typeahead-min-length="2" 
+                typeahead-editable="false"
+                typeahead-min-length="2"
                 typeahead-wait-ms="200" />
               <span class="input-group-btn">
                 <a class="btn btn-default" ng-click="newRegion()"><i class="fa fa-plus"></i></a>
@@ -34,15 +34,15 @@
                 <label class="control-label" for="country">Pays de la région</label>
                 <div class="input-group" ng-show="!showSubCountry">
                   <input 
-                    id="country" 
-                    name="country" 
+                    id="country"
+                    name="country"
                     type="text"
-                    class="form-control" 
-                    ng-model="region.country" 
-                    placeholder="Pays" 
+                    class="form-control"
+                    ng-model="region.country"
+                    placeholder="Pays"
                     typeahead="country as country.name for country in countries($viewValue)"
-                    typeahead-editable="false"  
-                    typeahead-min-length="2" 
+                    typeahead-editable="false"
+                    typeahead-min-length="2"
                     typeahead-wait-ms="200" />
                   <span class="input-group-btn">
                     <a class="btn btn-default" ng-click="newCountry()"><i class="fa fa-plus"></i></a>
@@ -80,11 +80,11 @@
         <div class="form-group" ng-class="{'has-error': form.description.$invalid}">
           <label class="control-label" for="description">Description</label>
           <textarea 
-              id="description" 
+              id="description"
               name="description"
-              class="form-control" 
-              ng-model="appellation.description" 
-              placeholder="Description" 
+              class="form-control"
+              ng-model="appellation.description"
+              placeholder="Description"
               rows="5"></textarea>
           <error-ctrl ctrl="form.description"></error-ctrl>
         </div>

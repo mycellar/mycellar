@@ -13,15 +13,15 @@
         <div class="form-group" ng-class="{'has-error': form.producer.$invalid}">
           <label class="control-label" for="producer">Producteur</label>
           <input 
-              id="producer" 
-              name="producer" 
-              type="text" 
+              id="producer"
+              name="producer"
+              type="text"
               class="form-control"
-              ng-model="contact.producer" 
-              placeholder="Producteur" 
+              ng-model="contact.producer"
+              placeholder="Producteur"
               typeahead="producer as producer.name for producer in producers($viewValue)"
-              typeahead-editable="false"  
-              typeahead-min-length="2" 
+              typeahead-editable="false"
+              typeahead-min-length="2"
               typeahead-wait-ms="200" />
           <error-ctrl ctrl="form.producer"></error-ctrl>
         </div>
@@ -38,10 +38,10 @@
         <div class="form-group" ng-class="{'has-error': form.text.$invalid}">
           <label class="control-label" for="text">Texte</label>
           <textarea 
-              id="text" 
-              name="text" 
-              ng-model="contact.text" 
-              placeholder="Texte" 
+              id="text"
+              name="text"
+              ng-model="contact.text"
+              placeholder="Texte"
               class="form-control"
               rows="5"></textarea>
           <error-ctrl ctrl="form.text"></error-ctrl>

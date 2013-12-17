@@ -7,56 +7,56 @@
         <div class="form-group">
           <label for="country" class="sr-only">Nom du pays</label>
           <input 
-              id="country" 
-              name="country" 
-              type="text" 
-              ng-model="tableContext.filters['appellation.region.country.name']" 
-              placeholder="Nom du pays" 
+              id="country"
+              name="country"
+              type="text"
+              ng-model="tableContext.filters['appellation.region.country.name']"
+              placeholder="Nom du pays"
               typeahead="country.name for country in countries($viewValue)"
-              typeahead-editable="false"  
-              typeahead-min-length="2" 
+              typeahead-editable="false"
+              typeahead-min-length="2"
               typeahead-wait-ms="200"
               class="form-control" />
         </div>
         <div class="form-group">
           <label for="region" class="sr-only">Nom de la région</label>
           <input 
-              id="region" 
-              name="region" 
-              type="text" 
-              ng-model="tableContext.filters['appellation.region.name']" 
-              placeholder="Nom de la région" 
+              id="region"
+              name="region"
+              type="text"
+              ng-model="tableContext.filters['appellation.region.name']"
+              placeholder="Nom de la région"
               typeahead="region.name for region in regions($viewValue)"
-              typeahead-editable="false"  
-              typeahead-min-length="2" 
+              typeahead-editable="false"
+              typeahead-min-length="2"
               typeahead-wait-ms="200"
               class="form-control" />
         </div>
         <div class="form-group">
           <label for="appellation" class="sr-only">Nom de l'appellation</label>
           <input 
-              id="appellation" 
-              name="appellation" 
-              type="text" 
-              ng-model="tableContext.filters['appellation.name']" 
-              placeholder="Nom de l'appellation" 
+              id="appellation"
+              name="appellation"
+              type="text"
+              ng-model="tableContext.filters['appellation.name']"
+              placeholder="Nom de l'appellation"
               typeahead="appellation.name for appellation in appellations($viewValue)"
-              typeahead-editable="false"  
-              typeahead-min-length="2" 
+              typeahead-editable="false"
+              typeahead-min-length="2"
               typeahead-wait-ms="200"
               class="form-control" />
         </div>
         <div class="form-group">
           <label for="producer" class="sr-only">Nom du producteur</label>
           <input 
-              id="producer" 
-              name="producer" 
-              type="text" 
-              ng-model="tableContext.filters['producer.name']" 
-              placeholder="Nom du producteur" 
+              id="producer"
+              name="producer"
+              type="text"
+              ng-model="tableContext.filters['producer.name']"
+              placeholder="Nom du producteur"
               typeahead="producer.name for producer in producers($viewValue)"
-              typeahead-editable="false" 
-              typeahead-min-length="2" 
+              typeahead-editable="false"
+              typeahead-min-length="2"
               typeahead-wait-ms="200"
               class="form-control" />
         </div>

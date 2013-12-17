@@ -93,30 +93,30 @@
         <div class="form-group" ng-class="{'has-error': form.wine.$invalid}">
           <label class="control-label" for="appellation">Vin</label>
           <input 
-              id="wine" 
-              name="wine" 
+              id="wine"
+              name="wine"
               type="text"
-              class="form-control" 
-              ng-model="bookingBottle.bottle.wine" 
-              placeholder="Vin" 
+              class="form-control"
+              ng-model="bookingBottle.bottle.wine"
+              placeholder="Vin"
               typeahead="wine as wineLabel(wine) for wine in wines($viewValue)"
-              typeahead-editable="false" 
-              typeahead-min-length="2" 
+              typeahead-editable="false"
+              typeahead-min-length="2"
               typeahead-wait-ms="200" />
           <error-ctrl ctrl="form.wine"></error-ctrl>
         </div>
         <div class="form-group" ng-class="{'has-error': form.format.$invalid}">
           <label class="control-label" for="format">Format</label>
           <input 
-              id="format" 
-              name="format" 
+              id="format"
+              name="format"
               type="text"
-              class="form-control" 
-              ng-model="bookingBottle.bottle.format" 
-              placeholder="Format" 
+              class="form-control"
+              ng-model="bookingBottle.bottle.format"
+              placeholder="Format"
               typeahead="format as formatLabel(format) for format in formats($viewValue)"
-              typeahead-editable="false" 
-              typeahead-min-length="2" 
+              typeahead-editable="false"
+              typeahead-min-length="2"
               typeahead-wait-ms="200" />
           <error-ctrl ctrl="form.format"></error-ctrl>
         </div>
