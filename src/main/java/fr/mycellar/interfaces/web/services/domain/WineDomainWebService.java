@@ -106,6 +106,14 @@ public class WineDomainWebService {
         return wineServiceFacade.saveCountry(country);
     }
 
+    @POST
+    @Consumes(MediaType.APPLICATION_JSON)
+    @Path("validateCountry")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    public void validateCountry(Country country) throws BusinessException {
+        wineServiceFacade.validateCountry(country);
+    }
+
     // --------------
     // FORMAT
     // --------------
@@ -143,10 +151,19 @@ public class WineDomainWebService {
 
     @POST
     @Consumes(MediaType.APPLICATION_JSON)
+    @Produces(MediaType.APPLICATION_JSON)
     @Path("format")
     @PreAuthorize("hasRole('ROLE_ADMIN')")
-    public void saveFormat(Format format) throws BusinessException {
-        wineServiceFacade.saveFormat(format);
+    public Format saveFormat(Format format) throws BusinessException {
+        return wineServiceFacade.saveFormat(format);
+    }
+
+    @POST
+    @Consumes(MediaType.APPLICATION_JSON)
+    @Path("validateFormat")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    public void validateFormat(Format format) throws BusinessException {
+        wineServiceFacade.validateFormat(format);
     }
 
     // --------------
@@ -193,6 +210,14 @@ public class WineDomainWebService {
         return wineServiceFacade.saveAppellation(appellation);
     }
 
+    @POST
+    @Consumes(MediaType.APPLICATION_JSON)
+    @Path("validateAppellation")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    public void validateAppellation(Appellation appellation) throws BusinessException {
+        wineServiceFacade.validateAppellation(appellation);
+    }
+
     // --------------
     // PRODUCER
     // --------------
@@ -237,6 +262,14 @@ public class WineDomainWebService {
         return wineServiceFacade.saveProducer(producer);
     }
 
+    @POST
+    @Consumes(MediaType.APPLICATION_JSON)
+    @Path("validateProducer")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    public void validateProducer(Producer producer) throws BusinessException {
+        wineServiceFacade.validateProducer(producer);
+    }
+
     // --------------
     // REGION
     // --------------
@@ -274,10 +307,19 @@ public class WineDomainWebService {
 
     @POST
     @Consumes(MediaType.APPLICATION_JSON)
+    @Produces(MediaType.APPLICATION_JSON)
     @Path("region")
     @PreAuthorize("hasRole('ROLE_ADMIN')")
-    public void saveRegion(Region region) throws BusinessException {
-        wineServiceFacade.saveRegion(region);
+    public Region saveRegion(Region region) throws BusinessException {
+        return wineServiceFacade.saveRegion(region);
+    }
+
+    @POST
+    @Consumes(MediaType.APPLICATION_JSON)
+    @Path("validateRegion")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    public void validateRegion(Region region) throws BusinessException {
+        wineServiceFacade.validateRegion(region);
     }
 
     // --------------
@@ -316,10 +358,19 @@ public class WineDomainWebService {
 
     @POST
     @Consumes(MediaType.APPLICATION_JSON)
+    @Produces(MediaType.APPLICATION_JSON)
     @Path("wine")
     @PreAuthorize("hasRole('ROLE_ADMIN')")
-    public void saveWine(Wine wine) throws BusinessException {
-        wineServiceFacade.saveWine(wine);
+    public Wine saveWine(Wine wine) throws BusinessException {
+        return wineServiceFacade.saveWine(wine);
+    }
+
+    @POST
+    @Consumes(MediaType.APPLICATION_JSON)
+    @Path("validateWine")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    public void validateWine(Wine wine) throws BusinessException {
+        wineServiceFacade.validateWine(wine);
     }
 
     // BEANS Methods

@@ -2,7 +2,12 @@ angular.module('mycellar.resources.wine.appellations', ['ngResource']);
 
 angular.module('mycellar.resources.wine.appellations').factory('Appellations', ['$resource', '$q', function ($resource, $q) {
 
-  var Appellations = $resource('/api/domain/wine/appellations');
+  var Appellations = $resource('/api/domain/wine/appellations', {}, {
+    validate: {
+      url: '/api/domain/wine/validateAppellation',
+      method: 'POST'
+    }
+  });
   var Appellation = $resource('/api/domain/wine/appellation/:appellationId');
   
   Appellations.deleteById = function(id, fn) {

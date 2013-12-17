@@ -2,7 +2,12 @@ angular.module('mycellar.resources.wine.regions', ['ngResource']);
 
 angular.module('mycellar.resources.wine.regions').factory('Regions', ['$resource', '$q', function ($resource, $q) {
 
-  var Regions = $resource('/api/domain/wine/regions');
+  var Regions = $resource('/api/domain/wine/regions', {}, {
+    validate: {
+      url: '/api/domain/wine/validateRegion',
+      method: 'POST'
+    }
+  });
   var Region = $resource('/api/domain/wine/region/:regionId');
   
   Regions.deleteById = function(id, fn) {

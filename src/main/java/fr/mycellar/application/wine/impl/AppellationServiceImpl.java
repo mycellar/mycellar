@@ -24,13 +24,12 @@ import javax.inject.Singleton;
 
 import fr.mycellar.application.shared.AbstractSimpleService;
 import fr.mycellar.application.wine.AppellationService;
-import fr.mycellar.application.wine.WineService;
+import fr.mycellar.application.wine.RegionService;
 import fr.mycellar.domain.shared.NamedEntity_;
 import fr.mycellar.domain.shared.exception.BusinessError;
 import fr.mycellar.domain.shared.exception.BusinessException;
 import fr.mycellar.domain.wine.Appellation;
 import fr.mycellar.domain.wine.Appellation_;
-import fr.mycellar.domain.wine.Wine_;
 import fr.mycellar.infrastructure.shared.repository.SearchParameters;
 import fr.mycellar.infrastructure.wine.repository.AppellationRepository;
 
@@ -43,12 +42,18 @@ public class AppellationServiceImpl extends AbstractSimpleService<Appellation, A
 
     private AppellationRepository appellationRepository;
 
-    private WineService wineService;
+    private RegionService regionService;
 
     @Override
     public void validate(Appellation entity) throws BusinessException {
         if (entity.getRegion() == null) {
             throw new BusinessException(BusinessError.APPELLATION_00001);
+        } else {
+            try {
+                regionService.validate(entity.getRegion());
+            } catch (BusinessException e) {
+                throw new BusinessException(BusinessError.APPELLATION_00004, e);
+            }
         }
         Appellation existing = appellationRepository.findUniqueOrNone(new SearchParameters() //
                 .property(Appellation_.region, entity.getRegion()) //
@@ -60,7 +65,7 @@ public class AppellationServiceImpl extends AbstractSimpleService<Appellation, A
 
     @Override
     protected void validateDelete(Appellation entity) throws BusinessException {
-        if (wineService.count(new SearchParameters().property(Wine_.appellation, entity)) > 0) {
+        if (appellationRepository.findPropertyCount(new SearchParameters().property(Appellation_.id, entity.getId()), Appellation_.wines) > 0) {
             throw new BusinessException(BusinessError.APPELLATION_00003);
         }
     }
@@ -76,8 +81,8 @@ public class AppellationServiceImpl extends AbstractSimpleService<Appellation, A
     }
 
     @Inject
-    public void setWineService(WineService wineService) {
-        this.wineService = wineService;
+    public void setRegionService(RegionService regionService) {
+        this.regionService = regionService;
     }
 
 }

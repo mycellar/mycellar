@@ -48,6 +48,8 @@ public interface WineServiceFacade {
 
     long countWines(SearchParameters searchParameters);
 
+    long countWinesLike(String input, SearchParameters searchParameters);
+
     List<Wine> createVintages(Wine toCopy, int from, int to) throws BusinessException;
 
     void deleteAppellation(Appellation appellation) throws BusinessException;
@@ -90,22 +92,30 @@ public interface WineServiceFacade {
 
     List<Wine> getWines(SearchParameters searchParameters);
 
+    List<Wine> getWinesLike(String input, SearchParameters searchParameters);
+
     Appellation saveAppellation(Appellation appellation) throws BusinessException;
 
     Country saveCountry(Country country) throws BusinessException;
 
-    void saveFormat(Format format) throws BusinessException;
+    Format saveFormat(Format format) throws BusinessException;
 
     Producer saveProducer(Producer producer) throws BusinessException;
 
-    void saveRegion(Region region) throws BusinessException;
+    Region saveRegion(Region region) throws BusinessException;
 
-    void saveWine(Wine wine) throws BusinessException;
+    Wine saveWine(Wine wine) throws BusinessException;
+
+    void validateAppellation(Appellation appellation) throws BusinessException;
 
     void validateCountry(Country country) throws BusinessException;
 
-    List<Wine> getWinesLike(String input, SearchParameters searchParameters);
+    void validateFormat(Format format) throws BusinessException;
 
-    long countWinesLike(String input, SearchParameters searchParameters);
+    void validateProducer(Producer producer) throws BusinessException;
+
+    void validateRegion(Region region) throws BusinessException;
+
+    void validateWine(Wine wine) throws BusinessException;
 
 }

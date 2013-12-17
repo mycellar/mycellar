@@ -42,9 +42,10 @@ public enum BusinessError {
     /*
      * Appellation
      */
-    APPELLATION_00001(Appellation_.region), //
+    APPELLATION_00001(Appellation_.region), // region is not set
     APPELLATION_00002(Appellation_.name, Appellation_.region), //
     APPELLATION_00003(Appellation_.wines), //
+    APPELLATION_00004(Appellation_.region), // region is not valid
 
     /*
      * Booking event
@@ -102,9 +103,10 @@ public enum BusinessError {
     /*
      * Region
      */
-    REGION_00001(Region_.country), //
+    REGION_00001(Region_.country), // country is not set
     REGION_00002(Region_.country, Region_.name), //
     REGION_00003(Region_.appellations), //
+    REGION_00004(Region_.country), // country is not valid
 
     /*
      * ResetPasswordRequest

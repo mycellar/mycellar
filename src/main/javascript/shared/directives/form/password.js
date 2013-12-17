@@ -1,6 +1,6 @@
-angular.module('mycellar.directives.password', []);
+angular.module('mycellar.directives.form.password', []);
 
-angular.module('mycellar.directives.password').directive('equals', [
+angular.module('mycellar.directives.form.password').directive('equals', [
   function() {
     return {
       restrict: 'A',

@@ -3,6 +3,7 @@ angular.module('mycellar.controllers.admin.domain.booking.bookingEvent', [
   'mycellar.resources.wine.formats',
   'mycellar.resources.wine.wines',
   'mycellar.services.admin-domain',
+  'mycellar.directives.form',
   'mycellar.directives.admin-domain-nav'
 ]);
 

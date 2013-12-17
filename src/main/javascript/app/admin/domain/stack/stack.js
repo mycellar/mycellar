@@ -2,6 +2,7 @@ angular.module('mycellar.controllers.admin.domain.stack.stack', [
   'ngRoute',
   'mycellar.resources.stack.stacks', 
   'mycellar.services.admin-domain',
+  'mycellar.directives.form',
   'mycellar.directives.admin-domain-nav'
 ]);
 

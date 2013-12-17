@@ -2,6 +2,7 @@ angular.module('mycellar.controllers.admin.domain.contact.contact', [
   'mycellar.resources.contact.contacts', 
   'mycellar.resources.wine.producers',
   'mycellar.services.admin-domain',
+  'mycellar.directives.form',
   'mycellar.directives.admin-domain-nav'
 ]);
 

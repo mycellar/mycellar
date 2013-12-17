@@ -24,12 +24,11 @@ import javax.inject.Singleton;
 
 import fr.mycellar.application.shared.AbstractSimpleService;
 import fr.mycellar.application.wine.CountryService;
-import fr.mycellar.application.wine.RegionService;
 import fr.mycellar.domain.shared.NamedEntity_;
 import fr.mycellar.domain.shared.exception.BusinessError;
 import fr.mycellar.domain.shared.exception.BusinessException;
 import fr.mycellar.domain.wine.Country;
-import fr.mycellar.domain.wine.Region_;
+import fr.mycellar.domain.wine.Country_;
 import fr.mycellar.infrastructure.shared.repository.SearchParameters;
 import fr.mycellar.infrastructure.wine.repository.CountryRepository;
 
@@ -41,8 +40,6 @@ import fr.mycellar.infrastructure.wine.repository.CountryRepository;
 public class CountryServiceImpl extends AbstractSimpleService<Country, CountryRepository> implements CountryService {
 
     private CountryRepository countryRepository;
-
-    private RegionService regionService;
 
     @Override
     public Country find(String name) {
@@ -59,7 +56,7 @@ public class CountryServiceImpl extends AbstractSimpleService<Country, CountryRe
 
     @Override
     protected void validateDelete(Country entity) throws BusinessException {
-        if (regionService.count(new SearchParameters().property(Region_.country, entity)) > 0) {
+        if (countryRepository.findPropertyCount(new SearchParameters().property(Country_.id, entity.getId()), Country_.regions) > 0) {
             throw new BusinessException(BusinessError.COUNTRY_00002);
         }
     }
@@ -72,11 +69,6 @@ public class CountryServiceImpl extends AbstractSimpleService<Country, CountryRe
     @Inject
     public void setCountryRepository(CountryRepository countryRepository) {
         this.countryRepository = countryRepository;
-    }
-
-    @Inject
-    public void setRegionService(RegionService regionService) {
-        this.regionService = regionService;
     }
 
 }

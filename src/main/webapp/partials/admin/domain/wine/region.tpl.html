@@ -12,17 +12,33 @@
         <legend>Details</legend>
         <div class="form-group" ng-class="{'has-error': form.country.$invalid}">
           <label class="control-label" for="country">Pays</label>
-          <input 
+          <div class="input-group" ng-show="!showSubCountry">
+            <input 
               id="country" 
               name="country" 
-              type="text" 
-              class="form-control"
+              type="text"
+              class="form-control" 
               ng-model="region.country" 
               placeholder="Pays" 
               typeahead="country as country.name for country in countries($viewValue)"
               typeahead-editable="false"  
               typeahead-min-length="2" 
               typeahead-wait-ms="200" />
+            <span class="input-group-btn">
+              <a class="btn btn-default" ng-click="newCountry()"><i class="fa fa-plus"></i></a>
+            </span>
+          </div>
+          <div ng-show="showSubCountry" class="sub-entity">
+            <ng-form name="subCountryForm">
+              <div class="form-group" ng-class="{'has-error': subCountryForm.name.$invalid}">
+                <label class="control-label" for="name">Nom du pays</label>
+                <input class="form-control" id="name" name="name" type="text" ng-model="country.name" placeholder="Nom du pays" />
+                <error-ctrl ctrl="subCountryForm.name"></error-ctrl>
+              </div>
+              <a class="btn btn-success" ng-click="okCountry()">Valider</a>
+              <a class="btn btn-warning" ng-click="cancelCountry()">Annuler</a>
+            </ng-form>
+          </div>
           <error-ctrl ctrl="form.country"></error-ctrl>
         </div>
         <div class="form-group" ng-class="{'has-error': form.name.$invalid}">

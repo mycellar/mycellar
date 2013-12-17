@@ -1,6 +1,6 @@
 describe('Unit: Testing password directive', function() {
   var $scope;
-  beforeEach(angular.mock.module('mycellar.directives.password'));
+  beforeEach(angular.mock.module('mycellar.directives.form.password'));
   beforeEach(inject(function($compile, $rootScope) {
     $scope = $rootScope;
     var element = angular.element(
@@ -9,7 +9,7 @@ describe('Unit: Testing password directive', function() {
         '<input ng-model="model.password2" name="password2" equals="{{model.password}}" />' +
       '</form>'
     );
-    $scope.model = { password: '', password2: '' }
+    $scope.model = { password: '', password2: '' };
     $compile(element)($scope);
     $scope.$digest();
   }));

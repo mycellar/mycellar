@@ -3,6 +3,7 @@ angular.module('mycellar.controllers.admin.domain.booking.booking', [
   'mycellar.resources.booking.bookingEvents',
   'mycellar.resources.user.users',
   'mycellar.services.admin-domain',
+  'mycellar.directives.form',
   'mycellar.directives.admin-domain-nav'
 ]);
 

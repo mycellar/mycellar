@@ -1,6 +1,7 @@
 angular.module('mycellar.controllers.admin.domain.user.user', [
   'mycellar.resources.user.users', 
   'mycellar.services.admin-domain',
+  'mycellar.directives.form',
   'mycellar.directives.admin-domain-nav'
 ]);
 

@@ -1,6 +1,6 @@
 angular.module('mycellar.controllers.admin.domain.wine.producer', [
-  'mycellar.resources.wine.producers',
   'mycellar.services.admin-domain',
+  'mycellar.directives.form',
   'mycellar.directives.admin-domain-nav'
 ]);
 

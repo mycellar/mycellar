@@ -2,7 +2,12 @@ angular.module('mycellar.resources.wine.producers', ['ngResource']);
 
 angular.module('mycellar.resources.wine.producers').factory('Producers', ['$resource', '$q', function ($resource, $q) {
 
-  var Producers = $resource('/api/domain/wine/producers');
+  var Producers = $resource('/api/domain/wine/producers', {}, {
+    validate: {
+      url: '/api/domain/wine/validateProducer',
+      method: 'POST'
+    }
+  });
   var Producer = $resource('/api/domain/wine/producer/:producerId');
   
   Producers.deleteById = function(id, fn) {

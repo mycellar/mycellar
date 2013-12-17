@@ -230,8 +230,8 @@ public class WineServiceFacadeImpl implements WineServiceFacade {
 
     @Override
     @Transactional
-    public void saveFormat(Format format) throws BusinessException {
-        formatService.save(format);
+    public Format saveFormat(Format format) throws BusinessException {
+        return formatService.save(format);
     }
 
     @Override
@@ -242,20 +242,50 @@ public class WineServiceFacadeImpl implements WineServiceFacade {
 
     @Override
     @Transactional
-    public void saveRegion(Region region) throws BusinessException {
-        regionService.save(region);
+    public Region saveRegion(Region region) throws BusinessException {
+        return regionService.save(region);
     }
 
     @Override
     @Transactional
-    public void saveWine(Wine wine) throws BusinessException {
-        wineService.save(wine);
+    public Wine saveWine(Wine wine) throws BusinessException {
+        return wineService.save(wine);
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public void validateAppellation(Appellation appellation) throws BusinessException {
+        appellationService.validate(appellation);
     }
 
     @Override
     @Transactional(readOnly = true)
     public void validateCountry(Country country) throws BusinessException {
         countryService.validate(country);
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public void validateFormat(Format format) throws BusinessException {
+        formatService.validate(format);
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public void validateProducer(Producer producer) throws BusinessException {
+        producerService.validate(producer);
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public void validateRegion(Region region) throws BusinessException {
+        regionService.validate(region);
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public void validateWine(Wine wine) throws BusinessException {
+        wineService.validate(wine);
     }
 
     @Override

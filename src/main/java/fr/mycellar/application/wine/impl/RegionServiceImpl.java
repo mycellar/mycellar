@@ -23,12 +23,11 @@ import javax.inject.Named;
 import javax.inject.Singleton;
 
 import fr.mycellar.application.shared.AbstractSimpleService;
-import fr.mycellar.application.wine.AppellationService;
+import fr.mycellar.application.wine.CountryService;
 import fr.mycellar.application.wine.RegionService;
 import fr.mycellar.domain.shared.NamedEntity_;
 import fr.mycellar.domain.shared.exception.BusinessError;
 import fr.mycellar.domain.shared.exception.BusinessException;
-import fr.mycellar.domain.wine.Appellation_;
 import fr.mycellar.domain.wine.Region;
 import fr.mycellar.domain.wine.Region_;
 import fr.mycellar.infrastructure.shared.repository.SearchParameters;
@@ -43,12 +42,18 @@ public class RegionServiceImpl extends AbstractSimpleService<Region, RegionRepos
 
     private RegionRepository regionRepository;
 
-    private AppellationService appellationService;
+    private CountryService countryService;
 
     @Override
     public void validate(Region entity) throws BusinessException {
         if (entity.getCountry() == null) {
             throw new BusinessException(BusinessError.REGION_00001);
+        } else {
+            try {
+                countryService.validate(entity.getCountry());
+            } catch (BusinessException e) {
+                throw new BusinessException(BusinessError.REGION_00004, e);
+            }
         }
         Region existing = regionRepository.findUniqueOrNone(new SearchParameters() //
                 .property(Region_.country, entity.getCountry()) //
@@ -60,8 +65,8 @@ public class RegionServiceImpl extends AbstractSimpleService<Region, RegionRepos
 
     @Override
     protected void validateDelete(Region entity) throws BusinessException {
-        if (appellationService.count(new SearchParameters() //
-                .property(Appellation_.region, entity)) > 0) {
+        if (regionRepository.findPropertyCount(new SearchParameters() //
+                .property(Region_.id, entity.getId()), Region_.appellations) > 0) {
             throw new BusinessException(BusinessError.REGION_00003);
         }
     }
@@ -77,8 +82,8 @@ public class RegionServiceImpl extends AbstractSimpleService<Region, RegionRepos
     }
 
     @Inject
-    public void setAppellationService(AppellationService appellationService) {
-        this.appellationService = appellationService;
+    public void setCountryService(CountryService countryService) {
+        this.countryService = countryService;
     }
 
 }

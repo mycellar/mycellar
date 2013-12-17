@@ -21,6 +21,7 @@ package fr.mycellar.infrastructure.shared.repository;
 import static com.google.common.base.Preconditions.checkNotNull;
 
 import java.io.Serializable;
+import java.util.Arrays;
 import java.util.List;
 
 import javax.inject.Inject;
@@ -167,7 +168,8 @@ public abstract class JpaGenericRepository<E extends Identifiable<PK>, PK extend
      *            the list of attributes to the property
      * @return the entities property matching the search.
      */
-    public <T> List<T> findProperty(Class<T> propertyType, SearchParameters sp, List<Attribute<?, ?>> attributes) {
+    @Override
+    public <T> List<T> findProperty(Class<T> propertyType, SearchParameters sp, Attribute<?, ?>... attributes) {
         if (sp.hasNamedQuery()) {
             return namedQueryUtil.findByNamedQuery(sp);
         }
@@ -177,7 +179,7 @@ public abstract class JpaGenericRepository<E extends Identifiable<PK>, PK extend
             criteriaQuery.distinct(true);
         }
         Root<E> root = criteriaQuery.from(type);
-        Path<T> path = jpaUtil.getPath(root, attributes);
+        Path<T> path = jpaUtil.getPath(root, Arrays.asList(attributes));
         criteriaQuery.select(path);
 
         // predicate
@@ -214,14 +216,15 @@ public abstract class JpaGenericRepository<E extends Identifiable<PK>, PK extend
      *            the list of attributes to the property
      * @return the number of entities matching the search.
      */
-    public long findPropertyCount(SearchParameters sp, List<Attribute<?, ?>> attributes) {
+    @Override
+    public long findPropertyCount(SearchParameters sp, Attribute<?, ?>... attributes) {
         if (sp.hasNamedQuery()) {
             return namedQueryUtil.numberByNamedQuery(sp).intValue();
         }
         CriteriaBuilder builder = entityManager.getCriteriaBuilder();
         CriteriaQuery<Long> criteriaQuery = builder.createQuery(Long.class);
         Root<E> root = criteriaQuery.from(type);
-        Path<?> path = jpaUtil.getPath(root, attributes);
+        Path<?> path = jpaUtil.getPath(root, Arrays.asList(attributes));
 
         if (sp.getDistinct()) {
             criteriaQuery = criteriaQuery.select(builder.countDistinct(path));

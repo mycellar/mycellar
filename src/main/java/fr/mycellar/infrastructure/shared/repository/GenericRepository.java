@@ -66,7 +66,7 @@ public interface GenericRepository<E extends Identifiable<PK>, PK extends Serial
      *            the list of attributes to the property
      * @return the entities property matching the search.
      */
-    <T> List<T> findProperty(Class<T> propertyType, SearchParameters sp, List<Attribute<?, ?>> attributes);
+    <T> List<T> findProperty(Class<T> propertyType, SearchParameters sp, Attribute<?, ?>... attributes);
 
     /**
      * Count the number of E instances.
@@ -80,7 +80,7 @@ public interface GenericRepository<E extends Identifiable<PK>, PK extends Serial
      *            the list of attributes to the property
      * @return the number of entities matching the search.
      */
-    long findPropertyCount(SearchParameters sp, List<Attribute<?, ?>> attributes);
+    long findPropertyCount(SearchParameters sp, Attribute<?, ?>... attributes);
 
     /**
      * @param searchParameters

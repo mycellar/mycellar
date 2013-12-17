@@ -2,7 +2,7 @@ angular.module('mycellar.controllers.login', [
   'ngRoute',
   'mycellar.resources.user.users',
   'mycellar.services.security.service',
-  'mycellar.directives.password'
+  'mycellar.directives.form.password'
 ], [
   '$routeProvider', 
   function($routeProvider){
