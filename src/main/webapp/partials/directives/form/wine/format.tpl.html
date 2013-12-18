@@ -1,14 +1,14 @@
-<div class="form-group" ng-class="{'has-error': form.wine.$invalid}">
-  <label class="control-label" for="wine">Vin{{postLabel}}</label>
+<div class="form-group" ng-class="{'has-error': form.format.$invalid}">
+  <label class="control-label" for="format">Format{{postLabel}}</label>
   <div class="input-group" ng-show="!showSub">
     <input 
-      id="wine"
-      name="wine"
+      id="format"
+      name="format"
       type="text"
       class="form-control"
-      ng-model="wine"
-      placeholder="Vin{{postLabel}}"
-      typeahead="wine as renderWine(wine) for wine in wines($viewValue)"
+      ng-model="format"
+      placeholder="Format{{postLabel}}"
+      typeahead="format as renderFormat(format) for format in formats($viewValue)"
       typeahead-editable="false"
       typeahead-min-length="2"
       typeahead-wait-ms="200" />
@@ -17,11 +17,11 @@
     </span>
   </div>
   <div ng-show="showSub" class="sub-entity">
-    <ng-form name="subWineForm">
-      <wine-form form="subWineForm" wine="newWine" post-label=" du vin"></wine-form>
+    <ng-form name="subFormatForm">
+      <format-form form="subFormatForm" format="newFormat" post-label=" du format"></format-form>
       <a class="btn btn-success" ng-click="ok()">Valider</a>
       <a class="btn btn-warning" ng-click="cancel()">Annuler</a>
     </ng-form>
   </div>
-  <error-ctrl ctrl="form.wine"></error-ctrl>
+  <error-ctrl ctrl="form.format"></error-ctrl>
 </div>

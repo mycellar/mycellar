@@ -8,8 +8,8 @@ angular.module('mycellar.controllers.admin.domain.booking.bookingEvent', [
 ]);
 
 angular.module('mycellar.controllers.admin.domain.booking.bookingEvent').controller('AdminDomainBookingEventController', [
-  '$scope', 'bookingEvent', 'adminDomainService', 'Wines', 'Formats', '$filter',
-  function ($scope, bookingEvent, adminDomainService, Wines, Formats, $filter) {
+  '$scope', 'bookingEvent', 'adminDomainService',
+  function ($scope, bookingEvent, adminDomainService) {
     $scope.bookingEvent = bookingEvent;
     angular.extend($scope, adminDomainService.editMethods('booking', 'BookingEvent', bookingEvent, 'form'));
 
@@ -59,34 +59,6 @@ angular.module('mycellar.controllers.admin.domain.booking.bookingEvent').control
       $scope.bookingEvent.bottles[position].position++;
       $scope.bookingEvent.bottles[position + 1].position--;
       $scope.bookingEvent.bottles[position] = $scope.bookingEvent.bottles.splice(position + 1, 1, $scope.bookingEvent.bottles[position])[0];
-    };
-
-    $scope.wines = function(input) {
-      return Wines.like({
-        input: input,
-        first: 0,
-        count: 20
-      });
-    };
-    $scope.formats = function(input) {
-      return Formats.nameLike(input);
-    };
-
-    var wineFilter = $filter('wineRenderer');
-    $scope.wineLabel = function(wine) {
-      if (wine != null) {
-        return wineFilter(wine);
-      } else {
-        return '';
-      }
-    };
-    var formatFilter = $filter('formatRenderer');
-    $scope.formatLabel = function(format) {
-      if (format != null) {
-        return formatFilter(format);
-      } else {
-        return '';
-      }
     };
   }
 ]);

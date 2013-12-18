@@ -90,36 +90,8 @@
       </fieldset>
       <fieldset ng-if="bookingBottle != null">
         <legend>{{isNew() ? 'Ajouter une bouteille à la campagne' : 'Modifier une bouteille de la campagne' }}</legend>
-        <div class="form-group" ng-class="{'has-error': form.wine.$invalid}">
-          <label class="control-label" for="appellation">Vin</label>
-          <input 
-              id="wine"
-              name="wine"
-              type="text"
-              class="form-control"
-              ng-model="bookingBottle.bottle.wine"
-              placeholder="Vin"
-              typeahead="wine as wineLabel(wine) for wine in wines($viewValue)"
-              typeahead-editable="false"
-              typeahead-min-length="2"
-              typeahead-wait-ms="200" />
-          <error-ctrl ctrl="form.wine"></error-ctrl>
-        </div>
-        <div class="form-group" ng-class="{'has-error': form.format.$invalid}">
-          <label class="control-label" for="format">Format</label>
-          <input 
-              id="format"
-              name="format"
-              type="text"
-              class="form-control"
-              ng-model="bookingBottle.bottle.format"
-              placeholder="Format"
-              typeahead="format as formatLabel(format) for format in formats($viewValue)"
-              typeahead-editable="false"
-              typeahead-min-length="2"
-              typeahead-wait-ms="200" />
-          <error-ctrl ctrl="form.format"></error-ctrl>
-        </div>
+        <wine form="form" wine="bookingBottle.bottle.wine"></wine>
+        <format form="form" format="bookingBottle.bottle.format"></format>
         <div class="form-group" ng-class="{'has-error': form.price.$invalid}">
           <label class="control-label" for="price">Prix</label>
           <input class="form-control" id="price" name="price" type="number" ng-model="bookingBottle.price" placeholder="Prix" />

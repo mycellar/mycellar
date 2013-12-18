@@ -28,7 +28,15 @@ angular.module('mycellar.directives.form.domain.wine.wine').directive('wineForm'
         wine: '=',
         postLabel: '@'
       },
-      controller: function($scope, Wines) {
+      controller: function($scope, Wines, $filter) {
+        var wineFilter = $filter('wineRenderer');
+        $scope.renderWine = function(wine) {
+          if (wine != null) {
+            return wineFilter(wine);
+          } else {
+            return '';
+          }
+        };
         $scope.wines = Wines.like;
         $scope.new = function() {
           $scope.newWine = {};

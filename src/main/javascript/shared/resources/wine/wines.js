@@ -36,7 +36,11 @@ angular.module('mycellar.resources.wine.wines').factory('Wines', ['$resource', '
 
   Wines.like = function(input) {
     var deferred = $q.defer();
-    Wines._like(input, function(result) {
+    Wines._like({
+      input: input,
+      first: 0,
+      count: 20
+    }, function(result) {
       $q.when(result.list).then(function(value) {
         deferred.resolve(value);
       }, function(value) {

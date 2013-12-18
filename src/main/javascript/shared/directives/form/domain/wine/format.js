@@ -1,33 +1,41 @@
-angular.module('mycellar.directives.form.domain.wine.producer', [
-  'mycellar.resources.wine.producers'
+angular.module('mycellar.directives.form.domain.wine.format', [
+  'mycellar.resources.wine.formats'
 ]);
 
-angular.module('mycellar.directives.form.domain.wine.producer').directive('producerForm', [
+angular.module('mycellar.directives.form.domain.wine.format').directive('formatForm', [
   function() {
     return {
       restrict: 'E',
       replace: true,
-      templateUrl: 'partials/directives/form/wine/producer-form.tpl.html',
+      templateUrl: 'partials/directives/form/wine/format-form.tpl.html',
       scope: {
         form: '=',
-        producer: '=',
+        format: '=',
         postLabel: '@'
       }
     }
   }
-]).directive('producer', [
+]).directive('format', [
   function() {
     return {
       restrict: 'E',
       replace: true,
-      templateUrl: 'partials/directives/form/wine/producer.tpl.html',
+      templateUrl: 'partials/directives/form/wine/format.tpl.html',
       scope: {
         form: '=',
-        producer: '=',
+        format: '=',
         postLabel: '@'
       },
-      controller: function($scope, Producers) {
-        $scope.producers = Producers.nameLike;
+      controller: function($scope, Formats, $filter) {
+        var formatFilter = $filter('formatRenderer');
+        $scope.renderFormat = function(format) {
+          if (format != null) {
+            return formatFilter(format);
+          } else {
+            return '';
+          }
+        };
+        $scope.formats = Formats.nameLike;
         $scope.new = function() {
           $scope.newProducer = {};
           $scope.showSub = true;
@@ -36,7 +44,7 @@ angular.module('mycellar.directives.form.domain.wine.producer').directive('produ
           $scope.showSub = false;
         };
         $scope.ok = function() {
-          Producers.validate($scope.newProducer, function (value, headers) {
+          Formats.validate($scope.newProducer, function (value, headers) {
             if (value.internalError != undefined) {
               $scope.subProducerForm.$setValidity('Error occured.', false);
             } else if (value.errorKey != undefined) {
@@ -44,7 +52,7 @@ angular.module('mycellar.directives.form.domain.wine.producer').directive('produ
                 $scope.subProducerForm[value.properties[property]].$setValidity(value.errorKey, false);
               }
             } else {
-              $scope.producer = $scope.newProducer;
+              $scope.format = $scope.newProducer;
               $scope.showSub = false;
             }
           });
