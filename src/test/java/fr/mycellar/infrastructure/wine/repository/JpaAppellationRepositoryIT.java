@@ -21,6 +21,8 @@ package fr.mycellar.infrastructure.wine.repository;
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.junit.Assert.assertThat;
 
+import java.util.List;
+
 import javax.inject.Inject;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
@@ -32,6 +34,8 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.transaction.annotation.Transactional;
 
+import fr.mycellar.domain.shared.NamedEntity_;
+import fr.mycellar.domain.wine.Appellation;
 import fr.mycellar.infrastructure.shared.repository.SearchParameters;
 
 /**
@@ -40,38 +44,27 @@ import fr.mycellar.infrastructure.shared.repository.SearchParameters;
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = { "classpath:context-infrastructure-test.xml" })
 @Transactional
-public class JpaWineRepositoryIT {
+public class JpaAppellationRepositoryIT {
     @PersistenceContext
     private EntityManager entityManager;
 
     @Inject
-    private JpaWineRepository jpaWineRepository;
+    private JpaAppellationRepository jpaAppellationRepository;
 
     @Test
     @Rollback
-    public void like() {
-        assertThat(jpaWineRepository.getWinesLike("saint", new SearchParameters()) //
-                .size(), equalTo(2));
-
-        assertThat(jpaWineRepository.getWinesLike("emilion", new SearchParameters()) //
-                .size(), equalTo(1));
-
-        assertThat(jpaWineRepository.getWinesLike("2005", new SearchParameters()) //
-                .size(), equalTo(4));
-
-        assertThat(jpaWineRepository.getWinesLike("", new SearchParameters()) //
-                .size(), equalTo(0));
-
-        assertThat(jpaWineRepository.getWinesLike("gaill", new SearchParameters()) //
-                .size(), equalTo(1));
-
-        assertThat(jpaWineRepository.getWinesLike("renaissa", new SearchParameters()) //
-                .size(), equalTo(1));
-
-        assertThat(jpaWineRepository.getWinesLike("gail renaissa", new SearchParameters()) //
-                .size(), equalTo(1));
-
-        assertThat(jpaWineRepository.getWinesLike("graylac regnaisoce", new SearchParameters()) //
-                .size(), equalTo(1));
+    public void byTermSelector() {
+        assertThat(searchByNameTerm("Gaillac").size(), equalTo(1));
+        assertThat(searchByNameTerm("Gaill").size(), equalTo(1));
     }
+
+    /**
+     * @return
+     */
+    private List<Appellation> searchByNameTerm(String input) {
+        return jpaAppellationRepository.find( //
+                new SearchParameters() //
+                        .term(NamedEntity_.name, input));
+    }
+
 }

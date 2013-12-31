@@ -59,9 +59,9 @@
     <slf4j.version>1.7.5</slf4j.version>
     <spring.version>3.2.5.RELEASE</spring.version>
     <spring.security.version>3.1.4.RELEASE</spring.security.version>
-    <hibernate.version>4.2.7.SP1</hibernate.version>
-    <hibernate.validator.version>5.0.1.Final</hibernate.validator.version>
-    <hibernate.search.version>4.4.0.Final</hibernate.search.version>
+    <hibernate.version>4.3.0.Final</hibernate.version>
+    <hibernate.validator.version>5.0.2.Final</hibernate.validator.version>
+    <hibernate.search.version>4.4.2.Final</hibernate.search.version>
     <jersey.version>1.18</jersey.version>
     <jackson.version>2.3.0</jackson.version>
     <h2.version>1.3.174</h2.version>
@@ -586,11 +586,6 @@
     </dependency>
 
     <!-- HIBERNATE -->
-    <dependency>
-      <groupId>org.hibernate</groupId>
-      <artifactId>hibernate-core</artifactId>
-      <version>${hibernate.version}</version>
-    </dependency>
     <dependency>
       <groupId>org.hibernate</groupId>
       <artifactId>hibernate-entitymanager</artifactId>

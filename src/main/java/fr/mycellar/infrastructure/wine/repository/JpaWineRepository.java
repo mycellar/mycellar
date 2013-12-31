@@ -27,6 +27,7 @@ import javax.inject.Inject;
 import javax.inject.Named;
 import javax.inject.Singleton;
 import javax.persistence.metamodel.Attribute;
+import javax.persistence.metamodel.SingularAttribute;
 
 import org.apache.commons.lang.StringUtils;
 
@@ -71,29 +72,23 @@ public class JpaWineRepository extends JpaSimpleRepository<Wine> implements Wine
     @Override
     public List<Wine> getWinesLike(String input, SearchParameters searchParameters) {
         restrictFromHibernateSearch(input, searchParameters);
-        return find(searchParameters);
+        if (searchParameters.hasProperties()) {
+            return find(searchParameters);
+        } else {
+            return new ArrayList<Wine>();
+        }
     }
 
     private void restrictFromHibernateSearch(String input, SearchParameters searchParameters) {
-        restrictFromHibernateSearch(searchParameters, //
-                hibernateSearchUtil.findId(Country.class, //
-                        new SearchParameters().term(NamedEntity_.name, input)), //
+        restrictFromHibernateSearch(searchParameters, Country.class, NamedEntity_.name, input, //
                 Wine_.appellation, Appellation_.region, Region_.country, Country_.id);
-        restrictFromHibernateSearch(searchParameters, //
-                hibernateSearchUtil.findId(Region.class, //
-                        new SearchParameters().term(NamedEntity_.name, input)), //
+        restrictFromHibernateSearch(searchParameters, Region.class, NamedEntity_.name, input, //
                 Wine_.appellation, Appellation_.region, Region_.id);
-        restrictFromHibernateSearch(searchParameters, //
-                hibernateSearchUtil.findId(Appellation.class, //
-                        new SearchParameters().term(NamedEntity_.name, input)), //
+        restrictFromHibernateSearch(searchParameters, Appellation.class, NamedEntity_.name, input, //
                 Wine_.appellation, Appellation_.id);
-        restrictFromHibernateSearch(searchParameters, //
-                hibernateSearchUtil.findId(Producer.class, //
-                        new SearchParameters().term(NamedEntity_.name, input)), //
+        restrictFromHibernateSearch(searchParameters, Producer.class, NamedEntity_.name, input, //
                 Wine_.producer, Producer_.id);
-        restrictFromHibernateSearch(searchParameters, //
-                hibernateSearchUtil.findId(Wine.class, //
-                        new SearchParameters().term(NamedEntity_.name, input)), //
+        restrictFromHibernateSearch(searchParameters, Wine.class, NamedEntity_.name, input, //
                 Wine_.id);
         Scanner vintageScanner = new Scanner(input);
         String vintageString = vintageScanner.findInLine("[0-9]{4}");
@@ -104,7 +99,15 @@ public class JpaWineRepository extends JpaSimpleRepository<Wine> implements Wine
         vintageScanner.close();
     }
 
-    private void restrictFromHibernateSearch(SearchParameters searchParameters, List<Serializable> ids, Attribute<?, ?>... attributes) {
+    private <X> void restrictFromHibernateSearch(SearchParameters searchParameters, Class<X> from, SingularAttribute<? super X, String> attribute, String input, Attribute<?, ?>... attributes) {
+        SearchParameters fullTextSearchParameters = new SearchParameters().term(attribute, input).searchSimilarity(0.9f);
+        List<Serializable> ids = hibernateSearchUtil.findId(from, fullTextSearchParameters);
+        if ((ids == null) || ids.isEmpty()) {
+            ids = hibernateSearchUtil.findId(from, fullTextSearchParameters.searchSimilarity(0.7f));
+        }
+        if ((ids == null) || ids.isEmpty()) {
+            ids = hibernateSearchUtil.findId(from, fullTextSearchParameters.searchSimilarity(0.5f));
+        }
         if ((ids != null) && (ids.size() > 0)) {
             List<Integer> realIds = new ArrayList<>();
             for (Serializable id : ids) {

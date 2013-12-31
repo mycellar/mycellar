@@ -20,8 +20,6 @@ package fr.mycellar.infrastructure.shared.search;
 
 import static org.hibernate.search.jpa.Search.getFullTextEntityManager;
 
-import java.util.Arrays;
-
 import javax.annotation.PostConstruct;
 import javax.inject.Named;
 import javax.persistence.EntityManager;
@@ -33,27 +31,11 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Lazy;
 
-import fr.mycellar.domain.booking.BookingEvent;
-import fr.mycellar.domain.contact.Contact;
-import fr.mycellar.domain.stock.Cellar;
-import fr.mycellar.domain.user.User;
-import fr.mycellar.domain.wine.Appellation;
-import fr.mycellar.domain.wine.Country;
-import fr.mycellar.domain.wine.Format;
-import fr.mycellar.domain.wine.Producer;
-import fr.mycellar.domain.wine.Region;
-import fr.mycellar.domain.wine.Wine;
-
 @Named
 @Lazy(false)
 public class MassIndexerService {
 
     private static final Logger logger = LoggerFactory.getLogger(MassIndexerService.class);
-
-    protected static final Class<?>[] CLASSES_TO_BE_INDEXED = { BookingEvent.class, //
-            Cellar.class, User.class, Appellation.class, Country.class, Format.class, //
-            Producer.class, Region.class, Wine.class, Contact.class //
-    };
 
     @PersistenceContext
     private EntityManager entityManager;
@@ -72,31 +54,19 @@ public class MassIndexerService {
         StopWatch stopWatch = new StopWatch();
         stopWatch.start();
         try {
-            for (Class<?> classToBeIndexed : CLASSES_TO_BE_INDEXED) {
-                indexClass(classToBeIndexed);
-            }
-        } finally {
-            stopWatch.stop();
-            logger.info("Indexed {} in {}", Arrays.toString(CLASSES_TO_BE_INDEXED), stopWatch.toString());
-        }
-    }
-
-    private void indexClass(Class<?> classToBeIndexed) {
-        StopWatch stopWatch = new StopWatch();
-        stopWatch.start();
-        try {
             getFullTextEntityManager(entityManager) //
-                    .createIndexer(classToBeIndexed) //
+                    .createIndexer() //
                     .batchSizeToLoadObjects(batchSizeToLoadObjects) //
                     .threadsToLoadObjects(threadsToLoadObjects) //
                     .threadsForSubsequentFetching(threadsForSubsequentFetching) //
                     .startAndWait();
         } catch (InterruptedException e) {
-            logger.warn("Interrupted while indexing " + classToBeIndexed.getSimpleName(), e);
+            logger.warn("Interrupted while indexing.", e);
             Thread.currentThread().interrupt();
         } finally {
             stopWatch.stop();
-            logger.info("Indexed {} in {}", classToBeIndexed.getSimpleName(), stopWatch.toString());
+            logger.info("Indexation done in {}.", stopWatch.toString());
         }
     }
+
 }

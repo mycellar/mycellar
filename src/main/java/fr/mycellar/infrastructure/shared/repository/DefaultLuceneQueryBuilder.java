@@ -32,7 +32,6 @@ import javax.inject.Named;
 import javax.inject.Singleton;
 import javax.persistence.metamodel.SingularAttribute;
 
-import org.apache.lucene.analysis.ASCIIFoldingFilter;
 import org.apache.lucene.queryParser.QueryParser;
 import org.apache.lucene.search.Query;
 import org.hibernate.search.jpa.FullTextEntityManager;
@@ -103,7 +102,7 @@ public class DefaultLuceneQueryBuilder implements LuceneQueryBuilder {
                     if (subQuery.length() > 1) {
                         subQuery.append(" ").append(orMode ? "OR" : "AND").append(" ");
                     }
-                    subQuery.append(buildSubQuery(property, wordElements, sp));
+                    subQuery.append(buildSubQuery(property, wordElements, orMode, sp));
                 }
             }
             subQuery.append(")");
@@ -114,39 +113,24 @@ public class DefaultLuceneQueryBuilder implements LuceneQueryBuilder {
         return null;
     }
 
-    private String buildSubQuery(SingularAttribute<?, ?> property, List<String> terms, SearchParameters sp) {
+    private String buildSubQuery(SingularAttribute<?, ?> property, List<String> terms, boolean orMode, SearchParameters sp) {
         StringBuilder subQuery = new StringBuilder();
         if (terms.size() > 1) {
             subQuery.append("(");
         }
         for (String term : terms) {
             if (subQuery.length() > 1) {
-                subQuery.append(" AND ");
+                subQuery.append(" ").append(orMode ? "OR" : "AND").append(" ");
             }
+            subQuery.append(property.getName() + ":" + escape(lowerCase(term)));
             if (sp.getSearchSimilarity() != null) {
-                subQuery.append(property.getName() + ":" + escapeForFuzzy(lowerCase(term)) + "~" + sp.getSearchSimilarity());
-            } else {
-                subQuery.append(property.getName() + ":" + escape(lowerCase(term)));
+                subQuery.append("~" + sp.getSearchSimilarity());
             }
         }
         if (terms.size() > 1) {
             subQuery.append(")");
         }
         return subQuery.toString();
-    }
-
-    /**
-     * Apply same filtering as "custom" analyzer. Lowercase is done by
-     * QueryParser for fuzzy search.
-     * 
-     * @param word
-     * @return
-     */
-    private String escapeForFuzzy(String word) {
-        int length = word.length();
-        char[] tmp = new char[length * 4];
-        length = ASCIIFoldingFilter.foldToASCII(word.toCharArray(), 0, tmp, 0, length);
-        return new String(tmp, 0, length);
     }
 
 }
