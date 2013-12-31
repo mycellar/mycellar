@@ -57,9 +57,9 @@
 
     <!-- Versions -->
     <slf4j.version>1.7.5</slf4j.version>
-    <spring.version>3.2.5.RELEASE</spring.version>
+    <spring.version>3.2.6.RELEASE</spring.version>
     <spring.security.version>3.1.4.RELEASE</spring.security.version>
-    <hibernate.version>4.3.0.Final</hibernate.version>
+    <hibernate.version>4.2.6.Final</hibernate.version>
     <hibernate.validator.version>5.0.2.Final</hibernate.validator.version>
     <hibernate.search.version>4.4.2.Final</hibernate.search.version>
     <jersey.version>1.18</jersey.version>
@@ -338,31 +338,6 @@
     </plugins>
   </build>
 
-  <repositories>
-    <repository>
-      <id>jboss-public-repository-group</id>
-      <name>JBoss Public Maven Repository Group</name>
-      <url>https://repository.jboss.org/nexus/content/groups/public-jboss/</url>
-      <layout>default</layout>
-      <releases>
-        <enabled>true</enabled>
-        <updatePolicy>never</updatePolicy>
-      </releases>
-      <snapshots>
-        <enabled>true</enabled>
-        <updatePolicy>never</updatePolicy>
-      </snapshots>
-    </repository>
-    <repository>
-      <id>apache.snapshots</id>
-      <name>Apache Snapshot Repository</name>
-      <url>http://repository.apache.org/snapshots</url>
-      <releases>
-        <enabled>false</enabled>
-      </releases>
-    </repository>
-  </repositories>
-
   <profiles>
     <profile>
       <id>db-h2</id>
@@ -569,7 +544,7 @@
     <dependency>
       <groupId>commons-beanutils</groupId>
       <artifactId>commons-beanutils</artifactId>
-      <version>1.8.3</version>
+      <version>1.9.0</version>
       <exclusions>
         <exclusion>
           <groupId>commons-logging</groupId>
