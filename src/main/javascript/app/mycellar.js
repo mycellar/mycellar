@@ -8,11 +8,11 @@ angular.extend(mycellar, {
 
 angular.module('mycellar', [
   'ngRoute',
+  'ui.bootstrap',
   'mycellar.loading',
   'mycellar.services.bootstrap',
   'mycellar.services.menu',
   'mycellar.services.security',
-  'mycellar.directives.bootstrap',
   'mycellar.controllers.home',
   'mycellar.controllers.login',
   'mycellar.controllers.account',

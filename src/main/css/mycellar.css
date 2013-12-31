@@ -28,6 +28,10 @@ body {
   margin: 0;
 }
 
+.pagination {
+  cursor: pointer;
+}
+
 /* END OF BOOTSTRAP overrides */
 
 footer {

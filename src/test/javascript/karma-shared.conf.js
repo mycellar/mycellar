@@ -4,6 +4,8 @@ module.exports = {
     'bower_components/angular/angular.js',
     'bower_components/angular-resource/angular-resource.js',
     'bower_components/angular-route/angular-route.js',
+    'bower_components/angular-i18n/angular-locale_fr-fr.js',
+    'bower_components/angular-ui-bootstrap-bower/ui-bootstrap-tpls.js',
   
     //App-specific Code
     'src/main/javascript/**/*.js',
