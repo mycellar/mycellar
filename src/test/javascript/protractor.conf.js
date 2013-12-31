@@ -1,12 +1,7 @@
 // A reference configuration file.
-if (!process.env.SAUCE_USERNAME) {
-  var seleniumAddress = 'http://localhost:4444/wd/hub';
-}
-  
 exports.config = {
   sauceUser: process.env.SAUCE_USERNAME,
   sauceKey: process.env.SAUCE_ACCESS_KEY,
-  seleniumAddress: seleniumAddress,
 
   specs: [
     './e2e/**/*.js'

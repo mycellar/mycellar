@@ -28,10 +28,10 @@ module.exports = function(grunt) {
         command: 'node ./node_modules/protractor/bin/webdriver-manager update'
       },
       npm_install: {
-        command: 'npm install'
+        command: 'npm --no-color install'
       },
       bower_install: {
-        command: 'node ./node_modules/bower/bin/bower install'
+        command: 'node ./node_modules/bower/bin/bower --no-color install'
       },
     },
 
@@ -98,7 +98,8 @@ module.exports = function(grunt) {
       },
       auto: {
         options: {
-          keepAlive: true
+          keepAlive: true,
+          seleniumAddress: 'http://localhost:4444/wd/hub'
         }
       }
     },
@@ -141,10 +142,10 @@ module.exports = function(grunt) {
 
   grunt.registerTask('test', ['test:unit', 'test:e2e']);
   grunt.registerTask('test:unit', ['karma:unit']);
-  grunt.registerTask('test:e2e', ['shell:selenium','protractor:singlerun']);
+  grunt.registerTask('test:e2e', ['protractor:singlerun']);
   grunt.registerTask('test:unit_browsers', ['karma:unit_browsers']);
 
-  grunt.registerTask('debug:e2e', ['shell:selenium','protractor:debug']);
+  grunt.registerTask('debug:e2e', ['protractor:debug']);
 
   grunt.registerTask('autotest:unit', ['karma:unit_auto']);
   grunt.registerTask('autotest:e2e', ['shell:selenium','watch:protractor']);
