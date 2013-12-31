@@ -92,14 +92,13 @@ module.exports = function(grunt) {
       singlerun: {
       },
       debug: {
-        debug: true
+        options: {
+          debug: true
+        }
       },
       auto: {
-        keepAlive: true,
         options: {
-          args: {
-            seleniumPort: 4444
-          }
+          keepAlive: true
         }
       }
     },
@@ -120,7 +119,7 @@ module.exports = function(grunt) {
           './bower_components/bootstrap/dist/css/bootstrap.css',
           './bower_components/bootstrap/dist/css/bootstrap-theme.css',
           './bower_components/font-awesome/css/font-awesome.css',
-          './src/main/css/mycellar.css'
+          './src/main/css/**/*.css'
         ]
       },
       scripts: {
@@ -142,10 +141,10 @@ module.exports = function(grunt) {
 
   grunt.registerTask('test', ['test:unit', 'test:e2e']);
   grunt.registerTask('test:unit', ['karma:unit']);
-  grunt.registerTask('test:e2e', ['protractor:singlerun']);
+  grunt.registerTask('test:e2e', ['shell:selenium','protractor:singlerun']);
   grunt.registerTask('test:unit_browsers', ['karma:unit_browsers']);
 
-  grunt.registerTask('debug:e2e', ['protractor:debug']);
+  grunt.registerTask('debug:e2e', ['shell:selenium','protractor:debug']);
 
   grunt.registerTask('autotest:unit', ['karma:unit_auto']);
   grunt.registerTask('autotest:e2e', ['shell:selenium','watch:protractor']);

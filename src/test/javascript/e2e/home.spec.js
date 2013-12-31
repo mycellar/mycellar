@@ -26,6 +26,7 @@ describe('E2E: Testing home', function() {
 
       // collapse nav
       homePage.getNavToggle().click();
+      browser.driver.sleep(200); // FIXME why sleep is neede ?
       expect(homePage.getNav().isDisplayed()).toBe(false);
     });
     
