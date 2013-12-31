@@ -69,8 +69,6 @@ describe('E2E: Testing account', function() {
     LoginTool.logout();
     LoginTool.loginWith('test@test.com', 'test2');
 
-    browser.driver.sleep(500); // FIXME try to understand why saucelabs fails here.
-    var page = new AccountPage();
     // rollback change
     page.get();
     page.changePassword.click();
