@@ -1,5 +1,3 @@
-var os = require('os');
-
 module.exports = function(grunt) {
 
   grunt.loadNpmTasks('grunt-open');
@@ -11,6 +9,7 @@ module.exports = function(grunt) {
   grunt.loadNpmTasks('grunt-protractor-runner');
   grunt.loadNpmTasks('grunt-karma');
   grunt.loadNpmTasks('grunt-karma-coveralls');
+  grunt.loadNpmTasks('grunt-coveralls-merge');
 
   grunt.initConfig({
     shell: {
@@ -32,7 +31,7 @@ module.exports = function(grunt) {
       },
       bower_install: {
         command: 'node ./node_modules/bower/bin/bower --no-color install'
-      },
+      }
     },
 
     karma: {
@@ -66,7 +65,18 @@ module.exports = function(grunt) {
 
     coveralls: {
       options: {
-        debug: true,
+        dryRun: true,
+        coverage_dir: 'coverage'
+      }
+    },
+    
+    coveralls_merge: {
+      options: {
+        dryRun: false,
+        coveralls_files: [
+          'coverage/coveralls.json',
+          'target/coveralls.json'
+        ],
         coverage_dir: 'coverage'
       }
     },
