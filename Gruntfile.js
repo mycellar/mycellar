@@ -184,10 +184,10 @@ module.exports = function(grunt) {
   grunt.registerTask('test', ['test:unit', 'test:e2e']);
   grunt.registerTask('test:unit', ['karma:unit']);
   if (process.env.SAUCE_USERNAME) {
-    grunt.registerTask('protractor-sauce-chrome-windows', ['protractor:sauce-chrome-windows']);
-    grunt.registerTask('protractor-sauce-chrome-linux', ['protractor:sauce-chrome-linux']);
-    grunt.registerTask('protractor-sauce-firefox-windows', ['protractor:sauce-firefox-windows']);
-    grunt.registerTask('protractor-sauce-firefox-linux', ['protractor:sauce-firefox-linux']);
+    grunt.registerTask('protractor-sauce-chrome-windows', ['protractor:sauce_chrome_windows']);
+    grunt.registerTask('protractor-sauce-chrome-linux', ['protractor:sauce_chrome_linux']);
+    grunt.registerTask('protractor-sauce-firefox-windows', ['protractor:sauce_firefox_windows']);
+    grunt.registerTask('protractor-sauce-firefox-linux', ['protractor:sauce_firefox_linux']);
     grunt.registerTask('test:e2e', ['concurrent:sauce_test']);
   } else {
     grunt.registerTask('test:e2e', ['protractor:singlerun']);
