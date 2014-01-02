@@ -16,7 +16,7 @@
  * You should have received a copy of the GNU General Public License
  * along with MyCellar. If not, see <http://www.gnu.org/licenses/>.
  */
-package fr.mycellar.interfaces.web.descriptors.menu.pedia;
+package fr.mycellar.interfaces.web.descriptors.menu.vinopedia;
 
 import org.springframework.stereotype.Component;
 
@@ -36,7 +36,7 @@ public class PediaPageDescriptor extends AbstractDescriptor implements IMenuDesc
 
     @Override
     public String getRoute() {
-        return "/pedia";
+        return "/vinopedia";
     }
 
     @Override

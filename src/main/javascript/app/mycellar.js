@@ -16,6 +16,7 @@ angular.module('mycellar', [
   'mycellar.controllers.home',
   'mycellar.controllers.login',
   'mycellar.controllers.account',
+  'mycellar.controllers.vinopedia',
   'mycellar.controllers.admin',
   'mycellar.controllers.booking',
   'mycellar.controllers.navigation',
