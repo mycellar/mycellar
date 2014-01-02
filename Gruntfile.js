@@ -3,6 +3,7 @@ module.exports = function(grunt) {
   grunt.loadNpmTasks('grunt-open');
   grunt.loadNpmTasks('grunt-shell');
   grunt.loadNpmTasks('grunt-shell-spawn');
+  grunt.loadNpmTasks('grunt-concurrent');
   grunt.loadNpmTasks('grunt-contrib-copy');
   grunt.loadNpmTasks('grunt-contrib-watch');
   grunt.loadNpmTasks('grunt-contrib-concat');
@@ -98,7 +99,7 @@ module.exports = function(grunt) {
     protractor: {
       options: {
         keepAlive: false,
-        configFile: "./src/test/javascript/protractor.conf.js"
+        configFile: './src/test/javascript/protractor.conf.js'
       },
       singlerun: {
       },
@@ -111,6 +112,26 @@ module.exports = function(grunt) {
         options: {
           keepAlive: true,
           seleniumAddress: 'http://localhost:4444/wd/hub'
+        }
+      },
+      sauce_chrome_windows: {
+        options: {
+          configFile: './src/test/javascript/sauce/protractor-chrome-windows.conf.js'
+        }
+      },
+      sauce_chrome_linux: {
+        options: {
+          configFile: './src/test/javascript/sauce/protractor-chrome-linux.conf.js'
+        }
+      },
+      sauce_firefox_windows: {
+        options: {
+          configFile: './src/test/javascript/sauce/protractor-firefox-windows.conf.js'
+        }
+      },
+      sauce_firefox_linux: {
+        options: {
+          configFile: './src/test/javascript/sauce/protractor-firefox-linux.conf.js'
         }
       }
     },
@@ -147,13 +168,26 @@ module.exports = function(grunt) {
           './bower_components/angular-ui-bootstrap-bower/ui-bootstrap-tpls.js',
           './src/main/javascript/**/*.js'
         ]
-      },
+      }
+    },
+    
+    concurrent: {
+      sauce_test: [
+        'protractor:sauce-chrome-windows', 
+        'protractor:sauce-chrome-linux',
+        'protractor:sauce-firefox-windows',
+        'protractor:sauce-firefox-linux'
+      ]
     }
   });
 
   grunt.registerTask('test', ['test:unit', 'test:e2e']);
   grunt.registerTask('test:unit', ['karma:unit']);
-  grunt.registerTask('test:e2e', ['protractor:singlerun']);
+  if (process.env.SAUCE_USERNAME) {
+    grunt.registerTask('test:e2e', ['concurrent:sauce_test']);
+  } else {
+    grunt.registerTask('test:e2e', ['protractor:singlerun']);
+  }
   grunt.registerTask('test:unit_browsers', ['karma:unit_browsers']);
 
   grunt.registerTask('debug:e2e', ['protractor:debug']);
