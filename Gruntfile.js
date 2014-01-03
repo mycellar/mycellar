@@ -186,15 +186,20 @@ module.exports = function(grunt) {
       }
     },
     
+    // 3 PC & 3 MAC (saucelabs os limitation)
     concurrent: {
       sauce_test: [
         'protractor:sauce_chrome_windows'
-//        'protractor:sauce_chrome_linux',
-//        'protractor:sauce_firefox_windows',
+        'protractor:sauce_chrome_linux',
+        'protractor:sauce_firefox_windows',
 //        'protractor:sauce_firefox_linux',
-//        'protractor:sauce_iphone',
-//        'protractor:sauce_ipad',
+        'protractor:sauce_iphone',
+        'protractor:sauce_ipad',
 //        'protractor:sauce_android'
+      ],
+      sauce_test2: [
+        'protractor:sauce_firefox_linux',
+        'protractor:sauce_android'
       ]
     }
   });
