@@ -193,14 +193,14 @@ module.exports = function(grunt) {
         'protractor:sauce_chrome_linux',
         'protractor:sauce_firefox_windows',
 //        'protractor:sauce_firefox_linux',
+// TODO add android compatibility
 //        'protractor:sauce_android',
-//        TODO add iphone compatibility
+// TODO add iphone compatibility
 //        'protractor:sauce_iphone',
 //        'protractor:sauce_ipad'
       ],
       sauce_test2: [
-        'protractor:sauce_firefox_linux',
-        'protractor:sauce_android'
+        'protractor:sauce_firefox_linux'
       ]
     }
   });
