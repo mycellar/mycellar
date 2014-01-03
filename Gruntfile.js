@@ -207,7 +207,7 @@ module.exports = function(grunt) {
   grunt.registerTask('test', ['test:unit', 'test:e2e']);
   grunt.registerTask('test:unit', ['karma:unit']);
   if (process.env.SAUCE_USERNAME) {
-    grunt.registerTask('test:e2e', ['concurrent:sauce_test']);
+    grunt.registerTask('test:e2e', ['concurrent:sauce_test', 'concurrent:sauce_test2']);
   } else {
     grunt.registerTask('test:e2e', ['protractor:singlerun']);
   }
