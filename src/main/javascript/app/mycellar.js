@@ -10,7 +10,6 @@ angular.module('mycellar', [
   'ngRoute',
   'ui.bootstrap',
   'mycellar.loading',
-  'mycellar.services.bootstrap',
   'mycellar.services.menu',
   'mycellar.services.security',
   'mycellar.controllers.home',
