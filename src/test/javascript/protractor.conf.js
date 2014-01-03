@@ -4,6 +4,7 @@ exports.config = {
 
   specs: [
     './e2e/**/*.spec.js',
+    './e2e/**/*.spec.pc.js',
     './e2e/**/*.spec.plus.js'
   ],
 
