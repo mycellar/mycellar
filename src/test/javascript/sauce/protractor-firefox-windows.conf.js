@@ -3,7 +3,7 @@ exports.config = {
   sauceKey: process.env.SAUCE_ACCESS_KEY,
 
   specs: [
-    '../e2e/**/*.js'
+    '../e2e/**/*.spec.js'
   ],
 
   capabilities: {
