@@ -403,6 +403,7 @@ INSERT INTO CONFIGURATION (key, value, version) values('MAIL_ADDRESS_SENDER', 't
 INSERT INTO CONFIGURATION (key, value, version) values('REMINDER_ADDRESS_RECEIVERS', 'titi@test.com', 0);
 
 INSERT INTO USER (VERSION, EMAIL, FIRSTNAME, LASTNAME, PASSWORD, PROFILE) values (0, 'test@test.com', 'Test', 'Test', 'CF8Orkbts9yiF+FMj0gAR65NmEk8ycq5/ueJKw==', 'ADMIN');
+INSERT INTO USER (VERSION, EMAIL, FIRSTNAME, LASTNAME, PASSWORD, PROFILE) values (0, 'other@test.com', 'Test', 'Test', 'CF8Orkbts9yiF+FMj0gAR65NmEk8ycq5/ueJKw==', 'ADMIN');
 
 INSERT INTO COUNTRY (VERSION, NAME, DESCRIPTION) values (0, 'France', '');
 INSERT INTO COUNTRY (VERSION, NAME, DESCRIPTION) values (0, 'Allemagne', '');
