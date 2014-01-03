@@ -9,7 +9,7 @@ install:
 script: mvn verify
 after_success:
 - node_modules/grunt-cli/bin/grunt coverage
-- mvn verify jacoco:report coveralls:jacoco
+- mvn verify jacoco:report coveralls:jacoco -De2e=e2e_coverage
 - node_modules/grunt-cli/bin/grunt coveralls_merge
 addons:
   sauce_connect: true

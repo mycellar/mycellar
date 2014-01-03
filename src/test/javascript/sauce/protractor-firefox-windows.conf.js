@@ -8,6 +8,7 @@ exports.config = {
 
   capabilities: {
     'browserName': 'firefox',
+    'version': '25',
     'platform': 'Windows 8.1',
     'build': process.env.TRAVIS_BUILD_NUMBER,
     'name': 'Travis #' + process.env.TRAVIS_BUILD_NUMBER,

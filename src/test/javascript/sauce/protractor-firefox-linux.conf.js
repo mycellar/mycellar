@@ -8,6 +8,7 @@ exports.config = {
 
   capabilities: {
     'browserName': 'firefox',
+    'version': '25',
     'platform': 'Linux',
     'build': process.env.TRAVIS_BUILD_NUMBER,
     'name': 'Travis #' + process.env.TRAVIS_BUILD_NUMBER,

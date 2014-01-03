@@ -133,6 +133,21 @@ module.exports = function(grunt) {
         options: {
           configFile: './src/test/javascript/sauce/protractor-firefox-linux.conf.js'
         }
+      },
+      sauce_iphone: {
+        options: {
+          configFile: './src/test/javascript/sauce/protractor-iphone.conf.js'
+        }
+      },
+      sauce_ipad: {
+        options: {
+          configFile: './src/test/javascript/sauce/protractor-ipad.conf.js'
+        }
+      },
+      sauce_android: {
+        options: {
+          configFile: './src/test/javascript/sauce/protractor-android.conf.js'
+        }
       }
     },
 
@@ -173,10 +188,13 @@ module.exports = function(grunt) {
     
     concurrent: {
       sauce_test: [
-        'protractor-sauce-chrome-windows', 
-        'protractor-sauce-chrome-linux',
-        'protractor-sauce-firefox-windows',
-        'protractor-sauce-firefox-linux'
+        'protractor:sauce_chrome_windows', 
+        'protractor:sauce_chrome_linux',
+        'protractor:sauce_firefox_windows',
+        'protractor:sauce_firefox_linux',
+        'protractor:sauce_iphone',
+        'protractor:sauce_ipad',
+        'protractor:sauce_android'
       ]
     }
   });
@@ -184,10 +202,6 @@ module.exports = function(grunt) {
   grunt.registerTask('test', ['test:unit', 'test:e2e']);
   grunt.registerTask('test:unit', ['karma:unit']);
   if (process.env.SAUCE_USERNAME) {
-    grunt.registerTask('protractor-sauce-chrome-windows', ['protractor:sauce_chrome_windows']);
-    grunt.registerTask('protractor-sauce-chrome-linux', ['protractor:sauce_chrome_linux']);
-    grunt.registerTask('protractor-sauce-firefox-windows', ['protractor:sauce_firefox_windows']);
-    grunt.registerTask('protractor-sauce-firefox-linux', ['protractor:sauce_firefox_linux']);
     grunt.registerTask('test:e2e', ['concurrent:sauce_test']);
   } else {
     grunt.registerTask('test:e2e', ['protractor:singlerun']);
@@ -200,6 +214,7 @@ module.exports = function(grunt) {
   grunt.registerTask('autotest:e2e', ['shell:selenium','watch:protractor']);
 
   grunt.registerTask('test:coverage', ['karma:unit_coverage']);
+  grunt.registerTask('test:e2e_coverage', ['protractor:singlerun']);
   
   //installation-related
   grunt.registerTask('install', [

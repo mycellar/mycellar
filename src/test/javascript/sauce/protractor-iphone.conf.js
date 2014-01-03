@@ -7,9 +7,10 @@ exports.config = {
   ],
 
   capabilities: {
-    'browserName': 'chrome',
-    'version': '31',
-    'platform': 'Windows 8.1',
+    'browserName': 'iphone',
+    'version': '7',
+    'platform': 'OS X 10.9',
+    'device-orientation': 'portrait',
     'build': process.env.TRAVIS_BUILD_NUMBER,
     'name': 'Travis #' + process.env.TRAVIS_BUILD_NUMBER,
     'tunnel-identifier': process.env.TRAVIS_JOB_NUMBER

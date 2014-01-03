@@ -510,6 +510,9 @@
           <name>!skipTests</name>
         </property>
       </activation>
+      <properties>
+        <e2e>e2e</e2e>
+      </properties>
       <build>
         <plugins>
           <plugin>
@@ -527,7 +530,7 @@
                   <arguments>
                     <argument>node_modules/grunt-cli/bin/grunt</argument>
                     <argument>--no-color</argument>
-                    <argument>test:e2e</argument>
+                    <argument>test:${e2e}</argument>
                   </arguments>
                 </configuration>
               </execution>
