@@ -188,13 +188,13 @@ module.exports = function(grunt) {
     
     concurrent: {
       sauce_test: [
-        'protractor:sauce_chrome_windows', 
-        'protractor:sauce_chrome_linux',
-        'protractor:sauce_firefox_windows',
-        'protractor:sauce_firefox_linux',
-        'protractor:sauce_iphone',
-        'protractor:sauce_ipad',
-        'protractor:sauce_android'
+        'protractor:sauce_chrome_windows'
+//        'protractor:sauce_chrome_linux',
+//        'protractor:sauce_firefox_windows',
+//        'protractor:sauce_firefox_linux',
+//        'protractor:sauce_iphone',
+//        'protractor:sauce_ipad',
+//        'protractor:sauce_android'
       ]
     }
   });
