@@ -22,6 +22,7 @@ import java.util.List;
 
 import javax.inject.Named;
 import javax.inject.Singleton;
+import javax.persistence.TypedQuery;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Predicate;
@@ -89,12 +90,13 @@ public class JpaContactRepository extends JpaSimpleRepository<Contact> implement
             predicate = criteriaBuilder.and(predicate, criteriaBuilder.not(criteriaBuilder.exists(subquery)));
         }
 
-        List<Contact> result = getEntityManager().createQuery( //
+        TypedQuery<Contact> typedQuery = getEntityManager().createQuery( //
                 query.orderBy(getOrderByUtil().buildJpaOrders(searchParameters.getOrders(), root, criteriaBuilder, searchParameters)) //
                         .select(root) //
-                        .where(predicate)) //
-                .setFirstResult(searchParameters.getFirstResult()). //
-                setMaxResults(searchParameters.getMaxResults()).getResultList();
+                        .where(predicate));
+
+        getJpaUtil().applyPagination(typedQuery, searchParameters);
+        List<Contact> result = typedQuery.getResultList();
         logger.trace("Returned {} lastContacts for {}.", result.size(), searchParameters);
 
         return result;
