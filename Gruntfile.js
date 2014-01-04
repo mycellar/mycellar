@@ -1,6 +1,5 @@
 module.exports = function(grunt) {
 
-  grunt.loadNpmTasks('grunt-open');
   grunt.loadNpmTasks('grunt-shell');
   grunt.loadNpmTasks('grunt-shell-spawn');
   grunt.loadNpmTasks('grunt-concurrent');
