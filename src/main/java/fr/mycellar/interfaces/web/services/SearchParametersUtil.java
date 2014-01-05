@@ -20,11 +20,10 @@ package fr.mycellar.interfaces.web.services;
 
 import java.util.List;
 
-import javax.inject.Inject;
 import javax.inject.Named;
 import javax.inject.Singleton;
 
-import fr.mycellar.infrastructure.shared.repository.MetamodelUtil;
+import fr.mycellar.infrastructure.shared.repository.PropertySelector;
 import fr.mycellar.infrastructure.shared.repository.SearchMode;
 import fr.mycellar.infrastructure.shared.repository.SearchParameters;
 
@@ -35,21 +34,12 @@ import fr.mycellar.infrastructure.shared.repository.SearchParameters;
 @Singleton
 public class SearchParametersUtil {
 
-    private MetamodelUtil metamodelUtil;
-
-    /**
-     * @param first
-     * @param count
-     * @param filters
-     * @param orders
-     * @return
-     */
     public SearchParameters getSearchParametersForListWithCount(int first, int count, List<FilterCouple> filters, List<OrderCouple> orders, Class<?> clazz) {
         SearchParameters searchParameters = new SearchParameters();
         searchParameters.searchMode(SearchMode.ANYWHERE);
         for (FilterCouple filter : filters) {
             if (filter.isFilterSet()) {
-                searchParameters.property(metamodelUtil.toAttribute(filter.getProperty(), clazz), filter.getFilter());
+                searchParameters.property(new PropertySelector<>(filter.getProperty(), clazz).selected(filter.getFilter()));
             }
         }
         searchParameters.firstResult(first).maxResults(count);
@@ -57,11 +47,6 @@ public class SearchParametersUtil {
             searchParameters.orderBy(order.getDirection(), order.getProperty(), clazz);
         }
         return searchParameters;
-    }
-
-    @Inject
-    public void setMetamodelUtil(MetamodelUtil metamodelUtil) {
-        this.metamodelUtil = metamodelUtil;
     }
 
 }
