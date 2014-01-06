@@ -1,4 +1,6 @@
 <configuration>
+  <jmxConfigurator />
+
   <appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
     <encoder>
       <pattern>
@@ -7,17 +9,14 @@
     </encoder>
   </appender>
 
-  <logger name="fr.mycellar" level="trace" />
-  
+  <logger name="fr.mycellar" level="${log.level}" />
+
   <!-- URLRWRITE -->
   <!-- <logger name="org.tuckey.web.filters.urlrewrite" level="debug" /> -->
-  
+
   <!-- HIBERNATE QUERIES -->
   <!-- <logger name="org.hibernate.SQL" level="debug" /> -->
   <!-- <logger name="org.hibernate.type" level="trace" /> -->
-  
-  <!-- WICKET -->
-  <!-- <logger name="org.apache.wicket.Page" level="debug" /> -->
 
   <root level="warn">
     <appender-ref ref="STDOUT" />

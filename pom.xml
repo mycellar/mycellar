@@ -54,6 +54,7 @@
 
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    <log.level>trace</log.level>
 
     <!-- Versions -->
     <slf4j.version>1.7.5</slf4j.version>
@@ -411,6 +412,12 @@
         <db.user>mycellar</db.user>
         <db.pass>pswcellar</db.pass>
         <db.validationQuery>/* ping */</db.validationQuery>
+      </properties>
+    </profile>
+    <profile>
+      <id>prod</id>
+      <properties>
+        <log.level>info</log.level>
       </properties>
     </profile>
     <profile>
