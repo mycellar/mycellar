@@ -31,6 +31,15 @@ angular.module('mycellar.services.table').provider('tableService', [function () 
           isDesc: function(property) {
             return this.sort.ways[property] == 'desc';
           },
+          orderByFilterPredicates: function() {
+            var value = [];
+            for (key in this.sort.ways) {
+              if (this.sort.ways[key] != null) {
+                value.push((this.isAsc(key) ? '+' : '-') + key);
+              }
+            }
+            return value;
+          }
         };
       }
     };

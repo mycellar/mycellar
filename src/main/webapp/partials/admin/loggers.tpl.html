@@ -1,0 +1,48 @@
+<header class="page-header"><h1>Listes des loggers</h1></header>
+<data-table-filters table-context="tableContext">
+  <div class="form-group">
+    <label class="control-label sr-only" for="name">Nom</label>
+    <input class="form-control" id="name" name="name" placeholder="Nom" ng-model="tableContext.filters['name']" type="text" />
+  </div>
+  <div class="form-group">
+    <label class="control-label sr-only" for="level">Level</label>
+    <input class="form-control" id="level" name="level" placeholder="Level" ng-model="tableContext.filters['level']" type="text" />
+  </div>
+</data-table-filters>
+<div class="table-responsive">
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Logger <icon-sort attribute="name" table-context="tableContext" /></th>
+        <th>Level <icon-sort attribute="level" table-context="tableContext" /></th>
+        <th class="actions"></th>
+      </tr>
+    </thead>
+    <tbody ng-controller="LoadingCtrl">
+      <tr ng-repeat="logger in loggers | filter:tableContext.filters | orderBy:tableContext.orderByFilterPredicates()">
+        <td>{{logger.name}}</td>
+        <td>{{logger.level}}</td>
+        <td>
+          <div class="btn-group" style="width: 300px;">
+            <button ng-click="changeLevel(logger, 'TRACE')" ng-class="(logger.level=='TRACE') ? 'btn-danger' : 'btn-default'" class="btn btn-xs">TRACE</button>
+            <button ng-click="changeLevel(logger, 'DEBUG')" ng-class="(logger.level=='DEBUG') ? 'btn-warning' : 'btn-default'" class="btn btn-xs">DEBUG</button>
+            <button ng-click="changeLevel(logger, 'INFO')" ng-class="(logger.level=='INFO') ? 'btn-info' : 'btn-default'" class="btn btn-xs">INFO</button>
+            <button ng-click="changeLevel(logger, 'WARN')" ng-class="(logger.level=='WARN') ? 'btn-success' : 'btn-default'" class="btn btn-xs">WARN</button>
+            <button ng-click="changeLevel(logger, 'ERROR')" ng-class="(logger.level=='ERROR') ? 'btn-primary' : 'btn-default'" class="btn btn-xs">ERROR</button>
+            <button ng-click="changeLevel(logger, 'OFF')" ng-class="(logger.level=='OFF') ? 'btn-danger' : 'btn-default'" class="btn btn-xs">OFF</button>
+          </div>
+        </td>
+      </tr>
+      <tr ng-if="!loading && (loggers|filter:tableContext.filters).length == 0">
+        <td colspan="3" class="text-center">Aucun logger ne correspond aux filtres.</td>
+      </tr>
+    </tbody>
+    <tfoot>
+      <tr>
+        <th>Logger <icon-sort attribute="name" table-context="tableContext" /></th>
+        <th>Level <icon-sort attribute="level" table-context="tableContext" /></th>
+        <th class="actions"></th>
+      </tr>
+    </tfoot>
+  </table>
+</div>
