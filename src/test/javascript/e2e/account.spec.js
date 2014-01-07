@@ -3,8 +3,8 @@ var LoginTool = require('./tools/login.tool');
 describe('E2E: Testing account', function() {
 
   beforeEach(function() {
-    browser.driver.manage().timeouts().setScriptTimeout(5000);
-    browser.driver.manage().timeouts().implicitlyWait(5000);
+    browser.driver.manage().timeouts().setScriptTimeout(10000);
+    browser.driver.manage().timeouts().implicitlyWait(10000);
   });
 
   it('should load the account page', function() {
