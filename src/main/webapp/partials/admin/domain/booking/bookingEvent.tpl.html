@@ -28,65 +28,67 @@
       </fieldset>
       <fieldset>
         <legend>Bouteilles</legend>
-        <table class="table table-bordered table-striped table-condensed">
-          <thead>
-            <tr>
-              <th>Ordre</th>
-              <th>Producteur</th>
-              <th>Appellation</th>
-              <th>Nom</th>
-              <th>Millésime</th>
-              <th>Couleur</th>
-              <th>Type</th>
-              <th>Format</th>
-              <th>Max</th>
-              <th>Prix</th>
-              <th>
-                <a href ng-click="addBookingBottle()" class="btn btn-default btn-xs"><i class="fa fa-plus-circle"></i></a>
-              </th>
-            </tr>
-          </thead>
-          <tbody ng-controller="LoadingCtrl">
-            <tr ng-repeat="bookingBottle in bookingEvent.bottles">
-              <td>{{bookingBottle.position}}</td>
-              <td>{{bookingBottle.bottle.wine.producer.name}}</td>
-              <td>{{bookingBottle.bottle.wine.appellation.name}}</td>
-              <td>{{bookingBottle.bottle.wine.name}}</td>
-              <td>{{bookingBottle.bottle.wine.vintage}}</td>
-              <td>{{bookingBottle.bottle.wine.color | wineColorRenderer}}</td>
-              <td>{{bookingBottle.bottle.wine.type | wineTypeRenderer}}</td>
-              <td>{{bookingBottle.bottle.format | formatRenderer}}</td>
-              <td>{{bookingBottle.max}}</td>
-              <td>{{bookingBottle.price}}</td>
-              <td>
-                <a href ng-click="edit(bookingBottle)" class="btn btn-default btn-xs"><i class="fa fa-pencil"></i></a>
-                <a href ng-click="moveUp(bookingBottle)" class="btn btn-default btn-xs" ng-disabled="bookingBottle.position == 0"><i class="fa fa-arrow-up"></i></a>
-                <a href ng-click="moveDown(bookingBottle)" class="btn btn-default btn-xs" ng-disabled="bookingBottle.position == (bookingEvent.bottles.length - 1)"><i class="fa fa-arrow-down"></i></a>
-                <a href ng-click="removeBookingBottle(bookingBottle)" class="btn btn-danger btn-xs"><i class="fa fa-minus-circle"></i></a>
-              </td>
-            </tr>
-            <tr ng-if="!loading && items.length == 0">
-              <td colspan="11" class="text-center">Aucune bouteille dans la campagne.</td>
-            </tr>
-          </tbody>
-          <tfoot>
-            <tr>
-              <th>Ordre</th>
-              <th>Producteur</th>
-              <th>Appellation</th>
-              <th>Nom</th>
-              <th>Millésime</th>
-              <th>Couleur</th>
-              <th>Type</th>
-              <th>Format</th>
-              <th>Max</th>
-              <th>Prix</th>
-              <th>
-                <a href ng-click="addBookingBottle()" class="btn btn-default btn-xs"><i class="fa fa-plus-circle"></i></a>
-              </th>
-            </tr>
-          </tfoot>
-        </table>
+        <div class="table-responsive">
+          <table class="table table-bordered table-striped table-condensed">
+            <thead>
+              <tr>
+                <th>Ordre</th>
+                <th>Producteur</th>
+                <th>Appellation</th>
+                <th>Nom</th>
+                <th>Millésime</th>
+                <th>Couleur</th>
+                <th>Type</th>
+                <th>Format</th>
+                <th>Max</th>
+                <th>Prix</th>
+                <th>
+                  <a href ng-click="addBookingBottle()" class="btn btn-default btn-xs"><i class="fa fa-plus-circle"></i></a>
+                </th>
+              </tr>
+            </thead>
+            <tbody ng-controller="LoadingCtrl">
+              <tr ng-repeat="bookingBottle in bookingEvent.bottles">
+                <td>{{bookingBottle.position}}</td>
+                <td>{{bookingBottle.bottle.wine.producer.name}}</td>
+                <td>{{bookingBottle.bottle.wine.appellation.name}}</td>
+                <td>{{bookingBottle.bottle.wine.name}}</td>
+                <td>{{bookingBottle.bottle.wine.vintage}}</td>
+                <td>{{bookingBottle.bottle.wine.color | wineColorRenderer}}</td>
+                <td>{{bookingBottle.bottle.wine.type | wineTypeRenderer}}</td>
+                <td>{{bookingBottle.bottle.format | formatRenderer}}</td>
+                <td>{{bookingBottle.max}}</td>
+                <td>{{bookingBottle.price}}</td>
+                <td>
+                  <a href ng-click="edit(bookingBottle)" class="btn btn-default btn-xs"><i class="fa fa-pencil"></i></a>
+                  <a href ng-click="moveUp(bookingBottle)" class="btn btn-default btn-xs" ng-disabled="bookingBottle.position == 0"><i class="fa fa-arrow-up"></i></a>
+                  <a href ng-click="moveDown(bookingBottle)" class="btn btn-default btn-xs" ng-disabled="bookingBottle.position == (bookingEvent.bottles.length - 1)"><i class="fa fa-arrow-down"></i></a>
+                  <a href ng-click="removeBookingBottle(bookingBottle)" class="btn btn-danger btn-xs"><i class="fa fa-minus-circle"></i></a>
+                </td>
+              </tr>
+              <tr ng-if="!loading && items.length == 0">
+                <td colspan="11" class="text-center">Aucune bouteille dans la campagne.</td>
+              </tr>
+            </tbody>
+            <tfoot>
+              <tr>
+                <th>Ordre</th>
+                <th>Producteur</th>
+                <th>Appellation</th>
+                <th>Nom</th>
+                <th>Millésime</th>
+                <th>Couleur</th>
+                <th>Type</th>
+                <th>Format</th>
+                <th>Max</th>
+                <th>Prix</th>
+                <th>
+                  <a href ng-click="addBookingBottle()" class="btn btn-default btn-xs"><i class="fa fa-plus-circle"></i></a>
+                </th>
+              </tr>
+            </tfoot>
+          </table>
+        </div>
       </fieldset>
       <fieldset ng-if="bookingBottle != null">
         <legend>{{isNew() ? 'Ajouter une bouteille à la campagne' : 'Modifier une bouteille de la campagne' }}</legend>

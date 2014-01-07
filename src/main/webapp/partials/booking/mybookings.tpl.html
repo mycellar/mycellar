@@ -14,33 +14,35 @@
     <section>
       <div ng-if="booking != null">
         <h2>{{booking.bookingEvent.name}} du {{booking.bookingEvent.start}} au {{booking.bookingEvent.end}}</h2>
-        <table class="table table-bordered table-striped table-condensed">
-          <thead>
-            <tr>
-              <th>Vin</th>
-              <th>Format</th>
-              <th>Prix</th>
-              <th>Quantité</th>
-              <th>Total</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr ng-repeat="bookingBottle in booking.bookingEvent.bottles">
-              <td>{{bookingBottle.bottle.wine | wineRenderer}}</td>
-              <td>{{bookingBottle.bottle.format | formatRenderer}}</td>
-              <td>{{bookingBottle.price | currency:"€"}}</td>
-              <td>{{booking.quantities[booking.bookingEvent.id + '-' + bookingBottle.id]}}</td>
-              <td>{{bookingBottle.price * booking.quantities[booking.bookingEvent.id + '-' + bookingBottle.id] | currency:"€"}}</td>
-            </tr>
-          </tbody>
-          <tfoot>
-            <tr>
-              <th colspan="3"></th>
-              <th>Total</th>
-              <th>{{total | currency:"€"}}</th>
-            </tr>
-          </tfoot>
-        </table>
+        <div class="table-responsive">
+          <table class="table table-bordered table-striped table-condensed">
+            <thead>
+              <tr>
+                <th>Vin</th>
+                <th>Format</th>
+                <th>Prix</th>
+                <th>Quantité</th>
+                <th>Total</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr ng-repeat="bookingBottle in booking.bookingEvent.bottles">
+                <td>{{bookingBottle.bottle.wine | wineRenderer}}</td>
+                <td>{{bookingBottle.bottle.format | formatRenderer}}</td>
+                <td>{{bookingBottle.price | currency:"€"}}</td>
+                <td>{{booking.quantities[booking.bookingEvent.id + '-' + bookingBottle.id]}}</td>
+                <td>{{bookingBottle.price * booking.quantities[booking.bookingEvent.id + '-' + bookingBottle.id] | currency:"€"}}</td>
+              </tr>
+            </tbody>
+            <tfoot>
+              <tr>
+                <th colspan="3"></th>
+                <th>Total</th>
+                <th>{{total | currency:"€"}}</th>
+              </tr>
+            </tfoot>
+          </table>
+        </div>
       </div>
       <p ng-if="booking == null">Aucune réservation</p>
     </section>

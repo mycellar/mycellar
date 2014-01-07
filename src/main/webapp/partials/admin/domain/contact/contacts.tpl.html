@@ -14,38 +14,40 @@
     </data-table-filters>
     <data-error-div errors="errors"></data-error-div>
     <paginated options="tableOptions" items="items" table-context="tableContext">
-      <table class="table table-bordered table-striped table-condensed">
-        <thead>
-          <tr>
-            <th>Producteur <icon-sort attribute="producer.name" table-context="tableContext" /></th>
-            <th>Date du contact <icon-sort attribute="current" table-context="tableContext" /></th>
-            <th>Prochain contact <icon-sort attribute="next" table-context="tableContext" /></th>
-            <th class="actions"><a href ng-click="new()" class="btn btn-default btn-xs"><i class="fa fa-plus-circle"></i></a></th>
-          </tr>
-        </thead>
-        <tbody ng-controller="LoadingCtrl">
-          <tr ng-repeat="item in items">
-            <td>{{item.producer.name}}</td>
-            <td>{{item.current}}</td>
-            <td>{{item.next}}</td>
-            <td>
-              <a href ng-click="edit(item.id)" class="btn btn-default btn-xs"><i class="fa fa-pencil"></i></a>
-              <a href ng-click="delete(item.id)" class="btn btn-danger btn-xs"><i class="fa fa-minus-circle"></i></a>
-            </td>
-          </tr>
-          <tr ng-if="!loading && items.length == 0">
-            <td colspan="5" class="text-center">Aucun contact ne correspond aux filtres.</td>
-          </tr>
-        </tbody>
-        <tfoot>
-          <tr>
-            <th>Producteur <icon-sort attribute="producer.name" table-context="tableContext" /></th>
-            <th>Date du contact <icon-sort attribute="current" table-context="tableContext" /></th>
-            <th>Prochain contact <icon-sort attribute="next" table-context="tableContext" /></th>
-            <th class="actions"><a href ng-click="new()" class="btn btn-default btn-xs"><i class="fa fa-plus-circle"></i></a></th>
-          </tr>
-        </tfoot>
-      </table>
+      <div class="table-responsive">
+        <table class="table table-bordered table-striped table-condensed">
+          <thead>
+            <tr>
+              <th>Producteur <icon-sort attribute="producer.name" table-context="tableContext" /></th>
+              <th>Date du contact <icon-sort attribute="current" table-context="tableContext" /></th>
+              <th>Prochain contact <icon-sort attribute="next" table-context="tableContext" /></th>
+              <th class="actions"><a href ng-click="new()" class="btn btn-default btn-xs"><i class="fa fa-plus-circle"></i></a></th>
+            </tr>
+          </thead>
+          <tbody ng-controller="LoadingCtrl">
+            <tr ng-repeat="item in items">
+              <td>{{item.producer.name}}</td>
+              <td>{{item.current}}</td>
+              <td>{{item.next}}</td>
+              <td>
+                <a href ng-click="edit(item.id)" class="btn btn-default btn-xs"><i class="fa fa-pencil"></i></a>
+                <a href ng-click="delete(item.id)" class="btn btn-danger btn-xs"><i class="fa fa-minus-circle"></i></a>
+              </td>
+            </tr>
+            <tr ng-if="!loading && items.length == 0">
+              <td colspan="5" class="text-center">Aucun contact ne correspond aux filtres.</td>
+            </tr>
+          </tbody>
+          <tfoot>
+            <tr>
+              <th>Producteur <icon-sort attribute="producer.name" table-context="tableContext" /></th>
+              <th>Date du contact <icon-sort attribute="current" table-context="tableContext" /></th>
+              <th>Prochain contact <icon-sort attribute="next" table-context="tableContext" /></th>
+              <th class="actions"><a href ng-click="new()" class="btn btn-default btn-xs"><i class="fa fa-plus-circle"></i></a></th>
+            </tr>
+          </tfoot>
+        </table>
+      </div>
     </paginated>
   </div>
 </div>

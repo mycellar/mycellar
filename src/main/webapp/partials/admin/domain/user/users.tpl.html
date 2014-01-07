@@ -22,38 +22,40 @@
     </data-table-filters>
     <data-error-div errors="errors"></data-error-div>
     <paginated options="tableOptions" items="items" table-context="tableContext">
-      <table class="table table-bordered table-striped table-condensed">
-        <thead>
-          <tr>
-            <th>Nom de famille <icon-sort attribute="lastname" table-context="tableContext" /></th>
-            <th>Prénom <icon-sort attribute="firstname" table-context="tableContext" /></th>
-            <th>Email <icon-sort attribute="email" table-context="tableContext" /></th>
-            <th class="actions"></th>
-          </tr>
-        </thead>
-        <tbody ng-controller="LoadingCtrl">
-          <tr ng-repeat="item in items">
-            <td>{{item.lastname}}</td>
-            <td>{{item.firstname}}</td>
-            <td>{{item.email}}</td>
-            <td>
-              <a href ng-click="edit(item.id)" class="btn btn-default btn-xs"><i class="fa fa-pencil"></i></a>
-              <a href ng-click="delete(item.id)" class="btn btn-danger btn-xs"><i class="fa fa-minus-circle"></i></a>
-            </td>
-          </tr>
-          <tr ng-if="!loading && items.length == 0">
-            <td colspan="4" class="text-center">Aucun utilisateur ne correspond aux filtres.</td>
-          </tr>
-        </tbody>
-        <tfoot>
-          <tr>
-            <th>Nom de famille <icon-sort attribute="lastname" table-context="tableContext" /></th>
-            <th>Prénom <icon-sort attribute="firstname" table-context="tableContext" /></th>
-            <th>Email <icon-sort attribute="email" table-context="tableContext" /></th>
-            <th class="actions"></th>
-          </tr>
-        </tfoot>
-      </table>
+      <div class="table-responsive">
+        <table class="table table-bordered table-striped table-condensed">
+          <thead>
+            <tr>
+              <th>Nom de famille <icon-sort attribute="lastname" table-context="tableContext" /></th>
+              <th>Prénom <icon-sort attribute="firstname" table-context="tableContext" /></th>
+              <th>Email <icon-sort attribute="email" table-context="tableContext" /></th>
+              <th class="actions"></th>
+            </tr>
+          </thead>
+          <tbody ng-controller="LoadingCtrl">
+            <tr ng-repeat="item in items">
+              <td>{{item.lastname}}</td>
+              <td>{{item.firstname}}</td>
+              <td>{{item.email}}</td>
+              <td>
+                <a href ng-click="edit(item.id)" class="btn btn-default btn-xs"><i class="fa fa-pencil"></i></a>
+                <a href ng-click="delete(item.id)" class="btn btn-danger btn-xs"><i class="fa fa-minus-circle"></i></a>
+              </td>
+            </tr>
+            <tr ng-if="!loading && items.length == 0">
+              <td colspan="4" class="text-center">Aucun utilisateur ne correspond aux filtres.</td>
+            </tr>
+          </tbody>
+          <tfoot>
+            <tr>
+              <th>Nom de famille <icon-sort attribute="lastname" table-context="tableContext" /></th>
+              <th>Prénom <icon-sort attribute="firstname" table-context="tableContext" /></th>
+              <th>Email <icon-sort attribute="email" table-context="tableContext" /></th>
+              <th class="actions"></th>
+            </tr>
+          </tfoot>
+        </table>
+      </div>
     </paginated>
   </div>
 </div>

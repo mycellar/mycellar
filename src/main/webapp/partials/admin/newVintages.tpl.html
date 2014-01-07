@@ -94,47 +94,49 @@
       <fieldset>
         <legend>Vins à dupliquer</legend>
         <paginated options="tableOptions" items="wines" table-context="tableContext">
-          <table class="table table-bordered table-striped table-condensed">
-            <thead>
-              <tr>
-                <th>Pays <icon-sort attribute="appellation.region.country.name" table-context="tableContext" /></th>
-                <th>Région <icon-sort attribute="appellation.region.name" table-context="tableContext" /></th>
-                <th>Appellation <icon-sort attribute="appellation.name" table-context="tableContext" /></th>
-                <th>Producteur <icon-sort attribute="producer.name" table-context="tableContext" /></th>
-                <th>Nom <icon-sort attribute="name" table-context="tableContext" /></th>
-                <th>Millésime <icon-sort attribute="vintage" table-context="tableContext" /></th>
-                <th>Couleur <icon-sort attribute="color" table-context="tableContext" /></th>
-                <th>Type <icon-sort attribute="type" table-context="tableContext" /></th>
-              </tr>
-            </thead>
-            <tbody ng-controller="LoadingCtrl" >
-              <tr ng-repeat="wine in wines">
-                <td>{{wine.appellation.region.country.name}}</td>
-                <td>{{wine.appellation.region.name}}</td>
-                <td>{{wine.appellation.name}}</td>
-                <td>{{wine.producer.name}}</td>
-                <td>{{wine.name}}</td>
-                <td>{{wine.vintage}}</td>
-                <td>{{wine.color | wineColorRenderer}}</td>
-                <td>{{wine.type | wineTypeRenderer}}</td>
-              </tr>
-              <tr ng-if="!loading && wines.length == 0">
-                <td colspan="8" class="text-center">Aucun vin ne correspond aux filtres</td>
-              </tr>
-            </tbody>
-            <tfoot>
-              <tr>
-                <th>Pays <icon-sort attribute="appellation.region.country.name" table-context="tableContext" /></th>
-                <th>Région <icon-sort attribute="appellation.region.name" table-context="tableContext" /></th>
-                <th>Appellation <icon-sort attribute="appellation.name" table-context="tableContext" /></th>
-                <th>Producteur <icon-sort attribute="producer.name" table-context="tableContext" /></th>
-                <th>Nom <icon-sort attribute="name" table-context="tableContext" /></th>
-                <th>Millésime <icon-sort attribute="vintage" table-context="tableContext" /></th>
-                <th>Couleur <icon-sort attribute="color" table-context="tableContext" /></th>
-                <th>Type <icon-sort attribute="type" table-context="tableContext" /></th>
-              </tr>
-            </tfoot>
-          </table>
+          <div class="table-responsive">
+            <table class="table table-bordered table-striped table-condensed">
+              <thead>
+                <tr>
+                  <th>Pays <icon-sort attribute="appellation.region.country.name" table-context="tableContext" /></th>
+                  <th>Région <icon-sort attribute="appellation.region.name" table-context="tableContext" /></th>
+                  <th>Appellation <icon-sort attribute="appellation.name" table-context="tableContext" /></th>
+                  <th>Producteur <icon-sort attribute="producer.name" table-context="tableContext" /></th>
+                  <th>Nom <icon-sort attribute="name" table-context="tableContext" /></th>
+                  <th>Millésime <icon-sort attribute="vintage" table-context="tableContext" /></th>
+                  <th>Couleur <icon-sort attribute="color" table-context="tableContext" /></th>
+                  <th>Type <icon-sort attribute="type" table-context="tableContext" /></th>
+                </tr>
+              </thead>
+              <tbody ng-controller="LoadingCtrl" >
+                <tr ng-repeat="wine in wines">
+                  <td>{{wine.appellation.region.country.name}}</td>
+                  <td>{{wine.appellation.region.name}}</td>
+                  <td>{{wine.appellation.name}}</td>
+                  <td>{{wine.producer.name}}</td>
+                  <td>{{wine.name}}</td>
+                  <td>{{wine.vintage}}</td>
+                  <td>{{wine.color | wineColorRenderer}}</td>
+                  <td>{{wine.type | wineTypeRenderer}}</td>
+                </tr>
+                <tr ng-if="!loading && wines.length == 0">
+                  <td colspan="8" class="text-center">Aucun vin ne correspond aux filtres</td>
+                </tr>
+              </tbody>
+              <tfoot>
+                <tr>
+                  <th>Pays <icon-sort attribute="appellation.region.country.name" table-context="tableContext" /></th>
+                  <th>Région <icon-sort attribute="appellation.region.name" table-context="tableContext" /></th>
+                  <th>Appellation <icon-sort attribute="appellation.name" table-context="tableContext" /></th>
+                  <th>Producteur <icon-sort attribute="producer.name" table-context="tableContext" /></th>
+                  <th>Nom <icon-sort attribute="name" table-context="tableContext" /></th>
+                  <th>Millésime <icon-sort attribute="vintage" table-context="tableContext" /></th>
+                  <th>Couleur <icon-sort attribute="color" table-context="tableContext" /></th>
+                  <th>Type <icon-sort attribute="type" table-context="tableContext" /></th>
+                </tr>
+              </tfoot>
+            </table>
+          </div>
         </paginated>
       </fieldset>
     </div>

@@ -8,38 +8,40 @@
     <header class="page-header"><h1>Stacks</h1></header>
     <data-error-div errors="errors"></data-error-div>
     <paginated options="tableOptions" items="items" table-context="tableContext">
-      <table class="table table-bordered table-striped table-condensed">
-        <thead>
-          <tr>
-            <th>HashCode</th>
-            <th>Stack</th>
-            <th class="stackCount">Nombre <icon-sort attribute="count" table-context="tableContext" /></th>
-            <th class="actions"><a href ng-click="deleteAll()" class="btn btn-danger btn-xs" alt="Purger les stacks"><i class="fa fa-minus-circle"></i></a></th>
-          </tr>
-        </thead>
-        <tbody ng-controller="LoadingCtrl">
-          <tr ng-repeat="item in items">
-            <td>{{item.hashCode}}</td>
-            <td class="stack">{{item.stack | firstLine}}</td>
-            <td class="stackCount">{{item.count}}</td>
-            <td>
-              <a href ng-click="edit(item.id)" class="btn btn-default btn-xs"><i class="fa fa-pencil"></i></a>
-              <a href ng-click="delete(item.id)" class="btn btn-danger btn-xs"><i class="fa fa-minus-circle"></i></a>
-            </td>
-          </tr>
-          <tr ng-if="!loading && items.length == 0">
-            <td colspan="4" class="text-center">Aucune stack.</td>
-          </tr>
-        </tbody>
-        <tfoot>
-          <tr>
-            <th>HashCode</th>
-            <th>Stack</th>
-            <th class="stackCount">Nombre <icon-sort attribute="count" table-context="tableContext" /></th>
-            <th class="actions"><a href ng-click="deleteAll()" class="btn btn-danger btn-xs" alt="Delete all stacks"><i class="fa fa-minus-circle"></i></a></th>
-          </tr>
-        </tfoot>
-      </table>
+      <div class="table-responsive">
+        <table class="table table-bordered table-striped table-condensed">
+          <thead>
+            <tr>
+              <th>HashCode</th>
+              <th>Stack</th>
+              <th class="stackCount">Nombre <icon-sort attribute="count" table-context="tableContext" /></th>
+              <th class="actions"><a href ng-click="deleteAll()" class="btn btn-danger btn-xs" alt="Purger les stacks"><i class="fa fa-minus-circle"></i></a></th>
+            </tr>
+          </thead>
+          <tbody ng-controller="LoadingCtrl">
+            <tr ng-repeat="item in items">
+              <td>{{item.hashCode}}</td>
+              <td class="stack">{{item.stack | firstLine}}</td>
+              <td class="stackCount">{{item.count}}</td>
+              <td>
+                <a href ng-click="edit(item.id)" class="btn btn-default btn-xs"><i class="fa fa-pencil"></i></a>
+                <a href ng-click="delete(item.id)" class="btn btn-danger btn-xs"><i class="fa fa-minus-circle"></i></a>
+              </td>
+            </tr>
+            <tr ng-if="!loading && items.length == 0">
+              <td colspan="4" class="text-center">Aucune stack.</td>
+            </tr>
+          </tbody>
+          <tfoot>
+            <tr>
+              <th>HashCode</th>
+              <th>Stack</th>
+              <th class="stackCount">Nombre <icon-sort attribute="count" table-context="tableContext" /></th>
+              <th class="actions"><a href ng-click="deleteAll()" class="btn btn-danger btn-xs" alt="Delete all stacks"><i class="fa fa-minus-circle"></i></a></th>
+            </tr>
+          </tfoot>
+        </table>
+      </div>
     </paginated>
   </div>
 </div>
