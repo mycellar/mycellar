@@ -18,6 +18,8 @@
  */
 package fr.mycellar.domain.stock;
 
+import java.util.Objects;
+
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Embedded;
@@ -30,7 +32,6 @@ import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 import javax.persistence.UniqueConstraint;
 
-import org.apache.commons.lang3.ObjectUtils;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 
 import fr.mycellar.domain.shared.IdentifiedEntity;
@@ -92,7 +93,7 @@ public class Stock extends IdentifiedEntity {
     @Override
     protected boolean dataEquals(IdentifiedEntity other) {
         Stock stock = (Stock) other;
-        return ObjectUtils.equals(getBottle(), stock.getBottle());
+        return Objects.equals(getBottle(), stock.getBottle());
     }
 
     @Override

@@ -18,6 +18,8 @@
  */
 package fr.mycellar.domain.stack;
 
+import java.util.Objects;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -26,7 +28,6 @@ import javax.persistence.Lob;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
-import org.apache.commons.lang3.ObjectUtils;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 
 import fr.mycellar.domain.shared.IdentifiedEntity;
@@ -97,7 +98,7 @@ public class Stack extends IdentifiedEntity {
     @Override
     protected boolean dataEquals(IdentifiedEntity other) {
         Stack stack = (Stack) other;
-        return ObjectUtils.equals(getStack(), stack.getStack());
+        return Objects.equals(getStack(), stack.getStack());
     }
 
     @Override

@@ -18,6 +18,8 @@
  */
 package fr.mycellar.domain.image;
 
+import java.util.Objects;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -25,7 +27,6 @@ import javax.persistence.Id;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
-import org.apache.commons.lang3.ObjectUtils;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 
 import fr.mycellar.domain.shared.IdentifiedEntity;
@@ -115,9 +116,9 @@ public class Image extends NamedEntity {
         Image image = (Image) other;
         boolean result;
         if ((getContent() == null) || (image.getContent() == null)) {
-            result = ObjectUtils.equals(getName(), image.getName()) && ObjectUtils.equals(getContentType(), image.getContentType());
+            result = Objects.equals(getName(), image.getName()) && Objects.equals(getContentType(), image.getContentType());
         } else {
-            result = ObjectUtils.equals(getContent(), image.getContent());
+            result = Objects.equals(getContent(), image.getContent());
         }
         return result;
     }

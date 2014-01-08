@@ -18,6 +18,8 @@
  */
 package fr.mycellar.domain.contact;
 
+import java.util.Objects;
+
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -30,7 +32,6 @@ import javax.persistence.Table;
 import javax.persistence.UniqueConstraint;
 import javax.validation.Valid;
 
-import org.apache.commons.lang3.ObjectUtils;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.hibernate.annotations.Type;
 import org.hibernate.search.annotations.Field;
@@ -125,7 +126,7 @@ public class Contact extends IdentifiedEntity {
     @Override
     protected boolean dataEquals(IdentifiedEntity other) {
         Contact contact = (Contact) other;
-        return ObjectUtils.equals(producer, contact.producer) && ObjectUtils.equals(current, contact.current);
+        return Objects.equals(producer, contact.producer) && Objects.equals(current, contact.current);
     }
 
     @Override

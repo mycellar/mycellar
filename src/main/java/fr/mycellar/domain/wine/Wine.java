@@ -21,6 +21,7 @@ package fr.mycellar.domain.wine;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Set;
 
 import javax.persistence.CascadeType;
@@ -44,7 +45,6 @@ import javax.validation.Valid;
 import javax.validation.constraints.Pattern;
 import javax.xml.bind.annotation.XmlTransient;
 
-import org.apache.commons.lang3.ObjectUtils;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.hibernate.search.annotations.Indexed;
 
@@ -215,8 +215,8 @@ public class Wine extends NamedEntity {
     @Override
     protected boolean dataEquals(IdentifiedEntity other) {
         Wine wine = (Wine) other;
-        return ObjectUtils.equals(getName(), wine.getName()) && ObjectUtils.equals(getType(), wine.getType()) && ObjectUtils.equals(getVintage(), wine.getVintage())
-                && ObjectUtils.equals(getColor(), wine.getColor()) && ObjectUtils.equals(getAppellation(), wine.getAppellation()) && ObjectUtils.equals(getProducer(), wine.getProducer());
+        return Objects.equals(getName(), wine.getName()) && Objects.equals(getType(), wine.getType()) && Objects.equals(getVintage(), wine.getVintage()) && Objects.equals(getColor(), wine.getColor())
+                && Objects.equals(getAppellation(), wine.getAppellation()) && Objects.equals(getProducer(), wine.getProducer());
     }
 
     @Override

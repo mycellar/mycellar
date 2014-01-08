@@ -19,6 +19,7 @@
 package fr.mycellar.domain.user;
 
 import java.util.HashSet;
+import java.util.Objects;
 import java.util.Set;
 
 import javax.persistence.Column;
@@ -33,7 +34,6 @@ import javax.persistence.Table;
 import javax.persistence.UniqueConstraint;
 import javax.xml.bind.annotation.XmlTransient;
 
-import org.apache.commons.lang3.ObjectUtils;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.hibernate.search.annotations.Field;
 import org.hibernate.search.annotations.Indexed;
@@ -152,7 +152,7 @@ public class User extends IdentifiedEntity {
     @Override
     protected boolean dataEquals(IdentifiedEntity other) {
         User user = (User) other;
-        return ObjectUtils.equals(getEmail(), user.getEmail());
+        return Objects.equals(getEmail(), user.getEmail());
     }
 
     @Override

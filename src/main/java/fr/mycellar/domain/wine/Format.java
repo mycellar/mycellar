@@ -19,6 +19,7 @@
 package fr.mycellar.domain.wine;
 
 import java.util.HashSet;
+import java.util.Objects;
 import java.util.Set;
 
 import javax.persistence.AttributeOverride;
@@ -31,7 +32,6 @@ import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 import javax.xml.bind.annotation.XmlTransient;
 
-import org.apache.commons.lang3.ObjectUtils;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.hibernate.search.annotations.Indexed;
 
@@ -90,7 +90,7 @@ public class Format extends NamedEntity {
     @Override
     protected boolean dataEquals(IdentifiedEntity other) {
         Format format = (Format) other;
-        return ObjectUtils.equals(getName(), format.getName());
+        return Objects.equals(getName(), format.getName());
     }
 
     @Override

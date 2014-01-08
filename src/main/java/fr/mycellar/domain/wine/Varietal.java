@@ -18,6 +18,8 @@
  */
 package fr.mycellar.domain.wine;
 
+import java.util.Objects;
+
 import javax.persistence.AttributeOverride;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -28,7 +30,6 @@ import javax.persistence.Id;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
-import org.apache.commons.lang3.ObjectUtils;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 
 import fr.mycellar.domain.shared.IdentifiedEntity;
@@ -107,7 +108,7 @@ public class Varietal extends NamedEntity {
     @Override
     protected boolean dataEquals(IdentifiedEntity other) {
         Varietal varietal = (Varietal) other;
-        return ObjectUtils.equals(getName(), varietal.getName());
+        return Objects.equals(getName(), varietal.getName());
     }
 
     @Override

@@ -20,6 +20,7 @@ package fr.mycellar.domain.booking;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Objects;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -34,8 +35,6 @@ import javax.persistence.MapKeyJoinColumn;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 import javax.persistence.UniqueConstraint;
-
-import org.apache.commons.lang3.ObjectUtils;
 
 import fr.mycellar.domain.shared.IdentifiedEntity;
 import fr.mycellar.domain.user.User;
@@ -109,7 +108,7 @@ public class Booking extends IdentifiedEntity {
     @Override
     protected boolean dataEquals(IdentifiedEntity other) {
         Booking booking = (Booking) other;
-        return ObjectUtils.equals(getCustomer(), booking.getCustomer()) && ObjectUtils.equals(getBookingEvent(), booking.getBookingEvent());
+        return Objects.equals(getCustomer(), booking.getCustomer()) && Objects.equals(getBookingEvent(), booking.getBookingEvent());
     }
 
     @Override

@@ -20,6 +20,7 @@ package fr.mycellar.domain.stock;
 
 import java.util.Collections;
 import java.util.HashSet;
+import java.util.Objects;
 import java.util.Set;
 
 import javax.persistence.CascadeType;
@@ -33,7 +34,6 @@ import javax.persistence.OneToMany;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
-import org.apache.commons.lang3.ObjectUtils;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.hibernate.search.annotations.Indexed;
 
@@ -94,7 +94,7 @@ public class Cellar extends NamedEntity {
     @Override
     protected boolean dataEquals(IdentifiedEntity other) {
         Cellar cellar = (Cellar) other;
-        return ObjectUtils.equals(getName(), cellar.getName()) && ObjectUtils.equals(getOwner(), cellar.getOwner());
+        return Objects.equals(getName(), cellar.getName()) && Objects.equals(getOwner(), cellar.getOwner());
     }
 
     @Override

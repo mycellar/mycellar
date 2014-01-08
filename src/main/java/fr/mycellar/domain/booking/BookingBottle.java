@@ -18,6 +18,8 @@
  */
 package fr.mycellar.domain.booking;
 
+import java.util.Objects;
+
 import javax.persistence.Column;
 import javax.persistence.Embedded;
 import javax.persistence.Entity;
@@ -30,8 +32,6 @@ import javax.persistence.Table;
 import javax.persistence.UniqueConstraint;
 import javax.validation.Valid;
 import javax.validation.constraints.Pattern;
-
-import org.apache.commons.lang3.ObjectUtils;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
 
@@ -151,7 +151,7 @@ public class BookingBottle extends IdentifiedEntity {
     @Override
     protected boolean dataEquals(IdentifiedEntity other) {
         BookingBottle bookingBottle = (BookingBottle) other;
-        return ObjectUtils.equals(getBookingEvent(), bookingBottle.getBookingEvent()) && ObjectUtils.equals(getBottle(), bookingBottle.getBottle());
+        return Objects.equals(getBookingEvent(), bookingBottle.getBookingEvent()) && Objects.equals(getBottle(), bookingBottle.getBottle());
     }
 
     @Override

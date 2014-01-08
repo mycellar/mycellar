@@ -18,11 +18,12 @@
  */
 package fr.mycellar.domain.stock;
 
+import java.util.Objects;
+
 import javax.persistence.Column;
 import javax.persistence.DiscriminatorValue;
 import javax.persistence.Entity;
 
-import org.apache.commons.lang3.ObjectUtils;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 
 import fr.mycellar.domain.shared.IdentifiedEntity;
@@ -81,9 +82,9 @@ public class Input extends Movement {
     @Override
     protected boolean dataEquals(IdentifiedEntity other) {
         Input input = (Input) other;
-        return ObjectUtils.equals(getDate(), input.getDate()) && ObjectUtils.equals(getCellar(), input.getCellar()) && ObjectUtils.equals(getCharges(), input.getCharges())
-                && ObjectUtils.equals(getNumber(), input.getNumber()) && ObjectUtils.equals(getPrice(), input.getPrice()) && ObjectUtils.equals(getSource(), input.getSource())
-                && ObjectUtils.equals(getBottle(), input.getBottle());
+        return Objects.equals(getDate(), input.getDate()) && Objects.equals(getCellar(), input.getCellar()) && Objects.equals(getCharges(), input.getCharges())
+                && Objects.equals(getNumber(), input.getNumber()) && Objects.equals(getPrice(), input.getPrice()) && Objects.equals(getSource(), input.getSource())
+                && Objects.equals(getBottle(), input.getBottle());
     }
 
     @Override

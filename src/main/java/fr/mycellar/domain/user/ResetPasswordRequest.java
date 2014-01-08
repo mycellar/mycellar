@@ -18,6 +18,8 @@
  */
 package fr.mycellar.domain.user;
 
+import java.util.Objects;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -27,7 +29,6 @@ import javax.persistence.ManyToOne;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
-import org.apache.commons.lang3.ObjectUtils;
 import org.hibernate.annotations.Type;
 import org.joda.time.LocalDateTime;
 
@@ -100,7 +101,7 @@ public class ResetPasswordRequest extends IdentifiedEntity {
     @Override
     protected boolean dataEquals(IdentifiedEntity other) {
         ResetPasswordRequest resetPasswordRequest = (ResetPasswordRequest) other;
-        return ObjectUtils.equals(key, resetPasswordRequest.getKey());
+        return Objects.equals(key, resetPasswordRequest.getKey());
     }
 
     @Override

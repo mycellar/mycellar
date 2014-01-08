@@ -19,6 +19,7 @@
 package fr.mycellar.domain.booking;
 
 import java.util.HashSet;
+import java.util.Objects;
 import java.util.Set;
 import java.util.SortedSet;
 import java.util.TreeSet;
@@ -37,7 +38,6 @@ import javax.persistence.UniqueConstraint;
 import javax.validation.Valid;
 import javax.xml.bind.annotation.XmlTransient;
 
-import org.apache.commons.lang3.ObjectUtils;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.hibernate.annotations.Sort;
 import org.hibernate.annotations.SortType;
@@ -135,7 +135,7 @@ public class BookingEvent extends NamedEntity {
     @Override
     protected boolean dataEquals(IdentifiedEntity other) {
         BookingEvent bookingEvent = (BookingEvent) other;
-        return ObjectUtils.equals(getStart(), bookingEvent.getStart()) && ObjectUtils.equals(getEnd(), bookingEvent.getEnd()) && ObjectUtils.equals(getName(), bookingEvent.getName());
+        return Objects.equals(getStart(), bookingEvent.getStart()) && Objects.equals(getEnd(), bookingEvent.getEnd()) && Objects.equals(getName(), bookingEvent.getName());
     }
 
     @Override

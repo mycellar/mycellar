@@ -18,6 +18,8 @@
  */
 package fr.mycellar.domain.stock;
 
+import java.util.Objects;
+
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -31,7 +33,6 @@ import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 import javax.persistence.UniqueConstraint;
 
-import org.apache.commons.lang3.ObjectUtils;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.hibernate.validator.constraints.Email;
 
@@ -108,7 +109,7 @@ public class CellarShare extends IdentifiedEntity {
     @Override
     protected boolean dataEquals(IdentifiedEntity other) {
         CellarShare cellarShare = (CellarShare) other;
-        return ObjectUtils.equals(getEmail(), cellarShare.getEmail()) && ObjectUtils.equals(getAccessRight(), cellarShare.getAccessRight()) && ObjectUtils.equals(getCellar(), cellarShare.getCellar());
+        return Objects.equals(getEmail(), cellarShare.getEmail()) && Objects.equals(getAccessRight(), cellarShare.getAccessRight()) && Objects.equals(getCellar(), cellarShare.getCellar());
     }
 
     @Override

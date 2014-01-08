@@ -19,6 +19,7 @@
 package fr.mycellar.domain.wine;
 
 import java.util.HashSet;
+import java.util.Objects;
 import java.util.Set;
 
 import javax.persistence.AttributeOverride;
@@ -33,7 +34,6 @@ import javax.persistence.Table;
 import javax.validation.constraints.Pattern;
 import javax.xml.bind.annotation.XmlTransient;
 
-import org.apache.commons.lang3.ObjectUtils;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.hibernate.search.annotations.Indexed;
 
@@ -173,7 +173,7 @@ public class Producer extends NamedEntity {
     @Override
     protected boolean dataEquals(IdentifiedEntity other) {
         Producer producer = (Producer) other;
-        return ObjectUtils.equals(getName(), producer.getName());
+        return Objects.equals(getName(), producer.getName());
     }
 
     @Override

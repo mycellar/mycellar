@@ -18,6 +18,8 @@
  */
 package fr.mycellar.domain.admin;
 
+import java.util.Objects;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
@@ -27,7 +29,6 @@ import javax.persistence.Id;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
-import org.apache.commons.lang3.ObjectUtils;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 
 import fr.mycellar.domain.shared.IdentifiedEntity;
@@ -84,7 +85,7 @@ public class Configuration extends IdentifiedEntity {
     @Override
     protected boolean dataEquals(IdentifiedEntity other) {
         Configuration configuration = (Configuration) other;
-        return ObjectUtils.equals(getKey(), configuration.getKey());
+        return Objects.equals(getKey(), configuration.getKey());
     }
 
     @Override
