@@ -9,7 +9,7 @@ angular.module('mycellar.controllers.admin.domain.wine.appellations', [
 ], [
   'adminDomainServiceProvider', 
   function(adminDomainServiceProvider){
-    adminDomainServiceProvider.forDomain('wine', 'Appellation', 'Appellations', 'wine', 'Appellations')
+    adminDomainServiceProvider.forDomain('wine', 'Appellation', 'Appellations', 'Vin', 'Appellations')
       .whenCrud({}, {
         appellation: ['$route', 'Appellations', function ($route, Appellations) {
           var id = $route.current.params.id;

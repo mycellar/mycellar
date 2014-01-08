@@ -9,7 +9,7 @@ angular.module('mycellar.controllers.admin.domain.stock.cellars', [
 ], [
   'adminDomainServiceProvider',
   function(adminDomainServiceProvider){
-    adminDomainServiceProvider.forDomain('stock', 'Cellar', 'Cellars', 'stock', 'Cellars')
+    adminDomainServiceProvider.forDomain('stock', 'Cellar', 'Cellars', 'Stockage', 'Caves')
       .whenCrud({}, {
         cellar: ['$route', 'Cellars', function ($route, Cellars) {
           var id = $route.current.params.id;

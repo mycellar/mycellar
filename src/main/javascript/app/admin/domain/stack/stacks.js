@@ -9,7 +9,7 @@ angular.module('mycellar.controllers.admin.domain.stack.stacks', [
 ], [
   'adminDomainServiceProvider', 
   function(adminDomainServiceProvider){
-    adminDomainServiceProvider.forDomain('stack', 'Stack', 'Stacks', 'stack', 'Stacks')
+    adminDomainServiceProvider.forDomain('stack', 'Stack', 'Stacks', 'Stack', 'Stacks')
       .whenCrud({}, {
         stack: ['$route', 'Stacks', function ($route, Stacks) {
           return Stacks.getById($route.current.params.id);

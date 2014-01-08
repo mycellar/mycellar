@@ -9,7 +9,7 @@ angular.module('mycellar.controllers.admin.domain.wine.formats', [
 ], [
   'adminDomainServiceProvider', 
   function(adminDomainServiceProvider){
-    adminDomainServiceProvider.forDomain('wine', 'Format', 'Formats', 'wine', 'Formats')
+    adminDomainServiceProvider.forDomain('wine', 'Format', 'Formats', 'Vin', 'Formats')
       .whenCrud({}, {
         format: ['$route', 'Formats', function ($route, Formats) {
           var id = $route.current.params.id;

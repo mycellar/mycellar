@@ -110,10 +110,10 @@ angular.module('mycellar.services.admin-domain').provider('adminDomainService', 
         });
         if (menuGroup == null) {
           menu.push({label: groupLabel, menus: [{label: resourcesLabel, route: resourcesRoute}]});
-          // TODO sort menu
+          menu.sort(function(a,b) { return a.label.toUpperCase().localeCompare(b.label.toUpperCase()) });
         } else {
           menuGroup.menus.push({label: resourcesLabel, route: resourcesRoute});
-          // TODO sort sub-menu
+          menuGroup.menus.sort(function(a,b) { return a.label.toUpperCase().localeCompare(b.label.toUpperCase()) });
         }
         if (resourcePath[group] == undefined) {
           resourcePath[group] = [];

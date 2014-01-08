@@ -9,7 +9,7 @@ angular.module('mycellar.controllers.admin.domain.contact.contacts', [
 ], [
   'adminDomainServiceProvider', 
   function(adminDomainServiceProvider){
-    adminDomainServiceProvider.forDomain('contact', 'Contact', 'Contacts', 'contact', 'Contacts')
+    adminDomainServiceProvider.forDomain('contact', 'Contact', 'Contacts', 'Contact', 'Contacts')
       .whenCrud({}, {
         contact: ['$route', 'Contacts', function ($route, Contacts) {
           var id = $route.current.params.id;

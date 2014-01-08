@@ -9,7 +9,7 @@ angular.module('mycellar.controllers.admin.domain.booking.bookingEvents', [
 ], [
   'adminDomainServiceProvider', 
   function(adminDomainServiceProvider){
-    adminDomainServiceProvider.forDomain('booking', 'BookingEvent', 'BookingEvents', 'booking', 'Booking Events')
+    adminDomainServiceProvider.forDomain('booking', 'BookingEvent', 'BookingEvents', 'Réservation', 'Campagnes de réservation')
       .whenCrud({}, {
         bookingEvent: ['$route', 'BookingEvents', function ($route, BookingEvents) {
           var id = $route.current.params.id;

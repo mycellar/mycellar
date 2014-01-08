@@ -8,7 +8,7 @@ angular.module('mycellar.controllers.admin.domain.admin.configurations', [
 ], [
   'adminDomainServiceProvider', 
   function(adminDomainServiceProvider){
-    adminDomainServiceProvider.forDomain('admin', 'Configuration', 'Configurations', 'admin', 'Configurations')
+    adminDomainServiceProvider.forDomain('admin', 'Configuration', 'Configurations', 'Administration', 'Configurations')
       .whenCrud({}, {
         configuration: ['$route', 'Configurations', function ($route, Configurations) {
           return Configurations.getById($route.current.params.id);
