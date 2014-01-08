@@ -13,29 +13,37 @@
     <to last="true">-</to>
   </rule>
   <rule>
+    <name>JS</name>
     <note>To throw an error for wrong js.</note>
     <from>^/js/(.*)</from>
     <to last="true">-</to>
   </rule>
   <rule>
+    <name>CSS</name>
     <note>To throw an error for wrong css.</note>
     <from>^/css/(.*)</from>
     <to last="true">-</to>
   </rule>
   <rule>
+    <name>FONT</name>
     <note>To throw an error for wrong font.</note>
     <from>^/font/(.*)</from>
     <to last="true">-</to>
   </rule>
   <rule>
+    <name>partials</name>
     <note>For angular to throw a 404 if partial is not present.</note>
     <from>^/partials/(.*)</from>
     <to last="true">-</to>
   </rule>
-
   <rule>
-    <condition type="request-filename" operator="notdir"></condition>
-    <condition type="request-filename" operator="notfile"></condition>
+    <name>index</name>
+    <from>^/index.html</from>
+    <to last="true">-</to>
+  </rule>
+  <rule>
+    <name>default</name>
+    <note>Redirect to index.html.</note>
     <from>^/(.*)</from>
     <to>/index.html</to>
   </rule>
