@@ -27,7 +27,7 @@
   <rule>
     <name>FONT</name>
     <note>To throw an error for wrong font.</note>
-    <from>^/font/(.*)</from>
+    <from>^/fonts/(.*)</from>
     <to last="true">-</to>
   </rule>
   <rule>
