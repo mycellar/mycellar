@@ -31,6 +31,7 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 
 import org.slf4j.LoggerFactory;
+import org.springframework.security.access.prepost.PreAuthorize;
 
 import ch.qos.logback.classic.Level;
 import ch.qos.logback.classic.Logger;
@@ -48,6 +49,7 @@ public class LoggerWebService {
     @POST
     @Consumes(MediaType.APPLICATION_JSON)
     @Path("changeLevel")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     public void changeLevel(LoggerDto loggerDto) throws BusinessException {
         LoggerContext loggerContext = (LoggerContext) LoggerFactory.getILoggerFactory();
         loggerContext.getLogger(loggerDto.getName()).setLevel(Level.toLevel(loggerDto.getLevel(), Level.INFO));
@@ -56,6 +58,7 @@ public class LoggerWebService {
     @GET
     @Produces(MediaType.APPLICATION_JSON)
     @Path("loggers")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     public List<LoggerDto> getLoggers() {
         LoggerContext context = (LoggerContext) LoggerFactory.getILoggerFactory();
 
