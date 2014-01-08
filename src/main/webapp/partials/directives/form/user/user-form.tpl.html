@@ -1,0 +1,29 @@
+<fieldset>
+  <legend>Détails</legend>
+  <div class="form-group" ng-class="{'has-error': form.lastname.$invalid}">
+    <label class="control-label" for="lastname">Nom de famille</label>
+    <input class="form-control" id="lastname" name="lastname" type="text" ng-model="user.lastname" placeholder="Nom de famille" />
+    <error-ctrl ctrl="form.lastname"></error-ctrl>
+  </div>
+  <div class="form-group" ng-class="{'has-error': form.firstname.$invalid}">
+    <label class="control-label" for="firstname">Prénom</label>
+    <input class="form-control" id="firstname" name="firstname" type="text" ng-model="user.firstname" placeholder="Prénom" />
+    <error-ctrl ctrl="form.firstname"></error-ctrl>
+  </div>
+  <div class="form-group" ng-class="{'has-error': form.email.$invalid}">
+    <label class="control-label" for="email">Email</label>
+    <input class="form-control" id="email" name="email" type="email" ng-model="user.email" placeholder="Email" />
+    <error-ctrl ctrl="form.email"></error-ctrl>
+  </div>
+  <div class="form-group" ng-class="{'has-error': form.profile.$invalid}">
+    <label class="control-label" for="profile">Profile</label>
+    <select class="form-control" id="profile" name="profile" ng-model="user.profile">
+      <option label="Basic">BASIC</option>
+      <option label="Gestion de cave">CELLAR</option>
+      <option label="Réservation">BOOKING</option>
+      <option label="Complet">MYCELLAR</option>
+      <option label="Administrateur">ADMIN</option>
+    </select>
+    <error-ctrl ctrl="form.profile"></error-ctrl>
+  </div>
+</fieldset>

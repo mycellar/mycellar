@@ -1,21 +1,17 @@
 angular.module('mycellar.controllers.admin.domain.booking.booking', [
   'mycellar.resources.booking.bookings', 
-  'mycellar.resources.booking.bookingEvents',
-  'mycellar.resources.user.users',
   'mycellar.services.admin-domain',
   'mycellar.directives.form',
   'mycellar.directives.admin-domain-nav'
 ]);
 
 angular.module('mycellar.controllers.admin.domain.booking.booking').controller('AdminDomainBookingController', [
-  '$scope', 'booking', 'BookingEvents', 'adminDomainService', 'Users',
-  function ($scope, booking, BookingEvents, adminDomainService, Users) {
+  '$scope', 'booking', 'adminDomainService',
+  function ($scope, booking, adminDomainService) {
     $scope.booking = booking;
     
     angular.extend($scope, adminDomainService.editMethods('booking', 'Booking', booking, 'form'));
     
-    $scope.bookingEvents = BookingEvents.nameLike;
-    $scope.customers = Users.like;
     $scope.total = 0;
     $scope.$watch('booking.quantities', function (value) {
       if ($scope.booking.quantities != undefined) {

@@ -10,21 +10,7 @@
       <error-form form="form"></error-form>
       <fieldset>
         <legend>Détails</legend>
-        <div class="form-group" ng-class="{'has-error': form.producer.$invalid}">
-          <label class="control-label" for="producer">Producteur</label>
-          <input 
-              id="producer"
-              name="producer"
-              type="text"
-              class="form-control"
-              ng-model="contact.producer"
-              placeholder="Producteur"
-              typeahead="producer as producer.name for producer in producers($viewValue)"
-              typeahead-editable="false"
-              typeahead-min-length="2"
-              typeahead-wait-ms="200" />
-          <error-ctrl ctrl="form.producer"></error-ctrl>
-        </div>
+        <producer form="form" producer="contact.producer"></producer>
         <div class="form-group" ng-class="{'has-error': form.current.$invalid}">
           <label class="control-label" for="current">Date du contact</label>
           <input class="form-control" id="current" name="current" type="date" ng-model="contact.current" placeholder="Date du contact" />

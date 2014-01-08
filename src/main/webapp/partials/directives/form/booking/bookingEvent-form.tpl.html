@@ -1,0 +1,105 @@
+<div>
+  <fieldset>
+    <legend>Détails</legend>
+    <div class="form-group" ng-class="{'has-error': form.name.$invalid}">
+      <label class="control-label" for="name">Nom</label>
+      <input class="form-control" id="name" name="name" type="text" ng-model="bookingEvent.name" placeholder="Nom" />
+      <error-ctrl ctrl="form.name"></error-ctrl>
+    </div>
+    <div class="form-group" ng-class="{'has-error': form.start.$invalid}">
+      <label class="control-label" for="start">Début</label>
+      <input class="form-control" id="start" name="start" type="date" ng-model="bookingEvent.start" placeholder="Début" />
+      <error-ctrl ctrl="form.start"></error-ctrl>
+    </div>
+    <div class="form-group" ng-class="{'has-error': form.end.$invalid}">
+      <label class="control-label" for="end">Fin</label>
+      <input class="form-control" id="end" name="end" type="date" ng-model="bookingEvent.end" placeholder="Fin" />
+      <error-ctrl ctrl="form.end"></error-ctrl>
+    </div>
+  </fieldset>
+  <fieldset>
+    <legend>Bouteilles</legend>
+    <div class="table-responsive">
+      <table class="table table-bordered table-striped table-condensed">
+        <thead>
+          <tr>
+            <th>Ordre</th>
+            <th>Producteur</th>
+            <th>Appellation</th>
+            <th>Nom</th>
+            <th>Millésime</th>
+            <th>Couleur</th>
+            <th>Type</th>
+            <th>Format</th>
+            <th>Max</th>
+            <th>Prix</th>
+            <th>
+              <a href ng-click="addBookingBottle()" class="btn btn-default btn-xs"><i class="fa fa-plus-circle"></i></a>
+            </th>
+          </tr>
+        </thead>
+        <tbody ng-controller="LoadingCtrl">
+          <tr ng-repeat="bookingBottle in bookingEvent.bottles">
+            <td>{{bookingBottle.position}}</td>
+            <td>{{bookingBottle.bottle.wine.producer.name}}</td>
+            <td>{{bookingBottle.bottle.wine.appellation.name}}</td>
+            <td>{{bookingBottle.bottle.wine.name}}</td>
+            <td>{{bookingBottle.bottle.wine.vintage}}</td>
+            <td>{{bookingBottle.bottle.wine.color | wineColorRenderer}}</td>
+            <td>{{bookingBottle.bottle.wine.type | wineTypeRenderer}}</td>
+            <td>{{bookingBottle.bottle.format | formatRenderer}}</td>
+            <td>{{bookingBottle.max}}</td>
+            <td>{{bookingBottle.price}}</td>
+            <td>
+              <a href ng-click="edit(bookingBottle)" class="btn btn-default btn-xs"><i class="fa fa-pencil"></i></a>
+              <a href ng-click="moveUp(bookingBottle)" class="btn btn-default btn-xs" ng-disabled="bookingBottle.position == 0"><i class="fa fa-arrow-up"></i></a>
+              <a href ng-click="moveDown(bookingBottle)" class="btn btn-default btn-xs" ng-disabled="bookingBottle.position == (bookingEvent.bottles.length - 1)"><i class="fa fa-arrow-down"></i></a>
+              <a href ng-click="removeBookingBottle(bookingBottle)" class="btn btn-danger btn-xs"><i class="fa fa-minus-circle"></i></a>
+            </td>
+          </tr>
+          <tr ng-if="!loading && items.length == 0">
+            <td colspan="11" class="text-center">Aucune bouteille dans la campagne.</td>
+          </tr>
+        </tbody>
+        <tfoot>
+          <tr>
+            <th>Ordre</th>
+            <th>Producteur</th>
+            <th>Appellation</th>
+            <th>Nom</th>
+            <th>Millésime</th>
+            <th>Couleur</th>
+            <th>Type</th>
+            <th>Format</th>
+            <th>Max</th>
+            <th>Prix</th>
+            <th>
+              <a href ng-click="addBookingBottle()" class="btn btn-default btn-xs"><i class="fa fa-plus-circle"></i></a>
+            </th>
+          </tr>
+        </tfoot>
+      </table>
+    </div>
+  </fieldset>
+  <fieldset ng-if="bookingBottle != null">
+    <legend>{{isNew() ? 'Ajouter une bouteille à la campagne' : 'Modifier une bouteille de la campagne' }}</legend>
+    <wine form="form" wine="bookingBottle.bottle.wine"></wine>
+    <format form="form" format="bookingBottle.bottle.format"></format>
+    <div class="form-group" ng-class="{'has-error': form.price.$invalid}">
+      <label class="control-label" for="price">Prix</label>
+      <input class="form-control" id="price" name="price" type="number" ng-model="bookingBottle.price" placeholder="Prix" />
+      <error-ctrl ctrl="form.price"></error-ctrl>
+    </div>
+    <div class="form-group" ng-class="{'has-error': form.max.$invalid}">
+      <label class="control-label" for="max">Nombre maximum de bouteilles par client</label>
+      <input class="form-control" id="max" name="max" type="number" ng-model="bookingBottle.max" placeholder="Nombre maximum de bouteilles par client" />
+      <error-ctrl ctrl="form.max"></error-ctrl>
+    </div>
+    <div class="form-group" ng-class="{'has-error': form.url.$invalid}">
+      <label class="control-label" for="url">URL de la fiche sur cave-et-terroirs.fr</label>
+      <input class="form-control" id="url" name="url" type="text" ng-model="bookingBottle.url" placeholder="URL de la fiche sur cave-et-terroirs.fr" />
+      <error-ctrl ctrl="form.url"></error-ctrl>
+    </div>
+    <input type="submit" class="btn btn-default" value="{{isNew() ? 'Ajouter' : 'Modifier'}}" ng-click="addBottle()" />
+  </fieldset>
+</div>

@@ -1,0 +1,27 @@
+<div class="form-group" ng-class="{'has-error': form.user.$invalid}">
+  <label class="control-label" for="user">{{label}}{{postLabel}}</label>
+  <div class="input-group" ng-show="!showSub">
+    <input 
+      id="user"
+      name="user"
+      type="text"
+      class="form-control"
+      ng-model="user"
+      placeholder="{{label}}{{postLabel}}"
+      typeahead="user as renderUser(user) for user in users($viewValue)"
+      typeahead-editable="false"
+      typeahead-min-length="2"
+      typeahead-wait-ms="200" />
+    <span class="input-group-btn">
+      <a class="btn btn-default" ng-click="new()"><i class="fa fa-plus"></i></a>
+    </span>
+  </div>
+  <div ng-show="showSub" class="sub-entity">
+    <ng-form name="subUserForm">
+      <user-form form="subUserForm" user="newUser" post-label=" {{subPostLabel}}"></user-form>
+      <a class="btn btn-success" ng-click="ok()">Valider</a>
+      <a class="btn btn-warning" ng-click="cancel()">Annuler</a>
+    </ng-form>
+  </div>
+  <error-ctrl ctrl="form.user"></error-ctrl>
+</div>

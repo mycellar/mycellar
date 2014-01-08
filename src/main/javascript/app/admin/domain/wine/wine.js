@@ -5,8 +5,8 @@ angular.module('mycellar.controllers.admin.domain.wine.wine', [
 ]);
 
 angular.module('mycellar.controllers.admin.domain.wine.wine').controller('AdminDomainWineController', [
-  '$scope', 'wine', 'adminDomainService', 'Producers', 'Appellations', 'Regions', 'Countries',
-  function ($scope, wine, adminDomainService, Producers, Appellations, Regions, Countries) {
+  '$scope', 'wine', 'adminDomainService',
+  function ($scope, wine, adminDomainService) {
     $scope.wine = wine;
     angular.extend($scope, adminDomainService.editMethods('wine', 'Wine', wine, 'form'));
   }

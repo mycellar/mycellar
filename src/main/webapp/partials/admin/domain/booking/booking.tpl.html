@@ -10,36 +10,8 @@
       <error-form form="form"></error-form>
       <fieldset>
         <legend>Détails</legend>
-        <div class="form-group" ng-class="{'has-error': form.bookingEvent.$invalid}">
-          <label class="control-label" for="bookingEvent">Campagne de réservation</label>
-          <input 
-              id="bookingEvent"
-              name="bookingEvent"
-              type="text"
-              class="form-control"
-              ng-model="booking.bookingEvent"
-              placeholder="Campagne de réservation"
-              typeahead="bookingEvent as (bookingEvent.name + ' (' + bookingEvent.start + ' to ' + bookingEvent.end + ')') for bookingEvent in bookingEvents($viewValue)"
-              typeahead-editable="false"
-              typeahead-min-length="2"
-              typeahead-wait-ms="200" />
-          <error-ctrl ctrl="form.bookingEvent"></error-ctrl>
-        </div>
-        <div class="form-group" ng-class="{'has-error': form.customer.$invalid}">
-          <label class="control-label" for="customer">Client</label>
-          <input 
-              id="customer"
-              name="customer"
-              type="text"
-              class="form-control"
-              ng-model="booking.customer"
-              placeholder="Client"
-              typeahead="customer as (customer.lastname + ' ' + customer.firstname + ' (' + customer.email + ')') for customer in customers($viewValue)"
-              typeahead-editable="false"
-              typeahead-min-length="2"
-              typeahead-wait-ms="200" />
-          <error-ctrl ctrl="form.customer"></error-ctrl>
-        </div>
+        <booking-event form="form" booking-event="booking.bookingEvent"></booking-event>
+        <user form="form" user="booking.customer" label="Client" sub-post-label="du client"></user>
       </fieldset>
       <fieldset>
         <legend>Réservation</legend>
