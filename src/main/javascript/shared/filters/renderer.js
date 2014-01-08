@@ -21,9 +21,9 @@ angular.module('mycellar').filter('wineRenderer', function() {
   return function(format) {
     return format.name + ' (' + numberFilter(format.capacity) + 'L)';
   }
-}).filter('customerRenderer', function() {
-  return function(customer) {
-    return customer.lastname + ' ' + customer.firstname;
+}).filter('userRenderer', function() {
+  return function(user) {
+    return user.lastname + ' ' + user.firstname;
   }
 }).filter('wineTypeRenderer', function() {
   return function(type) {
@@ -52,5 +52,15 @@ angular.module('mycellar').filter('wineRenderer', function() {
       return 'Autre';
     }
     return color;
+  }
+}).filter('accessRightRenderer', function() {
+  return function(accessRight) {
+    switch(accessRight) {
+    case 'READ':
+      return 'Lecture seule';
+    case 'MODIFY':
+      return 'Modification';
+    }
+    return accessRight;
   }
 });

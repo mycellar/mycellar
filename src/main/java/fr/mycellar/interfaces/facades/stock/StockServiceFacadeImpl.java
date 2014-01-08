@@ -138,15 +138,29 @@ public class StockServiceFacadeImpl implements StockServiceFacade {
 
     @Override
     @Transactional
-    public void saveCellar(Cellar cellar) throws BusinessException {
-        cellarService.save(cellar);
+    public Cellar saveCellar(Cellar cellar) throws BusinessException {
+        return cellarService.save(cellar);
     }
 
     @Override
     @Transactional
-    public void saveCellarShare(CellarShare cellarShare) throws BusinessException {
-        cellarShareService.save(cellarShare);
+    public CellarShare saveCellarShare(CellarShare cellarShare) throws BusinessException {
+        return cellarShareService.save(cellarShare);
     }
+
+    @Override
+    @Transactional(readOnly = true)
+    public void validateCellar(Cellar cellar) throws BusinessException {
+        cellarService.validate(cellar);
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public void validateCellarShare(CellarShare cellarShare) throws BusinessException {
+        cellarShareService.validate(cellarShare);
+    }
+
+    // BEANS METHODS
 
     @Inject
     public void setCellarService(CellarService cellarService) {

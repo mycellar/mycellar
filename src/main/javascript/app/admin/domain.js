@@ -4,6 +4,7 @@ angular.module('mycellar.controllers.admin.domain', [
   'mycellar.controllers.admin.domain.booking',
   'mycellar.controllers.admin.domain.contact',
   'mycellar.controllers.admin.domain.stack',
+  'mycellar.controllers.admin.domain.stock',
   'mycellar.controllers.admin.domain.user',
   'mycellar.controllers.admin.domain.wine',
   'mycellar.directives.admin-domain-nav'

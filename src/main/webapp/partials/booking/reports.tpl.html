@@ -69,7 +69,7 @@
           <tbody>
             <tr ng-repeat="booking in bookings">
               <td><a class="btn btn-default btn-xs" href ng-click="selectBooking(booking)" title="Afficher la commande du client"><i class="fa fa-shopping-cart"></i></a></td>
-              <td>{{booking.customer | customerRenderer}}</td>
+              <td>{{booking.customer | userRenderer}}</td>
               <td>{{booking.quantities[booking.bookingEvent.id + '-' + bookingBottle.id]}}</td>
               <td>{{bookingBottle.price * booking.quantities[booking.bookingEvent.id + '-' + bookingBottle.id] | currency:"€"}}</td>
             </tr>
@@ -88,7 +88,7 @@
       </div>
     </section>
     <section ng-if="booking != null">
-      <h3>{{booking.customer | customerRenderer}}</h3>
+      <h3>{{booking.customer | userRenderer}}</h3>
       <div class="table-responsive">
         <table class="table table-bordered table-striped table-condensed">
           <thead>
@@ -132,7 +132,7 @@
           <tbody>
             <tr ng-repeat="booking in allBookings">
               <td><a class="btn btn-default btn-xs" href ng-click="selectBooking(booking)" title="Afficher la commande du client"><i class="fa fa-shopping-cart"></i></a></td>
-              <td>{{booking.customer | customerRenderer}}</td>
+              <td>{{booking.customer | userRenderer}}</td>
             </tr>
             <tr ng-if="!loading && allBookings.length == 0">
               <td colspan="2" class="text-center">Aucune réservation enregistrée</td>

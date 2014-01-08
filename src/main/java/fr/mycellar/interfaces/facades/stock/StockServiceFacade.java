@@ -34,98 +34,40 @@ import fr.mycellar.infrastructure.shared.repository.SearchParameters;
  */
 public interface StockServiceFacade {
 
-    /**
-     * @param arrival
-     */
     void arrival(Arrival arrival);
 
-    /**
-     * @param searchParameters
-     * @return
-     */
     long countCellars(SearchParameters searchParameters);
 
-    /**
-     * @param searchParameters
-     * @return
-     */
     long countCellarShares(SearchParameters searchParameters);
 
-    /**
-     * @param searchParameters
-     * @return
-     */
     long countMovements(SearchParameters searchParameters);
 
-    /**
-     * @param searchParameters
-     * @return
-     */
     long countStocks(SearchParameters searchParameters);
 
-    /**
-     * @param cellar
-     * @throws BusinessException
-     */
     void deleteCellar(Cellar cellar) throws BusinessException;
 
-    /**
-     * @param cellarShare
-     * @throws BusinessException
-     */
     void deleteCellarShare(CellarShare cellarShare) throws BusinessException;
 
-    /**
-     * @param drink
-     */
     void drink(Drink drink);
 
-    /**
-     * @param cellarId
-     * @return
-     */
     Cellar getCellarById(Integer cellarId);
 
-    /**
-     * @param cellarShareId
-     * @return
-     */
     CellarShare getCellarShareById(Integer cellarShareId);
 
-    /**
-     * @param searchParameters
-     * @return
-     */
     List<Cellar> getCellars(SearchParameters searchParameters);
 
-    /**
-     * @param searchParameters
-     * @return
-     */
     List<CellarShare> getCellarShares(SearchParameters searchParameters);
 
-    /**
-     * @param searchParameters
-     * @return
-     */
     List<Movement> getMovements(SearchParameters searchParameters);
 
-    /**
-     * @param searchParameters
-     * @return
-     */
     List<Stock> getStocks(SearchParameters searchParameters);
 
-    /**
-     * @param cellar
-     * @throws BusinessException
-     */
-    void saveCellar(Cellar cellar) throws BusinessException;
+    Cellar saveCellar(Cellar cellar) throws BusinessException;
 
-    /**
-     * @param cellarShare
-     * @throws BusinessException
-     */
-    void saveCellarShare(CellarShare cellarShare) throws BusinessException;
+    CellarShare saveCellarShare(CellarShare cellarShare) throws BusinessException;
+
+    void validateCellar(Cellar cellar) throws BusinessException;
+
+    void validateCellarShare(CellarShare cellarShare) throws BusinessException;
 
 }

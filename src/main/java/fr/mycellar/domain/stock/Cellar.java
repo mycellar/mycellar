@@ -18,7 +18,6 @@
  */
 package fr.mycellar.domain.stock;
 
-import java.util.Collections;
 import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
@@ -33,6 +32,7 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
+import javax.xml.bind.annotation.XmlTransient;
 
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.hibernate.search.annotations.Indexed;
@@ -54,6 +54,7 @@ public class Cellar extends NamedEntity {
     private static final long serialVersionUID = 201111181451L;
 
     @OneToMany(mappedBy = "cellar")
+    @XmlTransient
     private final Set<Stock> stocks = new HashSet<Stock>();
 
     @Id
@@ -66,6 +67,7 @@ public class Cellar extends NamedEntity {
     private User owner;
 
     @OneToMany(mappedBy = "cellar")
+    @XmlTransient
     private final Set<CellarShare> shares = new HashSet<CellarShare>();
 
     @Override
@@ -82,13 +84,6 @@ public class Cellar extends NamedEntity {
 
     public void setOwner(User owner) {
         this.owner = owner;
-    }
-
-    /**
-     * @return the shares
-     */
-    public Set<CellarShare> getShares() {
-        return Collections.unmodifiableSet(shares);
     }
 
     @Override

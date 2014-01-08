@@ -1,0 +1,16 @@
+<div class="row">
+  <div class="col-md-2">
+    <nav role="secondary">
+      <data-mycellar-admin-nav></data-mycellar-admin-nav>
+    </nav>
+  </div>
+  <div class="col-md-10">
+    <header class="page-header"><h1>Cave : {{cellar.name}}</h1></header>
+    <form name="form" class="form">
+      <error-form form="form"></error-form>
+      <cellar-form form="form" cellar="cellar"></cellar-form>
+      <input type="submit" class="btn btn-primary" value="Sauvegarder" ng-click="save()" />
+      <input type="submit" class="btn btn-default" value="Annuler" ng-click="cancel()" />
+    </form>
+  </div>
+</div>
