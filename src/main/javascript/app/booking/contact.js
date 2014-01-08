@@ -1,5 +1,6 @@
 angular.module('mycellar.controllers.booking.contact', [
   'ngRoute',
+  'mycellar.directives.form.domain.wine.producer',
   'mycellar.resources.contact.contacts',
   'mycellar.resources.wine.producers', 
 ], [
