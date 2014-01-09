@@ -3,6 +3,10 @@ angular.module('mycellar.resources.stock.cellars', ['ngResource']);
 angular.module('mycellar.resources.stock.cellars').factory('Cellars', ['$resource', '$q', function ($resource, $q) {
 
   var Cellars = $resource('/api/domain/stock/cellars', {}, {
+    getAllForCurrentUser: {
+      url: '/api/stock/cellars',
+      method: 'GET'
+    },
     validate: {
       url: '/api/domain/stock/validateCellar',
       method: 'POST'

@@ -13,6 +13,11 @@ angular.module('mycellar.directives.table.paginated').directive('paginated', ['$
     },
     link: function(scope, iElement, iAttrs, controller) {
       var started = false;
+      scope.$watch('options.parameters', function(value) {
+        if(started && scope.currentPage > 0) {
+          scope.setPage(1);
+        }
+      }, true);
       scope.$watch('tableContext.sort.ways', function(value) {
         if (started && scope.currentPage > 0) {
           scope.setPage(scope.currentPage);
@@ -60,12 +65,13 @@ angular.module('mycellar.directives.table.paginated').directive('paginated', ['$
         for (var t in $scope.tableContext.filters) {
           filters.push(t + ',' + $scope.tableContext.filters[t]);
         }
-        $scope.result = $scope.itemResource({
+        var parameters = angular.extend({}, $scope.options.parameters, {
           first: $scope.firstItem,
           count: $scope.itemsPerPage,
           sort: sort,
           filters: filters
         });
+        $scope.result = $scope.itemResource(parameters);
       };
       
       $scope.pageRange = $scope.options.pageRange || 6;

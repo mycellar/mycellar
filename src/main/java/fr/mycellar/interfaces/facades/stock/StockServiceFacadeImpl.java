@@ -31,12 +31,17 @@ import fr.mycellar.application.stock.CellarShareService;
 import fr.mycellar.application.stock.MovementService;
 import fr.mycellar.application.stock.StockService;
 import fr.mycellar.domain.shared.exception.BusinessException;
+import fr.mycellar.domain.stock.AccessRightEnum;
 import fr.mycellar.domain.stock.Arrival;
 import fr.mycellar.domain.stock.Cellar;
 import fr.mycellar.domain.stock.CellarShare;
+import fr.mycellar.domain.stock.CellarShare_;
+import fr.mycellar.domain.stock.Cellar_;
 import fr.mycellar.domain.stock.Drink;
 import fr.mycellar.domain.stock.Movement;
 import fr.mycellar.domain.stock.Stock;
+import fr.mycellar.domain.stock.Stock_;
+import fr.mycellar.domain.user.User;
 import fr.mycellar.infrastructure.shared.repository.SearchParameters;
 
 /**
@@ -158,6 +163,37 @@ public class StockServiceFacadeImpl implements StockServiceFacade {
     @Transactional(readOnly = true)
     public void validateCellarShare(CellarShare cellarShare) throws BusinessException {
         cellarShareService.validate(cellarShare);
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public List<Cellar> getCellars(User user) {
+        return getCellars(new SearchParameters().orMode().property(Cellar_.owner, user).property(Cellar_.shares, CellarShare_.email, user.getEmail()));
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public List<Stock> getStocks(Cellar cellar) {
+        return getStocks(new SearchParameters().property(Stock_.cellar, cellar));
+    }
+
+    @Override
+    public boolean hasReadRight(Integer cellarId, String userEmail) {
+        Cellar cellar = getCellarById(cellarId);
+        return cellar.getOwner().getEmail().equals(userEmail) //
+                || (countCellarShares(new SearchParameters() //
+                        .property(CellarShare_.email, userEmail) //
+                        .property(CellarShare_.cellar, Cellar_.id, cellarId)) > 0);
+    }
+
+    @Override
+    public boolean hasModifyRight(Integer cellarId, String userEmail) {
+        Cellar cellar = getCellarById(cellarId);
+        return cellar.getOwner().getEmail().equals(userEmail) //
+                || (countCellarShares(new SearchParameters() //
+                        .property(CellarShare_.email, userEmail) //
+                        .property(CellarShare_.cellar, Cellar_.id, cellarId) //
+                        .property(CellarShare_.accessRight, AccessRightEnum.MODIFY)) > 0);
     }
 
     // BEANS METHODS

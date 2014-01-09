@@ -27,6 +27,7 @@ import fr.mycellar.domain.stock.CellarShare;
 import fr.mycellar.domain.stock.Drink;
 import fr.mycellar.domain.stock.Movement;
 import fr.mycellar.domain.stock.Stock;
+import fr.mycellar.domain.user.User;
 import fr.mycellar.infrastructure.shared.repository.SearchParameters;
 
 /**
@@ -56,11 +57,15 @@ public interface StockServiceFacade {
 
     List<Cellar> getCellars(SearchParameters searchParameters);
 
+    List<Cellar> getCellars(User user);
+
     List<CellarShare> getCellarShares(SearchParameters searchParameters);
 
     List<Movement> getMovements(SearchParameters searchParameters);
 
     List<Stock> getStocks(SearchParameters searchParameters);
+
+    List<Stock> getStocks(Cellar cellar);
 
     Cellar saveCellar(Cellar cellar) throws BusinessException;
 
@@ -69,5 +74,9 @@ public interface StockServiceFacade {
     void validateCellar(Cellar cellar) throws BusinessException;
 
     void validateCellarShare(CellarShare cellarShare) throws BusinessException;
+
+    boolean hasReadRight(Integer cellarId, String currentUserEmail);
+
+    boolean hasModifyRight(Integer cellarId, String currentUserEmail);
 
 }
