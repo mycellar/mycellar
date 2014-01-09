@@ -30,6 +30,7 @@ import javax.ws.rs.ext.Provider;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.security.access.AccessDeniedException;
+import org.springframework.security.core.AuthenticationException;
 
 import fr.mycellar.interfaces.facades.stack.StackServiceFacade;
 import fr.mycellar.interfaces.web.services.InternalErrorHolder;
@@ -49,6 +50,8 @@ public class ThrowableMapper implements ExceptionMapper<Throwable> {
     @Override
     public Response toResponse(Throwable throwable) {
         if (throwable instanceof AccessDeniedException) {
+            return Response.status(Status.FORBIDDEN).build();
+        } else if (throwable instanceof AuthenticationException) {
             return Response.status(Status.UNAUTHORIZED).build();
         }
         stackServiceFacade.onThrowable(throwable);

@@ -9,6 +9,10 @@ angular.module('mycellar.services.security.interceptor').factory('securityInterc
         if(originalResponse.status === 401) {
           $injector.get('security').oldPath = $injector.get('$location').path();
           $injector.get('$location').path("/login");
+        } else if(originalResponse.status === 403) {
+          $injector.get('$location').path("/403");
+        } else if(originalResponse.status === 404) {
+          $injector.get('$location').path("/404");
         }
         return promise;
       });

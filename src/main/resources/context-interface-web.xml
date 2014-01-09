@@ -33,7 +33,7 @@
   <security:http pattern="/font/*" security="none" />
   <security:http pattern="/js/*" security="none" />
 
-  <bean id="myCellarAuthenticationEntryPoint" class="fr.mycellar.interfaces.web.security.MyCellarAuthenticationEntryPoint">
+  <bean id="myCellarAuthenticationEntryPoint" class="org.springframework.security.web.authentication.LoginUrlAuthenticationEntryPoint">
     <constructor-arg value="/login" />
   </bean>
 

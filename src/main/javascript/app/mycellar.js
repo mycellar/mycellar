@@ -12,6 +12,7 @@ angular.module('mycellar', [
   'mycellar.loading',
   'mycellar.services.menu',
   'mycellar.services.security',
+  'mycellar.controllers.errors',
   'mycellar.controllers.home',
   'mycellar.controllers.login',
   'mycellar.controllers.account',
@@ -24,7 +25,7 @@ angular.module('mycellar', [
 
 angular.module('mycellar').config(['$routeProvider', '$locationProvider', function ($routeProvider, $locationProvider) {
   $locationProvider.html5Mode(true);
-  $routeProvider.otherwise({redirectTo:'/home'});
+  $routeProvider.when('/', {redirectTo: '/home'}).otherwise({redirectTo:'/404'});
 }]);
 
 angular.module('mycellar').run([
