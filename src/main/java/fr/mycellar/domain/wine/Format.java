@@ -68,16 +68,10 @@ public class Format extends NamedEntity {
     @XmlTransient
     private final Set<Stock> stocks = new HashSet<Stock>();
 
-    /**
-     * @return the capacity
-     */
     public float getCapacity() {
         return capacity;
     }
 
-    /**
-     * @return the id
-     */
     @Override
     public Integer getId() {
         return id;

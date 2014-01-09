@@ -43,7 +43,6 @@ import fr.mycellar.domain.user.User;
 
 /**
  * @author bperalta
- * 
  */
 @Entity
 @Indexed
@@ -75,9 +74,6 @@ public class Cellar extends NamedEntity {
         return id;
     }
 
-    /**
-     * @return the owner
-     */
     public User getOwner() {
         return owner;
     }

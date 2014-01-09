@@ -60,30 +60,18 @@ public class Arrival implements Serializable {
         this.cellar = cellar;
     }
 
-    /**
-     * @return the arrivalBottles
-     */
     public List<ArrivalBottle> getArrivalBottles() {
         return arrivalBottles;
     }
 
-    /**
-     * @return the date
-     */
     public LocalDate getDate() {
         return date;
     }
 
-    /**
-     * @return the otherCharges
-     */
     public Float getOtherCharges() {
         return otherCharges;
     }
 
-    /**
-     * @return the source
-     */
     public String getSource() {
         return source;
     }

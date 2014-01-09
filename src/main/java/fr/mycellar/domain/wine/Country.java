@@ -67,24 +67,15 @@ public class Country extends NamedEntity {
     @XmlTransient
     private final Set<Region> regions = new HashSet<Region>();
 
-    /**
-     * @return the description
-     */
     public String getDescription() {
         return description;
     }
 
-    /**
-     * @return the id
-     */
     @Override
     public Integer getId() {
         return id;
     }
 
-    /**
-     * @return the map
-     */
     public Map getMap() {
         return map;
     }

@@ -60,9 +60,6 @@ public class ResetPasswordRequest extends IdentifiedEntity {
     @Column(name = "REQUEST_KEY", length = 32, unique = true)
     private String key;
 
-    /**
-     * @return the dateTime
-     */
     public LocalDateTime getDateTime() {
         return dateTime;
     }
@@ -71,9 +68,6 @@ public class ResetPasswordRequest extends IdentifiedEntity {
         this.dateTime = dateTime;
     }
 
-    /**
-     * @return the user
-     */
     public User getUser() {
         return user;
     }
@@ -82,9 +76,6 @@ public class ResetPasswordRequest extends IdentifiedEntity {
         this.user = user;
     }
 
-    /**
-     * @return the key
-     */
     public String getKey() {
         return key;
     }

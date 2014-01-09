@@ -64,31 +64,19 @@ public class Varietal extends NamedEntity {
     @Enumerated(EnumType.STRING)
     private VarietalColorEnum skin;
 
-    /**
-     * @return the description
-     */
     public String getDescription() {
         return description;
     }
 
-    /**
-     * @return the flesh
-     */
     public VarietalColorEnum getFlesh() {
         return flesh;
     }
 
-    /**
-     * @return the id
-     */
     @Override
     public Integer getId() {
         return id;
     }
 
-    /**
-     * @return the skin
-     */
     public VarietalColorEnum getSkin() {
         return skin;
     }

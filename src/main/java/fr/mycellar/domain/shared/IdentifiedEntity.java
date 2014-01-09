@@ -75,9 +75,6 @@ public abstract class IdentifiedEntity implements Identifiable<Integer>, Seriali
         return getId() != null;
     }
 
-    /**
-     * @return the version
-     */
     public int getVersion() {
         return version;
     }

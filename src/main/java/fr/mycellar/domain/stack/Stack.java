@@ -57,9 +57,6 @@ public class Stack extends IdentifiedEntity {
     @Column(name = "STACK_HASH", unique = true)
     private int hashCode;
 
-    /**
-     * @return the count
-     */
     public long getCount() {
         return count;
     }
@@ -71,9 +68,6 @@ public class Stack extends IdentifiedEntity {
         count++;
     }
 
-    /**
-     * @return the stack
-     */
     public String getStack() {
         return stack;
     }
@@ -83,9 +77,6 @@ public class Stack extends IdentifiedEntity {
         hashCode = stack.hashCode();
     }
 
-    /**
-     * @return the hashCode
-     */
     public int getHashCode() {
         return hashCode;
     }

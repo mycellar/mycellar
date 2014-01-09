@@ -65,17 +65,11 @@ public class CellarShare extends IdentifiedEntity {
     @JoinColumn(name = "CELLAR", nullable = false)
     private Cellar cellar;
 
-    /**
-     * @return the id
-     */
     @Override
     public Integer getId() {
         return id;
     }
 
-    /**
-     * @return the email
-     */
     public String getEmail() {
         return email;
     }
@@ -84,9 +78,6 @@ public class CellarShare extends IdentifiedEntity {
         this.email = email;
     }
 
-    /**
-     * @return the accessRight
-     */
     public AccessRightEnum getAccessRight() {
         return accessRight;
     }
@@ -95,9 +86,6 @@ public class CellarShare extends IdentifiedEntity {
         this.accessRight = accessRight;
     }
 
-    /**
-     * @return the cellar
-     */
     public Cellar getCellar() {
         return cellar;
     }

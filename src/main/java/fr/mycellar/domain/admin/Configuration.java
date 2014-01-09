@@ -55,9 +55,6 @@ public class Configuration extends IdentifiedEntity {
     @Column(name = "VALUE", length = 2000)
     private String value;
 
-    /**
-     * @return the key
-     */
     public ConfigurationKeyEnum getKey() {
         return key;
     }
@@ -66,9 +63,6 @@ public class Configuration extends IdentifiedEntity {
         this.key = key;
     }
 
-    /**
-     * @return the value
-     */
     public String getValue() {
         return value;
     }

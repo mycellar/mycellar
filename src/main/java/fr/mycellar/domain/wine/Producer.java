@@ -85,9 +85,6 @@ public class Producer extends NamedEntity {
     @XmlTransient
     private final Set<Wine> wines = new HashSet<Wine>();
 
-    /**
-     * @return the contactInformation
-     */
     public String getContactInformation() {
         return contactInformation;
     }
@@ -96,9 +93,6 @@ public class Producer extends NamedEntity {
         this.contactInformation = contactInformation;
     }
 
-    /**
-     * @return the phone
-     */
     public String getPhone() {
         return phone;
     }
@@ -107,9 +101,6 @@ public class Producer extends NamedEntity {
         this.phone = phone;
     }
 
-    /**
-     * @return the fax
-     */
     public String getFax() {
         return fax;
     }
@@ -118,9 +109,6 @@ public class Producer extends NamedEntity {
         this.fax = fax;
     }
 
-    /**
-     * @return the email
-     */
     public String getEmail() {
         return email;
     }
@@ -129,31 +117,19 @@ public class Producer extends NamedEntity {
         this.email = email;
     }
 
-    /**
-     * @return the address
-     */
     public Address getAddress() {
         return address;
     }
 
-    /**
-     * @return the description
-     */
     public String getDescription() {
         return description;
     }
 
-    /**
-     * @return the id
-     */
     @Override
     public Integer getId() {
         return id;
     }
 
-    /**
-     * @return the websiteUrl
-     */
     public String getWebsiteUrl() {
         return websiteUrl;
     }

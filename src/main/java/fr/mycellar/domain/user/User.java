@@ -86,9 +86,6 @@ public class User extends IdentifiedEntity {
     @Enumerated(EnumType.STRING)
     private ProfileEnum profile;
 
-    /**
-     * @return the profile
-     */
     public ProfileEnum getProfile() {
         return profile;
     }
@@ -97,38 +94,23 @@ public class User extends IdentifiedEntity {
         this.profile = profile;
     }
 
-    /**
-     * @return the email
-     */
     public String getEmail() {
         return email;
     }
 
-    /**
-     * @return the firstname
-     */
     public String getFirstname() {
         return firstname;
     }
 
-    /**
-     * @return the id
-     */
     @Override
     public Integer getId() {
         return id;
     }
 
-    /**
-     * @return the lastname
-     */
     public String getLastname() {
         return lastname;
     }
 
-    /**
-     * @return the password
-     */
     public String getPassword() {
         return password;
     }

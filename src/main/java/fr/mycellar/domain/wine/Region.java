@@ -77,31 +77,19 @@ public class Region extends NamedEntity {
     @Embedded
     private Map map;
 
-    /**
-     * @return the country
-     */
     public Country getCountry() {
         return country;
     }
 
-    /**
-     * @return the description
-     */
     public String getDescription() {
         return description;
     }
 
-    /**
-     * @return the id
-     */
     @Override
     public Integer getId() {
         return id;
     }
 
-    /**
-     * @return the map
-     */
     public Map getMap() {
         return map;
     }

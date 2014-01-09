@@ -41,16 +41,10 @@ public class Bottle {
     @JoinColumn(name = "WINE", nullable = false)
     private Wine wine;
 
-    /**
-     * @return the format
-     */
     public Format getFormat() {
         return format;
     }
 
-    /**
-     * @return the wine
-     */
     public Wine getWine() {
         return wine;
     }

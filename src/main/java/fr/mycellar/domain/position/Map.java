@@ -42,16 +42,10 @@ public class Map implements Serializable {
     @Embedded
     private Position position;
 
-    /**
-     * @return the image
-     */
     public Image getImage() {
         return image;
     }
 
-    /**
-     * @return the position
-     */
     public Position getPosition() {
         return position;
     }

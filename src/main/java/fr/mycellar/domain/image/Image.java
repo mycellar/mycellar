@@ -59,38 +59,23 @@ public class Image extends NamedEntity {
     @Column(name = "WIDTH")
     private int width;
 
-    /**
-     * @return the content
-     */
     public byte[] getContent() {
         return content;
     }
 
-    /**
-     * @return the contentType
-     */
     public String getContentType() {
         return contentType;
     }
 
-    /**
-     * @return the height
-     */
     public int getHeight() {
         return height;
     }
 
-    /**
-     * @return the id
-     */
     @Override
     public Integer getId() {
         return id;
     }
 
-    /**
-     * @return the width
-     */
     public int getWidth() {
         return width;
     }

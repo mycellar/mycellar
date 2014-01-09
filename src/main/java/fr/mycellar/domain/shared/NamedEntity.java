@@ -38,9 +38,6 @@ public abstract class NamedEntity extends IdentifiedEntity {
     @Field
     private String name;
 
-    /**
-     * @return the name
-     */
     public String getName() {
         return name;
     }

@@ -30,23 +30,14 @@ public class ArrivalBottle implements Serializable {
     private float price;
     private Integer quantity;
 
-    /**
-     * @return the bottle
-     */
     public Bottle getBottle() {
         return bottle;
     }
 
-    /**
-     * @return the price
-     */
     public float getPrice() {
         return price;
     }
 
-    /**
-     * @return the quantity
-     */
     public Integer getQuantity() {
         return quantity;
     }

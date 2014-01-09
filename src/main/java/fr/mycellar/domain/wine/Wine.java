@@ -116,66 +116,39 @@ public class Wine extends NamedEntity {
     @Column(name = "VINTAGE")
     private Integer vintage;
 
-    /**
-     * @return the appellation
-     */
     public Appellation getAppellation() {
         return appellation;
     }
 
-    /**
-     * @return the color
-     */
     public WineColorEnum getColor() {
         return color;
     }
 
-    /**
-     * @return the description
-     */
     public String getDescription() {
         return description;
     }
 
-    /**
-     * @return the id
-     */
     @Override
     public Integer getId() {
         return id;
     }
 
-    /**
-     * @return the photoUrl
-     */
     public String getPhotoUrl() {
         return photoUrl;
     }
 
-    /**
-     * @return the producer
-     */
     public Producer getProducer() {
         return producer;
     }
 
-    /**
-     * @return the ranking
-     */
     public String getRanking() {
         return ranking;
     }
 
-    /**
-     * @return the type
-     */
     public WineTypeEnum getType() {
         return type;
     }
 
-    /**
-     * @return the vintage
-     */
     public Integer getVintage() {
         return vintage;
     }

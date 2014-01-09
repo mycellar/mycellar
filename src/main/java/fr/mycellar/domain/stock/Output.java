@@ -43,16 +43,10 @@ public class Output extends Movement {
     @Column(name = "PRICE")
     private float price;
 
-    /**
-     * @return the destination
-     */
     public String getDestination() {
         return destination;
     }
 
-    /**
-     * @return the price
-     */
     public float getPrice() {
         return price;
     }

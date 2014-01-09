@@ -72,9 +72,6 @@ public abstract class Movement extends IdentifiedEntity {
     @Type(type = "org.jadira.usertype.dateandtime.joda.PersistentLocalDate")
     private LocalDate date;
 
-    /**
-     * @return the date
-     */
     public LocalDate getDate() {
         return date;
     }
@@ -83,9 +80,6 @@ public abstract class Movement extends IdentifiedEntity {
         this.date = date;
     }
 
-    /**
-     * @return the bottle
-     */
     public Bottle getBottle() {
         return bottle;
     }
@@ -94,9 +88,6 @@ public abstract class Movement extends IdentifiedEntity {
         this.bottle = bottle;
     }
 
-    /**
-     * @return the cellar
-     */
     public Cellar getCellar() {
         return cellar;
     }
@@ -105,17 +96,11 @@ public abstract class Movement extends IdentifiedEntity {
         this.cellar = cellar;
     }
 
-    /**
-     * @return the id
-     */
     @Override
     public Integer getId() {
         return id;
     }
 
-    /**
-     * @return the number
-     */
     public int getNumber() {
         return number;
     }

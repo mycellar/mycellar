@@ -56,44 +56,26 @@ public class Address implements Serializable {
     @Column(name = "ADDRESS_ZIP_CODE")
     private String zipCode;
 
-    /**
-     * @return the city
-     */
     public String getCity() {
         return city;
     }
 
-    /**
-     * @return the country
-     */
     public Country getCountry() {
         return country;
     }
 
-    /**
-     * @return the line1
-     */
     public String getLine1() {
         return line1;
     }
 
-    /**
-     * @return the line2
-     */
     public String getLine2() {
         return line2;
     }
 
-    /**
-     * @return the position
-     */
     public Position getPosition() {
         return position;
     }
 
-    /**
-     * @return the zipCode
-     */
     public String getZipCode() {
         return zipCode;
     }

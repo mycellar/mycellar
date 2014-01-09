@@ -82,9 +82,6 @@ public class BookingBottle extends IdentifiedEntity {
         return id;
     }
 
-    /**
-     * @return the position
-     */
     public Integer getPosition() {
         return position;
     }
@@ -93,9 +90,6 @@ public class BookingBottle extends IdentifiedEntity {
         this.position = position;
     }
 
-    /**
-     * @return the max
-     */
     public Integer getMax() {
         return max;
     }
@@ -104,9 +98,6 @@ public class BookingBottle extends IdentifiedEntity {
         this.max = max;
     }
 
-    /**
-     * @return the bottle
-     */
     public Bottle getBottle() {
         return bottle;
     }
@@ -115,9 +106,6 @@ public class BookingBottle extends IdentifiedEntity {
         this.bottle = bottle;
     }
 
-    /**
-     * @return the bookingEvent
-     */
     public BookingEvent getBookingEvent() {
         return bookingEvent;
     }
@@ -126,9 +114,6 @@ public class BookingBottle extends IdentifiedEntity {
         this.bookingEvent = bookingEvent;
     }
 
-    /**
-     * @return the price
-     */
     public Float getPrice() {
         return price;
     }
@@ -137,9 +122,6 @@ public class BookingBottle extends IdentifiedEntity {
         this.price = price;
     }
 
-    /**
-     * @return the url
-     */
     public String getUrl() {
         return url;
     }

@@ -44,9 +44,6 @@ public class Drink implements Serializable {
         drinkBottles.add(drinkBottle);
     }
 
-    /**
-     * @return the drinkWith
-     */
     public String getDrinkWith() {
         return drinkWith;
     }
@@ -55,9 +52,6 @@ public class Drink implements Serializable {
         this.drinkWith = drinkWith;
     }
 
-    /**
-     * @return the date
-     */
     public LocalDate getDate() {
         return date;
     }
@@ -66,9 +60,6 @@ public class Drink implements Serializable {
         this.date = date;
     }
 
-    /**
-     * @return the drinkBottles
-     */
     public List<DrinkBottle> getDrinkBottles() {
         return drinkBottles;
     }

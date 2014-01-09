@@ -76,9 +76,6 @@ public class Booking extends IdentifiedEntity {
         return id;
     }
 
-    /**
-     * @return the customer
-     */
     public User getCustomer() {
         return customer;
     }
@@ -87,9 +84,6 @@ public class Booking extends IdentifiedEntity {
         customer = user;
     }
 
-    /**
-     * @return the bookingEvent
-     */
     public BookingEvent getBookingEvent() {
         return bookingEvent;
     }
@@ -98,9 +92,6 @@ public class Booking extends IdentifiedEntity {
         this.bookingEvent = bookingEvent;
     }
 
-    /**
-     * @return the quantities
-     */
     public Map<BookingBottle, Integer> getQuantities() {
         return quantities;
     }

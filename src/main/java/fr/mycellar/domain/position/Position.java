@@ -38,16 +38,10 @@ public class Position implements Serializable {
     @Column(name = "LONGITUDE")
     private float longitude;
 
-    /**
-     * @return latitude
-     */
     public float getLatitude() {
         return latitude;
     }
 
-    /**
-     * @return longitude
-     */
     public float getLongitude() {
         return longitude;
     }

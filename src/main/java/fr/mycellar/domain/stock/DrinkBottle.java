@@ -31,9 +31,6 @@ public class DrinkBottle implements Serializable {
     private Integer quantity;
     private Cellar cellar;
 
-    /**
-     * @return the cellar
-     */
     public Cellar getCellar() {
         return cellar;
     }
@@ -42,9 +39,6 @@ public class DrinkBottle implements Serializable {
         this.cellar = cellar;
     }
 
-    /**
-     * @return the bottle
-     */
     public Bottle getBottle() {
         return bottle;
     }
@@ -53,9 +47,6 @@ public class DrinkBottle implements Serializable {
         this.bottle = bottle;
     }
 
-    /**
-     * @return the quantity
-     */
     public Integer getQuantity() {
         return quantity;
     }

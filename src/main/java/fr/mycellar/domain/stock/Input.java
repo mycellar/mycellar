@@ -46,23 +46,14 @@ public class Input extends Movement {
     @Column(name = "SOURCE")
     private String source;
 
-    /**
-     * @return the charges
-     */
     public float getCharges() {
         return charges;
     }
 
-    /**
-     * @return the price
-     */
     public float getPrice() {
         return price;
     }
 
-    /**
-     * @return the source
-     */
     public String getSource() {
         return source;
     }

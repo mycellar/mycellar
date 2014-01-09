@@ -103,9 +103,6 @@ public class BookingEvent extends NamedEntity {
         return id;
     }
 
-    /**
-     * @return the start
-     */
     public LocalDate getStart() {
         return start;
     }
@@ -114,9 +111,6 @@ public class BookingEvent extends NamedEntity {
         this.start = start;
     }
 
-    /**
-     * @return the end
-     */
     public LocalDate getEnd() {
         return end;
     }
@@ -125,9 +119,6 @@ public class BookingEvent extends NamedEntity {
         this.end = end;
     }
 
-    /**
-     * @return the bottles
-     */
     public Set<BookingBottle> getBottles() {
         return bottles;
     }

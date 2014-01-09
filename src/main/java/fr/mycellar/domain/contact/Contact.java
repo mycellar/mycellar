@@ -74,9 +74,6 @@ public class Contact extends IdentifiedEntity {
     @Type(type = "org.jadira.usertype.dateandtime.joda.PersistentLocalDate")
     private LocalDate next;
 
-    /**
-     * @return the producer
-     */
     public Producer getProducer() {
         return producer;
     }
@@ -85,9 +82,6 @@ public class Contact extends IdentifiedEntity {
         this.producer = producer;
     }
 
-    /**
-     * @return the text
-     */
     public String getText() {
         return text;
     }
@@ -96,9 +90,6 @@ public class Contact extends IdentifiedEntity {
         this.text = text;
     }
 
-    /**
-     * @return the current
-     */
     public LocalDate getCurrent() {
         return current;
     }
@@ -107,9 +98,6 @@ public class Contact extends IdentifiedEntity {
         this.current = current;
     }
 
-    /**
-     * @return the next
-     */
     public LocalDate getNext() {
         return next;
     }
