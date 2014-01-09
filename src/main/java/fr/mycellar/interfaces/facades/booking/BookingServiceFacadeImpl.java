@@ -170,13 +170,15 @@ public class BookingServiceFacadeImpl implements BookingServiceFacade {
     }
 
     private void updateBooking(Booking booking) {
-        // LAZY-INIT
-        booking.getQuantities().hashCode();
-        // UPDATE BOTTLES
-        if (booking.getBookingEvent() != null) {
-            for (BookingBottle bookingBottle : booking.getBookingEvent().getBottles()) {
-                if (!booking.getQuantities().containsKey(bookingBottle)) {
-                    booking.getQuantities().put(bookingBottle, 0);
+        if (booking != null) {
+            // LAZY-INIT
+            booking.getQuantities().hashCode();
+            // UPDATE BOTTLES
+            if (booking.getBookingEvent() != null) {
+                for (BookingBottle bookingBottle : booking.getBookingEvent().getBottles()) {
+                    if (!booking.getQuantities().containsKey(bookingBottle)) {
+                        booking.getQuantities().put(bookingBottle, 0);
+                    }
                 }
             }
         }

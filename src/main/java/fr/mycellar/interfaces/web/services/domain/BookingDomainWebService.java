@@ -35,6 +35,9 @@ import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.MediaType;
 
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.context.SecurityContextHolder;
 
 import fr.mycellar.domain.booking.Booking;
 import fr.mycellar.domain.booking.BookingEvent;
@@ -88,18 +91,31 @@ public class BookingDomainWebService {
 
     @DELETE
     @Path("booking/{id}")
-    @PreAuthorize("hasRole('ROLE_ADMIN') or (hasRole('ROLE_BOOKING') and @currentUserService.isCurrentUser(@bookingServiceFacade.getBookingById(#bookingId).customer))")
+    @PreAuthorize("hasRole('ROLE_ADMIN') or hasRole('ROLE_BOOKING')")
     public void deleteBookingById(@PathParam("id") int bookingId) throws BusinessException {
-        bookingServiceFacade.deleteBooking(bookingServiceFacade.getBookingById(bookingId));
+        Booking booking = bookingServiceFacade.getBookingById(bookingId);
+        if (booking != null) {
+            Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+            if (authentication.getAuthorities().contains(new SimpleGrantedAuthority("ROLE_ADMIN")) || booking.getCustomer().getEmail().equals(authentication.getPrincipal())) {
+                bookingServiceFacade.deleteBooking(booking);
+            }
+        }
     }
 
     @POST
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
     @Path("booking")
-    @PreAuthorize("hasRole('ROLE_ADMIN') or (hasRole('ROLE_BOOKING') and @currentUserService.isCurrentUser(#booking.customer))")
+    @PreAuthorize("hasRole('ROLE_ADMIN') or hasRole('ROLE_BOOKING')")
     public Booking saveBooking(Booking booking) throws BusinessException {
-        return bookingServiceFacade.saveBooking(booking);
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        if ((booking.getId() == null)
+                || authentication.getAuthorities().contains(new SimpleGrantedAuthority("ROLE_ADMIN"))
+                || (bookingServiceFacade.getBookingById(booking.getId()).getCustomer().getEmail().equals(authentication.getPrincipal()) && booking.getCustomer().getEmail()
+                        .equals(authentication.getPrincipal()))) {
+            return bookingServiceFacade.saveBooking(booking);
+        }
+        return null;
     }
 
     // --------------
