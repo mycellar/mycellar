@@ -35,14 +35,14 @@ angular.module('mycellar.controllers.cellar.shares').controller('SharesControlle
     $scope.selectCellar = function(cellar) {
       $scope.cellar = cellar;
     };
-    
+
     $scope.tableOptions = {
         itemResource: CellarShares.getAllForCellar,
         defaultSort: ['email'],
         parameters : {cellarId: 0}
     };
     $scope.tableContext = tableContext;
-    
+
     $scope.$watch('cellar.id', function (value) {
       if ($scope.cellar != null && $scope.cellar.id != undefined) {
         $scope.tableOptions.parameters.cellarId = $scope.cellar.id;

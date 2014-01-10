@@ -43,7 +43,7 @@ angular.module('mycellar.controllers.cellar.mycellars').controller('MyCellarsCon
     $scope.selectCellar = function(cellar) {
       $scope.cellar = cellar;
     };
-    
+
     $scope.tableOptions = {
         itemResource: Stocks.getAllForCellar,
         defaultSort: ['bottle.wine.appellation.region.country.name',
@@ -56,7 +56,7 @@ angular.module('mycellar.controllers.cellar.mycellars').controller('MyCellarsCon
         parameters : {cellarId: 0}
     };
     $scope.tableContext = tableContext;
-    
+
     $scope.$watch('cellar.id', function (value) {
       if ($scope.cellar != null && $scope.cellar.id != undefined) {
         $scope.tableOptions.parameters.cellarId = $scope.cellar.id;
