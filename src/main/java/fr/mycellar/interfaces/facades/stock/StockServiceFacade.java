@@ -75,8 +75,10 @@ public interface StockServiceFacade {
 
     void validateCellarShare(CellarShare cellarShare) throws BusinessException;
 
-    boolean hasReadRight(Integer cellarId, String currentUserEmail);
+    boolean hasReadRight(Integer cellarId, String userEmail);
 
-    boolean hasModifyRight(Integer cellarId, String currentUserEmail);
+    boolean hasModifyRight(Integer cellarId, String userEmail);
+
+    boolean isOwner(Integer cellarId, String userEmail);
 
 }

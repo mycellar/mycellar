@@ -34,6 +34,8 @@ import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.access.prepost.PreAuthorize;
 
 import fr.mycellar.domain.stock.Cellar;
+import fr.mycellar.domain.stock.CellarShare;
+import fr.mycellar.domain.stock.CellarShare_;
 import fr.mycellar.domain.stock.Cellar_;
 import fr.mycellar.domain.stock.Stock;
 import fr.mycellar.domain.stock.Stock_;
@@ -63,7 +65,7 @@ public class StockWebService {
     @Produces(MediaType.APPLICATION_JSON)
     @Path("cellars")
     @PreAuthorize("hasRole('ROLE_CELLAR')")
-    public ListWithCount<Cellar> getCellars() {
+    public ListWithCount<Cellar> getCellarsForCurrentUser() {
         return new ListWithCount<>(stockServiceFacade.getCellars(currentUserService.getCurrentUser()));
     }
 
@@ -85,6 +87,26 @@ public class StockWebService {
             stocks = stockServiceFacade.getStocks(searchParameters);
         }
         return new ListWithCount<>(stockServiceFacade.countStocks(searchParameters), stocks);
+    }
+
+    @GET
+    @Produces(MediaType.APPLICATION_JSON)
+    @Path("cellarShares")
+    @PreAuthorize("hasRole('ROLE_CELLAR')")
+    public ListWithCount<CellarShare> getCellarShares(@QueryParam("cellarId") Integer cellarId, @QueryParam("first") int first, @QueryParam("count") int count,
+            @QueryParam("filters") List<FilterCouple> filters, @QueryParam("sort") List<OrderCouple> orders) {
+        if (!stockServiceFacade.isOwner(cellarId, currentUserService.getCurrentUserEmail())) {
+            throw new AccessDeniedException("Current user isn't the owner of the cellar.");
+        }
+        SearchParameters searchParameters = searchParametersUtil.getSearchParametersForListWithCount(first, count, filters, orders, CellarShare.class);
+        searchParameters.property(CellarShare_.cellar, Cellar_.id, cellarId);
+        List<CellarShare> cellarShares;
+        if (count == 0) {
+            cellarShares = new ArrayList<>();
+        } else {
+            cellarShares = stockServiceFacade.getCellarShares(searchParameters);
+        }
+        return new ListWithCount<>(stockServiceFacade.countCellarShares(searchParameters), cellarShares);
     }
 
     @Inject

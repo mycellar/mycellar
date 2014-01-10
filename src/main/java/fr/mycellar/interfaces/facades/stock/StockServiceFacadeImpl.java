@@ -178,22 +178,31 @@ public class StockServiceFacadeImpl implements StockServiceFacade {
     }
 
     @Override
+    @Transactional(readOnly = true)
     public boolean hasReadRight(Integer cellarId, String userEmail) {
         Cellar cellar = getCellarById(cellarId);
-        return cellar.getOwner().getEmail().equals(userEmail) //
+        return (cellar != null) && (cellar.getOwner().getEmail().equals(userEmail) //
                 || (countCellarShares(new SearchParameters() //
                         .property(CellarShare_.email, userEmail) //
-                        .property(CellarShare_.cellar, Cellar_.id, cellarId)) > 0);
+                        .property(CellarShare_.cellar, Cellar_.id, cellarId)) > 0));
     }
 
     @Override
+    @Transactional(readOnly = true)
     public boolean hasModifyRight(Integer cellarId, String userEmail) {
         Cellar cellar = getCellarById(cellarId);
-        return cellar.getOwner().getEmail().equals(userEmail) //
+        return (cellar != null) && (cellar.getOwner().getEmail().equals(userEmail) //
                 || (countCellarShares(new SearchParameters() //
                         .property(CellarShare_.email, userEmail) //
                         .property(CellarShare_.cellar, Cellar_.id, cellarId) //
-                        .property(CellarShare_.accessRight, AccessRightEnum.MODIFY)) > 0);
+                        .property(CellarShare_.accessRight, AccessRightEnum.MODIFY)) > 0));
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public boolean isOwner(Integer cellarId, String userEmail) {
+        Cellar cellar = getCellarById(cellarId);
+        return (cellar != null) && cellar.getOwner().getEmail().equals(userEmail);
     }
 
     // BEANS METHODS

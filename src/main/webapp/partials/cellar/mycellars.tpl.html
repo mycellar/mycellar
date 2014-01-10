@@ -48,6 +48,9 @@
                   <td>{{stock.bottle.format | formatRenderer}}</td>
                   <td>{{stock.quantity}}</td>
                 </tr>
+                <tr ng-if="!loading && stocks.length == 0">
+                  <td colspan="10" class="text-center">Aucun stock.</td>
+                </tr>
               </tbody>
               <tfoot>
                 <tr>

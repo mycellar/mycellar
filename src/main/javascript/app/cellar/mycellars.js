@@ -57,7 +57,6 @@ angular.module('mycellar.controllers.cellar.mycellars').controller('MyCellarsCon
     };
     $scope.tableContext = tableContext;
     
-    $scope.stocks = {};
     $scope.$watch('cellar.id', function (value) {
       if ($scope.cellar != null && $scope.cellar.id != undefined) {
         $scope.tableOptions.parameters.cellarId = $scope.cellar.id;
