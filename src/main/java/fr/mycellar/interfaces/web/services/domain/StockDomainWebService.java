@@ -39,6 +39,8 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import fr.mycellar.domain.shared.exception.BusinessException;
 import fr.mycellar.domain.stock.Cellar;
 import fr.mycellar.domain.stock.CellarShare;
+import fr.mycellar.domain.stock.Movement;
+import fr.mycellar.domain.stock.Stock;
 import fr.mycellar.infrastructure.shared.repository.SearchParameters;
 import fr.mycellar.interfaces.facades.stock.StockServiceFacade;
 import fr.mycellar.interfaces.web.services.FilterCouple;
@@ -160,6 +162,110 @@ public class StockDomainWebService {
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     public void validateCellarShare(CellarShare cellarShare) throws BusinessException {
         stockServiceFacade.validateCellarShare(cellarShare);
+    }
+
+    // --------------
+    // STOCK
+    // --------------
+
+    @GET
+    @Produces(MediaType.APPLICATION_JSON)
+    @Path("stocks")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    public ListWithCount<Stock> getStocks(@QueryParam("first") int first, @QueryParam("count") int count, @QueryParam("filters") List<FilterCouple> filters,
+            @QueryParam("sort") List<OrderCouple> orders) {
+        SearchParameters searchParameters = searchParametersUtil.getSearchParametersForListWithCount(first, count, filters, orders, Stock.class);
+        List<Stock> stocks;
+        if (count == 0) {
+            stocks = new ArrayList<>();
+        } else {
+            stocks = stockServiceFacade.getStocks(searchParameters);
+        }
+        return new ListWithCount<>(stockServiceFacade.countStocks(searchParameters), stocks);
+    }
+
+    @GET
+    @Produces(MediaType.APPLICATION_JSON)
+    @Path("stock/{id}")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    public Stock getStockById(@PathParam("id") int stockId) {
+        return stockServiceFacade.getStockById(stockId);
+    }
+
+    @DELETE
+    @Path("stock/{id}")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    public void deleteStockById(@PathParam("id") int stockId) throws BusinessException {
+        stockServiceFacade.deleteStock(stockServiceFacade.getStockById(stockId));
+    }
+
+    @POST
+    @Consumes(MediaType.APPLICATION_JSON)
+    @Produces(MediaType.APPLICATION_JSON)
+    @Path("stock")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    public Stock saveStock(Stock stock) throws BusinessException {
+        return stockServiceFacade.saveStock(stock);
+    }
+
+    @POST
+    @Consumes(MediaType.APPLICATION_JSON)
+    @Path("validateStock")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    public void validateStock(Stock stock) throws BusinessException {
+        stockServiceFacade.validateStock(stock);
+    }
+
+    // --------------
+    // Movement
+    // --------------
+
+    @GET
+    @Produces(MediaType.APPLICATION_JSON)
+    @Path("movements")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    public ListWithCount<Movement> getMovements(@QueryParam("first") int first, @QueryParam("count") int count, @QueryParam("filters") List<FilterCouple> filters,
+            @QueryParam("sort") List<OrderCouple> orders) {
+        SearchParameters searchParameters = searchParametersUtil.getSearchParametersForListWithCount(first, count, filters, orders, Movement.class);
+        List<Movement> movements;
+        if (count == 0) {
+            movements = new ArrayList<>();
+        } else {
+            movements = stockServiceFacade.getMovements(searchParameters);
+        }
+        return new ListWithCount<>(stockServiceFacade.countMovements(searchParameters), movements);
+    }
+
+    @GET
+    @Produces(MediaType.APPLICATION_JSON)
+    @Path("movement/{id}")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    public Movement getMovementById(@PathParam("id") int movementId) {
+        return stockServiceFacade.getMovementById(movementId);
+    }
+
+    @DELETE
+    @Path("movement/{id}")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    public void deleteMovementById(@PathParam("id") int movementId) throws BusinessException {
+        stockServiceFacade.deleteMovement(stockServiceFacade.getMovementById(movementId));
+    }
+
+    @POST
+    @Consumes(MediaType.APPLICATION_JSON)
+    @Produces(MediaType.APPLICATION_JSON)
+    @Path("movement")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    public Movement saveMovement(Movement movement) throws BusinessException {
+        return stockServiceFacade.saveMovement(movement);
+    }
+
+    @POST
+    @Consumes(MediaType.APPLICATION_JSON)
+    @Path("validateMovement")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    public void validateMovement(Movement movement) throws BusinessException {
+        stockServiceFacade.validateMovement(movement);
     }
 
     // BEANS Methods

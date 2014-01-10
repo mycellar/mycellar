@@ -49,11 +49,19 @@ public interface StockServiceFacade {
 
     void deleteCellarShare(CellarShare cellarShare) throws BusinessException;
 
+    void deleteStock(Stock stock) throws BusinessException;
+
+    void deleteMovement(Movement movement) throws BusinessException;
+
     void drink(Drink drink);
 
     Cellar getCellarById(Integer cellarId);
 
     CellarShare getCellarShareById(Integer cellarShareId);
+
+    Movement getMovementById(Integer movementId);
+
+    Stock getStockById(Integer stockId);
 
     List<Cellar> getCellars(SearchParameters searchParameters);
 
@@ -71,9 +79,17 @@ public interface StockServiceFacade {
 
     CellarShare saveCellarShare(CellarShare cellarShare) throws BusinessException;
 
+    Movement saveMovement(Movement movement) throws BusinessException;
+
+    Stock saveStock(Stock stock) throws BusinessException;
+
     void validateCellar(Cellar cellar) throws BusinessException;
 
     void validateCellarShare(CellarShare cellarShare) throws BusinessException;
+
+    void validateMovement(Movement movement) throws BusinessException;
+
+    void validateStock(Stock stock) throws BusinessException;
 
     boolean hasReadRight(Integer cellarId, String userEmail);
 

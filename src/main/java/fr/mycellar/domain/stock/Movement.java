@@ -38,6 +38,9 @@ import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.hibernate.annotations.Type;
 import org.joda.time.LocalDate;
 
+import com.fasterxml.jackson.annotation.JsonSubTypes;
+import com.fasterxml.jackson.annotation.JsonTypeInfo;
+
 import fr.mycellar.domain.shared.IdentifiedEntity;
 
 /**
@@ -49,6 +52,8 @@ import fr.mycellar.domain.shared.IdentifiedEntity;
 @DiscriminatorColumn(name = "WAY", discriminatorType = DiscriminatorType.CHAR)
 @DiscriminatorValue("N")
 @SequenceGenerator(name = "MOVEMENT_ID_GENERATOR", allocationSize = 1)
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
+@JsonSubTypes({ @JsonSubTypes.Type(value = Input.class, name = "I"), @JsonSubTypes.Type(value = Output.class, name = "O") })
 public abstract class Movement extends IdentifiedEntity {
 
     private static final long serialVersionUID = 201111181451L;

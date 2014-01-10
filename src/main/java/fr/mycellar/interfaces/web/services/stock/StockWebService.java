@@ -37,6 +37,8 @@ import fr.mycellar.domain.stock.Cellar;
 import fr.mycellar.domain.stock.CellarShare;
 import fr.mycellar.domain.stock.CellarShare_;
 import fr.mycellar.domain.stock.Cellar_;
+import fr.mycellar.domain.stock.Movement;
+import fr.mycellar.domain.stock.Movement_;
 import fr.mycellar.domain.stock.Stock;
 import fr.mycellar.domain.stock.Stock_;
 import fr.mycellar.infrastructure.shared.repository.SearchParameters;
@@ -67,6 +69,26 @@ public class StockWebService {
     @PreAuthorize("hasRole('ROLE_CELLAR')")
     public ListWithCount<Cellar> getCellarsForCurrentUser() {
         return new ListWithCount<>(stockServiceFacade.getCellars(currentUserService.getCurrentUser()));
+    }
+
+    @GET
+    @Produces(MediaType.APPLICATION_JSON)
+    @Path("movements")
+    @PreAuthorize("hasRole('ROLE_CELLAR')")
+    public ListWithCount<Movement> getMovements(@QueryParam("cellarId") Integer cellarId, @QueryParam("first") int first, @QueryParam("count") int count,
+            @QueryParam("filters") List<FilterCouple> filters, @QueryParam("sort") List<OrderCouple> orders) {
+        if (!stockServiceFacade.hasReadRight(cellarId, currentUserService.getCurrentUserEmail())) {
+            throw new AccessDeniedException("No read access to this cellar.");
+        }
+        SearchParameters searchParameters = searchParametersUtil.getSearchParametersForListWithCount(first, count, filters, orders, Movement.class);
+        searchParameters.property(Movement_.cellar, Cellar_.id, cellarId);
+        List<Movement> movements;
+        if (count == 0) {
+            movements = new ArrayList<>();
+        } else {
+            movements = stockServiceFacade.getMovements(searchParameters);
+        }
+        return new ListWithCount<>(stockServiceFacade.countMovements(searchParameters), movements);
     }
 
     @GET

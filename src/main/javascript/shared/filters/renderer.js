@@ -63,4 +63,14 @@ angular.module('mycellar').filter('wineRenderer', function() {
     }
     return accessRight;
   }
+}).filter('movementTypeRenderer', function() {
+  return function(type) {
+    switch(type) {
+    case 'I':
+      return 'Entrée';
+    case 'O':
+      return 'Sortie';
+    }
+    return type;
+  }
 });

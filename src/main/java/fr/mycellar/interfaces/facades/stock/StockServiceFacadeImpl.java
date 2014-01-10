@@ -103,6 +103,18 @@ public class StockServiceFacadeImpl implements StockServiceFacade {
 
     @Override
     @Transactional
+    public void deleteMovement(Movement movement) throws BusinessException {
+        movementService.delete(movement);
+    }
+
+    @Override
+    @Transactional
+    public void deleteStock(Stock stock) throws BusinessException {
+        stockService.delete(stock);
+    }
+
+    @Override
+    @Transactional
     public void drink(Drink drink) {
         stockService.drink(drink);
     }
@@ -111,6 +123,18 @@ public class StockServiceFacadeImpl implements StockServiceFacade {
     @Transactional(readOnly = true)
     public Cellar getCellarById(Integer cellarId) {
         return cellarService.getById(cellarId);
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public Movement getMovementById(Integer movementId) {
+        return movementService.getById(movementId);
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public Stock getStockById(Integer stockId) {
+        return stockService.getById(stockId);
     }
 
     @Override
@@ -154,6 +178,18 @@ public class StockServiceFacadeImpl implements StockServiceFacade {
     }
 
     @Override
+    @Transactional
+    public Movement saveMovement(Movement movement) throws BusinessException {
+        return movementService.save(movement);
+    }
+
+    @Override
+    @Transactional
+    public Stock saveStock(Stock stock) throws BusinessException {
+        return stockService.save(stock);
+    }
+
+    @Override
     @Transactional(readOnly = true)
     public void validateCellar(Cellar cellar) throws BusinessException {
         cellarService.validate(cellar);
@@ -163,6 +199,18 @@ public class StockServiceFacadeImpl implements StockServiceFacade {
     @Transactional(readOnly = true)
     public void validateCellarShare(CellarShare cellarShare) throws BusinessException {
         cellarShareService.validate(cellarShare);
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public void validateMovement(Movement movement) throws BusinessException {
+        movementService.validate(movement);
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public void validateStock(Stock stock) throws BusinessException {
+        stockService.validate(stock);
     }
 
     @Override

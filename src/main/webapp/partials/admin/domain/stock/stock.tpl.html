@@ -1,0 +1,29 @@
+<div class="row">
+  <div class="col-md-2">
+    <nav role="secondary">
+      <data-mycellar-admin-nav></data-mycellar-admin-nav>
+    </nav>
+  </div>
+  <div class="col-md-10">
+    <header class="page-header">
+      <h1>{{stock.bottle.wine | wineRenderer}}</h1>
+      <h2>{{stock.bottle.format | formatRenderer}}</h2>
+    </header>
+    <form name="form" class="form">
+      <error-form form="form"></error-form>
+      <fieldset>
+        <legend>Détails</legend>
+        <cellar form="form" cellar="stock.cellar"></cellar>
+        <wine form="form" wine="stock.bottle.wine"></wine>
+        <format form="form" format="stock.bottle.format"></format>
+        <div class="form-group" ng-class="{'has-error': form.quantity.$invalid}">
+          <label class="control-label" for="quantity">Quantité</label>
+          <input class="form-control" id="quantity" name="quantity" type="number" ng-model="stock.quantity" placeholder="Quantité" />
+          <error-ctrl ctrl="form.quantity"></error-ctrl>
+        </div>
+      </fieldset>
+      <input type="submit" class="btn btn-primary" value="Sauvegarder" ng-click="save()" />
+      <input type="submit" class="btn btn-default" value="Annuler" ng-click="cancel()" />
+    </form>
+  </div>
+</div>
