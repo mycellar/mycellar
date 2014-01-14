@@ -27,6 +27,7 @@ import org.joda.time.LocalDate;
 import fr.mycellar.application.shared.AbstractSimpleService;
 import fr.mycellar.application.stock.MovementService;
 import fr.mycellar.application.stock.StockService;
+import fr.mycellar.domain.shared.exception.BusinessError;
 import fr.mycellar.domain.shared.exception.BusinessException;
 import fr.mycellar.domain.stock.Arrival;
 import fr.mycellar.domain.stock.ArrivalBottle;
@@ -51,14 +52,14 @@ public class StockServiceImpl extends AbstractSimpleService<Stock, StockReposito
     private MovementService movementService;
 
     @Override
-    public void drink(Drink drink) {
+    public void drink(Drink drink) throws BusinessException {
         for (DrinkBottle drinkBottle : drink.getDrinkBottles()) {
             removeFromStock(drinkBottle.getCellar(), drinkBottle.getBottle(), drinkBottle.getQuantity(), drink.getDate(), drink.getDrinkWith(), 0);
         }
     }
 
     @Override
-    public void stock(Arrival arrival) {
+    public void stock(Arrival arrival) throws BusinessException {
         Cellar cellar = arrival.getCellar();
         float unitCharges = arrival.getOtherCharges() / arrival.getArrivalBottles().size();
         for (ArrivalBottle arrivalBottle : arrival.getArrivalBottles()) {
@@ -68,26 +69,23 @@ public class StockServiceImpl extends AbstractSimpleService<Stock, StockReposito
     }
 
     @Override
-    public void addToStock(Cellar cellar, Bottle bottle, Integer quantity, LocalDate date, float charges, float price, String source) {
+    public Stock addToStock(Cellar cellar, Bottle bottle, Integer quantity, LocalDate date, float charges, float price, String source) throws BusinessException {
         Stock stock = updateStock(cellar, bottle, quantity);
         // Use cellar and bottle from stock, they could have been merged.
         movementService.createInput(stock.getCellar(), stock.getBottle(), quantity, date, charges, price, source);
+        return stock;
     }
 
     @Override
-    public void removeFromStock(Cellar cellar, Bottle bottle, Integer quantity, LocalDate date, String destination, float price) {
+    public Stock removeFromStock(Cellar cellar, Bottle bottle, Integer quantity, LocalDate date, String destination, float price) throws BusinessException {
         Stock stock = updateStock(cellar, bottle, -quantity);
         // Use cellar and bottle from stock, they could have been merged.
         movementService.createOutput(stock.getCellar(), stock.getBottle(), quantity, date, destination, price);
+        return stock;
     }
 
-    /**
-     * @param cellar
-     * @param bottle
-     * @param quantity
-     * @return
-     */
-    private Stock updateStock(Cellar cellar, Bottle bottle, Integer quantity) {
+    @Override
+    public Stock updateStock(Cellar cellar, Bottle bottle, Integer quantity) throws BusinessException {
         Stock stock = findStock(bottle, cellar);
         if (stock == null) {
             stock = new Stock();
@@ -96,6 +94,7 @@ public class StockServiceImpl extends AbstractSimpleService<Stock, StockReposito
             stock.setQuantity(0);
         }
         stock.setQuantity(stock.getQuantity() + quantity);
+        validate(stock);
         return stockRepository.save(stock);
     }
 
@@ -108,7 +107,28 @@ public class StockServiceImpl extends AbstractSimpleService<Stock, StockReposito
 
     @Override
     public void validate(Stock entity) throws BusinessException {
+        Stock existing = findStock(entity.getBottle(), entity.getCellar());
+        if ((existing != null) && ((entity.getId() == null) || !existing.getId().equals(entity.getId()))) {
+            throw new BusinessException(BusinessError.STOCK_00001);
+        }
+        if (entity.getQuantity() < 0) {
+            throw new BusinessException(BusinessError.STOCK_00002);
+        }
+    }
 
+    @Override
+    protected Stock saveInternal(Stock entity) throws BusinessException {
+        Stock existing = findStock(entity.getBottle(), entity.getCellar());
+        if (existing != null) {
+            if (existing.getQuantity() > entity.getQuantity()) {
+                return removeFromStock(entity.getCellar(), entity.getBottle(), existing.getQuantity() - entity.getQuantity(), new LocalDate(), "Régularisation", 0);
+            } else if (existing.getQuantity() < entity.getQuantity()) {
+                return addToStock(entity.getCellar(), entity.getBottle(), entity.getQuantity() - existing.getQuantity(), new LocalDate(), 0, 0, "Régularisation");
+            }
+        } else if (entity.getQuantity() >= 0) {
+            return addToStock(entity.getCellar(), entity.getBottle(), entity.getQuantity(), new LocalDate(), 0, 0, "Régularisation");
+        }
+        return super.saveInternal(entity);
     }
 
     @Override

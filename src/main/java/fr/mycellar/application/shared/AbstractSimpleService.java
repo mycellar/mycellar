@@ -38,9 +38,6 @@ public abstract class AbstractSimpleService<E extends IdentifiedEntity, R extend
         getRepository().delete(entity);
     }
 
-    /**
-     * @param entity
-     */
     protected void validateDelete(E entity) throws BusinessException {
 
     }
@@ -48,6 +45,10 @@ public abstract class AbstractSimpleService<E extends IdentifiedEntity, R extend
     @Override
     public final E save(E entity) throws BusinessException {
         validate(entity);
+        return saveInternal(entity);
+    }
+
+    protected E saveInternal(E entity) throws BusinessException {
         return getRepository().save(entity);
     }
 

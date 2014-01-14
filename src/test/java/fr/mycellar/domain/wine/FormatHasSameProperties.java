@@ -20,19 +20,16 @@ package fr.mycellar.domain.wine;
 
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.CoreMatchers.is;
-import fr.mycellar.domain.position.MapHasSameProperties;
 import fr.mycellar.domain.shared.NamedEntityHasSameProperties;
 
 /**
  * @author speralta
  */
-public class RegionHasSameProperties extends NamedEntityHasSameProperties<Region> {
+public class FormatHasSameProperties extends NamedEntityHasSameProperties<Format> {
 
-    public RegionHasSameProperties(Region object) {
+    public FormatHasSameProperties(Format object) {
         super(object);
-        addProperty("description", is(equalTo(object.getDescription())));
-        addNullableProperty("country", object.getCountry(), CountryHasSameProperties.class);
-        addNullableProperty("map", object.getMap(), MapHasSameProperties.class);
+        addProperty("capacity", is(equalTo(object.getCapacity())));
     }
 
 }

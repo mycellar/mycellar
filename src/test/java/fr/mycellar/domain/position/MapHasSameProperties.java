@@ -18,8 +18,7 @@
  */
 package fr.mycellar.domain.position;
 
-import static fr.mycellar.domain.DomainMatchers.hasSameProperties;
-import fr.mycellar.domain.position.Map;
+import fr.mycellar.domain.image.ImageHasSameProperties;
 import fr.mycellar.test.matchers.PropertiesMatcher;
 
 /**
@@ -28,8 +27,8 @@ import fr.mycellar.test.matchers.PropertiesMatcher;
 public class MapHasSameProperties extends PropertiesMatcher<Map> {
 
     public MapHasSameProperties(Map object) {
-        addProperty("image", hasSameProperties(object.getImage()));
-        addProperty("position", hasSameProperties(object.getPosition()));
+        addNullableProperty("image", object.getImage(), ImageHasSameProperties.class);
+        addNullableProperty("position", object.getPosition(), PositionHasSameProperties.class);
     }
 
 }

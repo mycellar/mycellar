@@ -18,11 +18,10 @@
  */
 package fr.mycellar.domain.wine;
 
-import static fr.mycellar.domain.DomainMatchers.hasSameProperties;
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.CoreMatchers.is;
+import fr.mycellar.domain.position.MapHasSameProperties;
 import fr.mycellar.domain.shared.NamedEntityHasSameProperties;
-import fr.mycellar.domain.wine.Appellation;
 
 /**
  * @author speralta
@@ -32,8 +31,8 @@ public class AppellationHasSameProperties extends NamedEntityHasSameProperties<A
     public AppellationHasSameProperties(Appellation object) {
         super(object);
         addProperty("description", is(equalTo(object.getDescription())));
-        addProperty("region", hasSameProperties(object.getRegion()));
-        addProperty("map", hasSameProperties(object.getMap()));
+        addNullableProperty("region", object.getRegion(), RegionHasSameProperties.class);
+        addNullableProperty("map", object.getMap(), MapHasSameProperties.class);
     }
 
 }

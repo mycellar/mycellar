@@ -35,7 +35,7 @@ import fr.mycellar.infrastructure.shared.repository.SearchParameters;
  */
 public interface StockServiceFacade {
 
-    void arrival(Arrival arrival);
+    void arrival(Arrival arrival) throws BusinessException;
 
     long countCellars(SearchParameters searchParameters);
 
@@ -53,7 +53,7 @@ public interface StockServiceFacade {
 
     void deleteMovement(Movement movement) throws BusinessException;
 
-    void drink(Drink drink);
+    void drink(Drink drink) throws BusinessException;
 
     Cellar getCellarById(Integer cellarId);
 

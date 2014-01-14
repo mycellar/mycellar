@@ -26,6 +26,8 @@ import org.joda.time.LocalDate;
 
 import fr.mycellar.application.shared.AbstractSimpleService;
 import fr.mycellar.application.stock.MovementService;
+import fr.mycellar.application.stock.StockService;
+import fr.mycellar.domain.shared.exception.BusinessError;
 import fr.mycellar.domain.shared.exception.BusinessException;
 import fr.mycellar.domain.stock.Bottle;
 import fr.mycellar.domain.stock.Cellar;
@@ -43,13 +45,34 @@ public class MovementServiceImpl extends AbstractSimpleService<Movement, Movemen
 
     private MovementRepository movementRepository;
 
+    private StockService stockService;
+
     @Override
     public void validate(Movement entity) throws BusinessException {
-
+        if (entity.getNumber() == 0) {
+            throw new BusinessException(BusinessError.MOVEMENT_00001);
+        }
     }
 
     @Override
-    public void createOutput(Cellar cellar, Bottle bottle, Integer quantity, LocalDate date, String destination, float price) {
+    protected Movement saveInternal(Movement entity) throws BusinessException {
+        if (entity.isIdSet()) {
+            Movement existing = movementRepository.getById(entity.getId());
+            stockService.updateStock(entity.getCellar(), entity.getBottle(), entity.getNumber() - existing.getNumber());
+            return super.saveInternal(entity);
+        } else if (entity instanceof Input) {
+            stockService.updateStock(entity.getCellar(), entity.getBottle(), entity.getNumber());
+            return createInput(entity.getCellar(), entity.getBottle(), entity.getNumber(), entity.getDate(), ((Input) entity).getCharges(), ((Input) entity).getPrice(), ((Input) entity).getSource());
+        } else if (entity instanceof Output) {
+            stockService.updateStock(entity.getCellar(), entity.getBottle(), -entity.getNumber());
+            return createOutput(entity.getCellar(), entity.getBottle(), entity.getNumber(), entity.getDate(), ((Output) entity).getDestination(), ((Output) entity).getPrice());
+        } else {
+            throw new IllegalStateException("Unknown movement type");
+        }
+    }
+
+    @Override
+    public Output createOutput(Cellar cellar, Bottle bottle, Integer quantity, LocalDate date, String destination, float price) throws BusinessException {
         Output output = new Output();
         output.setBottle(bottle);
         output.setCellar(cellar);
@@ -57,11 +80,13 @@ public class MovementServiceImpl extends AbstractSimpleService<Movement, Movemen
         output.setDestination(destination);
         output.setNumber(quantity);
         output.setPrice(price);
+        validate(output);
         movementRepository.save(output);
+        return output;
     }
 
     @Override
-    public void createInput(Cellar cellar, Bottle bottle, Integer quantity, LocalDate date, float charges, float price, String source) {
+    public Input createInput(Cellar cellar, Bottle bottle, Integer quantity, LocalDate date, float charges, float price, String source) throws BusinessException {
         Input input = new Input();
         input.setDate(date);
         input.setBottle(bottle);
@@ -70,7 +95,9 @@ public class MovementServiceImpl extends AbstractSimpleService<Movement, Movemen
         input.setNumber(quantity);
         input.setPrice(price);
         input.setSource(source);
+        validate(input);
         movementRepository.save(input);
+        return input;
     }
 
     @Override
@@ -81,6 +108,11 @@ public class MovementServiceImpl extends AbstractSimpleService<Movement, Movemen
     @Inject
     public void setMovementRepository(MovementRepository movementRepository) {
         this.movementRepository = movementRepository;
+    }
+
+    @Inject
+    public void setStockService(StockService stockService) {
+        this.stockService = stockService;
     }
 
 }

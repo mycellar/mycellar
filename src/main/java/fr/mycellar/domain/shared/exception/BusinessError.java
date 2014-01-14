@@ -26,6 +26,8 @@ import fr.mycellar.domain.contact.Contact_;
 import fr.mycellar.domain.stock.Bottle_;
 import fr.mycellar.domain.stock.CellarShare_;
 import fr.mycellar.domain.stock.Cellar_;
+import fr.mycellar.domain.stock.Movement_;
+import fr.mycellar.domain.stock.Stock_;
 import fr.mycellar.domain.user.ResetPasswordRequest_;
 import fr.mycellar.domain.user.User_;
 import fr.mycellar.domain.wine.Appellation_;
@@ -95,6 +97,11 @@ public enum BusinessError {
     FORMAT_00003(Format_.stocks), //
 
     /*
+     * Movement
+     */
+    MOVEMENT_00001(Movement_.number), //
+
+    /*
      * Producer
      */
     PRODUCER_00001(Producer_.name), //
@@ -112,6 +119,12 @@ public enum BusinessError {
      * ResetPasswordRequest
      */
     RESETPASSWORDREQUEST_00001(ResetPasswordRequest_.key), //
+
+    /*
+     * Stock
+     */
+    STOCK_00001(Stock_.cellar, Stock_.bottle), //
+    STOCK_00002(Stock_.quantity), //
 
     /*
      * User

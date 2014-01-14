@@ -16,23 +16,23 @@
  * You should have received a copy of the GNU General Public License
  * along with MyCellar. If not, see <http://www.gnu.org/licenses/>.
  */
-package fr.mycellar.domain.wine;
+package fr.mycellar.domain.stock;
 
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.CoreMatchers.is;
-import fr.mycellar.domain.position.MapHasSameProperties;
-import fr.mycellar.domain.shared.NamedEntityHasSameProperties;
+import fr.mycellar.domain.shared.IdentifiedEntityHasSameProperties;
 
 /**
  * @author speralta
  */
-public class RegionHasSameProperties extends NamedEntityHasSameProperties<Region> {
+public abstract class MovementHasSameProperties<E extends Movement> extends IdentifiedEntityHasSameProperties<E> {
 
-    public RegionHasSameProperties(Region object) {
+    public MovementHasSameProperties(E object) {
         super(object);
-        addProperty("description", is(equalTo(object.getDescription())));
-        addNullableProperty("country", object.getCountry(), CountryHasSameProperties.class);
-        addNullableProperty("map", object.getMap(), MapHasSameProperties.class);
+        addNullableProperty("bottle", object.getBottle(), BottleHasSameProperties.class);
+        addNullableProperty("cellar", object.getCellar(), CellarHasSameProperties.class);
+        addProperty("date", is(equalTo(object.getDate())));
+        addProperty("number", is(equalTo(object.getNumber())));
     }
 
 }

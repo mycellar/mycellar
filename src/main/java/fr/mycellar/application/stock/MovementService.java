@@ -21,6 +21,7 @@ package fr.mycellar.application.stock;
 import org.joda.time.LocalDate;
 
 import fr.mycellar.application.shared.SimpleService;
+import fr.mycellar.domain.shared.exception.BusinessException;
 import fr.mycellar.domain.stock.Bottle;
 import fr.mycellar.domain.stock.Cellar;
 import fr.mycellar.domain.stock.Movement;
@@ -30,25 +31,8 @@ import fr.mycellar.domain.stock.Movement;
  */
 public interface MovementService extends SimpleService<Movement> {
 
-    /**
-     * @param cellar
-     * @param bottle
-     * @param quantity
-     * @param date
-     * @param charges
-     * @param price
-     * @param source
-     */
-    void createInput(Cellar cellar, Bottle bottle, Integer quantity, LocalDate date, float charges, float price, String source);
+    Movement createInput(Cellar cellar, Bottle bottle, Integer quantity, LocalDate date, float charges, float price, String source) throws BusinessException;
 
-    /**
-     * @param cellar
-     * @param bottle
-     * @param quantity
-     * @param date
-     * @param destination
-     * @param price
-     */
-    void createOutput(Cellar cellar, Bottle bottle, Integer quantity, LocalDate date, String destination, float price);
+    Movement createOutput(Cellar cellar, Bottle bottle, Integer quantity, LocalDate date, String destination, float price) throws BusinessException;
 
 }

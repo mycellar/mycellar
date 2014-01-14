@@ -29,7 +29,7 @@ public final class FieldUtils {
 
     public static void setId(IdentifiedEntity entity, int id) {
         try {
-            org.apache.commons.lang3.reflect.FieldUtils.writeDeclaredField(entity, "id", id, true);
+            org.apache.commons.lang3.reflect.FieldUtils.writeField(entity, "id", id, true);
         } catch (IllegalAccessException e) {
             throw new RuntimeException(e);
         }
@@ -37,8 +37,7 @@ public final class FieldUtils {
 
     public static void setVersion(IdentifiedEntity entity, int version) {
         try {
-            Field field = org.apache.commons.lang3.reflect.FieldUtils.getDeclaredField(
-                    IdentifiedEntity.class, "version", true);
+            Field field = org.apache.commons.lang3.reflect.FieldUtils.getDeclaredField(IdentifiedEntity.class, "version", true);
             org.apache.commons.lang3.reflect.FieldUtils.writeField(field, entity, version);
         } catch (IllegalAccessException e) {
             throw new RuntimeException(e);

@@ -31,6 +31,7 @@ import javax.persistence.ManyToOne;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 import javax.persistence.UniqueConstraint;
+import javax.validation.Valid;
 
 import org.apache.commons.lang3.builder.ToStringBuilder;
 
@@ -47,6 +48,7 @@ public class Stock extends IdentifiedEntity {
     private static final long serialVersionUID = 201111181451L;
 
     @Embedded
+    @Valid
     private Bottle bottle;
 
     @ManyToOne(cascade = { CascadeType.PERSIST, CascadeType.MERGE })

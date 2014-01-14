@@ -33,6 +33,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
+import javax.validation.Valid;
 
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.hibernate.annotations.Type;
@@ -59,6 +60,7 @@ public abstract class Movement extends IdentifiedEntity {
     private static final long serialVersionUID = 201111181451L;
 
     @Embedded
+    @Valid
     private Bottle bottle;
 
     @ManyToOne(cascade = { CascadeType.PERSIST, CascadeType.MERGE })

@@ -18,11 +18,15 @@
  */
 package fr.mycellar.test.matchers;
 
+import static org.hamcrest.CoreMatchers.is;
+import static org.hamcrest.CoreMatchers.nullValue;
+
 import java.lang.reflect.InvocationTargetException;
 import java.util.HashMap;
 import java.util.Map;
 
 import org.apache.commons.beanutils.PropertyUtils;
+import org.apache.commons.lang3.reflect.ConstructorUtils;
 import org.hamcrest.Description;
 import org.hamcrest.Matcher;
 import org.hamcrest.TypeSafeDiagnosingMatcher;
@@ -38,6 +42,18 @@ public abstract class PropertiesMatcher<T> extends TypeSafeDiagnosingMatcher<T> 
         matchers.put(property, matcher);
     }
 
+    protected final <G> void addNullableProperty(String property, G value, Class<? extends PropertiesMatcher<G>> matcherClass) {
+        if (value != null) {
+            try {
+                addProperty(property, ConstructorUtils.getAccessibleConstructor(matcherClass, value.getClass()).newInstance(value));
+            } catch (InstantiationException | IllegalAccessException | IllegalArgumentException | InvocationTargetException e) {
+                throw new RuntimeException(e);
+            }
+        } else {
+            addProperty(property, is(nullValue()));
+        }
+    }
+
     /**
      * {@inheritDoc}
      */
@@ -51,8 +67,7 @@ public abstract class PropertiesMatcher<T> extends TypeSafeDiagnosingMatcher<T> 
             } else {
                 first = false;
             }
-            description.appendText(property).appendText(" ")
-                    .appendDescriptionOf(matchers.get(property));
+            description.appendText(property).appendText(" ").appendDescriptionOf(matchers.get(property));
         }
         description.appendText("}");
     }
@@ -70,22 +85,27 @@ public abstract class PropertiesMatcher<T> extends TypeSafeDiagnosingMatcher<T> 
             try {
                 subItem = PropertyUtils.getProperty(item, property);
             } catch (IllegalAccessException e) {
-                throw new RuntimeException("Cannot get " + property + " from " + item.getClass()
-                        + " : " + e.getMessage(), e);
+                throw new RuntimeException("Cannot get " + property + " from " + item.getClass() + " : " + e.getMessage(), e);
             } catch (InvocationTargetException e) {
-                throw new RuntimeException("Cannot get " + property + " from " + item.getClass()
-                        + " : " + e.getMessage(), e);
+                throw new RuntimeException("Cannot get " + property + " from " + item.getClass() + " : " + e.getMessage(), e);
             } catch (NoSuchMethodException e) {
-                throw new RuntimeException("Cannot get " + property + " from " + item.getClass()
-                        + " : " + e.getMessage(), e);
+                throw new RuntimeException("Cannot get " + property + " from " + item.getClass() + " : " + e.getMessage(), e);
             }
             if (!matcher.matches(subItem)) {
-                MatcherHelper.reportMismatch(property, matcher, subItem, mismatchDescription,
-                        matches);
+                if (!matches) {
+                    mismatchDescription.appendText(", ");
+                }
+                mismatchDescription.appendText(property).appendText(" ");
+                matcher.describeMismatch(subItem, mismatchDescription);
                 matches = false;
             }
         }
         mismatchDescription.appendText("}");
         return matches;
+    }
+
+    public PropertiesMatcher<T> without(String property) {
+        matchers.remove(property);
+        return this;
     }
 }

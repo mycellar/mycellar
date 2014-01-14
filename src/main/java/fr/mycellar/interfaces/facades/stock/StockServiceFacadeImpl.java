@@ -61,7 +61,7 @@ public class StockServiceFacadeImpl implements StockServiceFacade {
 
     @Override
     @Transactional
-    public void arrival(Arrival arrival) {
+    public void arrival(Arrival arrival) throws BusinessException {
         stockService.stock(arrival);
     }
 
@@ -115,7 +115,7 @@ public class StockServiceFacadeImpl implements StockServiceFacade {
 
     @Override
     @Transactional
-    public void drink(Drink drink) {
+    public void drink(Drink drink) throws BusinessException {
         stockService.drink(drink);
     }
 
