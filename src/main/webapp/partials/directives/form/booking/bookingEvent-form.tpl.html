@@ -57,7 +57,7 @@
               <a href ng-click="removeBookingBottle(bookingBottle)" class="btn btn-danger btn-xs"><i class="fa fa-minus-circle"></i></a>
             </td>
           </tr>
-          <tr ng-if="!loading && items.length == 0">
+          <tr ng-if="!loading && bookingEvent.bottles.length == 0">
             <td colspan="11" class="text-center">Aucune bouteille dans la campagne.</td>
           </tr>
         </tbody>
