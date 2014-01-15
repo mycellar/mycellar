@@ -43,7 +43,7 @@ angular.module('mycellar.controllers.cellar.arrival').controller('ArrivalControl
     $scope.isNew = function() {
       return $scope.arrival.arrivalBottles.indexOf($scope.arrivalBottle) == -1;
     };
-    
+
     $scope.save = function() {
       Stocks.arrival($scope.arrival, function() {
         $location.path('/cellar/io');
