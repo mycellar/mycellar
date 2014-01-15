@@ -41,6 +41,8 @@ import fr.mycellar.domain.stock.Cellar;
 import fr.mycellar.domain.stock.CellarShare;
 import fr.mycellar.domain.stock.CellarShare_;
 import fr.mycellar.domain.stock.Cellar_;
+import fr.mycellar.domain.stock.Drink;
+import fr.mycellar.domain.stock.DrinkBottle;
 import fr.mycellar.domain.stock.Movement;
 import fr.mycellar.domain.stock.Movement_;
 import fr.mycellar.domain.stock.Stock;
@@ -144,6 +146,19 @@ public class StockWebService {
             throw new AccessDeniedException("Current user isn't the owner of the cellar.");
         }
         stockServiceFacade.arrival(arrival);
+    }
+
+    @POST
+    @Consumes(MediaType.APPLICATION_JSON)
+    @Path("drink")
+    @PreAuthorize("hasRole('ROLE_CELLAR')")
+    public void drink(Drink drink) throws BusinessException {
+        for (DrinkBottle drinkBottle : drink.getDrinkBottles()) {
+            if (!stockServiceFacade.hasModifyRight(drinkBottle.getCellar().getId(), currentUserService.getCurrentUserEmail())) {
+                throw new AccessDeniedException("Current user isn't the owner of the cellar.");
+            }
+        }
+        stockServiceFacade.drink(drink);
     }
 
     @Inject

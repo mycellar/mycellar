@@ -14,6 +14,10 @@ angular.module('mycellar.resources.stock.stocks').factory('Stocks', ['$resource'
     arrival: {
       url: '/api/stock/arrival',
       method: 'POST'
+    },
+    drink: {
+      url: '/api/stock/drink',
+      method: 'POST'
     }
   });
   var Stock = $resource('/api/domain/stock/stock/:stockId');
