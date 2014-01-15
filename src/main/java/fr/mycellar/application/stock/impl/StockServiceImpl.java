@@ -61,7 +61,7 @@ public class StockServiceImpl extends AbstractSimpleService<Stock, StockReposito
     @Override
     public void stock(Arrival arrival) throws BusinessException {
         Cellar cellar = arrival.getCellar();
-        float unitCharges = arrival.getOtherCharges() / arrival.getArrivalBottles().size();
+        float unitCharges = arrival.getCharges() / arrival.getArrivalBottles().size();
         for (ArrivalBottle arrivalBottle : arrival.getArrivalBottles()) {
             Bottle bottle = arrivalBottle.getBottle();
             addToStock(cellar, bottle, arrivalBottle.getQuantity(), arrival.getDate(), unitCharges, arrivalBottle.getPrice(), arrival.getSource());

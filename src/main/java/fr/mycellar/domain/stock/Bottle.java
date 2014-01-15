@@ -18,6 +18,7 @@
  */
 package fr.mycellar.domain.stock;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Embeddable;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
@@ -33,11 +34,11 @@ import fr.mycellar.domain.wine.Wine;
 @Embeddable
 public class Bottle {
 
-    @ManyToOne
+    @ManyToOne(cascade = { CascadeType.PERSIST, CascadeType.MERGE })
     @JoinColumn(name = "FORMAT", nullable = false)
     private Format format;
 
-    @ManyToOne
+    @ManyToOne(cascade = { CascadeType.PERSIST, CascadeType.MERGE })
     @JoinColumn(name = "WINE", nullable = false)
     private Wine wine;
 

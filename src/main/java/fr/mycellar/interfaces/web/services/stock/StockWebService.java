@@ -24,7 +24,9 @@ import java.util.List;
 import javax.inject.Inject;
 import javax.inject.Named;
 import javax.inject.Singleton;
+import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
+import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 import javax.ws.rs.QueryParam;
@@ -33,6 +35,8 @@ import javax.ws.rs.core.MediaType;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.access.prepost.PreAuthorize;
 
+import fr.mycellar.domain.shared.exception.BusinessException;
+import fr.mycellar.domain.stock.Arrival;
 import fr.mycellar.domain.stock.Cellar;
 import fr.mycellar.domain.stock.CellarShare;
 import fr.mycellar.domain.stock.CellarShare_;
@@ -129,6 +133,17 @@ public class StockWebService {
             cellarShares = stockServiceFacade.getCellarShares(searchParameters);
         }
         return new ListWithCount<>(stockServiceFacade.countCellarShares(searchParameters), cellarShares);
+    }
+
+    @POST
+    @Consumes(MediaType.APPLICATION_JSON)
+    @Path("arrival")
+    @PreAuthorize("hasRole('ROLE_CELLAR')")
+    public void arrival(Arrival arrival) throws BusinessException {
+        if (!stockServiceFacade.hasModifyRight(arrival.getCellar().getId(), currentUserService.getCurrentUserEmail())) {
+            throw new AccessDeniedException("Current user isn't the owner of the cellar.");
+        }
+        stockServiceFacade.arrival(arrival);
     }
 
     @Inject

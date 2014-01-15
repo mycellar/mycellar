@@ -35,7 +35,7 @@ public class Arrival implements Serializable {
 
     private LocalDate date;
 
-    private Float otherCharges;
+    private Float charges;
 
     private String source;
 
@@ -68,8 +68,8 @@ public class Arrival implements Serializable {
         return date;
     }
 
-    public Float getOtherCharges() {
-        return otherCharges;
+    public Float getCharges() {
+        return charges;
     }
 
     public String getSource() {
@@ -80,8 +80,8 @@ public class Arrival implements Serializable {
         this.date = date;
     }
 
-    public void setOtherCharges(Float otherCharges) {
-        this.otherCharges = otherCharges;
+    public void setCharges(Float charges) {
+        this.charges = charges;
     }
 
     public void setSource(String source) {
