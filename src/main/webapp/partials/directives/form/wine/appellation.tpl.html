@@ -16,12 +16,12 @@
       <a class="btn btn-default" ng-click="new()"><i class="fa fa-plus"></i></a>
     </span>
   </div>
-  <div ng-show="showSub" class="sub-entity">
+  <div ng-if="showSub" class="sub-entity">
     <ng-form name="subAppellationForm">
       <appellation-form form="subAppellationForm" appellation="newAppellation" post-label=" de l'appellation"></appellation-form>
       <a class="btn btn-success" ng-click="ok()">Valider</a>
       <a class="btn btn-warning" ng-click="cancel()">Annuler</a>
     </ng-form>
   </div>
-  <error-ctrl ctrl="form.appellation"></error-ctrl>
+  <span ng-transclude />
 </div>

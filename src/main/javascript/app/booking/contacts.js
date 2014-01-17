@@ -19,13 +19,13 @@ angular.module('mycellar.controllers.booking.contacts', [
 angular.module('mycellar.controllers.booking.contacts').controller('ContactsController', [
   '$scope', 'Contacts', 'tableService', '$location',
   function($scope, Contacts, tableService, $location) {
+    $scope.errors = [];
     $scope.tableOptions = {
       itemResource: Contacts.getLastContacts,
       defaultSort: ['next']
     };
     $scope.tableContext = tableService.createTableContext();
     $scope.new = function() {
-      // TODO manage producer via typeahead in contact page ?
       $location.path('/booking/contact/');
     };
     $scope.edit = function(contact) {

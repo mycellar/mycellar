@@ -6,6 +6,7 @@
       <input class="form-control" id="producer.name" name="producer.name" placeholder="Nom du producteur" ng-model="tableContext.filters['producer.name']" type="text" />
     </div>
   </data-table-filters>
+  <error-div errors="errors"></error-div>
   <paginated options="tableOptions" items="items" table-context="tableContext">
     <div class="table-responsive">
       <table class="table table-bordered table-striped table-condensed">

@@ -4,8 +4,8 @@ angular.module('mycellar.controllers.admin.domain.user.users', [
   'mycellar.resources.user.users', 
   'mycellar.directives.table', 
   'mycellar.directives.error',
-  'mycellar.directives.admin-domain-nav',
-  'mycellar.services.admin-domain'
+  'mycellar.directives.admin',
+  'mycellar.services.admin'
 ], [
   'adminDomainServiceProvider', 
   function(adminDomainServiceProvider){

@@ -59,7 +59,7 @@ public class Contact extends IdentifiedEntity {
 
     @Valid
     @ManyToOne(cascade = { CascadeType.PERSIST, CascadeType.MERGE })
-    @JoinColumn(name = "PRODUCER")
+    @JoinColumn(name = "PRODUCER", nullable = false)
     private Producer producer;
 
     @Column(name = "TEXT", length = 10000)

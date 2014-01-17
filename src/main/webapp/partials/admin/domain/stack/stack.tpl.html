@@ -1,38 +1,29 @@
-<div class="row">
-  <div class="col-md-2">
-    <nav role="secondary">
-      <data-mycellar-admin-nav></data-mycellar-admin-nav>
-    </nav>
-  </div>
-  <div class="col-md-10">
-    <header class="page-header"><h1>Stack : {{stack.hashCode}}</h1></header>
-    <form name="form" class="form">
-      <error-form form="form"></error-form>
-      <fieldset>
-        <legend>Stack</legend>
-        <div class="form-group" ng-class="{'has-error': form.hashCode.$invalid}">
-          <label class="control-label" for="hashCode">HashCode</label>
-          <input class="form-control" id="hashCode" name="hashCode" type="text" ng-model="stack.hashCode" placeholder="HashCode" />
-          <error-ctrl ctrl="form.hashCode"></error-ctrl>
-        </div>
-        <div class="form-group" ng-class="{'has-error': form.stack.$invalid}">
-          <label class="control-label" for="stack">Stack</label>
-          <textarea 
-              id="stack"
-              name="stack"
-              ng-model="stack.stack"
-              placeholder="Stack"
-              class="form-control"
-              rows="15"></textarea>
-          <error-ctrl ctrl="form.stack"></error-ctrl>
-        </div>
-        <div class="form-group" ng-class="{'has-error': form.count.$invalid}">
-          <label class="control-label" for="count">Nombre</label>
-          <input class="form-control" id="count" name="count" type="number" ng-model="stack.count" placeholder="Nombre" />
-          <error-ctrl ctrl="form.count"></error-ctrl>
-        </div>
-      </fieldset>
-      <input type="submit" class="btn btn-default" value="Annuler" ng-click="cancel()" />
-    </form>
-  </div>
-</div>
+<admin-domain>
+  <header class="page-header"><h1>Stack : {{stack.hashCode}}</h1></header>
+  <form name="form" class="form">
+    <error-div errors="errors"></error-div>
+    <fieldset>
+      <legend>Stack</legend>
+      <div class="form-group" ng-class="{'has-error': form.hashCode.$invalid}">
+        <label class="control-label" for="hashCode">HashCode</label>
+        <input class="form-control" id="hashCode" name="hashCode" type="text" ng-model="stack.hashCode" placeholder="HashCode" />
+      </div>
+      <div class="form-group" ng-class="{'has-error': form.stack.$invalid}">
+        <label class="control-label" for="stack">Stack</label>
+        <textarea 
+            id="stack"
+            name="stack"
+            ng-model="stack.stack"
+            placeholder="Stack"
+            class="form-control"
+            rows="15"></textarea>
+      </div>
+      <div class="form-group" ng-class="{'has-error': form.count.$invalid}">
+        <label class="control-label" for="count">Nombre</label>
+        <input class="form-control" id="count" name="count" type="number" ng-model="stack.count" placeholder="Nombre" />
+        <error-ctrl ctrl="form.count"></error-ctrl>
+      </div>
+    </fieldset>
+    <input type="submit" class="btn btn-default" value="Annuler" ng-click="cancel()" />
+  </form>
+</admin-domain>

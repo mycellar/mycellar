@@ -24,6 +24,7 @@ package fr.mycellar.domain.shared;
 public final class ValidationPattern {
 
     public static final String URL_PATTERN = "(^http://.*)?";
+    public static final String EMAIL_PATTERN = "(.*@.*\\..{2,3})?";
 
     /**
      * Refuse instanciation.

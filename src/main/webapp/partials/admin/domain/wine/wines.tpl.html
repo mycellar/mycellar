@@ -1,88 +1,81 @@
-<div class="row">
-  <div class="col-md-2">
-    <nav role="secondary">
-      <data-mycellar-admin-nav></data-mycellar-admin-nav>
-    </nav>
-  </div>
-  <div class="col-md-10">
-    <header class="page-header"><h1>Vins</h1></header>
-    <data-table-filters table-context="tableContext">
-      <div class="form-group">
-        <label class="control-label sr-only" for="appellation.region.country.name">Nom du pays</label>
-        <input class="form-control" id="appellation.region.country.name" name="appellation.region.country.name" placeholder="Nom du pays" ng-model="tableContext.filters['appellation.region.country.name']" type="text" />
-      </div>
-      <div class="form-group">
-        <label class="control-label sr-only" for="appellation.region.name">Nom de la région</label>
-        <input class="form-control" id="appellation.region.name" name="appellation.region.name" placeholder="Nom de la région" ng-model="tableContext.filters['appellation.region.name']" type="text" />
-      </div>
-      <div class="form-group">
-        <label class="control-label sr-only" for="appellation.name">Nom de l'appellation</label>
-        <input class="form-control" id="appellation.name" name="appellation.name" placeholder="Nom de l'appellation" ng-model="tableContext.filters['appellation.name']" type="text" />
-      </div>
-      <div class="form-group">
-        <label class="control-label sr-only" for="producer.name">Nom du producteur</label>
-        <input class="form-control" id="producer.name" name="producer.name" placeholder="Nom du producteur" ng-model="tableContext.filters['producer.name']" type="text" />
-      </div>
-      <div class="form-group">
-        <label class="control-label sr-only" for="name">Nom</label>
-        <input class="form-control" id="name" name="name" placeholder="Nom" ng-model="tableContext.filters['name']" type="text" />
-      </div>
-      <div class="form-group">
-        <label class="control-label sr-only" for="vintage">Millésime</label>
-        <input class="form-control" id="vintage" name="vintage" placeholder="Millésime" ng-model="tableContext.filters['vintage']" type="text" />
-      </div>
-    </data-table-filters>
-    <data-error-div errors="errors"></data-error-div>
-    <paginated options="tableOptions" items="items" table-context="tableContext">
-      <div class="table-responsive">
-        <table class="table table-bordered table-striped table-condensed">
-          <thead>
-            <tr>
-              <th>Pays <icon-sort attribute="appellation.region.country.name" table-context="tableContext" /></th>
-              <th>Région <icon-sort attribute="appellation.region.name" table-context="tableContext" /></th>
-              <th>Appellation <icon-sort attribute="appellation.name" table-context="tableContext" /></th>
-              <th>Producteur <icon-sort attribute="producer.name" table-context="tableContext" /></th>
-              <th>Nom <icon-sort attribute="name" table-context="tableContext" /></th>
-              <th>Millésime <icon-sort attribute="vintage" table-context="tableContext" /></th>
-              <th>Couleur <icon-sort attribute="color" table-context="tableContext" /></th>
-              <th>Type <icon-sort attribute="type" table-context="tableContext" /></th>
-              <th class="actions"><a href ng-click="new()" class="btn btn-default btn-xs"><i class="fa fa-plus-circle"></i></a></th>
-            </tr>
-          </thead>
-          <tbody ng-controller="LoadingCtrl" >
-            <tr ng-repeat="item in items">
-              <td>{{item.appellation.region.country.name}}</td>
-              <td>{{item.appellation.region.name}}</td>
-              <td>{{item.appellation.name}}</td>
-              <td>{{item.producer.name}}</td>
-              <td>{{item.name}}</td>
-              <td>{{item.vintage}}</td>
-              <td>{{item.color | wineColorRenderer}}</td>
-              <td>{{item.type | wineTypeRenderer}}</td>
-              <td>
-                <a href ng-click="edit(item.id)" class="btn btn-default btn-xs"><i class="fa fa-pencil"></i></a>
-                <a href ng-click="delete(item.id)" class="btn btn-danger btn-xs"><i class="fa fa-minus-circle"></i></a>
-              </td>
-            </tr>
-            <tr ng-if="!loading && items.length == 0">
-              <td colspan="9" class="text-center">Aucun vin ne correspond aux filtres.</td>
-            </tr>
-          </tbody>
-          <tfoot>
-            <tr>
-              <th>Pays <icon-sort attribute="appellation.region.country.name" table-context="tableContext" /></th>
-              <th>Région <icon-sort attribute="appellation.region.name" table-context="tableContext" /></th>
-              <th>Appellation <icon-sort attribute="appellation.name" table-context="tableContext" /></th>
-              <th>Producteur <icon-sort attribute="producer.name" table-context="tableContext" /></th>
-              <th>Nom <icon-sort attribute="name" table-context="tableContext" /></th>
-              <th>Millésime <icon-sort attribute="vintage" table-context="tableContext" /></th>
-              <th>Couleur <icon-sort attribute="color" table-context="tableContext" /></th>
-              <th>Type <icon-sort attribute="type" table-context="tableContext" /></th>
-              <th class="actions"><a href ng-click="new()" class="btn btn-default btn-xs"><i class="fa fa-plus-circle"></i></a></th>
-            </tr>
-          </tfoot>
-        </table>
-      </div>
-    </paginated>
-  </div>
-</div>
+<admin-domain>
+  <header class="page-header"><h1>Vins</h1></header>
+  <data-table-filters table-context="tableContext">
+    <div class="form-group">
+      <label class="control-label sr-only" for="appellation.region.country.name">Nom du pays</label>
+      <input class="form-control" id="appellation.region.country.name" name="appellation.region.country.name" placeholder="Nom du pays" ng-model="tableContext.filters['appellation.region.country.name']" type="text" />
+    </div>
+    <div class="form-group">
+      <label class="control-label sr-only" for="appellation.region.name">Nom de la région</label>
+      <input class="form-control" id="appellation.region.name" name="appellation.region.name" placeholder="Nom de la région" ng-model="tableContext.filters['appellation.region.name']" type="text" />
+    </div>
+    <div class="form-group">
+      <label class="control-label sr-only" for="appellation.name">Nom de l'appellation</label>
+      <input class="form-control" id="appellation.name" name="appellation.name" placeholder="Nom de l'appellation" ng-model="tableContext.filters['appellation.name']" type="text" />
+    </div>
+    <div class="form-group">
+      <label class="control-label sr-only" for="producer.name">Nom du producteur</label>
+      <input class="form-control" id="producer.name" name="producer.name" placeholder="Nom du producteur" ng-model="tableContext.filters['producer.name']" type="text" />
+    </div>
+    <div class="form-group">
+      <label class="control-label sr-only" for="name">Nom</label>
+      <input class="form-control" id="name" name="name" placeholder="Nom" ng-model="tableContext.filters['name']" type="text" />
+    </div>
+    <div class="form-group">
+      <label class="control-label sr-only" for="vintage">Millésime</label>
+      <input class="form-control" id="vintage" name="vintage" placeholder="Millésime" ng-model="tableContext.filters['vintage']" type="text" />
+    </div>
+  </data-table-filters>
+  <error-div errors="errors"></error-div>
+  <paginated options="tableOptions" items="items" table-context="tableContext">
+    <div class="table-responsive">
+      <table class="table table-bordered table-striped table-condensed">
+        <thead>
+          <tr>
+            <th>Pays <icon-sort attribute="appellation.region.country.name" table-context="tableContext" /></th>
+            <th>Région <icon-sort attribute="appellation.region.name" table-context="tableContext" /></th>
+            <th>Appellation <icon-sort attribute="appellation.name" table-context="tableContext" /></th>
+            <th>Producteur <icon-sort attribute="producer.name" table-context="tableContext" /></th>
+            <th>Nom <icon-sort attribute="name" table-context="tableContext" /></th>
+            <th>Millésime <icon-sort attribute="vintage" table-context="tableContext" /></th>
+            <th>Couleur <icon-sort attribute="color" table-context="tableContext" /></th>
+            <th>Type <icon-sort attribute="type" table-context="tableContext" /></th>
+            <th class="actions"><a href ng-click="new()" class="btn btn-default btn-xs"><i class="fa fa-plus-circle"></i></a></th>
+          </tr>
+        </thead>
+        <tbody ng-controller="LoadingCtrl" >
+          <tr ng-repeat="item in items">
+            <td>{{item.appellation.region.country.name}}</td>
+            <td>{{item.appellation.region.name}}</td>
+            <td>{{item.appellation.name}}</td>
+            <td>{{item.producer.name}}</td>
+            <td>{{item.name}}</td>
+            <td>{{item.vintage}}</td>
+            <td>{{item.color | wineColorRenderer}}</td>
+            <td>{{item.type | wineTypeRenderer}}</td>
+            <td>
+              <a href ng-click="edit(item.id)" class="btn btn-default btn-xs"><i class="fa fa-pencil"></i></a>
+              <a href ng-click="delete(item.id)" class="btn btn-danger btn-xs"><i class="fa fa-minus-circle"></i></a>
+            </td>
+          </tr>
+          <tr ng-if="!loading && items.length == 0">
+            <td colspan="9" class="text-center">Aucun vin ne correspond aux filtres.</td>
+          </tr>
+        </tbody>
+        <tfoot>
+          <tr>
+            <th>Pays <icon-sort attribute="appellation.region.country.name" table-context="tableContext" /></th>
+            <th>Région <icon-sort attribute="appellation.region.name" table-context="tableContext" /></th>
+            <th>Appellation <icon-sort attribute="appellation.name" table-context="tableContext" /></th>
+            <th>Producteur <icon-sort attribute="producer.name" table-context="tableContext" /></th>
+            <th>Nom <icon-sort attribute="name" table-context="tableContext" /></th>
+            <th>Millésime <icon-sort attribute="vintage" table-context="tableContext" /></th>
+            <th>Couleur <icon-sort attribute="color" table-context="tableContext" /></th>
+            <th>Type <icon-sort attribute="type" table-context="tableContext" /></th>
+            <th class="actions"><a href ng-click="new()" class="btn btn-default btn-xs"><i class="fa fa-plus-circle"></i></a></th>
+          </tr>
+        </tfoot>
+      </table>
+    </div>
+  </paginated>
+</admin-domain>

@@ -1,6 +1,6 @@
 describe('Unit: Testing adminDomainService', function () {
 
-  beforeEach(angular.mock.module('mycellar.services.admin-domain'));
+  beforeEach(angular.mock.module('mycellar.services.admin.domain'));
   
   describe('Testing the provider', function() {
     var provider;

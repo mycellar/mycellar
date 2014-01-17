@@ -1,7 +1,7 @@
 <header class="page-header"><h1>Arrivée d'un colis</h1></header>
 <section>
   <form name="arrivalForm" class="form">
-    <error-form form="arrivalForm"></error-form>
+    <error-div errors="errors"></error-div>
     <fieldset>
       <legend>Bouteilles</legend>
       <div class="table-responsive">
@@ -63,40 +63,43 @@
     </fieldset>
     <fieldset ng-if="arrivalBottle != null">
       <legend>{{isNew() ? 'Ajouter une bouteille au colis' : 'Modifier une bouteille du colis' }}</legend>
-      <wine form="arrivalForm" wine="arrivalBottle.bottle.wine"></wine>
-      <format form="arrivalForm" format="arrivalBottle.bottle.format"></format>
+      <wine form="arrivalForm" wine="arrivalBottle.bottle.wine" input-required="true">
+        <span class="help-block" ng-if="arrivalForm.wine.$error.required">Veuillez saisir un vin</span>
+      </wine>
+      <format form="arrivalForm" format="arrivalBottle.bottle.format" input-required="true">
+        <span class="help-block" ng-if="arrivalForm.format.$error.required">Veuillez saisir un format</span>
+      </format>
       <div class="form-group" ng-class="{'has-error': arrivalForm.price.$invalid}">
         <label class="control-label" for="price">Prix</label>
         <input class="form-control" id="price" name="price" type="number" ng-model="arrivalBottle.price" placeholder="Prix" />
-        <error-ctrl ctrl="arrivalForm.price"></error-ctrl>
       </div>
       <div class="form-group" ng-class="{'has-error': arrivalForm.quantity.$invalid}">
         <label class="control-label" for="quantity">Quantité</label>
-        <input class="form-control" id="quantity" name="quantity" type="number" ng-model="arrivalBottle.quantity" placeholder="Quantité" />
-        <error-ctrl ctrl="arrivalForm.quantity"></error-ctrl>
+        <input class="form-control" id="quantity" name="quantity" type="number" ng-model="arrivalBottle.quantity" placeholder="Quantité" required />
+        <span class="help-block" ng-if="arrivalForm.quantity.$error.required">Veuillez saisir une quantité</span>
       </div>
-      <input type="submit" class="btn btn-default" value="{{isNew() ? 'Ajouter' : 'Modifier'}}" ng-click="addBottle()" />
+      <input type="submit" class="btn btn-default" value="{{isNew() ? 'Ajouter' : 'Modifier'}}" ng-click="addBottle()" ng-disabled="arrivalForm.$invalid" />
     </fieldset>
     <fieldset>
       <legend>Détails</legend>
-      <cellar form="arrivalForm" cellar="arrival.cellar"></cellar>
+      <cellar form="arrivalForm" cellar="arrival.cellar" input-required="true">
+        <span class="help-block" ng-if="arrivalForm.cellar.$error.required">Veuillez saisir une cave</span>
+      </cellar>
       <div class="form-group" ng-class="{'has-error': arrivalForm.date.$invalid}">
         <label class="control-label" for="date">Date de réception</label>
-        <input class="form-control" id="date" name="date" type="date" ng-model="arrival.date" placeholder="Date de réception" />
-        <error-ctrl ctrl="arrivalForm.date"></error-ctrl>
+        <input class="form-control" id="date" name="date" type="date" ng-model="arrival.date" placeholder="Date de réception" required />
+        <span class="help-block" ng-if="form.date.$error.required">Veuillez saisir une date de réception</span>
       </div>
       <div class="form-group" ng-class="{'has-error': arrivalForm.source.$invalid}">
         <label class="control-label" for="source">Source</label>
         <input class="form-control" id="source" name="source" type="text" ng-model="arrival.source" placeholder="Source" />
-        <error-ctrl ctrl="arrivalForm.source"></error-ctrl>
       </div>
       <div class="form-group" ng-class="{'has-error': arrivalForm.charges.$invalid}">
         <label class="control-label" for="charges">Charges</label>
         <input class="form-control" id="charges" name="charges" type="number" ng-model="arrival.charges" placeholder="Charges" />
-        <error-ctrl ctrl="arrivalForm.charges"></error-ctrl>
       </div>
     </fieldset>
-    <input type="submit" class="btn btn-primary" value="Sauvegarder" ng-click="save()" />
+    <input type="submit" class="btn btn-primary" value="Sauvegarder" ng-click="save()" ng-disabled="arrivalForm.$invalid" />
     <input type="submit" class="btn btn-default" value="Annuler" ng-click="cancel()" />
   </form>
 </section>

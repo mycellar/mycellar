@@ -7,7 +7,7 @@ angular.module('mycellar.controllers.admin.domain', [
   'mycellar.controllers.admin.domain.stock',
   'mycellar.controllers.admin.domain.user',
   'mycellar.controllers.admin.domain.wine',
-  'mycellar.directives.admin-domain-nav'
+  'mycellar.directives.admin'
 ], [
   '$routeProvider', 
   function($routeProvider){

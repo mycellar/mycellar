@@ -46,7 +46,7 @@ public class CellarShareServiceImpl extends AbstractSimpleService<CellarShare, C
                 .property(CellarShare_.cellar, entity.getCellar()) //
                 .property(CellarShare_.email, entity.getEmail()));
         if ((existing != null) && ((entity.getId() == null) || !existing.getId().equals(entity.getId()))) {
-            throw new BusinessException(BusinessError.CELLAR_SHARE_00001);
+            throw new BusinessException(BusinessError.CELLARSHARE_00001);
         }
     }
 

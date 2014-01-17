@@ -2,7 +2,7 @@
   <legend>Détails</legend>
   <div class="form-group" ng-class="{'has-error': form.name.$invalid}">
     <label class="control-label" for="name">Nom</label>
-    <input class="form-control" id="name" name="name" type="text" ng-model="cellar.name" placeholder="Nom" />
-    <error-ctrl ctrl="form.name"></error-ctrl>
+    <input class="form-control" id="name" name="name" type="text" ng-model="cellar.name" placeholder="Nom" required />
+    <span class="help-block" ng-if="form.name.$error.required">Veuillez saisir un nom</span>
   </div>
 </fieldset>

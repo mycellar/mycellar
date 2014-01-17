@@ -18,6 +18,7 @@ angular.module('mycellar.controllers.cellar.arrival', [
 angular.module('mycellar.controllers.cellar.arrival').controller('ArrivalController', [
   '$scope', 'Stocks', '$location',
   function($scope, Stocks, $location) {
+    $scope.errors = [];
     $scope.edit = function(arrivalBottle) {
       $scope.arrivalBottle = arrivalBottle;
     };
@@ -45,8 +46,18 @@ angular.module('mycellar.controllers.cellar.arrival').controller('ArrivalControl
     };
 
     $scope.save = function() {
-      Stocks.arrival($scope.arrival, function() {
-        $location.path('/cellar/io');
+      $scope.errors = [];
+      Stocks.arrival($scope.arrival, function(value) {
+        if (value.errorKey != undefined) {
+          angular.forEach(value.properties, function(property) {
+            if ($scope.arrivalForm[property] != undefined) {
+              $scope.arrivalForm[property].$setValidity(value.errorKey, false);
+            }
+          });
+          $scope.errors.push(value);
+        } else {
+          $location.path('/cellar/io');
+        }
       });
     };
     $scope.cancel = function() {

@@ -1,42 +1,36 @@
-<div class="row">
-  <div class="col-md-2">
-    <nav role="secondary">
-      <data-mycellar-admin-nav></data-mycellar-admin-nav>
-    </nav>
-  </div>
-  <div class="col-md-10">
-    <header class="page-header"><h1>Configurations</h1></header>
-    <paginated options="tableOptions" items="items" table-context="tableContext">
-      <div class="table-responsive">
-        <table class="table table-bordered table-striped table-condensed">
-          <thead>
-            <tr>
-              <th>Clé <icon-sort attribute="key" table-context="tableContext" /></th>
-              <th>Valeur</th>
-              <th class="actions"></th>
-            </tr>
-          </thead>
-          <tbody ng-controller="LoadingCtrl">
-            <tr ng-repeat="item in items">
-              <td>{{item.key}}</td>
-              <td>{{item.value}}</td>
-              <td>
-                <a href ng-click="edit(item.id)" class="btn btn-default btn-xs"><i class="fa fa-pencil"></i></a>
-              </td>
-            </tr>
-            <tr ng-if="!loading && items.length == 0">
-              <td colspan="3" class="text-center">Aucune configuration.</td>
-            </tr>
-          </tbody>
-          <tfoot>
-            <tr>
-              <th>Clé <icon-sort attribute="key" table-context="tableContext" /></th>
-              <th>Valeur</th>
-              <th class="actions"></th>
-            </tr>
-          </tfoot>
-        </table>
-      </div>
-    </data-mycellar-table>
-  </div>
-</div>
+<admin-domain>
+  <header class="page-header"><h1>Configurations</h1></header>
+  <error-div errors="errors"></error-div>
+  <paginated options="tableOptions" items="items" table-context="tableContext">
+    <div class="table-responsive">
+      <table class="table table-bordered table-striped table-condensed">
+        <thead>
+          <tr>
+            <th>Clé <icon-sort attribute="key" table-context="tableContext" /></th>
+            <th>Valeur</th>
+            <th class="actions"></th>
+          </tr>
+        </thead>
+        <tbody ng-controller="LoadingCtrl">
+          <tr ng-repeat="item in items">
+            <td>{{item.key}}</td>
+            <td>{{item.value}}</td>
+            <td>
+              <a href ng-click="edit(item.id)" class="btn btn-default btn-xs"><i class="fa fa-pencil"></i></a>
+            </td>
+          </tr>
+          <tr ng-if="!loading && items.length == 0">
+            <td colspan="3" class="text-center">Aucune configuration.</td>
+          </tr>
+        </tbody>
+        <tfoot>
+          <tr>
+            <th>Clé <icon-sort attribute="key" table-context="tableContext" /></th>
+            <th>Valeur</th>
+            <th class="actions"></th>
+          </tr>
+        </tfoot>
+      </table>
+    </div>
+  </paginated>
+</admin-domain>

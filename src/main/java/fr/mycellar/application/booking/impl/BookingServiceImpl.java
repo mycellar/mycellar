@@ -32,6 +32,7 @@ import fr.mycellar.domain.booking.Booking;
 import fr.mycellar.domain.booking.BookingBottle;
 import fr.mycellar.domain.booking.BookingEvent;
 import fr.mycellar.domain.booking.Booking_;
+import fr.mycellar.domain.shared.exception.BusinessError;
 import fr.mycellar.domain.shared.exception.BusinessException;
 import fr.mycellar.domain.user.User;
 import fr.mycellar.infrastructure.booking.repository.BookingRepository;
@@ -101,7 +102,12 @@ public class BookingServiceImpl extends AbstractSimpleService<Booking, BookingRe
 
     @Override
     public void validate(Booking entity) throws BusinessException {
-
+        Booking existing = bookingRepository.findUniqueOrNone(new SearchParameters() //
+                .property(Booking_.bookingEvent, entity.getBookingEvent()) //
+                .property(Booking_.customer, entity.getCustomer()));
+        if ((existing != null) && ((entity.getId() == null) || !existing.getId().equals(entity.getId()))) {
+            throw new BusinessException(BusinessError.BOOKING_00001);
+        }
     }
 
     @Override

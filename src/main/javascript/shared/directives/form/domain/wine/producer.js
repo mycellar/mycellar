@@ -20,13 +20,22 @@ angular.module('mycellar.directives.form.domain.wine.producer').directive('produ
     return {
       restrict: 'E',
       replace: true,
+      transclude: true,
       templateUrl: 'partials/directives/form/wine/producer.tpl.html',
       scope: {
         form: '=',
         producer: '=',
         postLabel: '@'
       },
+      compile: function(element, attrs) {
+        for (var attrName in attrs) {
+          if (attrName.indexOf("input") == 0) {
+            angular.element(element.find('input')[0]).attr(attrName.charAt(5).toLowerCase() + attrName.substring(6), attrs[attrName]);
+          }
+        }
+      },
       controller: function($scope, Producers) {
+        $scope.errors = [];
         $scope.producers = Producers.nameLike;
         $scope.new = function() {
           $scope.newProducer = {};
@@ -36,13 +45,15 @@ angular.module('mycellar.directives.form.domain.wine.producer').directive('produ
           $scope.showSub = false;
         };
         $scope.ok = function() {
+          $scope.errors = [];
           Producers.validate($scope.newProducer, function (value, headers) {
-            if (value.internalError != undefined) {
-              $scope.subProducerForm.$setValidity('Error occured.', false);
-            } else if (value.errorKey != undefined) {
-              for (var property in value.properties) {
-                $scope.subProducerForm[value.properties[property]].$setValidity(value.errorKey, false);
-              }
+            if (value.errorKey != undefined) {
+              angular.forEach(value.properties, function(property) {
+                if ($scope.subProducerForm[property] != undefined) {
+                  $scope.subProducerForm[property].$setValidity(value.errorKey, false);
+                }
+              });
+              $scope.errors.push(value);
             } else {
               $scope.producer = $scope.newProducer;
               $scope.showSub = false;

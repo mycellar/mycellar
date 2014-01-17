@@ -26,6 +26,7 @@ angular.module('mycellar.controllers.booking.contact', [
 angular.module('mycellar.controllers.booking.contact').controller('ContactController', [
   '$scope', 'producer', 'Contacts',
   function($scope, producer, Contacts) {
+    $scope.errors = [];
     $scope.setPage = function(page) {
       $scope.currentPage = page;
       $scope.firstItem = ($scope.currentPage - 1) * $scope.itemsPerPage;
@@ -49,17 +50,17 @@ angular.module('mycellar.controllers.booking.contact').controller('ContactContro
     });
     
     $scope.saveProducer = function() {
+      $scope.errors = [];
       $scope.backup = {};
       angular.copy($scope.producer, $scope.backup);
       $scope.producer.$save(function (value, headers) {
         if (value.errorKey != undefined) {
-          for (var property in value.properties) {
-            $scope.producerForm[value.properties[property]].$setValidity(value.errorKey, false);
-          }
-          angular.copy($scope.backup, $scope.producer);
-        } else if (value.internalError != undefined) {
-          $scope.producerForm.$setValidity('Error occured: '+ value.internalError+'.', false);
-          angular.copy($scope.backup, $scope.contact);
+          angular.forEach(value.properties, function(property) {
+            if ($scope.producerForm[property] != undefined) {
+              $scope.producerForm[property].$setValidity(value.errorKey, false);
+            }
+          });
+          $scope.errors.push(value);
         } else {
           $scope.backup = undefined;
         }
@@ -77,17 +78,17 @@ angular.module('mycellar.controllers.booking.contact').controller('ContactContro
     };
     
     $scope.saveContact = function() {
+      $scope.errors = [];
       $scope.backup = {};
       angular.copy($scope.contact, $scope.backup);
       $scope.contact.$save(function (value, headers) {
         if (value.errorKey != undefined) {
-          for (var property in value.properties) {
-            $scope.contactForm[value.properties[property]].$setValidity(value.errorKey, false);
-          }
-          angular.copy($scope.backup, $scope.contact);
-        } else if (value.internalError != undefined) {
-          $scope.contactForm.$setValidity('Error occured: '+ value.internalError+'.', false);
-          angular.copy($scope.backup, $scope.contact);
+          angular.forEach(value.properties, function(property) {
+            if ($scope.contactForm[property] != undefined) {
+              $scope.contactForm[property].$setValidity(value.errorKey, false);
+            }
+          });
+          $scope.errors.push(value);
         } else {
           $scope.backup = undefined;
           $scope.contact = null;
@@ -96,7 +97,6 @@ angular.module('mycellar.controllers.booking.contact').controller('ContactContro
       });
     };
     
-    $scope.errors = [];
     $scope.cancelContact = function() {
       $scope.contact = null;
     };

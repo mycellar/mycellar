@@ -1,9 +1,10 @@
 angular.module('mycellar.controllers.admin.domain.admin.configuration', [
   'ngRoute',
   'mycellar.resources.admin.configurations', 
-  'mycellar.services.admin-domain',
+  'mycellar.services.admin',
   'mycellar.directives.form',
-  'mycellar.directives.admin-domain-nav'
+  'mycellar.directives.error',
+  'mycellar.directives.admin'
 ]);
 
 angular.module('mycellar.controllers.admin.domain.admin.configuration').controller('AdminDomainConfigurationController', [

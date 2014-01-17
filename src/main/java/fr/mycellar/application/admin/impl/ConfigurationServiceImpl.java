@@ -27,6 +27,7 @@ import fr.mycellar.application.shared.AbstractSimpleService;
 import fr.mycellar.domain.admin.Configuration;
 import fr.mycellar.domain.admin.ConfigurationKeyEnum;
 import fr.mycellar.domain.admin.Configuration_;
+import fr.mycellar.domain.shared.ValidationPattern;
 import fr.mycellar.domain.shared.exception.BusinessError;
 import fr.mycellar.domain.shared.exception.BusinessException;
 import fr.mycellar.infrastructure.admin.repository.ConfigurationRepository;
@@ -62,6 +63,16 @@ public class ConfigurationServiceImpl extends AbstractSimpleService<Configuratio
         Configuration existing = find(entity.getKey());
         if ((existing != null) && ((entity.getId() == null) || !existing.getId().equals(entity.getId()))) {
             throw new BusinessException(BusinessError.CONFIGURATION_00001);
+        }
+        switch (entity.getKey()) {
+        case MAIL_ADDRESS_SENDER:
+        case REMINDER_ADDRESS_RECEIVERS:
+            if (!entity.getValue().matches(ValidationPattern.EMAIL_PATTERN)) {
+                throw new BusinessException(BusinessError.CONFIGURATION_00002);
+            }
+            break;
+        default:
+            break;
         }
     }
 

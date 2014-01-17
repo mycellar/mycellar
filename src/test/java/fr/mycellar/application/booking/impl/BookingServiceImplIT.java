@@ -19,24 +19,34 @@
 package fr.mycellar.application.booking.impl;
 
 import static org.mockito.Mockito.only;
+import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.verifyZeroInteractions;
 import static org.mockito.MockitoAnnotations.initMocks;
 
 import org.junit.Before;
 import org.junit.Test;
+import org.junit.runner.RunWith;
 import org.mockito.Mock;
+import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import org.springframework.transaction.annotation.Transactional;
 
 import fr.mycellar.domain.booking.Booking;
 import fr.mycellar.domain.booking.BookingBottle;
+import fr.mycellar.domain.booking.BookingEvent;
 import fr.mycellar.domain.shared.exception.BusinessException;
+import fr.mycellar.domain.user.User;
 import fr.mycellar.infrastructure.booking.repository.BookingRepository;
 import fr.mycellar.test.FieldUtils;
 
 /**
  * @author speralta
  */
-public class BookingServiceImplTest {
+@RunWith(SpringJUnit4ClassRunner.class)
+@ContextConfiguration(locations = { "classpath:context-infrastructure-test.xml" })
+@Transactional
+public class BookingServiceImplIT {
 
     private BookingServiceImpl bookingServiceImpl;
 
@@ -53,10 +63,12 @@ public class BookingServiceImplTest {
     @Test
     public void testSaveOrDelete_save() throws BusinessException {
         Booking booking = new Booking();
+        booking.setBookingEvent(new BookingEvent());
+        booking.setCustomer(new User());
         booking.getQuantities().put(new BookingBottle(), 1);
         bookingServiceImpl.saveOrDelete(booking);
 
-        verify(bookingRepository, only()).save(booking);
+        verify(bookingRepository, times(1)).save(booking);
     }
 
     @Test

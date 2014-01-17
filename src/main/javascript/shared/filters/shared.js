@@ -9,16 +9,6 @@ angular.module('mycellar').filter('firstLine', function () {
     }
     return out;
   }
-}).filter('errorKeys', function () {
-  return function (input) {
-    var collectionKeys = [];
-    for (var key in input) {
-      if (input.hasOwnProperty(key) && key.charAt(0) != '$') {
-        collectionKeys.push(key);
-      }
-    }
-    return collectionKeys;
-  }
 }).filter('error', function() {
   return function (input) {
     if (input == 'email') {

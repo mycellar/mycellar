@@ -1,7 +1,7 @@
 <header class="page-header"><h1>Consommation de bouteilles</h1></header>
 <section>
   <form name="drinkForm" class="form">
-    <error-form form="drinkForm"></error-form>
+    <error-div errors="errors"></error-div>
     <fieldset>
       <legend>Bouteilles</legend>
       <div class="table-responsive">
@@ -63,30 +63,35 @@
     </fieldset>
     <fieldset ng-if="drinkBottle != null">
       <legend>{{isNew() ? 'Ajouter une bouteille bue' : 'Modifier une bouteille bue' }}</legend>
-      <wine form="drinkForm" wine="drinkBottle.bottle.wine"></wine>
-      <format form="drinkForm" format="drinkBottle.bottle.format"></format>
-      <cellar form="drinkForm" cellar="drinkBottle.cellar"></cellar>
+      <wine form="drinkForm" wine="drinkBottle.bottle.wine" input-required="true">
+        <span class="help-block" ng-if="drinkForm.wine.$error.required">Veuillez saisir un vin</span>
+      </wine>
+      <format form="drinkForm" format="drinkBottle.bottle.format" input-required="true">
+        <span class="help-block" ng-if="drinkForm.format.$error.required">Veuillez saisir un format</span>
+      </format>
+      <cellar form="drinkForm" cellar="drinkBottle.cellar" input-required="true">
+        <span class="help-block" ng-if="drinkForm.cellar.$error.required">Veuillez saisir une cave</span>
+      </cellar>
       <div class="form-group" ng-class="{'has-error': drinkForm.quantity.$invalid}">
         <label class="control-label" for="quantity">Quantité</label>
-        <input class="form-control" id="quantity" name="quantity" type="number" ng-model="drinkBottle.quantity" placeholder="Quantité" />
-        <error-ctrl ctrl="drinkForm.quantity"></error-ctrl>
+        <input class="form-control" id="quantity" name="quantity" type="number" ng-model="drinkBottle.quantity" placeholder="Quantité" required />
+        <span class="help-block" ng-if="form.quantity.$error.required">Veuillez saisir une quantité</span>
       </div>
-      <input type="submit" class="btn btn-default" value="{{isNew() ? 'Ajouter' : 'Modifier'}}" ng-click="addBottle()" />
+      <input type="submit" class="btn btn-default" value="{{isNew() ? 'Ajouter' : 'Modifier'}}" ng-click="addBottle()" ng-disabled="drinkForm.$invalid" />
     </fieldset>
     <fieldset>
       <legend>Détails</legend>
       <div class="form-group" ng-class="{'has-error': drinkForm.date.$invalid}">
         <label class="control-label" for="date">Date de consommation</label>
-        <input class="form-control" id="date" name="date" type="date" ng-model="drink.date" placeholder="Date de consommation" />
-        <error-ctrl ctrl="drinkForm.date"></error-ctrl>
+        <input class="form-control" id="date" name="date" type="date" ng-model="drink.date" placeholder="Date de consommation" required />
+        <span class="help-block" ng-if="form.date.$error.required">Veuillez saisir une date</span>
       </div>
       <div class="form-group" ng-class="{'has-error': drinkForm.drinkWith.$invalid}">
         <label class="control-label" for="drinkWith">Bu avec</label>
         <input class="form-control" id="drinkWith" name="drinkWith" type="text" ng-model="drink.drinkWith" placeholder="Bu avec" />
-        <error-ctrl ctrl="drinkForm.drinkWith"></error-ctrl>
       </div>
     </fieldset>
-    <input type="submit" class="btn btn-primary" value="Sauvegarder" ng-click="save()" />
+    <input type="submit" class="btn btn-primary" value="Sauvegarder" ng-click="save()" ng-disabled="drinkForm.$invalid" />
     <input type="submit" class="btn btn-default" value="Annuler" ng-click="cancel()" />
   </form>
 </section>

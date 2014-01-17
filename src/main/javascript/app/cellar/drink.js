@@ -18,6 +18,7 @@ angular.module('mycellar.controllers.cellar.drink', [
 angular.module('mycellar.controllers.cellar.drink').controller('DrinkController', [
   '$scope', 'Stocks', '$location',
   function($scope, Stocks, $location) {
+    $scope.errors = [];
     $scope.edit = function(drinkBottle) {
       $scope.drinkBottle = drinkBottle;
     };
@@ -45,8 +46,18 @@ angular.module('mycellar.controllers.cellar.drink').controller('DrinkController'
     };
 
     $scope.save = function() {
-      Stocks.drink($scope.drink, function() {
-        $location.path('/cellar/io');
+      $scope.errors = [];
+      Stocks.drink($scope.drink, function(value) {
+        if (value.errorKey != undefined) {
+          angular.forEach(value.properties, function(property) {
+            if ($scope.drinkForm[property]) {
+              $scope.drinkForm[property].$setValidity(value.errorKey, false);
+            }
+          });
+          $scope.errors.push(value);
+        } else {
+          $location.path('/cellar/io');
+        }
       });
     };
     $scope.cancel = function() {

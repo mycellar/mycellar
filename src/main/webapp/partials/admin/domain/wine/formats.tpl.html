@@ -1,50 +1,43 @@
-<div class="row">
-  <div class="col-md-2">
-    <nav role="secondary">
-      <data-mycellar-admin-nav></data-mycellar-admin-nav>
-    </nav>
-  </div>
-  <div class="col-md-10">
-    <header class="page-header"><h1>Formats</h1></header>
-    <data-table-filters table-context="tableContext">
-      <div class="form-group">
-        <label class="control-label sr-only" for="name">Nom</label>
-        <input class="form-control" id="name" name="name" placeholder="Nom" ng-model="tableContext.filters['name']" type="text" />
-      </div>
-    </data-table-filters>
-    <data-error-div errors="errors"></data-error-div>
-    <paginated options="tableOptions" items="items" table-context="tableContext">
-      <div class="table-responsive">
-        <table class="table table-bordered table-striped table-condensed">
-          <thead>
-            <tr>
-              <th>Nom <icon-sort attribute="name" table-context="tableContext" /></th>
-              <th>Contenance <icon-sort attribute="capacity" table-context="tableContext" /></th>
-              <th class="actions"><a href ng-click="new()" class="btn btn-default btn-xs"><i class="fa fa-plus-circle"></i></a></th>
-            </tr>
-          </thead>
-          <tbody ng-controller="LoadingCtrl">
-            <tr ng-repeat="item in items">
-              <td>{{item.name}}</td>
-              <td>{{item.capacity | number}} L</td>
-              <td>
-                <a href ng-click="edit(item.id)" class="btn btn-default btn-xs"><i class="fa fa-pencil"></i></a>
-                <a href ng-click="delete(item.id)" class="btn btn-danger btn-xs"><i class="fa fa-minus-circle"></i></a>
-              </td>
-            </tr>
-            <tr ng-if="!loading && items.length == 0">
-              <td colspan="3" class="text-center">Aucun format ne correspond aux filtres.</td>
-            </tr>
-          </tbody>
-          <tfoot>
-            <tr>
-              <th>Nom <icon-sort attribute="name" table-context="tableContext" /></th>
-              <th>Contenance <icon-sort attribute="capacity" table-context="tableContext" /></th>
-              <th class="actions"><a href ng-click="new()" class="btn btn-default btn-xs"><i class="fa fa-plus-circle"></i></a></th>
-            </tr>
-          </tfoot>
-        </table>
-      </div>
-    </paginated>
-  </div>
-</div>
+<admin-domain>
+  <header class="page-header"><h1>Formats</h1></header>
+  <data-table-filters table-context="tableContext">
+    <div class="form-group">
+      <label class="control-label sr-only" for="name">Nom</label>
+      <input class="form-control" id="name" name="name" placeholder="Nom" ng-model="tableContext.filters['name']" type="text" />
+    </div>
+  </data-table-filters>
+  <error-div errors="errors"></error-div>
+  <paginated options="tableOptions" items="items" table-context="tableContext">
+    <div class="table-responsive">
+      <table class="table table-bordered table-striped table-condensed">
+        <thead>
+          <tr>
+            <th>Nom <icon-sort attribute="name" table-context="tableContext" /></th>
+            <th>Contenance <icon-sort attribute="capacity" table-context="tableContext" /></th>
+            <th class="actions"><a href ng-click="new()" class="btn btn-default btn-xs"><i class="fa fa-plus-circle"></i></a></th>
+          </tr>
+        </thead>
+        <tbody ng-controller="LoadingCtrl">
+          <tr ng-repeat="item in items">
+            <td>{{item.name}}</td>
+            <td>{{item.capacity | number}} L</td>
+            <td>
+              <a href ng-click="edit(item.id)" class="btn btn-default btn-xs"><i class="fa fa-pencil"></i></a>
+              <a href ng-click="delete(item.id)" class="btn btn-danger btn-xs"><i class="fa fa-minus-circle"></i></a>
+            </td>
+          </tr>
+          <tr ng-if="!loading && items.length == 0">
+            <td colspan="3" class="text-center">Aucun format ne correspond aux filtres.</td>
+          </tr>
+        </tbody>
+        <tfoot>
+          <tr>
+            <th>Nom <icon-sort attribute="name" table-context="tableContext" /></th>
+            <th>Contenance <icon-sort attribute="capacity" table-context="tableContext" /></th>
+            <th class="actions"><a href ng-click="new()" class="btn btn-default btn-xs"><i class="fa fa-plus-circle"></i></a></th>
+          </tr>
+        </tfoot>
+      </table>
+    </div>
+  </paginated>
+</admin-domain>

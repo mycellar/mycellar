@@ -71,13 +71,22 @@ angular.module('mycellar.directives.form.domain.booking.bookingEvent').directive
     return {
       restrict: 'E',
       replace: true,
+      transclude: true,
       templateUrl: 'partials/directives/form/booking/bookingEvent.tpl.html',
       scope: {
         form: '=',
         bookingEvent: '=',
         postLabel: '@'
       },
+      compile: function(element, attrs) {
+        for (var attrName in attrs) {
+          if (attrName.indexOf("input") == 0) {
+            angular.element(element.find('input')[0]).attr(attrName.charAt(5).toLowerCase() + attrName.substring(6), attrs[attrName]);
+          }
+        }
+      },
       controller: function($scope, BookingEvents) {
+        $scope.errors = [];
         $scope.bookingEvents = BookingEvents.nameLike;
         $scope.new = function() {
           $scope.newBookingEvent = {};
@@ -87,13 +96,15 @@ angular.module('mycellar.directives.form.domain.booking.bookingEvent').directive
           $scope.showSub = false;
         };
         $scope.ok = function() {
+          $scope.errors = [];
           BookingEvents.validate($scope.newBookingEvent, function (value, headers) {
-            if (value.internalError != undefined) {
-              $scope.subBookingEventForm.$setValidity('Error occured.', false);
-            } else if (value.errorKey != undefined) {
-              for (var property in value.properties) {
-                $scope.subBookingEventForm[value.properties[property]].$setValidity(value.errorKey, false);
-              }
+            if (value.errorKey != undefined) {
+              angular.forEach(value.properties, function(property) {
+                if ($scope.subBookingEventForm[property] != undefined) {
+                  $scope.subBookingEventForm[property].$setValidity(value.errorKey, false);
+                }
+              });
+              $scope.errors.push(value);
             } else {
               $scope.bookingEvent = $scope.newBookingEvent;
               $scope.showSub = false;

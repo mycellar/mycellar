@@ -1,93 +1,86 @@
-<div class="row">
-  <div class="col-md-2">
-    <nav role="secondary">
-      <data-mycellar-admin-nav></data-mycellar-admin-nav>
-    </nav>
-  </div>
-  <div class="col-md-10">
-    <header class="page-header"><h1>Caves</h1></header>
-    <data-table-filters table-context="tableContext">
-      <div class="form-group">
-        <label class="control-label sr-only" for="cellar.name">Nom de la cave</label>
-        <input class="form-control" id="cellar.name" name="cellar.name" placeholder="Nom de la cave" ng-model="tableContext.filters['cellar.name']" type="text" />
-      </div>
-      <div class="form-group">
-        <label class="control-label sr-only" for="cellar.owner.email">Email du propriétaire de la cave</label>
-        <input class="form-control" id="cellar.owner.email" name="cellar.owner.email" placeholder="Email du propriétaire de la cave" ng-model="tableContext.filters['cellar.owner.email']" type="text" />
-      </div>
-      <div class="form-group">
-        <label class="control-label sr-only" for="bottle.wine.appellation.region.country.name">Nom du pays</label>
-        <input class="form-control" id="bottle.wine.appellation.region.country.name" name="bottle.wine.appellation.region.country.name" placeholder="Nom du pays" ng-model="tableContext.filters['bottle.wine.appellation.region.country.name']" type="text" />
-      </div>
-      <div class="form-group">
-        <label class="control-label sr-only" for="bottle.wine.appellation.region.name">Nom de la région</label>
-        <input class="form-control" id="bottle.wine.appellation.region.name" name="bottle.wine.appellation.region.name" placeholder="Nom de la région" ng-model="tableContext.filters['bottle.wine.appellation.region.name']" type="text" />
-      </div>
-      <div class="form-group">
-        <label class="control-label sr-only" for="bottle.wine.appellation.name">Nom de l'appellation</label>
-        <input class="form-control" id="bottle.wine.appellation.name" name="bottle.wine.appellation.name" placeholder="Nom de l'appellation" ng-model="tableContext.filters['bottle.wine.appellation.name']" type="text" />
-      </div>
-      <div class="form-group">
-        <label class="control-label sr-only" for="bottle.wine.producer.name">Nom du producteur</label>
-        <input class="form-control" id="bottle.wine.producer.name" name="bottle.wine.producer.name" placeholder="Nom du producteur" ng-model="tableContext.filters['bottle.wine.producer.name']" type="text" />
-      </div>
-      <div class="form-group">
-        <label class="control-label sr-only" for="bottle.wine.name">Nom</label>
-        <input class="form-control" id="bottle.wine.name" name="bottle.wine.name" placeholder="Nom" ng-model="tableContext.filters['bottle.wine.name']" type="text" />
-      </div>
-      <div class="form-group">
-        <label class="control-label sr-only" for="bottle.wine.vintage">Millésime</label>
-        <input class="form-control" id="bottle.wine.vintage" name="bottle.wine.vintage" placeholder="Millésime" ng-model="tableContext.filters['bottle.wine.vintage']" type="text" />
-      </div>
-    </data-table-filters>
-    <data-error-div errors="errors"></data-error-div>
-    <paginated options="tableOptions" items="items" table-context="tableContext">
-      <div class="table-responsive">
-        <table class="table table-bordered table-striped table-condensed">
-          <thead>
-            <tr>
-              <th>I/O</th>
-              <th>Propriétaire <icon-sort attribute="cellar.owner.email" table-context="tableContext" /></th>
-              <th>Cave <icon-sort attribute="cellar.name" table-context="tableContext" /></th>
-              <th>Date <icon-sort attribute="date" table-context="tableContext" /></th>
-              <th>Vin</th>
-              <th>Format</th>
-              <th>Quantité <icon-sort attribute="number" table-context="tableContext" /></th>
-              <th class="actions"><a href ng-click="new()" class="btn btn-default btn-xs"><i class="fa fa-plus-circle"></i></a></th>
-            </tr>
-          </thead>
-          <tbody ng-controller="LoadingCtrl">
-            <tr ng-repeat="item in items">
-              <td>{{item.type}}</td>
-              <td>{{item.cellar.owner.email}}</td>
-              <td>{{item.cellar.name}}</td>
-              <td>{{item.date}}</td>
-              <td>{{item.bottle.wine | wineRenderer}}</td>
-              <td>{{item.bottle.format | formatRenderer}}</td>
-              <td>{{item.number}}</td>
-              <td>
-                <a href ng-click="edit(item.id)" class="btn btn-default btn-xs"><i class="fa fa-pencil"></i></a>
-                <a href ng-click="delete(item.id)" class="btn btn-danger btn-xs"><i class="fa fa-minus-circle"></i></a>
-              </td>
-            </tr>
-            <tr ng-if="!loading && items.length == 0">
-              <td colspan="8" class="text-center">Aucune cave ne correspond aux filtres.</td>
-            </tr>
-          </tbody>
-          <tfoot>
-            <tr>
-              <th>I/O</th>
-              <th>Propriétaire <icon-sort attribute="cellar.owner.email" table-context="tableContext" /></th>
-              <th>Cave <icon-sort attribute="cellar.name" table-context="tableContext" /></th>
-              <th>Date <icon-sort attribute="date" table-context="tableContext" /></th>
-              <th>Vin</th>
-              <th>Format</th>
-              <th>Quantité <icon-sort attribute="number" table-context="tableContext" /></th>
-              <th class="actions"><a href ng-click="new()" class="btn btn-default btn-xs"><i class="fa fa-plus-circle"></i></a></th>
-            </tr>
-          </tfoot>
-        </table>
-      </div>
-    </paginated>
-  </div>
-</div>
+<admin-domain>
+  <header class="page-header"><h1>Caves</h1></header>
+  <data-table-filters table-context="tableContext">
+    <div class="form-group">
+      <label class="control-label sr-only" for="cellar.name">Nom de la cave</label>
+      <input class="form-control" id="cellar.name" name="cellar.name" placeholder="Nom de la cave" ng-model="tableContext.filters['cellar.name']" type="text" />
+    </div>
+    <div class="form-group">
+      <label class="control-label sr-only" for="cellar.owner.email">Email du propriétaire de la cave</label>
+      <input class="form-control" id="cellar.owner.email" name="cellar.owner.email" placeholder="Email du propriétaire de la cave" ng-model="tableContext.filters['cellar.owner.email']" type="text" />
+    </div>
+    <div class="form-group">
+      <label class="control-label sr-only" for="bottle.wine.appellation.region.country.name">Nom du pays</label>
+      <input class="form-control" id="bottle.wine.appellation.region.country.name" name="bottle.wine.appellation.region.country.name" placeholder="Nom du pays" ng-model="tableContext.filters['bottle.wine.appellation.region.country.name']" type="text" />
+    </div>
+    <div class="form-group">
+      <label class="control-label sr-only" for="bottle.wine.appellation.region.name">Nom de la région</label>
+      <input class="form-control" id="bottle.wine.appellation.region.name" name="bottle.wine.appellation.region.name" placeholder="Nom de la région" ng-model="tableContext.filters['bottle.wine.appellation.region.name']" type="text" />
+    </div>
+    <div class="form-group">
+      <label class="control-label sr-only" for="bottle.wine.appellation.name">Nom de l'appellation</label>
+      <input class="form-control" id="bottle.wine.appellation.name" name="bottle.wine.appellation.name" placeholder="Nom de l'appellation" ng-model="tableContext.filters['bottle.wine.appellation.name']" type="text" />
+    </div>
+    <div class="form-group">
+      <label class="control-label sr-only" for="bottle.wine.producer.name">Nom du producteur</label>
+      <input class="form-control" id="bottle.wine.producer.name" name="bottle.wine.producer.name" placeholder="Nom du producteur" ng-model="tableContext.filters['bottle.wine.producer.name']" type="text" />
+    </div>
+    <div class="form-group">
+      <label class="control-label sr-only" for="bottle.wine.name">Nom</label>
+      <input class="form-control" id="bottle.wine.name" name="bottle.wine.name" placeholder="Nom" ng-model="tableContext.filters['bottle.wine.name']" type="text" />
+    </div>
+    <div class="form-group">
+      <label class="control-label sr-only" for="bottle.wine.vintage">Millésime</label>
+      <input class="form-control" id="bottle.wine.vintage" name="bottle.wine.vintage" placeholder="Millésime" ng-model="tableContext.filters['bottle.wine.vintage']" type="text" />
+    </div>
+  </data-table-filters>
+  <error-div errors="errors"></error-div>
+  <paginated options="tableOptions" items="items" table-context="tableContext">
+    <div class="table-responsive">
+      <table class="table table-bordered table-striped table-condensed">
+        <thead>
+          <tr>
+            <th>I/O</th>
+            <th>Propriétaire <icon-sort attribute="cellar.owner.email" table-context="tableContext" /></th>
+            <th>Cave <icon-sort attribute="cellar.name" table-context="tableContext" /></th>
+            <th>Date <icon-sort attribute="date" table-context="tableContext" /></th>
+            <th>Vin</th>
+            <th>Format</th>
+            <th>Quantité <icon-sort attribute="number" table-context="tableContext" /></th>
+            <th class="actions"><a href ng-click="new()" class="btn btn-default btn-xs"><i class="fa fa-plus-circle"></i></a></th>
+          </tr>
+        </thead>
+        <tbody ng-controller="LoadingCtrl">
+          <tr ng-repeat="item in items">
+            <td>{{item.type}}</td>
+            <td>{{item.cellar.owner.email}}</td>
+            <td>{{item.cellar.name}}</td>
+            <td>{{item.date}}</td>
+            <td>{{item.bottle.wine | wineRenderer}}</td>
+            <td>{{item.bottle.format | formatRenderer}}</td>
+            <td>{{item.number}}</td>
+            <td>
+              <a href ng-click="edit(item.id)" class="btn btn-default btn-xs"><i class="fa fa-pencil"></i></a>
+              <a href ng-click="delete(item.id)" class="btn btn-danger btn-xs"><i class="fa fa-minus-circle"></i></a>
+            </td>
+          </tr>
+          <tr ng-if="!loading && items.length == 0">
+            <td colspan="8" class="text-center">Aucune cave ne correspond aux filtres.</td>
+          </tr>
+        </tbody>
+        <tfoot>
+          <tr>
+            <th>I/O</th>
+            <th>Propriétaire <icon-sort attribute="cellar.owner.email" table-context="tableContext" /></th>
+            <th>Cave <icon-sort attribute="cellar.name" table-context="tableContext" /></th>
+            <th>Date <icon-sort attribute="date" table-context="tableContext" /></th>
+            <th>Vin</th>
+            <th>Format</th>
+            <th>Quantité <icon-sort attribute="number" table-context="tableContext" /></th>
+            <th class="actions"><a href ng-click="new()" class="btn btn-default btn-xs"><i class="fa fa-plus-circle"></i></a></th>
+          </tr>
+        </tfoot>
+      </table>
+    </div>
+  </paginated>
+</admin-domain>

@@ -30,6 +30,7 @@ angular.module('mycellar.directives.form.domain.user.user').directive('userForm'
     return {
       restrict: 'E',
       replace: true,
+      transclude: true,
       templateUrl: 'partials/directives/form/user/user.tpl.html',
       scope: {
         form: '=',
@@ -37,6 +38,13 @@ angular.module('mycellar.directives.form.domain.user.user').directive('userForm'
         postLabel: '@',
         label: '@',
         subPostLabel: '@'
+      },
+      compile: function(element, attrs) {
+        for (var attrName in attrs) {
+          if (attrName.indexOf("input") == 0) {
+            angular.element(element.find('input')[0]).attr(attrName.charAt(5).toLowerCase() + attrName.substring(6), attrs[attrName]);
+          }
+        }
       },
       link: function(scope, iElement, iAttrs, controller, transcludeFn) {
         if (scope.label == null || scope.label == '') {
@@ -55,6 +63,7 @@ angular.module('mycellar.directives.form.domain.user.user').directive('userForm'
             return '';
           }
         };
+        $scope.errors = [];
         $scope.users = Users.nameLike;
         $scope.new = function() {
           $scope.newUser = {};
@@ -64,13 +73,15 @@ angular.module('mycellar.directives.form.domain.user.user').directive('userForm'
           $scope.showSub = false;
         };
         $scope.ok = function() {
+          $scope.errors = [];
           Users.validate($scope.newUser, function (value, headers) {
-            if (value.internalError != undefined) {
-              $scope.subUserForm.$setValidity('Error occured.', false);
-            } else if (value.errorKey != undefined) {
-              for (var property in value.properties) {
-                $scope.subUserForm[value.properties[property]].$setValidity(value.errorKey, false);
-              }
+            if (value.errorKey != undefined) {
+              angular.forEach(value.properties, function(property) {
+                if ($scope.subUserForm[property] != undefined) {
+                  $scope.subUserForm[property].$setValidity(value.errorKey, false);
+                }
+              });
+              $scope.errors.push(value);
             } else {
               $scope.user = $scope.newUser;
               $scope.showSub = false;

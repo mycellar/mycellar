@@ -1,40 +1,35 @@
-<div class="row">
-  <div class="col-md-2">
-    <nav role="secondary">
-      <data-mycellar-admin-nav></data-mycellar-admin-nav>
-    </nav>
-  </div>
-  <div class="col-md-10">
-    <header class="page-header"><h1>Contact</h1></header>
-    <form name="form" class="form">
-      <error-form form="form"></error-form>
-      <fieldset>
-        <legend>Détails</legend>
-        <producer form="form" producer="contact.producer"></producer>
-        <div class="form-group" ng-class="{'has-error': form.current.$invalid}">
-          <label class="control-label" for="current">Date du contact</label>
-          <input class="form-control" id="current" name="current" type="date" ng-model="contact.current" placeholder="Date du contact" />
-          <error-ctrl ctrl="form.current"></error-ctrl>
-        </div>
-        <div class="form-group" ng-class="{'has-error': form.next.$invalid}">
-          <label class="control-label" for="next">Prochain contact</label>
-          <input class="form-control" id="next" name="next" type="date" ng-model="contact.next" placeholder="Prochain contact" />
-          <error-ctrl ctrl="form.next"></error-ctrl>
-        </div>
-        <div class="form-group" ng-class="{'has-error': form.text.$invalid}">
-          <label class="control-label" for="text">Texte</label>
-          <textarea 
-              id="text"
-              name="text"
-              ng-model="contact.text"
-              placeholder="Texte"
-              class="form-control"
-              rows="5"></textarea>
-          <error-ctrl ctrl="form.text"></error-ctrl>
-        </div>
-      </fieldset>
-      <input type="submit" class="btn btn-primary" value="Sauvegarder" ng-click="save()" />
-      <input type="submit" class="btn btn-default" value="Annuler" ng-click="cancel()" />
-    </form>
-  </div>
-</div>
+<admin-domain>
+  <header class="page-header"><h1>Contact</h1></header>
+  <form name="form" class="form">
+    <error-div errors="errors"></error-div>
+    <fieldset>
+      <legend>Détails</legend>
+      <producer form="form" producer="contact.producer" input-required="true">
+        <span class="help-block" ng-if="form.producer.$error.required">Veuillez saisir un producteur</span>
+        <span class="help-block" ng-if="form.producer.$error.BusinessError_CONTACT_00001">Un contact existe déjà pour ce producteur à cette date</span>
+      </producer>
+      <div class="form-group" ng-class="{'has-error': form.current.$invalid}">
+        <label class="control-label" for="current">Date du contact</label>
+        <input class="form-control" id="current" name="current" type="date" ng-model="contact.current" placeholder="Date du contact" required />
+        <span class="help-block" ng-if="form.current.$error.required">Veuillez saisir une date</span>
+        <span class="help-block" ng-if="form.current.$error.BusinessError_CONTACT_00001">Un contact existe déjà pour ce producteur à cette date</span>
+      </div>
+      <div class="form-group" ng-class="{'has-error': form.next.$invalid}">
+        <label class="control-label" for="next">Prochain contact</label>
+        <input class="form-control" id="next" name="next" type="date" ng-model="contact.next" placeholder="Prochain contact" />
+      </div>
+      <div class="form-group" ng-class="{'has-error': form.text.$invalid}">
+        <label class="control-label" for="text">Texte</label>
+        <textarea 
+            id="text"
+            name="text"
+            ng-model="contact.text"
+            placeholder="Texte"
+            class="form-control"
+            rows="5"></textarea>
+      </div>
+    </fieldset>
+    <input type="submit" class="btn btn-primary" value="Sauvegarder" ng-click="save()" ng-disabled="form.$invalid" />
+    <input type="submit" class="btn btn-default" value="Annuler" ng-click="cancel()" />
+  </form>
+</admin-domain>

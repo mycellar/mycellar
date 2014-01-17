@@ -20,13 +20,22 @@ angular.module('mycellar.directives.form.domain.stock.cellar').directive('cellar
     return {
       restrict: 'E',
       replace: true,
+      transclude: true,
       templateUrl: 'partials/directives/form/stock/cellar.tpl.html',
       scope: {
         form: '=',
         cellar: '=',
         postLabel: '@'
       },
+      compile: function(element, attrs) {
+        for (var attrName in attrs) {
+          if (attrName.indexOf("input") == 0) {
+            angular.element(element.find('input')[0]).attr(attrName.charAt(5).toLowerCase() + attrName.substring(6), attrs[attrName]);
+          }
+        }
+      },
       controller: function($scope, Cellars) {
+        $scope.errors = [];
         $scope.cellars = Cellars.nameLike;
         $scope.new = function() {
           $scope.newCellar = {};
@@ -36,13 +45,15 @@ angular.module('mycellar.directives.form.domain.stock.cellar').directive('cellar
           $scope.showSub = false;
         };
         $scope.ok = function() {
+          $scope.errors = [];
           Cellars.validate($scope.newCellar, function (value, headers) {
-            if (value.internalError != undefined) {
-              $scope.subCellarForm.$setValidity('Error occured.', false);
-            } else if (value.errorKey != undefined) {
-              for (var property in value.properties) {
-                $scope.subCellarForm[value.properties[property]].$setValidity(value.errorKey, false);
-              }
+            if (value.errorKey != undefined) {
+              angular.forEach(value.properties, function(property) {
+                if ($scope.subCellarForm[property] != undefined) {
+                  $scope.subCellarForm[property].$setValidity(value.errorKey, false);
+                }
+              });
+              $scope.errors.push(value);
             } else {
               $scope.cellar = $scope.newCellar;
               $scope.showSub = false;

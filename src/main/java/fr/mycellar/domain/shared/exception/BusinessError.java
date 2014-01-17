@@ -22,6 +22,7 @@ import javax.persistence.metamodel.Attribute;
 
 import fr.mycellar.domain.admin.Configuration_;
 import fr.mycellar.domain.booking.BookingEvent_;
+import fr.mycellar.domain.booking.Booking_;
 import fr.mycellar.domain.contact.Contact_;
 import fr.mycellar.domain.stock.Bottle_;
 import fr.mycellar.domain.stock.CellarShare_;
@@ -50,6 +51,11 @@ public enum BusinessError {
     APPELLATION_00004(Appellation_.region), // region is not valid
 
     /*
+     * Booking
+     */
+    BOOKING_00001(Booking_.bookingEvent, Booking_.customer),
+
+    /*
      * Booking event
      */
     BOOKINGEVENT_00001(BookingEvent_.bookings), //
@@ -69,17 +75,18 @@ public enum BusinessError {
     /*
      * CellarShare
      */
-    CELLAR_SHARE_00001(CellarShare_.email, CellarShare_.cellar), //
+    CELLARSHARE_00001(CellarShare_.email, CellarShare_.cellar), //
 
     /*
      * Configuration
      */
     CONFIGURATION_00001(Configuration_.key), //
+    CONFIGURATION_00002(Configuration_.value), //
 
     /*
      * Contact
      */
-    CONTACT_00001(Contact_.producer), //
+    CONTACT_00001(Contact_.producer, Contact_.current), //
     CONTACT_00002(Contact_.producer), //
     CONTACT_00003(Contact_.current), //
 
@@ -160,7 +167,7 @@ public enum BusinessError {
      * @return the key
      */
     public String getKey() {
-        return getClass().getSimpleName() + "." + name();
+        return getClass().getSimpleName() + "_" + name();
     }
 
     /**
