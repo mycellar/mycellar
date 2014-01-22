@@ -1,32 +1,46 @@
 angular.module('mycellar.controllers.admin.domain.stock.cellarShares', [
   'ngRoute',
-  'mycellar.controllers.admin.domain.stock.cellarShare',
   'mycellar.resources.stock.cellarShares',
   'mycellar.directives.table',
   'mycellar.directives.error',
+  'mycellar.directives.form',
   'mycellar.directives.admin',
   'mycellar.services.admin'
 ], [
   'adminDomainServiceProvider',
   function(adminDomainServiceProvider){
-    adminDomainServiceProvider.forDomain('stock', 'CellarShare', 'CellarShares', 'Stockage', 'Partages de cave')
-      .whenCrud({}, {
-        cellarShare: ['$route', 'CellarShares', function ($route, CellarShares) {
-          var id = $route.current.params.id;
-          if (id != null && id > 0) {
-            return CellarShares.getById(id);
-          } else {
-            return CellarShares.new();
-          }
-        }]
-      }
-    );
+    adminDomainServiceProvider.forDomain({
+      group: 'stock', 
+      resourceName: 'CellarShare', 
+      resourcesName: 'CellarShares', 
+      groupLabel: 'Stockage', 
+      resourcesLabel: 'Partages de cave',
+      defaultSort: ['cellar.name', 'email']
+    }).whenCrud();
   }
 ]);
 
 angular.module('mycellar.controllers.admin.domain.stock.cellarShares').controller('AdminDomainCellarSharesController', [
-  '$scope', 'CellarShares', 'adminDomainService',
-  function ($scope, CellarShares, adminDomainService) {
-    angular.extend($scope, adminDomainService.listMethods('stock', 'CellarShare', CellarShares, ['cellar.name', 'email']));
+  '$scope', 'adminDomainService', 'tableContext',
+  function ($scope, adminDomainService, tableContext) {
+    adminDomainService.listMethods({
+      scope: $scope,
+      group: 'stock',
+      resourceName: 'CellarShare', 
+      tableContext: tableContext
+    });
+  }
+]);
+
+angular.module('mycellar.controllers.admin.domain.stock.cellarShares').controller('AdminDomainCellarShareController', [
+  '$scope', 'adminDomainService', 'item',
+  function ($scope, adminDomainService, item) {
+    $scope.cellarShare = item;
+    adminDomainService.editMethods({
+      scope: $scope,
+      group: 'stock', 
+      resourceName: 'CellarShare', 
+      resource: item
+    });
   }
 ]);

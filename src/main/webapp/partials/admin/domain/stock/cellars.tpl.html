@@ -1,35 +1,38 @@
 <admin-domain>
   <header class="page-header"><h1>Caves</h1></header>
-  <data-table-filters table-context="tableContext">
+  <table-filters table-context="tableContext">
     <div class="form-group">
       <label class="control-label sr-only" for="name">Nom</label>
       <input class="form-control" id="name" name="name" placeholder="Nom" ng-model="tableContext.filters['name']" type="text" />
     </div>
-  </data-table-filters>
+  </table-filters>
   <error-div errors="errors"></error-div>
-  <paginated options="tableOptions" items="items" table-context="tableContext">
+  <paginated table-context="tableContext">
     <div class="table-responsive">
       <table class="table table-bordered table-striped table-condensed">
         <thead>
           <tr>
+            <th>Propriétaire <icon-sort attribute="owner.email" table-context="tableContext" /></th>
             <th>Nom <icon-sort attribute="name" table-context="tableContext" /></th>
             <th class="actions"><a href ng-click="new()" class="btn btn-default btn-xs"><i class="fa fa-plus-circle"></i></a></th>
           </tr>
         </thead>
         <tbody ng-controller="LoadingCtrl">
-          <tr ng-repeat="item in items">
-            <td>{{item.name}}</td>
+          <tr ng-repeat="cellar in tableContext.items">
+            <td>{{cellar.owner.email}}</td>
+            <td>{{cellar.name}}</td>
             <td>
-              <a href ng-click="edit(item.id)" class="btn btn-default btn-xs"><i class="fa fa-pencil"></i></a>
-              <a href ng-click="delete(item.id)" class="btn btn-danger btn-xs"><i class="fa fa-minus-circle"></i></a>
+              <a href ng-click="edit(cellar.id)" class="btn btn-default btn-xs"><i class="fa fa-pencil"></i></a>
+              <a href ng-click="delete(cellar.id)" class="btn btn-danger btn-xs"><i class="fa fa-minus-circle"></i></a>
             </td>
           </tr>
-          <tr ng-if="!loading && items.length == 0">
-            <td colspan="2" class="text-center">Aucune cave ne correspond aux filtres.</td>
+          <tr ng-if="!loading && tableContext.items.length == 0">
+            <td colspan="3" class="text-center">Aucune cave ne correspond aux filtres.</td>
           </tr>
         </tbody>
         <tfoot>
           <tr>
+            <th>Propriétaire <icon-sort attribute="owner.email" table-context="tableContext" /></th>
             <th>Nom <icon-sort attribute="name" table-context="tableContext" /></th>
             <th class="actions"><a href ng-click="new()" class="btn btn-default btn-xs"><i class="fa fa-plus-circle"></i></a></th>
           </tr>

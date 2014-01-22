@@ -1,13 +1,13 @@
 <admin-domain>
   <header class="page-header"><h1>Campagnes de réservation</h1></header>
-  <data-table-filters table-context="tableContext">
+  <table-filters table-context="tableContext">
     <div class="form-group">
       <label class="control-label sr-only" for="name">Nom</label>
       <input class="form-control" id="name" name="name" placeholder="Nom" ng-model="tableContext.filters['name']" type="text" />
     </div>
-  </data-table-filters>
+  </table-filters>
   <error-div errors="errors"></error-div>
-  <paginated options="tableOptions" items="items" table-context="tableContext">
+  <paginated table-context="tableContext">
     <div class="table-responsive">
       <table class="table table-bordered table-striped table-condensed">
         <thead>
@@ -19,16 +19,16 @@
           </tr>
         </thead>
         <tbody ng-controller="LoadingCtrl">
-          <tr ng-repeat="item in items">
-            <td>{{item.start}}</td>
-            <td>{{item.end}}</td>
-            <td>{{item.name}}</td>
+          <tr ng-repeat="bookingEvent in tableContext.items">
+            <td>{{bookingEvent.start}}</td>
+            <td>{{bookingEvent.end}}</td>
+            <td>{{bookingEvent.name}}</td>
             <td>
-              <a href ng-click="edit(item.id)" class="btn btn-default btn-xs"><i class="fa fa-pencil"></i></a>
-              <a href ng-click="delete(item.id)" class="btn btn-danger btn-xs"><i class="fa fa-minus-circle"></i></a>
+              <a href ng-click="edit(bookingEvent.id)" class="btn btn-default btn-xs"><i class="fa fa-pencil"></i></a>
+              <a href ng-click="delete(bookingEvent.id)" class="btn btn-danger btn-xs"><i class="fa fa-minus-circle"></i></a>
             </td>
           </tr>
-          <tr ng-if="!loading && items.length == 0">
+          <tr ng-if="!loading && tableContext.items.length == 0">
             <td colspan="4" class="text-center">Aucune campagne de réservation ne correpond aux filtres.</td>
           </tr>
         </tbody>

@@ -9,7 +9,7 @@ angular.module('mycellar.controllers.booking.mybookings', [
       controller: 'MyBookingsController',
       resolve: {
         bookings: ['Bookings', function(Bookings){
-          return Bookings.getAllForCurrentUser();
+          return Bookings.getAllForCurrentUser().$promise;
         }]
       }
     });

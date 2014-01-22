@@ -25,6 +25,7 @@ import javax.inject.Inject;
 import javax.inject.Named;
 import javax.inject.Singleton;
 import javax.ws.rs.Consumes;
+import javax.ws.rs.DefaultValue;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
@@ -64,7 +65,10 @@ public class AdminDomainWebService {
     @Produces(MediaType.APPLICATION_JSON)
     @Path("configurations")
     @PreAuthorize("hasRole('ROLE_ADMIN')")
-    public ListWithCount<Configuration> getConfigurations(@QueryParam("first") int first, @QueryParam("count") int count, @QueryParam("filters") List<FilterCouple> filters,
+    public ListWithCount<Configuration> getConfigurations( //
+            @QueryParam("first") int first, //
+            @QueryParam("count") @DefaultValue("20") int count, //
+            @QueryParam("filters") List<FilterCouple> filters, //
             @QueryParam("sort") List<OrderCouple> orders) {
         SearchParameters searchParameters = searchParametersUtil.getSearchParametersForListWithCount(first, count, filters, orders, Configuration.class);
         List<Configuration> configurations;
@@ -78,7 +82,7 @@ public class AdminDomainWebService {
 
     @GET
     @Produces(MediaType.APPLICATION_JSON)
-    @Path("configuration/{id}")
+    @Path("configurations/{id}")
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     public Configuration getConfigurationById(@PathParam("id") int configurationId) {
         return administrationServiceFacade.getConfigurationById(configurationId);
@@ -87,10 +91,13 @@ public class AdminDomainWebService {
     @POST
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
-    @Path("configuration")
+    @Path("configurations/{id}")
     @PreAuthorize("hasRole('ROLE_ADMIN')")
-    public Configuration saveConfiguration(Configuration configuration) throws BusinessException {
-        return administrationServiceFacade.saveConfiguration(configuration);
+    public Configuration saveConfiguration(@PathParam("id") int configurationId, Configuration configuration) throws BusinessException {
+        if ((configurationId == configuration.getId()) && (getConfigurationById(configurationId) != null)) {
+            return administrationServiceFacade.saveConfiguration(configuration);
+        }
+        throw new RuntimeException();
     }
 
     // BEANS Methods

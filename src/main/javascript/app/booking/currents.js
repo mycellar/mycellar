@@ -10,7 +10,7 @@ angular.module('mycellar.controllers.booking.currents', [
       controller: 'CurrentBookingsController',
       resolve: {
         bookingEvents: ['BookingEvents', function(BookingEvents){
-          return BookingEvents.currents();
+          return BookingEvents.currents().$promise;
         }]
       }
     });

@@ -1,6 +1,6 @@
 <admin-domain>
   <header class="page-header"><h1>Réservations</h1></header>
-  <data-table-filters table-context="tableContext">
+  <table-filters table-context="tableContext">
     <div class="form-group">
       <label class="control-label sr-only" for="bookingEvent.name">Nom de la compagne de réservation</label>
       <input class="form-control" id="bookingEvent.name" name="bookingEvent.name" placeholder="Nom de la compagne de réservation" ng-model="tableContext.filters['bookingEvent.name']" type="text" />
@@ -9,9 +9,9 @@
       <label class="control-label sr-only" for="customer.lastname">Nom de famille du client</label>
       <input class="form-control" id="customer.lastname" name="customer.lastname" placeholder="Nom de famille du client" ng-model="tableContext.filters['customer.lastname']" type="text" />
     </div>
-  </data-table-filters>
+  </table-filters>
   <error-div errors="errors"></error-div>
-  <paginated options="tableOptions" items="items" table-context="tableContext">
+  <paginated table-context="tableContext">
     <div class="table-responsive">
       <table class="table table-bordered table-striped table-condensed">
         <thead>
@@ -24,17 +24,17 @@
           </tr>
         </thead>
         <tbody ng-controller="LoadingCtrl">
-          <tr ng-repeat="item in items">
-            <td>{{item.customer.lastname + ' ' + item.customer.firstname}}</td>
-            <td>{{item.bookingEvent.name}}</td>
-            <td>{{item.bookingEvent.start}}</td>
-            <td>{{item.bookingEvent.end}}</td>
+          <tr ng-repeat="booking in tableContext.items">
+            <td>{{booking.customer.lastname + ' ' + booking.customer.firstname}}</td>
+            <td>{{booking.bookingEvent.name}}</td>
+            <td>{{booking.bookingEvent.start}}</td>
+            <td>{{booking.bookingEvent.end}}</td>
             <td>
-              <a href ng-click="edit(item.id)" class="btn btn-default btn-xs"><i class="fa fa-pencil"></i></a>
-              <a href ng-click="delete(item.id)" class="btn btn-danger btn-xs"><i class="fa fa-minus-circle"></i></a>
+              <a href ng-click="edit(booking.id)" class="btn btn-default btn-xs"><i class="fa fa-pencil"></i></a>
+              <a href ng-click="delete(booking.id)" class="btn btn-danger btn-xs"><i class="fa fa-minus-circle"></i></a>
             </td>
           </tr>
-          <tr ng-if="!loading && items.length == 0">
+          <tr ng-if="!loading && tableContext.items.length == 0">
             <td colspan="5" class="text-center">Aucune réservation ne correspond aux filtres.</td>
           </tr>
         </tbody>

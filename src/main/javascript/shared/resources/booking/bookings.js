@@ -4,7 +4,7 @@ angular.module('mycellar.resources.booking.bookings').factory('Bookings', [
   '$resource', '$q', 
   function ($resource, $q) {
 
-    var Bookings = $resource('/api/domain/booking/bookings', {}, {
+    var Bookings = $resource('/api/domain/booking/bookings/:id', {id: '@id'}, {
       getAllForCurrentUser: {
         url: '/api/booking/bookings',
         method: 'GET'
@@ -18,18 +18,12 @@ angular.module('mycellar.resources.booking.bookings').factory('Bookings', [
         url: '/api/booking/bookingsByEvent?bookingEventId=:bookingEventId',
         method: 'GET',
         isArray: true
-      }
-    });
-    var Booking = $resource('/api/domain/booking/booking/:bookingId', {}, {
+      },
       getByBookingEventForCurrentUser: {
         url: '/api/booking/booking?bookingEventId=:bookingEventId',
         method: 'GET'
       }
     });
-
-    Bookings.deleteById = function(id, fn) {
-      return Booking.delete({bookingId: id}, fn);
-    };
 
     Bookings.count = function () {
       var deferred = $q.defer();
@@ -41,18 +35,6 @@ angular.module('mycellar.resources.booking.bookings').factory('Bookings', [
         });
       });
       return deferred.promise;
-    };
-
-    Bookings.getByBookingEventForCurrentUser = function(bookingEvent) {
-      return Booking.getByBookingEventForCurrentUser({'bookingEventId': bookingEvent.id});
-    };
-
-    Bookings.getById = function(id) {
-      return Booking.get({bookingId: id});
-    };
-
-    Bookings.new = function() {
-      return new Booking();
     };
 
     return Bookings;

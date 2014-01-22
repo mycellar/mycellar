@@ -11,20 +11,23 @@ angular.module('mycellar.controllers.booking.contacts', [
       templateUrl: 'partials/booking/contacts.tpl.html',
       controller: 'ContactsController',
       resolve: {
+        tableContext: [
+          'tableService', 'Contacts',
+          function(tableService, Contacts) {
+            var tableContext = tableService.createTableContext(Contacts.getLastContacts, ['next']);
+            return tableContext.setPage(1).promise;
+          }
+        ]
       }
     });
   }
 ]);
 
 angular.module('mycellar.controllers.booking.contacts').controller('ContactsController', [
-  '$scope', 'Contacts', 'tableService', '$location',
-  function($scope, Contacts, tableService, $location) {
+  '$scope', '$location', 'tableContext',
+  function($scope, $location, tableContext) {
     $scope.errors = [];
-    $scope.tableOptions = {
-      itemResource: Contacts.getLastContacts,
-      defaultSort: ['next']
-    };
-    $scope.tableContext = tableService.createTableContext();
+    $scope.tableContext = tableContext;
     $scope.new = function() {
       $location.path('/booking/contact/');
     };

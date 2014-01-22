@@ -25,7 +25,7 @@ angular.module('mycellar.controllers.login').controller('LoginController', [
     $scope.login = security.login;
     $scope.logout = security.logout;
     $scope.register = security.register;
-    $scope.user = Users.new();
+    $scope.user = new Users();
     $scope.user.password = '';
     $scope.password2 = '';
   }

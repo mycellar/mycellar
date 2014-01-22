@@ -25,6 +25,7 @@ import javax.inject.Inject;
 import javax.inject.Named;
 import javax.inject.Singleton;
 import javax.ws.rs.GET;
+import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
@@ -36,6 +37,7 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import fr.mycellar.domain.booking.Booking;
 import fr.mycellar.domain.booking.BookingBottle;
 import fr.mycellar.domain.booking.BookingEvent;
+import fr.mycellar.domain.shared.exception.BusinessException;
 import fr.mycellar.interfaces.facades.booking.BookingServiceFacade;
 import fr.mycellar.interfaces.web.security.CurrentUserService;
 import fr.mycellar.interfaces.web.services.ListWithCount;
@@ -98,6 +100,14 @@ public class BookingWebService {
     @PreAuthorize("hasRole('ROLE_BOOKING')")
     public ListWithCount<Booking> getBookings() {
         return new ListWithCount<>(bookingServiceFacade.getBookings(currentUserService.getCurrentUser()));
+    }
+
+    @POST
+    @Produces(MediaType.APPLICATION_JSON)
+    @Path("bookings/{id}")
+    @PreAuthorize("hasRole('ROLE_BOOKING')")
+    public Booking saveBooking(@PathParam("id") Integer id, Booking booking) throws BusinessException {
+        return bookingServiceFacade.saveBooking(booking);
     }
 
     @Inject

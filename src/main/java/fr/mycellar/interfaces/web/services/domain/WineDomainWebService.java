@@ -26,6 +26,7 @@ import javax.inject.Named;
 import javax.inject.Singleton;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.DELETE;
+import javax.ws.rs.DefaultValue;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
@@ -70,7 +71,10 @@ public class WineDomainWebService {
     @Produces(MediaType.APPLICATION_JSON)
     @Path("countries")
     @PreAuthorize("hasRole('ROLE_ADMIN')")
-    public ListWithCount<Country> getCountries(@QueryParam("first") int first, @QueryParam("count") int count, @QueryParam("filters") List<FilterCouple> filters,
+    public ListWithCount<Country> getCountries( //
+            @QueryParam("first") int first, //
+            @QueryParam("count") @DefaultValue("10") int count, //
+            @QueryParam("filters") List<FilterCouple> filters, //
             @QueryParam("sort") List<OrderCouple> orders) {
         SearchParameters searchParameters = searchParametersUtil.getSearchParametersForListWithCount(first, count, filters, orders, Country.class);
         List<Country> countries;
@@ -84,14 +88,14 @@ public class WineDomainWebService {
 
     @GET
     @Produces(MediaType.APPLICATION_JSON)
-    @Path("country/{id}")
+    @Path("countries/{id}")
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     public Country getCountryById(@PathParam("id") int countryId) {
         return wineServiceFacade.getCountryById(countryId);
     }
 
     @DELETE
-    @Path("country/{id}")
+    @Path("countries/{id}")
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     public void deleteCountryById(@PathParam("id") int countryId) throws BusinessException {
         wineServiceFacade.deleteCountry(wineServiceFacade.getCountryById(countryId));
@@ -100,10 +104,13 @@ public class WineDomainWebService {
     @POST
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
-    @Path("country")
+    @Path("countries/{id}")
     @PreAuthorize("hasRole('ROLE_ADMIN')")
-    public Country saveCountry(Country country) throws BusinessException {
-        return wineServiceFacade.saveCountry(country);
+    public Country saveCountry(@PathParam("id") Integer id, Country country) throws BusinessException {
+        if (((id == null) && (country.getId() == null)) || ((id != null) && id.equals(country.getId()) && (wineServiceFacade.getCountryById(id) != null))) {
+            return wineServiceFacade.saveCountry(country);
+        }
+        throw new RuntimeException();
     }
 
     @POST
@@ -122,7 +129,10 @@ public class WineDomainWebService {
     @Produces(MediaType.APPLICATION_JSON)
     @Path("formats")
     @PreAuthorize("hasRole('ROLE_ADMIN')")
-    public ListWithCount<Format> getFormats(@QueryParam("first") int first, @QueryParam("count") int count, @QueryParam("filters") List<FilterCouple> filters,
+    public ListWithCount<Format> getFormats( //
+            @QueryParam("first") int first, //
+            @QueryParam("count") @DefaultValue("10") int count, //
+            @QueryParam("filters") List<FilterCouple> filters, //
             @QueryParam("sort") List<OrderCouple> orders) {
         SearchParameters searchParameters = searchParametersUtil.getSearchParametersForListWithCount(first, count, filters, orders, Format.class);
         List<Format> formats;
@@ -136,14 +146,14 @@ public class WineDomainWebService {
 
     @GET
     @Produces(MediaType.APPLICATION_JSON)
-    @Path("format/{id}")
+    @Path("formats/{id}")
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     public Format getFormatById(@PathParam("id") int formatId) {
         return wineServiceFacade.getFormatById(formatId);
     }
 
     @DELETE
-    @Path("format/{id}")
+    @Path("formats/{id}")
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     public void deleteFormatById(@PathParam("id") int formatId) throws BusinessException {
         wineServiceFacade.deleteFormat(wineServiceFacade.getFormatById(formatId));
@@ -152,10 +162,13 @@ public class WineDomainWebService {
     @POST
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
-    @Path("format")
+    @Path("formats/{id}")
     @PreAuthorize("hasRole('ROLE_ADMIN')")
-    public Format saveFormat(Format format) throws BusinessException {
-        return wineServiceFacade.saveFormat(format);
+    public Format saveFormat(@PathParam("id") Integer id, Format format) throws BusinessException {
+        if (((id == null) && (format.getId() == null)) || ((id != null) && id.equals(format.getId()) && (wineServiceFacade.getFormatById(id) != null))) {
+            return wineServiceFacade.saveFormat(format);
+        }
+        throw new RuntimeException();
     }
 
     @POST
@@ -174,7 +187,10 @@ public class WineDomainWebService {
     @Produces(MediaType.APPLICATION_JSON)
     @Path("appellations")
     @PreAuthorize("hasRole('ROLE_ADMIN')")
-    public ListWithCount<Appellation> getAppellation(@QueryParam("first") int first, @QueryParam("count") int count, @QueryParam("filters") List<FilterCouple> filters,
+    public ListWithCount<Appellation> getAppellation( //
+            @QueryParam("first") int first, //
+            @QueryParam("count") @DefaultValue("10") int count, //
+            @QueryParam("filters") List<FilterCouple> filters, //
             @QueryParam("sort") List<OrderCouple> orders) {
         SearchParameters searchParameters = searchParametersUtil.getSearchParametersForListWithCount(first, count, filters, orders, Appellation.class);
         List<Appellation> appellations;
@@ -188,14 +204,14 @@ public class WineDomainWebService {
 
     @GET
     @Produces(MediaType.APPLICATION_JSON)
-    @Path("appellation/{id}")
+    @Path("appellations/{id}")
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     public Appellation getAppellationById(@PathParam("id") int appellationId) {
         return wineServiceFacade.getAppellationById(appellationId);
     }
 
     @DELETE
-    @Path("appellation/{id}")
+    @Path("appellations/{id}")
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     public void deleteAppellationById(@PathParam("id") int appellationId) throws BusinessException {
         wineServiceFacade.deleteAppellation(wineServiceFacade.getAppellationById(appellationId));
@@ -204,10 +220,13 @@ public class WineDomainWebService {
     @POST
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
-    @Path("appellation")
+    @Path("appellations/{id}")
     @PreAuthorize("hasRole('ROLE_ADMIN')")
-    public Appellation saveAppellation(Appellation appellation) throws BusinessException {
-        return wineServiceFacade.saveAppellation(appellation);
+    public Appellation saveAppellation(@PathParam("id") Integer id, Appellation appellation) throws BusinessException {
+        if (((id == null) && (appellation.getId() == null)) || ((id != null) && id.equals(appellation.getId()) && (wineServiceFacade.getAppellationById(id) != null))) {
+            return wineServiceFacade.saveAppellation(appellation);
+        }
+        throw new RuntimeException();
     }
 
     @POST
@@ -226,7 +245,10 @@ public class WineDomainWebService {
     @Produces(MediaType.APPLICATION_JSON)
     @Path("producers")
     @PreAuthorize("hasRole('ROLE_ADMIN')")
-    public ListWithCount<Producer> getProducers(@QueryParam("first") int first, @QueryParam("count") int count, @QueryParam("filters") List<FilterCouple> filters,
+    public ListWithCount<Producer> getProducers( //
+            @QueryParam("first") int first, //
+            @QueryParam("count") @DefaultValue("10") int count, //
+            @QueryParam("filters") List<FilterCouple> filters, //
             @QueryParam("sort") List<OrderCouple> orders) {
         SearchParameters searchParameters = searchParametersUtil.getSearchParametersForListWithCount(first, count, filters, orders, Producer.class);
         List<Producer> producers;
@@ -240,14 +262,14 @@ public class WineDomainWebService {
 
     @GET
     @Produces(MediaType.APPLICATION_JSON)
-    @Path("producer/{id}")
+    @Path("producers/{id}")
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     public Producer getProducerById(@PathParam("id") int producerId) {
         return wineServiceFacade.getProducerById(producerId);
     }
 
     @DELETE
-    @Path("producer/{id}")
+    @Path("producers/{id}")
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     public void deleteProducerById(@PathParam("id") int producerId) throws BusinessException {
         wineServiceFacade.deleteProducer(wineServiceFacade.getProducerById(producerId));
@@ -256,10 +278,13 @@ public class WineDomainWebService {
     @POST
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
-    @Path("producer")
+    @Path("producers/{id}")
     @PreAuthorize("hasRole('ROLE_ADMIN')")
-    public Producer saveProducer(Producer producer) throws BusinessException {
-        return wineServiceFacade.saveProducer(producer);
+    public Producer saveProducer(@PathParam("id") Integer id, Producer producer) throws BusinessException {
+        if (((id == null) && (producer.getId() == null)) || ((id != null) && id.equals(producer.getId()) && (wineServiceFacade.getProducerById(id) != null))) {
+            return wineServiceFacade.saveProducer(producer);
+        }
+        throw new RuntimeException();
     }
 
     @POST
@@ -278,7 +303,10 @@ public class WineDomainWebService {
     @Produces(MediaType.APPLICATION_JSON)
     @Path("regions")
     @PreAuthorize("hasRole('ROLE_ADMIN')")
-    public ListWithCount<Region> getRegions(@QueryParam("first") int first, @QueryParam("count") int count, @QueryParam("filters") List<FilterCouple> filters,
+    public ListWithCount<Region> getRegions( //
+            @QueryParam("first") int first, //
+            @QueryParam("count") @DefaultValue("10") int count, //
+            @QueryParam("filters") List<FilterCouple> filters, //
             @QueryParam("sort") List<OrderCouple> orders) {
         SearchParameters searchParameters = searchParametersUtil.getSearchParametersForListWithCount(first, count, filters, orders, Region.class);
         List<Region> regions;
@@ -292,14 +320,14 @@ public class WineDomainWebService {
 
     @GET
     @Produces(MediaType.APPLICATION_JSON)
-    @Path("region/{id}")
+    @Path("regions/{id}")
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     public Region getRegionById(@PathParam("id") int regionId) {
         return wineServiceFacade.getRegionById(regionId);
     }
 
     @DELETE
-    @Path("region/{id}")
+    @Path("regions/{id}")
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     public void deleteRegionById(@PathParam("id") int regionId) throws BusinessException {
         wineServiceFacade.deleteRegion(wineServiceFacade.getRegionById(regionId));
@@ -308,10 +336,13 @@ public class WineDomainWebService {
     @POST
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
-    @Path("region")
+    @Path("regions/{id}")
     @PreAuthorize("hasRole('ROLE_ADMIN')")
-    public Region saveRegion(Region region) throws BusinessException {
-        return wineServiceFacade.saveRegion(region);
+    public Region saveRegion(@PathParam("id") Integer id, Region region) throws BusinessException {
+        if (((id == null) && (region.getId() == null)) || ((id != null) && id.equals(region.getId()) && (wineServiceFacade.getRegionById(id) != null))) {
+            return wineServiceFacade.saveRegion(region);
+        }
+        throw new RuntimeException();
     }
 
     @POST
@@ -330,7 +361,11 @@ public class WineDomainWebService {
     @Produces(MediaType.APPLICATION_JSON)
     @Path("wines")
     @PreAuthorize("hasRole('ROLE_ADMIN')")
-    public ListWithCount<Wine> getWines(@QueryParam("first") int first, @QueryParam("count") int count, @QueryParam("filters") List<FilterCouple> filters, @QueryParam("sort") List<OrderCouple> orders) {
+    public ListWithCount<Wine> getWines( //
+            @QueryParam("first") int first, //
+            @QueryParam("count") @DefaultValue("10") int count, //
+            @QueryParam("filters") List<FilterCouple> filters, //
+            @QueryParam("sort") List<OrderCouple> orders) {
         SearchParameters searchParameters = searchParametersUtil.getSearchParametersForListWithCount(first, count, filters, orders, Wine.class);
         List<Wine> wines;
         if (count == 0) {
@@ -343,14 +378,14 @@ public class WineDomainWebService {
 
     @GET
     @Produces(MediaType.APPLICATION_JSON)
-    @Path("wine/{id}")
+    @Path("wines/{id}")
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     public Wine getWineById(@PathParam("id") int countryId) {
         return wineServiceFacade.getWineById(countryId);
     }
 
     @DELETE
-    @Path("wine/{id}")
+    @Path("wines/{id}")
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     public void deleteWineById(@PathParam("id") int wineId) throws BusinessException {
         wineServiceFacade.deleteWine(wineServiceFacade.getWineById(wineId));
@@ -359,10 +394,13 @@ public class WineDomainWebService {
     @POST
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
-    @Path("wine")
+    @Path("wines/{id}")
     @PreAuthorize("hasRole('ROLE_ADMIN')")
-    public Wine saveWine(Wine wine) throws BusinessException {
-        return wineServiceFacade.saveWine(wine);
+    public Wine saveWine(@PathParam("id") Integer id, Wine wine) throws BusinessException {
+        if (((id == null) && (wine.getId() == null)) || ((id != null) && id.equals(wine.getId()) && (wineServiceFacade.getWineById(id) != null))) {
+            return wineServiceFacade.saveWine(wine);
+        }
+        throw new RuntimeException();
     }
 
     @POST

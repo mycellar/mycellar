@@ -26,6 +26,7 @@ import javax.inject.Named;
 import javax.inject.Singleton;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.DELETE;
+import javax.ws.rs.DefaultValue;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
@@ -68,7 +69,10 @@ public class StockDomainWebService {
     @Produces(MediaType.APPLICATION_JSON)
     @Path("cellars")
     @PreAuthorize("hasRole('ROLE_ADMIN')")
-    public ListWithCount<Cellar> getCellars(@QueryParam("first") int first, @QueryParam("count") int count, @QueryParam("filters") List<FilterCouple> filters,
+    public ListWithCount<Cellar> getCellars( //
+            @QueryParam("first") int first, //
+            @QueryParam("count") @DefaultValue("10") int count, //
+            @QueryParam("filters") List<FilterCouple> filters, //
             @QueryParam("sort") List<OrderCouple> orders) {
         SearchParameters searchParameters = searchParametersUtil.getSearchParametersForListWithCount(first, count, filters, orders, Cellar.class);
         List<Cellar> cellars;
@@ -82,14 +86,14 @@ public class StockDomainWebService {
 
     @GET
     @Produces(MediaType.APPLICATION_JSON)
-    @Path("cellar/{id}")
+    @Path("cellars/{id}")
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     public Cellar getCellarById(@PathParam("id") int cellarId) {
         return stockServiceFacade.getCellarById(cellarId);
     }
 
     @DELETE
-    @Path("cellar/{id}")
+    @Path("cellars/{id}")
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     public void deleteCellarById(@PathParam("id") int cellarId) throws BusinessException {
         stockServiceFacade.deleteCellar(stockServiceFacade.getCellarById(cellarId));
@@ -98,10 +102,13 @@ public class StockDomainWebService {
     @POST
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
-    @Path("cellar")
+    @Path("cellars/{id}")
     @PreAuthorize("hasRole('ROLE_ADMIN')")
-    public Cellar saveCellar(Cellar cellar) throws BusinessException {
-        return stockServiceFacade.saveCellar(cellar);
+    public Cellar saveCellar(@PathParam("id") Integer id, Cellar cellar) throws BusinessException {
+        if (((id == null) && (cellar.getId() == null)) || ((id != null) && id.equals(cellar.getId()) && (stockServiceFacade.getCellarById(id) != null))) {
+            return stockServiceFacade.saveCellar(cellar);
+        }
+        throw new RuntimeException();
     }
 
     @POST
@@ -120,7 +127,10 @@ public class StockDomainWebService {
     @Produces(MediaType.APPLICATION_JSON)
     @Path("cellarShares")
     @PreAuthorize("hasRole('ROLE_ADMIN')")
-    public ListWithCount<CellarShare> getCellarShares(@QueryParam("first") int first, @QueryParam("count") int count, @QueryParam("filters") List<FilterCouple> filters,
+    public ListWithCount<CellarShare> getCellarShares(//
+            @QueryParam("first") int first, //
+            @QueryParam("count") @DefaultValue("10") int count, //
+            @QueryParam("filters") List<FilterCouple> filters, //
             @QueryParam("sort") List<OrderCouple> orders) {
         SearchParameters searchParameters = searchParametersUtil.getSearchParametersForListWithCount(first, count, filters, orders, CellarShare.class);
         List<CellarShare> cellarShares;
@@ -134,14 +144,14 @@ public class StockDomainWebService {
 
     @GET
     @Produces(MediaType.APPLICATION_JSON)
-    @Path("cellarShare/{id}")
+    @Path("cellarShares/{id}")
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     public CellarShare getCellarShareById(@PathParam("id") int cellarShareId) {
         return stockServiceFacade.getCellarShareById(cellarShareId);
     }
 
     @DELETE
-    @Path("cellarShare/{id}")
+    @Path("cellarShares/{id}")
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     public void deleteCellarShareById(@PathParam("id") int cellarShareId) throws BusinessException {
         stockServiceFacade.deleteCellarShare(stockServiceFacade.getCellarShareById(cellarShareId));
@@ -150,10 +160,14 @@ public class StockDomainWebService {
     @POST
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
-    @Path("cellarShare")
+    @Path("cellarShares/{id}")
     @PreAuthorize("hasRole('ROLE_ADMIN')")
-    public CellarShare saveCellarShare(CellarShare cellarShare) throws BusinessException {
-        return stockServiceFacade.saveCellarShare(cellarShare);
+    public CellarShare saveCellarShare(@PathParam("id") Integer id, CellarShare cellarShare) throws BusinessException {
+        if (((id == null) && (cellarShare.getId() == null)) || ((id != null) && id.equals(cellarShare.getId()) && (stockServiceFacade.getCellarShareById(id) != null))) {
+            return stockServiceFacade.saveCellarShare(cellarShare);
+        }
+        throw new RuntimeException();
+
     }
 
     @POST
@@ -172,7 +186,10 @@ public class StockDomainWebService {
     @Produces(MediaType.APPLICATION_JSON)
     @Path("stocks")
     @PreAuthorize("hasRole('ROLE_ADMIN')")
-    public ListWithCount<Stock> getStocks(@QueryParam("first") int first, @QueryParam("count") int count, @QueryParam("filters") List<FilterCouple> filters,
+    public ListWithCount<Stock> getStocks( //
+            @QueryParam("first") int first, //
+            @QueryParam("count") @DefaultValue("10") int count, //
+            @QueryParam("filters") List<FilterCouple> filters, //
             @QueryParam("sort") List<OrderCouple> orders) {
         SearchParameters searchParameters = searchParametersUtil.getSearchParametersForListWithCount(first, count, filters, orders, Stock.class);
         List<Stock> stocks;
@@ -186,14 +203,14 @@ public class StockDomainWebService {
 
     @GET
     @Produces(MediaType.APPLICATION_JSON)
-    @Path("stock/{id}")
+    @Path("stocks/{id}")
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     public Stock getStockById(@PathParam("id") int stockId) {
         return stockServiceFacade.getStockById(stockId);
     }
 
     @DELETE
-    @Path("stock/{id}")
+    @Path("stocks/{id}")
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     public void deleteStockById(@PathParam("id") int stockId) throws BusinessException {
         stockServiceFacade.deleteStock(stockServiceFacade.getStockById(stockId));
@@ -202,10 +219,13 @@ public class StockDomainWebService {
     @POST
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
-    @Path("stock")
+    @Path("stocks/{id}")
     @PreAuthorize("hasRole('ROLE_ADMIN')")
-    public Stock saveStock(Stock stock) throws BusinessException {
-        return stockServiceFacade.saveStock(stock);
+    public Stock saveStock(@PathParam("id") Integer id, Stock stock) throws BusinessException {
+        if (((id == null) && (stock.getId() == null)) || ((id != null) && id.equals(stock.getId()) && (stockServiceFacade.getStockById(id) != null))) {
+            return stockServiceFacade.saveStock(stock);
+        }
+        throw new RuntimeException();
     }
 
     @POST
@@ -224,7 +244,10 @@ public class StockDomainWebService {
     @Produces(MediaType.APPLICATION_JSON)
     @Path("movements")
     @PreAuthorize("hasRole('ROLE_ADMIN')")
-    public ListWithCount<Movement> getMovements(@QueryParam("first") int first, @QueryParam("count") int count, @QueryParam("filters") List<FilterCouple> filters,
+    public ListWithCount<Movement> getMovements( //
+            @QueryParam("first") int first, //
+            @QueryParam("count") @DefaultValue("10") int count, //
+            @QueryParam("filters") List<FilterCouple> filters, //
             @QueryParam("sort") List<OrderCouple> orders) {
         SearchParameters searchParameters = searchParametersUtil.getSearchParametersForListWithCount(first, count, filters, orders, Movement.class);
         List<Movement> movements;
@@ -238,14 +261,14 @@ public class StockDomainWebService {
 
     @GET
     @Produces(MediaType.APPLICATION_JSON)
-    @Path("movement/{id}")
+    @Path("movements/{id}")
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     public Movement getMovementById(@PathParam("id") int movementId) {
         return stockServiceFacade.getMovementById(movementId);
     }
 
     @DELETE
-    @Path("movement/{id}")
+    @Path("movements/{id}")
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     public void deleteMovementById(@PathParam("id") int movementId) throws BusinessException {
         stockServiceFacade.deleteMovement(stockServiceFacade.getMovementById(movementId));
@@ -254,10 +277,13 @@ public class StockDomainWebService {
     @POST
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
-    @Path("movement")
+    @Path("movements/{id}")
     @PreAuthorize("hasRole('ROLE_ADMIN')")
-    public Movement saveMovement(Movement movement) throws BusinessException {
-        return stockServiceFacade.saveMovement(movement);
+    public Movement saveMovement(@PathParam("id") Integer id, Movement movement) throws BusinessException {
+        if (((id == null) && (movement.getId() == null)) || ((id != null) && id.equals(movement.getId()) && (stockServiceFacade.getMovementById(id) != null))) {
+            return stockServiceFacade.saveMovement(movement);
+        }
+        throw new RuntimeException();
     }
 
     @POST

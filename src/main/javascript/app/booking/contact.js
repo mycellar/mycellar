@@ -13,7 +13,7 @@ angular.module('mycellar.controllers.booking.contact', [
         producer: ['$route', 'Producers', function ($route, Producers) {
           var id = $route.current.params.producerId;
           if (id != null && id > 0) {
-            return Producers.getById(id);
+            return Producers.get({id: id});
           } else {
             return null;
           }

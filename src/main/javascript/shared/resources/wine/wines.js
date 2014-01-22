@@ -2,21 +2,21 @@ angular.module('mycellar.resources.wine.wines', ['ngResource']);
 
 angular.module('mycellar.resources.wine.wines').factory('Wines', ['$resource', '$q', function ($resource, $q) {
 
-  var Wines = $resource('/api/wine/wines', {}, {
+  var Wines = $resource('/api/domain/wine/wines/:id', {id: '@id'}, {
     _like: {
       url: '/api/wine/wines/like',
       method: 'GET'
+    },
+    _count: {
+      url: '/api/wine/wines',
+      method: 'GET',
+      params: {count: 0}
     }
   });
-  var Wine = $resource('/api/domain/wine/wine/:wineId');
-  
-  Wines.deleteById = function(id, fn) {
-    return Wine.delete({wineId: id}, fn);
-  };
-  
+
   Wines.count = function () {
     var deferred = $q.defer();
-    Wines.get({count: 0}, function(result) {
+    Wines._count({}, function(result) {
       $q.when(result.count).then(function(value) {
         deferred.resolve(value);
       }, function(value) {
@@ -24,14 +24,6 @@ angular.module('mycellar.resources.wine.wines').factory('Wines', ['$resource', '
       });
     });
     return deferred.promise;
-  };
-  
-  Wines.getById = function(id) {
-    return Wine.get({wineId: id});
-  };
-  
-  Wines.new = function() {
-    return new Wine();
   };
 
   Wines.like = function(input) {

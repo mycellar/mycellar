@@ -18,7 +18,7 @@
     <section>
       <div ng-if="cellar != null">
         <h2>{{cellar.name}}</h2>
-        <paginated options="tableOptions" items="movements" table-context="tableContext">
+        <paginated table-context="tableContext">
           <div class="table-responsive">
             <table class="table table-bordered table-striped table-condensed">
               <thead>
@@ -31,14 +31,14 @@
                 </tr>
               </thead>
               <tbody>
-                <tr ng-repeat="movement in movements">
+                <tr ng-repeat="movement in tableContext.items">
                   <td>{{movement.type}}</td>
                   <td>{{movement.date}}</td>
                   <td>{{movement.bottle.wine | wineRenderer}}</td>
                   <td>{{movement.bottle.format | formatRenderer}}</td>
                   <td>{{movement.number}}</td>
                 </tr>
-                <tr ng-if="!loading && movements.length == 0">
+                <tr ng-if="!loading && tableContext.items.length == 0">
                   <td colspan="5" class="text-center">Ni entrée, ni sorties dans cette cave.</td>
                 </tr>
               </tbody>

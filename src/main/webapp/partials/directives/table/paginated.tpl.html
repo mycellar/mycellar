@@ -1,17 +1,17 @@
 <div>
   <div ng-transclude></div>
   <div class="text-center">
-    <pagination page="currentPage" on-select-page="setPage(page)" max-size="pageRange" total-items="total" items-per-page="itemsPerPage"></pagination>
+    <pagination page="tableContext.currentPage" on-select-page="tableContext.setPage(page)" max-size="tableContext.pageRange" total-items="tableContext.total" items-per-page="tableContext.itemsPerPage"></pagination>
   </div>
   <div class="row">
     <div class="col-md-6">
-      {{count > 0 ? firstItem + 1 : 0}} à {{firstItem + count}} des {{total}} entrées.
+      {{tableContext.count > 0 ? tableContext.firstItem + 1 : 0}} à {{tableContext.firstItem + tableContext.count}} des {{tableContext.total}} entrées.
     </div>
     <div class="col-md-6 text-right">
       <form class="form-inline">
         <div class="form-group">
           Afficher 
-          <select ng-model="itemsPerPage" class="form-control" style="width: auto;">
+          <select ng-model="tableContext.itemsPerPage" class="form-control" style="width: auto;">
             <option>10</option>
             <option>20</option>
             <option>30</option>

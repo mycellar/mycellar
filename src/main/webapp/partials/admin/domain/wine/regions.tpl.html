@@ -1,6 +1,6 @@
 <admin-domain>
   <header class="page-header"><h1>Régions</h1></header>
-  <data-table-filters table-context="tableContext">
+  <table-filters table-context="tableContext">
     <div class="form-group">
       <label class="control-label sr-only" for="country.name">Nom du pays</label>
       <input class="form-control" id="country.name" name="country.name" placeholder="Nom du pays" ng-model="tableContext.filters['country.name']" type="text" />
@@ -9,9 +9,9 @@
       <label class="control-label sr-only" for="name">Nom</label>
       <input class="form-control" id="name" name="name" placeholder="Nom" ng-model="tableContext.filters['name']" type="text" />
     </div>
-  </data-table-filters>
+  </table-filters>
   <error-div errors="errors"></error-div>
-  <paginated options="tableOptions" items="items" table-context="tableContext">
+  <paginated table-context="tableContext">
     <div class="table-responsive">
       <table class="table table-bordered table-striped table-condensed">
         <thead>
@@ -22,15 +22,15 @@
           </tr>
         </thead>
         <tbody ng-controller="LoadingCtrl">
-          <tr ng-repeat="item in items">
-            <td>{{item.country.name}}</td>
-            <td>{{item.name}}</td>
+          <tr ng-repeat="region in tableContext.items">
+            <td>{{region.country.name}}</td>
+            <td>{{region.name}}</td>
             <td>
-              <a href ng-click="edit(item.id)" class="btn btn-default btn-xs"><i class="fa fa-pencil"></i></a>
-              <a href ng-click="delete(item.id)" class="btn btn-danger btn-xs"><i class="fa fa-minus-circle"></i></a>
+              <a href ng-click="edit(region.id)" class="btn btn-default btn-xs"><i class="fa fa-pencil"></i></a>
+              <a href ng-click="delete(region.id)" class="btn btn-danger btn-xs"><i class="fa fa-minus-circle"></i></a>
             </td>
           </tr>
-          <tr ng-if="!loading && items.length == 0">
+          <tr ng-if="!loading && tableContext.items.length == 0">
             <td colspan="3" class="text-center">Aucune région ne correspond aux filtres.</td>
           </tr>
         </tbody>

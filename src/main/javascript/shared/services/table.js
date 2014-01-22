@@ -1,11 +1,17 @@
 angular.module('mycellar.services.table', []);
 
-angular.module('mycellar.services.table').provider('tableService', [function () {
-  this.$get = function() {
+angular.module('mycellar.services.table').provider('tableService', [function ($q) {
+  this.$get = ['$q', function($q) {
     return {
-      createTableContext: function() {
-        return {
+      createTableContext: function(query, defaultSort, parameters) {
+        var tableContext = {
           filtersIsCollapsed: true,
+          query: query,
+          pageRange: 6,
+          itemsPerPage: 10,
+          total: null,
+          firstItem: null,
+          parameters: parameters || {},
           sort: {
             properties: [],
             ways: {}
@@ -39,9 +45,38 @@ angular.module('mycellar.services.table').provider('tableService', [function () 
               }
             }
             return value;
+          },
+          setPage: function(page) {
+            this.currentPage = page;
+            this.firstItem = (page - 1) * this.itemsPerPage;
+            var sortParameter = [];
+            for (var t in this.sort.properties) {
+              sortParameter.push(this.sort.properties[t] + ',' + this.sort.ways[this.sort.properties[t]]);
+            }
+            var filtersParameter = [];
+            for (var t in this.filters) {
+              filtersParameter.push(t + ',' + this.filters[t]);
+            }
+            this.result = this.query(angular.extend({}, this.parameters, {
+              first: this.firstItem,
+              count: this.itemsPerPage,
+              sort: sortParameter,
+              filters: filtersParameter
+            }));
+            var deferred = $q.defer();
+            this.result.$promise.then(function(value) {
+              deferred.resolve(tableContext);
+            }, function(value) {
+              deferred.reject(tableContext);
+            });
+            return deferred;
           }
         };
+        angular.forEach(defaultSort, function(sort) {
+          tableContext.sortBy(sort);
+        });
+        return tableContext;
       }
     };
-  };  
+  }];  
 }]);

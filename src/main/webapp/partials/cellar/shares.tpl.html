@@ -13,7 +13,7 @@
     <section>
       <div ng-if="cellar != null">
         <h2>{{cellar.name}}</h2>
-        <paginated options="tableOptions" items="cellarShares" table-context="tableContext">
+        <paginated table-context="tableContext">
           <div class="table-responsive">
             <table class="table table-bordered table-striped table-condensed">
               <thead>
@@ -23,11 +23,11 @@
                 </tr>
               </thead>
               <tbody>
-                <tr ng-repeat="cellarShare in cellarShares">
+                <tr ng-repeat="cellarShare in tableContext.items">
                   <td>{{cellarShare.email}}</td>
                   <td>{{cellarShare.accessRight | accessRightRenderer}}</td>
                 </tr>
-                <tr ng-if="!loading && cellarShares.length == 0">
+                <tr ng-if="!loading && tableContext.items.length == 0">
                   <td colspan="2" class="text-center">Aucun partage.</td>
                 </tr>
               </tbody>

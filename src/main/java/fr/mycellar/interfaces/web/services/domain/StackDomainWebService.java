@@ -25,6 +25,7 @@ import javax.inject.Inject;
 import javax.inject.Named;
 import javax.inject.Singleton;
 import javax.ws.rs.DELETE;
+import javax.ws.rs.DefaultValue;
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
@@ -59,7 +60,10 @@ public class StackDomainWebService {
     @Produces(MediaType.APPLICATION_JSON)
     @Path("stacks")
     @PreAuthorize("hasRole('ROLE_ADMIN')")
-    public ListWithCount<Stack> getStacks(@QueryParam("first") int first, @QueryParam("count") int count, @QueryParam("filters") List<FilterCouple> filters,
+    public ListWithCount<Stack> getStacks( //
+            @QueryParam("first") int first, //
+            @QueryParam("count") @DefaultValue("10") int count, //
+            @QueryParam("filters") List<FilterCouple> filters, //
             @QueryParam("sort") List<OrderCouple> orders) {
         SearchParameters searchParameters = searchParametersUtil.getSearchParametersForListWithCount(first, count, filters, orders, Stack.class);
         List<Stack> stacks;
@@ -73,14 +77,14 @@ public class StackDomainWebService {
 
     @GET
     @Produces(MediaType.APPLICATION_JSON)
-    @Path("stack/{id}")
+    @Path("stacks/{id}")
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     public Stack getStackById(@PathParam("id") int stackId) {
         return stackServiceFacade.getStackById(stackId);
     }
 
     @DELETE
-    @Path("stack/{id}")
+    @Path("stacks/{id}")
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     public void deleteStackById(@PathParam("id") int stackId) throws BusinessException {
         stackServiceFacade.deleteStack(stackServiceFacade.getStackById(stackId));

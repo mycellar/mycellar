@@ -1,32 +1,46 @@
 angular.module('mycellar.controllers.admin.domain.wine.countries', [
   'ngRoute',
-  'mycellar.controllers.admin.domain.wine.country', 
   'mycellar.resources.wine.countries', 
   'mycellar.directives.table',
   'mycellar.directives.error',
+  'mycellar.directives.form',
   'mycellar.directives.admin',
   'mycellar.services.admin'
 ], [
   'adminDomainServiceProvider', 
   function(adminDomainServiceProvider){
-    adminDomainServiceProvider.forDomain('wine', 'Country', 'Countries', 'Vin', 'Pays')
-      .whenCrud({}, {
-        country: ['$route', 'Countries', function ($route, Countries) {
-          var id = $route.current.params.id;
-          if (id != null && id > 0) {
-            return Countries.getById(id);
-          } else {
-            return Countries.new();
-          }
-        }]
-      }
-    );
+    adminDomainServiceProvider.forDomain({
+      group: 'wine', 
+      resourceName: 'Country', 
+      resourcesName: 'Countries', 
+      groupLabel: 'Vin', 
+      resourcesLabel: 'Pays',
+      defaultSort: ['name'] 
+    }).whenCrud();
   }
 ]);
 
 angular.module('mycellar.controllers.admin.domain.wine.countries').controller('AdminDomainCountriesController', [
-  '$scope', 'Countries', 'adminDomainService',
-  function ($scope, Countries, adminDomainService) {
-    angular.extend($scope, adminDomainService.listMethods('wine', 'Country', Countries, ['name']));
+  '$scope', 'adminDomainService', 'tableContext',
+  function ($scope, adminDomainService, tableContext) {
+    adminDomainService.listMethods({
+      scope: $scope,
+      group: 'wine',
+      resourceName: 'Country', 
+      tableContext: tableContext
+    });
+  }
+]);
+
+angular.module('mycellar.controllers.admin.domain.wine.countries').controller('AdminDomainCountryController', [
+  '$scope', 'adminDomainService', 'item',
+  function ($scope, adminDomainService, item) {
+    $scope.country = item;
+    adminDomainService.editMethods({
+      scope: $scope,
+      group: 'wine', 
+      resourceName: 'Country', 
+      resource: item
+    });
   }
 ]);

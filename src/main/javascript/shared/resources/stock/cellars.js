@@ -2,7 +2,7 @@ angular.module('mycellar.resources.stock.cellars', ['ngResource']);
 
 angular.module('mycellar.resources.stock.cellars').factory('Cellars', ['$resource', '$q', function ($resource, $q) {
 
-  var Cellars = $resource('/api/domain/stock/cellars', {}, {
+  var Cellars = $resource('/api/domain/stock/cellars/:id', {id: '@id'}, {
     getAllForCurrentUser: {
       url: '/api/stock/cellars',
       method: 'GET'
@@ -12,11 +12,6 @@ angular.module('mycellar.resources.stock.cellars').factory('Cellars', ['$resourc
       method: 'POST'
     }
   });
-  var Cellar = $resource('/api/domain/stock/cellar/:cellarId');
-
-  Cellars.deleteById = function(id, fn) {
-    return Cellar.delete({cellarId: id}, fn);
-  };
 
   Cellars.count = function () {
     var deferred = $q.defer();
@@ -28,14 +23,6 @@ angular.module('mycellar.resources.stock.cellars').factory('Cellars', ['$resourc
       });
     });
     return deferred.promise;
-  };
-
-  Cellars.getById = function(id) {
-    return Cellar.get({cellarId: id});
-  };
-
-  Cellars.new = function() {
-    return new Cellar();
   };
 
   Cellars.nameLike = function(name) {

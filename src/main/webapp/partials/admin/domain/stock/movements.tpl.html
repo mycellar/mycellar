@@ -1,6 +1,6 @@
 <admin-domain>
   <header class="page-header"><h1>Caves</h1></header>
-  <data-table-filters table-context="tableContext">
+  <table-filters table-context="tableContext">
     <div class="form-group">
       <label class="control-label sr-only" for="cellar.name">Nom de la cave</label>
       <input class="form-control" id="cellar.name" name="cellar.name" placeholder="Nom de la cave" ng-model="tableContext.filters['cellar.name']" type="text" />
@@ -33,9 +33,9 @@
       <label class="control-label sr-only" for="bottle.wine.vintage">Millésime</label>
       <input class="form-control" id="bottle.wine.vintage" name="bottle.wine.vintage" placeholder="Millésime" ng-model="tableContext.filters['bottle.wine.vintage']" type="text" />
     </div>
-  </data-table-filters>
+  </table-filters>
   <error-div errors="errors"></error-div>
-  <paginated options="tableOptions" items="items" table-context="tableContext">
+  <paginated table-context="tableContext">
     <div class="table-responsive">
       <table class="table table-bordered table-striped table-condensed">
         <thead>
@@ -51,20 +51,20 @@
           </tr>
         </thead>
         <tbody ng-controller="LoadingCtrl">
-          <tr ng-repeat="item in items">
-            <td>{{item.type}}</td>
-            <td>{{item.cellar.owner.email}}</td>
-            <td>{{item.cellar.name}}</td>
-            <td>{{item.date}}</td>
-            <td>{{item.bottle.wine | wineRenderer}}</td>
-            <td>{{item.bottle.format | formatRenderer}}</td>
-            <td>{{item.number}}</td>
+          <tr ng-repeat="movement in tableContext.items">
+            <td>{{movement.type}}</td>
+            <td>{{movement.cellar.owner.email}}</td>
+            <td>{{movement.cellar.name}}</td>
+            <td>{{movement.date}}</td>
+            <td>{{movement.bottle.wine | wineRenderer}}</td>
+            <td>{{movement.bottle.format | formatRenderer}}</td>
+            <td>{{movement.number}}</td>
             <td>
-              <a href ng-click="edit(item.id)" class="btn btn-default btn-xs"><i class="fa fa-pencil"></i></a>
-              <a href ng-click="delete(item.id)" class="btn btn-danger btn-xs"><i class="fa fa-minus-circle"></i></a>
+              <a href ng-click="edit(movement.id)" class="btn btn-default btn-xs"><i class="fa fa-pencil"></i></a>
+              <a href ng-click="delete(movement.id)" class="btn btn-danger btn-xs"><i class="fa fa-minus-circle"></i></a>
             </td>
           </tr>
-          <tr ng-if="!loading && items.length == 0">
+          <tr ng-if="!loading && tableContext.items.length == 0">
             <td colspan="8" class="text-center">Aucune cave ne correspond aux filtres.</td>
           </tr>
         </tbody>

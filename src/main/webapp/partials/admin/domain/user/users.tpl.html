@@ -1,6 +1,6 @@
 <admin-domain>
   <header class="page-header"><h1>Utilisateurs</h1></header>
-  <data-table-filters table-context="tableContext">
+  <table-filters table-context="tableContext">
     <div class="form-group">
       <label class="control-label sr-only" for="lastname">Nom de famille</label>
       <input class="form-control" id="lastname" name="lastname" placeholder="Nom de famille" ng-model="tableContext.filters['lastname']" type="text" />
@@ -13,9 +13,9 @@
       <label class="control-label sr-only" for="email">Email</label>
       <input class="form-control" id="email" name="email" placeholder="Email" ng-model="tableContext.filters['email']" type="text" />
     </div>
-  </data-table-filters>
+  </table-filters>
   <error-div errors="errors"></error-div>
-  <paginated options="tableOptions" items="items" table-context="tableContext">
+  <paginated table-context="tableContext">
     <div class="table-responsive">
       <table class="table table-bordered table-striped table-condensed">
         <thead>
@@ -27,16 +27,16 @@
           </tr>
         </thead>
         <tbody ng-controller="LoadingCtrl">
-          <tr ng-repeat="item in items">
-            <td>{{item.lastname}}</td>
-            <td>{{item.firstname}}</td>
-            <td>{{item.email}}</td>
+          <tr ng-repeat="user in tableContext.items">
+            <td>{{user.lastname}}</td>
+            <td>{{user.firstname}}</td>
+            <td>{{user.email}}</td>
             <td>
-              <a href ng-click="edit(item.id)" class="btn btn-default btn-xs"><i class="fa fa-pencil"></i></a>
-              <a href ng-click="delete(item.id)" class="btn btn-danger btn-xs"><i class="fa fa-minus-circle"></i></a>
+              <a href ng-click="edit(user.id)" class="btn btn-default btn-xs"><i class="fa fa-pencil"></i></a>
+              <a href ng-click="delete(user.id)" class="btn btn-danger btn-xs"><i class="fa fa-minus-circle"></i></a>
             </td>
           </tr>
-          <tr ng-if="!loading && items.length == 0">
+          <tr ng-if="!loading && tableContext.items.length == 0">
             <td colspan="4" class="text-center">Aucun utilisateur ne correspond aux filtres.</td>
           </tr>
         </tbody>

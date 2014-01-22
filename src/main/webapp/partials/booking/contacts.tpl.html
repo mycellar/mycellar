@@ -1,13 +1,13 @@
 <header class="page-header"><h1>Contacts</h1></header>
 <section>
-  <data-table-filters table-context="tableContext">
+  <table-filters table-context="tableContext">
     <div class="form-group">
       <label class="control-label sr-only" for="producer.name">Nom du producteur</label>
       <input class="form-control" id="producer.name" name="producer.name" placeholder="Nom du producteur" ng-model="tableContext.filters['producer.name']" type="text" />
     </div>
-  </data-table-filters>
+  </table-filters>
   <error-div errors="errors"></error-div>
-  <paginated options="tableOptions" items="items" table-context="tableContext">
+  <paginated table-context="tableContext">
     <div class="table-responsive">
       <table class="table table-bordered table-striped table-condensed">
         <thead>
@@ -19,7 +19,7 @@
           </tr>
         </thead>
         <tbody ng-controller="LoadingCtrl">
-          <tr ng-repeat="item in items">
+          <tr ng-repeat="item in tableContext.items">
             <td>{{item.producer.name}}</td>
             <td>{{item.current}}</td>
             <td>{{item.next}}</td>
@@ -27,7 +27,7 @@
               <a href ng-click="edit(item)" class="btn btn-default btn-xs"><i class="fa fa-pencil"></i></a>
             </td>
           </tr>
-          <tr ng-if="!loading && items.length == 0">
+          <tr ng-if="!loading && tableContext.items.length == 0">
             <td colspan="5" class="text-center">Aucun contact ne correspond aux filtres.</td>
           </tr>
         </tbody>

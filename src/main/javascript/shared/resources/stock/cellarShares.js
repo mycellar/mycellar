@@ -2,7 +2,7 @@ angular.module('mycellar.resources.stock.cellarShares', ['ngResource']);
 
 angular.module('mycellar.resources.stock.cellarShares').factory('CellarShares', ['$resource', '$q', function ($resource, $q) {
 
-  var CellarShares = $resource('/api/domain/stock/cellarShares', {}, {
+  var CellarShares = $resource('/api/domain/stock/cellarShares/:id', {id: '@id'}, {
     getAllForCellar: {
       url: '/api/stock/cellarShares',
       method: 'GET'
@@ -12,11 +12,6 @@ angular.module('mycellar.resources.stock.cellarShares').factory('CellarShares', 
       method: 'POST'
     }
   });
-  var CellarShare = $resource('/api/domain/stock/cellarShare/:cellarShareId');
-
-  CellarShares.deleteById = function(id, fn) {
-    return CellarShare.delete({cellarShareId: id}, fn);
-  };
 
   CellarShares.count = function () {
     var deferred = $q.defer();
@@ -28,14 +23,6 @@ angular.module('mycellar.resources.stock.cellarShares').factory('CellarShares', 
       });
     });
     return deferred.promise;
-  };
-
-  CellarShares.getById = function(id) {
-    return CellarShare.get({cellarShareId: id});
-  };
-
-  CellarShares.new = function() {
-    return new CellarShare();
   };
 
   return CellarShares;

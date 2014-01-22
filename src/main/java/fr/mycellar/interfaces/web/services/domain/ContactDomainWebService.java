@@ -26,6 +26,7 @@ import javax.inject.Named;
 import javax.inject.Singleton;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.DELETE;
+import javax.ws.rs.DefaultValue;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
@@ -65,7 +66,9 @@ public class ContactDomainWebService {
     @Produces(MediaType.APPLICATION_JSON)
     @Path("contacts")
     @PreAuthorize("hasRole('ROLE_ADMIN')")
-    public ListWithCount<Contact> getContacts(@QueryParam("first") int first, @QueryParam("count") int count, @QueryParam("filters") List<FilterCouple> filters,
+    public ListWithCount<Contact> getContacts(@QueryParam("first") int first, //
+            @QueryParam("count") @DefaultValue("10") int count, //
+            @QueryParam("filters") List<FilterCouple> filters, //
             @QueryParam("sort") List<OrderCouple> orders) {
         SearchParameters searchParameters = searchParametersUtil.getSearchParametersForListWithCount(first, count, filters, orders, Contact.class);
         List<Contact> contacts;
@@ -79,14 +82,14 @@ public class ContactDomainWebService {
 
     @GET
     @Produces(MediaType.APPLICATION_JSON)
-    @Path("contact/{id}")
+    @Path("contacts/{id}")
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     public Contact getContactById(@PathParam("id") int contactId) {
         return contactServiceFacade.getContactById(contactId);
     }
 
     @DELETE
-    @Path("contact/{id}")
+    @Path("contacts/{id}")
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     public void deleteContactById(@PathParam("id") int contactId) throws BusinessException {
         contactServiceFacade.deleteContact(contactServiceFacade.getContactById(contactId));
@@ -95,10 +98,25 @@ public class ContactDomainWebService {
     @POST
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
-    @Path("contact")
+    @Path("contacts/{id}")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    public Contact saveContact(@PathParam("id") int contactId, Contact contact) throws BusinessException {
+        if ((contactId == contact.getId()) && (getContactById(contactId) != null)) {
+            return contactServiceFacade.saveContact(contact);
+        }
+        throw new RuntimeException();
+    }
+
+    @POST
+    @Consumes(MediaType.APPLICATION_JSON)
+    @Produces(MediaType.APPLICATION_JSON)
+    @Path("contacts")
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     public Contact saveContact(Contact contact) throws BusinessException {
-        return contactServiceFacade.saveContact(contact);
+        if (contact.getId() == null) {
+            return contactServiceFacade.saveContact(contact);
+        }
+        throw new RuntimeException();
     }
 
     // BEANS Methods

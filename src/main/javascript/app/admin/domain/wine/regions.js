@@ -1,33 +1,46 @@
 angular.module('mycellar.controllers.admin.domain.wine.regions', [
   'ngRoute',
-  'mycellar.controllers.admin.domain.wine.region', 
   'mycellar.resources.wine.regions', 
   'mycellar.directives.table',
   'mycellar.directives.error',
+  'mycellar.directives.form',
   'mycellar.directives.admin',
   'mycellar.services.admin'
 ], [
   'adminDomainServiceProvider', 
   function(adminDomainServiceProvider){
-    adminDomainServiceProvider.forDomain('wine', 'Region', 'Regions', 'Vin', 'Régions')
-      .whenCrud({}, {
-        region: ['$route', 'Regions', function ($route, Regions) {
-          var id = $route.current.params.id;
-          if (id != null && id > 0) {
-            return Regions.getById(id);
-          } else {
-            return Regions.new();
-          }
-        }]
-      }
-    );
+    adminDomainServiceProvider.forDomain({
+      group: 'wine', 
+      resourceName: 'Region', 
+      resourcesName: 'Regions', 
+      groupLabel: 'Vin',
+      resourcesLabel: 'Régions',
+      defaultSort: ['country.name', 'name'] 
+    }).whenCrud();
   }
 ]);
 
 angular.module('mycellar.controllers.admin.domain.wine.regions').controller('AdminDomainRegionsController', [
-  '$scope', 'Regions', 'adminDomainService',
-  function ($scope, Regions, adminDomainService) {
-    angular.extend($scope, adminDomainService.listMethods('wine', 'Region', Regions, ['country.name',
-                                                                                      'name']));
+  '$scope', 'adminDomainService', 'tableContext',
+  function ($scope, adminDomainService, tableContext) {
+    adminDomainService.listMethods({
+      scope: $scope,
+      group: 'wine', 
+      resourceName: 'Region', 
+      tableContext: tableContext
+    });
+  }
+]);
+
+angular.module('mycellar.controllers.admin.domain.wine.regions').controller('AdminDomainRegionController', [
+  '$scope', 'adminDomainService', 'item',
+  function ($scope, adminDomainService, item) {
+    $scope.region = item;
+    adminDomainService.editMethods({
+      scope: $scope,
+      group: 'wine', 
+      resourceName: 'Region', 
+      resource: item
+    });
   }
 ]);

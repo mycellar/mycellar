@@ -2,12 +2,7 @@ angular.module('mycellar.resources.wine.formats', ['ngResource']);
 
 angular.module('mycellar.resources.wine.formats').factory('Formats', ['$resource', '$q', function ($resource, $q) {
 
-  var Formats = $resource('/api/domain/wine/formats');
-  var Format = $resource('/api/domain/wine/format/:formatId');
-
-  Formats.deleteById = function(id, fn) {
-    return Format.delete({formatId: id}, fn);
-  };
+  var Formats = $resource('/api/domain/wine/formats/:id', {id: '@id'}, {});
 
   Formats.count = function () {
     var deferred = $q.defer();
@@ -19,14 +14,6 @@ angular.module('mycellar.resources.wine.formats').factory('Formats', ['$resource
       });
     });
     return deferred.promise;
-  };
-
-  Formats.getById = function(id) {
-    return Format.get({formatId: id});
-  };
-
-  Formats.new = function() {
-    return new Format();
   };
 
   Formats.nameLike = function(name) {

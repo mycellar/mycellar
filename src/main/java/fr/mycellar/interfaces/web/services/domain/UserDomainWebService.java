@@ -26,6 +26,7 @@ import javax.inject.Named;
 import javax.inject.Singleton;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.DELETE;
+import javax.ws.rs.DefaultValue;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
@@ -65,7 +66,11 @@ public class UserDomainWebService {
     @Produces(MediaType.APPLICATION_JSON)
     @Path("users")
     @PreAuthorize("hasRole('ROLE_ADMIN')")
-    public ListWithCount<User> getUsers(@QueryParam("first") int first, @QueryParam("count") int count, @QueryParam("filters") List<FilterCouple> filters, @QueryParam("sort") List<OrderCouple> orders) {
+    public ListWithCount<User> getUsers( //
+            @QueryParam("first") int first, //
+            @QueryParam("count") @DefaultValue("10") int count, //
+            @QueryParam("filters") List<FilterCouple> filters, //
+            @QueryParam("sort") List<OrderCouple> orders) {
         SearchParameters searchParameters = searchParametersUtil.getSearchParametersForListWithCount(first, count, filters, orders, User.class);
         List<User> users;
         if (count == 0) {
@@ -78,14 +83,14 @@ public class UserDomainWebService {
 
     @GET
     @Produces(MediaType.APPLICATION_JSON)
-    @Path("user/{id}")
+    @Path("users/{id}")
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     public User getUserById(@PathParam("id") int userId) {
         return userServiceFacade.getUserById(userId);
     }
 
     @DELETE
-    @Path("user/{id}")
+    @Path("users/{id}")
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     public void deleteUserById(@PathParam("id") int userId) throws BusinessException {
         userServiceFacade.deleteUser(userServiceFacade.getUserById(userId));
@@ -94,10 +99,13 @@ public class UserDomainWebService {
     @POST
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
-    @Path("user")
+    @Path("users")
     @PreAuthorize("hasRole('ROLE_ADMIN')")
-    public User saveUser(User user) throws BusinessException {
-        return userServiceFacade.saveUser(user);
+    public User saveUser(@PathParam("id") Integer id, User user) throws BusinessException {
+        if (((id == null) && (user.getId() == null)) || ((id != null) && id.equals(user.getId()) && (userServiceFacade.getUserById(id) != null))) {
+            return userServiceFacade.saveUser(user);
+        }
+        throw new RuntimeException();
     }
 
     // BEAN METHODS

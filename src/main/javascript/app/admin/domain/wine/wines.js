@@ -1,37 +1,51 @@
 angular.module('mycellar.controllers.admin.domain.wine.wines', [
   'ngRoute',
-  'mycellar.controllers.admin.domain.wine.wine', 
   'mycellar.resources.wine.wines', 
   'mycellar.directives.table',
   'mycellar.directives.error',
+  'mycellar.directives.form',
   'mycellar.directives.admin',
   'mycellar.services.admin'
 ], [
   'adminDomainServiceProvider', 
   function(adminDomainServiceProvider){
-    adminDomainServiceProvider.forDomain('wine', 'Wine', 'Wines', 'Vin', 'Vins')
-      .whenCrud({}, {
-        wine: ['$route', 'Wines', function ($route, Wines) {
-          var id = $route.current.params.id;
-          if (id != null && id > 0) {
-            return Wines.getById(id);
-          } else {
-            return Wines.new();
-          }
-        }]
-      }
-    );
+    adminDomainServiceProvider.forDomain({
+      group: 'wine', 
+      resourceName: 'Wine', 
+      resourcesName: 'Wines', 
+      groupLabel: 'Vin', 
+      resourcesLabel: 'Vins',
+      defaultSort: ['appellation.region.country.name',
+                    'appellation.region.name',
+                    'appellation.name',
+                    'producer.name',
+                    'name', 
+                    'vintage']
+    }).whenCrud();
   }
 ]);
 
 angular.module('mycellar.controllers.admin.domain.wine.wines').controller('AdminDomainWinesController', [
-  '$scope', 'Wines', 'adminDomainService',
-  function ($scope, Wines, adminDomainService) {
-    angular.extend($scope, adminDomainService.listMethods('wine', 'Wine', Wines, ['appellation.region.country.name',
-                                                                                  'appellation.region.name',
-                                                                                  'appellation.name',
-                                                                                  'producer.name',
-                                                                                  'name', 
-                                                                                  'vintage']));
+  '$scope', 'adminDomainService', 'tableContext',
+  function ($scope, adminDomainService, tableContext) {
+    adminDomainService.listMethods({
+      scope: $scope,
+      group: 'wine',
+      resourceName: 'Wine',
+      tableContext: tableContext
+    });
+  }
+]);
+
+angular.module('mycellar.controllers.admin.domain.wine.wines').controller('AdminDomainWineController', [
+  '$scope', 'adminDomainService', 'item',
+  function ($scope, adminDomainService, item) {
+    $scope.wine = item;
+    adminDomainService.editMethods({
+      scope: $scope,
+      group: 'wine',
+      resourceName: 'Wine',
+      resource: item
+    });
   }
 ]);

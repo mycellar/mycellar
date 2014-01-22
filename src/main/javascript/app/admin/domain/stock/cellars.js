@@ -1,32 +1,46 @@
 angular.module('mycellar.controllers.admin.domain.stock.cellars', [
   'ngRoute',
-  'mycellar.controllers.admin.domain.stock.cellar',
   'mycellar.resources.stock.cellars',
   'mycellar.directives.table',
   'mycellar.directives.error',
+  'mycellar.directives.form',
   'mycellar.directives.admin',
   'mycellar.services.admin'
 ], [
   'adminDomainServiceProvider',
   function(adminDomainServiceProvider){
-    adminDomainServiceProvider.forDomain('stock', 'Cellar', 'Cellars', 'Stockage', 'Caves')
-      .whenCrud({}, {
-        cellar: ['$route', 'Cellars', function ($route, Cellars) {
-          var id = $route.current.params.id;
-          if (id != null && id > 0) {
-            return Cellars.getById(id);
-          } else {
-            return Cellars.new();
-          }
-        }]
-      }
-    );
+    adminDomainServiceProvider.forDomain({
+      group: 'stock', 
+      resourceName: 'Cellar', 
+      resourcesName: 'Cellars', 
+      groupLabel: 'Stockage', 
+      resourcesLabel: 'Caves',
+      defaultSort: ['name']
+    }).whenCrud();
   }
 ]);
 
 angular.module('mycellar.controllers.admin.domain.stock.cellars').controller('AdminDomainCellarsController', [
-  '$scope', 'Cellars', 'adminDomainService',
-  function ($scope, Cellars, adminDomainService) {
-    angular.extend($scope, adminDomainService.listMethods('stock', 'Cellar', Cellars, ['name']));
+  '$scope', 'adminDomainService', 'tableContext',
+  function ($scope, adminDomainService, tableContext) {
+    adminDomainService.listMethods({
+      scope: $scope,
+      group: 'stock', 
+      resourceName: 'Cellar', 
+      tableContext: tableContext
+    });
+  }
+]);
+
+angular.module('mycellar.controllers.admin.domain.stock.cellars').controller('AdminDomainCellarController', [
+  '$scope', 'adminDomainService', 'item',
+  function ($scope, adminDomainService, item) {
+    $scope.cellar = item;
+    adminDomainService.editMethods({
+      scope: $scope,
+      group: 'stock', 
+      resourceName: 'Cellar', 
+      resource: item
+    });
   }
 ]);

@@ -2,13 +2,9 @@ angular.module('mycellar.resources.stack.stacks', ['ngResource']);
 
 angular.module('mycellar.resources.stack.stacks').factory('Stacks', ['$resource', '$q', function ($resource, $q) {
 
-  var Stacks = $resource('/api/domain/stack/stacks');
+  var Stacks = $resource('/api/domain/stack/stacks/:id', {id: '@id'}, {});
   var Stack = $resource('/api/domain/stack/stack/:stackId');
 
-  Stacks.deleteById = function(id, fn) {
-    return Stack.delete({stackId: id}, fn);
-  };
-  
   Stacks.count = function () {
     var deferred = $q.defer();
     Stacks.get({count: 0}, function(result) {
@@ -19,10 +15,6 @@ angular.module('mycellar.resources.stack.stacks').factory('Stacks', ['$resource'
       });
     });
     return deferred.promise;
-  };
-  
-  Stacks.getById = function(id) {
-    return Stack.get({stackId: id});
   };
   
   return Stacks;

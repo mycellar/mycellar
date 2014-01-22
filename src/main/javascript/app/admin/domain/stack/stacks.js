@@ -1,28 +1,35 @@
 angular.module('mycellar.controllers.admin.domain.stack.stacks', [
   'ngRoute',
-  'mycellar.controllers.admin.domain.stack.stack', 
   'mycellar.resources.stack.stacks', 
   'mycellar.directives.table',
   'mycellar.directives.error', 
+  'mycellar.directives.form',
   'mycellar.directives.admin',
   'mycellar.services.admin'
 ], [
   'adminDomainServiceProvider', 
   function(adminDomainServiceProvider){
-    adminDomainServiceProvider.forDomain('stack', 'Stack', 'Stacks', 'Stack', 'Stacks')
-      .whenCrud({}, {
-        stack: ['$route', 'Stacks', function ($route, Stacks) {
-          return Stacks.getById($route.current.params.id);
-        }]
-      }
-    );
+    adminDomainServiceProvider.forDomain({
+      group: 'stack', 
+      resourceName: 'Stack', 
+      resourcesName: 'Stacks', 
+      groupLabel :'Stack', 
+      resourcesLabel: 'Stacks',
+      defaultSort: ['count', 'count'],
+      canSave: false
+    }).whenCrud();
   }
 ]);
 
 angular.module('mycellar.controllers.admin.domain.stack.stacks').controller('AdminDomainStacksController', [
-  '$scope', '$route', 'Stacks', 'adminDomainService', 
-  function ($scope, $route, Stacks, adminDomainService) {
-    angular.extend($scope, adminDomainService.listMethods('stack', 'Stack', Stacks, ['count', 'count'], true, false));
+  '$scope', '$route', 'adminDomainService', 'tableContext',
+  function ($scope, $route, adminDomainService, tableContext) {
+    adminDomainService.listMethods({
+      scope: $scope,
+      group: 'stack', 
+      resourceName: 'Stack', 
+      tableContext: tableContext
+    });
     $scope.deleteAll = function() {
       Stacks.delete({}, function (value, headers) {
         if (value.errorKey != undefined) {
@@ -34,6 +41,19 @@ angular.module('mycellar.controllers.admin.domain.stack.stacks').controller('Adm
         }
       });
     };
+  }
+]);
+
+angular.module('mycellar.controllers.admin.domain.stack.stacks').controller('AdminDomainStackController', [
+  '$scope', 'adminDomainService', 'item', 
+  function ($scope, stack, adminDomainService, item) {
+    $scope.stack = item;
+    adminDomainService.editMethods({
+      scope: $scope,
+      group: 'stack', 
+      resourceName: 'Stack',
+      resource: item
+    });
   }
 ]);
 

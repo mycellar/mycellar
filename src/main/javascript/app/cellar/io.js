@@ -10,20 +10,25 @@ angular.module('mycellar.controllers.cellar.io', [
       templateUrl: 'partials/cellar/io.tpl.html',
       controller: 'InputOutputController',
       resolve: {
-        cellars: ['Cellars', function(Cellars){
-          return Cellars.getAllForCurrentUser();
+        cellars: ['Cellars', function(Cellars) {
+          return Cellars.getAllForCurrentUser().$promise;
         }],
-        tableContext: ['tableService', function(tableService) {
-          return tableService.createTableContext();
-        }]
+       tableContext: ['tableService', 'Movements', function(tableService, Movements) {
+         return tableService.createTableContext(
+           Movements.getAllForCellar, 
+           ['date', 'date'], 
+           {cellarId: 0}
+         );
+       }]
       }
     });
   }
 ]);
 
 angular.module('mycellar.controllers.cellar.io').controller('InputOutputController', [
-  '$scope', 'cellars', 'Movements', 'tableContext',
-  function($scope, cellars, Movements, tableContext) {
+  '$scope', 'cellars', 'tableContext',
+  function($scope, cellars, tableContext) {
+    $scope.tableContext = tableContext;
     $scope.cellarsResource = cellars;
     $scope.$watch('cellarsResource.list', function() {
       if ($scope.cellarsResource.list != undefined && $scope.cellarsResource.list.length > 0) {
@@ -43,17 +48,14 @@ angular.module('mycellar.controllers.cellar.io').controller('InputOutputControll
     $scope.selectCellar = function(cellar) {
       $scope.cellar = cellar;
     };
-
-    $scope.tableOptions = {
-        itemResource: Movements.getAllForCellar,
-        defaultSort: ['date', 'date'],
-        parameters : {cellarId: 0}
-    };
-    $scope.tableContext = tableContext;
-
+    var started = false;
     $scope.$watch('cellar.id', function (value) {
       if ($scope.cellar != null && $scope.cellar.id != undefined) {
-        $scope.tableOptions.parameters.cellarId = $scope.cellar.id;
+        $scope.tableContext.parameters.cellarId = $scope.cellar.id;
+        if (!started) {
+          started = true;
+          $scope.tableContext.setPage(1);
+        }
       }
     });
   }

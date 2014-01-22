@@ -1,26 +1,47 @@
 angular.module('mycellar.controllers.admin.domain.admin.configurations', [
-  'mycellar.controllers.admin.domain.admin.configuration', 
   'mycellar.resources.admin.configurations', 
   'mycellar.directives.table',
-  'mycellar.directives.error', 
+  'mycellar.directives.error',
+  'mycellar.directives.form',
   'mycellar.directives.admin',
   'mycellar.services.admin'
 ], [
-  'adminDomainServiceProvider', 
-  function(adminDomainServiceProvider){
-    adminDomainServiceProvider.forDomain('admin', 'Configuration', 'Configurations', 'Administration', 'Configurations')
-      .whenCrud({}, {
-        configuration: ['$route', 'Configurations', function ($route, Configurations) {
-          return Configurations.getById($route.current.params.id);
-        }]
-      }
-    );
+  'adminDomainServiceProvider',
+  function(adminDomainServiceProvider) {
+    adminDomainServiceProvider.forDomain({
+      group: 'admin', 
+      resourceName: 'Configuration', 
+      resourcesName: 'Configurations', 
+      groupLabel: 'Administration', 
+      resourcesLabel: 'Configurations',
+      defaultSort: ['key'],
+      canCreate: false,
+      canDelete: false
+    }).whenCrud();
   }
 ]);
 
 angular.module('mycellar.controllers.admin.domain.admin.configurations').controller('AdminDomainConfigurationsController', [
-  '$scope', 'Configurations', 'adminDomainService', 
-  function ($scope, Configurations, adminDomainService) {
-    angular.extend($scope, adminDomainService.listMethods('admin', 'Configuration', Configurations, ['key'], false, false));
+  '$scope', 'adminDomainService', 'tableContext',
+  function($scope, adminDomainService, tableContext) {
+    adminDomainService.listMethods({
+      scope: $scope, 
+      group: 'admin', 
+      resourceName: 'Configuration',
+      tableContext: tableContext
+    });
+  }
+]);
+
+angular.module('mycellar.controllers.admin.domain.admin.configurations').controller('AdminDomainConfigurationController', [
+  '$scope', 'adminDomainService', 'item',
+  function ($scope, adminDomainService, item) {
+    $scope.configuration = item;
+    adminDomainService.editMethods({
+      scope: $scope,
+      group: 'admin', 
+      resourceName: 'Configuration', 
+      resource: item
+    });
   }
 ]);

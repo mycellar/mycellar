@@ -2,26 +2,16 @@ angular.module('mycellar.resources.booking.bookingEvents', ['ngResource']);
 
 angular.module('mycellar.resources.booking.bookingEvents').factory('BookingEvents', ['$resource', '$q', function ($resource, $q) {
 
-  var BookingEvents = $resource('/api/domain/booking/bookingEvents', {}, {
+  var BookingEvents = $resource('/api/domain/booking/bookingEvents/:id', {id: '@id'}, {
     currents: {
       url: '/api/booking/currentBookingEvents',
       method: 'GET'
-    }
-  });
-  var BookingEvent = $resource('/api/domain/booking/bookingEvent/:bookingEventId', {}, {
+    },
     getQuantities: {
-      url: '/api/booking/quantities/:bookingEventId',
+      url: '/api/booking/quantities/:id',
       method: 'GET'
     }
   });
-
-  BookingEvent.deleteById = BookingEvent.delete;
-  BookingEvent.delete = function(fn) {
-    return BookingEvent.deleteById({bookingEventId: this.id}, fn);
-  };
-  BookingEvents.deleteById = function(id, fn) {
-    return BookingEvent.deleteById({bookingEventId: id}, fn);
-  };
 
   BookingEvents.count = function () {
     var deferred = $q.defer();
@@ -35,14 +25,6 @@ angular.module('mycellar.resources.booking.bookingEvents').factory('BookingEvent
     return deferred.promise;
   };
   
-  BookingEvents.getById = function(id) {
-    return BookingEvent.get({bookingEventId: id});
-  };
-  
-  BookingEvents.new = function() {
-    return new BookingEvent();
-  };
-  
   BookingEvents.nameLike = function(name) {
     var deferred = $q.defer();
     BookingEvents.get({first: 0, count: 15, filters: 'name,'+name, sort: 'name,asc'}, function(result) {
@@ -53,10 +35,6 @@ angular.module('mycellar.resources.booking.bookingEvents').factory('BookingEvent
       });
     });
     return deferred.promise;
-  };
-  
-  BookingEvents.getQuantities = function(bookingEvent, fn) {
-    return BookingEvent.getQuantities({bookingEventId: bookingEvent.id}, fn);
   };
   
   return BookingEvents;

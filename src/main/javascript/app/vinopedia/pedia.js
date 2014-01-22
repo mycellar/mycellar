@@ -7,26 +7,27 @@ angular.module('mycellar.controllers.vinopedia.pedia', [
   function($routeProvider){
     $routeProvider.when('/vinopedia', {
       templateUrl: 'partials/vinopedia/pedia.tpl.html',
-      controller: 'VinopediaController'
+      controller: 'VinopediaController',
+      resolve: {
+        tableContext: ['tableService', 'Wines', function(tableService, Wines) {
+          var tableContext = tableService.createTableContext(Wines.get, [
+            'appellation.region.country.name',
+            'appellation.region.name',
+            'appellation.name',
+            'producer.name',
+            'name', 
+            'vintage'
+          ]);
+          return tableContext.setPage(1).promise;
+        }]
+      }
     });
   }
 ]);
 
 angular.module('mycellar.controllers.vinopedia.pedia').controller('VinopediaController', [
-  '$scope', 'tableService', 'Wines',
-  function ($scope, tableService, Wines) {
-    $scope.tableOptions = {
-      itemResource: Wines.get,
-      defaultSort: [
-        'appellation.region.country.name',
-        'appellation.region.name',
-        'appellation.name',
-        'producer.name',
-        'name', 
-        'vintage'
-      ]
-    };
-    $scope.tableContext = tableService.createTableContext();
-    $scope.errors = [];
+  '$scope', 'tableContext',
+  function ($scope, tableContext) {
+    $scope.tableContext = tableContext;
   }
 ]);
