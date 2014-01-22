@@ -4,13 +4,13 @@ branches:
   - master
 install:
 - mvn install -DskipTests
-- npm install
+- npm --no-color install
 - node_modules/grunt-cli/bin/grunt --no-color install
 script: mvn verify
 after_success:
-- node_modules/grunt-cli/bin/grunt coverage
+- node_modules/grunt-cli/bin/grunt --no-color coverage
 - mvn verify jacoco:report coveralls:jacoco -De2e=e2e_coverage
-- node_modules/grunt-cli/bin/grunt coveralls_merge
+- node_modules/grunt-cli/bin/grunt --no-color coveralls_merge
 addons:
   sauce_connect: true
 env:
