@@ -19,12 +19,12 @@ describe('E2E: Testing home', function() {
 
       // collapse nav
       homePage.getNavToggle().click();
-      browser.driver.sleep(200); // FIXME why sleep is neede ?
+      browser.driver.sleep(200); // sleep to wait animation ending
       expect(homePage.getNav().isDisplayed()).toBe(false);
     });
     
     afterEach(function() {
-      // FIXME resize to oldSize (cannot re-uset getSize())
+      // FIXME resize to oldSize (cannot re-use getSize())
       browser.driver.manage().window().setSize(800,800);
     });
     
