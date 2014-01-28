@@ -30,7 +30,6 @@ import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
-import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
@@ -82,7 +81,7 @@ public class Wine extends NamedEntity {
     @Enumerated(EnumType.ORDINAL)
     private WineColorEnum color;
 
-    @ElementCollection(fetch = FetchType.EAGER)
+    @ElementCollection
     @JoinTable(name = "WINE_VARIETAL", joinColumns = @JoinColumn(name = "WINE"))
     @Column(name = "PERCENT")
     @MapKeyJoinColumn(name = "VARIETAL")

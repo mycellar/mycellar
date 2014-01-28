@@ -28,10 +28,12 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
-import org.springframework.test.context.ContextConfiguration;
+import org.springframework.boot.test.SpringApplicationConfiguration;
+import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.transaction.annotation.Transactional;
 
+import fr.mycellar.MyCellarApplication;
 import fr.mycellar.domain.booking.Booking;
 import fr.mycellar.domain.booking.BookingBottle;
 import fr.mycellar.domain.booking.BookingEvent;
@@ -44,7 +46,8 @@ import fr.mycellar.test.FieldUtils;
  * @author speralta
  */
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(locations = { "classpath:context-infrastructure-test.xml" })
+@SpringApplicationConfiguration(classes = { MyCellarApplication.class })
+@ActiveProfiles("test")
 @Transactional
 public class BookingServiceImplIT {
 

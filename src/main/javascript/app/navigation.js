@@ -1,5 +1,5 @@
 angular.module('mycellar.controllers.navigation', [
-  'mycellar.services.security.service',
+  'mycellar.services.security',
   'mycellar.services.menu'
 ]);
 

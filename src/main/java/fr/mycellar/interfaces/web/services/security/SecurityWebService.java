@@ -22,6 +22,7 @@ import javax.inject.Inject;
 import javax.inject.Named;
 import javax.inject.Singleton;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
@@ -41,12 +42,14 @@ import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
 
+import fr.mycellar.configuration.SpringSecurityConfiguration;
 import fr.mycellar.domain.shared.exception.BusinessError;
 import fr.mycellar.domain.shared.exception.BusinessException;
 import fr.mycellar.domain.user.ProfileEnum;
 import fr.mycellar.domain.user.User;
 import fr.mycellar.interfaces.facades.user.UserServiceFacade;
 import fr.mycellar.interfaces.web.security.CurrentUserService;
+import fr.mycellar.interfaces.web.security.SecurityContextTokenRepository;
 
 /**
  * @author speralta
@@ -59,6 +62,8 @@ public class SecurityWebService {
     private static final Logger logger = LoggerFactory.getLogger(SecurityWebService.class);
 
     private AuthenticationManager authenticationManager;
+
+    private SecurityContextTokenRepository securityContextTokenRepository;
 
     private CurrentUserService currentUserService;
 
@@ -82,19 +87,19 @@ public class SecurityWebService {
     @Produces(MediaType.APPLICATION_JSON)
     @Consumes(MediaType.APPLICATION_JSON)
     @Path("resetPassword")
-    public UserDto resetPassword(ResetPasswordDto resetPasswordDto) throws BusinessException {
+    public UserDto resetPassword(ResetPasswordDto resetPasswordDto, @Context HttpServletResponse response) throws BusinessException {
         User user = userServiceFacade.resetPassword(resetPasswordDto.getKey(), resetPasswordDto.getPassword());
         UserDto userDto = new UserDto();
         userDto.setEmail(user.getEmail());
         userDto.setPassword(resetPasswordDto.getPassword());
-        return login(userDto);
+        return login(userDto, response);
     }
 
     @POST
     @Produces(MediaType.APPLICATION_JSON)
     @Consumes(MediaType.APPLICATION_JSON)
     @Path("changePassword")
-    public UserDto changePassword(ChangePasswordDto changePasswordDto) throws BusinessException {
+    public UserDto changePassword(ChangePasswordDto changePasswordDto, @Context HttpServletResponse response) throws BusinessException {
         User currentUser = currentUserService.getCurrentUser();
         User user = userServiceFacade.authenticateUser(currentUser.getEmail(), changePasswordDto.getOldPassword());
 
@@ -103,14 +108,14 @@ public class SecurityWebService {
         UserDto userDto = new UserDto();
         userDto.setEmail(user.getEmail());
         userDto.setPassword(changePasswordDto.getPassword());
-        return login(userDto);
+        return login(userDto, response);
     }
 
     @POST
     @Produces(MediaType.APPLICATION_JSON)
     @Consumes(MediaType.APPLICATION_JSON)
     @Path("changeEmail")
-    public UserDto changeEmail(ChangeEmailDto changeEmailDto) throws BusinessException {
+    public UserDto changeEmail(ChangeEmailDto changeEmailDto, @Context HttpServletResponse response) throws BusinessException {
         User currentUser = currentUserService.getCurrentUser();
         User user = userServiceFacade.authenticateUser(currentUser.getEmail(), changeEmailDto.getPassword());
         user.setEmail(changeEmailDto.getEmail());
@@ -121,7 +126,7 @@ public class SecurityWebService {
         UserDto userDto = new UserDto();
         userDto.setEmail(user.getEmail());
         userDto.setPassword(changeEmailDto.getPassword());
-        return login(userDto);
+        return login(userDto, response);
     }
 
     @GET
@@ -145,7 +150,7 @@ public class SecurityWebService {
     @Produces(MediaType.APPLICATION_JSON)
     @Consumes(MediaType.APPLICATION_JSON)
     @Path("login")
-    public UserDto login(UserDto userDto) throws BusinessException {
+    public UserDto login(UserDto userDto, @Context HttpServletResponse response) throws BusinessException {
         UsernamePasswordAuthenticationToken authRequest = new UsernamePasswordAuthenticationToken(userDto.getEmail(), userDto.getPassword());
         Authentication auth;
         try {
@@ -157,7 +162,9 @@ public class SecurityWebService {
         }
         if ((auth != null) && auth.isAuthenticated()) {
             logger.debug("Authentication success: {}", auth);
-            SecurityContextHolder.getContext().setAuthentication(auth);
+            SecurityContext context = SecurityContextHolder.getContext();
+            context.setAuthentication(auth);
+            response.setHeader(SpringSecurityConfiguration.TOKEN_HEADER_NAME, securityContextTokenRepository.newToken(context).getKey());
             return getCurrentUser();
         }
         SecurityContextHolder.clearContext();
@@ -182,7 +189,7 @@ public class SecurityWebService {
     @Produces(MediaType.APPLICATION_JSON)
     @Consumes(MediaType.APPLICATION_JSON)
     @Path("register")
-    public UserDto register(User userToRegister) throws BusinessException {
+    public UserDto register(User userToRegister, @Context HttpServletResponse response) throws BusinessException {
         User user = new User();
         user.setEmail(userToRegister.getEmail());
         user.setFirstname(userToRegister.getFirstname());
@@ -194,13 +201,17 @@ public class SecurityWebService {
         UserDto userDto = new UserDto();
         userDto.setEmail(userToRegister.getEmail());
         userDto.setPassword(userToRegister.getPassword());
-        return login(userDto);
+        return login(userDto, response);
     }
 
     @Inject
-    @Named("myCellarAuthenticationManager")
     public void setAuthenticationManager(AuthenticationManager authenticationManager) {
         this.authenticationManager = authenticationManager;
+    }
+
+    @Inject
+    public void setSecurityContextTokenRepository(SecurityContextTokenRepository securityContextTokenRepository) {
+        this.securityContextTokenRepository = securityContextTokenRepository;
     }
 
     @Inject

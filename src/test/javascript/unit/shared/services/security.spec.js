@@ -1,6 +1,6 @@
 describe('Unit: Testing security', function() {
 
-  beforeEach(angular.mock.module('mycellar.services.security.service'));
+  beforeEach(angular.mock.module('mycellar.services.security'));
 
   it('should be exposed', inject(function(security) {
     expect(security).to.not.be.null;
@@ -22,10 +22,6 @@ describe('Unit: Testing security', function() {
     expect(security.isAuthenticated).to.not.be.null;
   }));
   
-  it('should have an oldPath property', inject(function(security) {
-    expect(security.oldPath).to.be.defined;
-  }));
-
   it('should have an currentUser property', inject(function(security) {
     expect(security.currentUser).to.be.defined;
   }));

@@ -21,7 +21,6 @@ package fr.mycellar.domain.booking;
 import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
-import java.util.SortedSet;
 import java.util.TreeSet;
 
 import javax.persistence.CascadeType;
@@ -39,8 +38,6 @@ import javax.validation.Valid;
 import javax.xml.bind.annotation.XmlTransient;
 
 import org.apache.commons.lang3.builder.ToStringBuilder;
-import org.hibernate.annotations.Sort;
-import org.hibernate.annotations.SortType;
 import org.hibernate.annotations.Type;
 import org.hibernate.search.annotations.Indexed;
 import org.joda.time.LocalDate;
@@ -85,10 +82,9 @@ public class BookingEvent extends NamedEntity {
     @Valid
     @OneToMany(mappedBy = "bookingEvent", cascade = { CascadeType.MERGE, CascadeType.PERSIST }, fetch = FetchType.EAGER, orphanRemoval = true)
     @OrderBy("position")
-    @Sort(comparator = BookingBottlePositionComparator.class, type = SortType.COMPARATOR)
     @JsonManagedReference("bookingEvent-bottles")
     @JsonDeserialize(as = BookingBottleSet.class)
-    private final SortedSet<BookingBottle> bottles = new BookingBottleSet();
+    private final Set<BookingBottle> bottles = new BookingBottleSet();
 
     @Column(name = "START", nullable = false)
     @Type(type = "org.jadira.usertype.dateandtime.joda.PersistentLocalDate")

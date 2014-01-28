@@ -1,6 +1,6 @@
 angular.module('mycellar.controllers.password', [
   'ngRoute',
-  'mycellar.services.security.service'
+  'mycellar.services.security'
 ], [
   '$routeProvider', 
   function($routeProvider){

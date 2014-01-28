@@ -1,8 +1,9 @@
 angular.module('mycellar.controllers.login', [
   'ngRoute',
   'mycellar.resources.user.users',
-  'mycellar.services.security.service',
-  'mycellar.directives.form.password'
+  'mycellar.services.security',
+  'mycellar.directives.form.password',
+  'mycellar.directives.form.login'
 ], [
   '$routeProvider', 
   function($routeProvider){
@@ -18,11 +19,16 @@ angular.module('mycellar.controllers.login', [
 ]);
 
 angular.module('mycellar.controllers.login').controller('LoginController', [
-  '$scope', 'security', 'Users',
-  function ($scope, security, Users) {
+  '$scope', 'security', 'Users', '$location',
+  function ($scope, security, Users, $location) {
     $scope.email = '';
     $scope.password = '';
-    $scope.login = security.login;
+    $scope.login = function() {
+      security.login($scope.email, $scope.password);
+    };
+    $scope.resetPasswordRequest = function() {
+      $location.path('/reset-password-request');
+    };
     $scope.logout = security.logout;
     $scope.register = security.register;
     $scope.user = new Users();

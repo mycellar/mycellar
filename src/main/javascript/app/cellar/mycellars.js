@@ -13,8 +13,16 @@ angular.module('mycellar.controllers.cellar.mycellars', [
         cellars: ['Cellars', function(Cellars){
           return Cellars.getAllForCurrentUser();
         }],
-        tableContext: ['tableService', function(tableService) {
-          return tableService.createTableContext();
+        tableContext: ['tableService', 'Stocks', function(tableService, Stocks) {
+          return tableService.createTableContext(Stocks.getAllForCellar, [
+            'bottle.wine.appellation.region.country.name',
+            'bottle.wine.appellation.region.name',
+            'bottle.wine.appellation.name',
+            'bottle.wine.producer.name',
+            'bottle.wine.name',
+            'bottle.wine.vintage',
+            'bottle.format.capacity'],
+          {cellarId: 0});
         }]
       }
     });
@@ -22,8 +30,8 @@ angular.module('mycellar.controllers.cellar.mycellars', [
 ]);
 
 angular.module('mycellar.controllers.cellar.mycellars').controller('MyCellarsController', [
-  '$scope', 'cellars', 'Stocks', 'tableContext',
-  function($scope, cellars, Stocks, tableContext) {
+  '$scope', 'cellars', 'tableContext',
+  function($scope, cellars, tableContext) {
     $scope.cellarsResource = cellars;
     $scope.$watch('cellarsResource.list', function() {
       if ($scope.cellarsResource.list != undefined && $scope.cellarsResource.list.length > 0) {
@@ -44,22 +52,16 @@ angular.module('mycellar.controllers.cellar.mycellars').controller('MyCellarsCon
       $scope.cellar = cellar;
     };
 
-    $scope.tableOptions = {
-        itemResource: Stocks.getAllForCellar,
-        defaultSort: ['bottle.wine.appellation.region.country.name',
-                      'bottle.wine.appellation.region.name',
-                      'bottle.wine.appellation.name',
-                      'bottle.wine.producer.name',
-                      'bottle.wine.name',
-                      'bottle.wine.vintage',
-                      'bottle.format.capacity'],
-        parameters : {cellarId: 0}
-    };
     $scope.tableContext = tableContext;
 
+    var started = false;
     $scope.$watch('cellar.id', function (value) {
       if ($scope.cellar != null && $scope.cellar.id != undefined) {
-        $scope.tableOptions.parameters.cellarId = $scope.cellar.id;
+        $scope.tableContext.parameters.cellarId = $scope.cellar.id;
+        if (!started) {
+          started = true;
+          $scope.tableContext.setPage(1);
+        }
       }
     });
   }

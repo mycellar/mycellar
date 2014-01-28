@@ -27,18 +27,21 @@ import javax.persistence.PersistenceContext;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.springframework.boot.test.SpringApplicationConfiguration;
 import org.springframework.test.annotation.Rollback;
-import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.transaction.annotation.Transactional;
 
+import fr.mycellar.MyCellarApplication;
 import fr.mycellar.infrastructure.shared.repository.SearchParameters;
 
 /**
  * @author speralta
  */
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(locations = { "classpath:context-infrastructure-test.xml" })
+@SpringApplicationConfiguration(classes = { MyCellarApplication.class })
+@ActiveProfiles("test")
 @Transactional
 public class JpaWineRepositoryIT {
     @PersistenceContext
@@ -50,28 +53,24 @@ public class JpaWineRepositoryIT {
     @Test
     @Rollback
     public void like() {
-        assertThat(jpaWineRepository.getWinesLike("saint", new SearchParameters()) //
-                .size(), equalTo(2));
+        assertThat(getWinesLikeSize("saint"), equalTo(2));
 
-        assertThat(jpaWineRepository.getWinesLike("emilion", new SearchParameters()) //
-                .size(), equalTo(1));
+        assertThat(getWinesLikeSize("emilion"), equalTo(1));
 
-        assertThat(jpaWineRepository.getWinesLike("2005", new SearchParameters()) //
-                .size(), equalTo(4));
+        assertThat(getWinesLikeSize("2005"), equalTo(4));
 
-        assertThat(jpaWineRepository.getWinesLike("", new SearchParameters()) //
-                .size(), equalTo(0));
+        assertThat(getWinesLikeSize(""), equalTo(0));
 
-        assertThat(jpaWineRepository.getWinesLike("gaill", new SearchParameters()) //
-                .size(), equalTo(1));
+        assertThat(getWinesLikeSize("gaill"), equalTo(1));
 
-        assertThat(jpaWineRepository.getWinesLike("renaissa", new SearchParameters()) //
-                .size(), equalTo(1));
+        assertThat(getWinesLikeSize("renaissa"), equalTo(1));
 
-        assertThat(jpaWineRepository.getWinesLike("gail renaissa", new SearchParameters()) //
-                .size(), equalTo(1));
+        assertThat(getWinesLikeSize("gail renaissa"), equalTo(1));
 
-        assertThat(jpaWineRepository.getWinesLike("graylac regnaisoce", new SearchParameters()) //
-                .size(), equalTo(1));
+        assertThat(getWinesLikeSize("graylac regnaisoce"), equalTo(1));
+    }
+
+    private int getWinesLikeSize(String like) {
+        return jpaWineRepository.getWinesLike(like, new SearchParameters()).size();
     }
 }

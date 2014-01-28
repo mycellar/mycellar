@@ -31,11 +31,13 @@ import org.joda.time.LocalDate;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.springframework.boot.test.SpringApplicationConfiguration;
 import org.springframework.test.annotation.Rollback;
-import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.transaction.annotation.Transactional;
 
+import fr.mycellar.MyCellarApplication;
 import fr.mycellar.domain.shared.exception.BusinessException;
 import fr.mycellar.domain.stock.Bottle;
 import fr.mycellar.domain.stock.Cellar;
@@ -51,7 +53,8 @@ import fr.mycellar.infrastructure.stock.repository.StockRepository;
  * @author speralta
  */
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(locations = { "classpath:context-infrastructure-test.xml" })
+@SpringApplicationConfiguration(classes = { MyCellarApplication.class })
+@ActiveProfiles("test")
 @Transactional
 public class MovementServiceImplIT {
 

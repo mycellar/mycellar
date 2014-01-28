@@ -39,7 +39,7 @@ angular.module('mycellar.controllers.booking.reports').controller('BookingReport
       $scope.bookingBottle = null;
       $scope.booking = null;
       $scope.bookingEvent = bookingEvent;
-      $scope.quantities = BookingEvents.getQuantities(bookingEvent, function(value) {
+      $scope.quantities = BookingEvents.getQuantities({id: bookingEvent.id}, function(value) {
         $scope.total = 0;
         angular.forEach($scope.bookingEvent.bottles, function(value) {
           $scope.total += value.price * $scope.quantities[$scope.bookingEvent.id + "-" + value.id];

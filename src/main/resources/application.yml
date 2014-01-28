@@ -1,0 +1,17 @@
+spring:
+  application:
+    name: MyCellar
+  jpa:
+    generate-ddl: ${db.generate}
+    hibernate:
+      ddl-auto: none
+    properties:
+      hibernate:
+        dialect: ${db.dialect}
+        search:
+          analyzer: org.apache.lucene.analysis.fr.FrenchAnalyzer
+          default: 
+            directory_provider: ram
+            worker:
+              execution: async
+              thread_pool_size: 3

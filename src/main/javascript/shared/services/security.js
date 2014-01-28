@@ -1,22 +1,27 @@
-angular.module('mycellar.services.security.service', [
+angular.module('mycellar.services.security', [
+  'http-auth-interceptor',
   'mycellar.services.menu'
 ]);
 
-angular.module('mycellar.services.security.service').factory('security', [
-  '$http', '$q', '$location', 'menuService',
-  function($http, $q, $location, menuService) {
+angular.module('mycellar.services.security').factory('security', [
+  '$http', '$q', '$location', 'authService', 'menuService',
+  function($http, $q, $location, authService, menuService) {
     var loginCallback = function(response) {
       service.currentUser = response.data;
-      if (service.isAuthenticated()) {
-        $location.path(service.oldPath);
+      $http.defaults.headers.common['Rest-Token'] = response.headers('Rest-Token');
+      if (window.localStorage) {
+        window.localStorage.setItem('Rest-Token', response.headers('Rest-Token'));
       } else {
-        $location.path($location.path());
+        $cookieStore.put('Rest-Token', response.headers('Rest-Token'));
       }
+      authService.loginConfirmed(response.data, function(config) {
+        config.headers['Rest-Token'] = response.headers('Rest-Token');
+        return config;
+      });
       menuService.reloadMenus();
     };
     // The public API of the service
     var service = {
-      oldPath: '/',
       // Attempt to authenticate a user by the given email and password
       login: function(email, password) {
         return $http.post('/api/login', {email: email, password: password}).then(loginCallback);
@@ -26,6 +31,12 @@ angular.module('mycellar.services.security.service').factory('security', [
       logout: function() {
         $http.post('/api/logout').then(function() {
           service.currentUser = null;
+          delete $http.defaults.headers.common['Rest-Token'];
+          if (window.localStorage) {
+            window.localStorage.removeItem('Rest-Token');
+          } else {
+            $cookieStore.remove('Rest-Token');
+          }
           $location.path('/');
           menuService.reloadMenus();
         });
@@ -40,8 +51,14 @@ angular.module('mycellar.services.security.service').factory('security', [
         if ( service.isAuthenticated() ) {
           return $q.when(service.currentUser);
         } else {
+          if (window.localStorage) {
+            $http.defaults.headers.common['Rest-Token'] = window.localStorage.getItem('Rest-Token');
+          } else {
+            $http.defaults.headers.common['Rest-Token'] = $cookieStore.get('Rest-Token');
+          }
           return $http.get('/api/current-user').then(function(response) {
             service.currentUser = response.data;
+            menuService.reloadMenus();
             return service.currentUser;
           });
         }

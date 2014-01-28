@@ -27,11 +27,13 @@ import javax.persistence.PersistenceContext;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.springframework.boot.test.SpringApplicationConfiguration;
 import org.springframework.test.annotation.Rollback;
-import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.transaction.annotation.Transactional;
 
+import fr.mycellar.MyCellarApplication;
 import fr.mycellar.domain.admin.ConfigurationKeyEnum;
 import fr.mycellar.domain.admin.Configuration_;
 import fr.mycellar.infrastructure.shared.repository.SearchParameters;
@@ -40,7 +42,8 @@ import fr.mycellar.infrastructure.shared.repository.SearchParameters;
  * @author speralta
  */
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(locations = { "classpath:context-infrastructure-test.xml" })
+@SpringApplicationConfiguration(classes = { MyCellarApplication.class })
+@ActiveProfiles("test")
 @Transactional
 public class JpaConfigurationRepositoryIT {
     @PersistenceContext

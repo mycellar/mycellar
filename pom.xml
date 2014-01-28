@@ -22,6 +22,12 @@
   http://maven.apache.org/xsd/maven-4.0.0.xsd">
   <modelVersion>4.0.0</modelVersion>
 
+  <parent>
+    <groupId>org.springframework.boot</groupId>
+    <artifactId>spring-boot-starter-parent</artifactId>
+    <version>1.0.0.RC1</version>
+  </parent>
+
   <groupId>mycellar</groupId>
   <version>0.7.3-SNAPSHOT</version>
   <artifactId>mycellar</artifactId>
@@ -54,30 +60,18 @@
 
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-    <log.level>trace</log.level>
 
     <!-- Versions -->
-    <slf4j.version>1.7.5</slf4j.version>
-    <spring.version>3.2.6.RELEASE</spring.version>
-    <spring.security.version>3.1.4.RELEASE</spring.security.version>
-    <hibernate.version>4.2.6.Final</hibernate.version>
-    <hibernate.validator.version>5.0.2.Final</hibernate.validator.version>
-    <hibernate.search.version>4.4.2.Final</hibernate.search.version>
+    <java.version>1.7</java.version>
+    <jetty.version>9.1.1.v20140108</jetty.version>
+    <servlet-api.version>3.1.0</servlet-api.version>
+    <hibernate-entitymanager.version>4.3.1.Final</hibernate-entitymanager.version>
+    <hibernate-search.version>4.5.0.Alpha2</hibernate-search.version>
     <jersey.version>1.18</jersey.version>
     <jackson.version>2.3.1</jackson.version>
-    <h2.version>1.3.174</h2.version>
   </properties>
 
   <build>
-    <resources>
-      <resource>
-        <directory>src/main/resources</directory>
-        <filtering>true</filtering>
-        <excludes>
-          <exclude>**/*.properties</exclude>
-        </excludes>
-      </resource>
-    </resources>
     <pluginManagement>
       <plugins>
         <plugin>
@@ -121,11 +115,6 @@
           <version>2.16</version>
         </plugin>
         <plugin>
-          <groupId>org.eclipse.jetty</groupId>
-          <artifactId>jetty-maven-plugin</artifactId>
-          <version>9.0.7.v20131107</version>
-        </plugin>
-        <plugin>
           <groupId>org.codehaus.mojo</groupId>
           <artifactId>exec-maven-plugin</artifactId>
           <version>1.2.1</version>
@@ -138,6 +127,10 @@
       </plugins>
     </pluginManagement>
     <plugins>
+      <plugin>
+        <groupId>org.springframework.boot</groupId>
+        <artifactId>spring-boot-maven-plugin</artifactId>
+      </plugin>
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-compiler-plugin</artifactId>
@@ -155,20 +148,6 @@
           <additionalProjectFacets>
             <jst.web>3.0</jst.web>
           </additionalProjectFacets>
-        </configuration>
-      </plugin>
-      <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-war-plugin</artifactId>
-        <configuration>
-          <filteringDeploymentDescriptors>true</filteringDeploymentDescriptors>
-          <archive>
-            <manifest>
-              <addDefaultImplementationEntries>true</addDefaultImplementationEntries>
-              <addDefaultSpecificationEntries>true</addDefaultSpecificationEntries>
-            </manifest>
-          </archive>
-          <archiveClasses>true</archiveClasses>
         </configuration>
       </plugin>
       <plugin>
@@ -191,36 +170,16 @@
               </resources>
             </configuration>
           </execution>
-          <execution>
-            <id>java-properties</id>
-            <phase>process-resources</phase>
-            <goals>
-              <goal>copy-resources</goal>
-            </goals>
-            <configuration>
-              <outputDirectory>${project.build.outputDirectory}</outputDirectory>
-              <encoding>ISO-8859-1</encoding>
-              <resources>
-                <resource>
-                  <directory>src/main/resources</directory>
-                  <filtering>true</filtering>
-                  <includes>
-                    <include>**/*.properties</include>
-                  </includes>
-                </resource>
-              </resources>
-            </configuration>
-          </execution>
         </executions>
       </plugin>
       <plugin>
         <groupId>org.eclipse.jetty</groupId>
         <artifactId>jetty-maven-plugin</artifactId>
+        <version>${jetty.version}</version>
         <configuration>
           <jettyXml>${project.build.directory}/jetty/jetty.xml</jettyXml>
           <webApp>
             <defaultsDescriptor>${project.build.directory}/jetty/webdefault.xml</defaultsDescriptor>
-            <descriptor>${project.build.directory}/${project.build.finalName}/WEB-INF/web.xml</descriptor>
           </webApp>
           <stopKey>stopJetty</stopKey>
           <stopPort>9999</stopPort>
@@ -232,14 +191,9 @@
             <version>1.4</version>
           </dependency>
           <dependency>
-            <groupId>mysql</groupId>
-            <artifactId>mysql-connector-java</artifactId>
-            <version>5.1.20</version>
-          </dependency>
-          <dependency>
-            <groupId>com.h2database</groupId>
-            <artifactId>h2</artifactId>
-            <version>${h2.version}</version>
+            <groupId>${db.driver.groupId}</groupId>
+            <artifactId>${db.driver.artifactId}</artifactId>
+            <version>${db.driver.version}</version>
           </dependency>
           <dependency>
             <groupId>javax.mail</groupId>
@@ -252,10 +206,10 @@
             <id>start-jetty-it</id>
             <phase>pre-integration-test</phase>
             <goals>
-              <goal>run-forked</goal>
+              <goal>start</goal>
             </goals>
             <configuration>
-              <waitForChild>false</waitForChild>
+              <daemon>true</daemon>
               <jvmArgs>${jacocoAgent}</jvmArgs>
             </configuration>
           </execution>
@@ -351,13 +305,16 @@
         </property>
       </activation>
       <properties>
-        <db.dialect>H2</db.dialect>
+        <db.dialect>org.hibernate.dialect.H2Dialect</db.dialect>
         <db.generate>true</db.generate>
         <db.driver>org.h2.Driver</db.driver>
         <db.url>jdbc:h2:file:target/mycellar;AUTO_SERVER=TRUE</db.url>
         <db.user>mycellar</db.user>
         <db.pass></db.pass>
         <db.validationQuery></db.validationQuery>
+        <db.driver.groupId>com.h2database</db.driver.groupId>
+        <db.driver.artifactId>h2</db.driver.artifactId>
+        <db.driver.version>${h2.version}</db.driver.version>
       </properties>
       <build>
         <plugins>
@@ -405,19 +362,16 @@
         </property>
       </activation>
       <properties>
-        <db.dialect>MYSQL</db.dialect>
+        <db.dialect>org.hibernate.dialect.MySQL5Dialect</db.dialect>
         <db.generate>true</db.generate>
         <db.driver>com.mysql.jdbc.Driver</db.driver>
         <db.url>jdbc:mysql://localhost:3306/mycellar</db.url>
         <db.user>mycellar</db.user>
         <db.pass>pswcellar</db.pass>
         <db.validationQuery>/* ping */</db.validationQuery>
-      </properties>
-    </profile>
-    <profile>
-      <id>prod</id>
-      <properties>
-        <log.level>info</log.level>
+        <db.driver.groupId>mysql</db.driver.groupId>
+        <db.driver.artifactId>mysql-connector-java</db.driver.artifactId>
+        <db.driver.version>5.1.20</db.driver.version>
       </properties>
     </profile>
     <profile>
@@ -547,6 +501,13 @@
   </profiles>
 
   <dependencies>
+    <!-- YAML -->
+    <dependency>
+      <groupId>org.yaml</groupId>
+      <artifactId>snakeyaml</artifactId>
+    </dependency>
+
+    <!-- Apache Commons -->
     <dependency>
       <groupId>org.apache.commons</groupId>
       <artifactId>commons-lang3</artifactId>
@@ -574,18 +535,17 @@
     <!-- HIBERNATE -->
     <dependency>
       <groupId>org.hibernate</groupId>
-      <artifactId>hibernate-entitymanager</artifactId>
-      <version>${hibernate.version}</version>
+      <artifactId>hibernate-core</artifactId>
+      <version>${hibernate-entitymanager.version}</version>
     </dependency>
     <dependency>
       <groupId>org.hibernate</groupId>
       <artifactId>hibernate-validator</artifactId>
-      <version>${hibernate.validator.version}</version>
     </dependency>
     <dependency>
       <groupId>org.hibernate</groupId>
       <artifactId>hibernate-search</artifactId>
-      <version>${hibernate.search.version}</version>
+      <version>${hibernate-search.version}</version>
       <exclusions>
         <exclusion>
           <groupId>org.codehaus.jackson</groupId>
@@ -600,15 +560,10 @@
     <dependency>
       <groupId>org.hibernate</groupId>
       <artifactId>hibernate-search-analyzers</artifactId>
-      <version>${hibernate.search.version}</version>
+      <version>${hibernate-search.version}</version>
     </dependency>
 
     <!-- JODA-TIME -->
-    <dependency>
-      <groupId>joda-time</groupId>
-      <artifactId>joda-time</artifactId>
-      <version>2.3</version>
-    </dependency>
     <dependency>
       <groupId>org.jadira.usertype</groupId>
       <artifactId>usertype.core</artifactId>
@@ -623,44 +578,30 @@
 
     <!-- SPRING -->
     <dependency>
-      <groupId>org.springframework</groupId>
-      <artifactId>spring-context</artifactId>
-      <version>${spring.version}</version>
+      <groupId>org.springframework.boot</groupId>
+      <artifactId>spring-boot-starter-web</artifactId>
+      <exclusions>
+        <exclusion>
+          <groupId>org.springframework.boot</groupId>
+          <artifactId>spring-boot-starter-tomcat</artifactId>
+        </exclusion>
+      </exclusions>
+    </dependency>
+    <dependency>
+      <groupId>org.springframework.boot</groupId>
+      <artifactId>spring-boot-starter-security</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>org.springframework.boot</groupId>
+      <artifactId>spring-boot-starter-data-jpa</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>org.springframework.boot</groupId>
+      <artifactId>spring-boot-starter-test</artifactId>
     </dependency>
     <dependency>
       <groupId>org.springframework</groupId>
       <artifactId>spring-context-support</artifactId>
-      <version>${spring.version}</version>
-    </dependency>
-    <dependency>
-      <groupId>org.springframework</groupId>
-      <artifactId>spring-tx</artifactId>
-      <version>${spring.version}</version>
-    </dependency>
-    <dependency>
-      <groupId>org.springframework</groupId>
-      <artifactId>spring-orm</artifactId>
-      <version>${spring.version}</version>
-    </dependency>
-    <dependency>
-      <groupId>org.springframework</groupId>
-      <artifactId>spring-jdbc</artifactId>
-      <version>${spring.version}</version>
-    </dependency>
-    <dependency>
-      <groupId>org.springframework</groupId>
-      <artifactId>spring-web</artifactId>
-      <version>${spring.version}</version>
-    </dependency>
-    <dependency>
-      <groupId>org.springframework.security</groupId>
-      <artifactId>spring-security-web</artifactId>
-      <version>${spring.security.version}</version>
-    </dependency>
-    <dependency>
-      <groupId>org.springframework.security</groupId>
-      <artifactId>spring-security-config</artifactId>
-      <version>${spring.security.version}</version>
     </dependency>
 
     <!-- jackson -->
@@ -756,40 +697,15 @@
       </exclusions>
     </dependency>
 
-    <!-- SLF4J -->
-    <dependency>
-      <groupId>org.slf4j</groupId>
-      <artifactId>slf4j-api</artifactId>
-      <version>${slf4j.version}</version>
-    </dependency>
-    <dependency>
-      <groupId>org.slf4j</groupId>
-      <artifactId>jcl-over-slf4j</artifactId>
-      <version>${slf4j.version}</version>
-    </dependency>
-    <dependency>
-      <groupId>org.slf4j</groupId>
-      <artifactId>log4j-over-slf4j</artifactId>
-      <version>${slf4j.version}</version>
-    </dependency>
-    <dependency>
-      <groupId>ch.qos.logback</groupId>
-      <artifactId>logback-classic</artifactId>
-      <version>1.0.13</version>
-    </dependency>
-
     <!-- JAVAX -->
     <dependency>
       <groupId>javax.servlet</groupId>
       <artifactId>javax.servlet-api</artifactId>
-      <version>3.0.1</version>
-      <scope>provided</scope>
     </dependency>
     <dependency>
       <groupId>javax.mail</groupId>
       <artifactId>mail</artifactId>
       <version>1.4.6</version>
-      <scope>provided</scope>
       <exclusions>
         <exclusion>
           <groupId>javax.activation</groupId>
@@ -804,13 +720,13 @@
     </dependency>
     <dependency>
       <groupId>javax.ws.rs</groupId>
-      <artifactId>jsr311-api</artifactId>
-      <version>1.1.1</version>
+      <artifactId>javax.ws.rs-api</artifactId>
+      <version>2.0</version>
     </dependency>
     <dependency>
       <groupId>org.hibernate.javax.persistence</groupId>
-      <artifactId>hibernate-jpa-2.0-api</artifactId>
-      <version>1.0.1.Final</version>
+      <artifactId>hibernate-jpa-2.1-api</artifactId>
+      <version>1.0.0.Final</version>
     </dependency>
     <dependency>
       <groupId>javax.inject</groupId>
@@ -841,35 +757,33 @@
 
     <!-- Test -->
     <dependency>
-      <groupId>junit</groupId>
-      <artifactId>junit</artifactId>
-      <version>4.11</version>
-      <scope>test</scope>
-    </dependency>
-    <dependency>
-      <groupId>org.hamcrest</groupId>
-      <artifactId>hamcrest-core</artifactId>
-      <version>1.3</version>
-      <scope>test</scope>
-    </dependency>
-    <dependency>
-      <groupId>org.mockito</groupId>
-      <artifactId>mockito-core</artifactId>
-      <version>1.9.5</version>
-      <scope>test</scope>
-    </dependency>
-    <dependency>
       <groupId>com.h2database</groupId>
       <artifactId>h2</artifactId>
-      <version>${h2.version}</version>
-      <scope>test</scope>
-    </dependency>
-    <dependency>
-      <groupId>org.springframework</groupId>
-      <artifactId>spring-test</artifactId>
-      <version>${spring.version}</version>
       <scope>test</scope>
     </dependency>
   </dependencies>
+
+  <repositories>
+    <repository>
+      <id>spring-snapshots</id>
+      <url>http://repo.spring.io/snapshot</url>
+      <snapshots><enabled>true</enabled></snapshots>
+    </repository>
+    <repository>
+      <id>spring-milestones</id>
+      <url>http://repo.spring.io/milestone</url>
+      <snapshots><enabled>true</enabled></snapshots>
+    </repository>
+  </repositories>
+  <pluginRepositories>
+    <pluginRepository>
+      <id>spring-snapshots</id>
+      <url>http://repo.spring.io/snapshot</url>
+    </pluginRepository>
+    <pluginRepository>
+      <id>spring-milestones</id>
+      <url>http://repo.spring.io/milestone</url>
+    </pluginRepository>
+  </pluginRepositories>
 
 </project>

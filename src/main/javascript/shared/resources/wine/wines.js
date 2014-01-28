@@ -7,16 +7,15 @@ angular.module('mycellar.resources.wine.wines').factory('Wines', ['$resource', '
       url: '/api/wine/wines/like',
       method: 'GET'
     },
-    _count: {
+    get: {
       url: '/api/wine/wines',
-      method: 'GET',
-      params: {count: 0}
+      method: 'GET'
     }
   });
 
   Wines.count = function () {
     var deferred = $q.defer();
-    Wines._count({}, function(result) {
+    Wines.get({count: 0}, function(result) {
       $q.when(result.count).then(function(value) {
         deferred.resolve(value);
       }, function(value) {

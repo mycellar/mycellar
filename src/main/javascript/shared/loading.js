@@ -1,4 +1,6 @@
-angular.module('mycellar.loading', []).factory('loadingService', function() {
+angular.module('mycellar.loading', []);
+
+angular.module('mycellar.loading').factory('loadingService', function() {
   var service = {
     requestCount: 0,
     isLoading: function() {
@@ -6,35 +8,40 @@ angular.module('mycellar.loading', []).factory('loadingService', function() {
     }
   };
   return service;
-}).factory('onStartInterceptor', function(loadingService) {
-  return function (data, headersGetter) {
-    loadingService.requestCount++;
-    return data;
-  };
-}).factory('delayedPromise', function($q, $timeout){
-  return function(promise, delay) {
-    var deferred = $q.defer();
-    var delayedHandler = function() {
-      $timeout(function() { deferred.resolve(promise); }, delay);
-    };
-    promise.then(delayedHandler, delayedHandler);
-    return deferred.promise;
-  };
-}).factory('onCompleteInterceptor', function(loadingService, delayedPromise) {
-  return function(promise) {
-    var decrementRequestCount = function(response) {
-      loadingService.requestCount--;
-      return response;
-    };
-    // Normally we would just chain on to the promise but ...
-    return promise.then(decrementRequestCount, decrementRequestCount);
-    // ... we are delaying the response by 2 secs to allow the loading to be seen.
-    // return delayedPromise(promise, 2000).then(decrementRequestCount, decrementRequestCount);
-  };
-}).config(function($httpProvider) {
-  $httpProvider.responseInterceptors.push('onCompleteInterceptor');
-}).run(function($http, onStartInterceptor) {
-  $http.defaults.transformRequest.push(onStartInterceptor);
-}).controller('LoadingCtrl', function($scope, loadingService) {
-  $scope.$watch(function() { return loadingService.isLoading(); }, function(value) { $scope.loading = value; });
 });
+
+angular.module('mycellar.loading').config([
+  '$httpProvider',
+  function($httpProvider) {
+    $httpProvider.interceptors.push([
+      '$q', 'loadingService',
+      function($q, loadingService) {
+        return {
+          request: function(config) {
+            loadingService.requestCount++;
+            return config || $q.when(config);
+          },
+          response: function(response) {
+            loadingService.requestCount--;
+            return $q.when(response);
+          },
+          responseError: function(rejection) {
+            loadingService.requestCount--;
+            return $q.reject(rejection);
+          }
+        };
+      }
+    ]);
+  }
+]);
+
+angular.module('mycellar.loading').controller('LoadingCtrl', [
+  '$scope', 'loadingService',
+    function($scope, loadingService) {
+    $scope.$watch(function() {
+      return loadingService.isLoading();
+    }, function(value) { 
+      $scope.loading = value;
+    });
+  }
+]);

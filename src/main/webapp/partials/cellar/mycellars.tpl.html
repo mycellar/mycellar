@@ -18,7 +18,7 @@
     <section>
       <div ng-if="cellar != null">
         <h2>{{cellar.name}}</h2>
-        <paginated options="tableOptions" items="stocks" table-context="tableContext">
+        <paginated table-context="tableContext">
           <div class="table-responsive">
             <table class="table table-bordered table-striped table-condensed">
               <thead>
@@ -36,7 +36,7 @@
                 </tr>
               </thead>
               <tbody>
-                <tr ng-repeat="stock in stocks">
+                <tr ng-repeat="stock in tableContext.items">
                   <td>{{stock.bottle.wine.appellation.region.country.name}}</td>
                   <td>{{stock.bottle.wine.appellation.region.name}}</td>
                   <td>{{stock.bottle.wine.appellation.name}}</td>
@@ -48,7 +48,7 @@
                   <td>{{stock.bottle.format | formatRenderer}}</td>
                   <td>{{stock.quantity}}</td>
                 </tr>
-                <tr ng-if="!loading && stocks.length == 0">
+                <tr ng-if="!loading && tableContext.items.length == 0">
                   <td colspan="10" class="text-center">Aucun stock.</td>
                 </tr>
               </tbody>

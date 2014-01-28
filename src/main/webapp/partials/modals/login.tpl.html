@@ -1,0 +1,11 @@
+<div class="modal-header">
+  <h3>Connectez-vous !</h3>
+</div>
+<div class="modal-body">
+  <login-form buttons="false" email="email" password="password" />
+</div>
+<div class="modal-footer">
+  <button class="btn btn-default" ng-click="$close({email: email, password: password})">Se connecter</button>
+  <button class="btn btn-default" ng-click="$dismiss({reason: 'Forgot password', requestPassword: true})">J'ai oublié mon mot de passe</button>
+  <button class="btn btn-default" ng-click="$dismiss({reason: 'Login cancelled by user.'})">Fermer</button>
+</div>

@@ -1,0 +1,11 @@
+<configuration>
+  <property name="LOG_FILE" value="./target/mycellar.log" />
+
+  <include resource="org/springframework/boot/logging/logback/base.xml"/>
+
+  <logger name="fr.mycellar" level="debug" />
+  <logger name="org.hibernate.SQL" level="debug" />
+  <!-- <logger name="org.hibernate.type" level="trace" /> -->
+
+  <root level="warn" />
+</configuration>
