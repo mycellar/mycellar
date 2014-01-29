@@ -50,16 +50,8 @@ module.exports = function(grunt) {
         singleRun: false
       },
       unit_coverage: {
-        configFile: './src/test/javascript/karma-unit.conf.js',
-        colors: false,
-        reporters: ['coverage'],
-        preprocessors: {
-          './src/main/javascript/**/*.js': ['coverage']
-        },
-        coverageReporter: {
-          type: 'lcov',
-          dir: 'coverage/'
-        }
+        configFile: './src/test/javascript/karma-coverage.conf.js',
+        colors: false
       }
     },
 
