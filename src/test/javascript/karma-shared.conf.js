@@ -26,15 +26,7 @@ module.exports = {
   ],
   basePath: '../../../',
   frameworks: ['mocha'],
-  reporters: ['progress'],
   browsers: [],
-  preprocessors: {
-    'src/main/webapp/partials/**/*.tpl.html': 'ng-html2js'
-  },
-  ngHtml2JsPreprocessor: {
-    // strip this from the file path
-    stripPrefix: 'src/main/webapp/'
-  },
   autoWatch: false,
   singleRun: true,
   colors: true
