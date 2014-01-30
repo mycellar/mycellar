@@ -19,7 +19,9 @@
 package fr.mycellar.interfaces.web.security;
 
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.Map;
+import java.util.Map.Entry;
 
 import javax.inject.Inject;
 import javax.inject.Named;
@@ -27,6 +29,10 @@ import javax.inject.Singleton;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.joda.time.LocalDateTime;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.security.authentication.AnonymousAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContext;
@@ -45,27 +51,40 @@ import fr.mycellar.configuration.SpringSecurityConfiguration;
 @Named
 public class SecurityContextTokenRepository implements SecurityContextRepository {
 
-    // TODO purge old tokens
-    private final Map<Token, SecurityContext> securityContexts = new HashMap<Token, SecurityContext>();
+    private static class TimedSecurityContext {
+        private final SecurityContext securityContext;
+        private LocalDateTime localDateTime;
+
+        public TimedSecurityContext(SecurityContext securityContext, LocalDateTime localDateTime) {
+            this.securityContext = securityContext;
+            this.localDateTime = localDateTime;
+        }
+    }
+
+    private static final Logger logger = LoggerFactory.getLogger(SecurityContextTokenRepository.class);
+
+    private final Map<Token, TimedSecurityContext> securityContexts = new HashMap<>();
 
     @Inject
     private KeyBasedPersistenceTokenService keyBasedPersistenceTokenService;
 
     @Override
     public SecurityContext loadContext(HttpRequestResponseHolder requestResponseHolder) {
-        Object key = requestResponseHolder.getRequest().getHeader(SpringSecurityConfiguration.TOKEN_HEADER_NAME);
-        if ((key != null) && (key instanceof String)) {
-            try {
+        try {
+            Object key = requestResponseHolder.getRequest().getHeader(SpringSecurityConfiguration.TOKEN_HEADER_NAME);
+            if ((key != null) && (key instanceof String)) {
+
                 Token token = keyBasedPersistenceTokenService.verifyToken((String) key);
                 if (token != null) {
-                    SecurityContext context = securityContexts.get(token);
+                    TimedSecurityContext context = securityContexts.get(token);
                     if (context != null) {
-                        return context;
+                        context.localDateTime = new LocalDateTime();
+                        return context.securityContext;
                     }
                 }
-            } catch (Exception e) {
-
             }
+        } catch (Exception e) {
+            // return SecurityContextHolder.createEmptyContext();
         }
         return SecurityContextHolder.createEmptyContext();
     }
@@ -74,19 +93,23 @@ public class SecurityContextTokenRepository implements SecurityContextRepository
     public void saveContext(SecurityContext context, HttpServletRequest request, HttpServletResponse response) {
         Object key = response.getHeader(SpringSecurityConfiguration.TOKEN_HEADER_NAME);
         if ((key != null) && (key instanceof String)) {
-            securityContexts.put(keyBasedPersistenceTokenService.verifyToken((String) key), context);
+            securityContexts.put(keyBasedPersistenceTokenService.verifyToken((String) key), new TimedSecurityContext(context, new LocalDateTime()));
         }
     }
 
     @Override
     public boolean containsContext(HttpServletRequest request) {
-        Object key = request.getHeader(SpringSecurityConfiguration.TOKEN_HEADER_NAME);
-        if ((key != null) && (key instanceof String)) {
-            try {
-                return keyBasedPersistenceTokenService.verifyToken((String) key) != null;
-            } catch (Exception e) {
-                // return false;
+        try {
+            Object key = request.getHeader(SpringSecurityConfiguration.TOKEN_HEADER_NAME);
+            if ((key != null) && (key instanceof String)) {
+                Token token = keyBasedPersistenceTokenService.verifyToken((String) key);
+                if (token != null) {
+                    return securityContexts.containsKey(token);
+                }
+
             }
+        } catch (Exception e) {
+            // return false;
         }
         return false;
     }
@@ -103,4 +126,15 @@ public class SecurityContextTokenRepository implements SecurityContextRepository
         securityContexts.remove(request.getHeader(SpringSecurityConfiguration.TOKEN_HEADER_NAME));
     }
 
+    @Scheduled(fixedRate = 1000)
+    public void cleanRepository() {
+        LocalDateTime expired = new LocalDateTime().minusMinutes(1);
+        for (Iterator<Entry<Token, TimedSecurityContext>> iterator = securityContexts.entrySet().iterator(); iterator.hasNext();) {
+            Entry<Token, TimedSecurityContext> entry = iterator.next();
+            if (entry.getValue().localDateTime.isAfter(expired)) {
+                logger.debug("Remove expired token: {}", entry.getKey().getKey());
+                iterator.remove();
+            }
+        }
+    }
 }
