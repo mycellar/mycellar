@@ -4,7 +4,7 @@
     <error-div errors="errors"></error-div>
     <fieldset>
       <legend>Détails</legend>
-      <cellar form="form" cellar="cellarShare.cellar" input-required="true">
+      <cellar admin="true" form="form" cellar="cellarShare.cellar" input-required="true">
         <span class="help-block" ng-if="form.cellar.$error.required">Veuillez saisir une cave</span>
         <span class="help-block" ng-if="form.cellar.$error.BusinessError_CELLARSHARE_00001">Un partage de cave existe déjà pour cette cave et cet email</span>
       </cellar>

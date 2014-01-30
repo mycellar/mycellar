@@ -7,7 +7,7 @@
     <error-div errors="errors"></error-div>
     <fieldset>
       <legend>Détails</legend>
-      <cellar form="form" cellar="stock.cellar" input-required="true">
+      <cellar admin="true" form="form" cellar="stock.cellar" input-required="true">
         <span class="help-block" ng-if="form.cellar.$error.required">Veuillez saisir une cave</span>
       </cellar>
       <wine form="form" wine="stock.bottle.wine" input-required="true">

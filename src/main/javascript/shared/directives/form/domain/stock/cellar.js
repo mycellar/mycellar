@@ -25,7 +25,8 @@ angular.module('mycellar.directives.form.domain.stock.cellar').directive('cellar
       scope: {
         form: '=',
         cellar: '=',
-        postLabel: '@'
+        postLabel: '@',
+        admin: '='
       },
       compile: function(element, attrs) {
         for (var attrName in attrs) {
@@ -35,8 +36,13 @@ angular.module('mycellar.directives.form.domain.stock.cellar').directive('cellar
         }
       },
       controller: function($scope, Cellars) {
+        $scope.admin = $scope.admin == undefined ? false : $scope.admin;
         $scope.errors = [];
-        $scope.cellars = Cellars.nameLike;
+        if ($scope.admin) {
+          $scope.cellars = Cellars.nameLike;
+        } else {
+          $scope.cellars = Cellars.nameLikeForUser;
+        }
         $scope.new = function() {
           $scope.newCellar = {};
           $scope.showSub = true;

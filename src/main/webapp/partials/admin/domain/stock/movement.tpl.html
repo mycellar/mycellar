@@ -19,7 +19,7 @@
       <input class="form-control" id="date" name="date" type="date" ng-model="movement.date" placeholder="Date" required />
       <span class="help-block" ng-if="form.date.$error.required">Veuillez saisir une date</span>
     </div>
-    <cellar form="form" cellar="movement.cellar" input-required="true">
+    <cellar admin="true" form="form" cellar="movement.cellar" input-required="true">
       <span class="help-block" ng-if="form.cellar.$error.required">Veuillez saisir une cave</span>
     </cellar>
     <wine form="form" wine="movement.bottle.wine" input-required="true">

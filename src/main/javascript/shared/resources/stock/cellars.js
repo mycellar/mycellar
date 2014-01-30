@@ -37,5 +37,17 @@ angular.module('mycellar.resources.stock.cellars').factory('Cellars', ['$resourc
     return deferred.promise;
   };
 
+  Cellars.nameLikeForUser = function(name) {
+    var deferred = $q.defer();
+    Cellars.getAllForCurrentUser({first: 0, count: 15, filters: 'name,'+name, sort: 'name,asc'}, function(result) {
+      $q.when(result.list).then(function(value) {
+        deferred.resolve(value);
+      }, function(value) {
+        deferred.reject(value);
+      });
+    });
+    return deferred.promise;
+  };
+
   return Cellars;
 }]);
