@@ -59,6 +59,7 @@ angular.module('mycellar').run([
           security.login(result.email, result.password);
         }, function(reason) {
           authService.loginCancelled(reason.requestPassword, reason.reason);
+          security.logout();
         });
       }
     });
