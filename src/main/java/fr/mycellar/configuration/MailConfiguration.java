@@ -18,27 +18,28 @@
  */
 package fr.mycellar.configuration;
 
-import org.jasypt.digest.PooledStringDigester;
-import org.jasypt.digest.StringDigester;
-import org.jasypt.salt.RandomSaltGenerator;
+import javax.inject.Inject;
+import javax.mail.Session;
+
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.mail.javamail.JavaMailSender;
+import org.springframework.mail.javamail.JavaMailSenderImpl;
 
 /**
  * @author speralta
  */
 @Configuration
-public class ApplicationConfiguration {
+public class MailConfiguration {
+
+    @Inject
+    private Session session;
 
     @Bean
-    public StringDigester stringDigester() {
-        PooledStringDigester stringDigester = new PooledStringDigester();
-        stringDigester.setPoolSize(4);
-        stringDigester.setAlgorithm("SHA-1");
-        stringDigester.setIterations(10000);
-        stringDigester.setSaltSizeBytes(8);
-        stringDigester.setSaltGenerator(new RandomSaltGenerator());
-        return stringDigester;
+    public JavaMailSender javaMailSender() {
+        JavaMailSenderImpl javaMailSender = new JavaMailSenderImpl();
+        javaMailSender.setSession(session);
+        return javaMailSender;
     }
 
 }

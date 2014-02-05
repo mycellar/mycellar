@@ -24,8 +24,13 @@ import java.util.List;
 import javax.inject.Inject;
 import javax.inject.Named;
 import javax.inject.Singleton;
+import javax.ws.rs.Consumes;
+import javax.ws.rs.DELETE;
+import javax.ws.rs.DefaultValue;
 import javax.ws.rs.GET;
+import javax.ws.rs.POST;
 import javax.ws.rs.Path;
+import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.MediaType;
@@ -33,6 +38,7 @@ import javax.ws.rs.core.MediaType;
 import org.springframework.security.access.prepost.PreAuthorize;
 
 import fr.mycellar.domain.contact.Contact;
+import fr.mycellar.domain.shared.exception.BusinessException;
 import fr.mycellar.infrastructure.shared.repository.SearchParameters;
 import fr.mycellar.interfaces.facades.contact.ContactServiceFacade;
 import fr.mycellar.interfaces.web.services.FilterCouple;
@@ -66,6 +72,63 @@ public class ContactWebService {
             contacts = contactServiceFacade.getLastContacts(searchParameters);
         }
         return new ListWithCount<>(contactServiceFacade.countLastContacts(searchParameters), contacts);
+    }
+
+    @GET
+    @Produces(MediaType.APPLICATION_JSON)
+    @Path("contacts")
+    @PreAuthorize("hasRole('ADMIN')")
+    public ListWithCount<Contact> getContacts(@QueryParam("first") int first, //
+            @QueryParam("count") @DefaultValue("10") int count, //
+            @QueryParam("filters") List<FilterCouple> filters, //
+            @QueryParam("sort") List<OrderCouple> orders) {
+        SearchParameters searchParameters = searchParametersUtil.getSearchParametersForListWithCount(first, count, filters, orders, Contact.class);
+        List<Contact> contacts;
+        if (count == 0) {
+            contacts = new ArrayList<>();
+        } else {
+            contacts = contactServiceFacade.getContacts(searchParameters);
+        }
+        return new ListWithCount<>(contactServiceFacade.countContacts(searchParameters), contacts);
+    }
+
+    @GET
+    @Produces(MediaType.APPLICATION_JSON)
+    @Path("contacts/{id}")
+    @PreAuthorize("hasRole('ADMIN')")
+    public Contact getContactById(@PathParam("id") int contactId) {
+        return contactServiceFacade.getContactById(contactId);
+    }
+
+    @DELETE
+    @Path("contacts/{id}")
+    @PreAuthorize("hasRole('ADMIN')")
+    public void deleteContactById(@PathParam("id") int contactId) throws BusinessException {
+        contactServiceFacade.deleteContact(contactServiceFacade.getContactById(contactId));
+    }
+
+    @POST
+    @Consumes(MediaType.APPLICATION_JSON)
+    @Produces(MediaType.APPLICATION_JSON)
+    @Path("contacts/{id}")
+    @PreAuthorize("hasRole('ADMIN')")
+    public Contact saveContact(@PathParam("id") int contactId, Contact contact) throws BusinessException {
+        if ((contactId == contact.getId()) && (getContactById(contactId) != null)) {
+            return contactServiceFacade.saveContact(contact);
+        }
+        throw new RuntimeException();
+    }
+
+    @POST
+    @Consumes(MediaType.APPLICATION_JSON)
+    @Produces(MediaType.APPLICATION_JSON)
+    @Path("contacts")
+    @PreAuthorize("hasRole('ADMIN')")
+    public Contact saveContact(Contact contact) throws BusinessException {
+        if (contact.getId() == null) {
+            return contactServiceFacade.saveContact(contact);
+        }
+        throw new RuntimeException();
     }
 
     @Inject

@@ -1,3 +1,5 @@
+var expect = require('./chai.tool');
+
 module.exports = {
 
   loginWith: function(mail, password) {
@@ -8,7 +10,7 @@ module.exports = {
     loginPage.passwordInput.sendKeys(password);
     loginPage.loginButton.click();
 
-    expect(loginPage.accountLink.getText()).toEqual(mail);
+    expect(loginPage.accountLink.getText()).to.eventually.equal(mail);
   },
 
   login: function() {
@@ -17,7 +19,7 @@ module.exports = {
 
   logout: function() {
     element(by.xpath('//a[@title="Se déconnecter"]')).click();
-    expect(element(by.xpath('//a[@title="Se déconnecter"]')).isDisplayed()).toBe(false);
+    expect(element(by.xpath('//a[@title="Se déconnecter"]')).isDisplayed()).to.eventually.be.false;
   }
 
 };

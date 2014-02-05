@@ -4,7 +4,7 @@ angular.module('mycellar.controllers.admin.domain.admin.configurations', [
   'mycellar.directives.error',
   'mycellar.directives.form',
   'mycellar.directives.admin',
-  'mycellar.services.admin'
+  'mycellar.services.admin.domain'
 ], [
   'adminDomainServiceProvider',
   function(adminDomainServiceProvider) {

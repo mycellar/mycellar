@@ -20,7 +20,7 @@ angular.module('mycellar.directives.form.domain.user.user').directive('userForm'
           scope.label = 'Utilisateur';
         }
         if (scope.subPostLabel == null || scope.subPostLabel == '') {
-          scope.subPostLabel = 'de l\'utilisateur';
+          scope.subPostLabel = ' de l\'utilisateur';
         }
       }
     }
@@ -51,44 +51,53 @@ angular.module('mycellar.directives.form.domain.user.user').directive('userForm'
           scope.label = 'Utilisateur';
         }
         if (scope.subPostLabel == null || scope.subPostLabel == '') {
-          scope.subPostLabel = 'de l\'utilisateur';
+          scope.subPostLabel = ' de l\'utilisateur';
         }
       },
-      controller: function($scope, Users, $filter) {
-        var userFilter = $filter('userRenderer');
-        $scope.renderUser = function(user) {
-          if (user != null) {
-            return userFilter(user);
-          } else {
-            return '';
-          }
-        };
-        $scope.errors = [];
-        $scope.users = Users.nameLike;
-        $scope.new = function() {
-          $scope.newUser = {};
-          $scope.showSub = true;
-        };
-        $scope.cancel = function() {
-          $scope.showSub = false;
-        };
-        $scope.ok = function() {
-          $scope.errors = [];
-          Users.validate($scope.newUser, function (value, headers) {
-            if (value.errorKey != undefined) {
-              angular.forEach(value.properties, function(property) {
-                if ($scope.subUserForm[property] != undefined) {
-                  $scope.subUserForm[property].$setValidity(value.errorKey, false);
-                }
-              });
-              $scope.errors.push(value);
+      controller: [
+        '$scope', '$location', '$filter', 'Users', 'AdminUsers',
+        function($scope, $location, $filter, Users, AdminUsers) {
+          var userFilter = $filter('userRenderer');
+          $scope.renderUser = function(user) {
+            if (user != null) {
+              return userFilter(user);
             } else {
-              $scope.user = $scope.newUser;
-              $scope.showSub = false;
+              return '';
             }
-          });
-        };
-      }
+          };
+          var resource;
+          if ($location.path().match(/\/admin/)) {
+            resource = AdminUsers;
+          } else {
+            resource = Users;
+          }
+          $scope.errors = [];
+          $scope.users = resource.like;
+          $scope.new = function() {
+            $scope.newUser = {};
+            $scope.showSub = true;
+          };
+          $scope.cancel = function() {
+            $scope.showSub = false;
+          };
+          $scope.ok = function() {
+            $scope.errors = [];
+            resource.validate($scope.newUser, function (value, headers) {
+              if (value.errorKey != undefined) {
+                angular.forEach(value.properties, function(property) {
+                  if ($scope.subUserForm[property] != undefined) {
+                    $scope.subUserForm[property].$setValidity(value.errorKey, false);
+                  }
+                });
+                $scope.errors.push(value);
+              } else {
+                $scope.user = $scope.newUser;
+                $scope.showSub = false;
+              }
+            });
+          };
+        }
+      ]
     }
   }
 ]);

@@ -18,19 +18,15 @@ angular.module('mycellar.controllers.admin.tools', [
 ]);
 
 angular.module('mycellar.controllers.admin.tools').controller('AdminNewVintagesController', [
-  '$scope', 'Wines', 'Countries', 'Regions', 'Appellations', 'Producers', 'tableService', '$http', 
+  '$scope', 'AdminWines', 'AdminCountries', 'AdminRegions', 'AdminAppellations', 'AdminProducers', 'tableService', '$http', 
   function ($scope, Wines, Countries, Regions, Appellations, Producers, tableService, $http) {
-    $scope.tableOptions = {
-      itemResource: Wines.get,
-      defaultSort: ['appellation.region.country.name',
-                    'appellation.region.name',
-                    'appellation.name',
-                    'producer.name',
-                    'name', 
-                    'vintage']
-    };
-    $scope.tableContext = tableService.createTableContext();
-    
+    $scope.tableContext = tableService.createTableContext(Wines.get, ['appellation.region.country.name',
+                                                                      'appellation.region.name',
+                                                                      'appellation.name',
+                                                                      'producer.name',
+                                                                      'name', 
+                                                                      'vintage']);
+    $scope.tableContext.setPage(1);
     $scope.messages = [];
     $scope.errors = [];
     $scope.wines = [];
@@ -71,9 +67,9 @@ angular.module('mycellar.controllers.admin.tools').controller('AdminNewVintagesC
         createVintage($scope.wines, idxs);
       }
     };
-    $scope.countries = Countries.nameLike;
-    $scope.regions = Regions.nameLike;
-    $scope.appellations = Appellations.nameLike;
-    $scope.producers = Producers.nameLike;
+    $scope.countries = Countries.like;
+    $scope.regions = Regions.like;
+    $scope.appellations = Appellations.like;
+    $scope.producers = Producers.like;
   }
 ]);

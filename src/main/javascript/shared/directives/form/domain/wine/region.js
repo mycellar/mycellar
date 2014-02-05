@@ -35,33 +35,42 @@ angular.module('mycellar.directives.form.domain.wine.region').directive('regionF
           }
         }
       },
-      controller: function($scope, Regions) {
-        $scope.errors = [];
-        $scope.regions = Regions.nameLike;
-        $scope.new = function() {
-          $scope.newRegion = {};
-          $scope.showSub = true;
-        };
-        $scope.cancel = function() {
-          $scope.showSub = false;
-        };
-        $scope.ok = function() {
+      controller: [
+        '$scope', '$location', 'Regions', 'AdminRegions',
+        function($scope, $location, Regions, AdminRegions) {
+          var resource;
+          if ($location.path().match(/\/admin/)) {
+            resource = AdminRegions;
+          } else {
+            resource = Regions;
+          }
           $scope.errors = [];
-          Regions.validate($scope.newRegion, function (value, headers) {
-            if (value.errorKey != undefined) {
-              angular.forEach(value.properties, function(property) {
-                if ($scope.subRegionForm[property] != undefined) {
-                  $scope.subRegionForm[property].$setValidity(value.errorKey, false);
-                }
-              });
-              $scope.errors.push(value);
-            } else {
-              $scope.region = $scope.newRegion;
-              $scope.showSub = false;
-            }
-          });
-        };
-      }
+          $scope.regions = resource.like;
+          $scope.new = function() {
+            $scope.newRegion = {};
+            $scope.showSub = true;
+          };
+          $scope.cancel = function() {
+            $scope.showSub = false;
+          };
+          $scope.ok = function() {
+            $scope.errors = [];
+            resource.validate($scope.newRegion, function (value, headers) {
+              if (value.errorKey != undefined) {
+                angular.forEach(value.properties, function(property) {
+                  if ($scope.subRegionForm[property] != undefined) {
+                    $scope.subRegionForm[property].$setValidity(value.errorKey, false);
+                  }
+                });
+                $scope.errors.push(value);
+              } else {
+                $scope.region = $scope.newRegion;
+                $scope.showSub = false;
+              }
+            });
+          };
+        }
+      ]
     }
   }
 ]);

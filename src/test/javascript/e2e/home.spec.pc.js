@@ -1,3 +1,5 @@
+var expect = require('./tools/chai.tool');
+
 describe('E2E: Testing home', function() {
 
   describe('with a tiny window', function() {
@@ -10,17 +12,17 @@ describe('E2E: Testing home', function() {
       var homePage = new HomePage();
       homePage.get();
 
-      expect(homePage.getNavToggle().isDisplayed()).toBe(true);
-      expect(homePage.getNav().isDisplayed()).toBe(false);
+      expect(homePage.getNavToggle().isDisplayed()).to.eventually.be.true;
+      expect(homePage.getNav().isDisplayed()).to.eventually.be.false;
 
       // expand nav
       homePage.getNavToggle().click();
-      expect(homePage.getNav().isDisplayed()).toBe(true);
+      expect(homePage.getNav().isDisplayed()).to.eventually.be.true;
 
       // collapse nav
       homePage.getNavToggle().click();
       browser.driver.sleep(200); // sleep to wait animation ending
-      expect(homePage.getNav().isDisplayed()).toBe(false);
+      expect(homePage.getNav().isDisplayed()).to.eventually.be.false;
     });
     
     afterEach(function() {
@@ -34,7 +36,7 @@ describe('E2E: Testing home', function() {
     var homePage = new HomePage();
     homePage.get();
 
-    expect(homePage.getRegisterButton().isDisplayed()).toBe(true);
+    expect(homePage.getRegisterButton().isDisplayed()).to.eventually.be.true;
   });
 
 });

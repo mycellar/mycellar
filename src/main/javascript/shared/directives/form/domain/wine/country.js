@@ -34,33 +34,42 @@ angular.module('mycellar.directives.form.domain.wine.country').directive('countr
           }
         }
       },
-      controller: function($scope, Countries) {
-        $scope.errors = [];
-        $scope.countries = Countries.nameLike;
-        $scope.new = function() {
-          $scope.newCountry = {};
-          $scope.showSub = true;
-        };
-        $scope.cancel = function() {
-          $scope.showSub = false;
-        };
-        $scope.ok = function() {
+      controller: [
+        '$scope', '$location', 'Countries', 'AdminCountries',
+        function($scope, $location, Countries, AdminCountries) {
+          var resource;
+          if ($location.path().match(/\/admin/)) {
+            resource = AdminCountries;
+          } else {
+            resource = Countries;
+          }
           $scope.errors = [];
-          Countries.validate($scope.newCountry, function (value, headers) {
-            if (value.errorKey != undefined) {
-              angular.forEach(value.properties, function() {
-                if ($scope.subCountryForm[property] != undefined) {
-                  $scope.subCountryForm[property].$setValidity(value.errorKey, false);
-                }
-              });
-              $scope.errors.push(value);
-            } else {
-              $scope.country = $scope.newCountry;
-              $scope.showSub = false;
-            }
-          });
-        };
-      }
+          $scope.countries = resource.like;
+          $scope.new = function() {
+            $scope.newCountry = {};
+            $scope.showSub = true;
+          };
+          $scope.cancel = function() {
+            $scope.showSub = false;
+          };
+          $scope.ok = function() {
+            $scope.errors = [];
+            resource.validate($scope.newCountry, function (value, headers) {
+              if (value.errorKey != undefined) {
+                angular.forEach(value.properties, function() {
+                  if ($scope.subCountryForm[property] != undefined) {
+                    $scope.subCountryForm[property].$setValidity(value.errorKey, false);
+                  }
+                });
+                $scope.errors.push(value);
+              } else {
+                $scope.country = $scope.newCountry;
+                $scope.showSub = false;
+              }
+            });
+          };
+        }
+      ]
     }
   }
 ]);

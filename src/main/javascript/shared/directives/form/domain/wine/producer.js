@@ -34,33 +34,42 @@ angular.module('mycellar.directives.form.domain.wine.producer').directive('produ
           }
         }
       },
-      controller: function($scope, Producers) {
-        $scope.errors = [];
-        $scope.producers = Producers.nameLike;
-        $scope.new = function() {
-          $scope.newProducer = {};
-          $scope.showSub = true;
-        };
-        $scope.cancel = function() {
-          $scope.showSub = false;
-        };
-        $scope.ok = function() {
+      controller: [
+        '$scope', '$location', 'Producers', 'AdminProducers',
+        function($scope, $location, Producers, AdminProducers) {
+          var resource;
+          if ($location.path().match(/\/admin/)) {
+            resource = AdminProducers;
+          } else {
+            resource = Producers;
+          }
           $scope.errors = [];
-          Producers.validate($scope.newProducer, function (value, headers) {
-            if (value.errorKey != undefined) {
-              angular.forEach(value.properties, function(property) {
-                if ($scope.subProducerForm[property] != undefined) {
-                  $scope.subProducerForm[property].$setValidity(value.errorKey, false);
-                }
-              });
-              $scope.errors.push(value);
-            } else {
-              $scope.producer = $scope.newProducer;
-              $scope.showSub = false;
-            }
-          });
-        };
-      }
+          $scope.producers = resource.like;
+          $scope.new = function() {
+            $scope.newProducer = {};
+            $scope.showSub = true;
+          };
+          $scope.cancel = function() {
+            $scope.showSub = false;
+          };
+          $scope.ok = function() {
+            $scope.errors = [];
+            resource.validate($scope.newProducer, function (value, headers) {
+              if (value.errorKey != undefined) {
+                angular.forEach(value.properties, function(property) {
+                  if ($scope.subProducerForm[property] != undefined) {
+                    $scope.subProducerForm[property].$setValidity(value.errorKey, false);
+                  }
+                });
+                $scope.errors.push(value);
+              } else {
+                $scope.producer = $scope.newProducer;
+                $scope.showSub = false;
+              }
+            });
+          };
+        }
+      ]
     }
   }
 ]);

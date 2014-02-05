@@ -35,32 +35,41 @@ angular.module('mycellar.directives.form.domain.wine.appellation').directive('ap
           }
         }
       },
-      controller: function($scope, Appellations) {
-        $scope.errors = [];
-        $scope.appellations = Appellations.nameLike;
-        $scope.new = function() {
-          $scope.newAppellation = {};
-          $scope.showSub = true;
-        };
-        $scope.cancel = function() {
-          $scope.showSub = false;
-        };
-        $scope.ok = function() {
-          Appellations.validate($scope.newAppellation, function (value, headers) {
-            if (value.errorKey != undefined) {
-              angular.forEach(value.properties, function(property) {
-                if ($scope.subAppellationForm[property] != undefined) {
-                  $scope.subAppellationForm[property].$setValidity(value.errorKey, false);
-                }
-              });
-              $scope.errors.push(value);
-            } else {
-              $scope.appellation = $scope.newAppellation;
-              $scope.showSub = false;
-            }
-          });
-        };
-      }
+      controller: [
+        '$scope', '$location', 'Appellations', 'AdminAppellations',
+        function($scope, $location, Appellations, AdminAppellations) {
+          var resource;
+          if ($location.path().match(/\/admin/)) {
+            resource = AdminAppellations;
+          } else {
+            resource = Appellations;
+          }
+          $scope.errors = [];
+          $scope.appellations = resource.like;
+          $scope.new = function() {
+            $scope.newAppellation = {};
+            $scope.showSub = true;
+          };
+          $scope.cancel = function() {
+            $scope.showSub = false;
+          };
+          $scope.ok = function() {
+            resource.validate($scope.newAppellation, function (value, headers) {
+              if (value.errorKey != undefined) {
+                angular.forEach(value.properties, function(property) {
+                  if ($scope.subAppellationForm[property] != undefined) {
+                    $scope.subAppellationForm[property].$setValidity(value.errorKey, false);
+                  }
+                });
+                $scope.errors.push(value);
+              } else {
+                $scope.appellation = $scope.newAppellation;
+                $scope.showSub = false;
+              }
+            });
+          };
+        }
+      ]
     }
   }
 ]);

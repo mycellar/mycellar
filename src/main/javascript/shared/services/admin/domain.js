@@ -162,7 +162,7 @@ angular.module('mycellar.services.admin.domain').provider('adminDomainService', 
             controller: controllerName(parameters.resourcesName),
             resolve: angular.extend({
               tableContext: [
-                'tableService', parameters.resourcesName,
+                'tableService', 'Admin' + parameters.resourcesName,
                 function(tableService, resource) {
                   var tableContext = tableService.createTableContext(resource.get, parameters.defaultSort);
                   return tableContext.setPage(1).promise;
@@ -175,8 +175,7 @@ angular.module('mycellar.services.admin.domain').provider('adminDomainService', 
             controller: controllerName(parameters.resourceName),
             resolve: angular.extend({
               item: [
-                '$route',
-                parameters.resourcesName,
+                '$route', 'Admin' + parameters.resourcesName,
                 function($route, resource) {
                   var id = $route.current.params.id;
                   if (id != null) {

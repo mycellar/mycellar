@@ -49,10 +49,10 @@ public class Configuration extends IdentifiedEntity {
     private Integer id;
 
     @Enumerated(EnumType.STRING)
-    @Column(name = "KEY", unique = true, nullable = false)
+    @Column(name = "CONFIG_KEY", unique = true, nullable = false)
     private ConfigurationKeyEnum key;
 
-    @Column(name = "VALUE", length = 2000)
+    @Column(name = "CONFIG_VALUE", length = 2000)
     private String value;
 
     public ConfigurationKeyEnum getKey() {

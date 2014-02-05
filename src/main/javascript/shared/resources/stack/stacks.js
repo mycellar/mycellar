@@ -1,21 +1,12 @@
-angular.module('mycellar.resources.stack.stacks', ['ngResource']);
+angular.module('mycellar.resources.stack.stacks', [
+  'mycellar.services.admin.resource'
+]);
 
-angular.module('mycellar.resources.stack.stacks').factory('Stacks', ['$resource', '$q', function ($resource, $q) {
-
-  var Stacks = $resource('/api/domain/stack/stacks/:id', {id: '@id'}, {});
-  var Stack = $resource('/api/domain/stack/stack/:stackId');
-
-  Stacks.count = function () {
-    var deferred = $q.defer();
-    Stacks.get({count: 0}, function(result) {
-      $q.when(result.count).then(function(value) {
-        deferred.resolve(value);
-      }, function(value) {
-        deferred.reject(value);
-      });
+angular.module('mycellar.resources.stack.stacks').factory('AdminStacks', [
+  'adminDomainResource',
+  function (adminDomainResource) {
+    return adminDomainResource.createResource({
+      url: '/api/admin/domain/stack/stacks'
     });
-    return deferred.promise;
-  };
-  
-  return Stacks;
-}]);
+  }
+]);

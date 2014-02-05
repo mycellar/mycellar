@@ -30,8 +30,6 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.MediaType;
 
-import org.springframework.security.access.prepost.PreAuthorize;
-
 import fr.mycellar.domain.shared.exception.BusinessError;
 import fr.mycellar.domain.shared.exception.BusinessException;
 import fr.mycellar.domain.wine.Wine;
@@ -43,7 +41,7 @@ import fr.mycellar.interfaces.facades.wine.WineServiceFacade;
 @Named
 @Singleton
 @Path("/admin/tools")
-public class AdminToolsWebService {
+public class ToolsWebService {
 
     private WineServiceFacade wineServiceFacade;
 
@@ -51,7 +49,6 @@ public class AdminToolsWebService {
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
     @Path("createVintages")
-    @PreAuthorize("hasRole('ROLE_ADMIN')")
     public List<Wine> createVintages(Wine wine, @QueryParam("from") int from, @QueryParam("to") int to) throws BusinessException {
         if (to < from) {
             throw new BusinessException(BusinessError.OTHER_00001);

@@ -85,33 +85,42 @@ angular.module('mycellar.directives.form.domain.booking.bookingEvent').directive
           }
         }
       },
-      controller: function($scope, BookingEvents) {
-        $scope.errors = [];
-        $scope.bookingEvents = BookingEvents.nameLike;
-        $scope.new = function() {
-          $scope.newBookingEvent = {};
-          $scope.showSub = true;
-        };
-        $scope.cancel = function() {
-          $scope.showSub = false;
-        };
-        $scope.ok = function() {
+      controller: [
+        '$scope', '$location', 'BookingEvents', 'AdminBookingEvents',
+        function($scope, $location, BookingEvents, AdminBookingEvents) {
+          var resource;
+          if ($location.path().match(/\/admin/)) {
+            resource = AdminBookingEvents;
+          } else {
+            resource = BookingEvents;
+          }
+          $scope.bookingEvents = resource.like;
           $scope.errors = [];
-          BookingEvents.validate($scope.newBookingEvent, function (value, headers) {
-            if (value.errorKey != undefined) {
-              angular.forEach(value.properties, function(property) {
-                if ($scope.subBookingEventForm[property] != undefined) {
-                  $scope.subBookingEventForm[property].$setValidity(value.errorKey, false);
-                }
-              });
-              $scope.errors.push(value);
-            } else {
-              $scope.bookingEvent = $scope.newBookingEvent;
-              $scope.showSub = false;
-            }
-          });
-        };
-      }
+          $scope.new = function() {
+            $scope.newBookingEvent = {};
+            $scope.showSub = true;
+          };
+          $scope.cancel = function() {
+            $scope.showSub = false;
+          };
+          $scope.ok = function() {
+            $scope.errors = [];
+            resource.validate($scope.newBookingEvent, function (value, headers) {
+              if (value.errorKey != undefined) {
+                angular.forEach(value.properties, function(property) {
+                  if ($scope.subBookingEventForm[property] != undefined) {
+                    $scope.subBookingEventForm[property].$setValidity(value.errorKey, false);
+                  }
+                });
+                $scope.errors.push(value);
+              } else {
+                $scope.bookingEvent = $scope.newBookingEvent;
+                $scope.showSub = false;
+              }
+            });
+          };
+        }
+      ]
     }
   }
 ]);

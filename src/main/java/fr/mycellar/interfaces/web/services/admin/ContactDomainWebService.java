@@ -16,7 +16,7 @@
  * You should have received a copy of the GNU General Public License
  * along with MyCellar. If not, see <http://www.gnu.org/licenses/>.
  */
-package fr.mycellar.interfaces.web.services.domain;
+package fr.mycellar.interfaces.web.services.admin;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -35,12 +35,10 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.MediaType;
 
-import org.springframework.security.access.prepost.PreAuthorize;
-
+import fr.mycellar.domain.contact.Contact;
 import fr.mycellar.domain.shared.exception.BusinessException;
-import fr.mycellar.domain.user.User;
 import fr.mycellar.infrastructure.shared.repository.SearchParameters;
-import fr.mycellar.interfaces.facades.user.UserServiceFacade;
+import fr.mycellar.interfaces.facades.contact.ContactServiceFacade;
 import fr.mycellar.interfaces.web.services.FilterCouple;
 import fr.mycellar.interfaces.web.services.ListWithCount;
 import fr.mycellar.interfaces.web.services.OrderCouple;
@@ -51,68 +49,74 @@ import fr.mycellar.interfaces.web.services.SearchParametersUtil;
  */
 @Named
 @Singleton
-@Path("/domain/user")
-public class UserDomainWebService {
+@Path("/admin/domain/contact")
+public class ContactDomainWebService {
 
-    private UserServiceFacade userServiceFacade;
+    private ContactServiceFacade contactServiceFacade;
 
     private SearchParametersUtil searchParametersUtil;
 
     // --------------
-    // USER
+    // CONTACT
     // --------------
 
     @GET
     @Produces(MediaType.APPLICATION_JSON)
-    @Path("users")
-    @PreAuthorize("hasRole('ROLE_ADMIN')")
-    public ListWithCount<User> getUsers( //
-            @QueryParam("first") int first, //
+    @Path("contacts")
+    public ListWithCount<Contact> getContacts(@QueryParam("first") int first, //
             @QueryParam("count") @DefaultValue("10") int count, //
             @QueryParam("filters") List<FilterCouple> filters, //
             @QueryParam("sort") List<OrderCouple> orders) {
-        SearchParameters searchParameters = searchParametersUtil.getSearchParametersForListWithCount(first, count, filters, orders, User.class);
-        List<User> users;
+        SearchParameters searchParameters = searchParametersUtil.getSearchParametersForListWithCount(first, count, filters, orders, Contact.class);
+        List<Contact> contacts;
         if (count == 0) {
-            users = new ArrayList<>();
+            contacts = new ArrayList<>();
         } else {
-            users = userServiceFacade.getUsers(searchParameters);
+            contacts = contactServiceFacade.getContacts(searchParameters);
         }
-        return new ListWithCount<>(userServiceFacade.countUsers(searchParameters), users);
+        return new ListWithCount<>(contactServiceFacade.countContacts(searchParameters), contacts);
     }
 
     @GET
     @Produces(MediaType.APPLICATION_JSON)
-    @Path("users/{id}")
-    @PreAuthorize("hasRole('ROLE_ADMIN')")
-    public User getUserById(@PathParam("id") int userId) {
-        return userServiceFacade.getUserById(userId);
+    @Path("contacts/{id}")
+    public Contact getContactById(@PathParam("id") int contactId) {
+        return contactServiceFacade.getContactById(contactId);
     }
 
     @DELETE
-    @Path("users/{id}")
-    @PreAuthorize("hasRole('ROLE_ADMIN')")
-    public void deleteUserById(@PathParam("id") int userId) throws BusinessException {
-        userServiceFacade.deleteUser(userServiceFacade.getUserById(userId));
+    @Path("contacts/{id}")
+    public void deleteContactById(@PathParam("id") int contactId) throws BusinessException {
+        contactServiceFacade.deleteContact(contactServiceFacade.getContactById(contactId));
     }
 
     @POST
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
-    @Path("users")
-    @PreAuthorize("hasRole('ROLE_ADMIN')")
-    public User saveUser(@PathParam("id") Integer id, User user) throws BusinessException {
-        if (((id == null) && (user.getId() == null)) || ((id != null) && id.equals(user.getId()) && (userServiceFacade.getUserById(id) != null))) {
-            return userServiceFacade.saveUser(user);
+    @Path("contacts/{id}")
+    public Contact saveContact(@PathParam("id") int contactId, Contact contact) throws BusinessException {
+        if ((contactId == contact.getId()) && (getContactById(contactId) != null)) {
+            return contactServiceFacade.saveContact(contact);
         }
         throw new RuntimeException();
     }
 
-    // BEAN METHODS
+    @POST
+    @Consumes(MediaType.APPLICATION_JSON)
+    @Produces(MediaType.APPLICATION_JSON)
+    @Path("contacts")
+    public Contact saveContact(Contact contact) throws BusinessException {
+        if (contact.getId() == null) {
+            return contactServiceFacade.saveContact(contact);
+        }
+        throw new RuntimeException();
+    }
+
+    // BEANS Methods
 
     @Inject
-    public void setUserServiceFacade(UserServiceFacade userServiceFacade) {
-        this.userServiceFacade = userServiceFacade;
+    public void setContactServiceFacade(ContactServiceFacade contactServiceFacade) {
+        this.contactServiceFacade = contactServiceFacade;
     }
 
     @Inject

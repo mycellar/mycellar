@@ -4,7 +4,7 @@ angular.module('mycellar.controllers.admin.domain.wine.appellations', [
   'mycellar.directives.table',
   'mycellar.directives.error',
   'mycellar.directives.admin',
-  'mycellar.services.admin'
+  'mycellar.services.admin.domain'
 ], [
   'adminDomainServiceProvider', 
   function(adminDomainServiceProvider){

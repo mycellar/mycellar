@@ -29,7 +29,7 @@ angular.module('mycellar.controllers.booking.currents').controller('CurrentBooki
     });
 
     $scope.selectBooking = function(bookingEvent) {
-      $scope.booking = Bookings.getByBookingEventForCurrentUser(bookingEvent);
+      $scope.booking = Bookings.getByBookingEventForCurrentUser({bookingEventId: bookingEvent.id});
     };
     
     $scope.save = function(booking) {
@@ -54,7 +54,7 @@ angular.module('mycellar.controllers.booking.currents').controller('CurrentBooki
       var errors = $scope.errors;
       $scope.backup = {};
       angular.copy($scope.booking, $scope.backup);
-      Bookings.deleteById($scope.booking.id, function (value, headers) {
+      $scope.booking.$delete(function (value) {
         if (value.errorKey != undefined) {
           errors.push({errorKey: value.errorKey});
           angular.copy($scope.backup, $scope.booking);

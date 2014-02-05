@@ -16,7 +16,7 @@
  * You should have received a copy of the GNU General Public License
  * along with MyCellar. If not, see <http://www.gnu.org/licenses/>.
  */
-package fr.mycellar.interfaces.web.services.domain;
+package fr.mycellar.interfaces.web.services.admin;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -33,8 +33,6 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.MediaType;
 
-import org.springframework.security.access.prepost.PreAuthorize;
-
 import fr.mycellar.domain.shared.exception.BusinessException;
 import fr.mycellar.domain.stack.Stack;
 import fr.mycellar.infrastructure.shared.repository.SearchParameters;
@@ -49,7 +47,7 @@ import fr.mycellar.interfaces.web.services.SearchParametersUtil;
  */
 @Named
 @Singleton
-@Path("/domain/stack")
+@Path("/admin/domain/stack")
 public class StackDomainWebService {
 
     private StackServiceFacade stackServiceFacade;
@@ -59,7 +57,6 @@ public class StackDomainWebService {
     @GET
     @Produces(MediaType.APPLICATION_JSON)
     @Path("stacks")
-    @PreAuthorize("hasRole('ROLE_ADMIN')")
     public ListWithCount<Stack> getStacks( //
             @QueryParam("first") int first, //
             @QueryParam("count") @DefaultValue("10") int count, //
@@ -78,21 +75,18 @@ public class StackDomainWebService {
     @GET
     @Produces(MediaType.APPLICATION_JSON)
     @Path("stacks/{id}")
-    @PreAuthorize("hasRole('ROLE_ADMIN')")
     public Stack getStackById(@PathParam("id") int stackId) {
         return stackServiceFacade.getStackById(stackId);
     }
 
     @DELETE
     @Path("stacks/{id}")
-    @PreAuthorize("hasRole('ROLE_ADMIN')")
     public void deleteStackById(@PathParam("id") int stackId) throws BusinessException {
         stackServiceFacade.deleteStack(stackServiceFacade.getStackById(stackId));
     }
 
     @DELETE
     @Path("stacks")
-    @PreAuthorize("hasRole('ROLE_ADMIN')")
     public void deleteAllStacks() throws BusinessException {
         stackServiceFacade.deleteAllStacks();
     }

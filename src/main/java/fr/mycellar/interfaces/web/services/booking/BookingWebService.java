@@ -18,12 +18,11 @@
  */
 package fr.mycellar.interfaces.web.services.booking;
 
-import java.util.List;
-import java.util.Map;
-
 import javax.inject.Inject;
 import javax.inject.Named;
 import javax.inject.Singleton;
+import javax.ws.rs.Consumes;
+import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
@@ -35,7 +34,6 @@ import javax.ws.rs.core.MediaType;
 import org.springframework.security.access.prepost.PreAuthorize;
 
 import fr.mycellar.domain.booking.Booking;
-import fr.mycellar.domain.booking.BookingBottle;
 import fr.mycellar.domain.booking.BookingEvent;
 import fr.mycellar.domain.shared.exception.BusinessException;
 import fr.mycellar.interfaces.facades.booking.BookingServiceFacade;
@@ -56,18 +54,53 @@ public class BookingWebService {
 
     @GET
     @Produces(MediaType.APPLICATION_JSON)
-    @Path("quantities/{bookingEventId}")
-    @PreAuthorize("hasRole('ROLE_ADMIN')")
-    public Map<BookingBottle, Long> getQuantities(@PathParam("bookingEventId") Integer bookingEventId) {
-        return bookingServiceFacade.getBookingsQuantities(bookingServiceFacade.getBookingEventById(bookingEventId));
+    @Path("bookings")
+    @PreAuthorize("hasRole('ROLE_BOOKING')")
+    public ListWithCount<Booking> getBookings() {
+        return new ListWithCount<>(bookingServiceFacade.getBookings(currentUserService.getCurrentUser()));
     }
 
     @GET
     @Produces(MediaType.APPLICATION_JSON)
-    @Path("bookingsByEvent")
-    @PreAuthorize("hasRole('ROLE_ADMIN')")
-    public List<Booking> getBookingsByBookingEvent(@QueryParam("bookingEventId") Integer bookingEventId) {
-        return bookingServiceFacade.getBookingsByBookingEventId(bookingEventId);
+    @Path("bookings/{id}")
+    @PreAuthorize("hasRole('ROLE_BOOKING')")
+    // TODO @PostAuthorize("") to check booking is owned by
+    public Booking getBookingById(@PathParam("id") int bookingId) {
+        return bookingServiceFacade.getBookingById(bookingId);
+    }
+
+    @DELETE
+    @Path("bookings/{id}")
+    @PreAuthorize("hasRole('ROLE_BOOKING')")
+    // TODO @PreAuthorize("") to check booking is owned by
+    public void deleteBookingById(@PathParam("id") int bookingId) throws BusinessException {
+        bookingServiceFacade.deleteBooking(bookingServiceFacade.getBookingById(bookingId));
+    }
+
+    @POST
+    @Consumes(MediaType.APPLICATION_JSON)
+    @Produces(MediaType.APPLICATION_JSON)
+    @Path("bookings/{id}")
+    @PreAuthorize("hasRole('ROLE_BOOKING')")
+    // TODO @PreAuthorize("") to check booking is owned by
+    public Booking saveBooking(@PathParam("id") Integer id, Booking booking) throws BusinessException {
+        if ((id == booking.getId()) && (bookingServiceFacade.getBookingById(id) != null)) {
+            return bookingServiceFacade.saveBooking(booking);
+        }
+        throw new RuntimeException();
+    }
+
+    @POST
+    @Consumes(MediaType.APPLICATION_JSON)
+    @Produces(MediaType.APPLICATION_JSON)
+    @Path("bookings")
+    @PreAuthorize("hasRole('ROLE_BOOKING')")
+    // TODO @PreAuthorize("") to check booking is owned by
+    public Booking saveBooking(Booking booking) throws BusinessException {
+        if (booking.getId() == null) {
+            return bookingServiceFacade.saveBooking(booking);
+        }
+        throw new RuntimeException();
     }
 
     @GET
@@ -80,34 +113,10 @@ public class BookingWebService {
 
     @GET
     @Produces(MediaType.APPLICATION_JSON)
-    @Path("booking")
+    @Path("bookingByBookingEvent")
     @PreAuthorize("hasRole('ROLE_BOOKING')")
     public Booking getBooking(@QueryParam("bookingEventId") Integer bookingEventId) {
         return bookingServiceFacade.getBooking(bookingServiceFacade.getBookingEventById(bookingEventId), currentUserService.getCurrentUser());
-    }
-
-    @GET
-    @Produces(MediaType.APPLICATION_JSON)
-    @Path("bookingsByBottle")
-    @PreAuthorize("hasRole('ROLE_ADMIN')")
-    public List<Booking> getBookingsByBookingBottle(@QueryParam("bookingBottleId") Integer bookingBottleId) {
-        return bookingServiceFacade.getBookingsByBookingBottleId(bookingBottleId);
-    }
-
-    @GET
-    @Produces(MediaType.APPLICATION_JSON)
-    @Path("bookings")
-    @PreAuthorize("hasRole('ROLE_BOOKING')")
-    public ListWithCount<Booking> getBookings() {
-        return new ListWithCount<>(bookingServiceFacade.getBookings(currentUserService.getCurrentUser()));
-    }
-
-    @POST
-    @Produces(MediaType.APPLICATION_JSON)
-    @Path("bookings/{id}")
-    @PreAuthorize("hasRole('ROLE_BOOKING')")
-    public Booking saveBooking(@PathParam("id") Integer id, Booking booking) throws BusinessException {
-        return bookingServiceFacade.saveBooking(booking);
     }
 
     @Inject

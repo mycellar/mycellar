@@ -16,7 +16,7 @@
  * You should have received a copy of the GNU General Public License
  * along with MyCellar. If not, see <http://www.gnu.org/licenses/>.
  */
-package fr.mycellar.interfaces.web.services.domain;
+package fr.mycellar.interfaces.web.services.admin;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -34,8 +34,6 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.MediaType;
 
-import org.springframework.security.access.prepost.PreAuthorize;
-
 import fr.mycellar.domain.admin.Configuration;
 import fr.mycellar.domain.shared.exception.BusinessException;
 import fr.mycellar.infrastructure.shared.repository.SearchParameters;
@@ -50,7 +48,7 @@ import fr.mycellar.interfaces.web.services.SearchParametersUtil;
  */
 @Named
 @Singleton
-@Path("/domain/admin")
+@Path("/admin/domain/admin")
 public class AdminDomainWebService {
 
     private AdministrationServiceFacade administrationServiceFacade;
@@ -64,7 +62,6 @@ public class AdminDomainWebService {
     @GET
     @Produces(MediaType.APPLICATION_JSON)
     @Path("configurations")
-    @PreAuthorize("hasRole('ROLE_ADMIN')")
     public ListWithCount<Configuration> getConfigurations( //
             @QueryParam("first") int first, //
             @QueryParam("count") @DefaultValue("20") int count, //
@@ -83,7 +80,6 @@ public class AdminDomainWebService {
     @GET
     @Produces(MediaType.APPLICATION_JSON)
     @Path("configurations/{id}")
-    @PreAuthorize("hasRole('ROLE_ADMIN')")
     public Configuration getConfigurationById(@PathParam("id") int configurationId) {
         return administrationServiceFacade.getConfigurationById(configurationId);
     }
@@ -92,7 +88,6 @@ public class AdminDomainWebService {
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
     @Path("configurations/{id}")
-    @PreAuthorize("hasRole('ROLE_ADMIN')")
     public Configuration saveConfiguration(@PathParam("id") int configurationId, Configuration configuration) throws BusinessException {
         if ((configurationId == configuration.getId()) && (getConfigurationById(configurationId) != null)) {
             return administrationServiceFacade.saveConfiguration(configuration);

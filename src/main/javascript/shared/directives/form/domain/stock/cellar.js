@@ -25,8 +25,7 @@ angular.module('mycellar.directives.form.domain.stock.cellar').directive('cellar
       scope: {
         form: '=',
         cellar: '=',
-        postLabel: '@',
-        admin: '='
+        postLabel: '@'
       },
       compile: function(element, attrs) {
         for (var attrName in attrs) {
@@ -35,38 +34,42 @@ angular.module('mycellar.directives.form.domain.stock.cellar').directive('cellar
           }
         }
       },
-      controller: function($scope, Cellars) {
-        $scope.admin = $scope.admin == undefined ? false : $scope.admin;
-        $scope.errors = [];
-        if ($scope.admin) {
-          $scope.cellars = Cellars.nameLike;
-        } else {
-          $scope.cellars = Cellars.nameLikeForUser;
-        }
-        $scope.new = function() {
-          $scope.newCellar = {};
-          $scope.showSub = true;
-        };
-        $scope.cancel = function() {
-          $scope.showSub = false;
-        };
-        $scope.ok = function() {
+      controller: [
+        '$scope', '$location', 'Cellars', 'AdminCellars',
+        function($scope, $route, Cellars, AdminCellars) {
+          var resource;
+          if ($location.path().match(/\/admin/)) {
+            resource = AdminCellars;
+          } else {
+            resource = Cellars;
+          }
+          $scope.cellars = resource.like;
           $scope.errors = [];
-          Cellars.validate($scope.newCellar, function (value, headers) {
-            if (value.errorKey != undefined) {
-              angular.forEach(value.properties, function(property) {
-                if ($scope.subCellarForm[property] != undefined) {
-                  $scope.subCellarForm[property].$setValidity(value.errorKey, false);
-                }
-              });
-              $scope.errors.push(value);
-            } else {
-              $scope.cellar = $scope.newCellar;
-              $scope.showSub = false;
-            }
-          });
-        };
-      }
+          $scope.new = function() {
+            $scope.newCellar = {};
+            $scope.showSub = true;
+          };
+          $scope.cancel = function() {
+            $scope.showSub = false;
+          };
+          $scope.ok = function() {
+            $scope.errors = [];
+            resource.validate($scope.newCellar, function (value, headers) {
+              if (value.errorKey != undefined) {
+                angular.forEach(value.properties, function(property) {
+                  if ($scope.subCellarForm[property] != undefined) {
+                    $scope.subCellarForm[property].$setValidity(value.errorKey, false);
+                  }
+                });
+                $scope.errors.push(value);
+              } else {
+                $scope.cellar = $scope.newCellar;
+                $scope.showSub = false;
+              }
+            });
+          };
+        }
+      ]
     }
   }
 ]);

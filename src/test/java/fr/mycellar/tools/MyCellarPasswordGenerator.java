@@ -19,10 +19,10 @@
 package fr.mycellar.tools;
 
 import org.jasypt.digest.StringDigester;
-import org.springframework.context.ApplicationContext;
-import org.springframework.context.support.ClassPathXmlApplicationContext;
+import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 
 import fr.mycellar.application.user.impl.StringPasswordEncryptor;
+import fr.mycellar.configuration.ApplicationConfiguration;
 
 /**
  * @author speralta
@@ -30,10 +30,10 @@ import fr.mycellar.application.user.impl.StringPasswordEncryptor;
 public class MyCellarPasswordGenerator {
 
     public static void main(String... args) {
-        ApplicationContext context = new ClassPathXmlApplicationContext("context-application-encryptor.xml");
+        AnnotationConfigApplicationContext context = new AnnotationConfigApplicationContext(ApplicationConfiguration.class);
         StringPasswordEncryptor encryptor = new StringPasswordEncryptor();
         encryptor.setStringDigester(context.getBean(StringDigester.class));
-        String encryptedPassword = encryptor.encryptPassword("s");
+        String encryptedPassword = encryptor.encryptPassword("test");
         System.out.println(encryptedPassword + " size: " + encryptedPassword.length());
     }
 

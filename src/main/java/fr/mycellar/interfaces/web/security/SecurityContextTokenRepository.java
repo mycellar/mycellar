@@ -73,7 +73,6 @@ public class SecurityContextTokenRepository implements SecurityContextRepository
         try {
             Object key = requestResponseHolder.getRequest().getHeader(SpringSecurityConfiguration.TOKEN_HEADER_NAME);
             if ((key != null) && (key instanceof String)) {
-
                 Token token = keyBasedPersistenceTokenService.verifyToken((String) key);
                 if (token != null) {
                     TimedSecurityContext context = securityContexts.get(token);
@@ -126,12 +125,12 @@ public class SecurityContextTokenRepository implements SecurityContextRepository
         securityContexts.remove(request.getHeader(SpringSecurityConfiguration.TOKEN_HEADER_NAME));
     }
 
-    @Scheduled(fixedRate = 1000)
+    @Scheduled(fixedRate = 60000)
     public void cleanRepository() {
-        LocalDateTime expired = new LocalDateTime().minusMinutes(1);
+        LocalDateTime expired = new LocalDateTime().minusMinutes(15);
         for (Iterator<Entry<Token, TimedSecurityContext>> iterator = securityContexts.entrySet().iterator(); iterator.hasNext();) {
             Entry<Token, TimedSecurityContext> entry = iterator.next();
-            if (entry.getValue().localDateTime.isAfter(expired)) {
+            if (entry.getValue().localDateTime.isBefore(expired)) {
                 logger.debug("Remove expired token: {}", entry.getKey().getKey());
                 iterator.remove();
             }

@@ -36,41 +36,50 @@ angular.module('mycellar.directives.form.domain.wine.wine').directive('wineForm'
           }
         }
       },
-      controller: function($scope, Wines, $filter) {
-        var wineFilter = $filter('wineRenderer');
-        $scope.renderWine = function(wine) {
-          if (wine != null) {
-            return wineFilter(wine);
-          } else {
-            return '';
-          }
-        };
-        $scope.errors = [];
-        $scope.wines = Wines.like;
-        $scope.new = function() {
-          $scope.newWine = {};
-          $scope.showSub = true;
-        };
-        $scope.cancel = function() {
-          $scope.showSub = false;
-        };
-        $scope.ok = function() {
-          $scope.errors = [];
-          Wines.validate($scope.newWine, function (value, headers) {
-            if (value.errorKey != undefined) {
-              angular.forEach(value.properties, function(property) {
-                if ($scope.subWineForm[property] != undefined) {
-                  $scope.subWineForm[value.properties[property]].$setValidity(value.errorKey, false);
-                }
-              });
-              $scope.errors.push(value);
+      controller: [
+        '$scope', '$location', '$filter', 'Wines', 'AdminWines',
+        function($scope, $location, $filter, Wines, AdminWines) {
+          var wineFilter = $filter('wineRenderer');
+          $scope.renderWine = function(wine) {
+            if (wine != null) {
+              return wineFilter(wine);
             } else {
-              $scope.wine = $scope.newWine;
-              $scope.showSub = false;
+              return '';
             }
-          });
-        };
-      }
+          };
+          var resource;
+          if ($location.path().match(/\/admin/)) {
+            resource = AdminWines;
+          } else {
+            resource = Wines;
+          }
+          $scope.errors = [];
+          $scope.wines = resource.like;
+          $scope.new = function() {
+            $scope.newWine = {};
+            $scope.showSub = true;
+          };
+          $scope.cancel = function() {
+            $scope.showSub = false;
+          };
+          $scope.ok = function() {
+            $scope.errors = [];
+            resource.validate($scope.newWine, function (value, headers) {
+              if (value.errorKey != undefined) {
+                angular.forEach(value.properties, function(property) {
+                  if ($scope.subWineForm[property] != undefined) {
+                    $scope.subWineForm[value.properties[property]].$setValidity(value.errorKey, false);
+                  }
+                });
+                $scope.errors.push(value);
+              } else {
+                $scope.wine = $scope.newWine;
+                $scope.showSub = false;
+              }
+            });
+          };
+        }
+      ]
     }
   }
 ]);

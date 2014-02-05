@@ -1,3 +1,4 @@
+var expect = require('./tools/chai.tool');
 var LoginTool = require('./tools/login.tool');
 
 describe('E2E: Testing account', function() {
@@ -9,16 +10,16 @@ describe('E2E: Testing account', function() {
     page.get();
 
     page.changeEmail.click();
-    expect(page.email1.isDisplayed()).toBe(true);
-    expect(page.email2.isDisplayed()).toBe(true);
-    expect(page.emailPassword.isDisplayed()).toBe(true);
-    expect(page.doChangeEmail.isDisplayed()).toBe(true);
+    expect(page.email1.isDisplayed()).to.eventually.be.true;
+    expect(page.email2.isDisplayed()).to.eventually.be.true;
+    expect(page.emailPassword.isDisplayed()).to.eventually.be.true;
+    expect(page.doChangeEmail.isDisplayed()).to.eventually.be.true;
     page.email1.sendKeys('test2@test.com');
     page.email2.sendKeys('test2@test.com');
     page.emailPassword.sendKeys('test');
     page.doChangeEmail.click();
     page.get();
-    expect(page.email.getText()).toEqual('test2@test.com');
+    expect(page.email.getText()).to.eventually.equal('test2@test.com');
 
     // rollback change
     page.changeEmail.click();
@@ -27,7 +28,7 @@ describe('E2E: Testing account', function() {
     page.emailPassword.sendKeys('test');
     page.doChangeEmail.click();
     page.get();
-    expect(page.email.getText()).toEqual('test@test.com');
+    expect(page.email.getText()).to.eventually.equal('test@test.com');
 
     LoginTool.logout();
   });
@@ -39,10 +40,10 @@ describe('E2E: Testing account', function() {
     page.get();
 
     page.changePassword.click();
-    expect(page.oldPassword.isDisplayed()).toBe(true);
-    expect(page.password1.isDisplayed()).toBe(true);
-    expect(page.password2.isDisplayed()).toBe(true);
-    expect(page.doChangePassword.isDisplayed()).toBe(true);
+    expect(page.oldPassword.isDisplayed()).to.eventually.be.true;
+    expect(page.password1.isDisplayed()).to.eventually.be.true;
+    expect(page.password2.isDisplayed()).to.eventually.be.true;
+    expect(page.doChangePassword.isDisplayed()).to.eventually.be.true;
     page.oldPassword.sendKeys('test');
     page.password1.sendKeys('test2');
     page.password2.sendKeys('test2');

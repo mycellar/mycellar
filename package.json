@@ -14,8 +14,8 @@
   "main": "",
   "devDependencies": {
     "grunt": "0.4.2",
-    "grunt-cli": "0.1.11",
-    "grunt-shell": "0.6.1",
+    "grunt-cli": "0.1.13",
+    "grunt-shell": "0.6.4",
     "grunt-shell-spawn": "0.3.0",
     "grunt-concurrent": "0.4.3",
     "grunt-karma": "0.7.2",
@@ -31,12 +31,13 @@
     "karma-firefox-launcher": "0.1.3",
     "karma-phantomjs-launcher": "0.1.1",
     "karma-ng-html2js-preprocessor": "0.1.0",
-    "karma-coverage": "0.1.4",
+    "karma-coverage": "0.1.5",
     "bower": "1.2.8",
-    "mocha": "1.16.2",
-    "chai": "1.8.1",
+    "mocha": "1.17.1",
+    "chai": "1.9.0",
+    "chai-as-promised": "4.1.0",
     "sinon": "1.7.3",
-    "protractor": "0.16.1"
+    "protractor": "0.17.0"
   },
   "dependencies": {},
   "scripts": {

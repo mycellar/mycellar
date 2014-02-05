@@ -1,3 +1,4 @@
+var expect = require('./tools/chai.tool');
 var LoginTool = require('./tools/login.tool');
 
 describe('E2E: Testing account', function() {
@@ -13,9 +14,9 @@ describe('E2E: Testing account', function() {
     var page = new AccountPage();
     page.get();
 
-    expect(browser.driver.getCurrentUrl()).toMatch(/account/);
-    expect(page.title.isDisplayed()).toBe(true);
-    expect(page.title.getText()).toEqual('Mon compte');
+    expect(browser.driver.getCurrentUrl()).to.eventually.match(/account/);
+    expect(page.title.isDisplayed()).to.eventually.be.true;
+    expect(page.title.getText()).to.eventually.equal('Mon compte');
 
     LoginTool.logout();
   });

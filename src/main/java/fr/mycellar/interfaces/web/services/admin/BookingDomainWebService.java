@@ -16,10 +16,11 @@
  * You should have received a copy of the GNU General Public License
  * along with MyCellar. If not, see <http://www.gnu.org/licenses/>.
  */
-package fr.mycellar.interfaces.web.services.domain;
+package fr.mycellar.interfaces.web.services.admin;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import javax.inject.Inject;
 import javax.inject.Named;
@@ -35,9 +36,8 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.MediaType;
 
-import org.springframework.security.access.prepost.PreAuthorize;
-
 import fr.mycellar.domain.booking.Booking;
+import fr.mycellar.domain.booking.BookingBottle;
 import fr.mycellar.domain.booking.BookingEvent;
 import fr.mycellar.domain.shared.exception.BusinessException;
 import fr.mycellar.infrastructure.shared.repository.SearchParameters;
@@ -52,7 +52,7 @@ import fr.mycellar.interfaces.web.services.SearchParametersUtil;
  */
 @Named
 @Singleton
-@Path("/domain/booking")
+@Path("/admin/domain/booking")
 public class BookingDomainWebService {
 
     private BookingServiceFacade bookingServiceFacade;
@@ -66,7 +66,6 @@ public class BookingDomainWebService {
     @GET
     @Produces(MediaType.APPLICATION_JSON)
     @Path("bookings")
-    @PreAuthorize("hasRole('ROLE_ADMIN')")
     public ListWithCount<Booking> getBookings( //
             @QueryParam("first") int first, //
             @QueryParam("count") @DefaultValue("10") int count, //
@@ -85,14 +84,12 @@ public class BookingDomainWebService {
     @GET
     @Produces(MediaType.APPLICATION_JSON)
     @Path("bookings/{id}")
-    @PreAuthorize("hasRole('ROLE_ADMIN')")
     public Booking getBookingById(@PathParam("id") int bookingId) {
         return bookingServiceFacade.getBookingById(bookingId);
     }
 
     @DELETE
     @Path("bookings/{id}")
-    @PreAuthorize("hasRole('ROLE_ADMIN')")
     public void deleteBookingById(@PathParam("id") int bookingId) throws BusinessException {
         bookingServiceFacade.deleteBooking(bookingServiceFacade.getBookingById(bookingId));
     }
@@ -101,9 +98,19 @@ public class BookingDomainWebService {
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
     @Path("bookings/{id}")
-    @PreAuthorize("hasRole('ROLE_ADMIN')")
     public Booking saveBooking(@PathParam("id") Integer id, Booking booking) throws BusinessException {
-        if (((id == null) && (booking.getId() == null)) || ((id != null) && id.equals(booking.getId()) && (bookingServiceFacade.getBookingById(id) != null))) {
+        if ((id == booking.getId()) && (bookingServiceFacade.getBookingById(id) != null)) {
+            return bookingServiceFacade.saveBooking(booking);
+        }
+        throw new RuntimeException();
+    }
+
+    @POST
+    @Consumes(MediaType.APPLICATION_JSON)
+    @Produces(MediaType.APPLICATION_JSON)
+    @Path("bookings")
+    public Booking saveBooking(Booking booking) throws BusinessException {
+        if (booking.getId() == null) {
             return bookingServiceFacade.saveBooking(booking);
         }
         throw new RuntimeException();
@@ -116,7 +123,6 @@ public class BookingDomainWebService {
     @GET
     @Produces(MediaType.APPLICATION_JSON)
     @Path("bookingEvents")
-    @PreAuthorize("hasRole('ROLE_ADMIN')")
     public ListWithCount<BookingEvent> getBookingEvents(@QueryParam("first") int first, //
             @QueryParam("count") @DefaultValue("10") int count, //
             @QueryParam("filters") List<FilterCouple> filters, //
@@ -134,14 +140,12 @@ public class BookingDomainWebService {
     @GET
     @Produces(MediaType.APPLICATION_JSON)
     @Path("bookingEvents/{id}")
-    @PreAuthorize("hasRole('ROLE_ADMIN')")
     public BookingEvent getBookingEventById(@PathParam("id") int bookingEventId) {
         return bookingServiceFacade.getBookingEventById(bookingEventId);
     }
 
     @DELETE
     @Path("bookingEvents/{id}")
-    @PreAuthorize("hasRole('ROLE_ADMIN')")
     public void deleteBookingEventById(@PathParam("id") int bookingEventId) throws BusinessException {
         bookingServiceFacade.deleteBookingEvent(bookingServiceFacade.getBookingEventById(bookingEventId));
     }
@@ -150,12 +154,47 @@ public class BookingDomainWebService {
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
     @Path("bookingEvents/{id}")
-    @PreAuthorize("hasRole('ROLE_ADMIN')")
     public BookingEvent saveBookingEvent(@PathParam("id") Integer id, BookingEvent bookingEvent) throws BusinessException {
-        if (((id == null) && (bookingEvent.getId() == null)) || ((id != null) && id.equals(bookingEvent.getId()) && (bookingServiceFacade.getBookingEventById(id) != null))) {
+        if ((id == bookingEvent.getId()) && (bookingServiceFacade.getBookingEventById(id) != null)) {
             return bookingServiceFacade.saveBookingEvent(bookingEvent);
         }
         throw new RuntimeException();
+    }
+
+    @POST
+    @Consumes(MediaType.APPLICATION_JSON)
+    @Produces(MediaType.APPLICATION_JSON)
+    @Path("bookingEvents")
+    public BookingEvent saveBookingEvent(BookingEvent bookingEvent) throws BusinessException {
+        if (bookingEvent.getId() == null) {
+            return bookingServiceFacade.saveBookingEvent(bookingEvent);
+        }
+        throw new RuntimeException();
+    }
+
+    // --------------
+    // OTHER
+    // --------------
+
+    @GET
+    @Produces(MediaType.APPLICATION_JSON)
+    @Path("quantities/{bookingEventId}")
+    public Map<BookingBottle, Long> getQuantities(@PathParam("bookingEventId") Integer bookingEventId) {
+        return bookingServiceFacade.getBookingsQuantities(bookingServiceFacade.getBookingEventById(bookingEventId));
+    }
+
+    @GET
+    @Produces(MediaType.APPLICATION_JSON)
+    @Path("bookingsByEvent")
+    public List<Booking> getBookingsByBookingEvent(@QueryParam("bookingEventId") Integer bookingEventId) {
+        return bookingServiceFacade.getBookingsByBookingEventId(bookingEventId);
+    }
+
+    @GET
+    @Produces(MediaType.APPLICATION_JSON)
+    @Path("bookingsByBottle")
+    public List<Booking> getBookingsByBookingBottle(@QueryParam("bookingBottleId") Integer bookingBottleId) {
+        return bookingServiceFacade.getBookingsByBookingBottleId(bookingBottleId);
     }
 
     // BEANS Methods

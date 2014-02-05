@@ -34,41 +34,50 @@ angular.module('mycellar.directives.form.domain.wine.format').directive('formatF
           }
         }
       },
-      controller: function($scope, Formats, $filter) {
-        var formatFilter = $filter('formatRenderer');
-        $scope.renderFormat = function(format) {
-          if (format != null) {
-            return formatFilter(format);
-          } else {
-            return '';
-          }
-        };
-        $scope.errors = [];
-        $scope.formats = Formats.nameLike;
-        $scope.new = function() {
-          $scope.newProducer = {};
-          $scope.showSub = true;
-        };
-        $scope.cancel = function() {
-          $scope.showSub = false;
-        };
-        $scope.ok = function() {
-          $scope.errors = [];
-          Formats.validate($scope.newProducer, function (value, headers) {
-            if (value.errorKey != undefined) {
-              angular.forEach(value.properties, function(property) {
-                if($scope.subProducerForm[property] != undefined) {
-                  $scope.subProducerForm[value.properties[property]].$setValidity(value.errorKey, false);
-                }
-              });
-              $scope.errors.push(value);
+      controller: [
+        '$scope', '$location', '$filter', 'Formats', 'AdminFormats',
+        function($scope, $location, $filter, Formats, AdminFormats) {
+          var formatFilter = $filter('formatRenderer');
+          $scope.renderFormat = function(format) {
+            if (format != null) {
+              return formatFilter(format);
             } else {
-              $scope.format = $scope.newProducer;
-              $scope.showSub = false;
+              return '';
             }
-          });
-        };
-      }
+          };
+          var resource;
+          if ($location.path().match(/\/admin/)) {
+            resource = AdminFormats;
+          } else {
+            resource = Formats;
+          }
+          $scope.errors = [];
+          $scope.formats = resource.like;
+          $scope.new = function() {
+            $scope.newFormat = {};
+            $scope.showSub = true;
+          };
+          $scope.cancel = function() {
+            $scope.showSub = false;
+          };
+          $scope.ok = function() {
+            $scope.errors = [];
+            resource.validate($scope.newFormat, function (value, headers) {
+              if (value.errorKey != undefined) {
+                angular.forEach(value.properties, function(property) {
+                  if($scope.subFormatForm[property] != undefined) {
+                    $scope.subFormatForm[value.properties[property]].$setValidity(value.errorKey, false);
+                  }
+                });
+                $scope.errors.push(value);
+              } else {
+                $scope.format = $scope.newFormat;
+                $scope.showSub = false;
+              }
+            });
+          };
+        }
+      ]
     }
   }
 ]);

@@ -1,22 +1,24 @@
+var expect = require('./tools/chai.tool');
+
 describe("E2E: Testing reset-password-request", function() {
 
   it('should load the reset-password-request page', function() {
     var page = new ResetPasswordRequestPage();
     page.get();
 
-    expect(page.getEmail().isDisplayed()).toBe(true);
+    expect(page.getEmail().isDisplayed()).to.eventually.be.true;
   });
 
   it('should ask a reset password', function() {
     var page = new ResetPasswordRequestPage();
     page.get();
 
-    expect(page.getRequestSentText().isDisplayed()).toBe(false);
+    expect(page.getRequestSentText().isDisplayed()).to.eventually.be.false;
 
     page.getEmail().sendKeys('t@t.fr');
     page.getRequestPasswordResetButton().click();
 
-    expect(page.getRequestSentText().isDisplayed()).toBe(true);
+    expect(page.getRequestSentText().isDisplayed()).to.eventually.be.true;
   });
 
 });

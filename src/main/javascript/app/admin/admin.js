@@ -10,13 +10,13 @@ angular.module('mycellar.controllers.admin.page', [
       templateUrl: 'partials/admin/admin.tpl.html',
       controller: 'AdminController',
       resolve: {
-        winesCount: ['Wines', function(Wines){
+        winesCount: ['AdminWines', function(Wines){
           return Wines.count();
         }],
-        usersCount: ['Users', function(Users) {
+        usersCount: ['AdminUsers', function(Users) {
           return Users.count();
         }],
-        stacksCount: ['Stacks', function(Stacks) {
+        stacksCount: ['AdminStacks', function(Stacks) {
           return Stacks.count();
         }]
       }
