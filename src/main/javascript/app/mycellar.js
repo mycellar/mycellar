@@ -8,6 +8,7 @@ angular.extend(mycellar, {
 
 angular.module('mycellar', [
   'ngRoute',
+  'ngAnimate',
   'ui.bootstrap',
   'http-auth-interceptor',
   'mycellar.loading',

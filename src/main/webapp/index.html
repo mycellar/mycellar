@@ -9,26 +9,21 @@
     <link rel="stylesheet" href="css/mycellar.css" type="text/css" media="screen">
   </head>
   <body>
+    <div ng-controller="LoadingCtrl" ng-show="loading" class="loading well"><i class="fa fa-spinner fa-spin fa-lg"></i> Chargement en cours</div>
     <div ng-include="'partials/nav.tpl.html'"></div>
-    <div class="container" ng-controller="LoadingCtrl">
-      <div ng-show="loading" class="loading well"><i class="fa fa-spinner fa-spin fa-lg"></i> Chargement en cours</div>
-      <!--[if lt IE 7]>
-      <p class="alert alert-error">Votre est navigateur est <em>trop vieux !</em>
-        <a href="http://browsehappy.com/">Changez de navigateur internet</a> pour utiliser correctement ce site.
-      </p>
-      <![endif]-->
+    <!--[if lt IE 7]>
+    <p class="alert alert-error">Votre est navigateur est <em>trop vieux !</em>
+      <a href="http://browsehappy.com/">Changez de navigateur internet</a> pour utiliser correctement ce site.
+    </p>
+    <![endif]-->
 
-      <!--[if lt IE 9]>
-      <div class="alert">
-        Vous utilisez une ancienne version d'Internet Explorer.
-        Pour une meilleure expérience <a href="http://www.microsoft.com/IE9">mettez à jour IE</a>
-        ou <a href="http://browsehappy.com/">changez de navigateur internet</a>.
-      </div>
-      <![endif]-->
-      <div ng-view></div>
+    <!--[if lt IE 9]>
+    <div class="alert">
+      Vous utilisez une ancienne version d'Internet Explorer.
+      Pour une meilleure expérience <a href="http://www.microsoft.com/IE9">mettez à jour IE</a>
+      ou <a href="http://browsehappy.com/">changez de navigateur internet</a>.
     </div>
-    <footer>
-      <p>2012-2014 Tous droits réservés, MyCellar GPL V3.</p>
-    </footer>
+    <![endif]-->
+    <div ng-view class="slide"></div>
   </body>
 </html>

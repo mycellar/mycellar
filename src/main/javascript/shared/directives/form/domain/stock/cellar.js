@@ -36,7 +36,7 @@ angular.module('mycellar.directives.form.domain.stock.cellar').directive('cellar
       },
       controller: [
         '$scope', '$location', 'Cellars', 'AdminCellars',
-        function($scope, $route, Cellars, AdminCellars) {
+        function($scope, $location, Cellars, AdminCellars) {
           var resource;
           if ($location.path().match(/\/admin/)) {
             resource = AdminCellars;

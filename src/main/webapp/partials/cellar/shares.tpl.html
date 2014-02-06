@@ -1,47 +1,52 @@
-<header class="page-header"><h1>Mes partages</h1></header>
-<div class="row">
-  <div class="col-md-2">
-    <nav>
-      <ul class="nav nav-pills nav-stacked text-center">
-        <li ng-repeat="cellar in cellars" ng-class="{active: cellar.id == $parent.cellar.id}">
-          <a href ng-click="selectCellar(cellar)">{{cellar.name}}</a>
-        </li>
-      </ul>
-    </nav>
+<div class="container">
+  <header class="page-header"><h1>Mes partages</h1></header>
+  <div class="row">
+    <div class="col-md-2">
+      <nav>
+        <ul class="nav nav-pills nav-stacked text-center">
+          <li ng-repeat="cellar in cellars" ng-class="{active: cellar.id == $parent.cellar.id}">
+            <a href ng-click="selectCellar(cellar)">{{cellar.name}}</a>
+          </li>
+        </ul>
+      </nav>
+    </div>
+    <div class="col-md-10">
+      <section>
+        <div ng-if="cellar != null">
+          <h2>{{cellar.name}}</h2>
+          <paginated table-context="tableContext">
+            <div class="table-responsive">
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Email <icon-sort attribute="email" table-context="tableContext" /></th>
+                    <th>Droit d'accès <icon-sort attribute="accessRight" table-context="tableContext" /></th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr ng-repeat="cellarShare in tableContext.items">
+                    <td>{{cellarShare.email}}</td>
+                    <td>{{cellarShare.accessRight | accessRightRenderer}}</td>
+                  </tr>
+                  <tr ng-if="!loading && tableContext.items.length == 0">
+                    <td colspan="2" class="text-center">Aucun partage.</td>
+                  </tr>
+                </tbody>
+                <tfoot>
+                  <tr>
+                    <th>Email <icon-sort attribute="email" table-context="tableContext" /></th>
+                    <th>Droit d'accès <icon-sort attribute="accessRight" table-context="tableContext" /></th>
+                  </tr>
+                </tfoot>
+              </table>
+            </div>
+          </paginated>
+        </div>
+        <p ng-if="cellar == null">Aucune cave</p>
+      </section>
+    </div>
   </div>
-  <div class="col-md-10">
-    <section>
-      <div ng-if="cellar != null">
-        <h2>{{cellar.name}}</h2>
-        <paginated table-context="tableContext">
-          <div class="table-responsive">
-            <table class="table table-bordered table-striped table-condensed">
-              <thead>
-                <tr>
-                  <th>Email <icon-sort attribute="email" table-context="tableContext" /></th>
-                  <th>Droit d'accès <icon-sort attribute="accessRight" table-context="tableContext" /></th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr ng-repeat="cellarShare in tableContext.items">
-                  <td>{{cellarShare.email}}</td>
-                  <td>{{cellarShare.accessRight | accessRightRenderer}}</td>
-                </tr>
-                <tr ng-if="!loading && tableContext.items.length == 0">
-                  <td colspan="2" class="text-center">Aucun partage.</td>
-                </tr>
-              </tbody>
-              <tfoot>
-                <tr>
-                  <th>Email <icon-sort attribute="email" table-context="tableContext" /></th>
-                  <th>Droit d'accès <icon-sort attribute="accessRight" table-context="tableContext" /></th>
-                </tr>
-              </tfoot>
-            </table>
-          </div>
-        </paginated>
-      </div>
-      <p ng-if="cellar == null">Aucune cave</p>
-    </section>
-  </div>
+  <footer>
+    <p>2012-2014 Tous droits réservés, MyCellar GPL V3.</p>
+  </footer>
 </div>

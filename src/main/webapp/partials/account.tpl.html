@@ -1,91 +1,96 @@
-<header class="page-header"><h1>Mon compte</h1></header>
-<section>
-  <div ng-hide="hasProfile">
-    <span class="alert alert-info">Votre inscription n'est pas encore validée. Nous vous tiendrons informé dans les plus brefs délais.</span>
-  </div>
-  <div class="row">
-    <div class="col-md-2">
-      <header role="secondary" class="page-header">
-        <h4>Badges</h4>
-      </header>
-      <span class="badge" title="Utilisateur non validé" ng-hide="hasProfile"><i class="fa fa-times"></i></span>
-      <span class="badge" title="Utilisateur validé" ng-show="hasProfile"><i class="fa fa-check"></i></span>
-      <span class="badge" title="Accès à la réservation" ng-show="hasBooking"><i class="fa fa-shopping-cart"></i></span>
-      <span class="badge" title="Accès à la gestion de cave" ng-show="hasCellar"><i class="fa fa-th"></i></span>
-      <span class="badge" title="Accès à l'administration" ng-show="hasAdmin"><i class="fa fa-wrench"></i></span>
+<div class="container">
+  <header class="page-header"><h1>Mon compte</h1></header>
+  <section>
+    <div ng-hide="hasProfile">
+      <span class="alert alert-info">Votre inscription n'est pas encore validée. Nous vous tiendrons informé dans les plus brefs délais.</span>
     </div>
-    <div class="col-md-8">
-      <section>
+    <div class="row">
+      <div class="col-md-2">
         <header role="secondary" class="page-header">
-          <h4>
-            Gestion de votre compte
-            <small>
-              Changement d'adresse email, de mot de passe...
-            </small>
-          </h4>
+          <h4>Badges</h4>
         </header>
-
-        <a href class="btn btn-default" ng-click="displayChangeEmailForm()">Changer votre email</a>
-        <a href class="btn btn-default" ng-click="displayChangePasswordForm()">Changer votre mot de passe</a>
-
-        <form name="changeEmailForm" class="form-horizontal" ng-show="changeEmailFormDisplayed">
-          <fieldset>
-            <legend>Changement de votre email</legend>
-            <error-form form="changeEmailForm"></error-form>
-            <div class="form-group" ng-class="{'has-error': changeEmailForm.email.$invalid}">
-              <label class="control-label" for="email">Email</label>
-              <input type="email" id="email" name="email" class="form-control" placeholder="Email" ng-model="email" equals="{{email2}}" />
-              <error-ctrl ctrl="changeEmailForm.email"></error-ctrl>
+        <span class="badge" title="Utilisateur non validé" ng-hide="hasProfile"><i class="fa fa-times"></i></span>
+        <span class="badge" title="Utilisateur validé" ng-show="hasProfile"><i class="fa fa-check"></i></span>
+        <span class="badge" title="Accès à la réservation" ng-show="hasBooking"><i class="fa fa-shopping-cart"></i></span>
+        <span class="badge" title="Accès à la gestion de cave" ng-show="hasCellar"><i class="fa fa-th"></i></span>
+        <span class="badge" title="Accès à l'administration" ng-show="hasAdmin"><i class="fa fa-wrench"></i></span>
+      </div>
+      <div class="col-md-8">
+        <section>
+          <header role="secondary" class="page-header">
+            <h4>
+              Gestion de votre compte
+              <small>
+                Changement d'adresse email, de mot de passe...
+              </small>
+            </h4>
+          </header>
+  
+          <a href class="btn btn-default" ng-click="displayChangeEmailForm()">Changer votre email</a>
+          <a href class="btn btn-default" ng-click="displayChangePasswordForm()">Changer votre mot de passe</a>
+  
+          <form name="changeEmailForm" class="form-horizontal" ng-show="changeEmailFormDisplayed">
+            <fieldset>
+              <legend>Changement de votre email</legend>
+              <error-form form="changeEmailForm"></error-form>
+              <div class="form-group" ng-class="{'has-error': changeEmailForm.email.$invalid}">
+                <label class="control-label" for="email">Email</label>
+                <input type="email" id="email" name="email" class="form-control" placeholder="Email" ng-model="email" equals="{{email2}}" />
+                <error-ctrl ctrl="changeEmailForm.email"></error-ctrl>
+              </div>
+              <div class="form-group" ng-class="{'has-error': changeEmailForm.email2.$invalid}">
+                <label class="control-label" for="email2">Confirmation de l'email</label>
+                <input type="email" id="email2" name="email2" class="form-control" placeholder="Confirmation de l'email" ng-model="email2" equals="{{email}}" />
+                <error-ctrl ctrl="changeEmailForm.email2"></error-ctrl>
+              </div>
+              <div class="form-group" ng-class="{'has-error': changeEmailForm.password.$invalid}">
+                <label class="control-label" for="password">Mot de passe</label>
+                <input type="password" id="password" name="password" class="form-control" placeholder="Mot de passe" ng-model="password" />
+                <error-ctrl ctrl="changeEmailForm.password"></error-ctrl>
+              </div>
+            </fieldset>
+            <div class="form-actions">
+              <input type="submit" class="btn btn-primary" value="Changer mon email" ng-click="changeEmail()" />
             </div>
-            <div class="form-group" ng-class="{'has-error': changeEmailForm.email2.$invalid}">
-              <label class="control-label" for="email2">Confirmation de l'email</label>
-              <input type="email" id="email2" name="email2" class="form-control" placeholder="Confirmation de l'email" ng-model="email2" equals="{{email}}" />
-              <error-ctrl ctrl="changeEmailForm.email2"></error-ctrl>
+          </form>
+          <form name="changePasswordForm" class="form-horizontal" ng-show="changePasswordFormDisplayed">
+            <fieldset>
+              <legend>Changement de votre mot de passe</legend>
+              <error-form form="changePasswordForm"></error-form>
+              <div class="form-group" ng-class="{'has-error': changePasswordForm.oldPassword.$invalid}">
+                <label class="control-label" for="password">Ancien mot de passe</label>
+                <input type="password" id="oldPassword" name="oldPassword" class="form-control" placeholder="Mot de passe" ng-model="oldPassword" />
+                <error-ctrl ctrl="changePasswordForm.oldPassword"></error-ctrl>
+              </div>
+              <div class="form-group" ng-class="{'has-error': changePasswordForm.password.$invalid}">
+                <label class="control-label" for="password">Mot de passe</label>
+                <input type="password" id="password" name="password" class="form-control" placeholder="Mot de passe" ng-model="password" equals="{{password2}}" />
+                <error-ctrl ctrl="changePasswordForm.password"></error-ctrl>
+              </div>
+              <div class="form-group" ng-class="{'has-error': changePasswordForm.password2.$invalid}">
+                <label class="control-label" for="password2">Confirmation du mot de passe</label>
+                <input type="password" id="password2" name="password2" class="form-control" placeholder="Confirmation du mot de passe" ng-model="password2" equals="{{password}}" />
+                <error-ctrl ctrl="changePasswordForm.password2"></error-ctrl>
+              </div>
+            </fieldset>
+            <div class="form-actions">
+              <input type="submit" class="btn btn-primary" value="Changer mon mot de passe" ng-click="changePassword()" />
             </div>
-            <div class="form-group" ng-class="{'has-error': changeEmailForm.password.$invalid}">
-              <label class="control-label" for="password">Mot de passe</label>
-              <input type="password" id="password" name="password" class="form-control" placeholder="Mot de passe" ng-model="password" />
-              <error-ctrl ctrl="changeEmailForm.password"></error-ctrl>
-            </div>
-          </fieldset>
-          <div class="form-actions">
-            <input type="submit" class="btn btn-primary" value="Changer mon email" ng-click="changeEmail()" />
-          </div>
-        </form>
-        <form name="changePasswordForm" class="form-horizontal" ng-show="changePasswordFormDisplayed">
-          <fieldset>
-            <legend>Changement de votre mot de passe</legend>
-            <error-form form="changePasswordForm"></error-form>
-            <div class="form-group" ng-class="{'has-error': changePasswordForm.oldPassword.$invalid}">
-              <label class="control-label" for="password">Ancien mot de passe</label>
-              <input type="password" id="oldPassword" name="oldPassword" class="form-control" placeholder="Mot de passe" ng-model="oldPassword" />
-              <error-ctrl ctrl="changePasswordForm.oldPassword"></error-ctrl>
-            </div>
-            <div class="form-group" ng-class="{'has-error': changePasswordForm.password.$invalid}">
-              <label class="control-label" for="password">Mot de passe</label>
-              <input type="password" id="password" name="password" class="form-control" placeholder="Mot de passe" ng-model="password" equals="{{password2}}" />
-              <error-ctrl ctrl="changePasswordForm.password"></error-ctrl>
-            </div>
-            <div class="form-group" ng-class="{'has-error': changePasswordForm.password2.$invalid}">
-              <label class="control-label" for="password2">Confirmation du mot de passe</label>
-              <input type="password" id="password2" name="password2" class="form-control" placeholder="Confirmation du mot de passe" ng-model="password2" equals="{{password}}" />
-              <error-ctrl ctrl="changePasswordForm.password2"></error-ctrl>
-            </div>
-          </fieldset>
-          <div class="form-actions">
-            <input type="submit" class="btn btn-primary" value="Changer mon mot de passe" ng-click="changePassword()" />
-          </div>
-        </form>
-      </section>
+          </form>
+        </section>
+      </div>
+      <div class="col-md-2">
+        <header role="secondary" class="page-header">
+          <h4>Coordonnées</h4>
+        </header>
+        <address>
+          <strong>{{userName}}</strong><br>
+          <span>{{userEmail}}</span>
+        </address>
+      </div>
     </div>
-    <div class="col-md-2">
-      <header role="secondary" class="page-header">
-        <h4>Coordonnées</h4>
-      </header>
-      <address>
-        <strong>{{userName}}</strong><br>
-        <span>{{userEmail}}</span>
-      </address>
-    </div>
-  </div>
-</section>
+  </section>
+  <footer>
+    <p>2012-2014 Tous droits réservés, MyCellar GPL V3.</p>
+  </footer>
+</div>

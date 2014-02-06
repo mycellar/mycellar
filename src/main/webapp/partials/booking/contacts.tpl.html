@@ -1,45 +1,50 @@
-<header class="page-header"><h1>Contacts</h1></header>
-<section>
-  <table-filters table-context="tableContext">
-    <div class="form-group">
-      <label class="control-label sr-only" for="producer.name">Nom du producteur</label>
-      <input class="form-control" id="producer.name" name="producer.name" placeholder="Nom du producteur" ng-model="tableContext.filters['producer.name']" type="text" />
-    </div>
-  </table-filters>
-  <error-div errors="errors"></error-div>
-  <paginated table-context="tableContext">
-    <div class="table-responsive">
-      <table class="table table-bordered table-striped table-condensed">
-        <thead>
-          <tr>
-            <th>Producteur <icon-sort attribute="producer.name" table-context="tableContext" /></th>
-            <th>Date du contact <icon-sort attribute="current" table-context="tableContext" /></th>
-            <th>Prochain contact <icon-sort attribute="next" table-context="tableContext" /></th>
-            <th class="actions"><a href ng-click="new()" class="btn btn-default btn-xs"><i class="fa fa-plus-circle"></i></a></th>
-          </tr>
-        </thead>
-        <tbody ng-controller="LoadingCtrl">
-          <tr ng-repeat="item in tableContext.items">
-            <td>{{item.producer.name}}</td>
-            <td>{{item.current}}</td>
-            <td>{{item.next}}</td>
-            <td>
-              <a href ng-click="edit(item)" class="btn btn-default btn-xs"><i class="fa fa-pencil"></i></a>
-            </td>
-          </tr>
-          <tr ng-if="!loading && tableContext.items.length == 0">
-            <td colspan="5" class="text-center">Aucun contact ne correspond aux filtres.</td>
-          </tr>
-        </tbody>
-        <tfoot>
-          <tr>
-            <th>Producteur <icon-sort attribute="producer.name" table-context="tableContext" /></th>
-            <th>Date du contact <icon-sort attribute="current" table-context="tableContext" /></th>
-            <th>Prochain contact <icon-sort attribute="next" table-context="tableContext" /></th>
-            <th class="actions"><a href ng-click="new()" class="btn btn-default btn-xs"><i class="fa fa-plus-circle"></i></a></th>
-          </tr>
-        </tfoot>
-      </table>
-    </div>
-  </paginated>
-</section>
+<div class="container">
+  <header class="page-header"><h1>Contacts</h1></header>
+  <section>
+    <table-filters table-context="tableContext">
+      <div class="form-group">
+        <label class="control-label sr-only" for="producer.name">Nom du producteur</label>
+        <input class="form-control" id="producer.name" name="producer.name" placeholder="Nom du producteur" ng-model="tableContext.filters['producer.name']" type="text" />
+      </div>
+    </table-filters>
+    <error-div errors="errors"></error-div>
+    <paginated table-context="tableContext">
+      <div class="table-responsive">
+        <table class="table table-bordered table-striped table-condensed">
+          <thead>
+            <tr>
+              <th>Producteur <icon-sort attribute="producer.name" table-context="tableContext" /></th>
+              <th>Date du contact <icon-sort attribute="current" table-context="tableContext" /></th>
+              <th>Prochain contact <icon-sort attribute="next" table-context="tableContext" /></th>
+              <th class="actions"><a href ng-click="new()" class="btn btn-default btn-xs"><i class="fa fa-plus-circle"></i></a></th>
+            </tr>
+          </thead>
+          <tbody ng-controller="LoadingCtrl">
+            <tr ng-repeat="item in tableContext.items">
+              <td>{{item.producer.name}}</td>
+              <td>{{item.current}}</td>
+              <td>{{item.next}}</td>
+              <td>
+                <a href ng-click="edit(item)" class="btn btn-default btn-xs"><i class="fa fa-pencil"></i></a>
+              </td>
+            </tr>
+            <tr ng-if="!loading && tableContext.items.length == 0">
+              <td colspan="5" class="text-center">Aucun contact ne correspond aux filtres.</td>
+            </tr>
+          </tbody>
+          <tfoot>
+            <tr>
+              <th>Producteur <icon-sort attribute="producer.name" table-context="tableContext" /></th>
+              <th>Date du contact <icon-sort attribute="current" table-context="tableContext" /></th>
+              <th>Prochain contact <icon-sort attribute="next" table-context="tableContext" /></th>
+              <th class="actions"><a href ng-click="new()" class="btn btn-default btn-xs"><i class="fa fa-plus-circle"></i></a></th>
+            </tr>
+          </tfoot>
+        </table>
+      </div>
+    </paginated>
+  </section>
+  <footer>
+    <p>2012-2014 Tous droits réservés, MyCellar GPL V3.</p>
+  </footer>
+</div>

@@ -1,181 +1,186 @@
-<header class="page-header"><h1>Création de nouveaux millésimes</h1></header>
-<form name="form" class="form">
-  <div class="row">
-    <div class="col-md-4">
-      <fieldset>
-        <legend>Filtres</legend>
-        <div class="form-group">
-          <label for="country" class="sr-only">Nom du pays</label>
-          <input 
-              id="country"
-              name="country"
-              type="text"
-              ng-model="tableContext.filters['appellation.region.country.name']"
-              placeholder="Nom du pays"
-              typeahead="country.name for country in countries($viewValue)"
-              typeahead-editable="false"
-              typeahead-min-length="2"
-              typeahead-wait-ms="200"
-              class="form-control" />
-        </div>
-        <div class="form-group">
-          <label for="region" class="sr-only">Nom de la région</label>
-          <input 
-              id="region"
-              name="region"
-              type="text"
-              ng-model="tableContext.filters['appellation.region.name']"
-              placeholder="Nom de la région"
-              typeahead="region.name for region in regions($viewValue)"
-              typeahead-editable="false"
-              typeahead-min-length="2"
-              typeahead-wait-ms="200"
-              class="form-control" />
-        </div>
-        <div class="form-group">
-          <label for="appellation" class="sr-only">Nom de l'appellation</label>
-          <input 
-              id="appellation"
-              name="appellation"
-              type="text"
-              ng-model="tableContext.filters['appellation.name']"
-              placeholder="Nom de l'appellation"
-              typeahead="appellation.name for appellation in appellations($viewValue)"
-              typeahead-editable="false"
-              typeahead-min-length="2"
-              typeahead-wait-ms="200"
-              class="form-control" />
-        </div>
-        <div class="form-group">
-          <label for="producer" class="sr-only">Nom du producteur</label>
-          <input 
-              id="producer"
-              name="producer"
-              type="text"
-              ng-model="tableContext.filters['producer.name']"
-              placeholder="Nom du producteur"
-              typeahead="producer.name for producer in producers($viewValue)"
-              typeahead-editable="false"
-              typeahead-min-length="2"
-              typeahead-wait-ms="200"
-              class="form-control" />
-        </div>
-        <div class="form-group">
-          <label for="type" class="sr-only">Type</label>
-          <select id="type" name="type" ng-model="tableContext.filters['type']" class="form-control">
-            <option label="Type"></option>
-            <option label="Tranquille">STILL</option>
-            <option label="Pétillant">SPARKLING</option>
-            <option label="Spiritueux">SPIRIT</option>
-            <option label="Autre">OTHER</option>
-          </select>
-        </div>
-        <div class="form-group">
-          <label for="color" class="sr-only">Couleur</label>
-          <select id="color" name="color" ng-model="tableContext.filters['color']" class="form-control">
-            <option label="Couleur"></option>
-            <option label="Rouge">RED</option>
-            <option label="Blanc">WHITE</option>
-            <option label="Rosé">ROSE</option>
-            <option label="Autre">OTHER</option>
-          </select>
-        </div>
-        <div class="form-group">
-          <label for="name" class="sr-only">Nom</label>
-          <input id="name" name="name" type="text" ng-model="tableContext.filters['name']" placeholder="Nom" class="form-control" />
-        </div>
-        <div class="form-group">
-          <label for="vintage" class="sr-only">Millésime</label>
-          <input id="vintage" name="vintage" type="number" ng-model="tableContext.filters['vintage']" placeholder="Millésime" class="form-control" />
-        </div>
-      </fieldset>
-    </div>
-    <div class="col-md-8">
-      <fieldset>
-        <legend>Vins à dupliquer</legend>
-        <paginated table-context="tableContext">
-          <div class="table-responsive">
-            <table class="table table-bordered table-striped table-condensed">
-              <thead>
-                <tr>
-                  <th>Pays <icon-sort attribute="appellation.region.country.name" table-context="tableContext" /></th>
-                  <th>Région <icon-sort attribute="appellation.region.name" table-context="tableContext" /></th>
-                  <th>Appellation <icon-sort attribute="appellation.name" table-context="tableContext" /></th>
-                  <th>Producteur <icon-sort attribute="producer.name" table-context="tableContext" /></th>
-                  <th>Nom <icon-sort attribute="name" table-context="tableContext" /></th>
-                  <th>Millésime <icon-sort attribute="vintage" table-context="tableContext" /></th>
-                  <th>Couleur <icon-sort attribute="color" table-context="tableContext" /></th>
-                  <th>Type <icon-sort attribute="type" table-context="tableContext" /></th>
-                </tr>
-              </thead>
-              <tbody ng-controller="LoadingCtrl" >
-                <tr ng-repeat="wine in tableContext.items">
-                  <td>{{wine.appellation.region.country.name}}</td>
-                  <td>{{wine.appellation.region.name}}</td>
-                  <td>{{wine.appellation.name}}</td>
-                  <td>{{wine.producer.name}}</td>
-                  <td>{{wine.name}}</td>
-                  <td>{{wine.vintage}}</td>
-                  <td>{{wine.color | wineColorRenderer}}</td>
-                  <td>{{wine.type | wineTypeRenderer}}</td>
-                </tr>
-                <tr ng-if="!loading && tableContext.items.length == 0">
-                  <td colspan="8" class="text-center">Aucun vin ne correspond aux filtres</td>
-                </tr>
-              </tbody>
-              <tfoot>
-                <tr>
-                  <th>Pays <icon-sort attribute="appellation.region.country.name" table-context="tableContext" /></th>
-                  <th>Région <icon-sort attribute="appellation.region.name" table-context="tableContext" /></th>
-                  <th>Appellation <icon-sort attribute="appellation.name" table-context="tableContext" /></th>
-                  <th>Producteur <icon-sort attribute="producer.name" table-context="tableContext" /></th>
-                  <th>Nom <icon-sort attribute="name" table-context="tableContext" /></th>
-                  <th>Millésime <icon-sort attribute="vintage" table-context="tableContext" /></th>
-                  <th>Couleur <icon-sort attribute="color" table-context="tableContext" /></th>
-                  <th>Type <icon-sort attribute="type" table-context="tableContext" /></th>
-                </tr>
-              </tfoot>
-            </table>
+<div class="container">
+  <header class="page-header"><h1>Création de nouveaux millésimes</h1></header>
+  <form name="form" class="form">
+    <div class="row">
+      <div class="col-md-4">
+        <fieldset>
+          <legend>Filtres</legend>
+          <div class="form-group">
+            <label for="country" class="sr-only">Nom du pays</label>
+            <input 
+                id="country"
+                name="country"
+                type="text"
+                ng-model="tableContext.filters['appellation.region.country.name']"
+                placeholder="Nom du pays"
+                typeahead="country.name for country in countries($viewValue)"
+                typeahead-editable="false"
+                typeahead-min-length="2"
+                typeahead-wait-ms="200"
+                class="form-control" />
           </div>
-        </paginated>
-      </fieldset>
-    </div>
-  </div>
-  <div class="row">
-    <div class="col-md-2">
-      <fieldset class="form">
-        <legend>Millésimes</legend>
-        <div class="form-group" ng-class="{'has-error': form.from.$invalid}">
-          <label class="control-label" for="from">Depuis</label>
-          <input id="from" name="from" type="number" ng-model="from" placeholder="Depuis" class="form-control" />
-          <error-ctrl ctrl="form.from"></error-ctrl>
-        </div>
-        <div class="form-group" ng-class="{'has-error': form.to.$invalid}">
-          <label class="control-label" for="to">Jusqu'en</label>
-          <input id="to" name="to" type="number" ng-model="to" placeholder="Jusqu'en" class="form-control" />
-          <error-ctrl ctrl="form.to"></error-ctrl>
-        </div>
-      </fieldset>
-    </div>
-    <div class="col-md-10">
-      <fieldset>
-        <legend>Résultats</legend>
-        <div class="progress progress-striped active" ng-class="{'progress-danger': errors.length > 0, 'progress-success': errors.length == 0}" ng-show="running">
-          <div class="bar" ng-style="{'width': (count / wines.length * 100) + '%'}"></div>
-        </div>
-        <div ng-show="errors.length > 0 || messages.length > 0">
-          <div class="alert alert-error" ng-repeat="error in errors">
-            <button type="button" class="close" ng-click="errors.splice(errors.indexOf(error), 1)">&times;</button>
-            {{error.errorKey}}
+          <div class="form-group">
+            <label for="region" class="sr-only">Nom de la région</label>
+            <input 
+                id="region"
+                name="region"
+                type="text"
+                ng-model="tableContext.filters['appellation.region.name']"
+                placeholder="Nom de la région"
+                typeahead="region.name for region in regions($viewValue)"
+                typeahead-editable="false"
+                typeahead-min-length="2"
+                typeahead-wait-ms="200"
+                class="form-control" />
           </div>
-          <div class="alert alert-success" ng-repeat="message in messages">
-            <button type="button" class="close" ng-click="messages.splice(messages.indexOf(message), 1)">&times;</button>
-            {{message.count}} millésimes créés.
+          <div class="form-group">
+            <label for="appellation" class="sr-only">Nom de l'appellation</label>
+            <input 
+                id="appellation"
+                name="appellation"
+                type="text"
+                ng-model="tableContext.filters['appellation.name']"
+                placeholder="Nom de l'appellation"
+                typeahead="appellation.name for appellation in appellations($viewValue)"
+                typeahead-editable="false"
+                typeahead-min-length="2"
+                typeahead-wait-ms="200"
+                class="form-control" />
           </div>
-        </div>
-      </fieldset>
+          <div class="form-group">
+            <label for="producer" class="sr-only">Nom du producteur</label>
+            <input 
+                id="producer"
+                name="producer"
+                type="text"
+                ng-model="tableContext.filters['producer.name']"
+                placeholder="Nom du producteur"
+                typeahead="producer.name for producer in producers($viewValue)"
+                typeahead-editable="false"
+                typeahead-min-length="2"
+                typeahead-wait-ms="200"
+                class="form-control" />
+          </div>
+          <div class="form-group">
+            <label for="type" class="sr-only">Type</label>
+            <select id="type" name="type" ng-model="tableContext.filters['type']" class="form-control">
+              <option label="Type"></option>
+              <option label="Tranquille">STILL</option>
+              <option label="Pétillant">SPARKLING</option>
+              <option label="Spiritueux">SPIRIT</option>
+              <option label="Autre">OTHER</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label for="color" class="sr-only">Couleur</label>
+            <select id="color" name="color" ng-model="tableContext.filters['color']" class="form-control">
+              <option label="Couleur"></option>
+              <option label="Rouge">RED</option>
+              <option label="Blanc">WHITE</option>
+              <option label="Rosé">ROSE</option>
+              <option label="Autre">OTHER</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label for="name" class="sr-only">Nom</label>
+            <input id="name" name="name" type="text" ng-model="tableContext.filters['name']" placeholder="Nom" class="form-control" />
+          </div>
+          <div class="form-group">
+            <label for="vintage" class="sr-only">Millésime</label>
+            <input id="vintage" name="vintage" type="number" ng-model="tableContext.filters['vintage']" placeholder="Millésime" class="form-control" />
+          </div>
+        </fieldset>
+      </div>
+      <div class="col-md-8">
+        <fieldset>
+          <legend>Vins à dupliquer</legend>
+          <paginated table-context="tableContext">
+            <div class="table-responsive">
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Pays <icon-sort attribute="appellation.region.country.name" table-context="tableContext" /></th>
+                    <th>Région <icon-sort attribute="appellation.region.name" table-context="tableContext" /></th>
+                    <th>Appellation <icon-sort attribute="appellation.name" table-context="tableContext" /></th>
+                    <th>Producteur <icon-sort attribute="producer.name" table-context="tableContext" /></th>
+                    <th>Nom <icon-sort attribute="name" table-context="tableContext" /></th>
+                    <th>Millésime <icon-sort attribute="vintage" table-context="tableContext" /></th>
+                    <th>Couleur <icon-sort attribute="color" table-context="tableContext" /></th>
+                    <th>Type <icon-sort attribute="type" table-context="tableContext" /></th>
+                  </tr>
+                </thead>
+                <tbody ng-controller="LoadingCtrl" >
+                  <tr ng-repeat="wine in tableContext.items">
+                    <td>{{wine.appellation.region.country.name}}</td>
+                    <td>{{wine.appellation.region.name}}</td>
+                    <td>{{wine.appellation.name}}</td>
+                    <td>{{wine.producer.name}}</td>
+                    <td>{{wine.name}}</td>
+                    <td>{{wine.vintage}}</td>
+                    <td>{{wine.color | wineColorRenderer}}</td>
+                    <td>{{wine.type | wineTypeRenderer}}</td>
+                  </tr>
+                  <tr ng-if="!loading && tableContext.items.length == 0">
+                    <td colspan="8" class="text-center">Aucun vin ne correspond aux filtres</td>
+                  </tr>
+                </tbody>
+                <tfoot>
+                  <tr>
+                    <th>Pays <icon-sort attribute="appellation.region.country.name" table-context="tableContext" /></th>
+                    <th>Région <icon-sort attribute="appellation.region.name" table-context="tableContext" /></th>
+                    <th>Appellation <icon-sort attribute="appellation.name" table-context="tableContext" /></th>
+                    <th>Producteur <icon-sort attribute="producer.name" table-context="tableContext" /></th>
+                    <th>Nom <icon-sort attribute="name" table-context="tableContext" /></th>
+                    <th>Millésime <icon-sort attribute="vintage" table-context="tableContext" /></th>
+                    <th>Couleur <icon-sort attribute="color" table-context="tableContext" /></th>
+                    <th>Type <icon-sort attribute="type" table-context="tableContext" /></th>
+                  </tr>
+                </tfoot>
+              </table>
+            </div>
+          </paginated>
+        </fieldset>
+      </div>
     </div>
-  </div>
-  <input type="submit" ng-click="createVintages()" class="btn btn-primary" value="Créer les millésimes" />
-  <input type="reset" ng-click="clearFilters()" class="btn btn-default" value="Vider les filtres" />
-</form>
+    <div class="row">
+      <div class="col-md-2">
+        <fieldset class="form">
+          <legend>Millésimes</legend>
+          <div class="form-group" ng-class="{'has-error': form.from.$invalid}">
+            <label class="control-label" for="from">Depuis</label>
+            <input id="from" name="from" type="number" ng-model="from" placeholder="Depuis" class="form-control" />
+            <error-ctrl ctrl="form.from"></error-ctrl>
+          </div>
+          <div class="form-group" ng-class="{'has-error': form.to.$invalid}">
+            <label class="control-label" for="to">Jusqu'en</label>
+            <input id="to" name="to" type="number" ng-model="to" placeholder="Jusqu'en" class="form-control" />
+            <error-ctrl ctrl="form.to"></error-ctrl>
+          </div>
+        </fieldset>
+      </div>
+      <div class="col-md-10">
+        <fieldset>
+          <legend>Résultats</legend>
+          <div class="progress progress-striped active" ng-class="{'progress-danger': errors.length > 0, 'progress-success': errors.length == 0}" ng-show="running">
+            <div class="bar" ng-style="{'width': (count / wines.length * 100) + '%'}"></div>
+          </div>
+          <div ng-show="errors.length > 0 || messages.length > 0">
+            <div class="alert alert-error" ng-repeat="error in errors">
+              <button type="button" class="close" ng-click="errors.splice(errors.indexOf(error), 1)">&times;</button>
+              {{error.errorKey}}
+            </div>
+            <div class="alert alert-success" ng-repeat="message in messages">
+              <button type="button" class="close" ng-click="messages.splice(messages.indexOf(message), 1)">&times;</button>
+              {{message.count}} millésimes créés.
+            </div>
+          </div>
+        </fieldset>
+      </div>
+    </div>
+    <input type="submit" ng-click="createVintages()" class="btn btn-primary" value="Créer les millésimes" />
+    <input type="reset" ng-click="clearFilters()" class="btn btn-default" value="Vider les filtres" />
+  </form>
+  <footer>
+    <p>2012-2014 Tous droits réservés, MyCellar GPL V3.</p>
+  </footer>
+</div>

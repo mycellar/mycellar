@@ -4,6 +4,7 @@ module.exports = {
     'bower_components/angular/angular.js',
     'bower_components/angular-resource/angular-resource.js',
     'bower_components/angular-route/angular-route.js',
+    'bower_components/angular-animate/angular-animate.js',
     'bower_components/angular-i18n/angular-locale_fr-fr.js',
     'bower_components/angular-bootstrap/ui-bootstrap-tpls.js',
     'bower_components/angular-http-auth/src/http-auth-interceptor.js',

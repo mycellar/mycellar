@@ -1,76 +1,81 @@
-<header class="page-header"><h1>Mes caves</h1></header>
-<div class="row">
-  <div class="col-md-2">
-    <nav>
-      <ul class="list-group">
-        <li class="list-group-item" ng-repeat="owner in owners">
-          <span class="list-group-item-heading">Propriétaire : {{owner.email}}</span>
-          <ul class="nav nav-pills nav-stacked text-center">
-            <li ng-repeat="cellar in ownersMap[owner.email]" ng-class="{active: cellar.id == $parent.cellar.id}">
-              <a href ng-click="selectCellar(cellar)">{{cellar.name}}</a>
-            </li>
-          </ul>
-        </li>
-      </ul>
-    </nav>
+<div class="container">
+  <header class="page-header"><h1>Mes caves</h1></header>
+  <div class="row">
+    <div class="col-md-2">
+      <nav>
+        <ul class="list-group">
+          <li class="list-group-item" ng-repeat="owner in owners">
+            <span class="list-group-item-heading">Propriétaire : {{owner.email}}</span>
+            <ul class="nav nav-pills nav-stacked text-center">
+              <li ng-repeat="cellar in ownersMap[owner.email]" ng-class="{active: cellar.id == $parent.cellar.id}">
+                <a href ng-click="selectCellar(cellar)">{{cellar.name}}</a>
+              </li>
+            </ul>
+          </li>
+        </ul>
+      </nav>
+    </div>
+    <div class="col-md-10">
+      <section>
+        <div ng-if="cellar != null">
+          <h2>{{cellar.name}}</h2>
+          <paginated table-context="tableContext">
+            <div class="table-responsive">
+              <table class="table table-bordered table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Pays <icon-sort attribute="bottle.wine.appellation.region.country.name" table-context="tableContext" /></th>
+                    <th>Région <icon-sort attribute="bottle.wine.appellation.region.name" table-context="tableContext" /></th>
+                    <th>Appellation <icon-sort attribute="bottle.wine.appellation.name" table-context="tableContext" /></th>
+                    <th>Producteur <icon-sort attribute="bottle.wine.producer.name" table-context="tableContext" /></th>
+                    <th>Nom <icon-sort attribute="bottle.wine.name" table-context="tableContext" /></th>
+                    <th>Millésime <icon-sort attribute="bottle.wine.vintage" table-context="tableContext" /></th>
+                    <th>Couleur <icon-sort attribute="bottle.wine.color" table-context="tableContext" /></th>
+                    <th>Type <icon-sort attribute="bottle.wine.type" table-context="tableContext" /></th>
+                    <th>Format <icon-sort attribute="bottle.format.capacity" table-context="tableContext" /></th>
+                    <th>Quantité <icon-sort attribute="quantity" table-context="tableContext" /></th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr ng-repeat="stock in tableContext.items">
+                    <td>{{stock.bottle.wine.appellation.region.country.name}}</td>
+                    <td>{{stock.bottle.wine.appellation.region.name}}</td>
+                    <td>{{stock.bottle.wine.appellation.name}}</td>
+                    <td>{{stock.bottle.wine.producer.name}}</td>
+                    <td>{{stock.bottle.wine.name}}</td>
+                    <td>{{stock.bottle.wine.vintage}}</td>
+                    <td>{{stock.bottle.wine.color | wineColorRenderer}}</td>
+                    <td>{{stock.bottle.wine.type | wineTypeRenderer}}</td>
+                    <td>{{stock.bottle.format | formatRenderer}}</td>
+                    <td>{{stock.quantity}}</td>
+                  </tr>
+                  <tr ng-if="!loading && tableContext.items.length == 0">
+                    <td colspan="10" class="text-center">Aucun stock.</td>
+                  </tr>
+                </tbody>
+                <tfoot>
+                  <tr>
+                    <th>Pays <icon-sort attribute="bottle.wine.appellation.region.country.name" table-context="tableContext" /></th>
+                    <th>Région <icon-sort attribute="bottle.wine.appellation.region.name" table-context="tableContext" /></th>
+                    <th>Appellation <icon-sort attribute="bottle.wine.appellation.name" table-context="tableContext" /></th>
+                    <th>Producteur <icon-sort attribute="bottle.wine.producer.name" table-context="tableContext" /></th>
+                    <th>Nom <icon-sort attribute="bottle.wine.name" table-context="tableContext" /></th>
+                    <th>Millésime <icon-sort attribute="bottle.wine.vintage" table-context="tableContext" /></th>
+                    <th>Couleur <icon-sort attribute="bottle.wine.color" table-context="tableContext" /></th>
+                    <th>Type <icon-sort attribute="bottle.wine.type" table-context="tableContext" /></th>
+                    <th>Format <icon-sort attribute="bottle.format.capacity" table-context="tableContext" /></th>
+                    <th>Quantité <icon-sort attribute="quantity" table-context="tableContext" /></th>
+                  </tr>
+                </tfoot>
+              </table>
+            </div>
+          </paginated>
+        </div>
+        <p ng-if="cellar == null">Aucune cave</p>
+      </section>
+    </div>
   </div>
-  <div class="col-md-10">
-    <section>
-      <div ng-if="cellar != null">
-        <h2>{{cellar.name}}</h2>
-        <paginated table-context="tableContext">
-          <div class="table-responsive">
-            <table class="table table-bordered table-striped table-condensed">
-              <thead>
-                <tr>
-                  <th>Pays <icon-sort attribute="bottle.wine.appellation.region.country.name" table-context="tableContext" /></th>
-                  <th>Région <icon-sort attribute="bottle.wine.appellation.region.name" table-context="tableContext" /></th>
-                  <th>Appellation <icon-sort attribute="bottle.wine.appellation.name" table-context="tableContext" /></th>
-                  <th>Producteur <icon-sort attribute="bottle.wine.producer.name" table-context="tableContext" /></th>
-                  <th>Nom <icon-sort attribute="bottle.wine.name" table-context="tableContext" /></th>
-                  <th>Millésime <icon-sort attribute="bottle.wine.vintage" table-context="tableContext" /></th>
-                  <th>Couleur <icon-sort attribute="bottle.wine.color" table-context="tableContext" /></th>
-                  <th>Type <icon-sort attribute="bottle.wine.type" table-context="tableContext" /></th>
-                  <th>Format <icon-sort attribute="bottle.format.capacity" table-context="tableContext" /></th>
-                  <th>Quantité <icon-sort attribute="quantity" table-context="tableContext" /></th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr ng-repeat="stock in tableContext.items">
-                  <td>{{stock.bottle.wine.appellation.region.country.name}}</td>
-                  <td>{{stock.bottle.wine.appellation.region.name}}</td>
-                  <td>{{stock.bottle.wine.appellation.name}}</td>
-                  <td>{{stock.bottle.wine.producer.name}}</td>
-                  <td>{{stock.bottle.wine.name}}</td>
-                  <td>{{stock.bottle.wine.vintage}}</td>
-                  <td>{{stock.bottle.wine.color | wineColorRenderer}}</td>
-                  <td>{{stock.bottle.wine.type | wineTypeRenderer}}</td>
-                  <td>{{stock.bottle.format | formatRenderer}}</td>
-                  <td>{{stock.quantity}}</td>
-                </tr>
-                <tr ng-if="!loading && tableContext.items.length == 0">
-                  <td colspan="10" class="text-center">Aucun stock.</td>
-                </tr>
-              </tbody>
-              <tfoot>
-                <tr>
-                  <th>Pays <icon-sort attribute="bottle.wine.appellation.region.country.name" table-context="tableContext" /></th>
-                  <th>Région <icon-sort attribute="bottle.wine.appellation.region.name" table-context="tableContext" /></th>
-                  <th>Appellation <icon-sort attribute="bottle.wine.appellation.name" table-context="tableContext" /></th>
-                  <th>Producteur <icon-sort attribute="bottle.wine.producer.name" table-context="tableContext" /></th>
-                  <th>Nom <icon-sort attribute="bottle.wine.name" table-context="tableContext" /></th>
-                  <th>Millésime <icon-sort attribute="bottle.wine.vintage" table-context="tableContext" /></th>
-                  <th>Couleur <icon-sort attribute="bottle.wine.color" table-context="tableContext" /></th>
-                  <th>Type <icon-sort attribute="bottle.wine.type" table-context="tableContext" /></th>
-                  <th>Format <icon-sort attribute="bottle.format.capacity" table-context="tableContext" /></th>
-                  <th>Quantité <icon-sort attribute="quantity" table-context="tableContext" /></th>
-                </tr>
-              </tfoot>
-            </table>
-          </div>
-        </paginated>
-      </div>
-      <p ng-if="cellar == null">Aucune cave</p>
-    </section>
-  </div>
+  <footer>
+    <p>2012-2014 Tous droits réservés, MyCellar GPL V3.</p>
+  </footer>
 </div>
