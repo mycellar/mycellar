@@ -25,7 +25,7 @@
   <parent>
     <groupId>org.springframework.boot</groupId>
     <artifactId>spring-boot-starter-parent</artifactId>
-    <version>1.0.0.RC1</version>
+    <version>1.0.0.RC3</version>
   </parent>
 
   <groupId>mycellar</groupId>
@@ -66,7 +66,7 @@
     <jetty.version>9.1.1.v20140108</jetty.version>
     <servlet-api.version>3.1.0</servlet-api.version>
     <hibernate-entitymanager.version>4.3.1.Final</hibernate-entitymanager.version>
-    <hibernate-search.version>4.5.0.Alpha2</hibernate-search.version>
+    <hibernate-search.version>4.5.0.Final</hibernate-search.version>
     <jersey.version>1.18</jersey.version>
     <jackson.version>2.3.1</jackson.version>
   </properties>
@@ -511,12 +511,12 @@
     <dependency>
       <groupId>org.apache.commons</groupId>
       <artifactId>commons-lang3</artifactId>
-      <version>3.2</version>
+      <version>3.2.1</version>
     </dependency>
     <dependency>
       <groupId>commons-beanutils</groupId>
       <artifactId>commons-beanutils</artifactId>
-      <version>1.9.0</version>
+      <version>1.9.1</version>
       <exclusions>
         <exclusion>
           <groupId>commons-logging</groupId>
@@ -529,7 +529,7 @@
     <dependency>
       <groupId>com.google.guava</groupId>
       <artifactId>guava</artifactId>
-      <version>15.0</version>
+      <version>16.0.1</version>
     </dependency>
 
     <!-- HIBERNATE -->
@@ -608,7 +608,7 @@
     <dependency>
       <groupId>com.fasterxml.jackson.core</groupId>
       <artifactId>jackson-annotations</artifactId>
-      <version>2.3.0</version>
+      <version>${jackson.version}</version>
     </dependency>
     <dependency>
       <groupId>com.fasterxml.jackson.core</groupId>
@@ -701,6 +701,7 @@
     <dependency>
       <groupId>javax.servlet</groupId>
       <artifactId>javax.servlet-api</artifactId>
+      <scope>provided</scope>
     </dependency>
     <dependency>
       <groupId>javax.mail</groupId>
@@ -752,7 +753,7 @@
     <dependency>
       <groupId>net.bull.javamelody</groupId>
       <artifactId>javamelody-core</artifactId>
-      <version>1.48.0</version>
+      <version>1.49.0</version>
     </dependency>
 
     <!-- Test -->
