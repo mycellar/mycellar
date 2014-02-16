@@ -19,9 +19,11 @@ describe("Unit: Testing AccountController", function() {
 
     it('should have noProfile', inject(function($rootScope, $controller) {
       var $scope = $rootScope.$new();
+      $rootScope.currentUser = null;
       var ctrl = $controller('AccountController', {
         $scope: $scope,
-        security: {currentUser: {}},
+        $rootScope: $rootScope,
+        security: {},
         $routeParams: {}
       });
       expect($scope.hasProfile).to.be.false;
@@ -38,9 +40,11 @@ describe("Unit: Testing AccountController", function() {
 
     it('should have correct profiles', inject(function($rootScope, $controller) {
       var $scope = $rootScope.$new();
+      $rootScope.currentUser = user;
       var ctrl = $controller('AccountController', {
         $scope: $scope,
-        security: {currentUser: user},
+        $rootScope: $rootScope,
+        security: {},
         $routeParams: {}
       });
       expect($scope.hasProfile).to.be.true;
@@ -57,9 +61,11 @@ describe("Unit: Testing AccountController", function() {
 
     it('should have correct profiles', inject(function($rootScope, $controller) {
       var $scope = $rootScope.$new();
+      $rootScope.currentUser = user;
       var ctrl = $controller('AccountController', {
         $scope: $scope,
-        security: {currentUser: user},
+        $rootScope: $rootScope,
+        security: {},
         $routeParams: {}
       });
       expect($scope.hasProfile).to.be.true;
@@ -76,9 +82,11 @@ describe("Unit: Testing AccountController", function() {
 
     it('should have correct profiles', inject(function($rootScope, $controller) {
       var $scope = $rootScope.$new();
+      $rootScope.currentUser = user;
       var ctrl = $controller('AccountController', {
         $scope: $scope,
-        security: {currentUser: user},
+        $rootScope: $rootScope,
+        security: {},
         $routeParams: {}
       });
       expect($scope.hasProfile).to.be.true;
@@ -95,9 +103,11 @@ describe("Unit: Testing AccountController", function() {
 
     it('should have correct profiles', inject(function($rootScope, $controller) {
       var $scope = $rootScope.$new();
+      $rootScope.currentUser = user;
       var ctrl = $controller('AccountController', {
         $scope: $scope,
-        security: {currentUser: user},
+        $rootScope: $rootScope,
+        security: {},
         $routeParams: {}
       });
       expect($scope.hasProfile).to.be.true;
@@ -114,9 +124,11 @@ describe("Unit: Testing AccountController", function() {
 
     it('should have correct profiles', inject(function($rootScope, $controller) {
       var $scope = $rootScope.$new();
+      $rootScope.currentUser = user;
       var ctrl = $controller('AccountController', {
         $scope: $scope,
-        security: {currentUser: user},
+        $rootScope: $rootScope,
+        security: {},
         $routeParams: {}
       });
       expect($scope.hasProfile).to.be.true;

@@ -37,7 +37,7 @@
       </form>
       <ul class="nav navbar-nav navbar-right" ng-show="isLoggedIn()">
         <li>
-          <a href="/account" title="Mon compte">{{currentUser.email}} <i class="fa fa-user"></i></a>
+          <a href="/account" title="Mon compte">{{$root.currentUser.email}} <i class="fa fa-user"></i></a>
         </li>
         <li>
           <a href title="Se déconnecter" ng-click="logout()"><span class="sr-only">Se déconnecter</span> <i class="fa fa-power-off"></i></a>

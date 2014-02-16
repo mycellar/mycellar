@@ -12,36 +12,34 @@ angular.module('mycellar.controllers.account', [
 ]);
 
 angular.module('mycellar.controllers.account').controller('AccountController', [
-  '$scope', 'security',
-  function ($scope, security) {
+  '$scope', '$rootScope', 'security',
+  function ($scope, $rootScope, security) {
     $scope.hasProfile = false;
     $scope.hasBooking = false;
     $scope.hasCellar = false;
     $scope.hasAdmin = false;
     $scope.userEmail = '';
     $scope.userName = '';
-    $scope.$watch(function() {
-      return security.currentUser;
-    }, function(value) {
+    $rootScope.$watch('currentUser', function() {
       manageCurrentUser();
     });
     var manageCurrentUser = function() {
-      if (security.currentUser != null) {
-        $scope.hasProfile = security.currentUser.profile != null;
-        if (security.currentUser.profile == 'BOOKING') {
+      if ($rootScope.currentUser != null) {
+        $scope.hasProfile = $rootScope.currentUser.profile != null;
+        if ($rootScope.currentUser.profile == 'BOOKING') {
           $scope.hasBooking = true;
-        } else if (security.currentUser.profile == 'CELLAR') {
+        } else if ($rootScope.currentUser.profile == 'CELLAR') {
           $scope.hasCellar = true;
-        } else if (security.currentUser.profile == 'ADMIN') {
+        } else if ($rootScope.currentUser.profile == 'ADMIN') {
           $scope.hasBooking = true;
           $scope.hasCellar = true;
           $scope.hasAdmin = true;
-        } else if (security.currentUser.profile == 'MYCELLAR') {
+        } else if ($rootScope.currentUser.profile == 'MYCELLAR') {
           $scope.hasBooking = true;
           $scope.hasCellar = true;
         }
-        $scope.userEmail = security.currentUser.email;
-        $scope.userName = security.currentUser.name;
+        $scope.userEmail = $rootScope.currentUser.email;
+        $scope.userName = $rootScope.currentUser.name;
       }
     };
     var resetScope = function() {

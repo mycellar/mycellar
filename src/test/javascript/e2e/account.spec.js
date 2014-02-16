@@ -28,5 +28,5 @@ var AccountPage = function() {
     browser.get('/account');
   };
 
-  this.title = element(by.xpath('/html/body/div[2]/div[2]/header/h1'));
+  this.title = element(by.xpath('//body//header/h1'));
 };

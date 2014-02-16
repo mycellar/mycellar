@@ -50,8 +50,8 @@ var BookingReportsPage = function() {
   };
 
   this.title = element(by.xpath('//header/h1'));
-  this.firstLine = element(by.xpath('//body/div[2]/div[2]//nav/ul[@class="nav nav-pills nav-stacked"]/li[1]/a'));
-  this.secondLine = element(by.xpath('//body/div[2]/div[2]//nav/ul[@class="nav nav-pills nav-stacked"]/li[2]/a'));
+  this.firstLine = element(by.xpath('//body/div[3]//nav/ul[@class="nav nav-pills nav-stacked"]/li[1]/a'));
+  this.secondLine = element(by.xpath('//body/div[3]//nav/ul[@class="nav nav-pills nav-stacked"]/li[2]/a'));
   this.eventName = element(by.xpath('//section//h2'));
   this.firstBottleButton = element(by.xpath('//section/div/table/tbody/tr[1]/td[1]/a'));
   this.firstBottleText = element(by.xpath('//section[1]/div/table/tbody/tr[1]/td[2]'));

@@ -18,7 +18,6 @@ describe('E2E: Testing account', function() {
     page.email2.sendKeys('test2@test.com');
     page.emailPassword.sendKeys('test');
     page.doChangeEmail.click();
-    page.get();
     expect(page.email.getText()).to.eventually.equal('test2@test.com');
 
     // rollback change
@@ -27,7 +26,6 @@ describe('E2E: Testing account', function() {
     page.email2.sendKeys('test@test.com');
     page.emailPassword.sendKeys('test');
     page.doChangeEmail.click();
-    page.get();
     expect(page.email.getText()).to.eventually.equal('test@test.com');
 
     LoginTool.logout();

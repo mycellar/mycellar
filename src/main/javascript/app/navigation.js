@@ -12,11 +12,6 @@ angular.module('mycellar.controllers.navigation').controller('NavigationControll
     $scope.isLoggedIn = security.isAuthenticated;
     $scope.login = security.login;
     $scope.logout = security.logout;
-    $scope.$watch(function() {
-      return security.currentUser;
-    }, function(currentUser) {
-      $scope.currentUser = currentUser;
-    });
     $scope.email = '';
     $scope.password = '';
     $scope.$on('collapse', function (event) {

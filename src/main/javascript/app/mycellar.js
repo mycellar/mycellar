@@ -56,23 +56,20 @@ angular.module('mycellar').run([
         loginModal = $modal.open({
           templateUrl: 'partials/modals/login.tpl.html'
         });
-        loginModal.result.then(function(result) {
-          security.login(result.email, result.password);
+        loginModal.result.then(function() {
+          authService.loginConfirmed(null, security.updateHeader);
         }, function(reason) {
-          authService.loginCancelled(reason.requestPassword, reason.reason);
-          security.logout();
+          authService.loginCancelled(null, reason.reason);
+          if (!reason.requestPassword) {
+            $location.path('/');
+          }
         });
       }
     });
     $rootScope.$on('event:auth-loginConfirmed', function() {
       loginModal = null;
     });
-    $rootScope.$on('event:auth-loginCancelled', function(event, requestPassword) {
-      if (requestPassword) {
-        $location.path('/reset-password-request');
-      } else {
-        $location.path('/');
-      }
+    $rootScope.$on('event:auth-loginCancelled', function() {
       loginModal = null;
     });
 

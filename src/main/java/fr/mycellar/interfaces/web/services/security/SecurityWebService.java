@@ -38,12 +38,10 @@ import org.slf4j.LoggerFactory;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
 
 import fr.mycellar.configuration.SpringSecurityConfiguration;
-import fr.mycellar.domain.shared.exception.BusinessError;
 import fr.mycellar.domain.shared.exception.BusinessException;
 import fr.mycellar.domain.user.ProfileEnum;
 import fr.mycellar.domain.user.User;
@@ -102,8 +100,9 @@ public class SecurityWebService {
     public UserDto changePassword(ChangePasswordDto changePasswordDto, @Context HttpServletResponse response) throws BusinessException {
         User currentUser = currentUserService.getCurrentUser();
         User user = userServiceFacade.authenticateUser(currentUser.getEmail(), changePasswordDto.getOldPassword());
-
         userServiceFacade.saveUserPassword(user, changePasswordDto.getPassword());
+
+        SecurityContextHolder.clearContext();
 
         UserDto userDto = new UserDto();
         userDto.setEmail(user.getEmail());
@@ -152,23 +151,12 @@ public class SecurityWebService {
     @Path("login")
     public UserDto login(UserDto userDto, @Context HttpServletResponse response) throws BusinessException {
         UsernamePasswordAuthenticationToken authRequest = new UsernamePasswordAuthenticationToken(userDto.getEmail(), userDto.getPassword());
-        Authentication auth;
-        try {
-            auth = authenticationManager.authenticate(authRequest);
-        } catch (AuthenticationException e) {
-            SecurityContextHolder.clearContext();
-            logger.debug("Authentication failed.", e);
-            throw new BusinessException(BusinessError.OTHER_00002, e);
-        }
-        if ((auth != null) && auth.isAuthenticated()) {
-            logger.debug("Authentication success: {}", auth);
-            SecurityContext context = SecurityContextHolder.getContext();
-            context.setAuthentication(auth);
-            response.setHeader(SpringSecurityConfiguration.TOKEN_HEADER_NAME, securityContextTokenRepository.newToken(context).getKey());
-            return getCurrentUser();
-        }
-        SecurityContextHolder.clearContext();
-        throw new BusinessException(BusinessError.OTHER_00002);
+        Authentication auth = authenticationManager.authenticate(authRequest);
+        logger.debug("Authentication success: {}", auth);
+        SecurityContext context = SecurityContextHolder.getContext();
+        context.setAuthentication(auth);
+        response.setHeader(SpringSecurityConfiguration.TOKEN_HEADER_NAME, securityContextTokenRepository.newToken(context).getKey());
+        return getCurrentUser();
     }
 
     @POST

@@ -21,13 +21,8 @@ angular.module('mycellar.controllers.login', [
 angular.module('mycellar.controllers.login').controller('LoginController', [
   '$scope', 'security', 'Users', '$location',
   function ($scope, security, Users, $location) {
-    $scope.email = '';
-    $scope.password = '';
     $scope.login = function() {
-      security.login($scope.email, $scope.password);
-    };
-    $scope.resetPasswordRequest = function() {
-      $location.path('/reset-password-request');
+      $location.path('/');
     };
     $scope.logout = security.logout;
     $scope.register = security.register;

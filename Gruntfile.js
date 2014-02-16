@@ -39,6 +39,11 @@ module.exports = function(grunt) {
         configFile: './src/test/javascript/karma-unit.conf.js',
         colors: false
       },
+      unit_debug: {
+        configFile: './src/test/javascript/karma-unit.conf.js',
+        browsers: ['Chrome'],
+        singleRun: false
+      },
       unit_browsers: {
         configFile: './src/test/javascript/karma-unit.conf.js',
         browsers: ['Chrome', 'Firefox'],
@@ -169,6 +174,7 @@ module.exports = function(grunt) {
         src: [
           './bower_components/angular/angular.js',
           './bower_components/angular-resource/angular-resource.js',
+          './bower_components/angular-cookies/angular-cookies.js',
           './bower_components/angular-route/angular-route.js',
           './bower_components/angular-animate/angular-animate.js',
           './bower_components/angular-i18n/angular-locale_fr-fr.js',
@@ -207,6 +213,7 @@ module.exports = function(grunt) {
   }
   grunt.registerTask('test:unit_browsers', ['karma:unit_browsers']);
 
+  grunt.registerTask('debug:unit', ['karma:unit_debug']);
   grunt.registerTask('debug:e2e', ['protractor:debug']);
 
   grunt.registerTask('autotest:unit', ['karma:unit_auto']);

@@ -37,6 +37,6 @@ var ResetPasswordRequestPage = function() {
   };
 
   this.getRequestSentText = function() {
-    return element(by.xpath('/html/body/div[2]/div[2]/section/div'));
+    return element(by.xpath('//body//section/div'));
   };
 };
