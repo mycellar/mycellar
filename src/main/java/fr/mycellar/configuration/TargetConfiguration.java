@@ -37,7 +37,7 @@ public class TargetConfiguration {
 
     @Bean
     public Session session() throws NamingException {
-        return new JndiLocatorDelegate().lookup("mail/Session", Session.class);
+        return JndiLocatorDelegate.createDefaultResourceRefLocator().lookup("mail/Session", Session.class);
     }
 
     @Bean
