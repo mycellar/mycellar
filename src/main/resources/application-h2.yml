@@ -1,0 +1,6 @@
+spring:
+  jpa:
+    generate-ddl: true
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.H2Dialect
