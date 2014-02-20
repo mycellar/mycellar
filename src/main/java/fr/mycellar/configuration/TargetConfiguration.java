@@ -32,7 +32,7 @@ import org.springframework.jndi.JndiLocatorDelegate;
  * @author speralta
  */
 @Configuration
-@Profile("default")
+@Profile({ "default", "target" })
 public class TargetConfiguration {
 
     @Bean

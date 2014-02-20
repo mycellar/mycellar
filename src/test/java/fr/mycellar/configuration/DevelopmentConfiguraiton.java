@@ -46,8 +46,11 @@ public class DevelopmentConfiguraiton {
 
     @Bean
     public DataSource dataSource() {
-        EmbeddedDatabaseBuilder builder = new EmbeddedDatabaseBuilder().setType(EmbeddedDatabaseType.H2);
-        return builder.setName("mycellar").addScript("file:./src/test/sql/create.sql").build();
+        return new EmbeddedDatabaseBuilder() //
+                .setType(EmbeddedDatabaseType.H2) //
+                .setName("mycellar") //
+                .addScript("file:./src/test/sql/create.sql") //
+                .build();
     }
 
 }
