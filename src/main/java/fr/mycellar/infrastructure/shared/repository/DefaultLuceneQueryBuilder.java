@@ -19,118 +19,77 @@
 package fr.mycellar.infrastructure.shared.repository;
 
 import static com.google.common.base.Throwables.propagate;
-import static com.google.common.collect.Lists.newArrayList;
-import static org.apache.commons.lang.StringUtils.isBlank;
-import static org.apache.commons.lang.StringUtils.isNotBlank;
-import static org.apache.commons.lang.StringUtils.lowerCase;
-import static org.apache.lucene.queryParser.QueryParser.escape;
-import static org.apache.lucene.util.Version.LUCENE_36;
-
-import java.util.List;
+import static org.apache.commons.lang3.StringUtils.isNotBlank;
 
 import javax.inject.Named;
 import javax.inject.Singleton;
-import javax.persistence.metamodel.SingularAttribute;
 
-import org.apache.lucene.queryParser.QueryParser;
 import org.apache.lucene.search.Query;
 import org.hibernate.search.jpa.FullTextEntityManager;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.hibernate.search.query.dsl.BooleanJunction;
+import org.hibernate.search.query.dsl.QueryBuilder;
+import org.hibernate.search.query.dsl.TermMatchingContext;
 
 @Named
 @Singleton
 public class DefaultLuceneQueryBuilder implements LuceneQueryBuilder {
 
-    private static final Logger logger = LoggerFactory.getLogger(DefaultLuceneQueryBuilder.class);
-
     private static final String SPACES_OR_PUNCTUATION = "\\p{Punct}|\\p{Blank}";
 
     @Override
     public Query build(FullTextEntityManager fullTextEntityManager, SearchParameters searchParameters, Class<?> type) {
-        List<String> clauses = getAllClauses(searchParameters, searchParameters.getTerms());
+        QueryBuilder builder = fullTextEntityManager.getSearchFactory().buildQueryBuilder().forEntity(type).get();
 
-        StringBuilder query = new StringBuilder();
-        query.append("+(");
-        for (String clause : clauses) {
-            if (query.length() > 2) {
-                query.append(" AND ");
+        BooleanJunction<?> context = builder.bool();
+        boolean valid = false;
+        for (TermSelector term : searchParameters.getTerms()) {
+            if (term.isNotEmpty()) {
+                boolean hasTerms = false;
+                BooleanJunction<?> termContext = builder.bool();
+                for (String selected : term.getSelected()) {
+                    if (isNotBlank(selected)) {
+                        BooleanJunction<?> splitContext = builder.bool();
+                        for (String value : selected.split(SPACES_OR_PUNCTUATION)) {
+                            if (isNotBlank(value)) {
+                                TermMatchingContext selectedContext;
+                                if (searchParameters.getSearchSimilarity() != null) {
+                                    selectedContext = builder.keyword().fuzzy().withEditDistanceUpTo(searchParameters.getSearchSimilarity()).onField(term.getAttribute().getName());
+                                } else {
+                                    selectedContext = builder.keyword().onField(term.getAttribute().getName());
+                                }
+                                Query selectedQuery = selectedContext.matching(value).createQuery();
+                                if (term.isOrMode()) {
+                                    splitContext.should(selectedQuery);
+                                } else {
+                                    splitContext.must(selectedQuery);
+                                }
+                                hasTerms = true;
+                            }
+                        }
+                        if (hasTerms) {
+                            if (term.isOrMode()) {
+                                termContext.should(splitContext.createQuery());
+                            } else {
+                                termContext.must(splitContext.createQuery());
+                            }
+                        }
+                    }
+                }
+                if (hasTerms) {
+                    context.must(termContext.createQuery());
+                    valid = true;
+                }
             }
-            query.append(clause);
         }
-        query.append(")");
-
-        if (query.length() == 3) {
-            return null;
-        }
-        logger.debug("Lucene query: {}", query);
         try {
-            return new QueryParser(LUCENE_36, null, fullTextEntityManager.getSearchFactory().getAnalyzer(type)).parse(query.toString());
+            if (valid) {
+                return context.createQuery();
+            } else {
+                return builder.all().except(builder.all().createQuery()).createQuery();
+            }
         } catch (Exception e) {
             throw propagate(e);
         }
-    }
-
-    private List<String> getAllClauses(SearchParameters sp, List<TermSelector> terms) {
-        List<String> clauses = newArrayList();
-        for (TermSelector term : terms) {
-            if (term.isNotEmpty()) {
-                String clause = getClause(sp, term.getSelected(), term.getAttribute(), term.isOrMode());
-                if (isNotBlank(clause)) {
-                    clauses.add(clause);
-                }
-            }
-        }
-        return clauses;
-    }
-
-    private String getClause(SearchParameters sp, List<String> terms, SingularAttribute<?, ?> property, boolean orMode) {
-        StringBuilder subQuery = new StringBuilder();
-        if (terms != null) {
-            subQuery.append("(");
-            for (String wordWithSpacesOrPunctuation : terms) {
-                if (isBlank(wordWithSpacesOrPunctuation)) {
-                    continue;
-                }
-                List<String> wordElements = newArrayList();
-                for (String str : wordWithSpacesOrPunctuation.split(SPACES_OR_PUNCTUATION)) {
-                    if (isNotBlank(str)) {
-                        wordElements.add(str);
-                    }
-                }
-                if (!wordElements.isEmpty()) {
-                    if (subQuery.length() > 1) {
-                        subQuery.append(" ").append(orMode ? "OR" : "AND").append(" ");
-                    }
-                    subQuery.append(buildSubQuery(property, wordElements, orMode, sp));
-                }
-            }
-            subQuery.append(")");
-        }
-        if (subQuery.length() > 2) {
-            return subQuery.toString();
-        }
-        return null;
-    }
-
-    private String buildSubQuery(SingularAttribute<?, ?> property, List<String> terms, boolean orMode, SearchParameters sp) {
-        StringBuilder subQuery = new StringBuilder();
-        if (terms.size() > 1) {
-            subQuery.append("(");
-        }
-        for (String term : terms) {
-            if (subQuery.length() > 1) {
-                subQuery.append(" ").append(orMode ? "OR" : "AND").append(" ");
-            }
-            subQuery.append(property.getName() + ":" + escape(lowerCase(term)));
-            if (sp.getSearchSimilarity() != null) {
-                subQuery.append("~" + sp.getSearchSimilarity());
-            }
-        }
-        if (terms.size() > 1) {
-            subQuery.append(")");
-        }
-        return subQuery.toString();
     }
 
 }

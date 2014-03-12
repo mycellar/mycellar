@@ -18,7 +18,7 @@
  */
 package fr.mycellar.interfaces.web.services;
 
-import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.joda.time.LocalDateTime;
 
 /**

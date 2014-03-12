@@ -29,7 +29,7 @@ import javax.inject.Singleton;
 import javax.persistence.metamodel.Attribute;
 import javax.persistence.metamodel.SingularAttribute;
 
-import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang3.StringUtils;
 
 import fr.mycellar.domain.shared.NamedEntity_;
 import fr.mycellar.domain.wine.Appellation;
@@ -100,13 +100,13 @@ public class JpaWineRepository extends JpaSimpleRepository<Wine> implements Wine
     }
 
     private <X> void restrictFromHibernateSearch(SearchParameters searchParameters, Class<X> from, SingularAttribute<? super X, String> attribute, String input, Attribute<?, ?>... attributes) {
-        SearchParameters fullTextSearchParameters = new SearchParameters().term(attribute, input).searchSimilarity(0.9f);
+        SearchParameters fullTextSearchParameters = new SearchParameters().term(attribute, input).searchSimilarity(null);
         List<Serializable> ids = hibernateSearchUtil.findId(from, fullTextSearchParameters);
         if ((ids == null) || ids.isEmpty()) {
-            ids = hibernateSearchUtil.findId(from, fullTextSearchParameters.searchSimilarity(0.7f));
+            ids = hibernateSearchUtil.findId(from, fullTextSearchParameters.searchSimilarity(1));
         }
         if ((ids == null) || ids.isEmpty()) {
-            ids = hibernateSearchUtil.findId(from, fullTextSearchParameters.searchSimilarity(0.5f));
+            ids = hibernateSearchUtil.findId(from, fullTextSearchParameters.searchSimilarity(2));
         }
         if ((ids != null) && (ids.size() > 0)) {
             List<Integer> realIds = new ArrayList<>();

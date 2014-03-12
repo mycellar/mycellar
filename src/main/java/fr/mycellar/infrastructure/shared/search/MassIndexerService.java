@@ -25,7 +25,7 @@ import javax.inject.Named;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 
-import org.apache.commons.lang.time.StopWatch;
+import org.apache.commons.lang3.time.StopWatch;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
@@ -46,9 +46,6 @@ public class MassIndexerService {
     @Value("${massIndexer.batchSizeToLoadObjects:10}")
     private int batchSizeToLoadObjects;
 
-    @Value("${massIndexer.nbThreadsForSubsequentFetching:1}")
-    private int threadsForSubsequentFetching;
-
     @PostConstruct
     public void createIndex() {
         StopWatch stopWatch = new StopWatch();
@@ -58,7 +55,6 @@ public class MassIndexerService {
                     .createIndexer() //
                     .batchSizeToLoadObjects(batchSizeToLoadObjects) //
                     .threadsToLoadObjects(threadsToLoadObjects) //
-                    .threadsForSubsequentFetching(threadsForSubsequentFetching) //
                     .startAndWait();
         } catch (InterruptedException e) {
             logger.warn("Interrupted while indexing.", e);

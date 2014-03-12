@@ -20,6 +20,7 @@ package fr.mycellar;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
+import org.springframework.boot.autoconfigure.web.DispatcherServletAutoConfiguration;
 import org.springframework.boot.autoconfigure.web.WebMvcAutoConfiguration;
 import org.springframework.boot.builder.SpringApplicationBuilder;
 import org.springframework.boot.context.web.SpringBootServletInitializer;
@@ -35,7 +36,7 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
 @ComponentScan
 @EnableScheduling
 @EnableTransactionManagement
-@EnableAutoConfiguration(exclude = WebMvcAutoConfiguration.class)
+@EnableAutoConfiguration(exclude = { WebMvcAutoConfiguration.class, DispatcherServletAutoConfiguration.class })
 public class MyCellarApplication extends SpringBootServletInitializer {
 
     @Override

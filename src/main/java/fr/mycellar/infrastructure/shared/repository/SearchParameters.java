@@ -20,7 +20,7 @@ package fr.mycellar.infrastructure.shared.repository;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 import static com.google.common.collect.Lists.transform;
-import static org.apache.commons.lang.StringUtils.isNotBlank;
+import static org.apache.commons.lang3.StringUtils.isNotBlank;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -101,7 +101,7 @@ public class SearchParameters implements Serializable {
 
     // hibernate search terms
     private final List<TermSelector> terms = new ArrayList<>();
-    private Float searchSimilarity = 0.5f;
+    private Integer searchSimilarity = 2;
 
     // Warn: before enabling cache for queries,
     // check this: https://hibernate.atlassian.net/browse/HHH-1523
@@ -319,11 +319,11 @@ public class SearchParameters implements Serializable {
         return !terms.isEmpty();
     }
 
-    public Float getSearchSimilarity() {
+    public Integer getSearchSimilarity() {
         return searchSimilarity;
     }
 
-    public void setSearchSimilarity(Float searchSimilarity) {
+    public void setSearchSimilarity(Integer searchSimilarity) {
         this.searchSimilarity = searchSimilarity;
     }
 
@@ -344,9 +344,9 @@ public class SearchParameters implements Serializable {
 
     /**
      * Specify the similarity for the indexed properties,
-     * {@link #searchSimilarity} is between 0f and 1f
+     * {@link #searchSimilarity} is between 0 and 2
      */
-    public SearchParameters searchSimilarity(Float searchSimilarity) {
+    public SearchParameters searchSimilarity(Integer searchSimilarity) {
         setSearchSimilarity(searchSimilarity);
         return this;
     }
