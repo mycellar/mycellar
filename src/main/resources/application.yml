@@ -4,8 +4,10 @@ spring:
   jpa:
     hibernate:
       ddl-auto: none
+      naming-strategy: org.hibernate.cfg.DefaultNamingStrategy
     properties:
       hibernate:
+        show_sql: false
         search:
           analyzer: org.apache.lucene.analysis.fr.FrenchAnalyzer
           default: 
