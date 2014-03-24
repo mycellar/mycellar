@@ -37,7 +37,7 @@ angular.module('mycellar.resources.booking.bookings').factory('AdminBookings', [
   'adminDomainResource',
   function (adminDomainResource) {
     return adminDomainResource.createResource({
-      url: '/api/booking/bookings'
+      url: '/api/admin/domain/booking/bookings'
     }, {
       getByBookingBottleId: {
         url: '/api/admin/domain/booking/bookingsByBottle?bookingBottleId=:bookingBottleId',
