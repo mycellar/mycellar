@@ -17,8 +17,8 @@ angular.module('mycellar.controllers.booking.mybookings', [
 ]);
 
 angular.module('mycellar.controllers.booking.mybookings').controller('MyBookingsController', [
-  '$scope', 'bookings', 
-  function($scope, bookings) {
+  '$scope', 'bookings', '$anchorScroll',
+  function($scope, bookings, $anchorScroll) {
     $scope.bookingsResource = bookings;
     $scope.$watch('bookingsResource.list', function() {
       if ($scope.bookingsResource.list != undefined && $scope.bookingsResource.list.length > 0) {
@@ -29,6 +29,7 @@ angular.module('mycellar.controllers.booking.mybookings').controller('MyBookings
 
     $scope.selectBooking = function(booking) {
       $scope.booking = booking;
+      $anchorScroll();
     };
     
     $scope.total = 0;

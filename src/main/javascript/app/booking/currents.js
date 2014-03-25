@@ -18,8 +18,8 @@ angular.module('mycellar.controllers.booking.currents', [
 ]);
 
 angular.module('mycellar.controllers.booking.currents').controller('CurrentBookingsController', [
-  '$scope', 'bookingEvents', 'Bookings', '$location',
-  function($scope, bookingEvents, Bookings, $location) {
+  '$scope', 'bookingEvents', 'Bookings', '$location', '$anchorScroll',
+  function($scope, bookingEvents, Bookings, $location, $anchorScroll) {
     $scope.bookingEventsResource = bookingEvents;
     $scope.$watch('bookingEventsResource.list', function() {
       if ($scope.bookingEventsResource.list != undefined && $scope.bookingEventsResource.list.length > 0) {
@@ -30,6 +30,7 @@ angular.module('mycellar.controllers.booking.currents').controller('CurrentBooki
 
     $scope.selectBooking = function(bookingEvent) {
       $scope.booking = Bookings.getByBookingEventForCurrentUser({bookingEventId: bookingEvent.id});
+      $anchorScroll();
     };
     
     $scope.save = function(booking) {
