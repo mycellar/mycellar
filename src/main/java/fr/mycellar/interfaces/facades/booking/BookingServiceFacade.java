@@ -105,9 +105,18 @@ public interface BookingServiceFacade {
     List<BookingEvent> getCurrentBookingEvents();
 
     /**
+     * @param customer
+     * @param count
+     * @param first
      * @return
      */
-    List<Booking> getBookings(User customer);
+    List<Booking> getBookings(User customer, int first, int count);
+
+    /**
+     * @param currentUser
+     * @return
+     */
+    long countBookings(User currentUser);
 
     /**
      * @param bookingEvent

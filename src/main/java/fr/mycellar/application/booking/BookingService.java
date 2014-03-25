@@ -42,9 +42,17 @@ public interface BookingService extends SimpleService<Booking> {
 
     /**
      * @param customer
+     * @param count
+     * @param first
      * @return
      */
-    List<Booking> getBookings(User customer);
+    List<Booking> getBookings(User customer, int first, int count);
+
+    /**
+     * @param customer
+     * @return
+     */
+    long countBookings(User customer);
 
     /**
      * @param booking

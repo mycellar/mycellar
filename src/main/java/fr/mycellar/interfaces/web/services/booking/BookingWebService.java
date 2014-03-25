@@ -23,6 +23,7 @@ import javax.inject.Named;
 import javax.inject.Singleton;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.DELETE;
+import javax.ws.rs.DefaultValue;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
@@ -56,8 +57,10 @@ public class BookingWebService {
     @Produces(MediaType.APPLICATION_JSON)
     @Path("bookings")
     @PreAuthorize("hasRole('ROLE_BOOKING')")
-    public ListWithCount<Booking> getBookings() {
-        return new ListWithCount<>(bookingServiceFacade.getBookings(currentUserService.getCurrentUser()));
+    public ListWithCount<Booking> getBookings( //
+            @QueryParam("first") int first, //
+            @QueryParam("count") @DefaultValue("10") int count) {
+        return new ListWithCount<>(bookingServiceFacade.countBookings(currentUserService.getCurrentUser()), bookingServiceFacade.getBookings(currentUserService.getCurrentUser(), first, count));
     }
 
     @GET
