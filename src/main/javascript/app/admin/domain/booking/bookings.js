@@ -44,6 +44,11 @@ angular.module('mycellar.controllers.admin.domain.booking.bookings').controller(
     });
     
     $scope.total = 0;
+    $scope.$watch('booking.bookingEvent', function(value) {
+      if ($scope.booking.bookingEvent != undefined) {
+        $scope.booking.quantities = {};
+      }
+    });
     $scope.$watch('booking.quantities', function (value) {
       if ($scope.booking.quantities != undefined) {
         $scope.total = 0;
