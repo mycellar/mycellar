@@ -31,6 +31,7 @@ import fr.mycellar.application.shared.AbstractSimpleService;
 import fr.mycellar.domain.booking.Booking;
 import fr.mycellar.domain.booking.BookingBottle;
 import fr.mycellar.domain.booking.BookingEvent;
+import fr.mycellar.domain.booking.BookingEvent_;
 import fr.mycellar.domain.booking.Booking_;
 import fr.mycellar.domain.shared.exception.BusinessError;
 import fr.mycellar.domain.shared.exception.BusinessException;
@@ -71,9 +72,17 @@ public class BookingServiceImpl extends AbstractSimpleService<Booking, BookingRe
     }
 
     @Override
-    public List<Booking> getBookings(User customer) {
-        return bookingRepository.find(new SearchParameters() //
+    public long countBookings(User customer) {
+        return bookingRepository.findCount(new SearchParameters() //
                 .property(Booking_.customer, customer));
+    }
+
+    @Override
+    public List<Booking> getBookings(User customer, int first, int count) {
+        return bookingRepository.find(new SearchParameters() //
+                .property(Booking_.customer, customer) //
+                .desc(Booking_.bookingEvent, BookingEvent_.start) //
+                .firstResult(first).maxResults(count));
     }
 
     @Override

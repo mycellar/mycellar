@@ -69,8 +69,14 @@ public class BookingServiceFacadeImpl implements BookingServiceFacade {
 
     @Override
     @Transactional(readOnly = true)
-    public List<Booking> getBookings(User customer) {
-        List<Booking> bookings = bookingService.getBookings(customer);
+    public long countBookings(User customer) {
+        return bookingService.countBookings(customer);
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public List<Booking> getBookings(User customer, int first, int count) {
+        List<Booking> bookings = bookingService.getBookings(customer, first, count);
         for (Booking booking : bookings) {
             updateBooking(booking);
         }
