@@ -300,6 +300,27 @@
           <dryRun>true</dryRun>
         </configuration>
       </plugin>
+      <plugin>
+        <groupId>org.codehaus.mojo</groupId>
+        <artifactId>exec-maven-plugin</artifactId>
+        <executions>
+          <execution>
+            <id>Grunt</id>
+            <phase>generate-sources</phase>
+            <goals>
+              <goal>exec</goal>
+            </goals>
+            <configuration>
+              <executable>node</executable>
+              <arguments>
+                <argument>node_modules/grunt-cli/bin/grunt</argument>
+                <argument>--no-color</argument>
+                <argument>update</argument>
+              </arguments>
+            </configuration>
+          </execution>
+        </executions>
+      </plugin>
     </plugins>
   </build>
 
@@ -406,27 +427,6 @@
                       <arg line="npm install" />
                     </exec>
                   </target>
-                </configuration>
-              </execution>
-            </executions>
-          </plugin>
-          <plugin>
-            <groupId>org.codehaus.mojo</groupId>
-            <artifactId>exec-maven-plugin</artifactId>
-            <executions>
-              <execution>
-                <id>Grunt</id>
-                <phase>generate-sources</phase>
-                <goals>
-                  <goal>exec</goal>
-                </goals>
-                <configuration>
-                  <executable>node</executable>
-                  <arguments>
-                    <argument>node_modules/grunt-cli/bin/grunt</argument>
-                    <argument>--no-color</argument>
-                    <argument>update</argument>
-                  </arguments>
                 </configuration>
               </execution>
             </executions>
