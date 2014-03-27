@@ -60,6 +60,9 @@ public class DefaultLuceneQueryBuilder implements LuceneQueryBuilder {
                                             .onField(term.getAttribute().getName()) //
                                             .matching(value).createQuery());
                                 }
+                                valueContext.should(builder.keyword() //
+                                        .onField(term.getAttribute().getName()) //
+                                        .matching(value).createQuery());
                                 valueContext.should(builder.keyword().wildcard() //
                                         .onField(term.getAttribute().getName()) //
                                         .matching("*" + value + "*").createQuery());
