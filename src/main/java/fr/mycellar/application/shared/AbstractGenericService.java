@@ -23,7 +23,7 @@ import java.util.List;
 
 import fr.mycellar.domain.shared.Identifiable;
 import fr.mycellar.infrastructure.shared.repository.GenericRepository;
-import fr.mycellar.infrastructure.shared.repository.SearchParameters;
+import fr.mycellar.infrastructure.shared.repository.query.SearchParameters;
 
 /**
  * @author speralta
@@ -31,22 +31,22 @@ import fr.mycellar.infrastructure.shared.repository.SearchParameters;
 public abstract class AbstractGenericService<R extends GenericRepository<E, PK>, E extends Identifiable<PK>, PK extends Serializable> implements GenericService<E, PK> {
 
     @Override
-    public long count(SearchParameters searchParameters) {
+    public long count(SearchParameters<E> searchParameters) {
         return getRepository().findCount(searchParameters);
     }
 
     @Override
-    public List<E> find(SearchParameters searchParameters) {
+    public List<E> find(SearchParameters<E> searchParameters) {
         return getRepository().find(searchParameters);
     }
 
     @Override
-    public E findUnique(SearchParameters searchParameters) {
+    public E findUnique(SearchParameters<E> searchParameters) {
         return getRepository().findUnique(searchParameters);
     }
 
     @Override
-    public E findUniqueOrNone(SearchParameters searchParameters) {
+    public E findUniqueOrNone(SearchParameters<E> searchParameters) {
         return getRepository().findUniqueOrNone(searchParameters);
     }
 

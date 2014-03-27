@@ -30,7 +30,7 @@ import fr.mycellar.domain.shared.exception.BusinessError;
 import fr.mycellar.domain.shared.exception.BusinessException;
 import fr.mycellar.domain.wine.Appellation;
 import fr.mycellar.domain.wine.Appellation_;
-import fr.mycellar.infrastructure.shared.repository.SearchParameters;
+import fr.mycellar.infrastructure.shared.repository.query.SearchParameters;
 import fr.mycellar.infrastructure.wine.repository.AppellationRepository;
 
 /**
@@ -55,9 +55,9 @@ public class AppellationServiceImpl extends AbstractSimpleService<Appellation, A
                 throw new BusinessException(BusinessError.APPELLATION_00004, e);
             }
         }
-        Appellation existing = appellationRepository.findUniqueOrNone(new SearchParameters() //
-                .property(Appellation_.region, entity.getRegion()) //
-                .property(NamedEntity_.name, entity.getName()));
+        Appellation existing = appellationRepository.findUniqueOrNone(new SearchParameters<Appellation>() //
+                .property(Appellation_.region).equalsTo(entity.getRegion()) //
+                .property(NamedEntity_.name).equalsTo(entity.getName()));
         if ((existing != null) && ((entity.getId() == null) || !existing.getId().equals(entity.getId()))) {
             throw new BusinessException(BusinessError.APPELLATION_00002);
         }
@@ -65,7 +65,7 @@ public class AppellationServiceImpl extends AbstractSimpleService<Appellation, A
 
     @Override
     protected void validateDelete(Appellation entity) throws BusinessException {
-        if (appellationRepository.findPropertyCount(new SearchParameters().property(Appellation_.id, entity.getId()), Appellation_.wines) > 0) {
+        if (appellationRepository.findPropertyCount(new SearchParameters<Appellation>().property(Appellation_.id).equalsTo(entity.getId()), Appellation_.wines) > 0) {
             throw new BusinessException(BusinessError.APPELLATION_00003);
         }
     }

@@ -29,7 +29,7 @@ import org.springframework.transaction.annotation.Transactional;
 import fr.mycellar.application.contact.ContactService;
 import fr.mycellar.domain.contact.Contact;
 import fr.mycellar.domain.shared.exception.BusinessException;
-import fr.mycellar.infrastructure.shared.repository.SearchParameters;
+import fr.mycellar.infrastructure.shared.repository.query.SearchParameters;
 
 /**
  * @author speralta
@@ -42,13 +42,13 @@ public class ContactServiceFacadeImpl implements ContactServiceFacade {
 
     @Override
     @Transactional(readOnly = true)
-    public long countContacts(SearchParameters searchParameters) {
+    public long countContacts(SearchParameters<Contact> searchParameters) {
         return contactService.count(searchParameters);
     }
 
     @Override
     @Transactional(readOnly = true)
-    public long countLastContacts(SearchParameters searchParameters) {
+    public long countLastContacts(SearchParameters<Contact> searchParameters) {
         return contactService.countLastContacts(searchParameters);
     }
 
@@ -60,13 +60,13 @@ public class ContactServiceFacadeImpl implements ContactServiceFacade {
 
     @Override
     @Transactional(readOnly = true)
-    public List<Contact> getContacts(SearchParameters searchParameters) {
+    public List<Contact> getContacts(SearchParameters<Contact> searchParameters) {
         return contactService.find(searchParameters);
     }
 
     @Override
     @Transactional(readOnly = true)
-    public List<Contact> getLastContacts(SearchParameters searchParameters) {
+    public List<Contact> getLastContacts(SearchParameters<Contact> searchParameters) {
         return contactService.getLastContacts(searchParameters);
     }
 

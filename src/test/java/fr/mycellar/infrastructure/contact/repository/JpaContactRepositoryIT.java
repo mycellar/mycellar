@@ -38,7 +38,7 @@ import org.springframework.transaction.annotation.Transactional;
 import fr.mycellar.MyCellarApplication;
 import fr.mycellar.domain.contact.Contact;
 import fr.mycellar.domain.wine.Producer;
-import fr.mycellar.infrastructure.shared.repository.SearchParameters;
+import fr.mycellar.infrastructure.shared.repository.query.SearchParameters;
 
 /**
  * @author speralta

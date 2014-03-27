@@ -29,26 +29,26 @@ import fr.mycellar.domain.wine.Region;
 import fr.mycellar.domain.wine.Wine;
 import fr.mycellar.domain.wine.WineColorEnum;
 import fr.mycellar.domain.wine.WineTypeEnum;
-import fr.mycellar.infrastructure.shared.repository.SearchParameters;
+import fr.mycellar.infrastructure.shared.repository.query.SearchParameters;
 
 /**
  * @author speralta
  */
 public interface WineServiceFacade {
 
-    long countAppellations(SearchParameters searchParameters);
+    long countAppellations(SearchParameters<Appellation> searchParameters);
 
-    long countCountries(SearchParameters searchParameters);
+    long countCountries(SearchParameters<Country> searchParameters);
 
-    long countFormats(SearchParameters searchParameters);
+    long countFormats(SearchParameters<Format> searchParameters);
 
-    long countProducers(SearchParameters searchParameters);
+    long countProducers(SearchParameters<Producer> searchParameters);
 
-    long countRegions(SearchParameters searchParameters);
+    long countRegions(SearchParameters<Region> searchParameters);
 
-    long countWines(SearchParameters searchParameters);
+    long countWines(SearchParameters<Wine> searchParameters);
 
-    long countWinesLike(String input, SearchParameters searchParameters);
+    long countWinesLike(String input, SearchParameters<Wine> searchParameters);
 
     List<Wine> createVintages(Wine toCopy, int from, int to) throws BusinessException;
 
@@ -70,29 +70,29 @@ public interface WineServiceFacade {
 
     Appellation getAppellationById(Integer appellationId);
 
-    List<Appellation> getAppellations(SearchParameters searchParameters);
+    List<Appellation> getAppellations(SearchParameters<Appellation> searchParameters);
 
-    List<Country> getCountries(SearchParameters searchParameters);
+    List<Country> getCountries(SearchParameters<Country> searchParameters);
 
     Country getCountryById(Integer countryId);
 
     Format getFormatById(Integer formatId);
 
-    List<Format> getFormats(SearchParameters searchParameters);
+    List<Format> getFormats(SearchParameters<Format> searchParameters);
 
     Producer getProducerById(Integer producerId);
 
-    List<Producer> getProducers(SearchParameters searchParameters);
+    List<Producer> getProducers(SearchParameters<Producer> searchParameters);
 
     Region getRegionById(Integer regionId);
 
-    List<Region> getRegions(SearchParameters searchParameters);
+    List<Region> getRegions(SearchParameters<Region> searchParameters);
 
     Wine getWineById(Integer wineId);
 
-    List<Wine> getWines(SearchParameters searchParameters);
+    List<Wine> getWines(SearchParameters<Wine> searchParameters);
 
-    List<Wine> getWinesLike(String input, SearchParameters searchParameters);
+    List<Wine> getWinesLike(String input, SearchParameters<Wine> searchParameters);
 
     Appellation saveAppellation(Appellation appellation) throws BusinessException;
 

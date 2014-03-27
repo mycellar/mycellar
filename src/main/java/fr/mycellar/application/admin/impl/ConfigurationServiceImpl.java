@@ -31,7 +31,7 @@ import fr.mycellar.domain.shared.ValidationPattern;
 import fr.mycellar.domain.shared.exception.BusinessError;
 import fr.mycellar.domain.shared.exception.BusinessException;
 import fr.mycellar.infrastructure.admin.repository.ConfigurationRepository;
-import fr.mycellar.infrastructure.shared.repository.SearchParameters;
+import fr.mycellar.infrastructure.shared.repository.query.SearchParameters;
 
 /**
  * @author speralta
@@ -54,8 +54,8 @@ public class ConfigurationServiceImpl extends AbstractSimpleService<Configuratio
 
     @Override
     public Configuration find(ConfigurationKeyEnum key) {
-        return configurationRepository.findUniqueOrNone(new SearchParameters() //
-                .property(Configuration_.key, key));
+        return configurationRepository.findUniqueOrNone(new SearchParameters<Configuration>() //
+                .property(Configuration_.key).equalsTo(key));
     }
 
     @Override

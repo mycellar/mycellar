@@ -21,30 +21,18 @@ package fr.mycellar.infrastructure.contact.repository;
 import java.util.List;
 
 import fr.mycellar.domain.contact.Contact;
-import fr.mycellar.infrastructure.shared.repository.SearchParameters;
 import fr.mycellar.infrastructure.shared.repository.SimpleRepository;
+import fr.mycellar.infrastructure.shared.repository.query.SearchParameters;
 
 /**
  * @author speralta
  */
 public interface ContactRepository extends SimpleRepository<Contact> {
 
-    /**
-     * @return
-     */
     List<Contact> getAllToContact();
 
-    /**
-     * @return
-     */
-    long countLastContacts(SearchParameters searchParameters);
+    long countLastContacts(SearchParameters<Contact> searchParameters);
 
-    /**
-     * @param orders
-     * @param first
-     * @param count
-     * @return
-     */
-    List<Contact> getLastContacts(SearchParameters searchParameters);
+    List<Contact> getLastContacts(SearchParameters<Contact> searchParameters);
 
 }

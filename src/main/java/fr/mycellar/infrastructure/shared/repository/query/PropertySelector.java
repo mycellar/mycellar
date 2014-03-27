@@ -16,9 +16,7 @@
  * You should have received a copy of the GNU General Public License
  * along with MyCellar. If not, see <http://www.gnu.org/licenses/>.
  */
-package fr.mycellar.infrastructure.shared.repository;
-
-import static com.google.common.base.Preconditions.checkNotNull;
+package fr.mycellar.infrastructure.shared.repository.query;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -39,20 +37,22 @@ public class PropertySelector<E, F> implements Serializable {
 
     private static final long serialVersionUID = 201308010800L;
 
-    private final Path path;
+    private final Path<E, F> path;
     private List<F> selected = new ArrayList<>();
-    private SearchMode searchMode; // for string property only.
+    private SearchMode searchMode = SearchMode.ANYWHERE;
     private Boolean notIncludingNull;
     private boolean orMode = true;
-    private Boolean caseSensitive = null;
+    private boolean caseSensitive = true;
     private boolean notMode = false;
 
-    public PropertySelector(Attribute<?, ?>... attributes) {
-        this.path = new Path(checkNotNull(attributes));
+    @SafeVarargs
+    public PropertySelector(Path<E, F> path, F... values) {
+        this.path = path;
+        selected = new ArrayList<>(Arrays.asList(values));
     }
 
     public PropertySelector(String path, Class<E> from) {
-        this.path = new Path(path, from);
+        this.path = new Path<E, F>(path, from);
     }
 
     public List<Attribute<?, ?>> getAttributes() {
@@ -72,11 +72,7 @@ public class PropertySelector<E, F> implements Serializable {
         return this;
     }
 
-    public boolean isCaseSensitiveSet() {
-        return caseSensitive != null;
-    }
-
-    public Boolean isCaseSensitive() {
+    public boolean isCaseSensitive() {
         return caseSensitive;
     }
 

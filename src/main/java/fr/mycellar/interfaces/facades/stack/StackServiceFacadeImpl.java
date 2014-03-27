@@ -34,7 +34,7 @@ import org.springframework.transaction.support.TransactionTemplate;
 import fr.mycellar.application.stack.StackService;
 import fr.mycellar.domain.shared.exception.BusinessException;
 import fr.mycellar.domain.stack.Stack;
-import fr.mycellar.infrastructure.shared.repository.SearchParameters;
+import fr.mycellar.infrastructure.shared.repository.query.SearchParameters;
 
 /**
  * @author speralta
@@ -65,13 +65,13 @@ public class StackServiceFacadeImpl implements StackServiceFacade {
 
     @Override
     @Transactional(readOnly = true)
-    public long countStacks(SearchParameters searchParameters) {
+    public long countStacks(SearchParameters<Stack> searchParameters) {
         return stackService.count(searchParameters);
     }
 
     @Override
     @Transactional(readOnly = true)
-    public List<Stack> getStacks(SearchParameters searchParameters) {
+    public List<Stack> getStacks(SearchParameters<Stack> searchParameters) {
         return stackService.find(searchParameters);
     }
 

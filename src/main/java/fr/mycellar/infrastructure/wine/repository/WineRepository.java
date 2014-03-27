@@ -18,19 +18,12 @@
  */
 package fr.mycellar.infrastructure.wine.repository;
 
-import java.util.List;
-
 import fr.mycellar.domain.wine.Wine;
-import fr.mycellar.infrastructure.shared.repository.SearchParameters;
 import fr.mycellar.infrastructure.shared.repository.SimpleRepository;
 
 /**
  * @author speralta
  */
 public interface WineRepository extends SimpleRepository<Wine> {
-
-    long countWinesLike(String input, SearchParameters searchParameters);
-
-    List<Wine> getWinesLike(String input, SearchParameters searchParameters);
 
 }

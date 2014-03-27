@@ -30,7 +30,7 @@ import fr.mycellar.application.stack.StackService;
 import fr.mycellar.domain.shared.exception.BusinessException;
 import fr.mycellar.domain.stack.Stack;
 import fr.mycellar.domain.stack.Stack_;
-import fr.mycellar.infrastructure.shared.repository.SearchParameters;
+import fr.mycellar.infrastructure.shared.repository.query.SearchParameters;
 import fr.mycellar.infrastructure.stack.repository.StackRepository;
 
 /**
@@ -57,8 +57,8 @@ public class StackServiceImpl extends AbstractSimpleService<Stack, StackReposito
         StringWriter stringWriter = new StringWriter();
         throwable.printStackTrace(new PrintWriter(stringWriter));
         String stackContent = stringWriter.toString();
-        Stack stack = stackRepository.findUniqueOrNone(new SearchParameters() //
-                .property(Stack_.hashCode, stackContent.hashCode()));
+        Stack stack = stackRepository.findUniqueOrNone(new SearchParameters<Stack>() //
+                .property(Stack_.hashCode).equalsTo(stackContent.hashCode()));
         if (stack == null) {
             stack = new Stack();
             stack.setStack(stackContent);

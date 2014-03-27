@@ -16,7 +16,7 @@
  * You should have received a copy of the GNU General Public License
  * along with MyCellar. If not, see <http://www.gnu.org/licenses/>.
  */
-package fr.mycellar.infrastructure.shared.repository;
+package fr.mycellar.infrastructure.shared.repository.util;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -29,6 +29,9 @@ import javax.persistence.criteria.Order;
 import javax.persistence.criteria.Path;
 import javax.persistence.criteria.Root;
 
+import fr.mycellar.infrastructure.shared.repository.query.OrderBy;
+import fr.mycellar.infrastructure.shared.repository.query.OrderByDirection;
+
 /**
  * Helper to create list of {@link Order} out of {@link OrderBy}s.
  */
@@ -38,11 +41,11 @@ public class OrderByUtil {
 
     private JpaUtil jpaUtil;
 
-    public <E> List<Order> buildJpaOrders(Iterable<OrderBy> orders, Root<E> root, CriteriaBuilder builder, SearchParameters sp) {
+    public <E> List<Order> buildJpaOrders(Iterable<OrderBy<E, ?>> orders, Root<E> root, CriteriaBuilder builder) {
         List<Order> jpaOrders = new ArrayList<>();
-        for (OrderBy ob : orders) {
+        for (OrderBy<E, ?> ob : orders) {
             Path<?> path = jpaUtil.getPath(root, ob.getAttributes());
-            jpaOrders.add(ob.isOrderDesc() ? builder.desc(path) : builder.asc(path));
+            jpaOrders.add(ob.getDirection() == OrderByDirection.DESC ? builder.desc(path) : builder.asc(path));
         }
         return jpaOrders;
     }

@@ -40,7 +40,7 @@ import fr.mycellar.domain.booking.Booking;
 import fr.mycellar.domain.booking.BookingBottle;
 import fr.mycellar.domain.booking.BookingEvent;
 import fr.mycellar.domain.shared.exception.BusinessException;
-import fr.mycellar.infrastructure.shared.repository.SearchParameters;
+import fr.mycellar.infrastructure.shared.repository.query.SearchParameters;
 import fr.mycellar.interfaces.facades.booking.BookingServiceFacade;
 import fr.mycellar.interfaces.web.services.FilterCouple;
 import fr.mycellar.interfaces.web.services.ListWithCount;
@@ -71,7 +71,7 @@ public class BookingDomainWebService {
             @QueryParam("count") @DefaultValue("10") int count, //
             @QueryParam("filters") List<FilterCouple> filters, //
             @QueryParam("sort") List<OrderCouple> orders) {
-        SearchParameters searchParameters = searchParametersUtil.getSearchParametersForListWithCount(first, count, filters, orders, Booking.class);
+        SearchParameters<Booking> searchParameters = searchParametersUtil.getSearchParametersForListWithCount(first, count, filters, orders, Booking.class);
         List<Booking> bookings;
         if (count == 0) {
             bookings = new ArrayList<>();
@@ -127,7 +127,7 @@ public class BookingDomainWebService {
             @QueryParam("count") @DefaultValue("10") int count, //
             @QueryParam("filters") List<FilterCouple> filters, //
             @QueryParam("sort") List<OrderCouple> orders) {
-        SearchParameters searchParameters = searchParametersUtil.getSearchParametersForListWithCount(first, count, filters, orders, BookingEvent.class);
+        SearchParameters<BookingEvent> searchParameters = searchParametersUtil.getSearchParametersForListWithCount(first, count, filters, orders, BookingEvent.class);
         List<BookingEvent> bookingEvents;
         if (count == 0) {
             bookingEvents = new ArrayList<>();
@@ -170,6 +170,29 @@ public class BookingDomainWebService {
             return bookingServiceFacade.saveBookingEvent(bookingEvent);
         }
         throw new RuntimeException();
+    }
+
+    @POST
+    @Consumes(MediaType.APPLICATION_JSON)
+    @Path("validateBookingEvent")
+    public void validateBookingEvent(BookingEvent bookingEvent) throws BusinessException {
+        bookingServiceFacade.validateBookingEvent(bookingEvent);
+    }
+
+    @GET
+    @Produces(MediaType.APPLICATION_JSON)
+    @Path("bookingEvents/like")
+    public ListWithCount<BookingEvent> getBookingEventsLike(@QueryParam("first") int first, @QueryParam("count") int count, @QueryParam("input") String input,
+            @QueryParam("sort") List<OrderCouple> orders) {
+        List<BookingEvent> bookingEvents;
+        if (count == 0) {
+            bookingEvents = new ArrayList<>();
+        } else {
+            bookingEvents = bookingServiceFacade.getBookingEventsLike(input,
+                    searchParametersUtil.getSearchParametersForListWithCount(first, count, new ArrayList<FilterCouple>(), orders, BookingEvent.class));
+        }
+        return new ListWithCount<>(bookingServiceFacade.countBookingEventsLike(input,
+                searchParametersUtil.getSearchParametersForListWithCount(first, count, new ArrayList<FilterCouple>(), orders, BookingEvent.class)), bookingEvents);
     }
 
     // --------------

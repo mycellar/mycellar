@@ -41,7 +41,7 @@ import fr.mycellar.domain.wine.Region;
 import fr.mycellar.domain.wine.Wine;
 import fr.mycellar.domain.wine.WineColorEnum;
 import fr.mycellar.domain.wine.WineTypeEnum;
-import fr.mycellar.infrastructure.shared.repository.SearchParameters;
+import fr.mycellar.infrastructure.shared.repository.query.SearchParameters;
 
 /**
  * @author speralta
@@ -63,36 +63,38 @@ public class WineServiceFacadeImpl implements WineServiceFacade {
     private WineService wineService;
 
     @Override
-    public long countAppellations(SearchParameters searchParameters) {
+    @Transactional(readOnly = true)
+    public long countAppellations(SearchParameters<Appellation> searchParameters) {
         return appellationService.count(searchParameters);
     }
 
     @Override
     @Transactional(readOnly = true)
-    public long countCountries(SearchParameters searchParameters) {
+    public long countCountries(SearchParameters<Country> searchParameters) {
         return countryService.count(searchParameters);
     }
 
     @Override
-    public long countFormats(SearchParameters searchParameters) {
+    @Transactional(readOnly = true)
+    public long countFormats(SearchParameters<Format> searchParameters) {
         return formatService.count(searchParameters);
     }
 
     @Override
     @Transactional(readOnly = true)
-    public long countProducers(SearchParameters searchParameters) {
+    public long countProducers(SearchParameters<Producer> searchParameters) {
         return producerService.count(searchParameters);
     }
 
     @Override
     @Transactional(readOnly = true)
-    public long countRegions(SearchParameters searchParameters) {
+    public long countRegions(SearchParameters<Region> searchParameters) {
         return regionService.count(searchParameters);
     }
 
     @Override
     @Transactional(readOnly = true)
-    public long countWines(SearchParameters searchParameters) {
+    public long countWines(SearchParameters<Wine> searchParameters) {
         return wineService.count(searchParameters);
     }
 
@@ -152,13 +154,13 @@ public class WineServiceFacadeImpl implements WineServiceFacade {
 
     @Override
     @Transactional(readOnly = true)
-    public List<Appellation> getAppellations(SearchParameters searchParameters) {
+    public List<Appellation> getAppellations(SearchParameters<Appellation> searchParameters) {
         return appellationService.find(searchParameters);
     }
 
     @Override
     @Transactional(readOnly = true)
-    public List<Country> getCountries(SearchParameters searchParameters) {
+    public List<Country> getCountries(SearchParameters<Country> searchParameters) {
         return countryService.find(searchParameters);
     }
 
@@ -176,7 +178,7 @@ public class WineServiceFacadeImpl implements WineServiceFacade {
 
     @Override
     @Transactional(readOnly = true)
-    public List<Format> getFormats(SearchParameters searchParameters) {
+    public List<Format> getFormats(SearchParameters<Format> searchParameters) {
         return formatService.find(searchParameters);
     }
 
@@ -188,7 +190,7 @@ public class WineServiceFacadeImpl implements WineServiceFacade {
 
     @Override
     @Transactional(readOnly = true)
-    public List<Producer> getProducers(SearchParameters searchParameters) {
+    public List<Producer> getProducers(SearchParameters<Producer> searchParameters) {
         return producerService.find(searchParameters);
     }
 
@@ -200,7 +202,7 @@ public class WineServiceFacadeImpl implements WineServiceFacade {
 
     @Override
     @Transactional(readOnly = true)
-    public List<Region> getRegions(SearchParameters searchParameters) {
+    public List<Region> getRegions(SearchParameters<Region> searchParameters) {
         return regionService.find(searchParameters);
     }
 
@@ -212,7 +214,7 @@ public class WineServiceFacadeImpl implements WineServiceFacade {
 
     @Override
     @Transactional(readOnly = true)
-    public List<Wine> getWines(SearchParameters searchParameters) {
+    public List<Wine> getWines(SearchParameters<Wine> searchParameters) {
         return wineService.find(searchParameters);
     }
 
@@ -296,14 +298,14 @@ public class WineServiceFacadeImpl implements WineServiceFacade {
 
     @Override
     @Transactional(readOnly = false)
-    public List<Wine> getWinesLike(String input, SearchParameters searchParameters) {
-        return wineService.getWinesLike(input, searchParameters);
+    public List<Wine> getWinesLike(String input, SearchParameters<Wine> searchParameters) {
+        return wineService.getAllLike(input, searchParameters);
     }
 
     @Override
     @Transactional(readOnly = false)
-    public long countWinesLike(String input, SearchParameters searchParameters) {
-        return wineService.countWinesLike(input, searchParameters);
+    public long countWinesLike(String input, SearchParameters<Wine> searchParameters) {
+        return wineService.countAllLike(input, searchParameters);
     }
 
     // BEANS METHODS

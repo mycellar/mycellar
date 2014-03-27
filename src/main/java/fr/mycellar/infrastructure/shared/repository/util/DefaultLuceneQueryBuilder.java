@@ -16,7 +16,7 @@
  * You should have received a copy of the GNU General Public License
  * along with MyCellar. If not, see <http://www.gnu.org/licenses/>.
  */
-package fr.mycellar.infrastructure.shared.repository;
+package fr.mycellar.infrastructure.shared.repository.util;
 
 import static com.google.common.base.Throwables.propagate;
 import static org.apache.commons.lang3.StringUtils.isNotBlank;
@@ -28,7 +28,9 @@ import org.apache.lucene.search.Query;
 import org.hibernate.search.jpa.FullTextEntityManager;
 import org.hibernate.search.query.dsl.BooleanJunction;
 import org.hibernate.search.query.dsl.QueryBuilder;
-import org.hibernate.search.query.dsl.TermMatchingContext;
+
+import fr.mycellar.infrastructure.shared.repository.query.SearchParametersValues;
+import fr.mycellar.infrastructure.shared.repository.query.TermSelector;
 
 @Named
 @Singleton
@@ -37,7 +39,7 @@ public class DefaultLuceneQueryBuilder implements LuceneQueryBuilder {
     private static final String SPACES_OR_PUNCTUATION = "\\p{Punct}|\\p{Blank}";
 
     @Override
-    public Query build(FullTextEntityManager fullTextEntityManager, SearchParameters searchParameters, Class<?> type) {
+    public <T> Query build(FullTextEntityManager fullTextEntityManager, SearchParametersValues<T> searchParameters, Class<? extends T> type) {
         QueryBuilder builder = fullTextEntityManager.getSearchFactory().buildQueryBuilder().forEntity(type).get();
 
         BooleanJunction<?> context = builder.bool();
@@ -51,17 +53,20 @@ public class DefaultLuceneQueryBuilder implements LuceneQueryBuilder {
                         BooleanJunction<?> splitContext = builder.bool();
                         for (String value : selected.split(SPACES_OR_PUNCTUATION)) {
                             if (isNotBlank(value)) {
-                                TermMatchingContext selectedContext;
+                                BooleanJunction<?> valueContext = builder.bool();
                                 if (searchParameters.getSearchSimilarity() != null) {
-                                    selectedContext = builder.keyword().fuzzy().withEditDistanceUpTo(searchParameters.getSearchSimilarity()).onField(term.getAttribute().getName());
-                                } else {
-                                    selectedContext = builder.keyword().onField(term.getAttribute().getName());
+                                    valueContext.should(builder.keyword().fuzzy() //
+                                            .withEditDistanceUpTo(searchParameters.getSearchSimilarity()) //
+                                            .onField(term.getAttribute().getName()) //
+                                            .matching(value).createQuery());
                                 }
-                                Query selectedQuery = selectedContext.matching(value).createQuery();
+                                valueContext.should(builder.keyword().wildcard() //
+                                        .onField(term.getAttribute().getName()) //
+                                        .matching("*" + value + "*").createQuery());
                                 if (term.isOrMode()) {
-                                    splitContext.should(selectedQuery);
+                                    splitContext.should(valueContext.createQuery());
                                 } else {
-                                    splitContext.must(selectedQuery);
+                                    splitContext.must(valueContext.createQuery());
                                 }
                                 hasTerms = true;
                             }

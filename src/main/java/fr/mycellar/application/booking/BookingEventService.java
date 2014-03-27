@@ -20,16 +20,14 @@ package fr.mycellar.application.booking;
 
 import java.util.List;
 
-import fr.mycellar.application.shared.SimpleService;
+import fr.mycellar.application.shared.SearchableService;
 import fr.mycellar.domain.booking.BookingEvent;
 import fr.mycellar.domain.shared.exception.BusinessException;
 
 /**
  * @author speralta
  */
-public interface BookingEventService extends SimpleService<BookingEvent> {
-
-    List<BookingEvent> getAllLike(String term);
+public interface BookingEventService extends SearchableService<BookingEvent> {
 
     List<BookingEvent> getCurrentBookingEvents();
 

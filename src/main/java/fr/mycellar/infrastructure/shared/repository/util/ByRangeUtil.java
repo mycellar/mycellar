@@ -16,7 +16,7 @@
  * You should have received a copy of the GNU General Public License
  * along with MyCellar. If not, see <http://www.gnu.org/licenses/>.
  */
-package fr.mycellar.infrastructure.shared.repository;
+package fr.mycellar.infrastructure.shared.repository.util;
 
 import static com.google.common.collect.Lists.newArrayList;
 import static java.lang.Boolean.FALSE;
@@ -32,6 +32,9 @@ import javax.persistence.criteria.Path;
 import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
 
+import fr.mycellar.infrastructure.shared.repository.query.Range;
+import fr.mycellar.infrastructure.shared.repository.query.SearchParametersValues;
+
 /**
  * Helper to create a predicate out of {@link Range}s.
  */
@@ -43,11 +46,10 @@ public class ByRangeUtil {
     @Inject
     private JpaUtil jpaUtil;
 
-    public <E> Predicate byRanges(Root<E> root, CriteriaBuilder builder, SearchParameters sp, Class<E> type) {
-        List<Range<?, ?>> ranges = sp.getRanges();
+    public <E> Predicate byRanges(Root<E> root, CriteriaBuilder builder, SearchParametersValues<E> sp, Class<E> type) {
+        List<Range<E, ?>> ranges = sp.getRanges();
         List<Predicate> predicates = newArrayList();
-        for (Range<?, ?> r : ranges) {
-            Range<E, ?> range = (Range<E, ?>) r;
+        for (Range<E, ?> range : ranges) {
             if (range.isSet()) {
                 Predicate rangePredicate = buildRangePredicate(range, root, builder);
                 if (rangePredicate != null) {
@@ -56,7 +58,7 @@ public class ByRangeUtil {
             }
         }
 
-        return jpaUtil.concatPredicate(sp, builder, predicates);
+        return jpaUtil.andPredicate(builder, predicates);
     }
 
     private <D extends Comparable<? super D>, E> Predicate buildRangePredicate(Range<E, D> range, Root<E> root, CriteriaBuilder builder) {

@@ -1,5 +1,5 @@
 /*
- * Copyright 2013, MyCellar
+ * Copyright 2011, MyCellar
  *
  * This file is part of MyCellar.
  *
@@ -16,8 +16,20 @@
  * You should have received a copy of the GNU General Public License
  * along with MyCellar. If not, see <http://www.gnu.org/licenses/>.
  */
-package fr.mycellar.infrastructure.shared.repository;
+package fr.mycellar.application.shared;
 
-public enum OrderByDirection {
-    ASC, DESC;
+import java.util.List;
+
+import fr.mycellar.domain.shared.IdentifiedEntity;
+import fr.mycellar.infrastructure.shared.repository.query.SearchParameters;
+
+/**
+ * @author speralta
+ */
+public interface SearchableService<E extends IdentifiedEntity> extends SimpleService<E> {
+
+    long countAllLike(String term, SearchParameters<E> searchParameters);
+
+    List<E> getAllLike(String term, SearchParameters<E> searchParameters);
+
 }

@@ -16,7 +16,7 @@
  * You should have received a copy of the GNU General Public License
  * along with MyCellar. If not, see <http://www.gnu.org/licenses/>.
  */
-package fr.mycellar.infrastructure.shared.repository;
+package fr.mycellar.infrastructure.shared.repository.util;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -30,6 +30,8 @@ import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
 
 import fr.mycellar.domain.shared.Identifiable;
+import fr.mycellar.infrastructure.shared.repository.query.SearchParametersValues;
+import fr.mycellar.infrastructure.shared.repository.query.TermSelector;
 
 @Named
 @Singleton
@@ -37,7 +39,7 @@ public class ByFullTextUtil {
     private HibernateSearchUtil hibernateSearchUtil;
     private JpaUtil jpaUtil;
 
-    public <T extends Identifiable<?>> Predicate byFullText(Root<T> root, CriteriaBuilder builder, SearchParameters sp, Class<T> type) {
+    public <T extends Identifiable<?>> Predicate byFullText(Root<T> root, CriteriaBuilder builder, SearchParametersValues<T> sp, Class<T> type) {
         if (!hasNonEmptyTerms(sp)) {
             return null;
         }
@@ -49,7 +51,7 @@ public class ByFullTextUtil {
         }
     }
 
-    private boolean hasNonEmptyTerms(SearchParameters sp) {
+    private boolean hasNonEmptyTerms(SearchParametersValues<?> sp) {
         for (TermSelector termSelector : sp.getTerms()) {
             if (termSelector.isNotEmpty()) {
                 return true;
@@ -58,7 +60,7 @@ public class ByFullTextUtil {
         return false;
     }
 
-    private <T extends Identifiable<?>> Predicate onOther(Root<T> root, CriteriaBuilder builder, SearchParameters sp) {
+    private <T extends Identifiable<?>> Predicate onOther(Root<T> root, CriteriaBuilder builder, SearchParametersValues<T> sp) {
         List<? extends T> found = hibernateSearchUtil.find(root.getJavaType(), sp);
         if (found == null) {
             return null;
@@ -70,10 +72,10 @@ public class ByFullTextUtil {
         for (T t : found) {
             predicates.add(builder.equal(root, t));
         }
-        return jpaUtil.concatPredicate(sp, builder, jpaUtil.orPredicate(builder, predicates));
+        return jpaUtil.andPredicate(builder, jpaUtil.orPredicate(builder, predicates));
     }
 
-    private <T> Predicate onIdentifiable(Root<T> root, CriteriaBuilder builder, SearchParameters sp) {
+    private <T> Predicate onIdentifiable(Root<T> root, CriteriaBuilder builder, SearchParametersValues<T> sp) {
         List<Serializable> ids = hibernateSearchUtil.findId(root.getJavaType(), sp);
         if (ids == null) {
             return null;
@@ -81,7 +83,7 @@ public class ByFullTextUtil {
             return builder.disjunction();
         }
 
-        return jpaUtil.concatPredicate(sp, builder, root.get("id").in(ids));
+        return root.get("id").in(ids);
     }
 
     @Inject

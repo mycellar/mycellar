@@ -16,7 +16,7 @@
  * You should have received a copy of the GNU General Public License
  * along with MyCellar. If not, see <http://www.gnu.org/licenses/>.
  */
-package fr.mycellar.infrastructure.shared.repository;
+package fr.mycellar.infrastructure.shared.repository.query;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -34,10 +34,6 @@ public class TermSelector implements Serializable {
     private final Path path;
     private List<String> selected = new ArrayList<>();
     private boolean orMode = true;
-
-    public TermSelector() {
-        path = null;
-    }
 
     public TermSelector(SingularAttribute<?, ?> attribute) {
         path = new Path(attribute);

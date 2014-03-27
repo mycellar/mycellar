@@ -40,7 +40,7 @@ import fr.mycellar.domain.shared.exception.BusinessError;
 import fr.mycellar.domain.shared.exception.BusinessException;
 import fr.mycellar.domain.wine.Producer;
 import fr.mycellar.infrastructure.contact.repository.ContactRepository;
-import fr.mycellar.infrastructure.shared.repository.SearchParameters;
+import fr.mycellar.infrastructure.shared.repository.query.SearchParameters;
 
 /**
  * @author speralta
@@ -56,12 +56,12 @@ public class ContactServiceImpl extends AbstractSimpleService<Contact, ContactRe
     private JavaMailSender javaMailSender;
 
     @Override
-    public long countLastContacts(SearchParameters searchParameters) {
+    public long countLastContacts(SearchParameters<Contact> searchParameters) {
         return contactRepository.countLastContacts(searchParameters);
     }
 
     @Override
-    public List<Contact> getLastContacts(SearchParameters searchParameters) {
+    public List<Contact> getLastContacts(SearchParameters<Contact> searchParameters) {
         return contactRepository.getLastContacts(searchParameters);
     }
 
@@ -108,16 +108,11 @@ public class ContactServiceImpl extends AbstractSimpleService<Contact, ContactRe
         }
     }
 
-    /**
-     * @param producer
-     * @param current
-     * @return
-     */
     @Override
     public Contact find(Producer producer, LocalDate current) {
-        return contactRepository.findUniqueOrNone(new SearchParameters()//
-                .property(Contact_.producer, producer) //
-                .property(Contact_.current, current));
+        return contactRepository.findUniqueOrNone(new SearchParameters<Contact>()//
+                .property(Contact_.producer).equalsTo(producer) //
+                .property(Contact_.current).equalsTo(current));
     }
 
     @Override

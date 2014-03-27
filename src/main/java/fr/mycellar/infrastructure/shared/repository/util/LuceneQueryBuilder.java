@@ -16,12 +16,14 @@
  * You should have received a copy of the GNU General Public License
  * along with MyCellar. If not, see <http://www.gnu.org/licenses/>.
  */
-package fr.mycellar.infrastructure.shared.repository;
+package fr.mycellar.infrastructure.shared.repository.util;
 
 import org.apache.lucene.search.Query;
 import org.hibernate.search.jpa.FullTextEntityManager;
 
+import fr.mycellar.infrastructure.shared.repository.query.SearchParametersValues;
+
 public interface LuceneQueryBuilder {
 
-    Query build(FullTextEntityManager fullTextEntityManager, SearchParameters searchParameters, Class<?> type);
+    <T> Query build(FullTextEntityManager fullTextEntityManager, SearchParametersValues<T> searchParameters, Class<? extends T> type);
 }

@@ -18,8 +18,6 @@
  */
 package fr.mycellar.application.user.impl;
 
-import java.util.List;
-
 import javax.inject.Inject;
 import javax.inject.Named;
 import javax.inject.Singleton;
@@ -27,18 +25,20 @@ import javax.inject.Singleton;
 import org.jasypt.util.password.PasswordEncryptor;
 
 import fr.mycellar.application.booking.BookingService;
-import fr.mycellar.application.shared.AbstractSimpleService;
+import fr.mycellar.application.shared.AbstractSearchableService;
 import fr.mycellar.application.stock.CellarService;
 import fr.mycellar.application.user.ResetPasswordRequestService;
 import fr.mycellar.application.user.UserService;
+import fr.mycellar.domain.booking.Booking;
 import fr.mycellar.domain.booking.Booking_;
 import fr.mycellar.domain.shared.exception.BusinessError;
 import fr.mycellar.domain.shared.exception.BusinessException;
+import fr.mycellar.domain.stock.Cellar;
 import fr.mycellar.domain.stock.Cellar_;
 import fr.mycellar.domain.user.ResetPasswordRequest;
 import fr.mycellar.domain.user.User;
 import fr.mycellar.domain.user.User_;
-import fr.mycellar.infrastructure.shared.repository.SearchParameters;
+import fr.mycellar.infrastructure.shared.repository.query.SearchParameters;
 import fr.mycellar.infrastructure.user.repository.UserRepository;
 
 /**
@@ -46,7 +46,7 @@ import fr.mycellar.infrastructure.user.repository.UserRepository;
  */
 @Named
 @Singleton
-public class UserServiceImpl extends AbstractSimpleService<User, UserRepository> implements UserService {
+public class UserServiceImpl extends AbstractSearchableService<User, UserRepository> implements UserService {
 
     private ResetPasswordRequestService resetPasswordRequestService;
 
@@ -66,8 +66,7 @@ public class UserServiceImpl extends AbstractSimpleService<User, UserRepository>
 
     @Override
     public void resetPasswordRequest(String email, String url) {
-        User user = userRepository.findUniqueOrNone( //
-                new SearchParameters().property(User_.email, email));
+        User user = getByEmail(email);
         if (user != null) {
             resetPasswordRequestService.createAndSendEmail(user, url);
         }
@@ -76,8 +75,7 @@ public class UserServiceImpl extends AbstractSimpleService<User, UserRepository>
 
     @Override
     public void validate(User entity) throws BusinessException {
-        User existing = userRepository.findUniqueOrNone( //
-                new SearchParameters().property(User_.email, entity.getEmail()));
+        User existing = getByEmail(entity.getEmail());
         if ((existing != null) && ((entity.getId() == null) || !existing.getId().equals(entity.getId()))) {
             throw new BusinessException(BusinessError.USER_00001);
         }
@@ -85,12 +83,12 @@ public class UserServiceImpl extends AbstractSimpleService<User, UserRepository>
 
     @Override
     protected void validateDelete(User entity) throws BusinessException {
-        if (bookingService.count(new SearchParameters() //
-                .property(Booking_.customer, entity)) > 0) {
+        if (bookingService.count(new SearchParameters<Booking>() //
+                .property(Booking_.customer).equalsTo(entity)) > 0) {
             throw new BusinessException(BusinessError.USER_00002);
         }
-        if (cellarService.count(new SearchParameters() //
-                .property(Cellar_.owner, entity)) > 0) {
+        if (cellarService.count(new SearchParameters<Cellar>() //
+                .property(Cellar_.owner).equalsTo(entity)) > 0) {
             throw new BusinessException(BusinessError.USER_00003);
         }
     }
@@ -106,15 +104,8 @@ public class UserServiceImpl extends AbstractSimpleService<User, UserRepository>
 
     @Override
     public User getByEmail(String email) {
-        return userRepository.findUniqueOrNone(new SearchParameters().property(User_.email, email));
-    }
-
-    @Override
-    public List<User> getUsersLike(String term) {
-        return userRepository.find(new SearchParameters() //
-                .term(User_.email, term) //
-                .term(User_.firstname, term) //
-                .term(User_.lastname, term));
+        return userRepository.findUniqueOrNone(new SearchParameters<User>() //
+                .property(User_.email).equalsTo(email));
     }
 
     @Override
@@ -126,6 +117,12 @@ public class UserServiceImpl extends AbstractSimpleService<User, UserRepository>
         User user = saveUserPassword(request.getUser(), password);
         resetPasswordRequestService.deleteAllForUser(request.getUser());
         return user;
+    }
+
+    @Override
+    protected SearchParameters<User> addTermToSearchParameters(String term, SearchParameters<User> searchParameters) {
+        // TODO add fulltext on firstname, lastname and email
+        return searchParameters;
     }
 
     @Override

@@ -40,7 +40,7 @@ import fr.mycellar.domain.stock.Cellar;
 import fr.mycellar.domain.stock.CellarShare;
 import fr.mycellar.domain.stock.Movement;
 import fr.mycellar.domain.stock.Stock;
-import fr.mycellar.infrastructure.shared.repository.SearchParameters;
+import fr.mycellar.infrastructure.shared.repository.query.SearchParameters;
 import fr.mycellar.interfaces.facades.stock.StockServiceFacade;
 import fr.mycellar.interfaces.web.services.FilterCouple;
 import fr.mycellar.interfaces.web.services.ListWithCount;
@@ -71,7 +71,7 @@ public class StockDomainWebService {
             @QueryParam("count") @DefaultValue("10") int count, //
             @QueryParam("filters") List<FilterCouple> filters, //
             @QueryParam("sort") List<OrderCouple> orders) {
-        SearchParameters searchParameters = searchParametersUtil.getSearchParametersForListWithCount(first, count, filters, orders, Cellar.class);
+        SearchParameters<Cellar> searchParameters = searchParametersUtil.getSearchParametersForListWithCount(first, count, filters, orders, Cellar.class);
         List<Cellar> cellars;
         if (count == 0) {
             cellars = new ArrayList<>();
@@ -123,6 +123,24 @@ public class StockDomainWebService {
         stockServiceFacade.validateCellar(cellar);
     }
 
+    @GET
+    @Produces(MediaType.APPLICATION_JSON)
+    @Path("cellars/like")
+    public ListWithCount<Cellar> getCellarsLike( //
+            @QueryParam("first") int first, //
+            @QueryParam("count") @DefaultValue("10") int count, //
+            @QueryParam("input") String input, //
+            @QueryParam("sort") List<OrderCouple> orders) {
+        SearchParameters<Cellar> searchParameters = searchParametersUtil.getSearchParametersForListWithCount(first, count, new ArrayList<FilterCouple>(), orders, Cellar.class);
+        List<Cellar> cellars;
+        if (count == 0) {
+            cellars = new ArrayList<>();
+        } else {
+            cellars = stockServiceFacade.getCellarsLike(input, searchParameters);
+        }
+        return new ListWithCount<>(stockServiceFacade.countCellarsLike(input, searchParameters), cellars);
+    }
+
     // --------------
     // CELLAR SHARE
     // --------------
@@ -135,7 +153,7 @@ public class StockDomainWebService {
             @QueryParam("count") @DefaultValue("10") int count, //
             @QueryParam("filters") List<FilterCouple> filters, //
             @QueryParam("sort") List<OrderCouple> orders) {
-        SearchParameters searchParameters = searchParametersUtil.getSearchParametersForListWithCount(first, count, filters, orders, CellarShare.class);
+        SearchParameters<CellarShare> searchParameters = searchParametersUtil.getSearchParametersForListWithCount(first, count, filters, orders, CellarShare.class);
         List<CellarShare> cellarShares;
         if (count == 0) {
             cellarShares = new ArrayList<>();
@@ -199,7 +217,7 @@ public class StockDomainWebService {
             @QueryParam("count") @DefaultValue("10") int count, //
             @QueryParam("filters") List<FilterCouple> filters, //
             @QueryParam("sort") List<OrderCouple> orders) {
-        SearchParameters searchParameters = searchParametersUtil.getSearchParametersForListWithCount(first, count, filters, orders, Stock.class);
+        SearchParameters<Stock> searchParameters = searchParametersUtil.getSearchParametersForListWithCount(first, count, filters, orders, Stock.class);
         List<Stock> stocks;
         if (count == 0) {
             stocks = new ArrayList<>();
@@ -263,7 +281,7 @@ public class StockDomainWebService {
             @QueryParam("count") @DefaultValue("10") int count, //
             @QueryParam("filters") List<FilterCouple> filters, //
             @QueryParam("sort") List<OrderCouple> orders) {
-        SearchParameters searchParameters = searchParametersUtil.getSearchParametersForListWithCount(first, count, filters, orders, Movement.class);
+        SearchParameters<Movement> searchParameters = searchParametersUtil.getSearchParametersForListWithCount(first, count, filters, orders, Movement.class);
         List<Movement> movements;
         if (count == 0) {
             movements = new ArrayList<>();

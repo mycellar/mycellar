@@ -22,7 +22,7 @@ import java.util.List;
 
 import fr.mycellar.domain.shared.exception.BusinessException;
 import fr.mycellar.domain.stack.Stack;
-import fr.mycellar.infrastructure.shared.repository.SearchParameters;
+import fr.mycellar.infrastructure.shared.repository.query.SearchParameters;
 
 /**
  * @author speralta
@@ -38,7 +38,7 @@ public interface StackServiceFacade {
      * @param searchParameters
      * @return
      */
-    long countStacks(SearchParameters searchParameters);
+    long countStacks(SearchParameters<Stack> searchParameters);
 
     /**
      * @param stack
@@ -55,7 +55,7 @@ public interface StackServiceFacade {
      * @param searchParameters
      * @return
      */
-    List<Stack> getStacks(SearchParameters searchParameters);
+    List<Stack> getStacks(SearchParameters<Stack> searchParameters);
 
     /**
      * @param stackId

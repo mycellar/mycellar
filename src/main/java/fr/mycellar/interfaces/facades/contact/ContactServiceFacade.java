@@ -22,7 +22,7 @@ import java.util.List;
 
 import fr.mycellar.domain.contact.Contact;
 import fr.mycellar.domain.shared.exception.BusinessException;
-import fr.mycellar.infrastructure.shared.repository.SearchParameters;
+import fr.mycellar.infrastructure.shared.repository.query.SearchParameters;
 
 /**
  * @author speralta
@@ -33,13 +33,13 @@ public interface ContactServiceFacade {
      * @param searchParameters
      * @return
      */
-    long countContacts(SearchParameters searchParameters);
+    long countContacts(SearchParameters<Contact> searchParameters);
 
     /**
      * @param searchParameters
      * @return
      */
-    long countLastContacts(SearchParameters searchParameters);
+    long countLastContacts(SearchParameters<Contact> searchParameters);
 
     /**
      * @param objectId
@@ -51,13 +51,13 @@ public interface ContactServiceFacade {
      * @param searchParameters
      * @return
      */
-    List<Contact> getContacts(SearchParameters searchParameters);
+    List<Contact> getContacts(SearchParameters<Contact> searchParameters);
 
     /**
      * @param searchParameters
      * @return
      */
-    List<Contact> getLastContacts(SearchParameters searchParameters);
+    List<Contact> getLastContacts(SearchParameters<Contact> searchParameters);
 
     /**
      * @param contact

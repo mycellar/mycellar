@@ -27,15 +27,17 @@ import javax.inject.Named;
 import javax.inject.Singleton;
 
 import fr.mycellar.application.booking.BookingEventService;
-import fr.mycellar.application.shared.AbstractSimpleService;
+import fr.mycellar.application.shared.AbstractSearchableService;
 import fr.mycellar.application.stock.StockService;
 import fr.mycellar.application.wine.WineService;
 import fr.mycellar.domain.booking.BookingBottle_;
+import fr.mycellar.domain.booking.BookingEvent;
 import fr.mycellar.domain.booking.BookingEvent_;
 import fr.mycellar.domain.shared.NamedEntity_;
 import fr.mycellar.domain.shared.exception.BusinessError;
 import fr.mycellar.domain.shared.exception.BusinessException;
 import fr.mycellar.domain.stock.Bottle_;
+import fr.mycellar.domain.stock.Stock;
 import fr.mycellar.domain.stock.Stock_;
 import fr.mycellar.domain.wine.Appellation;
 import fr.mycellar.domain.wine.Producer;
@@ -43,7 +45,7 @@ import fr.mycellar.domain.wine.Wine;
 import fr.mycellar.domain.wine.WineColorEnum;
 import fr.mycellar.domain.wine.WineTypeEnum;
 import fr.mycellar.domain.wine.Wine_;
-import fr.mycellar.infrastructure.shared.repository.SearchParameters;
+import fr.mycellar.infrastructure.shared.repository.query.SearchParameters;
 import fr.mycellar.infrastructure.wine.repository.WineRepository;
 
 /**
@@ -51,7 +53,7 @@ import fr.mycellar.infrastructure.wine.repository.WineRepository;
  */
 @Named
 @Singleton
-public class WineServiceImpl extends AbstractSimpleService<Wine, WineRepository> implements WineService {
+public class WineServiceImpl extends AbstractSearchableService<Wine, WineRepository> implements WineService {
 
     private WineRepository wineRepository;
 
@@ -60,20 +62,13 @@ public class WineServiceImpl extends AbstractSimpleService<Wine, WineRepository>
 
     @Override
     public Wine find(Producer producer, Appellation appellation, WineTypeEnum type, WineColorEnum color, String name, Integer vintage) {
-        Wine model = new Wine();
-        model.setProducer(producer);
-        model.setAppellation(appellation);
-        model.setType(type);
-        model.setColor(color);
-        model.setName(name);
-        model.setVintage(vintage);
-        return wineRepository.findUniqueOrNone(new SearchParameters() //
-                .property(Wine_.producer, producer) //
-                .property(Wine_.appellation, appellation) //
-                .property(Wine_.type, type) //
-                .property(Wine_.color, color) //
-                .property(NamedEntity_.name, name) //
-                .property(Wine_.vintage, vintage));
+        return wineRepository.findUniqueOrNone(new SearchParameters<Wine>() //
+                .property(Wine_.producer).equalsTo(producer) //
+                .property(Wine_.appellation).equalsTo(appellation) //
+                .property(Wine_.type).equalsTo(type) //
+                .property(Wine_.color).equalsTo(color) //
+                .property(NamedEntity_.name).equalsTo(name) //
+                .property(Wine_.vintage).equalsTo(vintage));
     }
 
     @Override
@@ -86,25 +81,74 @@ public class WineServiceImpl extends AbstractSimpleService<Wine, WineRepository>
 
     @Override
     protected void validateDelete(Wine entity) throws BusinessException {
-        if (stockService.count(new SearchParameters() //
-                .property(Stock_.bottle, Bottle_.wine, entity)) > 0) {
+        if (stockService.count(new SearchParameters<Stock>() //
+                .property(Stock_.bottle).to(Bottle_.wine).equalsTo(entity)) > 0) {
             throw new BusinessException(BusinessError.WINE_00002);
         }
-        if (bookingEventService.count(new SearchParameters() //
-                .property(BookingEvent_.bottles, BookingBottle_.bottle, Bottle_.wine, entity)) > 0) {
+        if (bookingEventService.count(new SearchParameters<BookingEvent>() //
+                .property(BookingEvent_.bottles).to(BookingBottle_.bottle).to(Bottle_.wine).equalsTo(entity)) > 0) {
             throw new BusinessException(BusinessError.WINE_00003);
         }
     }
 
     @Override
-    public long countWinesLike(String input, SearchParameters searchParameters) {
-        return wineRepository.countWinesLike(input, searchParameters);
+    protected SearchParameters<Wine> addTermToSearchParameters(String term, SearchParameters<Wine> searchParameters) {
+        // TODO add terms
+        return searchParameters;
     }
 
-    @Override
-    public List<Wine> getWinesLike(String input, SearchParameters searchParameters) {
-        return wineRepository.getWinesLike(input, searchParameters);
-    }
+    // private void restrictFromHibernateSearch(String input, SearchParameters
+    // searchParameters) {
+    // restrictFromHibernateSearch(searchParameters, Country.class,
+    // NamedEntity_.name, input, //
+    // Wine_.appellation, Appellation_.region, Region_.country, Country_.id);
+    // restrictFromHibernateSearch(searchParameters, Region.class,
+    // NamedEntity_.name, input, //
+    // Wine_.appellation, Appellation_.region, Region_.id);
+    // restrictFromHibernateSearch(searchParameters, Appellation.class,
+    // NamedEntity_.name, input, //
+    // Wine_.appellation, Appellation_.id);
+    // restrictFromHibernateSearch(searchParameters, Producer.class,
+    // NamedEntity_.name, input, //
+    // Wine_.producer, Producer_.id);
+    // restrictFromHibernateSearch(searchParameters, Wine.class,
+    // NamedEntity_.name, input, //
+    // Wine_.id);
+    // Scanner vintageScanner = new Scanner(input);
+    // String vintageString = vintageScanner.findInLine("[0-9]{4}");
+    // if (StringUtils.isNotBlank(vintageString)) {
+    // Integer vintage = Integer.parseInt(vintageString);
+    // searchParameters.property(Wine_.vintage, vintage);
+    // }
+    // vintageScanner.close();
+    // }
+    //
+    // private <X> void restrictFromHibernateSearch(SearchParameters
+    // searchParameters, Class<X> from, SingularAttribute<? super X, String>
+    // attribute, String input, Attribute<?, ?>... attributes) {
+    // SearchParameters fullTextSearchParameters = new
+    // SearchParameters().term(attribute, input).searchSimilarity(null);
+    // List<Serializable> ids = hibernateSearchUtil.findId(from,
+    // fullTextSearchParameters);
+    // if ((ids == null) || ids.isEmpty()) {
+    // ids = hibernateSearchUtil.findId(from,
+    // fullTextSearchParameters.searchSimilarity(1));
+    // }
+    // if ((ids == null) || ids.isEmpty()) {
+    // ids = hibernateSearchUtil.findId(from,
+    // fullTextSearchParameters.searchSimilarity(2));
+    // }
+    // if ((ids != null) && (ids.size() > 0)) {
+    // List<Integer> realIds = new ArrayList<>();
+    // for (Serializable id : ids) {
+    // realIds.add((Integer) id);
+    // }
+    // PropertySelector<Wine, Integer> selector = new
+    // PropertySelector<>(attributes);
+    // selector.setSelected(realIds);
+    // searchParameters.property(selector);
+    // }
+    // }
 
     @Override
     public List<Wine> createVintages(Wine wine, int from, int to) throws BusinessException {

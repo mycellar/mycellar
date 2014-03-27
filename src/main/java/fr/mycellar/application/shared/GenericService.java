@@ -22,19 +22,19 @@ import java.io.Serializable;
 import java.util.List;
 
 import fr.mycellar.domain.shared.Identifiable;
-import fr.mycellar.infrastructure.shared.repository.SearchParameters;
+import fr.mycellar.infrastructure.shared.repository.query.SearchParameters;
 
 /**
  * @author speralta
  */
 public interface GenericService<E extends Identifiable<PK>, PK extends Serializable> {
 
-    long count(SearchParameters searchParameters);
+    long count(SearchParameters<E> searchParameters);
 
-    List<E> find(SearchParameters searchParameters);
+    List<E> find(SearchParameters<E> searchParameters);
 
-    E findUnique(SearchParameters searchParameters);
+    E findUnique(SearchParameters<E> searchParameters);
 
-    E findUniqueOrNone(SearchParameters searchParameters);
+    E findUniqueOrNone(SearchParameters<E> searchParameters);
 
 }

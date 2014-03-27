@@ -42,7 +42,7 @@ import fr.mycellar.domain.stock.Movement;
 import fr.mycellar.domain.stock.Stock;
 import fr.mycellar.domain.stock.Stock_;
 import fr.mycellar.domain.user.User;
-import fr.mycellar.infrastructure.shared.repository.SearchParameters;
+import fr.mycellar.infrastructure.shared.repository.query.SearchParameters;
 
 /**
  * @author speralta
@@ -67,25 +67,37 @@ public class StockServiceFacadeImpl implements StockServiceFacade {
 
     @Override
     @Transactional(readOnly = true)
-    public long countCellars(SearchParameters searchParameters) {
+    public long countCellars(SearchParameters<Cellar> searchParameters) {
         return cellarService.count(searchParameters);
     }
 
     @Override
     @Transactional(readOnly = true)
-    public long countCellarShares(SearchParameters searchParameters) {
+    public long countCellarsLike(String term, SearchParameters<Cellar> searchParameters) {
+        return cellarService.countAllLike(term, searchParameters);
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public long countCellarsLike(String term, User user, SearchParameters<Cellar> searchParameters) {
+        return cellarService.countAllForUserLike(term, user, searchParameters);
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public long countCellarShares(SearchParameters<CellarShare> searchParameters) {
         return cellarShareService.count(searchParameters);
     }
 
     @Override
     @Transactional(readOnly = true)
-    public long countMovements(SearchParameters searchParameters) {
+    public long countMovements(SearchParameters<Movement> searchParameters) {
         return movementService.count(searchParameters);
     }
 
     @Override
     @Transactional(readOnly = true)
-    public long countStocks(SearchParameters searchParameters) {
+    public long countStocks(SearchParameters<Stock> searchParameters) {
         return stockService.count(searchParameters);
     }
 
@@ -144,24 +156,36 @@ public class StockServiceFacadeImpl implements StockServiceFacade {
 
     @Override
     @Transactional(readOnly = true)
-    public List<Cellar> getCellars(SearchParameters searchParameters) {
+    public List<Cellar> getCellars(SearchParameters<Cellar> searchParameters) {
         return cellarService.find(searchParameters);
     }
 
     @Override
-    public List<CellarShare> getCellarShares(SearchParameters searchParameters) {
+    @Transactional(readOnly = true)
+    public List<Cellar> getCellarsLike(String term, SearchParameters<Cellar> searchParameters) {
+        return cellarService.getAllLike(term, searchParameters);
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public List<Cellar> getCellarsLike(String term, User user, SearchParameters<Cellar> searchParameters) {
+        return cellarService.getAllForUserLike(term, user, searchParameters);
+    }
+
+    @Override
+    public List<CellarShare> getCellarShares(SearchParameters<CellarShare> searchParameters) {
         return cellarShareService.find(searchParameters);
     }
 
     @Override
     @Transactional(readOnly = true)
-    public List<Movement> getMovements(SearchParameters searchParameters) {
+    public List<Movement> getMovements(SearchParameters<Movement> searchParameters) {
         return movementService.find(searchParameters);
     }
 
     @Override
     @Transactional(readOnly = true)
-    public List<Stock> getStocks(SearchParameters searchParameters) {
+    public List<Stock> getStocks(SearchParameters<Stock> searchParameters) {
         return stockService.find(searchParameters);
     }
 
@@ -216,13 +240,16 @@ public class StockServiceFacadeImpl implements StockServiceFacade {
     @Override
     @Transactional(readOnly = true)
     public List<Cellar> getCellars(User user) {
-        return getCellars(new SearchParameters().orMode().property(Cellar_.owner, user).property(Cellar_.shares, CellarShare_.email, user.getEmail()));
+        return getCellars(new SearchParameters<Cellar>().disjunction() //
+                .property(Cellar_.owner).equalsTo(user) //
+                .property(Cellar_.shares).to(CellarShare_.email).equalsTo(user.getEmail()) //
+                .end());
     }
 
     @Override
     @Transactional(readOnly = true)
     public List<Stock> getStocks(Cellar cellar) {
-        return getStocks(new SearchParameters().property(Stock_.cellar, cellar));
+        return getStocks(new SearchParameters<Stock>().property(Stock_.cellar).equalsTo(cellar));
     }
 
     @Override
@@ -230,9 +257,9 @@ public class StockServiceFacadeImpl implements StockServiceFacade {
     public boolean hasReadRight(Integer cellarId, String userEmail) {
         Cellar cellar = getCellarById(cellarId);
         return (cellar != null) && (cellar.getOwner().getEmail().equals(userEmail) //
-                || (countCellarShares(new SearchParameters() //
-                        .property(CellarShare_.email, userEmail) //
-                        .property(CellarShare_.cellar, Cellar_.id, cellarId)) > 0));
+                || (countCellarShares(new SearchParameters<CellarShare>() //
+                        .property(CellarShare_.email).equalsTo(userEmail) //
+                        .property(CellarShare_.cellar).to(Cellar_.id).equalsTo(cellarId)) > 0));
     }
 
     @Override
@@ -240,10 +267,10 @@ public class StockServiceFacadeImpl implements StockServiceFacade {
     public boolean hasModifyRight(Integer cellarId, String userEmail) {
         Cellar cellar = getCellarById(cellarId);
         return (cellar != null) && (cellar.getOwner().getEmail().equals(userEmail) //
-                || (countCellarShares(new SearchParameters() //
-                        .property(CellarShare_.email, userEmail) //
-                        .property(CellarShare_.cellar, Cellar_.id, cellarId) //
-                        .property(CellarShare_.accessRight, AccessRightEnum.MODIFY)) > 0));
+                || (countCellarShares(new SearchParameters<CellarShare>() //
+                        .property(CellarShare_.email).equalsTo(userEmail) //
+                        .property(CellarShare_.cellar).to(Cellar_.id).equalsTo(cellarId) //
+                        .property(CellarShare_.accessRight).equalsTo(AccessRightEnum.MODIFY)) > 0));
     }
 
     @Override

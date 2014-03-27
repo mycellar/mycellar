@@ -31,7 +31,7 @@ import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.MediaType;
 
 import fr.mycellar.domain.wine.Wine;
-import fr.mycellar.infrastructure.shared.repository.SearchParameters;
+import fr.mycellar.infrastructure.shared.repository.query.SearchParameters;
 import fr.mycellar.interfaces.facades.wine.WineServiceFacade;
 import fr.mycellar.interfaces.web.services.FilterCouple;
 import fr.mycellar.interfaces.web.services.ListWithCount;
@@ -53,7 +53,7 @@ public class WineWebService {
     @Produces(MediaType.APPLICATION_JSON)
     @Path("wines")
     public ListWithCount<Wine> getWines(@QueryParam("first") int first, @QueryParam("count") int count, @QueryParam("filters") List<FilterCouple> filters, @QueryParam("sort") List<OrderCouple> orders) {
-        SearchParameters searchParameters = searchParametersUtil.getSearchParametersForListWithCount(first, count, filters, orders, Wine.class);
+        SearchParameters<Wine> searchParameters = searchParametersUtil.getSearchParametersForListWithCount(first, count, filters, orders, Wine.class);
         List<Wine> wines;
         if (count == 0) {
             wines = new ArrayList<>();
@@ -67,7 +67,7 @@ public class WineWebService {
     @Produces(MediaType.APPLICATION_JSON)
     @Path("wines/like")
     public ListWithCount<Wine> getWinesLike(@QueryParam("first") int first, @QueryParam("count") int count, @QueryParam("input") String input, @QueryParam("sort") List<OrderCouple> orders) {
-        SearchParameters searchParameters = searchParametersUtil.getSearchParametersForListWithCount(first, count, new ArrayList<FilterCouple>(), orders, Wine.class);
+        SearchParameters<Wine> searchParameters = searchParametersUtil.getSearchParametersForListWithCount(first, count, new ArrayList<FilterCouple>(), orders, Wine.class);
         List<Wine> wines;
         if (count == 0) {
             wines = new ArrayList<>();

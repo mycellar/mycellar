@@ -51,7 +51,7 @@ import fr.mycellar.domain.stock.Output;
 import fr.mycellar.domain.stock.Stock;
 import fr.mycellar.domain.wine.Format;
 import fr.mycellar.domain.wine.Wine;
-import fr.mycellar.infrastructure.shared.repository.SearchParameters;
+import fr.mycellar.infrastructure.shared.repository.query.SearchParameters;
 import fr.mycellar.infrastructure.stock.repository.MovementRepository;
 import fr.mycellar.infrastructure.stock.repository.StockRepository;
 
@@ -99,12 +99,16 @@ public class StockServiceImplIT {
         stock.setCellar(cellar);
         stock.setQuantity(6);
 
-        List<Movement> movements = movementRepository.find(new SearchParameters().property(Movement_.cellar, stock.getCellar()).property(Movement_.bottle, stock.getBottle()));
+        List<Movement> movements = movementRepository.find(new SearchParameters<Movement>() //
+                .property(Movement_.cellar).equalsTo(stock.getCellar()) //
+                .property(Movement_.bottle).equalsTo(stock.getBottle()));
         assertEquals(0, movements.size());
 
         // test
         Stock result = stockServiceImpl.save(stock);
-        movements = movementRepository.find(new SearchParameters().property(Movement_.cellar, result.getCellar()).property(Movement_.bottle, result.getBottle()));
+        movements = movementRepository.find(new SearchParameters<Movement>() //
+                .property(Movement_.cellar).equalsTo(result.getCellar()) //
+                .property(Movement_.bottle).equalsTo(result.getBottle()));
 
         // build expected
         Stock expectedStock = new Stock();
@@ -135,12 +139,16 @@ public class StockServiceImplIT {
         entityManager.detach(stock);
         stock.setQuantity(3);
 
-        List<Movement> movements = movementRepository.find(new SearchParameters().property(Movement_.cellar, stock.getCellar()).property(Movement_.bottle, stock.getBottle()));
+        List<Movement> movements = movementRepository.find(new SearchParameters<Movement>() //
+                .property(Movement_.cellar).equalsTo(stock.getCellar()) //
+                .property(Movement_.bottle).equalsTo(stock.getBottle()));
         assertEquals(0, movements.size());
 
         // test
         Stock result = stockServiceImpl.save(stock);
-        movements = movementRepository.find(new SearchParameters().property(Movement_.cellar, result.getCellar()).property(Movement_.bottle, result.getBottle()));
+        movements = movementRepository.find(new SearchParameters<Movement>() //
+                .property(Movement_.cellar).equalsTo(result.getCellar()) //
+                .property(Movement_.bottle).equalsTo(result.getBottle()));
 
         // build expected
         Stock expectedStock = new Stock();
@@ -170,12 +178,16 @@ public class StockServiceImplIT {
         entityManager.detach(stock);
         stock.setQuantity(9);
 
-        List<Movement> movements = movementRepository.find(new SearchParameters().property(Movement_.cellar, stock.getCellar()).property(Movement_.bottle, stock.getBottle()));
+        List<Movement> movements = movementRepository.find(new SearchParameters<Movement>() //
+                .property(Movement_.cellar).equalsTo(stock.getCellar()) //
+                .property(Movement_.bottle).equalsTo(stock.getBottle()));
         assertEquals(0, movements.size());
 
         // test
         Stock result = stockServiceImpl.save(stock);
-        movements = movementRepository.find(new SearchParameters().property(Movement_.cellar, result.getCellar()).property(Movement_.bottle, result.getBottle()));
+        movements = movementRepository.find(new SearchParameters<Movement>() //
+                .property(Movement_.cellar).equalsTo(result.getCellar()) //
+                .property(Movement_.bottle).equalsTo(result.getBottle()));
 
         // build expected
         Stock expectedStock = new Stock();
@@ -207,12 +219,16 @@ public class StockServiceImplIT {
         bottle.setFormat(entityManager.find(Format.class, 2));
         bottle.setWine(entityManager.find(Wine.class, 1));
 
-        List<Movement> movements = movementRepository.find(new SearchParameters().property(Movement_.cellar, cellar).property(Movement_.bottle, bottle));
+        List<Movement> movements = movementRepository.find(new SearchParameters<Movement>() //
+                .property(Movement_.cellar).equalsTo(cellar) //
+                .property(Movement_.bottle).equalsTo(bottle));
         assertEquals(0, movements.size());
 
         // test
         Stock result = stockServiceImpl.addToStock(cellar, bottle, 6, new LocalDate(), 30f, 30f, "source");
-        movements = movementRepository.find(new SearchParameters().property(Movement_.cellar, cellar).property(Movement_.bottle, bottle));
+        movements = movementRepository.find(new SearchParameters<Movement>() //
+                .property(Movement_.cellar).equalsTo(cellar) //
+                .property(Movement_.bottle).equalsTo(bottle));
 
         // build expected
         Stock expectedStock = new Stock();
@@ -244,12 +260,16 @@ public class StockServiceImplIT {
         bottle.setFormat(entityManager.find(Format.class, 1));
         bottle.setWine(entityManager.find(Wine.class, 1));
 
-        List<Movement> movements = movementRepository.find(new SearchParameters().property(Movement_.cellar, cellar).property(Movement_.bottle, bottle));
+        List<Movement> movements = movementRepository.find(new SearchParameters<Movement>() //
+                .property(Movement_.cellar).equalsTo(cellar) //
+                .property(Movement_.bottle).equalsTo(bottle));
         assertEquals(0, movements.size());
 
         // test
         Stock result = stockServiceImpl.addToStock(cellar, bottle, 6, new LocalDate(), 30f, 30f, "source");
-        movements = movementRepository.find(new SearchParameters().property(Movement_.cellar, cellar).property(Movement_.bottle, bottle));
+        movements = movementRepository.find(new SearchParameters<Movement>() //
+                .property(Movement_.cellar).equalsTo(cellar) //
+                .property(Movement_.bottle).equalsTo(bottle));
 
         // build expected
         Stock expectedStock = new Stock();
@@ -293,12 +313,14 @@ public class StockServiceImplIT {
         bottle.setFormat(entityManager.find(Format.class, 1));
         bottle.setWine(entityManager.find(Wine.class, 1));
 
-        List<Movement> movements = movementRepository.find(new SearchParameters().property(Movement_.cellar, cellar).property(Movement_.bottle, bottle));
+        List<Movement> movements = movementRepository.find(new SearchParameters<Movement>() //
+                .property(Movement_.cellar).equalsTo(cellar).property(Movement_.bottle).equalsTo(bottle));
         assertEquals(0, movements.size());
 
         // test
         Stock result = stockServiceImpl.removeFromStock(cellar, bottle, 3, new LocalDate(), "destination", 30f);
-        movements = movementRepository.find(new SearchParameters().property(Movement_.cellar, cellar).property(Movement_.bottle, bottle));
+        movements = movementRepository.find(new SearchParameters<Movement>() //
+                .property(Movement_.cellar).equalsTo(cellar).property(Movement_.bottle).equalsTo(bottle));
 
         // build expected
         Stock expectedStock = new Stock();

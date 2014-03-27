@@ -1,12 +1,13 @@
 angular.module('mycellar.resources.booking.bookings', [
-  'ngResource',
-  'mycellar.services.admin.resource'
+  'mycellar.services.resource'
 ]);
 
 angular.module('mycellar.resources.booking.bookings').factory('Bookings', [
-  '$resource', '$q',
-  function($resource, $q) {
-    var Bookings = $resource('/api/booking/bookings/:id', {id: '@id'}, {
+  'domainResource',
+  function (domainResource) {
+    return domainResource.createResource({
+      url: '/api/booking/bookings'
+    }, {
       getAllForCurrentUser: {
         url: '/api/booking/bookings',
         method: 'GET'
@@ -16,27 +17,13 @@ angular.module('mycellar.resources.booking.bookings').factory('Bookings', [
         method: 'GET'
       }
     });
-
-    Bookings.count = function() {
-      var deferred = $q.defer();
-      Bookings.get({count: 0}, function(result) {
-        $q.when(result.count).then(function(value) {
-          deferred.resolve(value);
-        }, function(value) {
-          deferred.reject(value);
-        });
-      });
-      return deferred.promise;
-    };
-
-    return Bookings;
   }
 ]);
 
 angular.module('mycellar.resources.booking.bookings').factory('AdminBookings', [
-  'adminDomainResource',
-  function (adminDomainResource) {
-    return adminDomainResource.createResource({
+  'domainResource',
+  function (domainResource) {
+    return domainResource.createResource({
       url: '/api/admin/domain/booking/bookings'
     }, {
       getByBookingBottleId: {

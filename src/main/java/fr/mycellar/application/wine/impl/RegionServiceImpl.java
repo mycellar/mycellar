@@ -30,7 +30,7 @@ import fr.mycellar.domain.shared.exception.BusinessError;
 import fr.mycellar.domain.shared.exception.BusinessException;
 import fr.mycellar.domain.wine.Region;
 import fr.mycellar.domain.wine.Region_;
-import fr.mycellar.infrastructure.shared.repository.SearchParameters;
+import fr.mycellar.infrastructure.shared.repository.query.SearchParameters;
 import fr.mycellar.infrastructure.wine.repository.RegionRepository;
 
 /**
@@ -55,9 +55,9 @@ public class RegionServiceImpl extends AbstractSimpleService<Region, RegionRepos
                 throw new BusinessException(BusinessError.REGION_00004, e);
             }
         }
-        Region existing = regionRepository.findUniqueOrNone(new SearchParameters() //
-                .property(Region_.country, entity.getCountry()) //
-                .property(NamedEntity_.name, entity.getName()));
+        Region existing = regionRepository.findUniqueOrNone(new SearchParameters<Region>() //
+                .property(Region_.country).equalsTo(entity.getCountry()) //
+                .property(NamedEntity_.name).equalsTo(entity.getName()));
         if ((existing != null) && ((entity.getId() == null) || !existing.getId().equals(entity.getId()))) {
             throw new BusinessException(BusinessError.REGION_00002);
         }
@@ -65,8 +65,8 @@ public class RegionServiceImpl extends AbstractSimpleService<Region, RegionRepos
 
     @Override
     protected void validateDelete(Region entity) throws BusinessException {
-        if (regionRepository.findPropertyCount(new SearchParameters() //
-                .property(Region_.id, entity.getId()), Region_.appellations) > 0) {
+        if (regionRepository.findPropertyCount(new SearchParameters<Region>() //
+                .property(Region_.id).equalsTo(entity.getId()), Region_.appellations) > 0) {
             throw new BusinessException(BusinessError.REGION_00003);
         }
     }

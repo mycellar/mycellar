@@ -35,7 +35,8 @@ import org.slf4j.LoggerFactory;
 
 import fr.mycellar.domain.contact.Contact;
 import fr.mycellar.infrastructure.shared.repository.JpaSimpleRepository;
-import fr.mycellar.infrastructure.shared.repository.SearchParameters;
+import fr.mycellar.infrastructure.shared.repository.query.SearchParameters;
+import fr.mycellar.infrastructure.shared.repository.query.SearchParametersValues;
 
 /**
  * @author speralta
@@ -54,7 +55,8 @@ public class JpaContactRepository extends JpaSimpleRepository<Contact> implement
     }
 
     @Override
-    public long countLastContacts(SearchParameters searchParameters) {
+    public long countLastContacts(SearchParameters<Contact> searchParameters) {
+        SearchParametersValues<Contact> values = searchParameters.build();
         CriteriaBuilder criteriaBuilder = getEntityManager().getCriteriaBuilder();
         CriteriaQuery<Long> query = criteriaBuilder.createQuery(Long.class);
         Root<Contact> root = query.from(Contact.class);
@@ -63,7 +65,7 @@ public class JpaContactRepository extends JpaSimpleRepository<Contact> implement
         Root<Contact> subroot = subquery.from(Contact.class);
         subquery.select(subroot).where(criteriaBuilder.equal(root.get("producer"), subroot.get("producer")),
                 criteriaBuilder.greaterThan(subroot.<LocalDate> get("current"), root.<LocalDate> get("current")));
-        Predicate predicate = getPredicate(query, root, criteriaBuilder, searchParameters);
+        Predicate predicate = getPredicate(query, root, criteriaBuilder, values);
         if (predicate == null) {
             predicate = criteriaBuilder.not(criteriaBuilder.exists(subquery));
         } else {
@@ -73,7 +75,8 @@ public class JpaContactRepository extends JpaSimpleRepository<Contact> implement
     }
 
     @Override
-    public List<Contact> getLastContacts(SearchParameters searchParameters) {
+    public List<Contact> getLastContacts(SearchParameters<Contact> searchParameters) {
+        SearchParametersValues<Contact> values = searchParameters.build();
         CriteriaBuilder criteriaBuilder = getEntityManager().getCriteriaBuilder();
         CriteriaQuery<Contact> query = criteriaBuilder.createQuery(Contact.class);
         Root<Contact> root = query.from(Contact.class);
@@ -83,7 +86,7 @@ public class JpaContactRepository extends JpaSimpleRepository<Contact> implement
         subquery.select(subroot).where(criteriaBuilder.equal(root.get("producer"), subroot.get("producer")),
                 criteriaBuilder.greaterThan(subroot.<LocalDate> get("current"), root.<LocalDate> get("current")));
 
-        Predicate predicate = getPredicate(query, root, criteriaBuilder, searchParameters);
+        Predicate predicate = getPredicate(query, root, criteriaBuilder, values);
         if (predicate == null) {
             predicate = criteriaBuilder.not(criteriaBuilder.exists(subquery));
         } else {
@@ -91,11 +94,11 @@ public class JpaContactRepository extends JpaSimpleRepository<Contact> implement
         }
 
         TypedQuery<Contact> typedQuery = getEntityManager().createQuery( //
-                query.orderBy(getOrderByUtil().buildJpaOrders(searchParameters.getOrders(), root, criteriaBuilder, searchParameters)) //
+                query.orderBy(getOrderByUtil().buildJpaOrders(values.getOrders(), root, criteriaBuilder)) //
                         .select(root) //
                         .where(predicate));
 
-        getJpaUtil().applyPagination(typedQuery, searchParameters);
+        getJpaUtil().applyPagination(typedQuery, values);
         List<Contact> result = typedQuery.getResultList();
         logger.trace("Returned {} lastContacts for {}.", result.size(), searchParameters);
 

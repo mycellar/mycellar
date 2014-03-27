@@ -37,7 +37,7 @@ import javax.ws.rs.core.MediaType;
 
 import fr.mycellar.domain.shared.exception.BusinessException;
 import fr.mycellar.domain.user.User;
-import fr.mycellar.infrastructure.shared.repository.SearchParameters;
+import fr.mycellar.infrastructure.shared.repository.query.SearchParameters;
 import fr.mycellar.interfaces.facades.user.UserServiceFacade;
 import fr.mycellar.interfaces.web.services.FilterCouple;
 import fr.mycellar.interfaces.web.services.ListWithCount;
@@ -68,7 +68,7 @@ public class UserDomainWebService {
             @QueryParam("count") @DefaultValue("10") int count, //
             @QueryParam("filters") List<FilterCouple> filters, //
             @QueryParam("sort") List<OrderCouple> orders) {
-        SearchParameters searchParameters = searchParametersUtil.getSearchParametersForListWithCount(first, count, filters, orders, User.class);
+        SearchParameters<User> searchParameters = searchParametersUtil.getSearchParametersForListWithCount(first, count, filters, orders, User.class);
         List<User> users;
         if (count == 0) {
             users = new ArrayList<>();
@@ -111,6 +111,27 @@ public class UserDomainWebService {
             return userServiceFacade.saveUser(user);
         }
         throw new RuntimeException();
+    }
+
+    @POST
+    @Consumes(MediaType.APPLICATION_JSON)
+    @Path("validateUser")
+    public void validateUser(User user) throws BusinessException {
+        userServiceFacade.validateUser(user);
+    }
+
+    @GET
+    @Produces(MediaType.APPLICATION_JSON)
+    @Path("users/like")
+    public ListWithCount<User> getUsersLike(@QueryParam("first") int first, @QueryParam("count") int count, @QueryParam("input") String input, @QueryParam("sort") List<OrderCouple> orders) {
+        List<User> users;
+        if (count == 0) {
+            users = new ArrayList<>();
+        } else {
+            users = userServiceFacade.getUsersLike(input, searchParametersUtil.getSearchParametersForListWithCount(first, count, new ArrayList<FilterCouple>(), orders, User.class));
+        }
+        return new ListWithCount<>(userServiceFacade.countUsersLike(input, searchParametersUtil.getSearchParametersForListWithCount(first, count, new ArrayList<FilterCouple>(), orders, User.class)),
+                users);
     }
 
     // BEAN METHODS

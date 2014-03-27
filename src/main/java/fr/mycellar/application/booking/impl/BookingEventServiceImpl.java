@@ -28,7 +28,8 @@ import org.joda.time.LocalDate;
 
 import fr.mycellar.application.booking.BookingEventService;
 import fr.mycellar.application.booking.BookingService;
-import fr.mycellar.application.shared.AbstractSimpleService;
+import fr.mycellar.application.shared.AbstractSearchableService;
+import fr.mycellar.domain.booking.Booking;
 import fr.mycellar.domain.booking.BookingEvent;
 import fr.mycellar.domain.booking.BookingEvent_;
 import fr.mycellar.domain.booking.Booking_;
@@ -36,15 +37,14 @@ import fr.mycellar.domain.shared.NamedEntity_;
 import fr.mycellar.domain.shared.exception.BusinessError;
 import fr.mycellar.domain.shared.exception.BusinessException;
 import fr.mycellar.infrastructure.booking.repository.BookingEventRepository;
-import fr.mycellar.infrastructure.shared.repository.Range;
-import fr.mycellar.infrastructure.shared.repository.SearchParameters;
+import fr.mycellar.infrastructure.shared.repository.query.SearchParameters;
 
 /**
  * @author speralta
  */
 @Named
 @Singleton
-public class BookingEventServiceImpl extends AbstractSimpleService<BookingEvent, BookingEventRepository> implements BookingEventService {
+public class BookingEventServiceImpl extends AbstractSearchableService<BookingEvent, BookingEventRepository> implements BookingEventService {
 
     private BookingEventRepository bookingEventRepository;
 
@@ -52,16 +52,9 @@ public class BookingEventServiceImpl extends AbstractSimpleService<BookingEvent,
 
     @Override
     public List<BookingEvent> getCurrentBookingEvents() {
-        return bookingEventRepository.find(new SearchParameters() //
-                .range(new Range<BookingEvent, LocalDate>(null, new LocalDate(), BookingEvent_.start), //
-                        new Range<BookingEvent, LocalDate>(new LocalDate(), null, BookingEvent_.end)));
-    }
-
-    @Override
-    public List<BookingEvent> getAllLike(String term) {
-        BookingEvent bookingEvent = new BookingEvent();
-        bookingEvent.setName(term);
-        return bookingEventRepository.find(new SearchParameters().term(NamedEntity_.name, term));
+        return bookingEventRepository.find(new SearchParameters<BookingEvent>() //
+                .rangeBetween(null, new LocalDate(), BookingEvent_.start) //
+                .rangeBetween(new LocalDate(), null, BookingEvent_.end));
     }
 
     @Override
@@ -77,10 +70,15 @@ public class BookingEventServiceImpl extends AbstractSimpleService<BookingEvent,
 
     @Override
     protected void validateDelete(BookingEvent entity) throws BusinessException {
-        if (bookingService.count(new SearchParameters() //
-                .property(Booking_.bookingEvent, entity)) > 0) {
+        if (bookingService.count(new SearchParameters<Booking>() //
+                .property(Booking_.bookingEvent).equalsTo(entity)) > 0) {
             throw new BusinessException(BusinessError.BOOKINGEVENT_00001);
         }
+    }
+
+    @Override
+    protected SearchParameters<BookingEvent> addTermToSearchParameters(String term, SearchParameters<BookingEvent> searchParameters) {
+        return searchParameters.fullText(NamedEntity_.name, term);
     }
 
     @Override

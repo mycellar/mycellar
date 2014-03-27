@@ -34,7 +34,7 @@ import fr.mycellar.domain.booking.BookingBottle;
 import fr.mycellar.domain.booking.BookingEvent;
 import fr.mycellar.domain.shared.exception.BusinessException;
 import fr.mycellar.domain.user.User;
-import fr.mycellar.infrastructure.shared.repository.SearchParameters;
+import fr.mycellar.infrastructure.shared.repository.query.SearchParameters;
 
 /**
  * @author speralta
@@ -85,19 +85,13 @@ public class BookingServiceFacadeImpl implements BookingServiceFacade {
 
     @Override
     @Transactional(readOnly = true)
-    public List<BookingEvent> getBookingEventsLike(String term) {
-        return bookingEventService.getAllLike(term);
-    }
-
-    @Override
-    @Transactional(readOnly = true)
-    public long countBookingEvents(SearchParameters searchParameters) {
+    public long countBookingEvents(SearchParameters<BookingEvent> searchParameters) {
         return bookingEventService.count(searchParameters);
     }
 
     @Override
     @Transactional(readOnly = true)
-    public long countBookings(SearchParameters searchParameters) {
+    public long countBookings(SearchParameters<Booking> searchParameters) {
         return bookingService.count(searchParameters);
     }
 
@@ -117,13 +111,13 @@ public class BookingServiceFacadeImpl implements BookingServiceFacade {
 
     @Override
     @Transactional(readOnly = true)
-    public List<BookingEvent> getBookingEvents(SearchParameters searchParameters) {
+    public List<BookingEvent> getBookingEvents(SearchParameters<BookingEvent> searchParameters) {
         return bookingEventService.find(searchParameters);
     }
 
     @Override
     @Transactional(readOnly = true)
-    public List<Booking> getBookings(SearchParameters searchParameters) {
+    public List<Booking> getBookings(SearchParameters<Booking> searchParameters) {
         List<Booking> bookings = bookingService.find(searchParameters);
         for (Booking booking : bookings) {
             updateBooking(booking);
@@ -173,6 +167,24 @@ public class BookingServiceFacadeImpl implements BookingServiceFacade {
     @Transactional
     public void deleteBookingEvent(BookingEvent bookingEvent) throws BusinessException {
         bookingEventService.delete(bookingEvent);
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public void validateBookingEvent(BookingEvent bookingEvent) throws BusinessException {
+        bookingEventService.validate(bookingEvent);
+    }
+
+    @Override
+    @Transactional(readOnly = false)
+    public List<BookingEvent> getBookingEventsLike(String term, SearchParameters<BookingEvent> searchParameters) {
+        return bookingEventService.getAllLike(term, searchParameters);
+    }
+
+    @Override
+    @Transactional(readOnly = false)
+    public long countBookingEventsLike(String term, SearchParameters<BookingEvent> searchParameters) {
+        return bookingEventService.countAllLike(term, searchParameters);
     }
 
     private void updateBooking(Booking booking) {
