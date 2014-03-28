@@ -38,6 +38,7 @@ import fr.mycellar.domain.shared.exception.BusinessError;
 import fr.mycellar.domain.shared.exception.BusinessException;
 import fr.mycellar.infrastructure.booking.repository.BookingEventRepository;
 import fr.mycellar.infrastructure.shared.repository.query.SearchParameters;
+import fr.mycellar.infrastructure.shared.repository.query.SearchBuilder;
 
 /**
  * @author speralta
@@ -52,9 +53,9 @@ public class BookingEventServiceImpl extends AbstractSearchableService<BookingEv
 
     @Override
     public List<BookingEvent> getCurrentBookingEvents() {
-        return bookingEventRepository.find(new SearchParameters<BookingEvent>() //
+        return bookingEventRepository.find(new SearchBuilder<BookingEvent>() //
                 .rangeBetween(null, new LocalDate(), BookingEvent_.start) //
-                .rangeBetween(new LocalDate(), null, BookingEvent_.end));
+                .rangeBetween(new LocalDate(), null, BookingEvent_.end).build());
     }
 
     @Override
@@ -70,15 +71,15 @@ public class BookingEventServiceImpl extends AbstractSearchableService<BookingEv
 
     @Override
     protected void validateDelete(BookingEvent entity) throws BusinessException {
-        if (bookingService.count(new SearchParameters<Booking>() //
-                .property(Booking_.bookingEvent).equalsTo(entity)) > 0) {
+        if (bookingService.count(new SearchBuilder<Booking>() //
+                .property(Booking_.bookingEvent).equalsTo(entity).build()) > 0) {
             throw new BusinessException(BusinessError.BOOKINGEVENT_00001);
         }
     }
 
     @Override
-    protected SearchParameters<BookingEvent> addTermToSearchParameters(String term, SearchParameters<BookingEvent> searchParameters) {
-        return searchParameters.fullText(NamedEntity_.name, term);
+    protected SearchParameters<BookingEvent> addTermToSearchParameters(String term, SearchParameters<BookingEvent> search) {
+        return new SearchBuilder<BookingEvent>(search).fullText(NamedEntity_.name, term).build();
     }
 
     @Override

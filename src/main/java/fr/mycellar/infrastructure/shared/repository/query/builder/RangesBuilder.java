@@ -27,18 +27,23 @@ import javax.persistence.metamodel.SingularAttribute;
 
 import fr.mycellar.infrastructure.shared.repository.query.Path;
 import fr.mycellar.infrastructure.shared.repository.query.Range;
-import fr.mycellar.infrastructure.shared.repository.query.SearchParameters;
+import fr.mycellar.infrastructure.shared.repository.query.SearchBuilder;
 
 /**
  * @author speralta
  */
 public class RangesBuilder<FROM> extends AbstractBuilder<FROM> {
-    private static final long serialVersionUID = 201403271745L;
 
-    private final List<Range<FROM, ?>> ranges = new ArrayList<>();
+    private final List<Range<FROM, ?>> ranges;
 
-    public RangesBuilder(SearchParameters<FROM> searchParameters) {
+    public RangesBuilder(SearchBuilder<FROM> searchParameters) {
         super(searchParameters);
+        ranges = new ArrayList<>();
+    }
+
+    public RangesBuilder(SearchBuilder<FROM> searchParameters, List<Range<FROM, ?>> ranges) {
+        super(searchParameters);
+        this.ranges = ranges;
     }
 
     public List<Range<FROM, ?>> getRanges() {
@@ -53,11 +58,11 @@ public class RangesBuilder<FROM> extends AbstractBuilder<FROM> {
         return new RangeBuilder<>(this, attribute);
     }
 
-    public <TO extends Comparable<? super TO>> SearchParameters<FROM> between(TO from, TO to, SingularAttribute<? super FROM, TO> attribute) {
+    public <TO extends Comparable<? super TO>> SearchBuilder<FROM> between(TO from, TO to, SingularAttribute<? super FROM, TO> attribute) {
         return between(from, to, new Path<FROM, TO>(attribute));
     }
 
-    <TO extends Comparable<? super TO>> SearchParameters<FROM> between(TO from, TO to, Path<FROM, TO> path) {
+    <TO extends Comparable<? super TO>> SearchBuilder<FROM> between(TO from, TO to, Path<FROM, TO> path) {
         ranges.add(new Range<FROM, TO>(from, to, path));
         return toSearchParameters();
     }

@@ -33,7 +33,7 @@ import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
 
 import fr.mycellar.infrastructure.shared.repository.query.Range;
-import fr.mycellar.infrastructure.shared.repository.query.SearchParametersValues;
+import fr.mycellar.infrastructure.shared.repository.query.SearchParameters;
 
 /**
  * Helper to create a predicate out of {@link Range}s.
@@ -46,7 +46,7 @@ public class ByRangeUtil {
     @Inject
     private JpaUtil jpaUtil;
 
-    public <E> Predicate byRanges(Root<E> root, CriteriaBuilder builder, SearchParametersValues<E> sp, Class<E> type) {
+    public <E> Predicate byRanges(Root<E> root, CriteriaBuilder builder, SearchParameters<E> sp, Class<E> type) {
         List<Range<E, ?>> ranges = sp.getRanges();
         List<Predicate> predicates = newArrayList();
         for (Range<E, ?> range : ranges) {

@@ -29,7 +29,7 @@ import org.hibernate.search.jpa.FullTextEntityManager;
 import org.hibernate.search.query.dsl.BooleanJunction;
 import org.hibernate.search.query.dsl.QueryBuilder;
 
-import fr.mycellar.infrastructure.shared.repository.query.SearchParametersValues;
+import fr.mycellar.infrastructure.shared.repository.query.SearchParameters;
 import fr.mycellar.infrastructure.shared.repository.query.TermSelector;
 
 @Named
@@ -39,12 +39,12 @@ public class DefaultLuceneQueryBuilder implements LuceneQueryBuilder {
     private static final String SPACES_OR_PUNCTUATION = "\\p{Punct}|\\p{Blank}";
 
     @Override
-    public <T> Query build(FullTextEntityManager fullTextEntityManager, SearchParametersValues<T> searchParameters, Class<? extends T> type) {
+    public <T> Query build(FullTextEntityManager fullTextEntityManager, SearchParameters<T> searchParameters, Class<? extends T> type) {
         QueryBuilder builder = fullTextEntityManager.getSearchFactory().buildQueryBuilder().forEntity(type).get();
 
         BooleanJunction<?> context = builder.bool();
         boolean valid = false;
-        for (TermSelector term : searchParameters.getTerms()) {
+        for (TermSelector<T> term : searchParameters.getTerms()) {
             if (term.isNotEmpty()) {
                 boolean hasTerms = false;
                 BooleanJunction<?> termContext = builder.bool();
@@ -54,9 +54,9 @@ public class DefaultLuceneQueryBuilder implements LuceneQueryBuilder {
                         for (String value : selected.split(SPACES_OR_PUNCTUATION)) {
                             if (isNotBlank(value)) {
                                 BooleanJunction<?> valueContext = builder.bool();
-                                if (searchParameters.getSearchSimilarity() != null) {
+                                if (term.getSearchSimilarity() != null) {
                                     valueContext.should(builder.keyword().fuzzy() //
-                                            .withEditDistanceUpTo(searchParameters.getSearchSimilarity()) //
+                                            .withEditDistanceUpTo(term.getSearchSimilarity()) //
                                             .onField(term.getAttribute().getName()) //
                                             .matching(value).createQuery());
                                 }

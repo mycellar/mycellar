@@ -29,11 +29,11 @@ import fr.mycellar.infrastructure.shared.repository.query.SearchParameters;
  */
 public interface AdministrationServiceFacade {
 
-    long countConfigurations(SearchParameters<Configuration> searchParameters);
+    long countConfigurations(SearchParameters<Configuration> search);
 
     Configuration getConfigurationById(Integer configurationId);
 
-    List<Configuration> getConfigurations(SearchParameters<Configuration> searchParameters);
+    List<Configuration> getConfigurations(SearchParameters<Configuration> search);
 
     Configuration saveConfiguration(Configuration configuration) throws BusinessException;
 

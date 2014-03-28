@@ -31,8 +31,8 @@ public interface ContactRepository extends SimpleRepository<Contact> {
 
     List<Contact> getAllToContact();
 
-    long countLastContacts(SearchParameters<Contact> searchParameters);
+    long countLastContacts(SearchParameters<Contact> search);
 
-    List<Contact> getLastContacts(SearchParameters<Contact> searchParameters);
+    List<Contact> getLastContacts(SearchParameters<Contact> search);
 
 }

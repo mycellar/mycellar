@@ -22,7 +22,7 @@ import javax.persistence.metamodel.PluralAttribute;
 import javax.persistence.metamodel.SingularAttribute;
 
 import fr.mycellar.infrastructure.shared.repository.query.Path;
-import fr.mycellar.infrastructure.shared.repository.query.SearchParameters;
+import fr.mycellar.infrastructure.shared.repository.query.SearchBuilder;
 
 /**
  * @author speralta
@@ -32,6 +32,11 @@ public class PropertySelectorBuilder<F, FROM, TO> {
     private final PropertySelectorsBuilder<F> builder;
 
     private final Path<F, TO> path;
+
+    public PropertySelectorBuilder(PropertySelectorsBuilder<F> builder, Path<F, TO> path) {
+        this.builder = builder;
+        this.path = path;
+    }
 
     public PropertySelectorBuilder(PropertySelectorsBuilder<F> builder, SingularAttribute<? super F, TO> attribute) {
         this.builder = builder;
@@ -54,7 +59,7 @@ public class PropertySelectorBuilder<F, FROM, TO> {
     }
 
     @SuppressWarnings("unchecked")
-    public SearchParameters<F> equalsTo(TO... values) {
+    public SearchBuilder<F> equalsTo(TO... values) {
         return builder.add(path, values);
     }
 

@@ -35,10 +35,10 @@ public interface StackServiceFacade {
     void onThrowable(Throwable throwable);
 
     /**
-     * @param searchParameters
+     * @param search
      * @return
      */
-    long countStacks(SearchParameters<Stack> searchParameters);
+    long countStacks(SearchParameters<Stack> search);
 
     /**
      * @param stack
@@ -52,10 +52,10 @@ public interface StackServiceFacade {
     void deleteAllStacks() throws BusinessException;
 
     /**
-     * @param searchParameters
+     * @param search
      * @return
      */
-    List<Stack> getStacks(SearchParameters<Stack> searchParameters);
+    List<Stack> getStacks(SearchParameters<Stack> search);
 
     /**
      * @param stackId

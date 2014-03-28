@@ -18,28 +18,25 @@
  */
 package fr.mycellar.infrastructure.shared.repository.query.builder.property;
 
-import java.io.Serializable;
-
 import javax.persistence.metamodel.PluralAttribute;
 import javax.persistence.metamodel.SingularAttribute;
 
 import fr.mycellar.infrastructure.shared.repository.query.Path;
 import fr.mycellar.infrastructure.shared.repository.query.PropertySelector;
 import fr.mycellar.infrastructure.shared.repository.query.PropertySelectors;
-import fr.mycellar.infrastructure.shared.repository.query.SearchParameters;
+import fr.mycellar.infrastructure.shared.repository.query.SearchBuilder;
 import fr.mycellar.infrastructure.shared.repository.query.builder.AbstractBuilder;
 
 /**
  * @author speralta
  */
-public class DisjunctionPropertySelectorsBuilder<FROM, PARENT extends Serializable> extends AbstractBuilder<FROM> {
-    private static final long serialVersionUID = 201403271745L;
+public class DisjunctionPropertySelectorsBuilder<FROM, PARENT> extends AbstractBuilder<FROM> {
 
     private final PropertySelectors<FROM> propertySelectors = new PropertySelectors<>();
 
     private final PARENT parent;
 
-    public DisjunctionPropertySelectorsBuilder(SearchParameters<FROM> searchParameters, PARENT parent) {
+    public DisjunctionPropertySelectorsBuilder(SearchBuilder<FROM> searchParameters, PARENT parent) {
         super(searchParameters);
         this.parent = parent;
     }

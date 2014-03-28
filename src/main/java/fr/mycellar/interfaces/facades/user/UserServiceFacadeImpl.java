@@ -45,14 +45,14 @@ public class UserServiceFacadeImpl implements UserServiceFacade {
 
     @Override
     @Transactional(readOnly = true)
-    public long countUsersLike(String term, SearchParameters<User> searchParameters) {
-        return userService.countAllLike(term, searchParameters);
+    public long countUsersLike(String term, SearchParameters<User> search) {
+        return userService.countAllLike(term, search);
     }
 
     @Override
     @Transactional(readOnly = true)
-    public List<User> getUsersLike(String term, SearchParameters<User> searchParameters) {
-        return userService.getAllLike(term, searchParameters);
+    public List<User> getUsersLike(String term, SearchParameters<User> search) {
+        return userService.getAllLike(term, search);
     }
 
     @Override
@@ -93,14 +93,14 @@ public class UserServiceFacadeImpl implements UserServiceFacade {
 
     @Override
     @Transactional(readOnly = true)
-    public long countUsers(SearchParameters<User> searchParameters) {
-        return userService.count(searchParameters);
+    public long countUsers(SearchParameters<User> search) {
+        return userService.count(search);
     }
 
     @Override
     @Transactional(readOnly = true)
-    public List<User> getUsers(SearchParameters<User> searchParameters) {
-        return userService.find(searchParameters);
+    public List<User> getUsers(SearchParameters<User> search) {
+        return userService.find(search);
     }
 
     @Override

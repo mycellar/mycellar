@@ -39,6 +39,7 @@ import fr.mycellar.domain.user.ResetPasswordRequest;
 import fr.mycellar.domain.user.User;
 import fr.mycellar.domain.user.User_;
 import fr.mycellar.infrastructure.shared.repository.query.SearchParameters;
+import fr.mycellar.infrastructure.shared.repository.query.SearchBuilder;
 import fr.mycellar.infrastructure.user.repository.UserRepository;
 
 /**
@@ -83,12 +84,12 @@ public class UserServiceImpl extends AbstractSearchableService<User, UserReposit
 
     @Override
     protected void validateDelete(User entity) throws BusinessException {
-        if (bookingService.count(new SearchParameters<Booking>() //
-                .property(Booking_.customer).equalsTo(entity)) > 0) {
+        if (bookingService.count(new SearchBuilder<Booking>() //
+                .property(Booking_.customer).equalsTo(entity).build()) > 0) {
             throw new BusinessException(BusinessError.USER_00002);
         }
-        if (cellarService.count(new SearchParameters<Cellar>() //
-                .property(Cellar_.owner).equalsTo(entity)) > 0) {
+        if (cellarService.count(new SearchBuilder<Cellar>() //
+                .property(Cellar_.owner).equalsTo(entity).build()) > 0) {
             throw new BusinessException(BusinessError.USER_00003);
         }
     }
@@ -104,8 +105,8 @@ public class UserServiceImpl extends AbstractSearchableService<User, UserReposit
 
     @Override
     public User getByEmail(String email) {
-        return userRepository.findUniqueOrNone(new SearchParameters<User>() //
-                .property(User_.email).equalsTo(email));
+        return userRepository.findUniqueOrNone(new SearchBuilder<User>() //
+                .property(User_.email).equalsTo(email).build());
     }
 
     @Override
@@ -120,9 +121,9 @@ public class UserServiceImpl extends AbstractSearchableService<User, UserReposit
     }
 
     @Override
-    protected SearchParameters<User> addTermToSearchParameters(String term, SearchParameters<User> searchParameters) {
+    protected SearchParameters<User> addTermToSearchParameters(String term, SearchParameters<User> search) {
         // TODO add fulltext on firstname, lastname and email
-        return searchParameters;
+        return search;
     }
 
     @Override

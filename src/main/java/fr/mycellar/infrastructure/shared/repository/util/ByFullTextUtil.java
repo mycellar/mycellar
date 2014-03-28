@@ -30,7 +30,7 @@ import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
 
 import fr.mycellar.domain.shared.Identifiable;
-import fr.mycellar.infrastructure.shared.repository.query.SearchParametersValues;
+import fr.mycellar.infrastructure.shared.repository.query.SearchParameters;
 import fr.mycellar.infrastructure.shared.repository.query.TermSelector;
 
 @Named
@@ -39,7 +39,7 @@ public class ByFullTextUtil {
     private HibernateSearchUtil hibernateSearchUtil;
     private JpaUtil jpaUtil;
 
-    public <T extends Identifiable<?>> Predicate byFullText(Root<T> root, CriteriaBuilder builder, SearchParametersValues<T> sp, Class<T> type) {
+    public <T extends Identifiable<?>> Predicate byFullText(Root<T> root, CriteriaBuilder builder, SearchParameters<T> sp, Class<T> type) {
         if (!hasNonEmptyTerms(sp)) {
             return null;
         }
@@ -51,8 +51,8 @@ public class ByFullTextUtil {
         }
     }
 
-    private boolean hasNonEmptyTerms(SearchParametersValues<?> sp) {
-        for (TermSelector termSelector : sp.getTerms()) {
+    private boolean hasNonEmptyTerms(SearchParameters<?> sp) {
+        for (TermSelector<?> termSelector : sp.getTerms()) {
             if (termSelector.isNotEmpty()) {
                 return true;
             }
@@ -60,7 +60,7 @@ public class ByFullTextUtil {
         return false;
     }
 
-    private <T extends Identifiable<?>> Predicate onOther(Root<T> root, CriteriaBuilder builder, SearchParametersValues<T> sp) {
+    private <T extends Identifiable<?>> Predicate onOther(Root<T> root, CriteriaBuilder builder, SearchParameters<T> sp) {
         List<? extends T> found = hibernateSearchUtil.find(root.getJavaType(), sp);
         if (found == null) {
             return null;
@@ -75,7 +75,7 @@ public class ByFullTextUtil {
         return jpaUtil.andPredicate(builder, jpaUtil.orPredicate(builder, predicates));
     }
 
-    private <T> Predicate onIdentifiable(Root<T> root, CriteriaBuilder builder, SearchParametersValues<T> sp) {
+    private <T> Predicate onIdentifiable(Root<T> root, CriteriaBuilder builder, SearchParameters<T> sp) {
         List<Serializable> ids = hibernateSearchUtil.findId(root.getJavaType(), sp);
         if (ids == null) {
             return null;

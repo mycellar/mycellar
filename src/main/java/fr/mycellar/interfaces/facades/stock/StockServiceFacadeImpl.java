@@ -43,6 +43,7 @@ import fr.mycellar.domain.stock.Stock;
 import fr.mycellar.domain.stock.Stock_;
 import fr.mycellar.domain.user.User;
 import fr.mycellar.infrastructure.shared.repository.query.SearchParameters;
+import fr.mycellar.infrastructure.shared.repository.query.SearchBuilder;
 
 /**
  * @author speralta
@@ -67,38 +68,38 @@ public class StockServiceFacadeImpl implements StockServiceFacade {
 
     @Override
     @Transactional(readOnly = true)
-    public long countCellars(SearchParameters<Cellar> searchParameters) {
-        return cellarService.count(searchParameters);
+    public long countCellars(SearchParameters<Cellar> search) {
+        return cellarService.count(search);
     }
 
     @Override
     @Transactional(readOnly = true)
-    public long countCellarsLike(String term, SearchParameters<Cellar> searchParameters) {
-        return cellarService.countAllLike(term, searchParameters);
+    public long countCellarsLike(String term, SearchParameters<Cellar> search) {
+        return cellarService.countAllLike(term, search);
     }
 
     @Override
     @Transactional(readOnly = true)
-    public long countCellarsLike(String term, User user, SearchParameters<Cellar> searchParameters) {
-        return cellarService.countAllForUserLike(term, user, searchParameters);
+    public long countCellarsLike(String term, User user, SearchParameters<Cellar> search) {
+        return cellarService.countAllForUserLike(term, user, search);
     }
 
     @Override
     @Transactional(readOnly = true)
-    public long countCellarShares(SearchParameters<CellarShare> searchParameters) {
-        return cellarShareService.count(searchParameters);
+    public long countCellarShares(SearchParameters<CellarShare> search) {
+        return cellarShareService.count(search);
     }
 
     @Override
     @Transactional(readOnly = true)
-    public long countMovements(SearchParameters<Movement> searchParameters) {
-        return movementService.count(searchParameters);
+    public long countMovements(SearchParameters<Movement> search) {
+        return movementService.count(search);
     }
 
     @Override
     @Transactional(readOnly = true)
-    public long countStocks(SearchParameters<Stock> searchParameters) {
-        return stockService.count(searchParameters);
+    public long countStocks(SearchParameters<Stock> search) {
+        return stockService.count(search);
     }
 
     @Override
@@ -156,37 +157,37 @@ public class StockServiceFacadeImpl implements StockServiceFacade {
 
     @Override
     @Transactional(readOnly = true)
-    public List<Cellar> getCellars(SearchParameters<Cellar> searchParameters) {
-        return cellarService.find(searchParameters);
+    public List<Cellar> getCellars(SearchParameters<Cellar> search) {
+        return cellarService.find(search);
     }
 
     @Override
     @Transactional(readOnly = true)
-    public List<Cellar> getCellarsLike(String term, SearchParameters<Cellar> searchParameters) {
-        return cellarService.getAllLike(term, searchParameters);
+    public List<Cellar> getCellarsLike(String term, SearchParameters<Cellar> search) {
+        return cellarService.getAllLike(term, search);
     }
 
     @Override
     @Transactional(readOnly = true)
-    public List<Cellar> getCellarsLike(String term, User user, SearchParameters<Cellar> searchParameters) {
-        return cellarService.getAllForUserLike(term, user, searchParameters);
+    public List<Cellar> getCellarsLike(String term, User user, SearchParameters<Cellar> search) {
+        return cellarService.getAllForUserLike(term, user, search);
     }
 
     @Override
-    public List<CellarShare> getCellarShares(SearchParameters<CellarShare> searchParameters) {
-        return cellarShareService.find(searchParameters);
-    }
-
-    @Override
-    @Transactional(readOnly = true)
-    public List<Movement> getMovements(SearchParameters<Movement> searchParameters) {
-        return movementService.find(searchParameters);
+    public List<CellarShare> getCellarShares(SearchParameters<CellarShare> search) {
+        return cellarShareService.find(search);
     }
 
     @Override
     @Transactional(readOnly = true)
-    public List<Stock> getStocks(SearchParameters<Stock> searchParameters) {
-        return stockService.find(searchParameters);
+    public List<Movement> getMovements(SearchParameters<Movement> search) {
+        return movementService.find(search);
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public List<Stock> getStocks(SearchParameters<Stock> search) {
+        return stockService.find(search);
     }
 
     @Override
@@ -240,16 +241,16 @@ public class StockServiceFacadeImpl implements StockServiceFacade {
     @Override
     @Transactional(readOnly = true)
     public List<Cellar> getCellars(User user) {
-        return getCellars(new SearchParameters<Cellar>().disjunction() //
+        return getCellars(new SearchBuilder<Cellar>().disjunction() //
                 .property(Cellar_.owner).equalsTo(user) //
                 .property(Cellar_.shares).to(CellarShare_.email).equalsTo(user.getEmail()) //
-                .end());
+                .end().build());
     }
 
     @Override
     @Transactional(readOnly = true)
     public List<Stock> getStocks(Cellar cellar) {
-        return getStocks(new SearchParameters<Stock>().property(Stock_.cellar).equalsTo(cellar));
+        return getStocks(new SearchBuilder<Stock>().property(Stock_.cellar).equalsTo(cellar).build());
     }
 
     @Override
@@ -257,9 +258,9 @@ public class StockServiceFacadeImpl implements StockServiceFacade {
     public boolean hasReadRight(Integer cellarId, String userEmail) {
         Cellar cellar = getCellarById(cellarId);
         return (cellar != null) && (cellar.getOwner().getEmail().equals(userEmail) //
-                || (countCellarShares(new SearchParameters<CellarShare>() //
+                || (countCellarShares(new SearchBuilder<CellarShare>() //
                         .property(CellarShare_.email).equalsTo(userEmail) //
-                        .property(CellarShare_.cellar).to(Cellar_.id).equalsTo(cellarId)) > 0));
+                        .property(CellarShare_.cellar).to(Cellar_.id).equalsTo(cellarId).build()) > 0));
     }
 
     @Override
@@ -267,10 +268,10 @@ public class StockServiceFacadeImpl implements StockServiceFacade {
     public boolean hasModifyRight(Integer cellarId, String userEmail) {
         Cellar cellar = getCellarById(cellarId);
         return (cellar != null) && (cellar.getOwner().getEmail().equals(userEmail) //
-                || (countCellarShares(new SearchParameters<CellarShare>() //
+                || (countCellarShares(new SearchBuilder<CellarShare>() //
                         .property(CellarShare_.email).equalsTo(userEmail) //
                         .property(CellarShare_.cellar).to(Cellar_.id).equalsTo(cellarId) //
-                        .property(CellarShare_.accessRight).equalsTo(AccessRightEnum.MODIFY)) > 0));
+                        .property(CellarShare_.accessRight).equalsTo(AccessRightEnum.MODIFY).build()) > 0));
     }
 
     @Override

@@ -31,23 +31,23 @@ import fr.mycellar.infrastructure.shared.repository.query.SearchParameters;
 public abstract class AbstractGenericService<R extends GenericRepository<E, PK>, E extends Identifiable<PK>, PK extends Serializable> implements GenericService<E, PK> {
 
     @Override
-    public long count(SearchParameters<E> searchParameters) {
-        return getRepository().findCount(searchParameters);
+    public long count(SearchParameters<E> search) {
+        return getRepository().findCount(search);
     }
 
     @Override
-    public List<E> find(SearchParameters<E> searchParameters) {
-        return getRepository().find(searchParameters);
+    public List<E> find(SearchParameters<E> search) {
+        return getRepository().find(search);
     }
 
     @Override
-    public E findUnique(SearchParameters<E> searchParameters) {
-        return getRepository().findUnique(searchParameters);
+    public E findUnique(SearchParameters<E> search) {
+        return getRepository().findUnique(search);
     }
 
     @Override
-    public E findUniqueOrNone(SearchParameters<E> searchParameters) {
-        return getRepository().findUniqueOrNone(searchParameters);
+    public E findUniqueOrNone(SearchParameters<E> search) {
+        return getRepository().findUniqueOrNone(search);
     }
 
     protected abstract R getRepository();

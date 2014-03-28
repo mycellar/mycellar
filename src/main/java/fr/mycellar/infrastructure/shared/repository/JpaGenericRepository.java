@@ -42,7 +42,7 @@ import org.slf4j.LoggerFactory;
 
 import fr.mycellar.domain.shared.Identifiable;
 import fr.mycellar.infrastructure.shared.repository.query.SearchParameters;
-import fr.mycellar.infrastructure.shared.repository.query.SearchParametersValues;
+import fr.mycellar.infrastructure.shared.repository.query.SearchBuilder;
 import fr.mycellar.infrastructure.shared.repository.util.ByFullTextUtil;
 import fr.mycellar.infrastructure.shared.repository.util.ByPropertySelectorUtil;
 import fr.mycellar.infrastructure.shared.repository.util.ByRangeUtil;
@@ -81,17 +81,9 @@ public abstract class JpaGenericRepository<E extends Identifiable<PK>, PK extend
         return type;
     }
 
-    /**
-     * Find and load a list of E instance.
-     * 
-     * @param searchParameters
-     *            carries additional search information
-     * @return the entities matching the search.
-     */
     @Override
-    public List<E> find(SearchParameters<E> searchParameters) {
-        checkNotNull(searchParameters, "The searchParameters cannot be null");
-        SearchParametersValues<E> sp = searchParameters.build();
+    public List<E> find(SearchParameters<E> sp) {
+        checkNotNull(sp, "The searchParameters cannot be null");
         CriteriaBuilder builder = entityManager.getCriteriaBuilder();
         CriteriaQuery<E> criteriaQuery = builder.createQuery(type);
         if (sp.isUseDistinct()) {
@@ -119,17 +111,9 @@ public abstract class JpaGenericRepository<E extends Identifiable<PK>, PK extend
         return entities;
     }
 
-    /**
-     * Count the number of E instances.
-     * 
-     * @param searchParameters
-     *            carries additional search information
-     * @return the number of entities matching the search.
-     */
     @Override
-    public long findCount(SearchParameters<E> searchParameters) {
-        checkNotNull(searchParameters, "The searchParameters cannot be null");
-        SearchParametersValues<E> sp = searchParameters.build();
+    public long findCount(SearchParameters<E> sp) {
+        checkNotNull(sp, "The searchParameters cannot be null");
         CriteriaBuilder builder = entityManager.getCriteriaBuilder();
 
         CriteriaQuery<Long> criteriaQuery = builder.createQuery(Long.class);
@@ -155,24 +139,9 @@ public abstract class JpaGenericRepository<E extends Identifiable<PK>, PK extend
         return typedQuery.getSingleResult().longValue();
     }
 
-    /**
-     * Find a list of E property.
-     * 
-     * @param propertyType
-     *            type of the property
-     * @param entity
-     *            a sample entity whose non-null properties may be used as
-     *            search hints
-     * @param searchParameters
-     *            carries additional search information
-     * @param attributes
-     *            the list of attributes to the property
-     * @return the entities property matching the search.
-     */
     @Override
-    public <T> List<T> findProperty(Class<T> propertyType, SearchParameters<E> searchParameters, Attribute<?, ?>... attributes) {
-        checkNotNull(searchParameters, "The searchParameters cannot be null");
-        SearchParametersValues<E> sp = searchParameters.build();
+    public <T> List<T> findProperty(Class<T> propertyType, SearchParameters<E> sp, Attribute<?, ?>... attributes) {
+        checkNotNull(sp, "The searchParameters cannot be null");
         CriteriaBuilder builder = entityManager.getCriteriaBuilder();
         CriteriaQuery<T> criteriaQuery = builder.createQuery(propertyType);
         if (sp.isUseDistinct()) {
@@ -203,22 +172,9 @@ public abstract class JpaGenericRepository<E extends Identifiable<PK>, PK extend
         return entities;
     }
 
-    /**
-     * Count the number of E instances.
-     * 
-     * @param entity
-     *            a sample entity whose non-null properties may be used as
-     *            search hint
-     * @param searchParameters
-     *            carries additional search information
-     * @param attributes
-     *            the list of attributes to the property
-     * @return the number of entities matching the search.
-     */
     @Override
-    public long findPropertyCount(SearchParameters<E> searchParameters, Attribute<?, ?>... attributes) {
-        checkNotNull(searchParameters, "The searchParameters cannot be null");
-        SearchParametersValues<E> sp = searchParameters.build();
+    public long findPropertyCount(SearchParameters<E> sp, Attribute<?, ?>... attributes) {
+        checkNotNull(sp, "The searchParameters cannot be null");
         CriteriaBuilder builder = entityManager.getCriteriaBuilder();
         CriteriaQuery<Long> criteriaQuery = builder.createQuery(Long.class);
         Root<E> root = criteriaQuery.from(type);
@@ -254,18 +210,10 @@ public abstract class JpaGenericRepository<E extends Identifiable<PK>, PK extend
         return result;
     }
 
-    /**
-     * We request at most 2, if there's more than one then we throw a
-     * {@link NonUniqueResultException}
-     * 
-     * @param searchParameters
-     * @return
-     * @throws NonUniqueResultException
-     */
     @Override
     public E findUniqueOrNone(SearchParameters<E> sp) {
         // this code is an optimization to prevent using a count
-        List<E> results = find(sp.paginate(0, 2));
+        List<E> results = find(new SearchBuilder<E>(sp).paginate(0, 2).build());
 
         if ((results == null) || results.isEmpty()) {
             return null;
@@ -278,28 +226,28 @@ public abstract class JpaGenericRepository<E extends Identifiable<PK>, PK extend
         return results.iterator().next();
     }
 
-    protected <R> Predicate getPredicate(CriteriaQuery<?> criteriaQuery, Root<E> root, CriteriaBuilder builder, SearchParametersValues<E> sp) {
+    protected <R> Predicate getPredicate(CriteriaQuery<?> criteriaQuery, Root<E> root, CriteriaBuilder builder, SearchParameters<E> sp) {
         return jpaUtil.andPredicate(builder, //
                 bySearchPredicate(root, builder, sp), //
                 byMandatoryPredicate(criteriaQuery, root, builder, sp));
     }
 
-    protected <R> Predicate bySearchPredicate(Root<E> root, CriteriaBuilder builder, SearchParametersValues<E> sp) {
+    protected <R> Predicate bySearchPredicate(Root<E> root, CriteriaBuilder builder, SearchParameters<E> sp) {
         return jpaUtil.andPredicate(builder, //
                 byFullText(root, builder, sp, type), //
                 byRanges(root, builder, sp, type), //
                 byPropertySelectors(root, builder, sp));
     }
 
-    protected Predicate byFullText(Root<E> root, CriteriaBuilder builder, SearchParametersValues<E> sp, Class<E> type) {
+    protected Predicate byFullText(Root<E> root, CriteriaBuilder builder, SearchParameters<E> sp, Class<E> type) {
         return byFullTextUtil.byFullText(root, builder, sp, type);
     }
 
-    protected Predicate byPropertySelectors(Root<E> root, CriteriaBuilder builder, SearchParametersValues<E> sp) {
+    protected Predicate byPropertySelectors(Root<E> root, CriteriaBuilder builder, SearchParameters<E> sp) {
         return byPropertySelectorUtil.byPropertySelectors(root, builder, sp);
     }
 
-    protected Predicate byRanges(Root<E> root, CriteriaBuilder builder, SearchParametersValues<E> sp, Class<E> type) {
+    protected Predicate byRanges(Root<E> root, CriteriaBuilder builder, SearchParameters<E> sp, Class<E> type) {
         return byRangeUtil.byRanges(root, builder, sp, type);
     }
 
@@ -307,7 +255,7 @@ public abstract class JpaGenericRepository<E extends Identifiable<PK>, PK extend
      * You may override this method to add a Predicate to the default find
      * method.
      */
-    protected <R> Predicate byMandatoryPredicate(CriteriaQuery<?> criteriaQuery, Root<E> root, CriteriaBuilder builder, SearchParametersValues<E> sp) {
+    protected <R> Predicate byMandatoryPredicate(CriteriaQuery<?> criteriaQuery, Root<E> root, CriteriaBuilder builder, SearchParameters<E> sp) {
         return null;
     }
 

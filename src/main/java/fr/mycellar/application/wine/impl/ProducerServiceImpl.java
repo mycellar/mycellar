@@ -31,7 +31,7 @@ import fr.mycellar.domain.shared.exception.BusinessException;
 import fr.mycellar.domain.wine.Producer;
 import fr.mycellar.domain.wine.Wine;
 import fr.mycellar.domain.wine.Wine_;
-import fr.mycellar.infrastructure.shared.repository.query.SearchParameters;
+import fr.mycellar.infrastructure.shared.repository.query.SearchBuilder;
 import fr.mycellar.infrastructure.wine.repository.ProducerRepository;
 
 /**
@@ -48,7 +48,7 @@ public class ProducerServiceImpl extends AbstractSimpleService<Producer, Produce
     @Override
     public void validate(Producer entity) throws BusinessException {
         Producer existing = producerRepository.findUniqueOrNone( //
-                new SearchParameters<Producer>().property(NamedEntity_.name).equalsTo(entity.getName()));
+                new SearchBuilder<Producer>().property(NamedEntity_.name).equalsTo(entity.getName()).build());
         if ((existing != null) && ((entity.getId() == null) || !existing.getId().equals(entity.getId()))) {
             throw new BusinessException(BusinessError.PRODUCER_00001);
         }
@@ -56,7 +56,7 @@ public class ProducerServiceImpl extends AbstractSimpleService<Producer, Produce
 
     @Override
     protected void validateDelete(Producer entity) throws BusinessException {
-        if (wineService.count(new SearchParameters<Wine>().property(Wine_.producer).equalsTo(entity)) > 0) {
+        if (wineService.count(new SearchBuilder<Wine>().property(Wine_.producer).equalsTo(entity).build()) > 0) {
             throw new BusinessException(BusinessError.PRODUCER_00002);
         }
     }

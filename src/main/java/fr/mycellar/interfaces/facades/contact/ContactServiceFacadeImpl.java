@@ -42,14 +42,14 @@ public class ContactServiceFacadeImpl implements ContactServiceFacade {
 
     @Override
     @Transactional(readOnly = true)
-    public long countContacts(SearchParameters<Contact> searchParameters) {
-        return contactService.count(searchParameters);
+    public long countContacts(SearchParameters<Contact> search) {
+        return contactService.count(search);
     }
 
     @Override
     @Transactional(readOnly = true)
-    public long countLastContacts(SearchParameters<Contact> searchParameters) {
-        return contactService.countLastContacts(searchParameters);
+    public long countLastContacts(SearchParameters<Contact> search) {
+        return contactService.countLastContacts(search);
     }
 
     @Override
@@ -60,14 +60,14 @@ public class ContactServiceFacadeImpl implements ContactServiceFacade {
 
     @Override
     @Transactional(readOnly = true)
-    public List<Contact> getContacts(SearchParameters<Contact> searchParameters) {
-        return contactService.find(searchParameters);
+    public List<Contact> getContacts(SearchParameters<Contact> search) {
+        return contactService.find(search);
     }
 
     @Override
     @Transactional(readOnly = true)
-    public List<Contact> getLastContacts(SearchParameters<Contact> searchParameters) {
-        return contactService.getLastContacts(searchParameters);
+    public List<Contact> getLastContacts(SearchParameters<Contact> search) {
+        return contactService.getLastContacts(search);
     }
 
     @Override

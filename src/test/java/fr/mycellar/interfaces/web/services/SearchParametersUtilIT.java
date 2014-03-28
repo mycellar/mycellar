@@ -35,7 +35,7 @@ import fr.mycellar.domain.wine.Wine;
 import fr.mycellar.infrastructure.shared.repository.query.OrderByDirection;
 import fr.mycellar.infrastructure.shared.repository.query.PropertySelector;
 import fr.mycellar.infrastructure.shared.repository.query.SearchParameters;
-import fr.mycellar.infrastructure.shared.repository.query.SearchParametersValues;
+import fr.mycellar.infrastructure.shared.repository.query.SearchBuilder;
 
 /**
  * @author speralta
@@ -67,16 +67,15 @@ public class SearchParametersUtilIT {
         String secondOrderValue = "desc";
         orders.add(new OrderCouple(secondOrder + "," + secondOrderValue));
 
-        SearchParameters<Wine> expectedBuilder = new SearchParameters<Wine>();
+        SearchBuilder<Wine> expectedBuilder = new SearchBuilder<Wine>();
         expectedBuilder.paginate(first, count) //
                 .property(new PropertySelector<>(firstFilter, Wine.class).selected(firstFilterValue)) //
                 .property(new PropertySelector<>(secondFilter, Wine.class).selected(secondFilterValue)) //
                 .orderBy(OrderByDirection.ASC, firstOrder, Wine.class) //
                 .orderBy(OrderByDirection.DESC, secondOrder, Wine.class);
-        SearchParametersValues<Wine> expected = expectedBuilder.build();
+        SearchParameters<Wine> expected = expectedBuilder.build();
 
-        SearchParameters<Wine> searchParametersBuilder = searchParametersUtil.getSearchParametersForListWithCount(first, count, filters, orders, Wine.class);
-        SearchParametersValues<Wine> searchParameters = searchParametersBuilder.build();
+        SearchParameters<Wine> searchParameters = searchParametersUtil.getSearchParametersForListWithCount(first, count, filters, orders, Wine.class);
 
         assertEquals(expected.getFirstResult(), searchParameters.getFirstResult());
         assertEquals(expected.getMaxResults(), searchParameters.getMaxResults());

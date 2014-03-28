@@ -42,8 +42,8 @@ public class AdministrationServiceFacadeImpl implements AdministrationServiceFac
 
     @Override
     @Transactional(readOnly = true)
-    public long countConfigurations(SearchParameters<Configuration> searchParameters) {
-        return configurationService.count(searchParameters);
+    public long countConfigurations(SearchParameters<Configuration> search) {
+        return configurationService.count(search);
     }
 
     @Override
@@ -54,8 +54,8 @@ public class AdministrationServiceFacadeImpl implements AdministrationServiceFac
 
     @Override
     @Transactional(readOnly = true)
-    public List<Configuration> getConfigurations(SearchParameters<Configuration> searchParameters) {
-        return configurationService.find(searchParameters);
+    public List<Configuration> getConfigurations(SearchParameters<Configuration> search) {
+        return configurationService.find(search);
     }
 
     @Override

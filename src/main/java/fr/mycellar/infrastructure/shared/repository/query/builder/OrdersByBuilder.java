@@ -28,18 +28,23 @@ import javax.persistence.metamodel.SingularAttribute;
 import fr.mycellar.infrastructure.shared.repository.query.OrderBy;
 import fr.mycellar.infrastructure.shared.repository.query.OrderByDirection;
 import fr.mycellar.infrastructure.shared.repository.query.Path;
-import fr.mycellar.infrastructure.shared.repository.query.SearchParameters;
+import fr.mycellar.infrastructure.shared.repository.query.SearchBuilder;
 
 /**
  * @author speralta
  */
 public class OrdersByBuilder<FROM> extends AbstractBuilder<FROM> {
-    private static final long serialVersionUID = 201403271745L;
 
-    private final Set<OrderBy<FROM, ?>> orders = new LinkedHashSet<>();
+    private final Set<OrderBy<FROM, ?>> orders;
 
-    public OrdersByBuilder(SearchParameters<FROM> searchParameters) {
+    public OrdersByBuilder(SearchBuilder<FROM> searchParameters) {
         super(searchParameters);
+        orders = new LinkedHashSet<>();
+    }
+
+    public OrdersByBuilder(SearchBuilder<FROM> searchParameters, Set<OrderBy<FROM, ?>> orders) {
+        super(searchParameters);
+        this.orders = new LinkedHashSet<>(orders);
     }
 
     public <TO> OrderByBuilder<FROM, FROM, TO> by(SingularAttribute<? super FROM, TO> attribute) {

@@ -21,9 +21,9 @@ package fr.mycellar.infrastructure.shared.repository.util;
 import org.apache.lucene.search.Query;
 import org.hibernate.search.jpa.FullTextEntityManager;
 
-import fr.mycellar.infrastructure.shared.repository.query.SearchParametersValues;
+import fr.mycellar.infrastructure.shared.repository.query.SearchParameters;
 
 public interface LuceneQueryBuilder {
 
-    <T> Query build(FullTextEntityManager fullTextEntityManager, SearchParametersValues<T> searchParameters, Class<? extends T> type);
+    <T> Query build(FullTextEntityManager fullTextEntityManager, SearchParameters<T> searchParameters, Class<? extends T> type);
 }

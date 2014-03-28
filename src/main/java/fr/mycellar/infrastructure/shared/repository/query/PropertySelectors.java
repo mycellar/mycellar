@@ -28,11 +28,26 @@ import java.util.List;
 public class PropertySelectors<FROM> implements Serializable {
     private static final long serialVersionUID = 201403271745L;
 
-    private boolean andMode = true;
+    private boolean andMode;
 
-    private final List<PropertySelector<FROM, ?>> properties = new ArrayList<>();
+    private final List<PropertySelector<FROM, ?>> properties;
 
-    private final List<PropertySelectors<FROM>> propertySelectors = new ArrayList<>();
+    private final List<PropertySelectors<FROM>> propertySelectors;
+
+    public PropertySelectors() {
+        andMode = true;
+        properties = new ArrayList<>();
+        propertySelectors = new ArrayList<>();
+    }
+
+    public PropertySelectors(PropertySelectors<FROM> propertySelectors) {
+        this.andMode = propertySelectors.andMode;
+        properties = new ArrayList<>(propertySelectors.properties);
+        this.propertySelectors = new ArrayList<>();
+        for (PropertySelectors<FROM> selectors : propertySelectors.propertySelectors) {
+            this.propertySelectors.add(new PropertySelectors<FROM>(selectors));
+        }
+    }
 
     public PropertySelectors<FROM> or() {
         andMode = false;

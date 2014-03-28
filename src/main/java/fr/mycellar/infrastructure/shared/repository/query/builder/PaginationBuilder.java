@@ -18,19 +18,26 @@
  */
 package fr.mycellar.infrastructure.shared.repository.query.builder;
 
-import fr.mycellar.infrastructure.shared.repository.query.SearchParameters;
+import fr.mycellar.infrastructure.shared.repository.query.SearchBuilder;
 
 /**
  * @author speralta
  */
 public class PaginationBuilder<FROM> extends AbstractBuilder<FROM> {
-    private static final long serialVersionUID = 201403271745L;
 
-    private int maxResults = -1;
-    private int firstResult = 0;
+    private int maxResults;
+    private int firstResult;
 
-    public PaginationBuilder(SearchParameters<FROM> searchParameters) {
+    public PaginationBuilder(SearchBuilder<FROM> searchParameters) {
         super(searchParameters);
+        maxResults = -1;
+        firstResult = 0;
+    }
+
+    public PaginationBuilder(SearchBuilder<FROM> searchParameters, int maxResults, int firstResult) {
+        super(searchParameters);
+        this.maxResults = maxResults;
+        this.firstResult = firstResult;
     }
 
     public PaginationBuilder<FROM> firstResult(int firstResult) {

@@ -24,19 +24,28 @@ import javax.persistence.metamodel.SingularAttribute;
 import fr.mycellar.infrastructure.shared.repository.query.Path;
 import fr.mycellar.infrastructure.shared.repository.query.PropertySelector;
 import fr.mycellar.infrastructure.shared.repository.query.PropertySelectors;
-import fr.mycellar.infrastructure.shared.repository.query.SearchParameters;
+import fr.mycellar.infrastructure.shared.repository.query.SearchBuilder;
 import fr.mycellar.infrastructure.shared.repository.query.builder.AbstractBuilder;
 
 /**
  * @author speralta
  */
 public class PropertySelectorsBuilder<FROM> extends AbstractBuilder<FROM> {
-    private static final long serialVersionUID = 201403271745L;
 
-    private final PropertySelectors<FROM> propertySelectors = new PropertySelectors<>();
+    private final PropertySelectors<FROM> propertySelectors;
 
-    public PropertySelectorsBuilder(SearchParameters<FROM> searchParameters) {
+    public PropertySelectorsBuilder(SearchBuilder<FROM> searchParameters) {
         super(searchParameters);
+        propertySelectors = new PropertySelectors<>();
+    }
+
+    public PropertySelectorsBuilder(SearchBuilder<FROM> searchParameters, PropertySelectors<FROM> propertySelectors) {
+        super(searchParameters);
+        this.propertySelectors = new PropertySelectors<FROM>(propertySelectors);
+    }
+
+    public <TO> PropertySelectorBuilder<FROM, FROM, TO> property(Path<FROM, TO> path) {
+        return new PropertySelectorBuilder<FROM, FROM, TO>(this, path);
     }
 
     public <TO> PropertySelectorBuilder<FROM, FROM, TO> property(SingularAttribute<? super FROM, TO> attribute) {
@@ -52,9 +61,8 @@ public class PropertySelectorsBuilder<FROM> extends AbstractBuilder<FROM> {
         return this;
     }
 
-    public DisjunctionPropertySelectorsBuilder<FROM, SearchParameters<FROM>> disjunction() {
-        DisjunctionPropertySelectorsBuilder<FROM, SearchParameters<FROM>> disjunction = new DisjunctionPropertySelectorsBuilder<FROM, SearchParameters<FROM>>(toSearchParameters(),
-                toSearchParameters());
+    public DisjunctionPropertySelectorsBuilder<FROM, SearchBuilder<FROM>> disjunction() {
+        DisjunctionPropertySelectorsBuilder<FROM, SearchBuilder<FROM>> disjunction = new DisjunctionPropertySelectorsBuilder<FROM, SearchBuilder<FROM>>(toSearchParameters(), toSearchParameters());
         propertySelectors.add(disjunction.getPropertySelectors().or());
         return disjunction;
     }
@@ -63,7 +71,7 @@ public class PropertySelectorsBuilder<FROM> extends AbstractBuilder<FROM> {
         return propertySelectors;
     }
 
-    <TO> SearchParameters<FROM> add(Path<FROM, TO> path, @SuppressWarnings("unchecked") TO... values) {
+    <TO> SearchBuilder<FROM> add(Path<FROM, TO> path, @SuppressWarnings("unchecked") TO... values) {
         propertySelectors.property(new PropertySelector<>(path, values));
         return toSearchParameters();
     }

@@ -37,7 +37,7 @@ import fr.mycellar.domain.shared.exception.BusinessError;
 import fr.mycellar.domain.shared.exception.BusinessException;
 import fr.mycellar.domain.user.User;
 import fr.mycellar.infrastructure.booking.repository.BookingRepository;
-import fr.mycellar.infrastructure.shared.repository.query.SearchParameters;
+import fr.mycellar.infrastructure.shared.repository.query.SearchBuilder;
 
 /**
  * @author speralta
@@ -73,23 +73,23 @@ public class BookingServiceImpl extends AbstractSimpleService<Booking, BookingRe
 
     @Override
     public long countBookings(User customer) {
-        return bookingRepository.findCount(new SearchParameters<Booking>() //
-                .property(Booking_.customer).equalsTo(customer));
+        return bookingRepository.findCount(new SearchBuilder<Booking>() //
+                .property(Booking_.customer).equalsTo(customer).build());
     }
 
     @Override
     public List<Booking> getBookings(User customer, int first, int count) {
-        return bookingRepository.find(new SearchParameters<Booking>() //
+        return bookingRepository.find(new SearchBuilder<Booking>() //
                 .property(Booking_.customer).equalsTo(customer) //
                 .orderBy(Booking_.bookingEvent).and(BookingEvent_.start).desc() //
-                .paginate(first, count));
+                .paginate(first, count).build());
     }
 
     @Override
     public Booking getBooking(BookingEvent bookingEvent, User customer) {
-        Booking booking = bookingRepository.findUniqueOrNone(new SearchParameters<Booking>() //
+        Booking booking = bookingRepository.findUniqueOrNone(new SearchBuilder<Booking>() //
                 .property(Booking_.bookingEvent).equalsTo(bookingEvent) //
-                .property(Booking_.customer).equalsTo(customer));
+                .property(Booking_.customer).equalsTo(customer).build());
         if (booking == null) {
             booking = new Booking();
             booking.setCustomer(customer);
@@ -105,15 +105,15 @@ public class BookingServiceImpl extends AbstractSimpleService<Booking, BookingRe
 
     @Override
     public List<Booking> getAllByBookingEventId(Integer bookingEventId) {
-        return bookingRepository.find(new SearchParameters<Booking>() //
-                .property(Booking_.bookingEvent).to(BookingEvent_.id).equalsTo(bookingEventId));
+        return bookingRepository.find(new SearchBuilder<Booking>() //
+                .property(Booking_.bookingEvent).to(BookingEvent_.id).equalsTo(bookingEventId).build());
     }
 
     @Override
     public void validate(Booking entity) throws BusinessException {
-        Booking existing = bookingRepository.findUniqueOrNone(new SearchParameters<Booking>() //
+        Booking existing = bookingRepository.findUniqueOrNone(new SearchBuilder<Booking>() //
                 .property(Booking_.bookingEvent).equalsTo(entity.getBookingEvent()) //
-                .property(Booking_.customer).equalsTo(entity.getCustomer()));
+                .property(Booking_.customer).equalsTo(entity.getCustomer()).build());
         if ((existing != null) && ((entity.getId() == null) || !existing.getId().equals(entity.getId()))) {
             throw new BusinessException(BusinessError.BOOKING_00001);
         }

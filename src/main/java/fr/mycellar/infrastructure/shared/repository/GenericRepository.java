@@ -38,20 +38,20 @@ public interface GenericRepository<E extends Identifiable<PK>, PK extends Serial
     /**
      * Find and load a list of E instance.
      * 
-     * @param searchParameters
+     * @param search
      *            carries additional search information
      * @return the entities matching the search.
      */
-    List<E> find(SearchParameters<E> searchParameters);
+    List<E> find(SearchParameters<E> search);
 
     /**
      * Count the number of E instances.
      * 
-     * @param searchParameters
+     * @param search
      *            carries additional search information
      * @return the number of entities matching the search.
      */
-    long findCount(SearchParameters<E> searchParameters);
+    long findCount(SearchParameters<E> search);
 
     /**
      * Find a list of E property.
@@ -61,13 +61,13 @@ public interface GenericRepository<E extends Identifiable<PK>, PK extends Serial
      * @param entity
      *            a sample entity whose non-null properties may be used as
      *            search hints
-     * @param searchParameters
+     * @param search
      *            carries additional search information
      * @param attributes
      *            the list of attributes to the property
      * @return the entities property matching the search.
      */
-    <T> List<T> findProperty(Class<T> propertyType, SearchParameters<E> sp, Attribute<?, ?>... attributes);
+    <T> List<T> findProperty(Class<T> propertyType, SearchParameters<E> search, Attribute<?, ?>... attributes);
 
     /**
      * Count the number of E instances.
@@ -75,28 +75,28 @@ public interface GenericRepository<E extends Identifiable<PK>, PK extends Serial
      * @param entity
      *            a sample entity whose non-null properties may be used as
      *            search hint
-     * @param searchParameters
+     * @param search
      *            carries additional search information
      * @param attributes
      *            the list of attributes to the property
      * @return the number of entities matching the search.
      */
-    long findPropertyCount(SearchParameters<E> sp, Attribute<?, ?>... attributes);
+    long findPropertyCount(SearchParameters<E> search, Attribute<?, ?>... attributes);
 
     /**
-     * @param searchParameters
+     * @param search
      * @return
      */
-    E findUnique(SearchParameters<E> searchParameters);
+    E findUnique(SearchParameters<E> search);
 
     /**
      * We request at most 2, if there's more than one then we throw a
      * {@link NonUniqueResultException}
      * 
-     * @param searchParameters
+     * @param search
      * @return
      * @throws NonUniqueResultException
      */
-    E findUniqueOrNone(SearchParameters<E> searchParameters);
+    E findUniqueOrNone(SearchParameters<E> search);
 
 }

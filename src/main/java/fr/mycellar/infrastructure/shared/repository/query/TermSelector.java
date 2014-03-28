@@ -29,18 +29,27 @@ import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 
-public class TermSelector implements Serializable {
+public class TermSelector<FROM> implements Serializable {
     private static final long serialVersionUID = 201308010800L;
-    private final Path path;
+    private final Path<FROM, String> path;
     private List<String> selected = new ArrayList<>();
     private boolean orMode = true;
+    private Integer searchSimilarity = 2;
 
-    public TermSelector(SingularAttribute<?, ?> attribute) {
-        path = new Path(attribute);
+    public TermSelector(SingularAttribute<? super FROM, String> attribute) {
+        path = new Path<FROM, String>(attribute);
     }
 
     public SingularAttribute<?, ?> getAttribute() {
         return path != null ? (SingularAttribute<?, ?>) path.getAttributes().get(0) : null;
+    }
+
+    public Integer getSearchSimilarity() {
+        return searchSimilarity;
+    }
+
+    public void setSearchSimilarity(Integer searchSimilarity) {
+        this.searchSimilarity = searchSimilarity;
     }
 
     public boolean isOrMode() {
@@ -51,12 +60,12 @@ public class TermSelector implements Serializable {
         this.orMode = orMode;
     }
 
-    public TermSelector or() {
+    public TermSelector<FROM> or() {
         setOrMode(true);
         return this;
     }
 
-    public TermSelector and() {
+    public TermSelector<FROM> and() {
         setOrMode(false);
         return this;
     }
@@ -79,7 +88,7 @@ public class TermSelector implements Serializable {
         this.selected = selected;
     }
 
-    public TermSelector selected(String... selected) {
+    public TermSelector<FROM> selected(String... selected) {
         setSelected(Arrays.asList(selected));
         return this;
     }

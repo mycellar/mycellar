@@ -34,7 +34,7 @@ import fr.mycellar.MyCellarApplication;
 import fr.mycellar.application.booking.BookingService;
 import fr.mycellar.domain.booking.BookingEvent;
 import fr.mycellar.infrastructure.booking.repository.BookingEventRepository;
-import fr.mycellar.infrastructure.shared.repository.query.SearchParameters;
+import fr.mycellar.infrastructure.shared.repository.query.SearchBuilder;
 
 /**
  * @author speralta
@@ -61,8 +61,8 @@ public class BookingEventServiceImplIT {
 
     @Test
     public void test() {
-        assertEquals(2, bookingEventServiceImpl.countAllLike("Campag", new SearchParameters<BookingEvent>()));
-        assertEquals(2, bookingEventServiceImpl.countAllLike("test", new SearchParameters<BookingEvent>()));
-        assertEquals(0, bookingEventServiceImpl.countAllLike("carnage", new SearchParameters<BookingEvent>()));
+        assertEquals(2, bookingEventServiceImpl.countAllLike("Campag", new SearchBuilder<BookingEvent>().build()));
+        assertEquals(2, bookingEventServiceImpl.countAllLike("test", new SearchBuilder<BookingEvent>().build()));
+        assertEquals(0, bookingEventServiceImpl.countAllLike("carnage", new SearchBuilder<BookingEvent>().build()));
     }
 }

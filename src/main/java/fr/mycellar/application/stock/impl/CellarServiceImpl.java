@@ -39,6 +39,7 @@ import fr.mycellar.domain.stock.Stock;
 import fr.mycellar.domain.stock.Stock_;
 import fr.mycellar.domain.user.User;
 import fr.mycellar.infrastructure.shared.repository.query.SearchParameters;
+import fr.mycellar.infrastructure.shared.repository.query.SearchBuilder;
 import fr.mycellar.infrastructure.stock.repository.CellarRepository;
 
 /**
@@ -55,20 +56,20 @@ public class CellarServiceImpl extends AbstractSearchableService<Cellar, CellarR
     private StockService stockService;
 
     @Override
-    public long countAllForUserLike(String term, User user, SearchParameters<Cellar> searchParameters) {
-        return count(addUserToSearchParameters(user, addTermToSearchParameters(term, searchParameters)));
+    public long countAllForUserLike(String term, User user, SearchParameters<Cellar> search) {
+        return count(addUserToSearchParameters(user, addTermToSearchParameters(term, search)));
     }
 
     @Override
-    public List<Cellar> getAllForUserLike(String term, User user, SearchParameters<Cellar> searchParameters) {
-        return find(addUserToSearchParameters(user, addTermToSearchParameters(term, searchParameters)));
+    public List<Cellar> getAllForUserLike(String term, User user, SearchParameters<Cellar> search) {
+        return find(addUserToSearchParameters(user, addTermToSearchParameters(term, search)));
     }
 
     @Override
     public void validate(Cellar entity) throws BusinessException {
-        Cellar existing = cellarRepository.findUniqueOrNone(new SearchParameters<Cellar>() //
+        Cellar existing = cellarRepository.findUniqueOrNone(new SearchBuilder<Cellar>() //
                 .property(Cellar_.owner).equalsTo(entity.getOwner()) //
-                .property(NamedEntity_.name).equalsTo(entity.getName()));
+                .property(NamedEntity_.name).equalsTo(entity.getName()).build());
         if ((existing != null) && ((entity.getId() == null) || !existing.getId().equals(entity.getId()))) {
             throw new BusinessException(BusinessError.CELLAR_00001);
         }
@@ -76,23 +77,26 @@ public class CellarServiceImpl extends AbstractSearchableService<Cellar, CellarR
 
     @Override
     protected void validateDelete(Cellar entity) throws BusinessException {
-        if (stockService.count(new SearchParameters<Stock>() //
-                .property(Stock_.cellar).equalsTo(entity)) > 0) {
+        if (stockService.count(new SearchBuilder<Stock>() //
+                .property(Stock_.cellar).equalsTo(entity).build()) > 0) {
             throw new BusinessException(BusinessError.CELLAR_00002);
         }
-        if (cellarShareService.count(new SearchParameters<CellarShare>() //
-                .property(CellarShare_.cellar).equalsTo(entity)) > 0) {
+        if (cellarShareService.count(new SearchBuilder<CellarShare>() //
+                .property(CellarShare_.cellar).equalsTo(entity).build()) > 0) {
             throw new BusinessException(BusinessError.CELLAR_00003);
         }
     }
 
     @Override
-    protected SearchParameters<Cellar> addTermToSearchParameters(String term, SearchParameters<Cellar> searchParameters) {
-        return searchParameters.fullText(NamedEntity_.name, term);
+    protected SearchParameters<Cellar> addTermToSearchParameters(String term, SearchParameters<Cellar> search) {
+        return new SearchBuilder<Cellar>(search).fullText(NamedEntity_.name, term).build();
     }
 
-    protected SearchParameters<Cellar> addUserToSearchParameters(User user, SearchParameters<Cellar> searchParameters) {
-        return searchParameters.disjunction().property(Cellar_.owner).equalsTo(user).property(Cellar_.shares).to(CellarShare_.email).equalsTo(user.getEmail()).end();
+    protected SearchParameters<Cellar> addUserToSearchParameters(User user, SearchParameters<Cellar> search) {
+        return new SearchBuilder<Cellar>(search).disjunction() //
+                .property(Cellar_.owner).equalsTo(user) //
+                .property(Cellar_.shares).to(CellarShare_.email).equalsTo(user.getEmail()) //
+                .end().build();
     }
 
     @Override

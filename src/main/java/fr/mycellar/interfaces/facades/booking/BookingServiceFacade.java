@@ -33,11 +33,11 @@ import fr.mycellar.infrastructure.shared.repository.query.SearchParameters;
  */
 public interface BookingServiceFacade {
 
-    long countBookingEvents(SearchParameters<BookingEvent> searchParameters);
+    long countBookingEvents(SearchParameters<BookingEvent> search);
 
-    long countBookingEventsLike(String term, SearchParameters<BookingEvent> searchParameters);
+    long countBookingEventsLike(String term, SearchParameters<BookingEvent> search);
 
-    long countBookings(SearchParameters<Booking> searchParameters);
+    long countBookings(SearchParameters<Booking> search);
 
     long countBookings(User currentUser);
 
@@ -51,11 +51,11 @@ public interface BookingServiceFacade {
 
     BookingEvent getBookingEventById(Integer bookingEventId);
 
-    List<BookingEvent> getBookingEvents(SearchParameters<BookingEvent> searchParameters);
+    List<BookingEvent> getBookingEvents(SearchParameters<BookingEvent> search);
 
-    List<BookingEvent> getBookingEventsLike(String term, SearchParameters<BookingEvent> searchParameters);
+    List<BookingEvent> getBookingEventsLike(String term, SearchParameters<BookingEvent> search);
 
-    List<Booking> getBookings(SearchParameters<Booking> searchParameters);
+    List<Booking> getBookings(SearchParameters<Booking> search);
 
     List<Booking> getBookings(User customer, int first, int count);
 

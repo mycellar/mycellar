@@ -37,7 +37,7 @@ import fr.mycellar.domain.stock.Drink;
 import fr.mycellar.domain.stock.DrinkBottle;
 import fr.mycellar.domain.stock.Stock;
 import fr.mycellar.domain.stock.Stock_;
-import fr.mycellar.infrastructure.shared.repository.query.SearchParameters;
+import fr.mycellar.infrastructure.shared.repository.query.SearchBuilder;
 import fr.mycellar.infrastructure.stock.repository.StockRepository;
 
 /**
@@ -100,9 +100,9 @@ public class StockServiceImpl extends AbstractSimpleService<Stock, StockReposito
 
     @Override
     public Stock findStock(Bottle bottle, Cellar cellar) {
-        return stockRepository.findUniqueOrNone(new SearchParameters<Stock>() //
+        return stockRepository.findUniqueOrNone(new SearchBuilder<Stock>() //
                 .property(Stock_.bottle).equalsTo(bottle) //
-                .property(Stock_.cellar).equalsTo(cellar));
+                .property(Stock_.cellar).equalsTo(cellar).build());
     }
 
     @Override

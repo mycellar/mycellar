@@ -31,17 +31,17 @@ public interface UserServiceFacade {
 
     User authenticateUser(String email, String password);
 
-    long countUsers(SearchParameters<User> searchParameters);
+    long countUsers(SearchParameters<User> search);
 
-    long countUsersLike(String term, SearchParameters<User> searchParameters);
+    long countUsersLike(String term, SearchParameters<User> search);
 
     User getUserById(Integer userId);
 
     User getUserByEmail(String email);
 
-    List<User> getUsers(SearchParameters<User> searchParameters);
+    List<User> getUsers(SearchParameters<User> search);
 
-    List<User> getUsersLike(String term, SearchParameters<User> searchParameters);
+    List<User> getUsersLike(String term, SearchParameters<User> search);
 
     User saveUser(User user) throws BusinessException;
 

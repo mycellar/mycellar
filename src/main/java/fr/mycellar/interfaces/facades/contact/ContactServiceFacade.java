@@ -30,16 +30,16 @@ import fr.mycellar.infrastructure.shared.repository.query.SearchParameters;
 public interface ContactServiceFacade {
 
     /**
-     * @param searchParameters
+     * @param search
      * @return
      */
-    long countContacts(SearchParameters<Contact> searchParameters);
+    long countContacts(SearchParameters<Contact> search);
 
     /**
-     * @param searchParameters
+     * @param search
      * @return
      */
-    long countLastContacts(SearchParameters<Contact> searchParameters);
+    long countLastContacts(SearchParameters<Contact> search);
 
     /**
      * @param objectId
@@ -48,16 +48,16 @@ public interface ContactServiceFacade {
     Contact getContactById(Integer objectId);
 
     /**
-     * @param searchParameters
+     * @param search
      * @return
      */
-    List<Contact> getContacts(SearchParameters<Contact> searchParameters);
+    List<Contact> getContacts(SearchParameters<Contact> search);
 
     /**
-     * @param searchParameters
+     * @param search
      * @return
      */
-    List<Contact> getLastContacts(SearchParameters<Contact> searchParameters);
+    List<Contact> getLastContacts(SearchParameters<Contact> search);
 
     /**
      * @param contact

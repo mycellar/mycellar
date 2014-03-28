@@ -18,24 +18,21 @@
  */
 package fr.mycellar.infrastructure.shared.repository.query.builder;
 
-import java.io.Serializable;
-
-import fr.mycellar.infrastructure.shared.repository.query.SearchParameters;
+import fr.mycellar.infrastructure.shared.repository.query.SearchBuilder;
 
 /**
  * @author speralta
  */
-public abstract class AbstractBuilder<FROM> implements Serializable {
-    private static final long serialVersionUID = 201403271745L;
+public abstract class AbstractBuilder<FROM> {
 
-    private final SearchParameters<FROM> searchParameters;
+    private final SearchBuilder<FROM> searchBuilder;
 
-    public AbstractBuilder(SearchParameters<FROM> searchParameters) {
-        this.searchParameters = searchParameters;
+    public AbstractBuilder(SearchBuilder<FROM> searchParameters) {
+        this.searchBuilder = searchParameters;
     }
 
-    public final SearchParameters<FROM> toSearchParameters() {
-        return searchParameters;
+    public final SearchBuilder<FROM> toSearchParameters() {
+        return searchBuilder;
     }
 
 }

@@ -35,7 +35,7 @@ import fr.mycellar.infrastructure.shared.repository.util.MetamodelUtil;
 
 /**
  * Holder class for path used by the {@link OrderBy}, {@link PropertySelector},
- * {@link TermSelector} and {@link SearchParameters}.
+ * {@link TermSelector} and {@link SearchBuilder}.
  */
 public class Path<FROM, TO> implements Serializable {
     private static final long serialVersionUID = 201403271745L;

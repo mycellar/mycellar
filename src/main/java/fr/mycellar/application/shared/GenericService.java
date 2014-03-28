@@ -29,12 +29,12 @@ import fr.mycellar.infrastructure.shared.repository.query.SearchParameters;
  */
 public interface GenericService<E extends Identifiable<PK>, PK extends Serializable> {
 
-    long count(SearchParameters<E> searchParameters);
+    long count(SearchParameters<E> search);
 
-    List<E> find(SearchParameters<E> searchParameters);
+    List<E> find(SearchParameters<E> search);
 
-    E findUnique(SearchParameters<E> searchParameters);
+    E findUnique(SearchParameters<E> search);
 
-    E findUniqueOrNone(SearchParameters<E> searchParameters);
+    E findUniqueOrNone(SearchParameters<E> search);
 
 }

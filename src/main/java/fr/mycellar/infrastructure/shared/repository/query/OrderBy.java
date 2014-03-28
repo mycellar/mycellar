@@ -29,7 +29,7 @@ import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 
 /**
- * Holder class for search ordering used by the {@link SearchParameters}. When
+ * Holder class for search ordering used by the {@link SearchBuilder}. When
  * used with {@link NamedQueryUtil}, you pass column name. For other usage, pass
  * the property name.
  */

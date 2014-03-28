@@ -22,7 +22,7 @@ import javax.persistence.metamodel.PluralAttribute;
 import javax.persistence.metamodel.SingularAttribute;
 
 import fr.mycellar.infrastructure.shared.repository.query.Path;
-import fr.mycellar.infrastructure.shared.repository.query.SearchParameters;
+import fr.mycellar.infrastructure.shared.repository.query.SearchBuilder;
 
 /**
  * @author speralta
@@ -61,11 +61,11 @@ public class RangeBuilder<F, FROM, TO> {
         return new RangeBuilder<F, TO, E>(builder, this, attribute);
     }
 
-    public <E extends Comparable<E>> SearchParameters<F> between(E from, E to, SingularAttribute<? super TO, E> attribute) {
+    public <E extends Comparable<E>> SearchBuilder<F> between(E from, E to, SingularAttribute<? super TO, E> attribute) {
         return builder.between(from, to, path.add(attribute));
     }
 
-    public <E extends Comparable<E>> SearchParameters<F> between(E from, E to, PluralAttribute<? super TO, ?, E> attribute) {
+    public <E extends Comparable<E>> SearchBuilder<F> between(E from, E to, PluralAttribute<? super TO, ?, E> attribute) {
         return builder.between(from, to, path.add(attribute));
     }
 

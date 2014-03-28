@@ -38,7 +38,7 @@ import org.springframework.transaction.annotation.Transactional;
 import fr.mycellar.MyCellarApplication;
 import fr.mycellar.domain.contact.Contact;
 import fr.mycellar.domain.wine.Producer;
-import fr.mycellar.infrastructure.shared.repository.query.SearchParameters;
+import fr.mycellar.infrastructure.shared.repository.query.SearchBuilder;
 
 /**
  * @author speralta
@@ -78,7 +78,7 @@ public class JpaContactRepositoryIT {
     public void countLastContacts_test() {
         initLastContactsTest();
 
-        assertEquals(1, jpaContactRepository.countLastContacts(new SearchParameters()));
+        assertEquals(1, jpaContactRepository.countLastContacts(new SearchBuilder<Contact>().build()));
     }
 
     @Test
@@ -86,7 +86,7 @@ public class JpaContactRepositoryIT {
     public void getLastContacts_test() {
         Contact contact = initLastContactsTest();
 
-        assertEquals(Arrays.asList(contact), jpaContactRepository.getLastContacts(new SearchParameters()));
+        assertEquals(Arrays.asList(contact), jpaContactRepository.getLastContacts(new SearchBuilder<Contact>().build()));
     }
 
     private Contact initLastContactsTest() {

@@ -36,7 +36,7 @@ import org.springframework.transaction.annotation.Transactional;
 import fr.mycellar.MyCellarApplication;
 import fr.mycellar.domain.shared.NamedEntity_;
 import fr.mycellar.domain.wine.Country;
-import fr.mycellar.infrastructure.shared.repository.query.SearchParameters;
+import fr.mycellar.infrastructure.shared.repository.query.SearchBuilder;
 
 /**
  * @author speralta
@@ -56,9 +56,10 @@ public class JpaCountryRepositoryIT {
     @Rollback
     public void byTermSelector() {
         assertThat(jpaCountryRepository.find( //
-                new SearchParameters<Country>() //
+                new SearchBuilder<Country>() //
+                        .fullText(NamedEntity_.name) //
                         .searchSimilarity(null) //
-                        .fullText(NamedEntity_.name, "France")) //
+                        .search("France").build()) //
                 .size(), equalTo(1));
     }
 

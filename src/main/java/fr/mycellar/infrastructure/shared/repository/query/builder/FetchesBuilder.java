@@ -26,18 +26,23 @@ import javax.persistence.metamodel.PluralAttribute;
 import javax.persistence.metamodel.SingularAttribute;
 
 import fr.mycellar.infrastructure.shared.repository.query.Path;
-import fr.mycellar.infrastructure.shared.repository.query.SearchParameters;
+import fr.mycellar.infrastructure.shared.repository.query.SearchBuilder;
 
 /**
  * @author speralta
  */
 public class FetchesBuilder<FROM> extends AbstractBuilder<FROM> {
-    private static final long serialVersionUID = 201403271745L;
 
-    private final Set<Path<FROM, ?>> fetches = new HashSet<>();
+    private final Set<Path<FROM, ?>> fetches;
 
-    public FetchesBuilder(SearchParameters<FROM> searchParameters) {
+    public FetchesBuilder(SearchBuilder<FROM> searchParameters) {
         super(searchParameters);
+        fetches = new HashSet<>();
+    }
+
+    public FetchesBuilder(SearchBuilder<FROM> searchParameters, Set<Path<FROM, ?>> fetches) {
+        super(searchParameters);
+        this.fetches = new HashSet<>(fetches);
     }
 
     public <TO> FetchBuilder<FROM, FROM, TO> fetch(SingularAttribute<? super FROM, TO> attribute) {

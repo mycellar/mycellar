@@ -30,8 +30,8 @@ import fr.mycellar.infrastructure.shared.repository.query.SearchParameters;
  */
 public interface CellarService extends SearchableService<Cellar> {
 
-    long countAllForUserLike(String term, User user, SearchParameters<Cellar> searchParameters);
+    long countAllForUserLike(String term, User user, SearchParameters<Cellar> search);
 
-    List<Cellar> getAllForUserLike(String term, User user, SearchParameters<Cellar> searchParameters);
+    List<Cellar> getAllForUserLike(String term, User user, SearchParameters<Cellar> search);
 
 }

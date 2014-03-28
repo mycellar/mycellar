@@ -18,8 +18,6 @@
  */
 package fr.mycellar.infrastructure.shared.repository.query.builder.property;
 
-import java.io.Serializable;
-
 import javax.persistence.metamodel.PluralAttribute;
 import javax.persistence.metamodel.SingularAttribute;
 
@@ -28,7 +26,7 @@ import fr.mycellar.infrastructure.shared.repository.query.Path;
 /**
  * @author speralta
  */
-public class ConjunctionPropertySelectorBuilder<F, FROM, TO, PARENT extends Serializable> {
+public class ConjunctionPropertySelectorBuilder<F, FROM, TO, PARENT> {
 
     private final ConjunctionPropertySelectorsBuilder<F, PARENT> builder;
 

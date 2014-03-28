@@ -56,7 +56,7 @@ import org.springframework.context.annotation.Lazy;
 
 import fr.mycellar.domain.shared.Identifiable;
 import fr.mycellar.infrastructure.shared.repository.query.SearchMode;
-import fr.mycellar.infrastructure.shared.repository.query.SearchParametersValues;
+import fr.mycellar.infrastructure.shared.repository.query.SearchParameters;
 
 @Named
 @Singleton
@@ -215,7 +215,7 @@ public class JpaUtil {
         return null;
     }
 
-    public void applyPagination(Query query, SearchParametersValues<?> sp) {
+    public void applyPagination(Query query, SearchParameters<?> sp) {
         if (sp.getFirstResult() > 0) {
             query.setFirstResult(sp.getFirstResult());
         }
@@ -225,7 +225,7 @@ public class JpaUtil {
     }
 
     @SuppressWarnings({ "unchecked", "rawtypes" })
-    public <E> void fetches(SearchParametersValues<E> sp, Root<E> root) {
+    public <E> void fetches(SearchParameters<E> sp, Root<E> root) {
         for (fr.mycellar.infrastructure.shared.repository.query.Path<E, ?> args : sp.getFetches()) {
             FetchParent<?, ?> from = root;
             for (Attribute<?, ?> arg : args.getAttributes()) {

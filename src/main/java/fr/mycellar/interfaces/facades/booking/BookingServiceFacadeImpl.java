@@ -85,14 +85,14 @@ public class BookingServiceFacadeImpl implements BookingServiceFacade {
 
     @Override
     @Transactional(readOnly = true)
-    public long countBookingEvents(SearchParameters<BookingEvent> searchParameters) {
-        return bookingEventService.count(searchParameters);
+    public long countBookingEvents(SearchParameters<BookingEvent> search) {
+        return bookingEventService.count(search);
     }
 
     @Override
     @Transactional(readOnly = true)
-    public long countBookings(SearchParameters<Booking> searchParameters) {
-        return bookingService.count(searchParameters);
+    public long countBookings(SearchParameters<Booking> search) {
+        return bookingService.count(search);
     }
 
     @Override
@@ -111,14 +111,14 @@ public class BookingServiceFacadeImpl implements BookingServiceFacade {
 
     @Override
     @Transactional(readOnly = true)
-    public List<BookingEvent> getBookingEvents(SearchParameters<BookingEvent> searchParameters) {
-        return bookingEventService.find(searchParameters);
+    public List<BookingEvent> getBookingEvents(SearchParameters<BookingEvent> search) {
+        return bookingEventService.find(search);
     }
 
     @Override
     @Transactional(readOnly = true)
-    public List<Booking> getBookings(SearchParameters<Booking> searchParameters) {
-        List<Booking> bookings = bookingService.find(searchParameters);
+    public List<Booking> getBookings(SearchParameters<Booking> search) {
+        List<Booking> bookings = bookingService.find(search);
         for (Booking booking : bookings) {
             updateBooking(booking);
         }
@@ -177,14 +177,14 @@ public class BookingServiceFacadeImpl implements BookingServiceFacade {
 
     @Override
     @Transactional(readOnly = false)
-    public List<BookingEvent> getBookingEventsLike(String term, SearchParameters<BookingEvent> searchParameters) {
-        return bookingEventService.getAllLike(term, searchParameters);
+    public List<BookingEvent> getBookingEventsLike(String term, SearchParameters<BookingEvent> search) {
+        return bookingEventService.getAllLike(term, search);
     }
 
     @Override
     @Transactional(readOnly = false)
-    public long countBookingEventsLike(String term, SearchParameters<BookingEvent> searchParameters) {
-        return bookingEventService.countAllLike(term, searchParameters);
+    public long countBookingEventsLike(String term, SearchParameters<BookingEvent> search) {
+        return bookingEventService.countAllLike(term, search);
     }
 
     private void updateBooking(Booking booking) {

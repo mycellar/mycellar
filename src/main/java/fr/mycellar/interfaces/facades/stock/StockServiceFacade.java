@@ -37,17 +37,17 @@ public interface StockServiceFacade {
 
     void arrival(Arrival arrival) throws BusinessException;
 
-    long countCellars(SearchParameters<Cellar> searchParameters);
+    long countCellars(SearchParameters<Cellar> search);
 
-    long countCellarShares(SearchParameters<CellarShare> searchParameters);
+    long countCellarShares(SearchParameters<CellarShare> search);
 
-    long countCellarsLike(String term, SearchParameters<Cellar> searchParameters);
+    long countCellarsLike(String term, SearchParameters<Cellar> search);
 
-    long countCellarsLike(String term, User user, SearchParameters<Cellar> searchParameters);
+    long countCellarsLike(String term, User user, SearchParameters<Cellar> search);
 
-    long countMovements(SearchParameters<Movement> searchParameters);
+    long countMovements(SearchParameters<Movement> search);
 
-    long countStocks(SearchParameters<Stock> searchParameters);
+    long countStocks(SearchParameters<Stock> search);
 
     void deleteCellar(Cellar cellar) throws BusinessException;
 
@@ -61,27 +61,27 @@ public interface StockServiceFacade {
 
     Cellar getCellarById(Integer cellarId);
 
-    List<Cellar> getCellars(SearchParameters<Cellar> searchParameters);
+    List<Cellar> getCellars(SearchParameters<Cellar> search);
 
     List<Cellar> getCellars(User user);
 
     CellarShare getCellarShareById(Integer cellarShareId);
 
-    List<CellarShare> getCellarShares(SearchParameters<CellarShare> searchParameters);
+    List<CellarShare> getCellarShares(SearchParameters<CellarShare> search);
 
-    List<Cellar> getCellarsLike(String term, SearchParameters<Cellar> searchParameters);
+    List<Cellar> getCellarsLike(String term, SearchParameters<Cellar> search);
 
-    List<Cellar> getCellarsLike(String term, User user, SearchParameters<Cellar> searchParameters);
+    List<Cellar> getCellarsLike(String term, User user, SearchParameters<Cellar> search);
 
     Movement getMovementById(Integer movementId);
 
-    List<Movement> getMovements(SearchParameters<Movement> searchParameters);
+    List<Movement> getMovements(SearchParameters<Movement> search);
 
     Stock getStockById(Integer stockId);
 
     List<Stock> getStocks(Cellar cellar);
 
-    List<Stock> getStocks(SearchParameters<Stock> searchParameters);
+    List<Stock> getStocks(SearchParameters<Stock> search);
 
     boolean hasModifyRight(Integer cellarId, String userEmail);
 

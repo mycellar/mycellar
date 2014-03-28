@@ -46,6 +46,7 @@ import fr.mycellar.domain.wine.WineColorEnum;
 import fr.mycellar.domain.wine.WineTypeEnum;
 import fr.mycellar.domain.wine.Wine_;
 import fr.mycellar.infrastructure.shared.repository.query.SearchParameters;
+import fr.mycellar.infrastructure.shared.repository.query.SearchBuilder;
 import fr.mycellar.infrastructure.wine.repository.WineRepository;
 
 /**
@@ -62,13 +63,13 @@ public class WineServiceImpl extends AbstractSearchableService<Wine, WineReposit
 
     @Override
     public Wine find(Producer producer, Appellation appellation, WineTypeEnum type, WineColorEnum color, String name, Integer vintage) {
-        return wineRepository.findUniqueOrNone(new SearchParameters<Wine>() //
+        return wineRepository.findUniqueOrNone(new SearchBuilder<Wine>() //
                 .property(Wine_.producer).equalsTo(producer) //
                 .property(Wine_.appellation).equalsTo(appellation) //
                 .property(Wine_.type).equalsTo(type) //
                 .property(Wine_.color).equalsTo(color) //
                 .property(NamedEntity_.name).equalsTo(name) //
-                .property(Wine_.vintage).equalsTo(vintage));
+                .property(Wine_.vintage).equalsTo(vintage).build());
     }
 
     @Override
@@ -81,23 +82,23 @@ public class WineServiceImpl extends AbstractSearchableService<Wine, WineReposit
 
     @Override
     protected void validateDelete(Wine entity) throws BusinessException {
-        if (stockService.count(new SearchParameters<Stock>() //
-                .property(Stock_.bottle).to(Bottle_.wine).equalsTo(entity)) > 0) {
+        if (stockService.count(new SearchBuilder<Stock>() //
+                .property(Stock_.bottle).to(Bottle_.wine).equalsTo(entity).build()) > 0) {
             throw new BusinessException(BusinessError.WINE_00002);
         }
-        if (bookingEventService.count(new SearchParameters<BookingEvent>() //
-                .property(BookingEvent_.bottles).to(BookingBottle_.bottle).to(Bottle_.wine).equalsTo(entity)) > 0) {
+        if (bookingEventService.count(new SearchBuilder<BookingEvent>() //
+                .property(BookingEvent_.bottles).to(BookingBottle_.bottle).to(Bottle_.wine).equalsTo(entity).build()) > 0) {
             throw new BusinessException(BusinessError.WINE_00003);
         }
     }
 
     @Override
-    protected SearchParameters<Wine> addTermToSearchParameters(String term, SearchParameters<Wine> searchParameters) {
+    protected SearchParameters<Wine> addTermToSearchParameters(String term, SearchParameters<Wine> search) {
         // TODO add terms
-        return searchParameters;
+        return search;
     }
 
-    // private void restrictFromHibernateSearch(String input, SearchParameters
+    // private void restrictFromHibernateSearch(String input, SearchBuilder
     // searchParameters) {
     // restrictFromHibernateSearch(searchParameters, Country.class,
     // NamedEntity_.name, input, //
@@ -123,11 +124,11 @@ public class WineServiceImpl extends AbstractSearchableService<Wine, WineReposit
     // vintageScanner.close();
     // }
     //
-    // private <X> void restrictFromHibernateSearch(SearchParameters
+    // private <X> void restrictFromHibernateSearch(SearchBuilder
     // searchParameters, Class<X> from, SingularAttribute<? super X, String>
     // attribute, String input, Attribute<?, ?>... attributes) {
-    // SearchParameters fullTextSearchParameters = new
-    // SearchParameters().term(attribute, input).searchSimilarity(null);
+    // SearchBuilder fullTextSearchParameters = new
+    // SearchBuilder().term(attribute, input).searchSimilarity(null);
     // List<Serializable> ids = hibernateSearchUtil.findId(from,
     // fullTextSearchParameters);
     // if ((ids == null) || ids.isEmpty()) {

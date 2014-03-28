@@ -24,8 +24,9 @@ import javax.inject.Named;
 import javax.inject.Singleton;
 
 import fr.mycellar.infrastructure.shared.repository.query.PropertySelector;
-import fr.mycellar.infrastructure.shared.repository.query.SearchMode;
 import fr.mycellar.infrastructure.shared.repository.query.SearchParameters;
+import fr.mycellar.infrastructure.shared.repository.query.SearchBuilder;
+import fr.mycellar.infrastructure.shared.repository.query.SearchMode;
 
 /**
  * @author speralta
@@ -35,17 +36,17 @@ import fr.mycellar.infrastructure.shared.repository.query.SearchParameters;
 public class SearchParametersUtil {
 
     public <E> SearchParameters<E> getSearchParametersForListWithCount(int first, int count, List<FilterCouple> filters, List<OrderCouple> orders, Class<E> clazz) {
-        SearchParameters<E> searchParameters = new SearchParameters<E>();
+        SearchBuilder<E> searchBuilder = new SearchBuilder<E>();
         for (FilterCouple filter : filters) {
             if (filter.isFilterSet()) {
-                searchParameters.property(new PropertySelector<>(filter.getProperty(), clazz).searchMode(SearchMode.ANYWHERE).selected(filter.getFilter()));
+                searchBuilder.property(new PropertySelector<>(filter.getProperty(), clazz).searchMode(SearchMode.ANYWHERE).selected(filter.getFilter()));
             }
         }
-        searchParameters.paginate(first, count);
+        searchBuilder.paginate(first, count);
         for (OrderCouple order : orders) {
-            searchParameters.orderBy(order.getDirection(), order.getProperty(), clazz);
+            searchBuilder.orderBy(order.getDirection(), order.getProperty(), clazz);
         }
-        return searchParameters;
+        return searchBuilder.build();
     }
 
 }

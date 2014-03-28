@@ -37,8 +37,8 @@ import org.hibernate.search.jpa.FullTextQuery;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import fr.mycellar.infrastructure.shared.repository.query.SearchBuilder;
 import fr.mycellar.infrastructure.shared.repository.query.SearchParameters;
-import fr.mycellar.infrastructure.shared.repository.query.SearchParametersValues;
 
 @Named
 @Singleton
@@ -50,7 +50,7 @@ public class HibernateSearchUtil {
     private LuceneQueryBuilder luceneQueryBuilder;
 
     @SuppressWarnings("unchecked")
-    public <T> List<T> find(Class<? extends T> clazz, SearchParametersValues<T> sp) {
+    public <T> List<T> find(Class<? extends T> clazz, SearchParameters<T> sp) {
         logger.debug("Searching {} with terms : {}.", new Object[] { clazz.getSimpleName(), sp.getTerms() });
         FullTextEntityManager fullTextEntityManager = getFullTextEntityManager(entityManager);
         Query query = luceneQueryBuilder.build(fullTextEntityManager, sp, clazz);
@@ -69,11 +69,11 @@ public class HibernateSearchUtil {
     }
 
     /**
-     * Same as {@link #find(Class, SearchParameters, String[])} but will return
+     * Same as {@link #find(Class, SearchBuilder, String[])} but will return
      * only the id.
      */
     @SuppressWarnings("unchecked")
-    public <T> List<Serializable> findId(Class<? extends T> type, SearchParametersValues<T> sp) {
+    public <T> List<Serializable> findId(Class<? extends T> type, SearchParameters<T> sp) {
         logger.debug("Searching id {} with terms : {}.", new Object[] { type.getSimpleName(), sp.getTerms() });
         FullTextEntityManager fullTextEntityManager = getFullTextEntityManager(entityManager);
         Query query = luceneQueryBuilder.build(fullTextEntityManager, sp, type);

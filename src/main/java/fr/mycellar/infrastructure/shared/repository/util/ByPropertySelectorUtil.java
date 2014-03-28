@@ -35,7 +35,7 @@ import org.springframework.util.CollectionUtils;
 import fr.mycellar.domain.shared.Identifiable;
 import fr.mycellar.infrastructure.shared.repository.query.PropertySelector;
 import fr.mycellar.infrastructure.shared.repository.query.PropertySelectors;
-import fr.mycellar.infrastructure.shared.repository.query.SearchParametersValues;
+import fr.mycellar.infrastructure.shared.repository.query.SearchParameters;
 
 /**
  * Helper to create a predicate out of {@link PropertySelector}s.
@@ -48,7 +48,7 @@ public class ByPropertySelectorUtil {
 
     private MetamodelUtil metamodelUtil;
 
-    public <E> Predicate byPropertySelectors(Root<E> root, CriteriaBuilder builder, SearchParametersValues<E> sp) {
+    public <E> Predicate byPropertySelectors(Root<E> root, CriteriaBuilder builder, SearchParameters<E> sp) {
         return byPropertySelectors(root, builder, sp.getPropertySelectors());
     }
 

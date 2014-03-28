@@ -49,6 +49,7 @@ import fr.mycellar.domain.stock.Movement_;
 import fr.mycellar.domain.stock.Stock;
 import fr.mycellar.domain.stock.Stock_;
 import fr.mycellar.infrastructure.shared.repository.query.SearchParameters;
+import fr.mycellar.infrastructure.shared.repository.query.SearchBuilder;
 import fr.mycellar.interfaces.facades.stock.StockServiceFacade;
 import fr.mycellar.interfaces.web.security.CurrentUserService;
 import fr.mycellar.interfaces.web.services.FilterCouple;
@@ -88,7 +89,7 @@ public class StockWebService {
             throw new AccessDeniedException("No read access to this cellar.");
         }
         SearchParameters<Movement> searchParameters = searchParametersUtil.getSearchParametersForListWithCount(first, count, filters, orders, Movement.class);
-        searchParameters.property(Movement_.cellar).to(Cellar_.id).equalsTo(cellarId);
+        searchParameters = new SearchBuilder<Movement>(searchParameters).property(Movement_.cellar).to(Cellar_.id).equalsTo(cellarId).build();
         List<Movement> movements;
         if (count == 0) {
             movements = new ArrayList<>();
@@ -108,7 +109,7 @@ public class StockWebService {
             throw new AccessDeniedException("No read access to this cellar.");
         }
         SearchParameters<Stock> searchParameters = searchParametersUtil.getSearchParametersForListWithCount(first, count, filters, orders, Stock.class);
-        searchParameters.property(Stock_.cellar).to(Cellar_.id).equalsTo(cellarId);
+        searchParameters = new SearchBuilder<Stock>(searchParameters).property(Stock_.cellar).to(Cellar_.id).equalsTo(cellarId).build();
         List<Stock> stocks;
         if (count == 0) {
             stocks = new ArrayList<>();
@@ -128,7 +129,7 @@ public class StockWebService {
             throw new AccessDeniedException("Current user isn't the owner of the cellar.");
         }
         SearchParameters<CellarShare> searchParameters = searchParametersUtil.getSearchParametersForListWithCount(first, count, filters, orders, CellarShare.class);
-        searchParameters.property(CellarShare_.cellar).to(Cellar_.id).equalsTo(cellarId);
+        searchParameters = new SearchBuilder<CellarShare>(searchParameters).property(CellarShare_.cellar).to(Cellar_.id).equalsTo(cellarId).build();
         List<CellarShare> cellarShares;
         if (count == 0) {
             cellarShares = new ArrayList<>();

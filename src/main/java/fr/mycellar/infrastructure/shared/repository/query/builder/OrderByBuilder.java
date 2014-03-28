@@ -22,7 +22,7 @@ import javax.persistence.metamodel.PluralAttribute;
 import javax.persistence.metamodel.SingularAttribute;
 
 import fr.mycellar.infrastructure.shared.repository.query.Path;
-import fr.mycellar.infrastructure.shared.repository.query.SearchParameters;
+import fr.mycellar.infrastructure.shared.repository.query.SearchBuilder;
 
 /**
  * @author speralta
@@ -53,11 +53,11 @@ public class OrderByBuilder<F, FROM, TO> {
         this.path = orderByBuilder.path.add(attribute);
     }
 
-    public SearchParameters<F> asc() {
+    public SearchBuilder<F> asc() {
         return builder.asc(path).toSearchParameters();
     }
 
-    public SearchParameters<F> desc() {
+    public SearchBuilder<F> desc() {
         return builder.desc(path).toSearchParameters();
     }
 

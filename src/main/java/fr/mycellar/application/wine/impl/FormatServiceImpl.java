@@ -37,7 +37,7 @@ import fr.mycellar.domain.stock.Stock;
 import fr.mycellar.domain.stock.Stock_;
 import fr.mycellar.domain.wine.Format;
 import fr.mycellar.domain.wine.Format_;
-import fr.mycellar.infrastructure.shared.repository.query.SearchParameters;
+import fr.mycellar.infrastructure.shared.repository.query.SearchBuilder;
 import fr.mycellar.infrastructure.wine.repository.FormatRepository;
 
 /**
@@ -54,9 +54,9 @@ public class FormatServiceImpl extends AbstractSimpleService<Format, FormatRepos
 
     @Override
     public void validate(Format entity) throws BusinessException {
-        Format existing = formatRepository.findUniqueOrNone(new SearchParameters<Format>() //
+        Format existing = formatRepository.findUniqueOrNone(new SearchBuilder<Format>() //
                 .property(Format_.capacity).equalsTo(entity.getCapacity()) //
-                .property(NamedEntity_.name).equalsTo(entity.getName()));
+                .property(NamedEntity_.name).equalsTo(entity.getName()).build());
         if ((existing != null) && ((entity.getId() == null) || !existing.getId().equals(entity.getId()))) {
             throw new BusinessException(BusinessError.FORMAT_00001);
         }
@@ -64,12 +64,12 @@ public class FormatServiceImpl extends AbstractSimpleService<Format, FormatRepos
 
     @Override
     protected void validateDelete(Format entity) throws BusinessException {
-        if (stockService.count(new SearchParameters<Stock>() //
-                .property(Stock_.bottle).to(Bottle_.format).equalsTo(entity)) > 0) {
+        if (stockService.count(new SearchBuilder<Stock>() //
+                .property(Stock_.bottle).to(Bottle_.format).equalsTo(entity).build()) > 0) {
             throw new BusinessException(BusinessError.FORMAT_00003);
         }
-        if (bookingEventService.count(new SearchParameters<BookingEvent>() //
-                .property(BookingEvent_.bottles).to(BookingBottle_.bottle).to(Bottle_.format).equalsTo(entity)) > 0) {
+        if (bookingEventService.count(new SearchBuilder<BookingEvent>() //
+                .property(BookingEvent_.bottles).to(BookingBottle_.bottle).to(Bottle_.format).equalsTo(entity).build()) > 0) {
             throw new BusinessException(BusinessError.FORMAT_00002);
         }
     }

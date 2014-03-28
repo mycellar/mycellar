@@ -65,14 +65,14 @@ public class StackServiceFacadeImpl implements StackServiceFacade {
 
     @Override
     @Transactional(readOnly = true)
-    public long countStacks(SearchParameters<Stack> searchParameters) {
-        return stackService.count(searchParameters);
+    public long countStacks(SearchParameters<Stack> search) {
+        return stackService.count(search);
     }
 
     @Override
     @Transactional(readOnly = true)
-    public List<Stack> getStacks(SearchParameters<Stack> searchParameters) {
-        return stackService.find(searchParameters);
+    public List<Stack> getStacks(SearchParameters<Stack> search) {
+        return stackService.find(search);
     }
 
     @Override
