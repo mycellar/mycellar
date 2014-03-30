@@ -37,8 +37,8 @@ import fr.mycellar.domain.shared.NamedEntity_;
 import fr.mycellar.domain.shared.exception.BusinessError;
 import fr.mycellar.domain.shared.exception.BusinessException;
 import fr.mycellar.infrastructure.booking.repository.BookingEventRepository;
-import fr.mycellar.infrastructure.shared.repository.query.SearchParameters;
 import fr.mycellar.infrastructure.shared.repository.query.SearchBuilder;
+import fr.mycellar.infrastructure.shared.repository.query.SearchParameters;
 
 /**
  * @author speralta
@@ -78,7 +78,7 @@ public class BookingEventServiceImpl extends AbstractSearchableService<BookingEv
     }
 
     @Override
-    protected SearchParameters<BookingEvent> addTermToSearchParameters(String term, SearchParameters<BookingEvent> search) {
+    protected SearchParameters<BookingEvent> addTermToSearchParametersParameters(String term, SearchParameters<BookingEvent> search) {
         return new SearchBuilder<BookingEvent>(search).fullText(NamedEntity_.name, term).build();
     }
 

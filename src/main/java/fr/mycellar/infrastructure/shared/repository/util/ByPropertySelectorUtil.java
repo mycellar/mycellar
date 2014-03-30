@@ -33,9 +33,9 @@ import javax.persistence.criteria.Root;
 import org.springframework.util.CollectionUtils;
 
 import fr.mycellar.domain.shared.Identifiable;
-import fr.mycellar.infrastructure.shared.repository.query.PropertySelector;
-import fr.mycellar.infrastructure.shared.repository.query.PropertySelectors;
 import fr.mycellar.infrastructure.shared.repository.query.SearchParameters;
+import fr.mycellar.infrastructure.shared.repository.query.selector.PropertySelector;
+import fr.mycellar.infrastructure.shared.repository.query.selector.Selectors;
 
 /**
  * Helper to create a predicate out of {@link PropertySelector}s.
@@ -53,7 +53,7 @@ public class ByPropertySelectorUtil {
     }
 
     @SuppressWarnings("unchecked")
-    private <E> Predicate byPropertySelectors(Root<E> root, CriteriaBuilder builder, PropertySelectors<E> propertySelectors) {
+    private <E> Predicate byPropertySelectors(Root<E> root, CriteriaBuilder builder, Selectors<E> propertySelectors) {
         List<Predicate> predicates = new ArrayList<>();
 
         for (PropertySelector<? super E, ?> selector : propertySelectors.getProperties()) {
@@ -65,7 +65,7 @@ public class ByPropertySelectorUtil {
                 byObjectSelector(root, builder, predicates, selector);
             }
         }
-        for (PropertySelectors<E> selectors : propertySelectors.getSelectors()) {
+        for (Selectors<E> selectors : propertySelectors.getSelectors()) {
             predicates.add(byPropertySelectors(root, builder, selectors));
         }
         if (propertySelectors.isAndMode()) {

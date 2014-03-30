@@ -23,7 +23,7 @@ import fr.mycellar.infrastructure.shared.repository.query.SearchBuilder;
 /**
  * @author speralta
  */
-public class PaginationBuilder<FROM> extends AbstractBuilder<FROM> {
+public class PaginationBuilder<FROM> extends AbstractBuilder<SearchBuilder<FROM>> {
 
     private int maxResults;
     private int firstResult;

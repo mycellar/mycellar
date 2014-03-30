@@ -62,7 +62,7 @@ public class StackDomainWebService {
             @QueryParam("count") @DefaultValue("10") int count, //
             @QueryParam("filters") List<FilterCouple> filters, //
             @QueryParam("sort") List<OrderCouple> orders) {
-        SearchParameters<Stack> searchParameters = searchParametersUtil.getSearchParametersForListWithCount(first, count, filters, orders, Stack.class);
+        SearchParameters<Stack> searchParameters = searchParametersUtil.getSearchParametersParametersForListWithCount(first, count, filters, orders, Stack.class);
         List<Stack> stacks;
         if (count == 0) {
             stacks = new ArrayList<>();

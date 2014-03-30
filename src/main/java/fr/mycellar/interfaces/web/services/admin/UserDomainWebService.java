@@ -68,7 +68,7 @@ public class UserDomainWebService {
             @QueryParam("count") @DefaultValue("10") int count, //
             @QueryParam("filters") List<FilterCouple> filters, //
             @QueryParam("sort") List<OrderCouple> orders) {
-        SearchParameters<User> searchParameters = searchParametersUtil.getSearchParametersForListWithCount(first, count, filters, orders, User.class);
+        SearchParameters<User> searchParameters = searchParametersUtil.getSearchParametersParametersForListWithCount(first, count, filters, orders, User.class);
         List<User> users;
         if (count == 0) {
             users = new ArrayList<>();
@@ -128,9 +128,9 @@ public class UserDomainWebService {
         if (count == 0) {
             users = new ArrayList<>();
         } else {
-            users = userServiceFacade.getUsersLike(input, searchParametersUtil.getSearchParametersForListWithCount(first, count, new ArrayList<FilterCouple>(), orders, User.class));
+            users = userServiceFacade.getUsersLike(input, searchParametersUtil.getSearchParametersParametersForListWithCount(first, count, new ArrayList<FilterCouple>(), orders, User.class));
         }
-        return new ListWithCount<>(userServiceFacade.countUsersLike(input, searchParametersUtil.getSearchParametersForListWithCount(first, count, new ArrayList<FilterCouple>(), orders, User.class)),
+        return new ListWithCount<>(userServiceFacade.countUsersLike(input, searchParametersUtil.getSearchParametersParametersForListWithCount(first, count, new ArrayList<FilterCouple>(), orders, User.class)),
                 users);
     }
 

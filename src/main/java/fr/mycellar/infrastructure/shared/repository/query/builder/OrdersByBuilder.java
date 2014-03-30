@@ -33,7 +33,7 @@ import fr.mycellar.infrastructure.shared.repository.query.SearchBuilder;
 /**
  * @author speralta
  */
-public class OrdersByBuilder<FROM> extends AbstractBuilder<FROM> {
+public class OrdersByBuilder<FROM> extends AbstractBuilder<SearchBuilder<FROM>> {
 
     private final Set<OrderBy<FROM, ?>> orders;
 

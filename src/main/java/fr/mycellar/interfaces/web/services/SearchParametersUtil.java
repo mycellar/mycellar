@@ -23,10 +23,10 @@ import java.util.List;
 import javax.inject.Named;
 import javax.inject.Singleton;
 
-import fr.mycellar.infrastructure.shared.repository.query.PropertySelector;
-import fr.mycellar.infrastructure.shared.repository.query.SearchParameters;
 import fr.mycellar.infrastructure.shared.repository.query.SearchBuilder;
+import fr.mycellar.infrastructure.shared.repository.query.SearchParameters;
 import fr.mycellar.infrastructure.shared.repository.query.SearchMode;
+import fr.mycellar.infrastructure.shared.repository.query.selector.PropertySelector;
 
 /**
  * @author speralta
@@ -35,7 +35,7 @@ import fr.mycellar.infrastructure.shared.repository.query.SearchMode;
 @Singleton
 public class SearchParametersUtil {
 
-    public <E> SearchParameters<E> getSearchParametersForListWithCount(int first, int count, List<FilterCouple> filters, List<OrderCouple> orders, Class<E> clazz) {
+    public <E> SearchParameters<E> getSearchParametersParametersForListWithCount(int first, int count, List<FilterCouple> filters, List<OrderCouple> orders, Class<E> clazz) {
         SearchBuilder<E> searchBuilder = new SearchBuilder<E>();
         for (FilterCouple filter : filters) {
             if (filter.isFilterSet()) {

@@ -54,11 +54,11 @@ public class OrderByBuilder<F, FROM, TO> {
     }
 
     public SearchBuilder<F> asc() {
-        return builder.asc(path).toSearchParameters();
+        return builder.asc(path).toParent();
     }
 
     public SearchBuilder<F> desc() {
-        return builder.desc(path).toSearchParameters();
+        return builder.desc(path).toParent();
     }
 
     public <E> OrderByBuilder<F, TO, E> and(SingularAttribute<? super TO, E> attribute) {

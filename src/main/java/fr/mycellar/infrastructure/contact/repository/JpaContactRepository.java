@@ -54,7 +54,7 @@ public class JpaContactRepository extends JpaSimpleRepository<Contact> implement
     }
 
     @Override
-    public long countLastContacts(SearchParameters<Contact> search) {
+    public long countLastContacts(SearchParameters<Contact> searchParameters) {
         CriteriaBuilder criteriaBuilder = getEntityManager().getCriteriaBuilder();
         CriteriaQuery<Long> query = criteriaBuilder.createQuery(Long.class);
         Root<Contact> root = query.from(Contact.class);
@@ -63,7 +63,7 @@ public class JpaContactRepository extends JpaSimpleRepository<Contact> implement
         Root<Contact> subroot = subquery.from(Contact.class);
         subquery.select(subroot).where(criteriaBuilder.equal(root.get("producer"), subroot.get("producer")),
                 criteriaBuilder.greaterThan(subroot.<LocalDate> get("current"), root.<LocalDate> get("current")));
-        Predicate predicate = getPredicate(query, root, criteriaBuilder, search);
+        Predicate predicate = getPredicate(query, root, criteriaBuilder, searchParameters);
         if (predicate == null) {
             predicate = criteriaBuilder.not(criteriaBuilder.exists(subquery));
         } else {

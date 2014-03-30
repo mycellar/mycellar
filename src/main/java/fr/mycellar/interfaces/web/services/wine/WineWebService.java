@@ -53,7 +53,7 @@ public class WineWebService {
     @Produces(MediaType.APPLICATION_JSON)
     @Path("wines")
     public ListWithCount<Wine> getWines(@QueryParam("first") int first, @QueryParam("count") int count, @QueryParam("filters") List<FilterCouple> filters, @QueryParam("sort") List<OrderCouple> orders) {
-        SearchParameters<Wine> searchParameters = searchParametersUtil.getSearchParametersForListWithCount(first, count, filters, orders, Wine.class);
+        SearchParameters<Wine> searchParameters = searchParametersUtil.getSearchParametersParametersForListWithCount(first, count, filters, orders, Wine.class);
         List<Wine> wines;
         if (count == 0) {
             wines = new ArrayList<>();
@@ -67,7 +67,7 @@ public class WineWebService {
     @Produces(MediaType.APPLICATION_JSON)
     @Path("wines/like")
     public ListWithCount<Wine> getWinesLike(@QueryParam("first") int first, @QueryParam("count") int count, @QueryParam("input") String input, @QueryParam("sort") List<OrderCouple> orders) {
-        SearchParameters<Wine> searchParameters = searchParametersUtil.getSearchParametersForListWithCount(first, count, new ArrayList<FilterCouple>(), orders, Wine.class);
+        SearchParameters<Wine> searchParameters = searchParametersUtil.getSearchParametersParametersForListWithCount(first, count, new ArrayList<FilterCouple>(), orders, Wine.class);
         List<Wine> wines;
         if (count == 0) {
             wines = new ArrayList<>();

@@ -30,7 +30,7 @@ import org.hibernate.search.query.dsl.BooleanJunction;
 import org.hibernate.search.query.dsl.QueryBuilder;
 
 import fr.mycellar.infrastructure.shared.repository.query.SearchParameters;
-import fr.mycellar.infrastructure.shared.repository.query.TermSelector;
+import fr.mycellar.infrastructure.shared.repository.query.selector.TermSelector;
 
 @Named
 @Singleton

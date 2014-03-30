@@ -32,8 +32,8 @@ import javax.persistence.criteria.Path;
 import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
 
-import fr.mycellar.infrastructure.shared.repository.query.Range;
 import fr.mycellar.infrastructure.shared.repository.query.SearchParameters;
+import fr.mycellar.infrastructure.shared.repository.query.selector.Range;
 
 /**
  * Helper to create a predicate out of {@link Range}s.

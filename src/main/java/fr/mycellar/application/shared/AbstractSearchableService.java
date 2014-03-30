@@ -31,14 +31,14 @@ public abstract class AbstractSearchableService<E extends IdentifiedEntity, R ex
 
     @Override
     public final long countAllLike(String term, SearchParameters<E> search) {
-        return getRepository().findCount(addTermToSearchParameters(term, search));
+        return getRepository().findCount(addTermToSearchParametersParameters(term, search));
     }
 
     @Override
     public final List<E> getAllLike(String term, SearchParameters<E> search) {
-        return getRepository().find(addTermToSearchParameters(term, search));
+        return getRepository().find(addTermToSearchParametersParameters(term, search));
     }
 
-    protected abstract SearchParameters<E> addTermToSearchParameters(String term, SearchParameters<E> search);
+    protected abstract SearchParameters<E> addTermToSearchParametersParameters(String term, SearchParameters<E> search);
 
 }

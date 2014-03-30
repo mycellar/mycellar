@@ -38,8 +38,8 @@ import fr.mycellar.domain.stock.Cellar_;
 import fr.mycellar.domain.stock.Stock;
 import fr.mycellar.domain.stock.Stock_;
 import fr.mycellar.domain.user.User;
-import fr.mycellar.infrastructure.shared.repository.query.SearchParameters;
 import fr.mycellar.infrastructure.shared.repository.query.SearchBuilder;
+import fr.mycellar.infrastructure.shared.repository.query.SearchParameters;
 import fr.mycellar.infrastructure.stock.repository.CellarRepository;
 
 /**
@@ -57,12 +57,12 @@ public class CellarServiceImpl extends AbstractSearchableService<Cellar, CellarR
 
     @Override
     public long countAllForUserLike(String term, User user, SearchParameters<Cellar> search) {
-        return count(addUserToSearchParameters(user, addTermToSearchParameters(term, search)));
+        return count(addUserToSearchParametersParameters(user, addTermToSearchParametersParameters(term, search)));
     }
 
     @Override
     public List<Cellar> getAllForUserLike(String term, User user, SearchParameters<Cellar> search) {
-        return find(addUserToSearchParameters(user, addTermToSearchParameters(term, search)));
+        return find(addUserToSearchParametersParameters(user, addTermToSearchParametersParameters(term, search)));
     }
 
     @Override
@@ -88,11 +88,11 @@ public class CellarServiceImpl extends AbstractSearchableService<Cellar, CellarR
     }
 
     @Override
-    protected SearchParameters<Cellar> addTermToSearchParameters(String term, SearchParameters<Cellar> search) {
+    protected SearchParameters<Cellar> addTermToSearchParametersParameters(String term, SearchParameters<Cellar> search) {
         return new SearchBuilder<Cellar>(search).fullText(NamedEntity_.name, term).build();
     }
 
-    protected SearchParameters<Cellar> addUserToSearchParameters(User user, SearchParameters<Cellar> search) {
+    protected SearchParameters<Cellar> addUserToSearchParametersParameters(User user, SearchParameters<Cellar> search) {
         return new SearchBuilder<Cellar>(search).disjunction() //
                 .property(Cellar_.owner).equalsTo(user) //
                 .property(Cellar_.shares).to(CellarShare_.email).equalsTo(user.getEmail()) //

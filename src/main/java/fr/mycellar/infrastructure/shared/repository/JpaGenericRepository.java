@@ -41,8 +41,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import fr.mycellar.domain.shared.Identifiable;
-import fr.mycellar.infrastructure.shared.repository.query.SearchParameters;
 import fr.mycellar.infrastructure.shared.repository.query.SearchBuilder;
+import fr.mycellar.infrastructure.shared.repository.query.SearchParameters;
 import fr.mycellar.infrastructure.shared.repository.util.ByFullTextUtil;
 import fr.mycellar.infrastructure.shared.repository.util.ByPropertySelectorUtil;
 import fr.mycellar.infrastructure.shared.repository.util.ByRangeUtil;

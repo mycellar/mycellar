@@ -54,7 +54,7 @@ public class FetchBuilder<F, FROM, TO> {
     }
 
     public SearchBuilder<F> and() {
-        return builder.add(path).toSearchParameters();
+        return builder.add(path).toParent();
     }
 
     public <E> FetchBuilder<F, TO, E> to(SingularAttribute<? super TO, E> attribute) {

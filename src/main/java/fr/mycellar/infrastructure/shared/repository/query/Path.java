@@ -30,6 +30,8 @@ import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 
+import fr.mycellar.infrastructure.shared.repository.query.selector.PropertySelector;
+import fr.mycellar.infrastructure.shared.repository.query.selector.TermSelector;
 import fr.mycellar.infrastructure.shared.repository.util.JpaUtil;
 import fr.mycellar.infrastructure.shared.repository.util.MetamodelUtil;
 

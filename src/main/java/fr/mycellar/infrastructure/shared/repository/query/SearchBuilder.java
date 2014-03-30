@@ -22,7 +22,6 @@ import static com.google.common.base.Preconditions.checkNotNull;
 
 import java.io.Serializable;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
@@ -34,16 +33,14 @@ import org.apache.commons.lang3.builder.ToStringStyle;
 
 import fr.mycellar.infrastructure.shared.repository.query.builder.FetchBuilder;
 import fr.mycellar.infrastructure.shared.repository.query.builder.FetchesBuilder;
-import fr.mycellar.infrastructure.shared.repository.query.builder.FullTextBuilder;
 import fr.mycellar.infrastructure.shared.repository.query.builder.OrderByBuilder;
 import fr.mycellar.infrastructure.shared.repository.query.builder.OrdersByBuilder;
 import fr.mycellar.infrastructure.shared.repository.query.builder.PaginationBuilder;
-import fr.mycellar.infrastructure.shared.repository.query.builder.RangeBuilder;
-import fr.mycellar.infrastructure.shared.repository.query.builder.RangesBuilder;
+import fr.mycellar.infrastructure.shared.repository.query.builder.RootSelectorsBuilder;
+import fr.mycellar.infrastructure.shared.repository.query.builder.SelectorBuilder;
 import fr.mycellar.infrastructure.shared.repository.query.builder.TermSelectorBuilder;
-import fr.mycellar.infrastructure.shared.repository.query.builder.property.DisjunctionPropertySelectorsBuilder;
-import fr.mycellar.infrastructure.shared.repository.query.builder.property.PropertySelectorBuilder;
-import fr.mycellar.infrastructure.shared.repository.query.builder.property.PropertySelectorsBuilder;
+import fr.mycellar.infrastructure.shared.repository.query.selector.Range;
+import fr.mycellar.infrastructure.shared.repository.query.selector.Selectors;
 
 /**
  * @author speralta
@@ -54,9 +51,7 @@ public class SearchBuilder<FROM> implements Serializable {
     private final PaginationBuilder<FROM> paginationBuilder;
     private final OrdersByBuilder<FROM> ordersByBuilder;
     private final FetchesBuilder<FROM> fetchesBuilder;
-    private final FullTextBuilder<FROM> fullTextBuilder;
-    private final RangesBuilder<FROM> rangesBuilder;
-    private final PropertySelectorsBuilder<FROM> propertySelectorsBuilder;
+    private final RootSelectorsBuilder<FROM> rootSelectorsBuilder;
 
     // extra parameters
     private final Map<String, Object> extraParameters;
@@ -67,9 +62,7 @@ public class SearchBuilder<FROM> implements Serializable {
         paginationBuilder = new PaginationBuilder<>(this);
         ordersByBuilder = new OrdersByBuilder<>(this);
         fetchesBuilder = new FetchesBuilder<>(this);
-        fullTextBuilder = new FullTextBuilder<>(this);
-        rangesBuilder = new RangesBuilder<>(this);
-        propertySelectorsBuilder = new PropertySelectorsBuilder<>(this);
+        rootSelectorsBuilder = new RootSelectorsBuilder<>(this);
         extraParameters = new HashMap<>();
         useDistinct = false;
     }
@@ -78,27 +71,13 @@ public class SearchBuilder<FROM> implements Serializable {
         paginationBuilder = new PaginationBuilder<>(this, searchParameters.getFirstResult(), searchParameters.getMaxResults());
         ordersByBuilder = new OrdersByBuilder<>(this, searchParameters.getOrders());
         fetchesBuilder = new FetchesBuilder<>(this, searchParameters.getFetches());
-        fullTextBuilder = new FullTextBuilder<>(this, searchParameters.getTerms());
-        rangesBuilder = new RangesBuilder<>(this, searchParameters.getRanges());
-        propertySelectorsBuilder = new PropertySelectorsBuilder<>(this, searchParameters.getPropertySelectors());
+        rootSelectorsBuilder = new RootSelectorsBuilder<>(this, searchParameters.getPropertySelectors());
         extraParameters = new HashMap<>(searchParameters.getExtraParameters());
         useDistinct = searchParameters.isUseDistinct();
     }
 
     public SearchParameters<FROM> build() {
         return new SearchParameters<FROM>(this);
-    }
-
-    // -----------------------------------
-    // Terms support (hibernate search)
-    // -----------------------------------
-
-    public SearchBuilder<FROM> fullText(SingularAttribute<? super FROM, String> attribute, String... selected) {
-        return fullTextBuilder.on(attribute).search(selected);
-    }
-
-    public TermSelectorBuilder<FROM> fullText(SingularAttribute<? super FROM, String> attribute) {
-        return fullTextBuilder.on(attribute);
     }
 
     // -----------------------------------
@@ -118,46 +97,34 @@ public class SearchBuilder<FROM> implements Serializable {
         return this;
     }
 
-    // -----------------------------------
-    // SearchParameters by range support
-    // -----------------------------------
+    // -------------------------------------
+    // SearchParameters by selectors support
+    // -------------------------------------
 
-    public <TO> RangeBuilder<FROM, FROM, TO> range(SingularAttribute<? super FROM, TO> attribute) {
-        return rangesBuilder.on(attribute);
-    }
-
-    public <TO> RangeBuilder<FROM, FROM, TO> range(PluralAttribute<? super FROM, ?, TO> attribute) {
-        return rangesBuilder.on(attribute);
-    }
-
-    public <TO extends Comparable<? super TO>> SearchBuilder<FROM> rangeBetween(TO from, TO to, SingularAttribute<? super FROM, TO> attribute) {
-        rangesBuilder.between(from, to, attribute);
+    public <E extends Comparable<E>> SearchBuilder<FROM> between(E from, E to, SingularAttribute<? super FROM, E> attribute) {
+        rootSelectorsBuilder.add(new Range<FROM, E>(from, to, new Path<>(attribute)));
         return this;
     }
 
-    // -----------------------------------
-    // SearchParameters by property selector support
-    // -----------------------------------
-
-    public <TO> PropertySelectorBuilder<FROM, FROM, TO> property(Path<FROM, TO> path) {
-        return propertySelectorsBuilder.property(path);
-    }
-
-    public <TO> PropertySelectorBuilder<FROM, FROM, TO> property(SingularAttribute<? super FROM, TO> attribute) {
-        return propertySelectorsBuilder.property(attribute);
-    }
-
-    public <TO> PropertySelectorBuilder<FROM, FROM, TO> property(PluralAttribute<? super FROM, ?, TO> attribute) {
-        return propertySelectorsBuilder.property(attribute);
-    }
-
-    public <TO> SearchBuilder<FROM> property(PropertySelector<FROM, TO> propertySelector) {
-        propertySelectorsBuilder.property(propertySelector);
+    public <E extends Comparable<E>> SearchBuilder<FROM> between(E from, E to, PluralAttribute<? super FROM, ?, E> attribute) {
+        rootSelectorsBuilder.add(new Range<FROM, E>(from, to, new Path<>(attribute)));
         return this;
     }
 
-    public <TO> DisjunctionPropertySelectorsBuilder<FROM, SearchBuilder<FROM>> disjunction() {
-        return propertySelectorsBuilder.disjunction();
+    public TermSelectorBuilder<FROM> fullText(SingularAttribute<FROM, String> attribute) {
+        return new TermSelectorBuilder<>(rootSelectorsBuilder, new Path<>(attribute));
+    }
+
+    public <TO> SelectorBuilder<FROM, FROM, TO, RootSelectorsBuilder<FROM>> on(Path<FROM, TO> path) {
+        return rootSelectorsBuilder.on(path);
+    }
+
+    public <TO> SelectorBuilder<FROM, FROM, TO, RootSelectorsBuilder<FROM>> on(SingularAttribute<? super FROM, TO> attribute) {
+        return rootSelectorsBuilder.on(attribute);
+    }
+
+    public <TO> SelectorBuilder<FROM, FROM, TO, RootSelectorsBuilder<FROM>> on(PluralAttribute<? super FROM, ?, TO> attribute) {
+        return rootSelectorsBuilder.on(attribute);
     }
 
     // -----------------------------------
@@ -228,16 +195,8 @@ public class SearchBuilder<FROM> implements Serializable {
         return fetchesBuilder.getFetches();
     }
 
-    List<TermSelector<FROM>> getTerms() {
-        return fullTextBuilder.getTerms();
-    }
-
-    List<Range<FROM, ?>> getRanges() {
-        return rangesBuilder.getRanges();
-    }
-
-    PropertySelectors<FROM> getPropertySelectors() {
-        return propertySelectorsBuilder.getPropertySelectors();
+    Selectors<FROM> getSelectors() {
+        return rootSelectorsBuilder.getSelectors();
     }
 
     @Override

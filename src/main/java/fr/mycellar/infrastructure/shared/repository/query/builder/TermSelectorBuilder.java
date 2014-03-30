@@ -18,22 +18,21 @@
  */
 package fr.mycellar.infrastructure.shared.repository.query.builder;
 
-import javax.persistence.metamodel.SingularAttribute;
-
+import fr.mycellar.infrastructure.shared.repository.query.Path;
 import fr.mycellar.infrastructure.shared.repository.query.SearchBuilder;
-import fr.mycellar.infrastructure.shared.repository.query.TermSelector;
+import fr.mycellar.infrastructure.shared.repository.query.selector.TermSelector;
 
 /**
  * @author speralta
  */
 public class TermSelectorBuilder<FROM> {
 
-    private final FullTextBuilder<FROM> fullTextBuilder;
+    private final RootSelectorsBuilder<FROM> rootSelectorsBuilder;
     private final TermSelector<FROM> termSelector;
 
-    public TermSelectorBuilder(FullTextBuilder<FROM> fullTextBuilder, SingularAttribute<? super FROM, String> attribute) {
-        this.fullTextBuilder = fullTextBuilder;
-        termSelector = new TermSelector<FROM>(attribute);
+    public TermSelectorBuilder(RootSelectorsBuilder<FROM> selectorsBuilder, Path<FROM, String> path) {
+        this.rootSelectorsBuilder = selectorsBuilder;
+        termSelector = new TermSelector<FROM>(path);
     }
 
     public TermSelectorBuilder<FROM> searchSimilarity(Integer searchSimilarity) {
@@ -43,7 +42,7 @@ public class TermSelectorBuilder<FROM> {
 
     public SearchBuilder<FROM> search(String... selected) {
         termSelector.selected(selected);
-        return fullTextBuilder.add(termSelector);
+        return rootSelectorsBuilder.add(termSelector).toParent();
     }
 
 }

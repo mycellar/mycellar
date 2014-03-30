@@ -31,7 +31,7 @@ import fr.mycellar.infrastructure.shared.repository.query.SearchBuilder;
 /**
  * @author speralta
  */
-public class FetchesBuilder<FROM> extends AbstractBuilder<FROM> {
+public class FetchesBuilder<FROM> extends AbstractBuilder<SearchBuilder<FROM>> {
 
     private final Set<Path<FROM, ?>> fetches;
 

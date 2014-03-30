@@ -16,21 +16,11 @@
  * You should have received a copy of the GNU General Public License
  * along with MyCellar. If not, see <http://www.gnu.org/licenses/>.
  */
-package fr.mycellar.infrastructure.shared.repository.query.builder;
+package fr.mycellar.infrastructure.shared.repository.query.selector;
 
 /**
  * @author speralta
  */
-public abstract class AbstractBuilder<PARENT> {
-
-    private final PARENT parent;
-
-    public AbstractBuilder(PARENT parent) {
-        this.parent = parent;
-    }
-
-    protected final PARENT toParent() {
-        return parent;
-    }
+public interface GroupSelector<FROM, S extends GroupSelector<FROM, S>> extends Selector<FROM, S> {
 
 }

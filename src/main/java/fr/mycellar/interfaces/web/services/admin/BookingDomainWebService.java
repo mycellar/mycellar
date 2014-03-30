@@ -71,7 +71,7 @@ public class BookingDomainWebService {
             @QueryParam("count") @DefaultValue("10") int count, //
             @QueryParam("filters") List<FilterCouple> filters, //
             @QueryParam("sort") List<OrderCouple> orders) {
-        SearchParameters<Booking> search = searchParametersUtil.getSearchParametersForListWithCount(first, count, filters, orders, Booking.class);
+        SearchParameters<Booking> search = searchParametersUtil.getSearchParametersParametersForListWithCount(first, count, filters, orders, Booking.class);
         List<Booking> bookings;
         if (count == 0) {
             bookings = new ArrayList<>();
@@ -127,7 +127,7 @@ public class BookingDomainWebService {
             @QueryParam("count") @DefaultValue("10") int count, //
             @QueryParam("filters") List<FilterCouple> filters, //
             @QueryParam("sort") List<OrderCouple> orders) {
-        SearchParameters<BookingEvent> search = searchParametersUtil.getSearchParametersForListWithCount(first, count, filters, orders, BookingEvent.class);
+        SearchParameters<BookingEvent> search = searchParametersUtil.getSearchParametersParametersForListWithCount(first, count, filters, orders, BookingEvent.class);
         List<BookingEvent> bookingEvents;
         if (count == 0) {
             bookingEvents = new ArrayList<>();
@@ -184,7 +184,7 @@ public class BookingDomainWebService {
     @Path("bookingEvents/like")
     public ListWithCount<BookingEvent> getBookingEventsLike(@QueryParam("first") int first, @QueryParam("count") int count, @QueryParam("input") String input,
             @QueryParam("sort") List<OrderCouple> orders) {
-        SearchParameters<BookingEvent> search = searchParametersUtil.getSearchParametersForListWithCount(first, count, new ArrayList<FilterCouple>(), orders, BookingEvent.class);
+        SearchParameters<BookingEvent> search = searchParametersUtil.getSearchParametersParametersForListWithCount(first, count, new ArrayList<FilterCouple>(), orders, BookingEvent.class);
         List<BookingEvent> bookingEvents;
         if (count == 0) {
             bookingEvents = new ArrayList<>();

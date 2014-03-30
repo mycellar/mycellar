@@ -33,9 +33,9 @@ import org.springframework.transaction.annotation.Transactional;
 import fr.mycellar.MyCellarApplication;
 import fr.mycellar.domain.wine.Wine;
 import fr.mycellar.infrastructure.shared.repository.query.OrderByDirection;
-import fr.mycellar.infrastructure.shared.repository.query.PropertySelector;
-import fr.mycellar.infrastructure.shared.repository.query.SearchParameters;
 import fr.mycellar.infrastructure.shared.repository.query.SearchBuilder;
+import fr.mycellar.infrastructure.shared.repository.query.SearchParameters;
+import fr.mycellar.infrastructure.shared.repository.query.selector.PropertySelector;
 
 /**
  * @author speralta
@@ -75,7 +75,7 @@ public class SearchParametersUtilIT {
                 .orderBy(OrderByDirection.DESC, secondOrder, Wine.class);
         SearchParameters<Wine> expected = expectedBuilder.build();
 
-        SearchParameters<Wine> searchParameters = searchParametersUtil.getSearchParametersForListWithCount(first, count, filters, orders, Wine.class);
+        SearchParameters<Wine> searchParameters = searchParametersUtil.getSearchParametersParametersForListWithCount(first, count, filters, orders, Wine.class);
 
         assertEquals(expected.getFirstResult(), searchParameters.getFirstResult());
         assertEquals(expected.getMaxResults(), searchParameters.getMaxResults());

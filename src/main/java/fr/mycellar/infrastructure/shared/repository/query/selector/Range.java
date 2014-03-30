@@ -16,18 +16,19 @@
  * You should have received a copy of the GNU General Public License
  * along with MyCellar. If not, see <http://www.gnu.org/licenses/>.
  */
-package fr.mycellar.infrastructure.shared.repository.query;
+package fr.mycellar.infrastructure.shared.repository.query.selector;
 
-import java.io.Serializable;
 import java.util.List;
 
 import javax.persistence.metamodel.Attribute;
+
+import fr.mycellar.infrastructure.shared.repository.query.Path;
 
 /**
  * Range support for {@link Comparable} types.
  */
 @SuppressWarnings("rawtypes")
-public class Range<E, D extends Comparable> implements Serializable {
+public class Range<E, D extends Comparable> implements Selector<E, Range<E, D>> {
     private static final long serialVersionUID = 201312031754L;
 
     private final Path<E, D> path;
@@ -85,14 +86,16 @@ public class Range<E, D extends Comparable> implements Serializable {
         this.includeNull = includeNull;
     }
 
-    /**
-     * Constructs a new Range by copy.
-     */
-    public Range(Range<E, D> other) {
+    private Range(Range<E, D> other) {
         this.path = other.path;
         this.from = other.from;
         this.to = other.to;
         this.includeNull = other.includeNull;
+    }
+
+    @Override
+    public Range<E, D> copy() {
+        return new Range<E, D>(this);
     }
 
     /**

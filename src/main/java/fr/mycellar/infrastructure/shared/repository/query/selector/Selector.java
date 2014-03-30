@@ -16,21 +16,15 @@
  * You should have received a copy of the GNU General Public License
  * along with MyCellar. If not, see <http://www.gnu.org/licenses/>.
  */
-package fr.mycellar.infrastructure.shared.repository.query.builder;
+package fr.mycellar.infrastructure.shared.repository.query.selector;
+
+import java.io.Serializable;
 
 /**
  * @author speralta
  */
-public abstract class AbstractBuilder<PARENT> {
+public interface Selector<FROM, S extends Selector<FROM, S>> extends Serializable {
 
-    private final PARENT parent;
-
-    public AbstractBuilder(PARENT parent) {
-        this.parent = parent;
-    }
-
-    protected final PARENT toParent() {
-        return parent;
-    }
+    S copy();
 
 }

@@ -18,19 +18,13 @@
  */
 package fr.mycellar.infrastructure.shared.repository.query.builder;
 
+import fr.mycellar.infrastructure.shared.repository.query.selector.Selector;
+
 /**
  * @author speralta
  */
-public abstract class AbstractBuilder<PARENT> {
+public interface SelectorsBuilder<FROM, CURRENT> {
 
-    private final PARENT parent;
-
-    public AbstractBuilder(PARENT parent) {
-        this.parent = parent;
-    }
-
-    protected final PARENT toParent() {
-        return parent;
-    }
+    <TO> CURRENT add(Selector<FROM, ?> selector);
 
 }

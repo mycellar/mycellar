@@ -64,7 +64,7 @@ public class ContactWebService {
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     public ListWithCount<Contact> getLastContacts(@QueryParam("first") int first, @QueryParam("count") int count, @QueryParam("filters") List<FilterCouple> filters,
             @QueryParam("sort") List<OrderCouple> orders) {
-        SearchParameters<Contact> searchParameters = searchParametersUtil.getSearchParametersForListWithCount(first, count, filters, orders, Contact.class);
+        SearchParameters<Contact> searchParameters = searchParametersUtil.getSearchParametersParametersForListWithCount(first, count, filters, orders, Contact.class);
         List<Contact> contacts;
         if (count == 0) {
             contacts = new ArrayList<>();
@@ -82,7 +82,7 @@ public class ContactWebService {
             @QueryParam("count") @DefaultValue("10") int count, //
             @QueryParam("filters") List<FilterCouple> filters, //
             @QueryParam("sort") List<OrderCouple> orders) {
-        SearchParameters<Contact> searchParameters = searchParametersUtil.getSearchParametersForListWithCount(first, count, filters, orders, Contact.class);
+        SearchParameters<Contact> searchParameters = searchParametersUtil.getSearchParametersParametersForListWithCount(first, count, filters, orders, Contact.class);
         List<Contact> contacts;
         if (count == 0) {
             contacts = new ArrayList<>();

@@ -38,8 +38,8 @@ import fr.mycellar.domain.stock.Cellar_;
 import fr.mycellar.domain.user.ResetPasswordRequest;
 import fr.mycellar.domain.user.User;
 import fr.mycellar.domain.user.User_;
-import fr.mycellar.infrastructure.shared.repository.query.SearchParameters;
 import fr.mycellar.infrastructure.shared.repository.query.SearchBuilder;
+import fr.mycellar.infrastructure.shared.repository.query.SearchParameters;
 import fr.mycellar.infrastructure.user.repository.UserRepository;
 
 /**
@@ -121,7 +121,7 @@ public class UserServiceImpl extends AbstractSearchableService<User, UserReposit
     }
 
     @Override
-    protected SearchParameters<User> addTermToSearchParameters(String term, SearchParameters<User> search) {
+    protected SearchParameters<User> addTermToSearchParametersParameters(String term, SearchParameters<User> search) {
         // TODO add fulltext on firstname, lastname and email
         return search;
     }

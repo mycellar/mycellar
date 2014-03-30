@@ -16,9 +16,8 @@
  * You should have received a copy of the GNU General Public License
  * along with MyCellar. If not, see <http://www.gnu.org/licenses/>.
  */
-package fr.mycellar.infrastructure.shared.repository.query;
+package fr.mycellar.infrastructure.shared.repository.query.selector;
 
-import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -28,12 +27,15 @@ import javax.persistence.metamodel.Attribute;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 
+import fr.mycellar.infrastructure.shared.repository.query.Path;
+import fr.mycellar.infrastructure.shared.repository.query.SearchMode;
+
 /**
  * Used to construct OR predicate for a property value. In other words you can
  * search all entities E having a given property set to one of the selected
  * values.
  */
-public class PropertySelector<E, F> implements Serializable {
+public class PropertySelector<E, F> implements Selector<E, PropertySelector<E, F>> {
 
     private static final long serialVersionUID = 201308010800L;
 
@@ -49,6 +51,21 @@ public class PropertySelector<E, F> implements Serializable {
     public PropertySelector(Path<E, F> path, F... values) {
         this.path = path;
         selected = new ArrayList<>(Arrays.asList(values));
+    }
+
+    private PropertySelector(PropertySelector<E, F> toCopy) {
+        path = toCopy.path;
+        selected = new ArrayList<>(toCopy.selected);
+        searchMode = toCopy.searchMode;
+        notIncludingNull = toCopy.notIncludingNull;
+        orMode = toCopy.orMode;
+        caseSensitive = toCopy.caseSensitive;
+        notMode = toCopy.notMode;
+    }
+
+    @Override
+    public PropertySelector<E, F> copy() {
+        return new PropertySelector<E, F>(this);
     }
 
     public PropertySelector(String path, Class<E> from) {

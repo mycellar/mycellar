@@ -67,7 +67,7 @@ public class AdminDomainWebService {
             @QueryParam("count") @DefaultValue("20") int count, //
             @QueryParam("filters") List<FilterCouple> filters, //
             @QueryParam("sort") List<OrderCouple> orders) {
-        SearchParameters<Configuration> search = searchParametersUtil.getSearchParametersForListWithCount(first, count, filters, orders, Configuration.class);
+        SearchParameters<Configuration> search = searchParametersUtil.getSearchParametersParametersForListWithCount(first, count, filters, orders, Configuration.class);
         List<Configuration> configurations;
         if (count == 0) {
             configurations = new ArrayList<>();

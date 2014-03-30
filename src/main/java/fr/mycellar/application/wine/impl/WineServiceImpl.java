@@ -45,8 +45,8 @@ import fr.mycellar.domain.wine.Wine;
 import fr.mycellar.domain.wine.WineColorEnum;
 import fr.mycellar.domain.wine.WineTypeEnum;
 import fr.mycellar.domain.wine.Wine_;
-import fr.mycellar.infrastructure.shared.repository.query.SearchParameters;
 import fr.mycellar.infrastructure.shared.repository.query.SearchBuilder;
+import fr.mycellar.infrastructure.shared.repository.query.SearchParameters;
 import fr.mycellar.infrastructure.wine.repository.WineRepository;
 
 /**
@@ -93,7 +93,7 @@ public class WineServiceImpl extends AbstractSearchableService<Wine, WineReposit
     }
 
     @Override
-    protected SearchParameters<Wine> addTermToSearchParameters(String term, SearchParameters<Wine> search) {
+    protected SearchParameters<Wine> addTermToSearchParametersParameters(String term, SearchParameters<Wine> search) {
         // TODO add terms
         return search;
     }

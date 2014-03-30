@@ -20,9 +20,10 @@ package fr.mycellar.infrastructure.shared.repository.query;
 
 import java.io.Serializable;
 import java.util.Collections;
-import java.util.List;
 import java.util.Map;
 import java.util.Set;
+
+import fr.mycellar.infrastructure.shared.repository.query.selector.Selectors;
 
 /**
  * @author speralta
@@ -40,14 +41,8 @@ public class SearchParameters<FROM> implements Serializable {
     // fetches
     private final Set<Path<FROM, ?>> fetches;
 
-    // ranges
-    private final List<Range<FROM, ?>> ranges;
-
     // property selectors
-    private final PropertySelectors<FROM> propertySelectors;
-
-    // hibernate search terms
-    private final List<TermSelector<FROM>> terms;
+    private final Selectors<FROM> selectors;
 
     // extra namedQueryParameters
     private final Map<String, Object> extraParameters;
@@ -60,9 +55,7 @@ public class SearchParameters<FROM> implements Serializable {
         firstResult = builder.getFirstResult();
         maxResults = builder.getMaxResults();
         orders = Collections.unmodifiableSet(builder.getOrders());
-        propertySelectors = builder.getPropertySelectors();
-        ranges = Collections.unmodifiableList(builder.getRanges());
-        terms = Collections.unmodifiableList(builder.getTerms());
+        selectors = builder.getSelectors();
         useDistinct = builder.isUseDistinct();
     }
 
@@ -82,16 +75,8 @@ public class SearchParameters<FROM> implements Serializable {
         return fetches;
     }
 
-    public List<Range<FROM, ?>> getRanges() {
-        return ranges;
-    }
-
-    public PropertySelectors<FROM> getPropertySelectors() {
-        return propertySelectors;
-    }
-
-    public List<TermSelector<FROM>> getTerms() {
-        return terms;
+    public Selectors<FROM> getPropertySelectors() {
+        return selectors;
     }
 
     public Map<String, Object> getExtraParameters() {

@@ -31,7 +31,7 @@ import javax.persistence.criteria.Root;
 
 import fr.mycellar.domain.shared.Identifiable;
 import fr.mycellar.infrastructure.shared.repository.query.SearchParameters;
-import fr.mycellar.infrastructure.shared.repository.query.TermSelector;
+import fr.mycellar.infrastructure.shared.repository.query.selector.TermSelector;
 
 @Named
 @Singleton

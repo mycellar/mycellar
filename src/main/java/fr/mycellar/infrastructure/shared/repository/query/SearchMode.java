@@ -18,6 +18,7 @@
  */
 package fr.mycellar.infrastructure.shared.repository.query;
 
+
 /**
  * Static values to use in conjunction with {@link SearchBuilder} object. It
  * maps the kind of search you can do in SQL.
