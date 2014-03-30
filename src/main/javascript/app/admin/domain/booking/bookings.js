@@ -44,9 +44,12 @@ angular.module('mycellar.controllers.admin.domain.booking.bookings').controller(
     });
     
     $scope.total = 0;
-    $scope.$watch('booking.bookingEvent', function(value) {
-      if ($scope.booking.bookingEvent != undefined) {
+    $scope.$watch('booking.bookingEvent', function(newValue, oldValue) {
+      if (oldValue != newValue && $scope.booking.bookingEvent != undefined) {
         $scope.booking.quantities = {};
+        angular.forEach($scope.booking.bookingEvent.bottles, function(value) {
+          $scope.booking.quantities[$scope.booking.bookingEvent.id + "-" + value.id] = 0;
+        });
       }
     });
     $scope.$watch('booking.quantities', function (value) {
