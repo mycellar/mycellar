@@ -35,7 +35,7 @@ import fr.mycellar.infrastructure.shared.repository.query.SearchMode;
  * search all entities E having a given property set to one of the selected
  * values.
  */
-public class PropertySelector<E, F> implements Selector<E, PropertySelector<E, F>> {
+public class PropertySelector<E, F> implements SingleSelector<E, F, PropertySelector<E, F>> {
 
     private static final long serialVersionUID = 201308010800L;
 

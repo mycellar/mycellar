@@ -30,7 +30,7 @@ import org.apache.commons.lang3.builder.ToStringStyle;
 
 import fr.mycellar.infrastructure.shared.repository.query.Path;
 
-public class TermSelector<FROM> implements Selector<FROM, TermSelector<FROM>> {
+public class TermSelector<FROM> implements SingleSelector<FROM, String, TermSelector<FROM>> {
     private static final long serialVersionUID = 201308010800L;
     private final Path<FROM, String> path;
     private List<String> selected = new ArrayList<>();

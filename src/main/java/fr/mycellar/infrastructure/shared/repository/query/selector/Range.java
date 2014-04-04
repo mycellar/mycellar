@@ -28,7 +28,7 @@ import fr.mycellar.infrastructure.shared.repository.query.Path;
  * Range support for {@link Comparable} types.
  */
 @SuppressWarnings("rawtypes")
-public class Range<E, D extends Comparable> implements Selector<E, Range<E, D>> {
+public class Range<E, D extends Comparable> implements SingleSelector<E, D, Range<E, D>> {
     private static final long serialVersionUID = 201312031754L;
 
     private final Path<E, D> path;
