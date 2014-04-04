@@ -30,15 +30,15 @@ import fr.mycellar.infrastructure.shared.repository.query.SearchParameters;
 public abstract class AbstractSearchableService<E extends IdentifiedEntity, R extends SimpleRepository<E>> extends AbstractSimpleService<E, R> implements SearchableService<E> {
 
     @Override
-    public final long countAllLike(String term, SearchParameters<E> search) {
-        return getRepository().findCount(addTermToSearchParametersParameters(term, search));
+    public final long countAllLike(String term, SearchParameters<E> searchParameters) {
+        return getRepository().findCount(addTermToSearchParametersParameters(term, searchParameters));
     }
 
     @Override
-    public final List<E> getAllLike(String term, SearchParameters<E> search) {
-        return getRepository().find(addTermToSearchParametersParameters(term, search));
+    public final List<E> getAllLike(String term, SearchParameters<E> searchParameters) {
+        return getRepository().find(addTermToSearchParametersParameters(term, searchParameters));
     }
 
-    protected abstract SearchParameters<E> addTermToSearchParametersParameters(String term, SearchParameters<E> search);
+    protected abstract SearchParameters<E> addTermToSearchParametersParameters(String term, SearchParameters<E> searchParameters);
 
 }

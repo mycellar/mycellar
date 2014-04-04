@@ -99,16 +99,12 @@ public class StockServiceImplIT {
         stock.setCellar(cellar);
         stock.setQuantity(6);
 
-        List<Movement> movements = movementRepository.find(new SearchBuilder<Movement>() //
-                .property(Movement_.cellar).equalsTo(stock.getCellar()) //
-                .property(Movement_.bottle).equalsTo(stock.getBottle()).build());
+        List<Movement> movements = getMovements(stock);
         assertEquals(0, movements.size());
 
         // test
         Stock result = stockServiceImpl.save(stock);
-        movements = movementRepository.find(new SearchBuilder<Movement>() //
-                .property(Movement_.cellar).equalsTo(result.getCellar()) //
-                .property(Movement_.bottle).equalsTo(result.getBottle()).build());
+        movements = getMovements(result);
 
         // build expected
         Stock expectedStock = new Stock();
@@ -139,16 +135,12 @@ public class StockServiceImplIT {
         entityManager.detach(stock);
         stock.setQuantity(3);
 
-        List<Movement> movements = movementRepository.find(new SearchBuilder<Movement>() //
-                .property(Movement_.cellar).equalsTo(stock.getCellar()) //
-                .property(Movement_.bottle).equalsTo(stock.getBottle()).build());
+        List<Movement> movements = getMovements(stock);
         assertEquals(0, movements.size());
 
         // test
         Stock result = stockServiceImpl.save(stock);
-        movements = movementRepository.find(new SearchBuilder<Movement>() //
-                .property(Movement_.cellar).equalsTo(result.getCellar()) //
-                .property(Movement_.bottle).equalsTo(result.getBottle()).build());
+        movements = getMovements(result);
 
         // build expected
         Stock expectedStock = new Stock();
@@ -178,16 +170,12 @@ public class StockServiceImplIT {
         entityManager.detach(stock);
         stock.setQuantity(9);
 
-        List<Movement> movements = movementRepository.find(new SearchBuilder<Movement>() //
-                .property(Movement_.cellar).equalsTo(stock.getCellar()) //
-                .property(Movement_.bottle).equalsTo(stock.getBottle()).build());
+        List<Movement> movements = getMovements(stock);
         assertEquals(0, movements.size());
 
         // test
         Stock result = stockServiceImpl.save(stock);
-        movements = movementRepository.find(new SearchBuilder<Movement>() //
-                .property(Movement_.cellar).equalsTo(result.getCellar()) //
-                .property(Movement_.bottle).equalsTo(result.getBottle()).build());
+        movements = getMovements(result);
 
         // build expected
         Stock expectedStock = new Stock();
@@ -219,16 +207,12 @@ public class StockServiceImplIT {
         bottle.setFormat(entityManager.find(Format.class, 2));
         bottle.setWine(entityManager.find(Wine.class, 1));
 
-        List<Movement> movements = movementRepository.find(new SearchBuilder<Movement>() //
-                .property(Movement_.cellar).equalsTo(cellar) //
-                .property(Movement_.bottle).equalsTo(bottle).build());
+        List<Movement> movements = getMovements(cellar, bottle);
         assertEquals(0, movements.size());
 
         // test
         Stock result = stockServiceImpl.addToStock(cellar, bottle, 6, new LocalDate(), 30f, 30f, "source");
-        movements = movementRepository.find(new SearchBuilder<Movement>() //
-                .property(Movement_.cellar).equalsTo(cellar) //
-                .property(Movement_.bottle).equalsTo(bottle).build());
+        movements = getMovements(cellar, bottle);
 
         // build expected
         Stock expectedStock = new Stock();
@@ -260,16 +244,12 @@ public class StockServiceImplIT {
         bottle.setFormat(entityManager.find(Format.class, 1));
         bottle.setWine(entityManager.find(Wine.class, 1));
 
-        List<Movement> movements = movementRepository.find(new SearchBuilder<Movement>() //
-                .property(Movement_.cellar).equalsTo(cellar) //
-                .property(Movement_.bottle).equalsTo(bottle).build());
+        List<Movement> movements = getMovements(cellar, bottle);
         assertEquals(0, movements.size());
 
         // test
         Stock result = stockServiceImpl.addToStock(cellar, bottle, 6, new LocalDate(), 30f, 30f, "source");
-        movements = movementRepository.find(new SearchBuilder<Movement>() //
-                .property(Movement_.cellar).equalsTo(cellar) //
-                .property(Movement_.bottle).equalsTo(bottle).build());
+        movements = getMovements(cellar, bottle);
 
         // build expected
         Stock expectedStock = new Stock();
@@ -313,16 +293,12 @@ public class StockServiceImplIT {
         bottle.setFormat(entityManager.find(Format.class, 1));
         bottle.setWine(entityManager.find(Wine.class, 1));
 
-        List<Movement> movements = movementRepository.find(new SearchBuilder<Movement>() //
-                .property(Movement_.cellar).equalsTo(cellar) //
-                .property(Movement_.bottle).equalsTo(bottle).build());
+        List<Movement> movements = getMovements(cellar, bottle);
         assertEquals(0, movements.size());
 
         // test
         Stock result = stockServiceImpl.removeFromStock(cellar, bottle, 3, new LocalDate(), "destination", 30f);
-        movements = movementRepository.find(new SearchBuilder<Movement>() //
-                .property(Movement_.cellar).equalsTo(cellar) //
-                .property(Movement_.bottle).equalsTo(bottle).build());
+        movements = getMovements(cellar, bottle);
 
         // build expected
         Stock expectedStock = new Stock();
@@ -343,6 +319,16 @@ public class StockServiceImplIT {
         assertThat(movements.get(0), is(instanceOf(Output.class)));
         assertThat((Output) movements.get(0), hasSameProperties(expectedOutput).without("id").without("version"));
         assertThat(result, hasSameProperties(expectedStock).without("id").without("version"));
+    }
+
+    private List<Movement> getMovements(Stock stock) {
+        return getMovements(stock.getCellar(), stock.getBottle());
+    }
+
+    private List<Movement> getMovements(Cellar cellar, Bottle bottle) {
+        return movementRepository.find(new SearchBuilder<Movement>() //
+                .on(Movement_.cellar).equalsTo(cellar) //
+                .on(Movement_.bottle).equalsTo(bottle).build());
     }
 
 }

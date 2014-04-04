@@ -43,9 +43,7 @@ import org.slf4j.LoggerFactory;
 import fr.mycellar.domain.shared.Identifiable;
 import fr.mycellar.infrastructure.shared.repository.query.SearchBuilder;
 import fr.mycellar.infrastructure.shared.repository.query.SearchParameters;
-import fr.mycellar.infrastructure.shared.repository.util.ByFullTextUtil;
-import fr.mycellar.infrastructure.shared.repository.util.ByPropertySelectorUtil;
-import fr.mycellar.infrastructure.shared.repository.util.ByRangeUtil;
+import fr.mycellar.infrastructure.shared.repository.util.BySelectorUtil;
 import fr.mycellar.infrastructure.shared.repository.util.JpaUtil;
 import fr.mycellar.infrastructure.shared.repository.util.MetamodelUtil;
 import fr.mycellar.infrastructure.shared.repository.util.OrderByUtil;
@@ -57,9 +55,7 @@ public abstract class JpaGenericRepository<E extends Identifiable<PK>, PK extend
 
     private final Logger logger = LoggerFactory.getLogger(getClass());
 
-    private ByFullTextUtil byFullTextUtil;
-    private ByPropertySelectorUtil byPropertySelectorUtil;
-    private ByRangeUtil byRangeUtil;
+    private BySelectorUtil bySelectorUtil;
     private OrderByUtil orderByUtil;
     private JpaUtil jpaUtil;
     private MetamodelUtil metamodelUtil;
@@ -233,22 +229,11 @@ public abstract class JpaGenericRepository<E extends Identifiable<PK>, PK extend
     }
 
     protected <R> Predicate bySearchPredicate(Root<E> root, CriteriaBuilder builder, SearchParameters<E> sp) {
-        return jpaUtil.andPredicate(builder, //
-                byFullText(root, builder, sp, type), //
-                byRanges(root, builder, sp, type), //
-                byPropertySelectors(root, builder, sp));
+        return bySelectors(root, builder, sp);
     }
 
-    protected Predicate byFullText(Root<E> root, CriteriaBuilder builder, SearchParameters<E> sp, Class<E> type) {
-        return byFullTextUtil.byFullText(root, builder, sp, type);
-    }
-
-    protected Predicate byPropertySelectors(Root<E> root, CriteriaBuilder builder, SearchParameters<E> sp) {
-        return byPropertySelectorUtil.byPropertySelectors(root, builder, sp);
-    }
-
-    protected Predicate byRanges(Root<E> root, CriteriaBuilder builder, SearchParameters<E> sp, Class<E> type) {
-        return byRangeUtil.byRanges(root, builder, sp, type);
+    protected Predicate bySelectors(Root<E> root, CriteriaBuilder builder, SearchParameters<E> sp) {
+        return bySelectorUtil.bySelectors(root, builder, sp);
     }
 
     /**
@@ -261,31 +246,13 @@ public abstract class JpaGenericRepository<E extends Identifiable<PK>, PK extend
 
     // BEANS METHODS
 
-    protected final ByFullTextUtil getByFullTextUtil() {
-        return byFullTextUtil;
+    protected final BySelectorUtil getBySelectorUtil() {
+        return bySelectorUtil;
     }
 
     @Inject
-    public final void setByFullTextUtil(ByFullTextUtil byFullTextUtil) {
-        this.byFullTextUtil = byFullTextUtil;
-    }
-
-    protected final ByPropertySelectorUtil getByPropertySelectorUtil() {
-        return byPropertySelectorUtil;
-    }
-
-    @Inject
-    public final void setByPropertySelectorUtil(ByPropertySelectorUtil byPropertySelectorUtil) {
-        this.byPropertySelectorUtil = byPropertySelectorUtil;
-    }
-
-    protected final ByRangeUtil getByRangeUtil() {
-        return byRangeUtil;
-    }
-
-    @Inject
-    public final void setByRangeUtil(ByRangeUtil byRangeUtil) {
-        this.byRangeUtil = byRangeUtil;
+    public final void setBySelectorUtil(BySelectorUtil bySelectorUtil) {
+        this.bySelectorUtil = bySelectorUtil;
     }
 
     protected final EntityManager getEntityManager() {

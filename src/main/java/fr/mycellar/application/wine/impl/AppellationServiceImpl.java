@@ -56,8 +56,8 @@ public class AppellationServiceImpl extends AbstractSimpleService<Appellation, A
             }
         }
         Appellation existing = appellationRepository.findUniqueOrNone(new SearchBuilder<Appellation>() //
-                .property(Appellation_.region).equalsTo(entity.getRegion()) //
-                .property(NamedEntity_.name).equalsTo(entity.getName()).build());
+                .on(Appellation_.region).equalsTo(entity.getRegion()) //
+                .on(NamedEntity_.name).equalsTo(entity.getName()).build());
         if ((existing != null) && ((entity.getId() == null) || !existing.getId().equals(entity.getId()))) {
             throw new BusinessException(BusinessError.APPELLATION_00002);
         }
@@ -65,7 +65,7 @@ public class AppellationServiceImpl extends AbstractSimpleService<Appellation, A
 
     @Override
     protected void validateDelete(Appellation entity) throws BusinessException {
-        if (appellationRepository.findPropertyCount(new SearchBuilder<Appellation>().property(Appellation_.id).equalsTo(entity.getId()).build(), Appellation_.wines) > 0) {
+        if (appellationRepository.findPropertyCount(new SearchBuilder<Appellation>().on(Appellation_.id).equalsTo(entity.getId()).build(), Appellation_.wines) > 0) {
             throw new BusinessException(BusinessError.APPELLATION_00003);
         }
     }

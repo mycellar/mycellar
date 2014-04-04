@@ -109,7 +109,7 @@ public class StockWebService {
             throw new AccessDeniedException("No read access to this cellar.");
         }
         SearchParameters<Stock> searchParameters = searchParametersUtil.getSearchParametersParametersForListWithCount(first, count, filters, orders, Stock.class);
-        searchParameters = new SearchBuilder<Stock>(searchParameters).property(Stock_.cellar).to(Cellar_.id).equalsTo(cellarId).build();
+        searchParameters = new SearchBuilder<Stock>(searchParameters).on(Stock_.cellar).to(Cellar_.id).equalsTo(cellarId).build();
         List<Stock> stocks;
         if (count == 0) {
             stocks = new ArrayList<>();
@@ -129,7 +129,7 @@ public class StockWebService {
             throw new AccessDeniedException("Current user isn't the owner of the cellar.");
         }
         SearchParameters<CellarShare> searchParameters = searchParametersUtil.getSearchParametersParametersForListWithCount(first, count, filters, orders, CellarShare.class);
-        searchParameters = new SearchBuilder<CellarShare>(searchParameters).property(CellarShare_.cellar).to(Cellar_.id).equalsTo(cellarId).build();
+        searchParameters = new SearchBuilder<CellarShare>(searchParameters).on(CellarShare_.cellar).to(Cellar_.id).equalsTo(cellarId).build();
         List<CellarShare> cellarShares;
         if (count == 0) {
             cellarShares = new ArrayList<>();

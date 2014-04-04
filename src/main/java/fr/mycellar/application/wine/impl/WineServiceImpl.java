@@ -64,12 +64,12 @@ public class WineServiceImpl extends AbstractSearchableService<Wine, WineReposit
     @Override
     public Wine find(Producer producer, Appellation appellation, WineTypeEnum type, WineColorEnum color, String name, Integer vintage) {
         return wineRepository.findUniqueOrNone(new SearchBuilder<Wine>() //
-                .property(Wine_.producer).equalsTo(producer) //
-                .property(Wine_.appellation).equalsTo(appellation) //
-                .property(Wine_.type).equalsTo(type) //
-                .property(Wine_.color).equalsTo(color) //
-                .property(NamedEntity_.name).equalsTo(name) //
-                .property(Wine_.vintage).equalsTo(vintage).build());
+                .on(Wine_.producer).equalsTo(producer) //
+                .on(Wine_.appellation).equalsTo(appellation) //
+                .on(Wine_.type).equalsTo(type) //
+                .on(Wine_.color).equalsTo(color) //
+                .on(NamedEntity_.name).equalsTo(name) //
+                .on(Wine_.vintage).equalsTo(vintage).build());
     }
 
     @Override
@@ -83,19 +83,18 @@ public class WineServiceImpl extends AbstractSearchableService<Wine, WineReposit
     @Override
     protected void validateDelete(Wine entity) throws BusinessException {
         if (stockService.count(new SearchBuilder<Stock>() //
-                .property(Stock_.bottle).to(Bottle_.wine).equalsTo(entity).build()) > 0) {
+                .on(Stock_.bottle).to(Bottle_.wine).equalsTo(entity).build()) > 0) {
             throw new BusinessException(BusinessError.WINE_00002);
         }
         if (bookingEventService.count(new SearchBuilder<BookingEvent>() //
-                .property(BookingEvent_.bottles).to(BookingBottle_.bottle).to(Bottle_.wine).equalsTo(entity).build()) > 0) {
+                .on(BookingEvent_.bottles).to(BookingBottle_.bottle).to(Bottle_.wine).equalsTo(entity).build()) > 0) {
             throw new BusinessException(BusinessError.WINE_00003);
         }
     }
 
     @Override
-    protected SearchParameters<Wine> addTermToSearchParametersParameters(String term, SearchParameters<Wine> search) {
-        // TODO add terms
-        return search;
+    protected SearchParameters<Wine> addTermToSearchParametersParameters(String term, SearchParameters<Wine> searchParameters) {
+        return searchParameters;
     }
 
     // private void restrictFromHibernateSearch(String input, SearchBuilder

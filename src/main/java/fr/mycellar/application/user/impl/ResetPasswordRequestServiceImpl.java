@@ -103,7 +103,7 @@ public class ResetPasswordRequestServiceImpl extends AbstractSimpleService<Reset
     public ResetPasswordRequest getByKey(String key) {
         ResetPasswordRequest request = resetPasswordRequestRepository.findUniqueOrNone( //
                 new SearchBuilder<ResetPasswordRequest>() //
-                        .property(ResetPasswordRequest_.key).equalsTo(key).build());
+                        .on(ResetPasswordRequest_.key).equalsTo(key).build());
         return (request != null) && request.getDateTime().isAfter(new LocalDateTime().minusHours(1)) ? request : null;
     }
 

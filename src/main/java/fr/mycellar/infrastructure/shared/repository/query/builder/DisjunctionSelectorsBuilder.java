@@ -18,63 +18,32 @@
  */
 package fr.mycellar.infrastructure.shared.repository.query.builder;
 
-import javax.persistence.metamodel.PluralAttribute;
-import javax.persistence.metamodel.SingularAttribute;
-
-import fr.mycellar.infrastructure.shared.repository.query.Path;
-import fr.mycellar.infrastructure.shared.repository.query.selector.Selector;
 import fr.mycellar.infrastructure.shared.repository.query.selector.Selectors;
 
 /**
  * @author speralta
  */
-public class DisjunctionSelectorsBuilder<FROM, PARENT> extends AbstractBuilder<PARENT> {
+public class DisjunctionSelectorsBuilder<FROM, PARENT> extends SelectorsBuilder<FROM, PARENT, DisjunctionSelectorsBuilder<FROM, PARENT>> {
 
-    private final Selectors<FROM> selectors;
+    public DisjunctionSelectorsBuilder(PARENT parent, Selectors<FROM> propertySelectors) {
+        super(parent, propertySelectors);
+    }
 
     public DisjunctionSelectorsBuilder(PARENT parent) {
         super(parent);
-        selectors = new Selectors<>();
     }
 
-    public DisjunctionSelectorsBuilder(PARENT parent, Selectors<FROM> propertySelectors) {
-        super(parent);
-        this.selectors = propertySelectors.copy();
+    @Override
+    protected DisjunctionSelectorsBuilder<FROM, PARENT> getThis() {
+        return this;
     }
 
-    public <TO> SelectorBuilder<FROM, PARENT, FROM, TO> on(Path<FROM, TO> path) {
-        return new SelectorBuilder<>(this, path);
-    }
-
-    public <TO> SelectorBuilder<FROM, PARENT, FROM, TO> on(SingularAttribute<? super FROM, TO> attribute) {
-        return new SelectorBuilder<>(this, attribute);
-    }
-
-    public <TO> SelectorBuilder<FROM, PARENT, FROM, TO> on(PluralAttribute<? super FROM, ?, TO> attribute) {
-        return new SelectorBuilder<>(this, attribute);
-    }
-
-    public DisjunctionSelectorsBuilder<FROM, DisjunctionSelectorsBuilder<FROM, PARENT>> disjunction() {
-        DisjunctionSelectorsBuilder<FROM, DisjunctionSelectorsBuilder<FROM, PARENT>> disjunction = new DisjunctionSelectorsBuilder<FROM, DisjunctionSelectorsBuilder<FROM, PARENT>>(this);
-        selectors.add(disjunction.getSelectors().or());
-        return disjunction;
-    }
-
-    public DisjunctionSelectorsBuilder<FROM, DisjunctionSelectorsBuilder<FROM, PARENT>> conjunction() {
-        DisjunctionSelectorsBuilder<FROM, DisjunctionSelectorsBuilder<FROM, PARENT>> conjunction = new DisjunctionSelectorsBuilder<FROM, DisjunctionSelectorsBuilder<FROM, PARENT>>(this);
+    public ConjunctionSelectorsBuilder<FROM, DisjunctionSelectorsBuilder<FROM, PARENT>> conjunction() {
+        ConjunctionSelectorsBuilder<FROM, DisjunctionSelectorsBuilder<FROM, PARENT>> conjunction = new ConjunctionSelectorsBuilder<FROM, DisjunctionSelectorsBuilder<FROM, PARENT>>(this);
         selectors.add(conjunction.getSelectors().or());
         return conjunction;
     }
 
-    public Selectors<FROM> getSelectors() {
-        return selectors;
-    }
-
-    public <TO> DisjunctionSelectorsBuilder<FROM, PARENT> add(Selector<FROM, ?> selector) {
-        selectors.add(selector);
-        return this;
-    }
-    
     public PARENT and() {
         return toParent();
     }

@@ -55,8 +55,8 @@ public class FormatServiceImpl extends AbstractSimpleService<Format, FormatRepos
     @Override
     public void validate(Format entity) throws BusinessException {
         Format existing = formatRepository.findUniqueOrNone(new SearchBuilder<Format>() //
-                .property(Format_.capacity).equalsTo(entity.getCapacity()) //
-                .property(NamedEntity_.name).equalsTo(entity.getName()).build());
+                .on(Format_.capacity).equalsTo(entity.getCapacity()) //
+                .on(NamedEntity_.name).equalsTo(entity.getName()).build());
         if ((existing != null) && ((entity.getId() == null) || !existing.getId().equals(entity.getId()))) {
             throw new BusinessException(BusinessError.FORMAT_00001);
         }
@@ -65,11 +65,11 @@ public class FormatServiceImpl extends AbstractSimpleService<Format, FormatRepos
     @Override
     protected void validateDelete(Format entity) throws BusinessException {
         if (stockService.count(new SearchBuilder<Stock>() //
-                .property(Stock_.bottle).to(Bottle_.format).equalsTo(entity).build()) > 0) {
+                .on(Stock_.bottle).to(Bottle_.format).equalsTo(entity).build()) > 0) {
             throw new BusinessException(BusinessError.FORMAT_00003);
         }
         if (bookingEventService.count(new SearchBuilder<BookingEvent>() //
-                .property(BookingEvent_.bottles).to(BookingBottle_.bottle).to(Bottle_.format).equalsTo(entity).build()) > 0) {
+                .on(BookingEvent_.bottles).to(BookingBottle_.bottle).to(Bottle_.format).equalsTo(entity).build()) > 0) {
             throw new BusinessException(BusinessError.FORMAT_00002);
         }
     }

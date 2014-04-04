@@ -18,13 +18,55 @@
  */
 package fr.mycellar.infrastructure.shared.repository.query.builder;
 
+import javax.persistence.metamodel.PluralAttribute;
+import javax.persistence.metamodel.SingularAttribute;
+
+import fr.mycellar.infrastructure.shared.repository.query.Path;
 import fr.mycellar.infrastructure.shared.repository.query.selector.Selector;
+import fr.mycellar.infrastructure.shared.repository.query.selector.Selectors;
 
 /**
  * @author speralta
  */
-public interface SelectorsBuilder<FROM, CURRENT> {
+public abstract class SelectorsBuilder<FROM, PARENT, CURRENT extends SelectorsBuilder<FROM, PARENT, CURRENT>> extends AbstractBuilder<PARENT> {
 
-    <TO> CURRENT add(Selector<FROM, ?> selector);
+    protected final Selectors<FROM> selectors;
+
+    public SelectorsBuilder(PARENT parent) {
+        super(parent);
+        selectors = new Selectors<>();
+    }
+
+    public SelectorsBuilder(PARENT parent, Selectors<FROM> propertySelectors) {
+        super(parent);
+        this.selectors = propertySelectors.copy();
+    }
+
+    public <TO> SelectorBuilder<FROM, FROM, TO, CURRENT> on(Path<FROM, TO> path) {
+        return new SelectorBuilder<>(getThis(), path);
+    }
+
+    public <TO> SelectorBuilder<FROM, FROM, TO, CURRENT> on(SingularAttribute<? super FROM, TO> attribute) {
+        return new SelectorBuilder<>(getThis(), attribute);
+    }
+
+    public <TO> SelectorBuilder<FROM, FROM, TO, CURRENT> on(PluralAttribute<? super FROM, ?, TO> attribute) {
+        return new SelectorBuilder<>(getThis(), attribute);
+    }
+
+    public TermSelectorBuilder<FROM, PARENT, CURRENT> fullText(SingularAttribute<? super FROM, String> attribute) {
+        return new TermSelectorBuilder<>(getThis(), new Path<>(attribute));
+    }
+
+    public Selectors<FROM> getSelectors() {
+        return selectors;
+    }
+
+    public CURRENT add(Selector<FROM, ?> selector) {
+        selectors.add(selector);
+        return getThis();
+    }
+
+    protected abstract CURRENT getThis();
 
 }

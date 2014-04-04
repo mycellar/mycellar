@@ -23,10 +23,9 @@ import java.util.List;
 import javax.inject.Named;
 import javax.inject.Singleton;
 
+import fr.mycellar.infrastructure.shared.repository.query.Path;
 import fr.mycellar.infrastructure.shared.repository.query.SearchBuilder;
 import fr.mycellar.infrastructure.shared.repository.query.SearchParameters;
-import fr.mycellar.infrastructure.shared.repository.query.SearchMode;
-import fr.mycellar.infrastructure.shared.repository.query.selector.PropertySelector;
 
 /**
  * @author speralta
@@ -39,7 +38,7 @@ public class SearchParametersUtil {
         SearchBuilder<E> searchBuilder = new SearchBuilder<E>();
         for (FilterCouple filter : filters) {
             if (filter.isFilterSet()) {
-                searchBuilder.property(new PropertySelector<>(filter.getProperty(), clazz).searchMode(SearchMode.ANYWHERE).selected(filter.getFilter()));
+                searchBuilder.on(new Path<>(filter.getProperty(), clazz)).anywhere(filter.getFilter());
             }
         }
         searchBuilder.paginate(first, count);

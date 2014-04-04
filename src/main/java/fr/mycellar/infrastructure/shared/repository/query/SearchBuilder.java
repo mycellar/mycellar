@@ -31,6 +31,7 @@ import javax.persistence.metamodel.SingularAttribute;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 
+import fr.mycellar.infrastructure.shared.repository.query.builder.DisjunctionSelectorsBuilder;
 import fr.mycellar.infrastructure.shared.repository.query.builder.FetchBuilder;
 import fr.mycellar.infrastructure.shared.repository.query.builder.FetchesBuilder;
 import fr.mycellar.infrastructure.shared.repository.query.builder.OrderByBuilder;
@@ -71,7 +72,7 @@ public class SearchBuilder<FROM> implements Serializable {
         paginationBuilder = new PaginationBuilder<>(this, searchParameters.getFirstResult(), searchParameters.getMaxResults());
         ordersByBuilder = new OrdersByBuilder<>(this, searchParameters.getOrders());
         fetchesBuilder = new FetchesBuilder<>(this, searchParameters.getFetches());
-        rootSelectorsBuilder = new RootSelectorsBuilder<>(this, searchParameters.getPropertySelectors());
+        rootSelectorsBuilder = new RootSelectorsBuilder<>(this, searchParameters.getSelectors());
         extraParameters = new HashMap<>(searchParameters.getExtraParameters());
         useDistinct = searchParameters.isUseDistinct();
     }
@@ -101,17 +102,17 @@ public class SearchBuilder<FROM> implements Serializable {
     // SearchParameters by selectors support
     // -------------------------------------
 
-    public <E extends Comparable<E>> SearchBuilder<FROM> between(E from, E to, SingularAttribute<? super FROM, E> attribute) {
+    public <E extends Comparable<? super E>> SearchBuilder<FROM> between(E from, E to, SingularAttribute<? super FROM, E> attribute) {
         rootSelectorsBuilder.add(new Range<FROM, E>(from, to, new Path<>(attribute)));
         return this;
     }
 
-    public <E extends Comparable<E>> SearchBuilder<FROM> between(E from, E to, PluralAttribute<? super FROM, ?, E> attribute) {
+    public <E extends Comparable<? super E>> SearchBuilder<FROM> between(E from, E to, PluralAttribute<? super FROM, ?, E> attribute) {
         rootSelectorsBuilder.add(new Range<FROM, E>(from, to, new Path<>(attribute)));
         return this;
     }
 
-    public TermSelectorBuilder<FROM> fullText(SingularAttribute<FROM, String> attribute) {
+    public TermSelectorBuilder<FROM, SearchBuilder<FROM>, RootSelectorsBuilder<FROM>> fullText(SingularAttribute<? super FROM, String> attribute) {
         return new TermSelectorBuilder<>(rootSelectorsBuilder, new Path<>(attribute));
     }
 
@@ -125,6 +126,10 @@ public class SearchBuilder<FROM> implements Serializable {
 
     public <TO> SelectorBuilder<FROM, FROM, TO, RootSelectorsBuilder<FROM>> on(PluralAttribute<? super FROM, ?, TO> attribute) {
         return rootSelectorsBuilder.on(attribute);
+    }
+
+    public DisjunctionSelectorsBuilder<FROM, RootSelectorsBuilder<FROM>> disjunction() {
+        return rootSelectorsBuilder.disjunction();
     }
 
     // -----------------------------------

@@ -34,7 +34,7 @@ public class PaginationBuilder<FROM> extends AbstractBuilder<SearchBuilder<FROM>
         firstResult = 0;
     }
 
-    public PaginationBuilder(SearchBuilder<FROM> searchParameters, int maxResults, int firstResult) {
+    public PaginationBuilder(SearchBuilder<FROM> searchParameters, int firstResult, int maxResults) {
         super(searchParameters);
         this.maxResults = maxResults;
         this.firstResult = firstResult;

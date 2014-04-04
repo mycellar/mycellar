@@ -55,7 +55,7 @@ public class ConfigurationServiceImpl extends AbstractSimpleService<Configuratio
     @Override
     public Configuration find(ConfigurationKeyEnum key) {
         return configurationRepository.findUniqueOrNone(new SearchBuilder<Configuration>() //
-                .property(Configuration_.key).equalsTo(key).build());
+                .on(Configuration_.key).equalsTo(key).build());
     }
 
     @Override

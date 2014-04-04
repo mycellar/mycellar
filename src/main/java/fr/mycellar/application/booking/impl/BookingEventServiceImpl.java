@@ -54,8 +54,8 @@ public class BookingEventServiceImpl extends AbstractSearchableService<BookingEv
     @Override
     public List<BookingEvent> getCurrentBookingEvents() {
         return bookingEventRepository.find(new SearchBuilder<BookingEvent>() //
-                .rangeBetween(null, new LocalDate(), BookingEvent_.start) //
-                .rangeBetween(new LocalDate(), null, BookingEvent_.end).build());
+                .between(null, new LocalDate(), BookingEvent_.start) //
+                .between(new LocalDate(), null, BookingEvent_.end).build());
     }
 
     @Override
@@ -72,14 +72,14 @@ public class BookingEventServiceImpl extends AbstractSearchableService<BookingEv
     @Override
     protected void validateDelete(BookingEvent entity) throws BusinessException {
         if (bookingService.count(new SearchBuilder<Booking>() //
-                .property(Booking_.bookingEvent).equalsTo(entity).build()) > 0) {
+                .on(Booking_.bookingEvent).equalsTo(entity).build()) > 0) {
             throw new BusinessException(BusinessError.BOOKINGEVENT_00001);
         }
     }
 
     @Override
     protected SearchParameters<BookingEvent> addTermToSearchParametersParameters(String term, SearchParameters<BookingEvent> search) {
-        return new SearchBuilder<BookingEvent>(search).fullText(NamedEntity_.name, term).build();
+        return new SearchBuilder<BookingEvent>(search).fullText(NamedEntity_.name).search(term).build();
     }
 
     @Override

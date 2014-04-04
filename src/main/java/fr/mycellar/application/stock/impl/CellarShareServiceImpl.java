@@ -43,8 +43,8 @@ public class CellarShareServiceImpl extends AbstractSimpleService<CellarShare, C
     @Override
     public void validate(CellarShare entity) throws BusinessException {
         CellarShare existing = cellarShareRepository.findUniqueOrNone(new SearchBuilder<CellarShare>() //
-                .property(CellarShare_.cellar).equalsTo(entity.getCellar()) //
-                .property(CellarShare_.email).equalsTo(entity.getEmail()).build());
+                .on(CellarShare_.cellar).equalsTo(entity.getCellar()) //
+                .on(CellarShare_.email).equalsTo(entity.getEmail()).build());
         if ((existing != null) && ((entity.getId() == null) || !existing.getId().equals(entity.getId()))) {
             throw new BusinessException(BusinessError.CELLARSHARE_00001);
         }

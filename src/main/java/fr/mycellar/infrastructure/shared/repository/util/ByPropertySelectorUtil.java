@@ -33,9 +33,7 @@ import javax.persistence.criteria.Root;
 import org.springframework.util.CollectionUtils;
 
 import fr.mycellar.domain.shared.Identifiable;
-import fr.mycellar.infrastructure.shared.repository.query.SearchParameters;
 import fr.mycellar.infrastructure.shared.repository.query.selector.PropertySelector;
-import fr.mycellar.infrastructure.shared.repository.query.selector.Selectors;
 
 /**
  * Helper to create a predicate out of {@link PropertySelector}s.
@@ -48,30 +46,20 @@ public class ByPropertySelectorUtil {
 
     private MetamodelUtil metamodelUtil;
 
-    public <E> Predicate byPropertySelectors(Root<E> root, CriteriaBuilder builder, SearchParameters<E> sp) {
-        return byPropertySelectors(root, builder, sp.getPropertySelectors());
-    }
-
     @SuppressWarnings("unchecked")
-    private <E> Predicate byPropertySelectors(Root<E> root, CriteriaBuilder builder, Selectors<E> propertySelectors) {
+    public <E> Predicate byPropertySelectors(Root<E> root, CriteriaBuilder builder, PropertySelector<? super E, ?> propertySelector) {
         List<Predicate> predicates = new ArrayList<>();
-
-        for (PropertySelector<? super E, ?> selector : propertySelectors.getProperties()) {
-            if (metamodelUtil.isBoolean(selector.getAttributes())) {
-                byBooleanSelector(root, builder, predicates, (PropertySelector<? super E, Boolean>) selector);
-            } else if (metamodelUtil.isString(selector.getAttributes())) {
-                byStringSelector(root, builder, predicates, (PropertySelector<? super E, String>) selector);
-            } else {
-                byObjectSelector(root, builder, predicates, selector);
-            }
-        }
-        for (Selectors<E> selectors : propertySelectors.getSelectors()) {
-            predicates.add(byPropertySelectors(root, builder, selectors));
-        }
-        if (propertySelectors.isAndMode()) {
-            return jpaUtil.andPredicate(builder, predicates);
+        if (metamodelUtil.isBoolean(propertySelector.getAttributes())) {
+            byBooleanSelector(root, builder, predicates, (PropertySelector<? super E, Boolean>) propertySelector);
+        } else if (metamodelUtil.isString(propertySelector.getAttributes())) {
+            byStringSelector(root, builder, predicates, (PropertySelector<? super E, String>) propertySelector);
         } else {
+            byObjectSelector(root, builder, predicates, propertySelector);
+        }
+        if (propertySelector.isOrMode()) {
             return jpaUtil.orPredicate(builder, predicates);
+        } else {
+            return jpaUtil.andPredicate(builder, predicates);
         }
     }
 

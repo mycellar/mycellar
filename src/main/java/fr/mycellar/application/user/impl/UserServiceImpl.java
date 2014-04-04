@@ -85,11 +85,11 @@ public class UserServiceImpl extends AbstractSearchableService<User, UserReposit
     @Override
     protected void validateDelete(User entity) throws BusinessException {
         if (bookingService.count(new SearchBuilder<Booking>() //
-                .property(Booking_.customer).equalsTo(entity).build()) > 0) {
+                .on(Booking_.customer).equalsTo(entity).build()) > 0) {
             throw new BusinessException(BusinessError.USER_00002);
         }
         if (cellarService.count(new SearchBuilder<Cellar>() //
-                .property(Cellar_.owner).equalsTo(entity).build()) > 0) {
+                .on(Cellar_.owner).equalsTo(entity).build()) > 0) {
             throw new BusinessException(BusinessError.USER_00003);
         }
     }
@@ -106,7 +106,7 @@ public class UserServiceImpl extends AbstractSearchableService<User, UserReposit
     @Override
     public User getByEmail(String email) {
         return userRepository.findUniqueOrNone(new SearchBuilder<User>() //
-                .property(User_.email).equalsTo(email).build());
+                .on(User_.email).equalsTo(email).build());
     }
 
     @Override
@@ -122,8 +122,10 @@ public class UserServiceImpl extends AbstractSearchableService<User, UserReposit
 
     @Override
     protected SearchParameters<User> addTermToSearchParametersParameters(String term, SearchParameters<User> search) {
-        // TODO add fulltext on firstname, lastname and email
-        return search;
+        return new SearchBuilder<User>(search).disjunction() //
+                .fullText(User_.lastname).search(term) //
+                .fullText(User_.firstname).search(term) //
+                .fullText(User_.email).search(term).and().build();
     }
 
     @Override

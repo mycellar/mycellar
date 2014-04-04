@@ -67,7 +67,7 @@ public class JpaConfigurationRepositoryIT {
     public void byPropertySelector() {
         assertThat(jpaConfigurationRepository.find( //
                 new SearchBuilder<Configuration>() //
-                        .property(Configuration_.key).equalsTo(ConfigurationKeyEnum.MAIL_ADDRESS_SENDER).build()) //
+                        .on(Configuration_.key).equalsTo(ConfigurationKeyEnum.MAIL_ADDRESS_SENDER).build()) //
                 .size(), equalTo(1));
     }
 

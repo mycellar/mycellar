@@ -58,7 +58,7 @@ public class StackServiceImpl extends AbstractSimpleService<Stack, StackReposito
         throwable.printStackTrace(new PrintWriter(stringWriter));
         String stackContent = stringWriter.toString();
         Stack stack = stackRepository.findUniqueOrNone(new SearchBuilder<Stack>() //
-                .property(Stack_.hashCode).equalsTo(stackContent.hashCode()).build());
+                .on(Stack_.hashCode).equalsTo(stackContent.hashCode()).build());
         if (stack == null) {
             stack = new Stack();
             stack.setStack(stackContent);

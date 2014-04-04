@@ -19,30 +19,29 @@
 package fr.mycellar.infrastructure.shared.repository.query.builder;
 
 import fr.mycellar.infrastructure.shared.repository.query.Path;
-import fr.mycellar.infrastructure.shared.repository.query.SearchBuilder;
 import fr.mycellar.infrastructure.shared.repository.query.selector.TermSelector;
 
 /**
  * @author speralta
  */
-public class TermSelectorBuilder<FROM> {
+public class TermSelectorBuilder<FROM, PARENT, CURRENT extends SelectorsBuilder<FROM, PARENT, CURRENT>> {
 
-    private final RootSelectorsBuilder<FROM> rootSelectorsBuilder;
+    private final SelectorsBuilder<FROM, PARENT, CURRENT> selectorsBuilder;
     private final TermSelector<FROM> termSelector;
 
-    public TermSelectorBuilder(RootSelectorsBuilder<FROM> selectorsBuilder, Path<FROM, String> path) {
-        this.rootSelectorsBuilder = selectorsBuilder;
+    public TermSelectorBuilder(SelectorsBuilder<FROM, PARENT, CURRENT> selectorsBuilder, Path<FROM, String> path) {
+        this.selectorsBuilder = selectorsBuilder;
         termSelector = new TermSelector<FROM>(path);
     }
 
-    public TermSelectorBuilder<FROM> searchSimilarity(Integer searchSimilarity) {
+    public TermSelectorBuilder<FROM, PARENT, CURRENT> searchSimilarity(Integer searchSimilarity) {
         termSelector.setSearchSimilarity(searchSimilarity);
         return this;
     }
 
-    public SearchBuilder<FROM> search(String... selected) {
+    public CURRENT search(String... selected) {
         termSelector.selected(selected);
-        return rootSelectorsBuilder.add(termSelector).toParent();
+        return selectorsBuilder.add(termSelector);
     }
 
 }

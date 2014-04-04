@@ -68,8 +68,8 @@ public class CellarServiceImpl extends AbstractSearchableService<Cellar, CellarR
     @Override
     public void validate(Cellar entity) throws BusinessException {
         Cellar existing = cellarRepository.findUniqueOrNone(new SearchBuilder<Cellar>() //
-                .property(Cellar_.owner).equalsTo(entity.getOwner()) //
-                .property(NamedEntity_.name).equalsTo(entity.getName()).build());
+                .on(Cellar_.owner).equalsTo(entity.getOwner()) //
+                .on(NamedEntity_.name).equalsTo(entity.getName()).build());
         if ((existing != null) && ((entity.getId() == null) || !existing.getId().equals(entity.getId()))) {
             throw new BusinessException(BusinessError.CELLAR_00001);
         }
@@ -78,25 +78,25 @@ public class CellarServiceImpl extends AbstractSearchableService<Cellar, CellarR
     @Override
     protected void validateDelete(Cellar entity) throws BusinessException {
         if (stockService.count(new SearchBuilder<Stock>() //
-                .property(Stock_.cellar).equalsTo(entity).build()) > 0) {
+                .on(Stock_.cellar).equalsTo(entity).build()) > 0) {
             throw new BusinessException(BusinessError.CELLAR_00002);
         }
         if (cellarShareService.count(new SearchBuilder<CellarShare>() //
-                .property(CellarShare_.cellar).equalsTo(entity).build()) > 0) {
+                .on(CellarShare_.cellar).equalsTo(entity).build()) > 0) {
             throw new BusinessException(BusinessError.CELLAR_00003);
         }
     }
 
     @Override
     protected SearchParameters<Cellar> addTermToSearchParametersParameters(String term, SearchParameters<Cellar> search) {
-        return new SearchBuilder<Cellar>(search).fullText(NamedEntity_.name, term).build();
+        return new SearchBuilder<Cellar>(search).fullText(NamedEntity_.name).search(term).build();
     }
 
     protected SearchParameters<Cellar> addUserToSearchParametersParameters(User user, SearchParameters<Cellar> search) {
         return new SearchBuilder<Cellar>(search).disjunction() //
-                .property(Cellar_.owner).equalsTo(user) //
-                .property(Cellar_.shares).to(CellarShare_.email).equalsTo(user.getEmail()) //
-                .end().build();
+                .on(Cellar_.owner).equalsTo(user) //
+                .on(Cellar_.shares).to(CellarShare_.email).equalsTo(user.getEmail()) //
+                .and().build();
     }
 
     @Override

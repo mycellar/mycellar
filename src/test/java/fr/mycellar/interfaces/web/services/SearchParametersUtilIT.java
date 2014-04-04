@@ -33,9 +33,10 @@ import org.springframework.transaction.annotation.Transactional;
 import fr.mycellar.MyCellarApplication;
 import fr.mycellar.domain.wine.Wine;
 import fr.mycellar.infrastructure.shared.repository.query.OrderByDirection;
+import fr.mycellar.infrastructure.shared.repository.query.Path;
 import fr.mycellar.infrastructure.shared.repository.query.SearchBuilder;
 import fr.mycellar.infrastructure.shared.repository.query.SearchParameters;
-import fr.mycellar.infrastructure.shared.repository.query.selector.PropertySelector;
+import fr.mycellar.infrastructure.shared.repository.query.selector.Selector;
 
 /**
  * @author speralta
@@ -69,8 +70,8 @@ public class SearchParametersUtilIT {
 
         SearchBuilder<Wine> expectedBuilder = new SearchBuilder<Wine>();
         expectedBuilder.paginate(first, count) //
-                .property(new PropertySelector<>(firstFilter, Wine.class).selected(firstFilterValue)) //
-                .property(new PropertySelector<>(secondFilter, Wine.class).selected(secondFilterValue)) //
+                .on(new Path<>(firstFilter, Wine.class)).anywhere(firstFilterValue) //
+                .on(new Path<>(secondFilter, Wine.class)).anywhere(secondFilterValue).and() //
                 .orderBy(OrderByDirection.ASC, firstOrder, Wine.class) //
                 .orderBy(OrderByDirection.DESC, secondOrder, Wine.class);
         SearchParameters<Wine> expected = expectedBuilder.build();
@@ -80,13 +81,11 @@ public class SearchParametersUtilIT {
         assertEquals(expected.getFirstResult(), searchParameters.getFirstResult());
         assertEquals(expected.getMaxResults(), searchParameters.getMaxResults());
         assertEquals(expected.getOrders(), searchParameters.getOrders());
-        assertEquals(expected.getPropertySelectors().getProperties().size(), searchParameters.getPropertySelectors().getProperties().size());
+        assertEquals(expected.getSelectors().getSelectors().size(), searchParameters.getSelectors().getSelectors().size());
         int index = 0;
-        for (PropertySelector<?, ?> expectedPropertySelector : expected.getPropertySelectors().getProperties()) {
-            PropertySelector<?, ?> propertySelector = searchParameters.getPropertySelectors().getProperties().get(index++);
-            assertEquals(expectedPropertySelector.getAttributes(), propertySelector.getAttributes());
-            assertEquals(expectedPropertySelector.getSearchMode(), propertySelector.getSearchMode());
-            assertEquals(expectedPropertySelector.getSelected(), propertySelector.getSelected());
+        for (Selector<?, ?> expectedSelector : expected.getSelectors().getSelectors()) {
+            Selector<?, ?> selector = searchParameters.getSelectors().getSelectors().get(index++);
+            assertEquals(expectedSelector.getClass(), selector.getClass());
         }
     }
 

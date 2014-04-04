@@ -242,15 +242,15 @@ public class StockServiceFacadeImpl implements StockServiceFacade {
     @Transactional(readOnly = true)
     public List<Cellar> getCellars(User user) {
         return getCellars(new SearchBuilder<Cellar>().disjunction() //
-                .property(Cellar_.owner).equalsTo(user) //
-                .property(Cellar_.shares).to(CellarShare_.email).equalsTo(user.getEmail()) //
-                .end().build());
+                .on(Cellar_.owner).equalsTo(user) //
+                .on(Cellar_.shares).to(CellarShare_.email).equalsTo(user.getEmail()) //
+                .and().build());
     }
 
     @Override
     @Transactional(readOnly = true)
     public List<Stock> getStocks(Cellar cellar) {
-        return getStocks(new SearchBuilder<Stock>().property(Stock_.cellar).equalsTo(cellar).build());
+        return getStocks(new SearchBuilder<Stock>().on(Stock_.cellar).equalsTo(cellar).build());
     }
 
     @Override
@@ -259,8 +259,8 @@ public class StockServiceFacadeImpl implements StockServiceFacade {
         Cellar cellar = getCellarById(cellarId);
         return (cellar != null) && (cellar.getOwner().getEmail().equals(userEmail) //
                 || (countCellarShares(new SearchBuilder<CellarShare>() //
-                        .property(CellarShare_.email).equalsTo(userEmail) //
-                        .property(CellarShare_.cellar).to(Cellar_.id).equalsTo(cellarId).build()) > 0));
+                        .on(CellarShare_.email).equalsTo(userEmail) //
+                        .on(CellarShare_.cellar).to(Cellar_.id).equalsTo(cellarId).build()) > 0));
     }
 
     @Override
@@ -269,9 +269,9 @@ public class StockServiceFacadeImpl implements StockServiceFacade {
         Cellar cellar = getCellarById(cellarId);
         return (cellar != null) && (cellar.getOwner().getEmail().equals(userEmail) //
                 || (countCellarShares(new SearchBuilder<CellarShare>() //
-                        .property(CellarShare_.email).equalsTo(userEmail) //
-                        .property(CellarShare_.cellar).to(Cellar_.id).equalsTo(cellarId) //
-                        .property(CellarShare_.accessRight).equalsTo(AccessRightEnum.MODIFY).build()) > 0));
+                        .on(CellarShare_.email).equalsTo(userEmail) //
+                        .on(CellarShare_.cellar).to(Cellar_.id).equalsTo(cellarId) //
+                        .on(CellarShare_.accessRight).equalsTo(AccessRightEnum.MODIFY).build()) > 0));
     }
 
     @Override

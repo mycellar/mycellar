@@ -112,8 +112,8 @@ public class ContactServiceImpl extends AbstractSimpleService<Contact, ContactRe
     @Override
     public Contact find(Producer producer, LocalDate current) {
         return contactRepository.findUniqueOrNone(new SearchBuilder<Contact>()//
-                .property(Contact_.producer).equalsTo(producer) //
-                .property(Contact_.current).equalsTo(current).build());
+                .on(Contact_.producer).equalsTo(producer) //
+                .on(Contact_.current).equalsTo(current).build());
     }
 
     @Override

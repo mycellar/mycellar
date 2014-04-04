@@ -56,8 +56,8 @@ public class RegionServiceImpl extends AbstractSimpleService<Region, RegionRepos
             }
         }
         Region existing = regionRepository.findUniqueOrNone(new SearchBuilder<Region>() //
-                .property(Region_.country).equalsTo(entity.getCountry()) //
-                .property(NamedEntity_.name).equalsTo(entity.getName()).build());
+                .on(Region_.country).equalsTo(entity.getCountry()) //
+                .on(NamedEntity_.name).equalsTo(entity.getName()).build());
         if ((existing != null) && ((entity.getId() == null) || !existing.getId().equals(entity.getId()))) {
             throw new BusinessException(BusinessError.REGION_00002);
         }
@@ -66,7 +66,7 @@ public class RegionServiceImpl extends AbstractSimpleService<Region, RegionRepos
     @Override
     protected void validateDelete(Region entity) throws BusinessException {
         if (regionRepository.findPropertyCount(new SearchBuilder<Region>() //
-                .property(Region_.id).equalsTo(entity.getId()).build(), Region_.appellations) > 0) {
+                .on(Region_.id).equalsTo(entity.getId()).build(), Region_.appellations) > 0) {
             throw new BusinessException(BusinessError.REGION_00003);
         }
     }

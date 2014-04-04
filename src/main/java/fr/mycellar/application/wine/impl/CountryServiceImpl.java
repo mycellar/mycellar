@@ -43,7 +43,7 @@ public class CountryServiceImpl extends AbstractSimpleService<Country, CountryRe
 
     @Override
     public Country find(String name) {
-        return countryRepository.findUniqueOrNone(new SearchBuilder<Country>().property(NamedEntity_.name).equalsTo(name).build());
+        return countryRepository.findUniqueOrNone(new SearchBuilder<Country>().on(NamedEntity_.name).equalsTo(name).build());
     }
 
     @Override
@@ -56,7 +56,7 @@ public class CountryServiceImpl extends AbstractSimpleService<Country, CountryRe
 
     @Override
     protected void validateDelete(Country entity) throws BusinessException {
-        if (countryRepository.findPropertyCount(new SearchBuilder<Country>().property(Country_.id).equalsTo(entity.getId()).build(), Country_.regions) > 0) {
+        if (countryRepository.findPropertyCount(new SearchBuilder<Country>().on(Country_.id).equalsTo(entity.getId()).build(), Country_.regions) > 0) {
             throw new BusinessException(BusinessError.COUNTRY_00002);
         }
     }

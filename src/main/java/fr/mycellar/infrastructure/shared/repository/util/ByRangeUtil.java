@@ -18,11 +18,8 @@
  */
 package fr.mycellar.infrastructure.shared.repository.util;
 
-import static com.google.common.collect.Lists.newArrayList;
 import static java.lang.Boolean.FALSE;
 import static java.lang.Boolean.TRUE;
-
-import java.util.List;
 
 import javax.inject.Inject;
 import javax.inject.Named;
@@ -32,7 +29,6 @@ import javax.persistence.criteria.Path;
 import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
 
-import fr.mycellar.infrastructure.shared.repository.query.SearchParameters;
 import fr.mycellar.infrastructure.shared.repository.query.selector.Range;
 
 /**
@@ -46,19 +42,12 @@ public class ByRangeUtil {
     @Inject
     private JpaUtil jpaUtil;
 
-    public <E> Predicate byRanges(Root<E> root, CriteriaBuilder builder, SearchParameters<E> sp, Class<E> type) {
-        List<Range<E, ?>> ranges = sp.getRanges();
-        List<Predicate> predicates = newArrayList();
-        for (Range<E, ?> range : ranges) {
-            if (range.isSet()) {
-                Predicate rangePredicate = buildRangePredicate(range, root, builder);
-                if (rangePredicate != null) {
-                    predicates.add(rangePredicate);
-                }
-            }
+    public <E> Predicate byRange(Root<E> root, CriteriaBuilder builder, Range<E, ?> range) {
+        if (range.isSet()) {
+            return buildRangePredicate(range, root, builder);
+        } else {
+            return null;
         }
-
-        return jpaUtil.andPredicate(builder, predicates);
     }
 
     private <D extends Comparable<? super D>, E> Predicate buildRangePredicate(Range<E, D> range, Root<E> root, CriteriaBuilder builder) {

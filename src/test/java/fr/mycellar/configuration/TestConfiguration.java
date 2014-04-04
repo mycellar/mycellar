@@ -34,7 +34,7 @@ import org.springframework.jdbc.datasource.embedded.EmbeddedDatabaseType;
  */
 @Configuration
 @Profile("test")
-public class DevelopmentConfiguraiton {
+public class TestConfiguration {
 
     @Bean
     public Session session() {

@@ -18,41 +18,21 @@
  */
 package fr.mycellar.infrastructure.shared.repository.query.builder;
 
-import javax.persistence.metamodel.PluralAttribute;
-import javax.persistence.metamodel.SingularAttribute;
-
-import fr.mycellar.infrastructure.shared.repository.query.Path;
 import fr.mycellar.infrastructure.shared.repository.query.SearchBuilder;
-import fr.mycellar.infrastructure.shared.repository.query.selector.Selector;
+import fr.mycellar.infrastructure.shared.repository.query.SearchParameters;
 import fr.mycellar.infrastructure.shared.repository.query.selector.Selectors;
 
 /**
  * @author speralta
  */
-public class RootSelectorsBuilder<FROM> extends AbstractBuilder<SearchBuilder<FROM>> implements SelectorsBuilder<FROM, RootSelectorsBuilder<FROM>> {
+public class RootSelectorsBuilder<FROM> extends SelectorsBuilder<FROM, SearchBuilder<FROM>, RootSelectorsBuilder<FROM>> {
 
-    private final Selectors<FROM> selectors;
+    public RootSelectorsBuilder(SearchBuilder<FROM> parent, Selectors<FROM> propertySelectors) {
+        super(parent, propertySelectors);
+    }
 
     public RootSelectorsBuilder(SearchBuilder<FROM> parent) {
         super(parent);
-        selectors = new Selectors<>();
-    }
-
-    public RootSelectorsBuilder(SearchBuilder<FROM> parent, Selectors<FROM> propertySelectors) {
-        super(parent);
-        this.selectors = propertySelectors.copy();
-    }
-
-    public <TO> SelectorBuilder<FROM, FROM, TO, RootSelectorsBuilder<FROM>> on(Path<FROM, TO> path) {
-        return new SelectorBuilder<>(this, path);
-    }
-
-    public <TO> SelectorBuilder<FROM, FROM, TO, RootSelectorsBuilder<FROM>> on(SingularAttribute<? super FROM, TO> attribute) {
-        return new SelectorBuilder<>(this, attribute);
-    }
-
-    public <TO> SelectorBuilder<FROM, FROM, TO, RootSelectorsBuilder<FROM>> on(PluralAttribute<? super FROM, ?, TO> attribute) {
-        return new SelectorBuilder<>(this, attribute);
     }
 
     public DisjunctionSelectorsBuilder<FROM, RootSelectorsBuilder<FROM>> disjunction() {
@@ -61,19 +41,17 @@ public class RootSelectorsBuilder<FROM> extends AbstractBuilder<SearchBuilder<FR
         return disjunction;
     }
 
-    public ConjunctionSelectorsBuilder<FROM, RootSelectorsBuilder<FROM>> conjunction() {
-        ConjunctionSelectorsBuilder<FROM, RootSelectorsBuilder<FROM>> conjunction = new ConjunctionSelectorsBuilder<FROM, RootSelectorsBuilder<FROM>>(this);
-        selectors.add(conjunction.getSelectors().or());
-        return conjunction;
-    }
-
-    public Selectors<FROM> getSelectors() {
-        return selectors;
-    }
-
     @Override
-    public <TO> RootSelectorsBuilder<FROM> add(Selector<FROM, ?> selector) {
-        selectors.add(selector);
+    protected RootSelectorsBuilder<FROM> getThis() {
         return this;
     }
+
+    public SearchParameters<FROM> build() {
+        return toParent().build();
+    }
+
+    public SearchBuilder<FROM> and() {
+        return toParent();
+    }
+
 }

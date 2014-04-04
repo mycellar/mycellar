@@ -30,7 +30,6 @@ import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
 
 import fr.mycellar.domain.shared.Identifiable;
-import fr.mycellar.infrastructure.shared.repository.query.SearchParameters;
 import fr.mycellar.infrastructure.shared.repository.query.selector.TermSelector;
 
 @Named
@@ -39,29 +38,21 @@ public class ByFullTextUtil {
     private HibernateSearchUtil hibernateSearchUtil;
     private JpaUtil jpaUtil;
 
-    public <T extends Identifiable<?>> Predicate byFullText(Root<T> root, CriteriaBuilder builder, SearchParameters<T> sp, Class<T> type) {
-        if (!hasNonEmptyTerms(sp)) {
+    public <T> Predicate byFullText(Root<T> root, CriteriaBuilder builder, TermSelector<T> termSelector) {
+        if (!termSelector.isNotEmpty()) {
             return null;
         }
 
-        if (Identifiable.class.isAssignableFrom(type)) {
-            return onIdentifiable(root, builder, sp);
+        if (Identifiable.class.isAssignableFrom(root.getJavaType())) {
+            return onIdentifiable(root, builder, termSelector);
         } else {
-            return onOther(root, builder, sp);
+            return onOther(root, builder, termSelector);
         }
+
     }
 
-    private boolean hasNonEmptyTerms(SearchParameters<?> sp) {
-        for (TermSelector<?> termSelector : sp.getTerms()) {
-            if (termSelector.isNotEmpty()) {
-                return true;
-            }
-        }
-        return false;
-    }
-
-    private <T extends Identifiable<?>> Predicate onOther(Root<T> root, CriteriaBuilder builder, SearchParameters<T> sp) {
-        List<? extends T> found = hibernateSearchUtil.find(root.getJavaType(), sp);
+    private <T> Predicate onOther(Root<T> root, CriteriaBuilder builder, TermSelector<T> termSelector) {
+        List<? extends T> found = hibernateSearchUtil.find(root.getJavaType(), termSelector);
         if (found == null) {
             return null;
         } else if (found.isEmpty()) {
@@ -72,11 +63,12 @@ public class ByFullTextUtil {
         for (T t : found) {
             predicates.add(builder.equal(root, t));
         }
-        return jpaUtil.andPredicate(builder, jpaUtil.orPredicate(builder, predicates));
+
+        return jpaUtil.orPredicate(builder, predicates);
     }
 
-    private <T> Predicate onIdentifiable(Root<T> root, CriteriaBuilder builder, SearchParameters<T> sp) {
-        List<Serializable> ids = hibernateSearchUtil.findId(root.getJavaType(), sp);
+    private <T> Predicate onIdentifiable(Root<T> root, CriteriaBuilder builder, TermSelector<T> termSelector) {
+        List<Serializable> ids = hibernateSearchUtil.findId(root.getJavaType(), termSelector);
         if (ids == null) {
             return null;
         } else if (ids.isEmpty()) {

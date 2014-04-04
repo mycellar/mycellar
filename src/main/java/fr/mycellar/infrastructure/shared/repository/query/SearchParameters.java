@@ -41,7 +41,7 @@ public class SearchParameters<FROM> implements Serializable {
     // fetches
     private final Set<Path<FROM, ?>> fetches;
 
-    // property selectors
+    // selectors
     private final Selectors<FROM> selectors;
 
     // extra namedQueryParameters
@@ -75,7 +75,7 @@ public class SearchParameters<FROM> implements Serializable {
         return fetches;
     }
 
-    public Selectors<FROM> getPropertySelectors() {
+    public Selectors<FROM> getSelectors() {
         return selectors;
     }
 

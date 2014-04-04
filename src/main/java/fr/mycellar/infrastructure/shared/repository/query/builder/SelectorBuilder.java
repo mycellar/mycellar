@@ -29,7 +29,7 @@ import fr.mycellar.infrastructure.shared.repository.query.selector.Range;
 /**
  * @author speralta
  */
-public class SelectorBuilder<F, FROM, TO, B extends SelectorsBuilder<F, B>> {
+public class SelectorBuilder<F, FROM, TO, B extends SelectorsBuilder<F, ?, B>> {
 
     private final B builder;
 
