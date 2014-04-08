@@ -17,6 +17,11 @@ angular.module('mycellar').filter('wineRenderer', function() {
         (wine.vintage != null ? ' - ' + wine.vintage : '') +
         colorLabel(wine.color);
   }
+}).filter('bookingEventRenderer', function(dateFilter) {
+  return function(bookingEvent) {
+    return bookingEvent.name + ' (du ' + dateFilter(bookingEvent.start, 'longDate') +
+        ' au ' + dateFilter(bookingEvent.end, 'longDate') + ')';
+  }
 }).filter('formatRenderer', function(numberFilter) {
   return function(format) {
     return format.name + ' (' + numberFilter(format.capacity) + 'L)';

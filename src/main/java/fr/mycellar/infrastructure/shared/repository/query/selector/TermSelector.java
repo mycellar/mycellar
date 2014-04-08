@@ -16,9 +16,8 @@
  * You should have received a copy of the GNU General Public License
  * along with MyCellar. If not, see <http://www.gnu.org/licenses/>.
  */
-package fr.mycellar.infrastructure.shared.repository;
+package fr.mycellar.infrastructure.shared.repository.query.selector;
 
-import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -29,22 +28,45 @@ import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 
-public class TermSelector implements Serializable {
+import fr.mycellar.infrastructure.shared.repository.query.Path;
+
+public class TermSelector<FROM> implements SingleSelector<FROM, String, TermSelector<FROM>> {
     private static final long serialVersionUID = 201308010800L;
-    private final Path path;
+    private final Path<FROM, String> path;
     private List<String> selected = new ArrayList<>();
     private boolean orMode = true;
+    private Integer searchSimilarity = 2;
 
-    public TermSelector() {
-        path = null;
+    public TermSelector(SingularAttribute<? super FROM, String> attribute) {
+        path = new Path<FROM, String>(attribute);
     }
 
-    public TermSelector(SingularAttribute<?, ?> attribute) {
-        path = new Path(attribute);
+    public TermSelector(Path<FROM, String> path) {
+        this.path = path;
+    }
+
+    private TermSelector(TermSelector<FROM> toCopy) {
+        path = toCopy.path;
+        selected = new ArrayList<>(toCopy.selected);
+        orMode = toCopy.orMode;
+        searchSimilarity = toCopy.searchSimilarity;
+    }
+
+    @Override
+    public TermSelector<FROM> copy() {
+        return new TermSelector<FROM>(this);
     }
 
     public SingularAttribute<?, ?> getAttribute() {
         return path != null ? (SingularAttribute<?, ?>) path.getAttributes().get(0) : null;
+    }
+
+    public Integer getSearchSimilarity() {
+        return searchSimilarity;
+    }
+
+    public void setSearchSimilarity(Integer searchSimilarity) {
+        this.searchSimilarity = searchSimilarity;
     }
 
     public boolean isOrMode() {
@@ -55,12 +77,12 @@ public class TermSelector implements Serializable {
         this.orMode = orMode;
     }
 
-    public TermSelector or() {
+    public TermSelector<FROM> or() {
         setOrMode(true);
         return this;
     }
 
-    public TermSelector and() {
+    public TermSelector<FROM> and() {
         setOrMode(false);
         return this;
     }
@@ -83,7 +105,7 @@ public class TermSelector implements Serializable {
         this.selected = selected;
     }
 
-    public TermSelector selected(String... selected) {
+    public TermSelector<FROM> selected(String... selected) {
         setSelected(Arrays.asList(selected));
         return this;
     }

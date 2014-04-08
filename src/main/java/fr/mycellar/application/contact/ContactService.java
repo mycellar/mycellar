@@ -25,35 +25,19 @@ import org.joda.time.LocalDate;
 import fr.mycellar.application.shared.SimpleService;
 import fr.mycellar.domain.contact.Contact;
 import fr.mycellar.domain.wine.Producer;
-import fr.mycellar.infrastructure.shared.repository.SearchParameters;
+import fr.mycellar.infrastructure.shared.repository.query.SearchParameters;
 
 /**
  * @author speralta
  */
 public interface ContactService extends SimpleService<Contact> {
 
-    /**
-     * @param producer
-     * @param current
-     * @return
-     */
     Contact find(Producer producer, LocalDate current);
 
-    /**
-     * 
-     */
     void sendReminders();
 
-    /**
-     * @param searchParameters
-     * @return
-     */
-    long countLastContacts(SearchParameters searchParameters);
+    long countLastContacts(SearchParameters<Contact> search);
 
-    /**
-     * @param searchParameters
-     * @return
-     */
-    List<Contact> getLastContacts(SearchParameters searchParameters);
+    List<Contact> getLastContacts(SearchParameters<Contact> search);
 
 }

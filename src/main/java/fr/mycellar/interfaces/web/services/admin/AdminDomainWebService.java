@@ -36,7 +36,7 @@ import javax.ws.rs.core.MediaType;
 
 import fr.mycellar.domain.admin.Configuration;
 import fr.mycellar.domain.shared.exception.BusinessException;
-import fr.mycellar.infrastructure.shared.repository.SearchParameters;
+import fr.mycellar.infrastructure.shared.repository.query.SearchParameters;
 import fr.mycellar.interfaces.facades.admin.AdministrationServiceFacade;
 import fr.mycellar.interfaces.web.services.FilterCouple;
 import fr.mycellar.interfaces.web.services.ListWithCount;
@@ -67,14 +67,14 @@ public class AdminDomainWebService {
             @QueryParam("count") @DefaultValue("20") int count, //
             @QueryParam("filters") List<FilterCouple> filters, //
             @QueryParam("sort") List<OrderCouple> orders) {
-        SearchParameters searchParameters = searchParametersUtil.getSearchParametersForListWithCount(first, count, filters, orders, Configuration.class);
+        SearchParameters<Configuration> search = searchParametersUtil.getSearchParametersParametersForListWithCount(first, count, filters, orders, Configuration.class);
         List<Configuration> configurations;
         if (count == 0) {
             configurations = new ArrayList<>();
         } else {
-            configurations = administrationServiceFacade.getConfigurations(searchParameters);
+            configurations = administrationServiceFacade.getConfigurations(search);
         }
-        return new ListWithCount<>(administrationServiceFacade.countConfigurations(searchParameters), configurations);
+        return new ListWithCount<>(administrationServiceFacade.countConfigurations(search), configurations);
     }
 
     @GET

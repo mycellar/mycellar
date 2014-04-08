@@ -23,9 +23,9 @@ import java.util.List;
 import javax.inject.Named;
 import javax.inject.Singleton;
 
-import fr.mycellar.infrastructure.shared.repository.PropertySelector;
-import fr.mycellar.infrastructure.shared.repository.SearchMode;
-import fr.mycellar.infrastructure.shared.repository.SearchParameters;
+import fr.mycellar.infrastructure.shared.repository.query.Path;
+import fr.mycellar.infrastructure.shared.repository.query.SearchBuilder;
+import fr.mycellar.infrastructure.shared.repository.query.SearchParameters;
 
 /**
  * @author speralta
@@ -34,19 +34,18 @@ import fr.mycellar.infrastructure.shared.repository.SearchParameters;
 @Singleton
 public class SearchParametersUtil {
 
-    public SearchParameters getSearchParametersForListWithCount(int first, int count, List<FilterCouple> filters, List<OrderCouple> orders, Class<?> clazz) {
-        SearchParameters searchParameters = new SearchParameters();
-        searchParameters.searchMode(SearchMode.ANYWHERE);
+    public <E> SearchParameters<E> getSearchParametersParametersForListWithCount(int first, int count, List<FilterCouple> filters, List<OrderCouple> orders, Class<E> clazz) {
+        SearchBuilder<E> searchBuilder = new SearchBuilder<E>();
         for (FilterCouple filter : filters) {
             if (filter.isFilterSet()) {
-                searchParameters.property(new PropertySelector<>(filter.getProperty(), clazz).selected(filter.getFilter()));
+                searchBuilder.on(new Path<>(filter.getProperty(), clazz)).anywhere(filter.getFilter());
             }
         }
-        searchParameters.firstResult(first).maxResults(count);
+        searchBuilder.paginate(first, count);
         for (OrderCouple order : orders) {
-            searchParameters.orderBy(order.getDirection(), order.getProperty(), clazz);
+            searchBuilder.orderBy(order.getDirection(), order.getProperty(), clazz);
         }
-        return searchParameters;
+        return searchBuilder.build();
     }
 
 }

@@ -29,7 +29,7 @@ import org.springframework.transaction.annotation.Transactional;
 import fr.mycellar.application.admin.ConfigurationService;
 import fr.mycellar.domain.admin.Configuration;
 import fr.mycellar.domain.shared.exception.BusinessException;
-import fr.mycellar.infrastructure.shared.repository.SearchParameters;
+import fr.mycellar.infrastructure.shared.repository.query.SearchParameters;
 
 /**
  * @author speralta
@@ -42,8 +42,8 @@ public class AdministrationServiceFacadeImpl implements AdministrationServiceFac
 
     @Override
     @Transactional(readOnly = true)
-    public long countConfigurations(SearchParameters searchParameters) {
-        return configurationService.count(searchParameters);
+    public long countConfigurations(SearchParameters<Configuration> search) {
+        return configurationService.count(search);
     }
 
     @Override
@@ -54,8 +54,8 @@ public class AdministrationServiceFacadeImpl implements AdministrationServiceFac
 
     @Override
     @Transactional(readOnly = true)
-    public List<Configuration> getConfigurations(SearchParameters searchParameters) {
-        return configurationService.find(searchParameters);
+    public List<Configuration> getConfigurations(SearchParameters<Configuration> search) {
+        return configurationService.find(search);
     }
 
     @Override

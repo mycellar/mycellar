@@ -30,7 +30,7 @@ import fr.mycellar.application.user.ResetPasswordRequestService;
 import fr.mycellar.application.user.UserService;
 import fr.mycellar.domain.shared.exception.BusinessException;
 import fr.mycellar.domain.user.User;
-import fr.mycellar.infrastructure.shared.repository.SearchParameters;
+import fr.mycellar.infrastructure.shared.repository.query.SearchParameters;
 
 /**
  * @author speralta
@@ -45,8 +45,14 @@ public class UserServiceFacadeImpl implements UserServiceFacade {
 
     @Override
     @Transactional(readOnly = true)
-    public List<User> getUsersLike(String term) {
-        return userService.getUsersLike(term);
+    public long countUsersLike(String term, SearchParameters<User> search) {
+        return userService.countAllLike(term, search);
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public List<User> getUsersLike(String term, SearchParameters<User> search) {
+        return userService.getAllLike(term, search);
     }
 
     @Override
@@ -87,14 +93,14 @@ public class UserServiceFacadeImpl implements UserServiceFacade {
 
     @Override
     @Transactional(readOnly = true)
-    public long countUsers(SearchParameters searchParameters) {
-        return userService.count(searchParameters);
+    public long countUsers(SearchParameters<User> search) {
+        return userService.count(search);
     }
 
     @Override
     @Transactional(readOnly = true)
-    public List<User> getUsers(SearchParameters searchParameters) {
-        return userService.find(searchParameters);
+    public List<User> getUsers(SearchParameters<User> search) {
+        return userService.find(search);
     }
 
     @Override
@@ -113,6 +119,12 @@ public class UserServiceFacadeImpl implements UserServiceFacade {
     @Transactional(readOnly = false)
     public User resetPassword(String key, String password) throws BusinessException {
         return userService.resetPassword(key, password);
+    }
+
+    @Override
+    @Transactional(readOnly = false)
+    public void validateUser(User user) throws BusinessException {
+        userService.validate(user);
     }
 
     @Inject

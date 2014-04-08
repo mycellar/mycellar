@@ -18,16 +18,14 @@
  */
 package fr.mycellar.application.user;
 
-import java.util.List;
-
-import fr.mycellar.application.shared.SimpleService;
+import fr.mycellar.application.shared.SearchableService;
 import fr.mycellar.domain.shared.exception.BusinessException;
 import fr.mycellar.domain.user.User;
 
 /**
  * @author speralta
  */
-public interface UserService extends SimpleService<User> {
+public interface UserService extends SearchableService<User> {
 
     User authenticate(String email, String password);
 
@@ -36,8 +34,6 @@ public interface UserService extends SimpleService<User> {
     void resetPasswordRequest(String email, String url);
 
     User getByEmail(String email);
-
-    List<User> getUsersLike(String term);
 
     User resetPassword(String key, String password) throws BusinessException;
 

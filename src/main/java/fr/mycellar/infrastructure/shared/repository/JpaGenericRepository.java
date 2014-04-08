@@ -41,6 +41,12 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import fr.mycellar.domain.shared.Identifiable;
+import fr.mycellar.infrastructure.shared.repository.query.SearchBuilder;
+import fr.mycellar.infrastructure.shared.repository.query.SearchParameters;
+import fr.mycellar.infrastructure.shared.repository.util.BySelectorUtil;
+import fr.mycellar.infrastructure.shared.repository.util.JpaUtil;
+import fr.mycellar.infrastructure.shared.repository.util.MetamodelUtil;
+import fr.mycellar.infrastructure.shared.repository.util.OrderByUtil;
 
 /**
  * JPA 2 Generic DAO with find by example/range/pattern and CRUD support.
@@ -49,10 +55,7 @@ public abstract class JpaGenericRepository<E extends Identifiable<PK>, PK extend
 
     private final Logger logger = LoggerFactory.getLogger(getClass());
 
-    private ByFullTextUtil byFullTextUtil;
-    private ByPropertySelectorUtil byPropertySelectorUtil;
-    private ByRangeUtil byRangeUtil;
-    private NamedQueryUtil namedQueryUtil;
+    private BySelectorUtil bySelectorUtil;
     private OrderByUtil orderByUtil;
     private JpaUtil jpaUtil;
     private MetamodelUtil metamodelUtil;
@@ -74,21 +77,12 @@ public abstract class JpaGenericRepository<E extends Identifiable<PK>, PK extend
         return type;
     }
 
-    /**
-     * Find and load a list of E instance.
-     * 
-     * @param searchParameters
-     *            carries additional search information
-     * @return the entities matching the search.
-     */
     @Override
-    public List<E> find(SearchParameters sp) {
-        if (sp.hasNamedQuery()) {
-            return namedQueryUtil.findByNamedQuery(sp);
-        }
+    public List<E> find(SearchParameters<E> sp) {
+        checkNotNull(sp, "The searchParameters cannot be null");
         CriteriaBuilder builder = entityManager.getCriteriaBuilder();
         CriteriaQuery<E> criteriaQuery = builder.createQuery(type);
-        if (sp.getDistinct()) {
+        if (sp.isUseDistinct()) {
             criteriaQuery.distinct(true);
         }
         Root<E> root = criteriaQuery.from(type);
@@ -103,10 +97,9 @@ public abstract class JpaGenericRepository<E extends Identifiable<PK>, PK extend
         jpaUtil.fetches(sp, root);
 
         // order by
-        criteriaQuery.orderBy(orderByUtil.buildJpaOrders(sp.getOrders(), root, builder, sp));
+        criteriaQuery.orderBy(orderByUtil.buildJpaOrders(sp.getOrders(), root, builder));
 
         TypedQuery<E> typedQuery = entityManager.createQuery(criteriaQuery);
-        jpaUtil.applyCacheHints(typedQuery, sp, type);
         jpaUtil.applyPagination(typedQuery, sp);
         List<E> entities = typedQuery.getResultList();
         logger.trace("Returned {} elements for {}.", entities.size(), sp);
@@ -114,26 +107,15 @@ public abstract class JpaGenericRepository<E extends Identifiable<PK>, PK extend
         return entities;
     }
 
-    /**
-     * Count the number of E instances.
-     * 
-     * @param searchParameters
-     *            carries additional search information
-     * @return the number of entities matching the search.
-     */
     @Override
-    public long findCount(SearchParameters sp) {
+    public long findCount(SearchParameters<E> sp) {
         checkNotNull(sp, "The searchParameters cannot be null");
-
-        if (sp.hasNamedQuery()) {
-            return namedQueryUtil.numberByNamedQuery(sp).intValue();
-        }
         CriteriaBuilder builder = entityManager.getCriteriaBuilder();
 
         CriteriaQuery<Long> criteriaQuery = builder.createQuery(Long.class);
         Root<E> root = criteriaQuery.from(type);
 
-        if (sp.getDistinct()) {
+        if (sp.isUseDistinct()) {
             criteriaQuery = criteriaQuery.select(builder.countDistinct(root));
         } else {
             criteriaQuery = criteriaQuery.select(builder.count(root));
@@ -146,36 +128,19 @@ public abstract class JpaGenericRepository<E extends Identifiable<PK>, PK extend
         }
 
         // construct order by to fetch or joins if needed
-        orderByUtil.buildJpaOrders(sp.getOrders(), root, builder, sp);
+        orderByUtil.buildJpaOrders(sp.getOrders(), root, builder);
 
         TypedQuery<Long> typedQuery = entityManager.createQuery(criteriaQuery);
 
-        jpaUtil.applyCacheHints(typedQuery, sp, type);
         return typedQuery.getSingleResult().longValue();
     }
 
-    /**
-     * Find a list of E property.
-     * 
-     * @param propertyType
-     *            type of the property
-     * @param entity
-     *            a sample entity whose non-null properties may be used as
-     *            search hints
-     * @param searchParameters
-     *            carries additional search information
-     * @param attributes
-     *            the list of attributes to the property
-     * @return the entities property matching the search.
-     */
     @Override
-    public <T> List<T> findProperty(Class<T> propertyType, SearchParameters sp, Attribute<?, ?>... attributes) {
-        if (sp.hasNamedQuery()) {
-            return namedQueryUtil.findByNamedQuery(sp);
-        }
+    public <T> List<T> findProperty(Class<T> propertyType, SearchParameters<E> sp, Attribute<?, ?>... attributes) {
+        checkNotNull(sp, "The searchParameters cannot be null");
         CriteriaBuilder builder = entityManager.getCriteriaBuilder();
         CriteriaQuery<T> criteriaQuery = builder.createQuery(propertyType);
-        if (sp.getDistinct()) {
+        if (sp.isUseDistinct()) {
             criteriaQuery.distinct(true);
         }
         Root<E> root = criteriaQuery.from(type);
@@ -196,7 +161,6 @@ public abstract class JpaGenericRepository<E extends Identifiable<PK>, PK extend
         criteriaQuery.orderBy(builder.asc(path));
 
         TypedQuery<T> typedQuery = entityManager.createQuery(criteriaQuery);
-        jpaUtil.applyCacheHints(typedQuery, sp, type);
         jpaUtil.applyPagination(typedQuery, sp);
         List<T> entities = typedQuery.getResultList();
         logger.debug("Returned {} elements for {}.", entities.size(), sp);
@@ -204,29 +168,15 @@ public abstract class JpaGenericRepository<E extends Identifiable<PK>, PK extend
         return entities;
     }
 
-    /**
-     * Count the number of E instances.
-     * 
-     * @param entity
-     *            a sample entity whose non-null properties may be used as
-     *            search hint
-     * @param searchParameters
-     *            carries additional search information
-     * @param attributes
-     *            the list of attributes to the property
-     * @return the number of entities matching the search.
-     */
     @Override
-    public long findPropertyCount(SearchParameters sp, Attribute<?, ?>... attributes) {
-        if (sp.hasNamedQuery()) {
-            return namedQueryUtil.numberByNamedQuery(sp).intValue();
-        }
+    public long findPropertyCount(SearchParameters<E> sp, Attribute<?, ?>... attributes) {
+        checkNotNull(sp, "The searchParameters cannot be null");
         CriteriaBuilder builder = entityManager.getCriteriaBuilder();
         CriteriaQuery<Long> criteriaQuery = builder.createQuery(Long.class);
         Root<E> root = criteriaQuery.from(type);
         Path<?> path = jpaUtil.getPath(root, Arrays.asList(attributes));
 
-        if (sp.getDistinct()) {
+        if (sp.isUseDistinct()) {
             criteriaQuery = criteriaQuery.select(builder.countDistinct(path));
         } else {
             criteriaQuery = criteriaQuery.select(builder.count(path));
@@ -239,16 +189,14 @@ public abstract class JpaGenericRepository<E extends Identifiable<PK>, PK extend
         }
 
         // construct order by to fetch or joins if needed
-        orderByUtil.buildJpaOrders(sp.getOrders(), root, builder, sp);
+        orderByUtil.buildJpaOrders(sp.getOrders(), root, builder);
 
         TypedQuery<Long> typedQuery = entityManager.createQuery(criteriaQuery);
-
-        jpaUtil.applyCacheHints(typedQuery, sp, type);
         return typedQuery.getSingleResult().longValue();
     }
 
     @Override
-    public E findUnique(SearchParameters sp) {
+    public E findUnique(SearchParameters<E> sp) {
         E result = findUniqueOrNone(sp);
 
         if (result == null) {
@@ -258,20 +206,10 @@ public abstract class JpaGenericRepository<E extends Identifiable<PK>, PK extend
         return result;
     }
 
-    /**
-     * We request at most 2, if there's more than one then we throw a
-     * {@link NonUniqueResultException}
-     * 
-     * @param searchParameters
-     * @return
-     * @throws NonUniqueResultException
-     */
     @Override
-    public E findUniqueOrNone(SearchParameters sp) {
+    public E findUniqueOrNone(SearchParameters<E> sp) {
         // this code is an optimization to prevent using a count
-        sp.setFirstResult(0);
-        sp.setMaxResults(2);
-        List<E> results = find(sp);
+        List<E> results = find(new SearchBuilder<E>(sp).paginate(0, 2).build());
 
         if ((results == null) || results.isEmpty()) {
             return null;
@@ -284,75 +222,37 @@ public abstract class JpaGenericRepository<E extends Identifiable<PK>, PK extend
         return results.iterator().next();
     }
 
-    protected <R> Predicate getPredicate(CriteriaQuery<?> criteriaQuery, Root<E> root, CriteriaBuilder builder, SearchParameters sp) {
+    protected <R> Predicate getPredicate(CriteriaQuery<?> criteriaQuery, Root<E> root, CriteriaBuilder builder, SearchParameters<E> sp) {
         return jpaUtil.andPredicate(builder, //
                 bySearchPredicate(root, builder, sp), //
                 byMandatoryPredicate(criteriaQuery, root, builder, sp));
     }
 
-    protected <R> Predicate bySearchPredicate(Root<E> root, CriteriaBuilder builder, SearchParameters sp) {
-        return jpaUtil.concatPredicate(sp, builder, //
-                byFullText(root, builder, sp, type), //
-                byRanges(root, builder, sp, type), //
-                byPropertySelectors(root, builder, sp));
+    protected <R> Predicate bySearchPredicate(Root<E> root, CriteriaBuilder builder, SearchParameters<E> sp) {
+        return bySelectors(root, builder, sp);
     }
 
-    protected Predicate byFullText(Root<E> root, CriteriaBuilder builder, SearchParameters sp, Class<E> type) {
-        return byFullTextUtil.byFullText(root, builder, sp, type);
-    }
-
-    protected Predicate byPropertySelectors(Root<E> root, CriteriaBuilder builder, SearchParameters sp) {
-        return byPropertySelectorUtil.byPropertySelectors(root, builder, sp);
-    }
-
-    protected Predicate byRanges(Root<E> root, CriteriaBuilder builder, SearchParameters sp, Class<E> type) {
-        return byRangeUtil.byRanges(root, builder, sp, type);
+    protected Predicate bySelectors(Root<E> root, CriteriaBuilder builder, SearchParameters<E> sp) {
+        return bySelectorUtil.bySelectors(root, builder, sp);
     }
 
     /**
      * You may override this method to add a Predicate to the default find
      * method.
      */
-    protected <R> Predicate byMandatoryPredicate(CriteriaQuery<?> criteriaQuery, Root<E> root, CriteriaBuilder builder, SearchParameters sp) {
+    protected <R> Predicate byMandatoryPredicate(CriteriaQuery<?> criteriaQuery, Root<E> root, CriteriaBuilder builder, SearchParameters<E> sp) {
         return null;
     }
 
     // BEANS METHODS
 
-    protected final ByFullTextUtil getByFullTextUtil() {
-        return byFullTextUtil;
+    protected final BySelectorUtil getBySelectorUtil() {
+        return bySelectorUtil;
     }
 
     @Inject
-    public final void setByFullTextUtil(ByFullTextUtil byFullTextUtil) {
-        this.byFullTextUtil = byFullTextUtil;
-    }
-
-    protected final ByPropertySelectorUtil getByPropertySelectorUtil() {
-        return byPropertySelectorUtil;
-    }
-
-    @Inject
-    public final void setByPropertySelectorUtil(ByPropertySelectorUtil byPropertySelectorUtil) {
-        this.byPropertySelectorUtil = byPropertySelectorUtil;
-    }
-
-    protected final ByRangeUtil getByRangeUtil() {
-        return byRangeUtil;
-    }
-
-    @Inject
-    public final void setByRangeUtil(ByRangeUtil byRangeUtil) {
-        this.byRangeUtil = byRangeUtil;
-    }
-
-    protected final NamedQueryUtil getNamedQueryUtil() {
-        return namedQueryUtil;
-    }
-
-    @Inject
-    public final void setNamedQueryUtil(NamedQueryUtil namedQueryUtil) {
-        this.namedQueryUtil = namedQueryUtil;
+    public final void setBySelectorUtil(BySelectorUtil bySelectorUtil) {
+        this.bySelectorUtil = bySelectorUtil;
     }
 
     protected final EntityManager getEntityManager() {

@@ -1,5 +1,5 @@
 /*
- * Copyright 2013, MyCellar
+ * Copyright 2014, MyCellar
  *
  * This file is part of MyCellar.
  *
@@ -16,12 +16,11 @@
  * You should have received a copy of the GNU General Public License
  * along with MyCellar. If not, see <http://www.gnu.org/licenses/>.
  */
-package fr.mycellar.infrastructure.shared.repository;
+package fr.mycellar.infrastructure.shared.repository.query.selector;
 
-import org.apache.lucene.search.Query;
-import org.hibernate.search.jpa.FullTextEntityManager;
+/**
+ * @author speralta
+ */
+public interface SingleSelector<FROM, TO, S extends SingleSelector<FROM, TO, S>> extends Selector<FROM, S> {
 
-public interface LuceneQueryBuilder {
-
-    Query build(FullTextEntityManager fullTextEntityManager, SearchParameters searchParameters, Class<?> type);
 }

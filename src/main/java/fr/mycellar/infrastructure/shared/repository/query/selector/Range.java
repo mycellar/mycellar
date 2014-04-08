@@ -16,21 +16,22 @@
  * You should have received a copy of the GNU General Public License
  * along with MyCellar. If not, see <http://www.gnu.org/licenses/>.
  */
-package fr.mycellar.infrastructure.shared.repository;
+package fr.mycellar.infrastructure.shared.repository.query.selector;
 
-import java.io.Serializable;
 import java.util.List;
 
 import javax.persistence.metamodel.Attribute;
+
+import fr.mycellar.infrastructure.shared.repository.query.Path;
 
 /**
  * Range support for {@link Comparable} types.
  */
 @SuppressWarnings("rawtypes")
-public class Range<E, D extends Comparable> implements Serializable {
+public class Range<E, D extends Comparable> implements SingleSelector<E, D, Range<E, D>> {
     private static final long serialVersionUID = 201312031754L;
 
-    private final Path path;
+    private final Path<E, D> path;
     private D from;
     private boolean includeFrom = true;
     private D to;
@@ -44,8 +45,8 @@ public class Range<E, D extends Comparable> implements Serializable {
      * @param attributes
      *            the path to the attribute of an existing entity.
      */
-    public Range(Attribute<?, ?>... attributes) {
-        path = new Path(attributes);
+    public Range(Path<E, D> path) {
+        this.path = path;
     }
 
     /**
@@ -60,8 +61,8 @@ public class Range<E, D extends Comparable> implements Serializable {
      * @param attributes
      *            the path to the attribute of an existing entity.
      */
-    public Range(D from, D to, Attribute<?, ?>... attributes) {
-        this(attributes);
+    public Range(D from, D to, Path<E, D> path) {
+        this(path);
         this.from = from;
         this.to = to;
     }
@@ -80,19 +81,21 @@ public class Range<E, D extends Comparable> implements Serializable {
      * @param attributes
      *            the path to the attribute of an existing entity.
      */
-    public Range(D from, D to, Boolean includeNull, Attribute<?, ?>... attributes) {
-        this(from, to, attributes);
+    public Range(D from, D to, Boolean includeNull, Path<E, D> path) {
+        this(from, to, path);
         this.includeNull = includeNull;
     }
 
-    /**
-     * Constructs a new Range by copy.
-     */
-    public Range(Range<E, D> other) {
+    private Range(Range<E, D> other) {
         this.path = other.path;
         this.from = other.from;
         this.to = other.to;
         this.includeNull = other.includeNull;
+    }
+
+    @Override
+    public Range<E, D> copy() {
+        return new Range<E, D>(this);
     }
 
     /**

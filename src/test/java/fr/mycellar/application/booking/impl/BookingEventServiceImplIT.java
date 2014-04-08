@@ -16,25 +16,25 @@
  * You should have received a copy of the GNU General Public License
  * along with MyCellar. If not, see <http://www.gnu.org/licenses/>.
  */
-package fr.mycellar.infrastructure.wine.repository;
+package fr.mycellar.application.booking.impl;
 
-import static org.hamcrest.CoreMatchers.equalTo;
-import static org.junit.Assert.assertThat;
+import static org.junit.Assert.assertEquals;
 
 import javax.inject.Inject;
-import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
 
+import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.boot.test.SpringApplicationConfiguration;
-import org.springframework.test.annotation.Rollback;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.transaction.annotation.Transactional;
 
 import fr.mycellar.MyCellarApplication;
-import fr.mycellar.infrastructure.shared.repository.SearchParameters;
+import fr.mycellar.application.booking.BookingService;
+import fr.mycellar.domain.booking.BookingEvent;
+import fr.mycellar.infrastructure.booking.repository.BookingEventRepository;
+import fr.mycellar.infrastructure.shared.repository.query.SearchBuilder;
 
 /**
  * @author speralta
@@ -43,34 +43,26 @@ import fr.mycellar.infrastructure.shared.repository.SearchParameters;
 @SpringApplicationConfiguration(classes = { MyCellarApplication.class })
 @ActiveProfiles("test")
 @Transactional
-public class JpaWineRepositoryIT {
-    @PersistenceContext
-    private EntityManager entityManager;
+public class BookingEventServiceImplIT {
+
+    private BookingEventServiceImpl bookingEventServiceImpl;
 
     @Inject
-    private JpaWineRepository jpaWineRepository;
+    private BookingService bookingService;
+    @Inject
+    private BookingEventRepository bookingEventRepository;
 
-    @Test
-    @Rollback
-    public void like() {
-        assertThat(getWinesLikeSize("saint"), equalTo(2));
-
-        assertThat(getWinesLikeSize("emilion"), equalTo(1));
-
-        assertThat(getWinesLikeSize("2005"), equalTo(4));
-
-        assertThat(getWinesLikeSize(""), equalTo(0));
-
-        assertThat(getWinesLikeSize("gaill"), equalTo(1));
-
-        assertThat(getWinesLikeSize("renaissa"), equalTo(1));
-
-        assertThat(getWinesLikeSize("gail renaissa"), equalTo(1));
-
-        assertThat(getWinesLikeSize("graylac regnaisoce"), equalTo(1));
+    @Before
+    public void setUp() {
+        bookingEventServiceImpl = new BookingEventServiceImpl();
+        bookingEventServiceImpl.setBookingEventRepository(bookingEventRepository);
+        bookingEventServiceImpl.setBookingService(bookingService);
     }
 
-    private int getWinesLikeSize(String like) {
-        return jpaWineRepository.getWinesLike(like, new SearchParameters()).size();
+    @Test
+    public void test() {
+        assertEquals(2, bookingEventServiceImpl.countAllLike("Campag", new SearchBuilder<BookingEvent>().build()));
+        assertEquals(2, bookingEventServiceImpl.countAllLike("test", new SearchBuilder<BookingEvent>().build()));
+        assertEquals(0, bookingEventServiceImpl.countAllLike("carnage", new SearchBuilder<BookingEvent>().build()));
     }
 }

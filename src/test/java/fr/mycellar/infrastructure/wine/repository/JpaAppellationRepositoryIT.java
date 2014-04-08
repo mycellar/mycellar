@@ -38,7 +38,7 @@ import org.springframework.transaction.annotation.Transactional;
 import fr.mycellar.MyCellarApplication;
 import fr.mycellar.domain.shared.NamedEntity_;
 import fr.mycellar.domain.wine.Appellation;
-import fr.mycellar.infrastructure.shared.repository.SearchParameters;
+import fr.mycellar.infrastructure.shared.repository.query.SearchBuilder;
 
 /**
  * @author speralta
@@ -66,8 +66,9 @@ public class JpaAppellationRepositoryIT {
      */
     private List<Appellation> searchByNameTerm(String input) {
         return jpaAppellationRepository.find( //
-                new SearchParameters() //
-                        .term(NamedEntity_.name, input));
+                new SearchBuilder<Appellation>() //
+                        .fullText(NamedEntity_.name).search(input) //
+                        .build());
     }
 
 }

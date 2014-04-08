@@ -1,11 +1,11 @@
 angular.module('mycellar.resources.admin.configurations', [
-  'mycellar.services.admin.resource'
+  'mycellar.services.resource'
 ]);
 
 angular.module('mycellar.resources.admin.configurations').factory('AdminConfigurations', [
-  'adminDomainResource',
-  function(adminDomainResource) {
-    return adminDomainResource.createResource({
+  'domainResource',
+  function(domainResource) {
+    return domainResource.createResource({
       url: '/api/admin/domain/admin/configurations'
     });
   }

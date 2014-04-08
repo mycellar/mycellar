@@ -86,8 +86,16 @@ angular.module('mycellar.directives.form.domain.booking.bookingEvent').directive
         }
       },
       controller: [
-        '$scope', '$location', 'BookingEvents', 'AdminBookingEvents',
-        function($scope, $location, BookingEvents, AdminBookingEvents) {
+        '$scope', '$location', 'BookingEvents', 'AdminBookingEvents', '$filter',
+        function($scope, $location, BookingEvents, AdminBookingEvents, $filter) {
+          var bookingEventFilter = $filter('bookingEventRenderer');
+          $scope.renderBookingEvent = function(bookingEvent) {
+            if (bookingEvent != null) {
+              return bookingEventFilter(bookingEvent);
+            } else {
+              return '';
+            }
+          };
           var resource;
           if ($location.path().match(/\/admin/)) {
             resource = AdminBookingEvents;

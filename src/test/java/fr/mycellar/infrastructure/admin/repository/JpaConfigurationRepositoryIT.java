@@ -34,9 +34,10 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.transaction.annotation.Transactional;
 
 import fr.mycellar.MyCellarApplication;
+import fr.mycellar.domain.admin.Configuration;
 import fr.mycellar.domain.admin.ConfigurationKeyEnum;
 import fr.mycellar.domain.admin.Configuration_;
-import fr.mycellar.infrastructure.shared.repository.SearchParameters;
+import fr.mycellar.infrastructure.shared.repository.query.SearchBuilder;
 
 /**
  * @author speralta
@@ -57,16 +58,16 @@ public class JpaConfigurationRepositoryIT {
     @Test
     @Rollback
     public void all() {
-        assertThat(jpaConfigurationRepository.find(new SearchParameters()).size(), equalTo(NB_CONFIGURATIONS));
-        assertThat(jpaConfigurationRepository.findCount(new SearchParameters()), equalTo(Long.valueOf(NB_CONFIGURATIONS)));
+        assertThat(jpaConfigurationRepository.find(new SearchBuilder<Configuration>().build()).size(), equalTo(NB_CONFIGURATIONS));
+        assertThat(jpaConfigurationRepository.findCount(new SearchBuilder<Configuration>().build()), equalTo(Long.valueOf(NB_CONFIGURATIONS)));
     }
 
     @Test
     @Rollback
     public void byPropertySelector() {
         assertThat(jpaConfigurationRepository.find( //
-                new SearchParameters() //
-                        .property(Configuration_.key, ConfigurationKeyEnum.MAIL_ADDRESS_SENDER)) //
+                new SearchBuilder<Configuration>() //
+                        .on(Configuration_.key).equalsTo(ConfigurationKeyEnum.MAIL_ADDRESS_SENDER).build()) //
                 .size(), equalTo(1));
     }
 

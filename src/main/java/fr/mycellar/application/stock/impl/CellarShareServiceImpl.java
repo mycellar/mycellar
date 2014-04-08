@@ -28,7 +28,7 @@ import fr.mycellar.domain.shared.exception.BusinessError;
 import fr.mycellar.domain.shared.exception.BusinessException;
 import fr.mycellar.domain.stock.CellarShare;
 import fr.mycellar.domain.stock.CellarShare_;
-import fr.mycellar.infrastructure.shared.repository.SearchParameters;
+import fr.mycellar.infrastructure.shared.repository.query.SearchBuilder;
 import fr.mycellar.infrastructure.stock.repository.CellarShareRepository;
 
 /**
@@ -42,9 +42,9 @@ public class CellarShareServiceImpl extends AbstractSimpleService<CellarShare, C
 
     @Override
     public void validate(CellarShare entity) throws BusinessException {
-        CellarShare existing = cellarShareRepository.findUniqueOrNone(new SearchParameters() //
-                .property(CellarShare_.cellar, entity.getCellar()) //
-                .property(CellarShare_.email, entity.getEmail()));
+        CellarShare existing = cellarShareRepository.findUniqueOrNone(new SearchBuilder<CellarShare>() //
+                .on(CellarShare_.cellar).equalsTo(entity.getCellar()) //
+                .on(CellarShare_.email).equalsTo(entity.getEmail()).build());
         if ((existing != null) && ((entity.getId() == null) || !existing.getId().equals(entity.getId()))) {
             throw new BusinessException(BusinessError.CELLARSHARE_00001);
         }

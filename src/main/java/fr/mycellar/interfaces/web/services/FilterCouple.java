@@ -39,12 +39,12 @@ public class FilterCouple {
         String value = couple.substring(couple.indexOf(",") + 1);
         Object result = null;
         try {
-            result = new Long(value);
+            result = Long.parseLong(value);
         } catch (Exception e) {
         }
         if (result == null) {
             try {
-                result = new Double(value);
+                result = Double.parseDouble(value);
             } catch (Exception e) {
             }
         }

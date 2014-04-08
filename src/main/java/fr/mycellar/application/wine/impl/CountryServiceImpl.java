@@ -29,7 +29,7 @@ import fr.mycellar.domain.shared.exception.BusinessError;
 import fr.mycellar.domain.shared.exception.BusinessException;
 import fr.mycellar.domain.wine.Country;
 import fr.mycellar.domain.wine.Country_;
-import fr.mycellar.infrastructure.shared.repository.SearchParameters;
+import fr.mycellar.infrastructure.shared.repository.query.SearchBuilder;
 import fr.mycellar.infrastructure.wine.repository.CountryRepository;
 
 /**
@@ -43,7 +43,7 @@ public class CountryServiceImpl extends AbstractSimpleService<Country, CountryRe
 
     @Override
     public Country find(String name) {
-        return countryRepository.findUniqueOrNone(new SearchParameters().property(NamedEntity_.name, name));
+        return countryRepository.findUniqueOrNone(new SearchBuilder<Country>().on(NamedEntity_.name).equalsTo(name).build());
     }
 
     @Override
@@ -56,7 +56,7 @@ public class CountryServiceImpl extends AbstractSimpleService<Country, CountryRe
 
     @Override
     protected void validateDelete(Country entity) throws BusinessException {
-        if (countryRepository.findPropertyCount(new SearchParameters().property(Country_.id, entity.getId()), Country_.regions) > 0) {
+        if (countryRepository.findPropertyCount(new SearchBuilder<Country>().on(Country_.id).equalsTo(entity.getId()).build(), Country_.regions) > 0) {
             throw new BusinessException(BusinessError.COUNTRY_00002);
         }
     }

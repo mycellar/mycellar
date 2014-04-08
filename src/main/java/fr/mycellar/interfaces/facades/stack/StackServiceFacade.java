@@ -22,7 +22,7 @@ import java.util.List;
 
 import fr.mycellar.domain.shared.exception.BusinessException;
 import fr.mycellar.domain.stack.Stack;
-import fr.mycellar.infrastructure.shared.repository.SearchParameters;
+import fr.mycellar.infrastructure.shared.repository.query.SearchParameters;
 
 /**
  * @author speralta
@@ -35,10 +35,10 @@ public interface StackServiceFacade {
     void onThrowable(Throwable throwable);
 
     /**
-     * @param searchParameters
+     * @param search
      * @return
      */
-    long countStacks(SearchParameters searchParameters);
+    long countStacks(SearchParameters<Stack> search);
 
     /**
      * @param stack
@@ -52,10 +52,10 @@ public interface StackServiceFacade {
     void deleteAllStacks() throws BusinessException;
 
     /**
-     * @param searchParameters
+     * @param search
      * @return
      */
-    List<Stack> getStacks(SearchParameters searchParameters);
+    List<Stack> getStacks(SearchParameters<Stack> search);
 
     /**
      * @param stackId
