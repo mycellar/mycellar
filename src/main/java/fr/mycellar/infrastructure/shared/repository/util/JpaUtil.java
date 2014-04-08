@@ -22,11 +22,7 @@ import static com.google.common.base.Predicates.notNull;
 import static com.google.common.collect.Iterables.filter;
 import static com.google.common.collect.Iterables.toArray;
 import static com.google.common.collect.Lists.newArrayList;
-import static org.apache.commons.lang3.StringUtils.isBlank;
-import static org.hibernate.proxy.HibernateProxyHelper.getClassWithoutInitializingProxy;
 
-import java.beans.PropertyDescriptor;
-import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -34,7 +30,6 @@ import java.util.Locale;
 
 import javax.inject.Named;
 import javax.inject.Singleton;
-import javax.persistence.Entity;
 import javax.persistence.Query;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.Expression;
@@ -47,14 +42,11 @@ import javax.persistence.criteria.Path;
 import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
 import javax.persistence.metamodel.Attribute;
-import javax.persistence.metamodel.ManagedType;
 import javax.persistence.metamodel.PluralAttribute;
 import javax.persistence.metamodel.SingularAttribute;
 
-import org.apache.commons.beanutils.PropertyUtils;
 import org.springframework.context.annotation.Lazy;
 
-import fr.mycellar.domain.shared.Identifiable;
 import fr.mycellar.infrastructure.shared.repository.query.SearchMode;
 import fr.mycellar.infrastructure.shared.repository.query.SearchParameters;
 
@@ -156,10 +148,6 @@ public class JpaUtil {
         return (Path<F>) path;
     }
 
-    public void verifyPath(Attribute<?, ?>... path) {
-        verifyPath(newArrayList(path));
-    }
-
     public void verifyPath(List<Attribute<?, ?>> path) {
         List<Attribute<?, ?>> attributes = new ArrayList<>(path);
         Class<?> from = null;
@@ -175,44 +163,6 @@ public class JpaUtil {
             }
             from = attribute.getJavaType();
         }
-    }
-
-    public <T, A> SingularAttribute<? super T, A> attribute(ManagedType<? super T> mt, Attribute<? super T, A> attr) {
-        return mt.getSingularAttribute(attr.getName(), attr.getJavaType());
-    }
-
-    public <T> SingularAttribute<? super T, String> stringAttribute(ManagedType<? super T> mt, Attribute<? super T, ?> attr) {
-        return mt.getSingularAttribute(attr.getName(), String.class);
-    }
-
-    public String[] toNames(Attribute<?, ?>... attributes) {
-        return toNamesList(Arrays.asList(attributes)).toArray(new String[0]);
-    }
-
-    public List<String> toNamesList(List<Attribute<?, ?>> attributes) {
-        List<String> ret = new ArrayList<>();
-        for (Attribute<?, ?> attribute : attributes) {
-            ret.add(attribute.getName());
-        }
-        return ret;
-    }
-
-    public String getEntityName(Identifiable<?> entity) {
-        Entity entityAnnotation = entity.getClass().getAnnotation(Entity.class);
-        if (isBlank(entityAnnotation.name())) {
-            return getClassWithoutInitializingProxy(entity).getSimpleName();
-        }
-        return entityAnnotation.name();
-    }
-
-    public String methodToProperty(Method m) {
-        PropertyDescriptor[] pds = PropertyUtils.getPropertyDescriptors(m.getDeclaringClass());
-        for (PropertyDescriptor pd : pds) {
-            if (m.equals(pd.getReadMethod()) || m.equals(pd.getWriteMethod())) {
-                return pd.getName();
-            }
-        }
-        return null;
     }
 
     public void applyPagination(Query query, SearchParameters<?> sp) {
