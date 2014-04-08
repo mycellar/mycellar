@@ -18,12 +18,12 @@
  */
 package fr.mycellar.application.wine;
 
-import fr.mycellar.application.shared.SimpleService;
+import fr.mycellar.application.shared.SearchableService;
 import fr.mycellar.domain.wine.Format;
 
 /**
  * @author speralta
  */
-public interface FormatService extends SimpleService<Format> {
+public interface FormatService extends SearchableService<Format> {
 
 }

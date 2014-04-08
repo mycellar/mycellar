@@ -34,4 +34,10 @@ public interface CellarService extends SearchableService<Cellar> {
 
     List<Cellar> getAllForUserLike(String term, User user, SearchParameters<Cellar> search);
 
+    List<Cellar> getAllForUser(User user);
+
+    boolean hasReadRight(Integer cellarId, String userEmail);
+
+    boolean hasModifyRight(Integer cellarId, String userEmail);
+
 }

@@ -18,6 +18,8 @@
  */
 package fr.mycellar.application.stock.impl;
 
+import java.util.List;
+
 import javax.inject.Inject;
 import javax.inject.Named;
 import javax.inject.Singleton;
@@ -96,6 +98,11 @@ public class StockServiceImpl extends AbstractSimpleService<Stock, StockReposito
         stock.setQuantity(stock.getQuantity() + quantity);
         validate(stock);
         return stockRepository.save(stock);
+    }
+
+    @Override
+    public List<Stock> getAllForCellar(Cellar cellar) {
+        return find(new SearchBuilder<Stock>().on(Stock_.cellar).equalsTo(cellar).build());
     }
 
     @Override

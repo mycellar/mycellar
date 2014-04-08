@@ -2,17 +2,6 @@ angular.module('mycellar.resources.user.users', [
   'mycellar.services.resource'
 ]);
 
-angular.module('mycellar.resources.user.users').factory('Users', [
-  'domainResource',
-  function (domainResource) {
-    return domainResource.createResource({
-      url: '/api/user/users',
-      validateUrl: '/api/user/validateUser',
-      likeUrl: '/api/user/users/like'
-    });
-  }
-]);
-
 angular.module('mycellar.resources.user.users').factory('AdminUsers', [
   'domainResource',
   function (domainResource) {

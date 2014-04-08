@@ -69,9 +69,19 @@ public class WineServiceFacadeImpl implements WineServiceFacade {
     }
 
     @Override
+    public long countAppellationsLike(String input, SearchParameters<Appellation> search) {
+        return appellationService.countAllLike(input, search);
+    }
+
+    @Override
     @Transactional(readOnly = true)
     public long countCountries(SearchParameters<Country> search) {
         return countryService.count(search);
+    }
+
+    @Override
+    public long countCountriesLike(String input, SearchParameters<Country> search) {
+        return countryService.countAllLike(input, search);
     }
 
     @Override
@@ -81,9 +91,19 @@ public class WineServiceFacadeImpl implements WineServiceFacade {
     }
 
     @Override
+    public long countFormatsLike(String input, SearchParameters<Format> search) {
+        return formatService.countAllLike(input, search);
+    }
+
+    @Override
     @Transactional(readOnly = true)
     public long countProducers(SearchParameters<Producer> search) {
         return producerService.count(search);
+    }
+
+    @Override
+    public long countProducersLike(String input, SearchParameters<Producer> search) {
+        return producerService.countAllLike(input, search);
     }
 
     @Override
@@ -93,9 +113,26 @@ public class WineServiceFacadeImpl implements WineServiceFacade {
     }
 
     @Override
+    public long countRegionsLike(String input, SearchParameters<Region> search) {
+        return regionService.countAllLike(input, search);
+    }
+
+    @Override
     @Transactional(readOnly = true)
     public long countWines(SearchParameters<Wine> search) {
         return wineService.count(search);
+    }
+
+    @Override
+    @Transactional(readOnly = false)
+    public long countWinesLike(String input, SearchParameters<Wine> search) {
+        return wineService.countAllLike(input, search);
+    }
+
+    @Override
+    @Transactional(readOnly = false)
+    public List<Wine> createVintages(Wine toCopy, int from, int to) throws BusinessException {
+        return wineService.createVintages(toCopy, from, to);
     }
 
     @Override
@@ -159,9 +196,19 @@ public class WineServiceFacadeImpl implements WineServiceFacade {
     }
 
     @Override
+    public List<Appellation> getAppellationsLike(String input, SearchParameters<Appellation> search) {
+        return appellationService.getAllLike(input, search);
+    }
+
+    @Override
     @Transactional(readOnly = true)
     public List<Country> getCountries(SearchParameters<Country> search) {
         return countryService.find(search);
+    }
+
+    @Override
+    public List<Country> getCountriesLike(String input, SearchParameters<Country> search) {
+        return countryService.getAllLike(input, search);
     }
 
     @Override
@@ -183,6 +230,11 @@ public class WineServiceFacadeImpl implements WineServiceFacade {
     }
 
     @Override
+    public List<Format> getFormatsLike(String input, SearchParameters<Format> search) {
+        return formatService.getAllLike(input, search);
+    }
+
+    @Override
     @Transactional(readOnly = true)
     public Producer getProducerById(Integer producerId) {
         return producerService.getById(producerId);
@@ -192,6 +244,11 @@ public class WineServiceFacadeImpl implements WineServiceFacade {
     @Transactional(readOnly = true)
     public List<Producer> getProducers(SearchParameters<Producer> search) {
         return producerService.find(search);
+    }
+
+    @Override
+    public List<Producer> getProducersLike(String input, SearchParameters<Producer> search) {
+        return producerService.getAllLike(input, search);
     }
 
     @Override
@@ -207,6 +264,11 @@ public class WineServiceFacadeImpl implements WineServiceFacade {
     }
 
     @Override
+    public List<Region> getRegionsLike(String input, SearchParameters<Region> search) {
+        return regionService.getAllLike(input, search);
+    }
+
+    @Override
     @Transactional(readOnly = true)
     public Wine getWineById(Integer wineId) {
         return wineService.getById(wineId);
@@ -216,6 +278,12 @@ public class WineServiceFacadeImpl implements WineServiceFacade {
     @Transactional(readOnly = true)
     public List<Wine> getWines(SearchParameters<Wine> search) {
         return wineService.find(search);
+    }
+
+    @Override
+    @Transactional(readOnly = false)
+    public List<Wine> getWinesLike(String input, SearchParameters<Wine> search) {
+        return wineService.getAllLike(input, search);
     }
 
     @Override
@@ -288,24 +356,6 @@ public class WineServiceFacadeImpl implements WineServiceFacade {
     @Transactional(readOnly = true)
     public void validateWine(Wine wine) throws BusinessException {
         wineService.validate(wine);
-    }
-
-    @Override
-    @Transactional(readOnly = false)
-    public List<Wine> createVintages(Wine toCopy, int from, int to) throws BusinessException {
-        return wineService.createVintages(toCopy, from, to);
-    }
-
-    @Override
-    @Transactional(readOnly = false)
-    public List<Wine> getWinesLike(String input, SearchParameters<Wine> search) {
-        return wineService.getAllLike(input, search);
-    }
-
-    @Override
-    @Transactional(readOnly = false)
-    public long countWinesLike(String input, SearchParameters<Wine> search) {
-        return wineService.countAllLike(input, search);
     }
 
     // BEANS METHODS

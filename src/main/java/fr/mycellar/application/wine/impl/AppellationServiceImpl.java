@@ -22,7 +22,7 @@ import javax.inject.Inject;
 import javax.inject.Named;
 import javax.inject.Singleton;
 
-import fr.mycellar.application.shared.AbstractSimpleService;
+import fr.mycellar.application.shared.AbstractSearchableService;
 import fr.mycellar.application.wine.AppellationService;
 import fr.mycellar.application.wine.RegionService;
 import fr.mycellar.domain.shared.NamedEntity_;
@@ -31,6 +31,7 @@ import fr.mycellar.domain.shared.exception.BusinessException;
 import fr.mycellar.domain.wine.Appellation;
 import fr.mycellar.domain.wine.Appellation_;
 import fr.mycellar.infrastructure.shared.repository.query.SearchBuilder;
+import fr.mycellar.infrastructure.shared.repository.query.SearchParameters;
 import fr.mycellar.infrastructure.wine.repository.AppellationRepository;
 
 /**
@@ -38,7 +39,7 @@ import fr.mycellar.infrastructure.wine.repository.AppellationRepository;
  */
 @Named
 @Singleton
-public class AppellationServiceImpl extends AbstractSimpleService<Appellation, AppellationRepository> implements AppellationService {
+public class AppellationServiceImpl extends AbstractSearchableService<Appellation, AppellationRepository> implements AppellationService {
 
     private AppellationRepository appellationRepository;
 
@@ -68,6 +69,11 @@ public class AppellationServiceImpl extends AbstractSimpleService<Appellation, A
         if (appellationRepository.findPropertyCount(new SearchBuilder<Appellation>().on(Appellation_.id).equalsTo(entity.getId()).build(), Appellation_.wines) > 0) {
             throw new BusinessException(BusinessError.APPELLATION_00003);
         }
+    }
+
+    @Override
+    protected SearchParameters<Appellation> addTermToSearchParametersParameters(String term, SearchParameters<Appellation> searchParameters) {
+        return new SearchBuilder<>(searchParameters).fullText(NamedEntity_.name).search(term).build();
     }
 
     @Override

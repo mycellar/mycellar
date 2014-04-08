@@ -22,7 +22,7 @@ import javax.inject.Inject;
 import javax.inject.Named;
 import javax.inject.Singleton;
 
-import fr.mycellar.application.shared.AbstractSimpleService;
+import fr.mycellar.application.shared.AbstractSearchableService;
 import fr.mycellar.application.wine.CountryService;
 import fr.mycellar.domain.shared.NamedEntity_;
 import fr.mycellar.domain.shared.exception.BusinessError;
@@ -30,6 +30,7 @@ import fr.mycellar.domain.shared.exception.BusinessException;
 import fr.mycellar.domain.wine.Country;
 import fr.mycellar.domain.wine.Country_;
 import fr.mycellar.infrastructure.shared.repository.query.SearchBuilder;
+import fr.mycellar.infrastructure.shared.repository.query.SearchParameters;
 import fr.mycellar.infrastructure.wine.repository.CountryRepository;
 
 /**
@@ -37,7 +38,7 @@ import fr.mycellar.infrastructure.wine.repository.CountryRepository;
  */
 @Named
 @Singleton
-public class CountryServiceImpl extends AbstractSimpleService<Country, CountryRepository> implements CountryService {
+public class CountryServiceImpl extends AbstractSearchableService<Country, CountryRepository> implements CountryService {
 
     private CountryRepository countryRepository;
 
@@ -59,6 +60,11 @@ public class CountryServiceImpl extends AbstractSimpleService<Country, CountryRe
         if (countryRepository.findPropertyCount(new SearchBuilder<Country>().on(Country_.id).equalsTo(entity.getId()).build(), Country_.regions) > 0) {
             throw new BusinessException(BusinessError.COUNTRY_00002);
         }
+    }
+
+    @Override
+    protected SearchParameters<Country> addTermToSearchParametersParameters(String term, SearchParameters<Country> searchParameters) {
+        return new SearchBuilder<>(searchParameters).fullText(NamedEntity_.name).search(term).build();
     }
 
     @Override

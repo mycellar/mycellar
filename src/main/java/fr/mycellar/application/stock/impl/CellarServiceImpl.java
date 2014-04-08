@@ -31,6 +31,7 @@ import fr.mycellar.application.stock.StockService;
 import fr.mycellar.domain.shared.NamedEntity_;
 import fr.mycellar.domain.shared.exception.BusinessError;
 import fr.mycellar.domain.shared.exception.BusinessException;
+import fr.mycellar.domain.stock.AccessRightEnum;
 import fr.mycellar.domain.stock.Cellar;
 import fr.mycellar.domain.stock.CellarShare;
 import fr.mycellar.domain.stock.CellarShare_;
@@ -63,6 +64,30 @@ public class CellarServiceImpl extends AbstractSearchableService<Cellar, CellarR
     @Override
     public List<Cellar> getAllForUserLike(String term, User user, SearchParameters<Cellar> search) {
         return find(addUserToSearchParametersParameters(user, addTermToSearchParametersParameters(term, search)));
+    }
+
+    @Override
+    public List<Cellar> getAllForUser(User user) {
+        return find(addUserToSearchParametersParameters(user, new SearchBuilder<Cellar>().build()));
+    }
+
+    @Override
+    public boolean hasReadRight(Integer cellarId, String userEmail) {
+        Cellar cellar = getById(cellarId);
+        return (cellar != null) && (cellar.getOwner().getEmail().equals(userEmail) //
+                || (cellarShareService.count(new SearchBuilder<CellarShare>() //
+                        .on(CellarShare_.email).equalsTo(userEmail) //
+                        .on(CellarShare_.cellar).to(Cellar_.id).equalsTo(cellarId).build()) > 0));
+    }
+
+    @Override
+    public boolean hasModifyRight(Integer cellarId, String userEmail) {
+        Cellar cellar = getById(cellarId);
+        return (cellar != null) && (cellar.getOwner().getEmail().equals(userEmail) //
+                || (cellarShareService.count(new SearchBuilder<CellarShare>() //
+                        .on(CellarShare_.email).equalsTo(userEmail) //
+                        .on(CellarShare_.cellar).to(Cellar_.id).equalsTo(cellarId) //
+                        .on(CellarShare_.accessRight).equalsTo(AccessRightEnum.MODIFY).build()) > 0));
     }
 
     @Override

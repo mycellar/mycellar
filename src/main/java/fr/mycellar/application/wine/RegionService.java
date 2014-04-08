@@ -18,12 +18,12 @@
  */
 package fr.mycellar.application.wine;
 
-import fr.mycellar.application.shared.SimpleService;
+import fr.mycellar.application.shared.SearchableService;
 import fr.mycellar.domain.wine.Region;
 
 /**
  * @author speralta
  */
-public interface RegionService extends SimpleService<Region> {
+public interface RegionService extends SearchableService<Region> {
 
 }

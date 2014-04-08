@@ -23,7 +23,7 @@ import javax.inject.Named;
 import javax.inject.Singleton;
 
 import fr.mycellar.application.booking.BookingEventService;
-import fr.mycellar.application.shared.AbstractSimpleService;
+import fr.mycellar.application.shared.AbstractSearchableService;
 import fr.mycellar.application.stock.StockService;
 import fr.mycellar.application.wine.FormatService;
 import fr.mycellar.domain.booking.BookingBottle_;
@@ -38,6 +38,7 @@ import fr.mycellar.domain.stock.Stock_;
 import fr.mycellar.domain.wine.Format;
 import fr.mycellar.domain.wine.Format_;
 import fr.mycellar.infrastructure.shared.repository.query.SearchBuilder;
+import fr.mycellar.infrastructure.shared.repository.query.SearchParameters;
 import fr.mycellar.infrastructure.wine.repository.FormatRepository;
 
 /**
@@ -45,7 +46,7 @@ import fr.mycellar.infrastructure.wine.repository.FormatRepository;
  */
 @Named
 @Singleton
-public class FormatServiceImpl extends AbstractSimpleService<Format, FormatRepository> implements FormatService {
+public class FormatServiceImpl extends AbstractSearchableService<Format, FormatRepository> implements FormatService {
 
     private FormatRepository formatRepository;
 
@@ -72,6 +73,11 @@ public class FormatServiceImpl extends AbstractSimpleService<Format, FormatRepos
                 .on(BookingEvent_.bottles).to(BookingBottle_.bottle).to(Bottle_.format).equalsTo(entity).build()) > 0) {
             throw new BusinessException(BusinessError.FORMAT_00002);
         }
+    }
+
+    @Override
+    protected SearchParameters<Format> addTermToSearchParametersParameters(String term, SearchParameters<Format> searchParameters) {
+        return new SearchBuilder<>(searchParameters).fullText(NamedEntity_.name).search(term).build();
     }
 
     @Override

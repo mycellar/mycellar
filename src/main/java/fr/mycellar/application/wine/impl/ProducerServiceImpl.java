@@ -22,7 +22,7 @@ import javax.inject.Inject;
 import javax.inject.Named;
 import javax.inject.Singleton;
 
-import fr.mycellar.application.shared.AbstractSimpleService;
+import fr.mycellar.application.shared.AbstractSearchableService;
 import fr.mycellar.application.wine.ProducerService;
 import fr.mycellar.application.wine.WineService;
 import fr.mycellar.domain.shared.NamedEntity_;
@@ -32,6 +32,7 @@ import fr.mycellar.domain.wine.Producer;
 import fr.mycellar.domain.wine.Wine;
 import fr.mycellar.domain.wine.Wine_;
 import fr.mycellar.infrastructure.shared.repository.query.SearchBuilder;
+import fr.mycellar.infrastructure.shared.repository.query.SearchParameters;
 import fr.mycellar.infrastructure.wine.repository.ProducerRepository;
 
 /**
@@ -39,7 +40,7 @@ import fr.mycellar.infrastructure.wine.repository.ProducerRepository;
  */
 @Named
 @Singleton
-public class ProducerServiceImpl extends AbstractSimpleService<Producer, ProducerRepository> implements ProducerService {
+public class ProducerServiceImpl extends AbstractSearchableService<Producer, ProducerRepository> implements ProducerService {
 
     private ProducerRepository producerRepository;
 
@@ -61,9 +62,11 @@ public class ProducerServiceImpl extends AbstractSimpleService<Producer, Produce
         }
     }
 
-    /**
-     * @return the producerRepository
-     */
+    @Override
+    protected SearchParameters<Producer> addTermToSearchParametersParameters(String term, SearchParameters<Producer> searchParameters) {
+        return new SearchBuilder<>(searchParameters).fullText(NamedEntity_.name).search(term).build();
+    }
+
     @Override
     public ProducerRepository getRepository() {
         return producerRepository;

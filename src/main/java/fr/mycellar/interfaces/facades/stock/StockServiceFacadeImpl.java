@@ -31,18 +31,13 @@ import fr.mycellar.application.stock.CellarShareService;
 import fr.mycellar.application.stock.MovementService;
 import fr.mycellar.application.stock.StockService;
 import fr.mycellar.domain.shared.exception.BusinessException;
-import fr.mycellar.domain.stock.AccessRightEnum;
 import fr.mycellar.domain.stock.Arrival;
 import fr.mycellar.domain.stock.Cellar;
 import fr.mycellar.domain.stock.CellarShare;
-import fr.mycellar.domain.stock.CellarShare_;
-import fr.mycellar.domain.stock.Cellar_;
 import fr.mycellar.domain.stock.Drink;
 import fr.mycellar.domain.stock.Movement;
 import fr.mycellar.domain.stock.Stock;
-import fr.mycellar.domain.stock.Stock_;
 import fr.mycellar.domain.user.User;
-import fr.mycellar.infrastructure.shared.repository.query.SearchBuilder;
 import fr.mycellar.infrastructure.shared.repository.query.SearchParameters;
 
 /**
@@ -241,37 +236,25 @@ public class StockServiceFacadeImpl implements StockServiceFacade {
     @Override
     @Transactional(readOnly = true)
     public List<Cellar> getCellars(User user) {
-        return getCellars(new SearchBuilder<Cellar>().disjunction() //
-                .on(Cellar_.owner).equalsTo(user) //
-                .on(Cellar_.shares).to(CellarShare_.email).equalsTo(user.getEmail()) //
-                .and().build());
+        return cellarService.getAllForUser(user);
     }
 
     @Override
     @Transactional(readOnly = true)
     public List<Stock> getStocks(Cellar cellar) {
-        return getStocks(new SearchBuilder<Stock>().on(Stock_.cellar).equalsTo(cellar).build());
+        return stockService.getAllForCellar(cellar);
     }
 
     @Override
     @Transactional(readOnly = true)
     public boolean hasReadRight(Integer cellarId, String userEmail) {
-        Cellar cellar = getCellarById(cellarId);
-        return (cellar != null) && (cellar.getOwner().getEmail().equals(userEmail) //
-                || (countCellarShares(new SearchBuilder<CellarShare>() //
-                        .on(CellarShare_.email).equalsTo(userEmail) //
-                        .on(CellarShare_.cellar).to(Cellar_.id).equalsTo(cellarId).build()) > 0));
+        return cellarService.hasReadRight(cellarId, userEmail);
     }
 
     @Override
     @Transactional(readOnly = true)
     public boolean hasModifyRight(Integer cellarId, String userEmail) {
-        Cellar cellar = getCellarById(cellarId);
-        return (cellar != null) && (cellar.getOwner().getEmail().equals(userEmail) //
-                || (countCellarShares(new SearchBuilder<CellarShare>() //
-                        .on(CellarShare_.email).equalsTo(userEmail) //
-                        .on(CellarShare_.cellar).to(Cellar_.id).equalsTo(cellarId) //
-                        .on(CellarShare_.accessRight).equalsTo(AccessRightEnum.MODIFY).build()) > 0));
+        return cellarService.hasModifyRight(cellarId, userEmail);
     }
 
     @Override

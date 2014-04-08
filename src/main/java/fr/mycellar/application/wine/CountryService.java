@@ -18,13 +18,13 @@
  */
 package fr.mycellar.application.wine;
 
-import fr.mycellar.application.shared.SimpleService;
+import fr.mycellar.application.shared.SearchableService;
 import fr.mycellar.domain.wine.Country;
 
 /**
  * @author speralta
  */
-public interface CountryService extends SimpleService<Country> {
+public interface CountryService extends SearchableService<Country> {
 
     Country find(String name);
 

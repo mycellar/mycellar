@@ -22,7 +22,7 @@ import javax.inject.Inject;
 import javax.inject.Named;
 import javax.inject.Singleton;
 
-import fr.mycellar.application.shared.AbstractSimpleService;
+import fr.mycellar.application.shared.AbstractSearchableService;
 import fr.mycellar.application.wine.CountryService;
 import fr.mycellar.application.wine.RegionService;
 import fr.mycellar.domain.shared.NamedEntity_;
@@ -31,6 +31,7 @@ import fr.mycellar.domain.shared.exception.BusinessException;
 import fr.mycellar.domain.wine.Region;
 import fr.mycellar.domain.wine.Region_;
 import fr.mycellar.infrastructure.shared.repository.query.SearchBuilder;
+import fr.mycellar.infrastructure.shared.repository.query.SearchParameters;
 import fr.mycellar.infrastructure.wine.repository.RegionRepository;
 
 /**
@@ -38,7 +39,7 @@ import fr.mycellar.infrastructure.wine.repository.RegionRepository;
  */
 @Named
 @Singleton
-public class RegionServiceImpl extends AbstractSimpleService<Region, RegionRepository> implements RegionService {
+public class RegionServiceImpl extends AbstractSearchableService<Region, RegionRepository> implements RegionService {
 
     private RegionRepository regionRepository;
 
@@ -69,6 +70,11 @@ public class RegionServiceImpl extends AbstractSimpleService<Region, RegionRepos
                 .on(Region_.id).equalsTo(entity.getId()).build(), Region_.appellations) > 0) {
             throw new BusinessException(BusinessError.REGION_00003);
         }
+    }
+
+    @Override
+    protected SearchParameters<Region> addTermToSearchParametersParameters(String term, SearchParameters<Region> searchParameters) {
+        return new SearchBuilder<>(searchParameters).fullText(NamedEntity_.name).search(term).build();
     }
 
     @Override

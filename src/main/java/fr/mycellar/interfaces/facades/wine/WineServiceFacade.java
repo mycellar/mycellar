@@ -38,13 +38,23 @@ public interface WineServiceFacade {
 
     long countAppellations(SearchParameters<Appellation> search);
 
+    long countAppellationsLike(String input, SearchParameters<Appellation> search);
+
     long countCountries(SearchParameters<Country> search);
+
+    long countCountriesLike(String input, SearchParameters<Country> search);
 
     long countFormats(SearchParameters<Format> search);
 
+    long countFormatsLike(String input, SearchParameters<Format> search);
+
     long countProducers(SearchParameters<Producer> search);
 
+    long countProducersLike(String input, SearchParameters<Producer> search);
+
     long countRegions(SearchParameters<Region> search);
+
+    long countRegionsLike(String input, SearchParameters<Region> search);
 
     long countWines(SearchParameters<Wine> search);
 
@@ -72,7 +82,11 @@ public interface WineServiceFacade {
 
     List<Appellation> getAppellations(SearchParameters<Appellation> search);
 
+    List<Appellation> getAppellationsLike(String input, SearchParameters<Appellation> search);
+
     List<Country> getCountries(SearchParameters<Country> search);
+
+    List<Country> getCountriesLike(String input, SearchParameters<Country> search);
 
     Country getCountryById(Integer countryId);
 
@@ -80,13 +94,19 @@ public interface WineServiceFacade {
 
     List<Format> getFormats(SearchParameters<Format> search);
 
+    List<Format> getFormatsLike(String input, SearchParameters<Format> search);
+
     Producer getProducerById(Integer producerId);
 
     List<Producer> getProducers(SearchParameters<Producer> search);
 
+    List<Producer> getProducersLike(String input, SearchParameters<Producer> search);
+
     Region getRegionById(Integer regionId);
 
     List<Region> getRegions(SearchParameters<Region> search);
+
+    List<Region> getRegionsLike(String input, SearchParameters<Region> search);
 
     Wine getWineById(Integer wineId);
 
