@@ -22,7 +22,7 @@ import javax.inject.Inject;
 import javax.inject.Named;
 import javax.inject.Singleton;
 
-import fr.mycellar.application.shared.AbstractSimpleService;
+import fr.mycellar.application.shared.AbstractSearchableService;
 import fr.mycellar.application.wine.CountryService;
 import fr.mycellar.application.wine.RegionService;
 import fr.mycellar.domain.shared.NamedEntity_;
@@ -30,7 +30,8 @@ import fr.mycellar.domain.shared.exception.BusinessError;
 import fr.mycellar.domain.shared.exception.BusinessException;
 import fr.mycellar.domain.wine.Region;
 import fr.mycellar.domain.wine.Region_;
-import fr.mycellar.infrastructure.shared.repository.SearchParameters;
+import fr.mycellar.infrastructure.shared.repository.query.SearchBuilder;
+import fr.mycellar.infrastructure.shared.repository.query.SearchParameters;
 import fr.mycellar.infrastructure.wine.repository.RegionRepository;
 
 /**
@@ -38,7 +39,7 @@ import fr.mycellar.infrastructure.wine.repository.RegionRepository;
  */
 @Named
 @Singleton
-public class RegionServiceImpl extends AbstractSimpleService<Region, RegionRepository> implements RegionService {
+public class RegionServiceImpl extends AbstractSearchableService<Region, RegionRepository> implements RegionService {
 
     private RegionRepository regionRepository;
 
@@ -55,9 +56,9 @@ public class RegionServiceImpl extends AbstractSimpleService<Region, RegionRepos
                 throw new BusinessException(BusinessError.REGION_00004, e);
             }
         }
-        Region existing = regionRepository.findUniqueOrNone(new SearchParameters() //
-                .property(Region_.country, entity.getCountry()) //
-                .property(NamedEntity_.name, entity.getName()));
+        Region existing = regionRepository.findUniqueOrNone(new SearchBuilder<Region>() //
+                .on(Region_.country).equalsTo(entity.getCountry()) //
+                .on(NamedEntity_.name).equalsTo(entity.getName()).build());
         if ((existing != null) && ((entity.getId() == null) || !existing.getId().equals(entity.getId()))) {
             throw new BusinessException(BusinessError.REGION_00002);
         }
@@ -65,10 +66,15 @@ public class RegionServiceImpl extends AbstractSimpleService<Region, RegionRepos
 
     @Override
     protected void validateDelete(Region entity) throws BusinessException {
-        if (regionRepository.findPropertyCount(new SearchParameters() //
-                .property(Region_.id, entity.getId()), Region_.appellations) > 0) {
+        if (regionRepository.findPropertyCount(new SearchBuilder<Region>() //
+                .on(Region_.id).equalsTo(entity.getId()).build(), Region_.appellations) > 0) {
             throw new BusinessException(BusinessError.REGION_00003);
         }
+    }
+
+    @Override
+    protected SearchParameters<Region> addTermToSearchParametersParameters(String term, SearchParameters<Region> searchParameters) {
+        return new SearchBuilder<>(searchParameters).fullText(NamedEntity_.name).search(term).build();
     }
 
     @Override

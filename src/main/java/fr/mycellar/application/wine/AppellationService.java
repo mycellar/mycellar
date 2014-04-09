@@ -18,12 +18,12 @@
  */
 package fr.mycellar.application.wine;
 
-import fr.mycellar.application.shared.SimpleService;
+import fr.mycellar.application.shared.SearchableService;
 import fr.mycellar.domain.wine.Appellation;
 
 /**
  * @author speralta
  */
-public interface AppellationService extends SimpleService<Appellation> {
+public interface AppellationService extends SearchableService<Appellation> {
 
 }

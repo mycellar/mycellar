@@ -18,12 +18,26 @@
  */
 package fr.mycellar.application.stock;
 
-import fr.mycellar.application.shared.SimpleService;
+import java.util.List;
+
+import fr.mycellar.application.shared.SearchableService;
 import fr.mycellar.domain.stock.Cellar;
+import fr.mycellar.domain.user.User;
+import fr.mycellar.infrastructure.shared.repository.query.SearchParameters;
 
 /**
  * @author speralta
  */
-public interface CellarService extends SimpleService<Cellar> {
+public interface CellarService extends SearchableService<Cellar> {
+
+    long countAllForUserLike(String term, User user, SearchParameters<Cellar> search);
+
+    List<Cellar> getAllForUserLike(String term, User user, SearchParameters<Cellar> search);
+
+    List<Cellar> getAllForUser(User user);
+
+    boolean hasReadRight(Integer cellarId, String userEmail);
+
+    boolean hasModifyRight(Integer cellarId, String userEmail);
 
 }

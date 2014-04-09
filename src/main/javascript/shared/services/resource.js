@@ -1,11 +1,11 @@
-angular.module('mycellar.services.admin.resource', [
+angular.module('mycellar.services.resource', [
   'ngResource'
 ]);
 
-angular.module('mycellar.services.admin.resource').factory('adminDomainResource', [
+angular.module('mycellar.services.resource').factory('domainResource', [
   '$resource', '$q',
   function($resource, $q) {
-    var adminDomainResource = {};
+    var domainResource = {};
     /**
      * parameters = {
      *   url: the resource url,
@@ -13,12 +13,18 @@ angular.module('mycellar.services.admin.resource').factory('adminDomainResource'
      *   likeUrl: the resource like url
      * }
      */
-    adminDomainResource.createResource = function(parameters, actions) {
+    domainResource.createResource = function(parameters, actions) {
       actions = actions || {};
       if (parameters.validateUrl != undefined) {
         actions.validate = {
           url: parameters.validateUrl,
           method: 'POST'
+        }
+      }
+      if (parameters.likeUrl != undefined) {
+        actions._like = {
+          url: parameters.likeUrl,
+          method: 'GET'
         }
       }
       var resource = $resource(parameters.url+'/:id', {id: '@id'}, actions);
@@ -36,7 +42,7 @@ angular.module('mycellar.services.admin.resource').factory('adminDomainResource'
       if (parameters.likeUrl != undefined) {
         resource.like = function(term) {
           var deferred = $q.defer();
-          resource.get({
+          resource._like({
             input: term,
             first: 0, 
             count: 20 
@@ -52,6 +58,6 @@ angular.module('mycellar.services.admin.resource').factory('adminDomainResource'
       }
       return resource;
     };
-    return adminDomainResource;
+    return domainResource;
   }
 ]);

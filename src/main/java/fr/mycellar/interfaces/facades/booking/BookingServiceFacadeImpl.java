@@ -34,7 +34,7 @@ import fr.mycellar.domain.booking.BookingBottle;
 import fr.mycellar.domain.booking.BookingEvent;
 import fr.mycellar.domain.shared.exception.BusinessException;
 import fr.mycellar.domain.user.User;
-import fr.mycellar.infrastructure.shared.repository.SearchParameters;
+import fr.mycellar.infrastructure.shared.repository.query.SearchParameters;
 
 /**
  * @author speralta
@@ -85,20 +85,14 @@ public class BookingServiceFacadeImpl implements BookingServiceFacade {
 
     @Override
     @Transactional(readOnly = true)
-    public List<BookingEvent> getBookingEventsLike(String term) {
-        return bookingEventService.getAllLike(term);
+    public long countBookingEvents(SearchParameters<BookingEvent> search) {
+        return bookingEventService.count(search);
     }
 
     @Override
     @Transactional(readOnly = true)
-    public long countBookingEvents(SearchParameters searchParameters) {
-        return bookingEventService.count(searchParameters);
-    }
-
-    @Override
-    @Transactional(readOnly = true)
-    public long countBookings(SearchParameters searchParameters) {
-        return bookingService.count(searchParameters);
+    public long countBookings(SearchParameters<Booking> search) {
+        return bookingService.count(search);
     }
 
     @Override
@@ -117,14 +111,14 @@ public class BookingServiceFacadeImpl implements BookingServiceFacade {
 
     @Override
     @Transactional(readOnly = true)
-    public List<BookingEvent> getBookingEvents(SearchParameters searchParameters) {
-        return bookingEventService.find(searchParameters);
+    public List<BookingEvent> getBookingEvents(SearchParameters<BookingEvent> search) {
+        return bookingEventService.find(search);
     }
 
     @Override
     @Transactional(readOnly = true)
-    public List<Booking> getBookings(SearchParameters searchParameters) {
-        List<Booking> bookings = bookingService.find(searchParameters);
+    public List<Booking> getBookings(SearchParameters<Booking> search) {
+        List<Booking> bookings = bookingService.find(search);
         for (Booking booking : bookings) {
             updateBooking(booking);
         }
@@ -173,6 +167,24 @@ public class BookingServiceFacadeImpl implements BookingServiceFacade {
     @Transactional
     public void deleteBookingEvent(BookingEvent bookingEvent) throws BusinessException {
         bookingEventService.delete(bookingEvent);
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public void validateBookingEvent(BookingEvent bookingEvent) throws BusinessException {
+        bookingEventService.validate(bookingEvent);
+    }
+
+    @Override
+    @Transactional(readOnly = false)
+    public List<BookingEvent> getBookingEventsLike(String term, SearchParameters<BookingEvent> search) {
+        return bookingEventService.getAllLike(term, search);
+    }
+
+    @Override
+    @Transactional(readOnly = false)
+    public long countBookingEventsLike(String term, SearchParameters<BookingEvent> search) {
+        return bookingEventService.countAllLike(term, search);
     }
 
     private void updateBooking(Booking booking) {

@@ -16,7 +16,7 @@
  * You should have received a copy of the GNU General Public License
  * along with MyCellar. If not, see <http://www.gnu.org/licenses/>.
  */
-package fr.mycellar.infrastructure.shared.repository;
+package fr.mycellar.infrastructure.shared.repository.query;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 
@@ -29,23 +29,24 @@ import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 
 /**
- * Holder class for search ordering used by the {@link SearchParameters}. When
+ * Holder class for search ordering used by the {@link SearchBuilder}. When
  * used with {@link NamedQueryUtil}, you pass column name. For other usage, pass
  * the property name.
  */
-public class OrderBy implements Serializable {
-    private static final long serialVersionUID = 1L;
-    private final Path path;
-    private OrderByDirection direction = OrderByDirection.ASC;
+public class OrderBy<FROM, TO> implements Serializable {
+    private static final long serialVersionUID = 201403271745L;
 
-    public OrderBy(OrderByDirection direction, Attribute<?, ?>... attributes) {
-        this.direction = checkNotNull(direction);
-        path = new Path(checkNotNull(attributes));
+    private final Path<FROM, TO> path;
+    private final OrderByDirection direction;
+
+    public OrderBy(OrderByDirection direction, Path<FROM, TO> path) {
+        this.direction = direction;
+        this.path = path;
     }
 
-    public OrderBy(OrderByDirection direction, String path, Class<?> from) {
+    public OrderBy(OrderByDirection direction, String path, Class<FROM> from) {
         this.direction = checkNotNull(direction);
-        this.path = new Path(checkNotNull(path), checkNotNull(from));
+        this.path = new Path<FROM, TO>(checkNotNull(path), checkNotNull(from));
     }
 
     public List<Attribute<?, ?>> getAttributes() {
@@ -58,10 +59,6 @@ public class OrderBy implements Serializable {
 
     public OrderByDirection getDirection() {
         return direction;
-    }
-
-    public boolean isOrderDesc() {
-        return OrderByDirection.DESC == direction;
     }
 
     @Override
@@ -83,7 +80,7 @@ public class OrderBy implements Serializable {
         if (getClass() != obj.getClass()) {
             return false;
         }
-        OrderBy other = (OrderBy) obj;
+        OrderBy<?, ?> other = (OrderBy<?, ?>) obj;
         if (path == null) {
             if (other.path != null) {
                 return false;

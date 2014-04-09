@@ -16,18 +16,13 @@
  * You should have received a copy of the GNU General Public License
  * along with MyCellar. If not, see <http://www.gnu.org/licenses/>.
  */
-package fr.mycellar.infrastructure.shared.repository;
+package fr.mycellar.infrastructure.shared.repository.util;
 
 import static com.google.common.base.Predicates.notNull;
 import static com.google.common.collect.Iterables.filter;
 import static com.google.common.collect.Iterables.toArray;
-import static com.google.common.collect.Iterables.transform;
 import static com.google.common.collect.Lists.newArrayList;
-import static org.apache.commons.lang3.StringUtils.isBlank;
-import static org.hibernate.proxy.HibernateProxyHelper.getClassWithoutInitializingProxy;
 
-import java.beans.PropertyDescriptor;
-import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -35,7 +30,6 @@ import java.util.Locale;
 
 import javax.inject.Named;
 import javax.inject.Singleton;
-import javax.persistence.Entity;
 import javax.persistence.Query;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.Expression;
@@ -48,17 +42,13 @@ import javax.persistence.criteria.Path;
 import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
 import javax.persistence.metamodel.Attribute;
-import javax.persistence.metamodel.ManagedType;
 import javax.persistence.metamodel.PluralAttribute;
 import javax.persistence.metamodel.SingularAttribute;
 
-import org.apache.commons.beanutils.PropertyUtils;
-import org.apache.commons.lang3.StringUtils;
 import org.springframework.context.annotation.Lazy;
 
-import com.google.common.base.Function;
-
-import fr.mycellar.domain.shared.Identifiable;
+import fr.mycellar.infrastructure.shared.repository.query.SearchMode;
+import fr.mycellar.infrastructure.shared.repository.query.SearchParameters;
 
 @Named
 @Singleton
@@ -75,24 +65,8 @@ public class JpaUtil {
         instance = this;
     }
 
-    public Predicate concatPredicate(SearchParameters sp, CriteriaBuilder builder, Predicate... predicatesNullAllowed) {
-        return concatPredicate(sp, builder, Arrays.asList(predicatesNullAllowed));
-    }
-
-    public Predicate concatPredicate(SearchParameters sp, CriteriaBuilder builder, Iterable<Predicate> predicatesNullAllowed) {
-        if (sp.isAndMode()) {
-            return andPredicate(builder, predicatesNullAllowed);
-        } else {
-            return orPredicate(builder, predicatesNullAllowed);
-        }
-    }
-
     public Predicate andPredicate(CriteriaBuilder builder, Predicate... predicatesNullAllowed) {
         return andPredicate(builder, Arrays.asList(predicatesNullAllowed));
-    }
-
-    public Predicate andNotPredicate(CriteriaBuilder builder, Predicate... predicatesNullAllowed) {
-        return andNotPredicate(builder, Arrays.asList(predicatesNullAllowed));
     }
 
     public Predicate orPredicate(CriteriaBuilder builder, Predicate... predicatesNullAllowed) {
@@ -101,23 +75,6 @@ public class JpaUtil {
 
     public Predicate andPredicate(CriteriaBuilder builder, Iterable<Predicate> predicatesNullAllowed) {
         List<Predicate> predicates = newArrayList(filter(predicatesNullAllowed, notNull()));
-        if ((predicates == null) || predicates.isEmpty()) {
-            return null;
-        } else if (predicates.size() == 1) {
-            return predicates.get(0);
-        } else {
-            return builder.and(toArray(predicates, Predicate.class));
-        }
-    }
-
-    public Predicate andNotPredicate(final CriteriaBuilder builder, Iterable<Predicate> predicatesNullAllowed) {
-        List<Predicate> predicates = newArrayList(transform(filter(predicatesNullAllowed, notNull()), new Function<Predicate, Predicate>() {
-            @Override
-            public Predicate apply(Predicate input) {
-                return builder.not(input);
-            }
-
-        }));
         if ((predicates == null) || predicates.isEmpty()) {
             return null;
         } else if (predicates.size() == 1) {
@@ -138,13 +95,13 @@ public class JpaUtil {
         }
     }
 
-    public <E> Predicate stringPredicate(Expression<String> path, Object attrValue, SearchMode searchMode, Boolean caseSensitive, SearchParameters sp, CriteriaBuilder builder) {
-        if (caseSensitive != null ? !caseSensitive : sp.isCaseInsensitive()) {
+    public <E> Predicate stringPredicate(Expression<String> path, Object attrValue, SearchMode searchMode, boolean caseSensitive, CriteriaBuilder builder) {
+        if (!caseSensitive) {
             path = builder.lower(path);
             attrValue = ((String) attrValue).toLowerCase(Locale.FRANCE);
         }
 
-        switch (searchMode != null ? searchMode : sp.getSearchMode()) {
+        switch (searchMode) {
         case EQUALS:
             return builder.equal(path, attrValue);
         case ENDING_LIKE:
@@ -154,16 +111,11 @@ public class JpaUtil {
         case ANYWHERE:
             return builder.like(path, "%" + attrValue + "%");
         case LIKE:
-            return builder.like(path, (String) attrValue); // assume user
-                                                           // provide the wild
-                                                           // cards
+            // assume user provide the wild cards
+            return builder.like(path, (String) attrValue);
         default:
             throw new IllegalStateException("expecting a search mode!");
         }
-    }
-
-    public <E> Predicate stringPredicate(Expression<String> path, Object attrValue, SearchParameters sp, CriteriaBuilder builder) {
-        return stringPredicate(path, attrValue, null, null, sp, builder);
     }
 
     /**
@@ -196,10 +148,6 @@ public class JpaUtil {
         return (Path<F>) path;
     }
 
-    public void verifyPath(Attribute<?, ?>... path) {
-        verifyPath(newArrayList(path));
-    }
-
     public void verifyPath(List<Attribute<?, ?>> path) {
         List<Attribute<?, ?>> attributes = new ArrayList<>(path);
         Class<?> from = null;
@@ -217,45 +165,7 @@ public class JpaUtil {
         }
     }
 
-    public <T, A> SingularAttribute<? super T, A> attribute(ManagedType<? super T> mt, Attribute<? super T, A> attr) {
-        return mt.getSingularAttribute(attr.getName(), attr.getJavaType());
-    }
-
-    public <T> SingularAttribute<? super T, String> stringAttribute(ManagedType<? super T> mt, Attribute<? super T, ?> attr) {
-        return mt.getSingularAttribute(attr.getName(), String.class);
-    }
-
-    public String[] toNames(Attribute<?, ?>... attributes) {
-        return toNamesList(Arrays.asList(attributes)).toArray(new String[0]);
-    }
-
-    public List<String> toNamesList(List<Attribute<?, ?>> attributes) {
-        List<String> ret = new ArrayList<>();
-        for (Attribute<?, ?> attribute : attributes) {
-            ret.add(attribute.getName());
-        }
-        return ret;
-    }
-
-    public String getEntityName(Identifiable<?> entity) {
-        Entity entityAnnotation = entity.getClass().getAnnotation(Entity.class);
-        if (isBlank(entityAnnotation.name())) {
-            return getClassWithoutInitializingProxy(entity).getSimpleName();
-        }
-        return entityAnnotation.name();
-    }
-
-    public String methodToProperty(Method m) {
-        PropertyDescriptor[] pds = PropertyUtils.getPropertyDescriptors(m.getDeclaringClass());
-        for (PropertyDescriptor pd : pds) {
-            if (m.equals(pd.getReadMethod()) || m.equals(pd.getWriteMethod())) {
-                return pd.getName();
-            }
-        }
-        return null;
-    }
-
-    public void applyPagination(Query query, SearchParameters sp) {
+    public void applyPagination(Query query, SearchParameters<?> sp) {
         if (sp.getFirstResult() > 0) {
             query.setFirstResult(sp.getFirstResult());
         }
@@ -264,23 +174,11 @@ public class JpaUtil {
         }
     }
 
-    public void applyCacheHints(Query query, SearchParameters sp, Class<? extends Identifiable<?>> type) {
-        if (sp.isCacheable()) {
-            query.setHint("org.hibernate.cacheable", true);
-
-            if (StringUtils.isNotBlank(sp.getCacheRegion())) {
-                query.setHint("org.hibernate.cacheRegion", sp.getCacheRegion());
-            } else {
-                query.setHint("org.hibernate.cacheRegion", type.getCanonicalName());
-            }
-        }
-    }
-
     @SuppressWarnings({ "unchecked", "rawtypes" })
-    protected void fetches(SearchParameters sp, Root<?> root) {
-        for (List<Attribute<?, ?>> args : sp.getFetches()) {
+    public <E> void fetches(SearchParameters<E> sp, Root<E> root) {
+        for (fr.mycellar.infrastructure.shared.repository.query.Path<E, ?> args : sp.getFetches()) {
             FetchParent<?, ?> from = root;
-            for (Attribute<?, ?> arg : args) {
+            for (Attribute<?, ?> arg : args.getAttributes()) {
                 boolean found = false;
                 for (Fetch<?, ?> fetch : from.getFetches()) {
                     if (arg.equals(fetch.getAttribute())) {

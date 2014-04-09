@@ -25,6 +25,7 @@ import javax.inject.Inject;
 import javax.inject.Named;
 import javax.inject.Singleton;
 import javax.ws.rs.Consumes;
+import javax.ws.rs.DefaultValue;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
@@ -47,7 +48,8 @@ import fr.mycellar.domain.stock.Movement;
 import fr.mycellar.domain.stock.Movement_;
 import fr.mycellar.domain.stock.Stock;
 import fr.mycellar.domain.stock.Stock_;
-import fr.mycellar.infrastructure.shared.repository.SearchParameters;
+import fr.mycellar.infrastructure.shared.repository.query.SearchBuilder;
+import fr.mycellar.infrastructure.shared.repository.query.SearchParameters;
 import fr.mycellar.interfaces.facades.stock.StockServiceFacade;
 import fr.mycellar.interfaces.web.security.CurrentUserService;
 import fr.mycellar.interfaces.web.services.FilterCouple;
@@ -86,8 +88,8 @@ public class StockWebService {
         if (!stockServiceFacade.hasReadRight(cellarId, currentUserService.getCurrentUserEmail())) {
             throw new AccessDeniedException("No read access to this cellar.");
         }
-        SearchParameters searchParameters = searchParametersUtil.getSearchParametersForListWithCount(first, count, filters, orders, Movement.class);
-        searchParameters.property(Movement_.cellar, Cellar_.id, cellarId);
+        SearchParameters<Movement> searchParameters = searchParametersUtil.getSearchParametersParametersForListWithCount(first, count, filters, orders, Movement.class);
+        searchParameters = new SearchBuilder<Movement>(searchParameters).on(Movement_.cellar).to(Cellar_.id).equalsTo(cellarId).build();
         List<Movement> movements;
         if (count == 0) {
             movements = new ArrayList<>();
@@ -106,8 +108,8 @@ public class StockWebService {
         if (!stockServiceFacade.hasReadRight(cellarId, currentUserService.getCurrentUserEmail())) {
             throw new AccessDeniedException("No read access to this cellar.");
         }
-        SearchParameters searchParameters = searchParametersUtil.getSearchParametersForListWithCount(first, count, filters, orders, Stock.class);
-        searchParameters.property(Stock_.cellar, Cellar_.id, cellarId);
+        SearchParameters<Stock> searchParameters = searchParametersUtil.getSearchParametersParametersForListWithCount(first, count, filters, orders, Stock.class);
+        searchParameters = new SearchBuilder<Stock>(searchParameters).on(Stock_.cellar).to(Cellar_.id).equalsTo(cellarId).build();
         List<Stock> stocks;
         if (count == 0) {
             stocks = new ArrayList<>();
@@ -126,8 +128,8 @@ public class StockWebService {
         if (!stockServiceFacade.isOwner(cellarId, currentUserService.getCurrentUserEmail())) {
             throw new AccessDeniedException("Current user isn't the owner of the cellar.");
         }
-        SearchParameters searchParameters = searchParametersUtil.getSearchParametersForListWithCount(first, count, filters, orders, CellarShare.class);
-        searchParameters.property(CellarShare_.cellar, Cellar_.id, cellarId);
+        SearchParameters<CellarShare> searchParameters = searchParametersUtil.getSearchParametersParametersForListWithCount(first, count, filters, orders, CellarShare.class);
+        searchParameters = new SearchBuilder<CellarShare>(searchParameters).on(CellarShare_.cellar).to(Cellar_.id).equalsTo(cellarId).build();
         List<CellarShare> cellarShares;
         if (count == 0) {
             cellarShares = new ArrayList<>();
@@ -159,6 +161,33 @@ public class StockWebService {
             }
         }
         stockServiceFacade.drink(drink);
+    }
+
+    @POST
+    @Consumes(MediaType.APPLICATION_JSON)
+    @Path("validateCellar")
+    @PreAuthorize("hasRole('ROLE_CELLAR')")
+    public void validateCellar(Cellar cellar) throws BusinessException {
+        stockServiceFacade.validateCellar(cellar);
+    }
+
+    @GET
+    @Produces(MediaType.APPLICATION_JSON)
+    @Path("cellars/like")
+    @PreAuthorize("hasRole('ROLE_CELLAR')")
+    public ListWithCount<Cellar> getCellarsLike( //
+            @QueryParam("first") int first, //
+            @QueryParam("count") @DefaultValue("10") int count, //
+            @QueryParam("input") String input, //
+            @QueryParam("sort") List<OrderCouple> orders) {
+        SearchParameters<Cellar> searchParameters = searchParametersUtil.getSearchParametersParametersForListWithCount(first, count, new ArrayList<FilterCouple>(), orders, Cellar.class);
+        List<Cellar> cellars;
+        if (count == 0) {
+            cellars = new ArrayList<>();
+        } else {
+            cellars = stockServiceFacade.getCellarsLike(input, currentUserService.getCurrentUser(), searchParameters);
+        }
+        return new ListWithCount<>(stockServiceFacade.countCellarsLike(input, currentUserService.getCurrentUser(), searchParameters), cellars);
     }
 
     @Inject

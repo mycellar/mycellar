@@ -18,6 +18,8 @@
  */
 package fr.mycellar.application.stock.impl;
 
+import java.util.List;
+
 import javax.inject.Inject;
 import javax.inject.Named;
 import javax.inject.Singleton;
@@ -37,7 +39,7 @@ import fr.mycellar.domain.stock.Drink;
 import fr.mycellar.domain.stock.DrinkBottle;
 import fr.mycellar.domain.stock.Stock;
 import fr.mycellar.domain.stock.Stock_;
-import fr.mycellar.infrastructure.shared.repository.SearchParameters;
+import fr.mycellar.infrastructure.shared.repository.query.SearchBuilder;
 import fr.mycellar.infrastructure.stock.repository.StockRepository;
 
 /**
@@ -99,10 +101,15 @@ public class StockServiceImpl extends AbstractSimpleService<Stock, StockReposito
     }
 
     @Override
+    public List<Stock> getAllForCellar(Cellar cellar) {
+        return find(new SearchBuilder<Stock>().on(Stock_.cellar).equalsTo(cellar).build());
+    }
+
+    @Override
     public Stock findStock(Bottle bottle, Cellar cellar) {
-        return stockRepository.findUniqueOrNone(new SearchParameters() //
-                .property(Stock_.bottle, bottle) //
-                .property(Stock_.cellar, cellar));
+        return stockRepository.findUniqueOrNone(new SearchBuilder<Stock>() //
+                .on(Stock_.bottle).equalsTo(bottle) //
+                .on(Stock_.cellar).equalsTo(cellar).build());
     }
 
     @Override

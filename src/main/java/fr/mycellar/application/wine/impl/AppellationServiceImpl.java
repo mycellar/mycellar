@@ -22,7 +22,7 @@ import javax.inject.Inject;
 import javax.inject.Named;
 import javax.inject.Singleton;
 
-import fr.mycellar.application.shared.AbstractSimpleService;
+import fr.mycellar.application.shared.AbstractSearchableService;
 import fr.mycellar.application.wine.AppellationService;
 import fr.mycellar.application.wine.RegionService;
 import fr.mycellar.domain.shared.NamedEntity_;
@@ -30,7 +30,8 @@ import fr.mycellar.domain.shared.exception.BusinessError;
 import fr.mycellar.domain.shared.exception.BusinessException;
 import fr.mycellar.domain.wine.Appellation;
 import fr.mycellar.domain.wine.Appellation_;
-import fr.mycellar.infrastructure.shared.repository.SearchParameters;
+import fr.mycellar.infrastructure.shared.repository.query.SearchBuilder;
+import fr.mycellar.infrastructure.shared.repository.query.SearchParameters;
 import fr.mycellar.infrastructure.wine.repository.AppellationRepository;
 
 /**
@@ -38,7 +39,7 @@ import fr.mycellar.infrastructure.wine.repository.AppellationRepository;
  */
 @Named
 @Singleton
-public class AppellationServiceImpl extends AbstractSimpleService<Appellation, AppellationRepository> implements AppellationService {
+public class AppellationServiceImpl extends AbstractSearchableService<Appellation, AppellationRepository> implements AppellationService {
 
     private AppellationRepository appellationRepository;
 
@@ -55,9 +56,9 @@ public class AppellationServiceImpl extends AbstractSimpleService<Appellation, A
                 throw new BusinessException(BusinessError.APPELLATION_00004, e);
             }
         }
-        Appellation existing = appellationRepository.findUniqueOrNone(new SearchParameters() //
-                .property(Appellation_.region, entity.getRegion()) //
-                .property(NamedEntity_.name, entity.getName()));
+        Appellation existing = appellationRepository.findUniqueOrNone(new SearchBuilder<Appellation>() //
+                .on(Appellation_.region).equalsTo(entity.getRegion()) //
+                .on(NamedEntity_.name).equalsTo(entity.getName()).build());
         if ((existing != null) && ((entity.getId() == null) || !existing.getId().equals(entity.getId()))) {
             throw new BusinessException(BusinessError.APPELLATION_00002);
         }
@@ -65,9 +66,14 @@ public class AppellationServiceImpl extends AbstractSimpleService<Appellation, A
 
     @Override
     protected void validateDelete(Appellation entity) throws BusinessException {
-        if (appellationRepository.findPropertyCount(new SearchParameters().property(Appellation_.id, entity.getId()), Appellation_.wines) > 0) {
+        if (appellationRepository.findPropertyCount(new SearchBuilder<Appellation>().on(Appellation_.id).equalsTo(entity.getId()).build(), Appellation_.wines) > 0) {
             throw new BusinessException(BusinessError.APPELLATION_00003);
         }
+    }
+
+    @Override
+    protected SearchParameters<Appellation> addTermToSearchParametersParameters(String term, SearchParameters<Appellation> searchParameters) {
+        return new SearchBuilder<>(searchParameters).fullText(NamedEntity_.name).search(term).build();
     }
 
     @Override

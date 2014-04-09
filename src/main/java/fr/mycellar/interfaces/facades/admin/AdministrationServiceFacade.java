@@ -22,35 +22,19 @@ import java.util.List;
 
 import fr.mycellar.domain.admin.Configuration;
 import fr.mycellar.domain.shared.exception.BusinessException;
-import fr.mycellar.infrastructure.shared.repository.SearchParameters;
+import fr.mycellar.infrastructure.shared.repository.query.SearchParameters;
 
 /**
  * @author speralta
  */
 public interface AdministrationServiceFacade {
 
-    /**
-     * @param searchParameters
-     * @return
-     */
-    long countConfigurations(SearchParameters searchParameters);
+    long countConfigurations(SearchParameters<Configuration> search);
 
-    /**
-     * @param configurationId
-     * @return
-     */
     Configuration getConfigurationById(Integer configurationId);
 
-    /**
-     * @param searchParameters
-     * @return
-     */
-    List<Configuration> getConfigurations(SearchParameters searchParameters);
+    List<Configuration> getConfigurations(SearchParameters<Configuration> search);
 
-    /**
-     * @param configuration
-     * @throws BusinessException
-     */
     Configuration saveConfiguration(Configuration configuration) throws BusinessException;
 
 }

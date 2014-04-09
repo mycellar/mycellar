@@ -22,15 +22,17 @@ import javax.inject.Inject;
 import javax.inject.Named;
 import javax.inject.Singleton;
 
-import fr.mycellar.application.shared.AbstractSimpleService;
+import fr.mycellar.application.shared.AbstractSearchableService;
 import fr.mycellar.application.wine.ProducerService;
 import fr.mycellar.application.wine.WineService;
 import fr.mycellar.domain.shared.NamedEntity_;
 import fr.mycellar.domain.shared.exception.BusinessError;
 import fr.mycellar.domain.shared.exception.BusinessException;
 import fr.mycellar.domain.wine.Producer;
+import fr.mycellar.domain.wine.Wine;
 import fr.mycellar.domain.wine.Wine_;
-import fr.mycellar.infrastructure.shared.repository.SearchParameters;
+import fr.mycellar.infrastructure.shared.repository.query.SearchBuilder;
+import fr.mycellar.infrastructure.shared.repository.query.SearchParameters;
 import fr.mycellar.infrastructure.wine.repository.ProducerRepository;
 
 /**
@@ -38,7 +40,7 @@ import fr.mycellar.infrastructure.wine.repository.ProducerRepository;
  */
 @Named
 @Singleton
-public class ProducerServiceImpl extends AbstractSimpleService<Producer, ProducerRepository> implements ProducerService {
+public class ProducerServiceImpl extends AbstractSearchableService<Producer, ProducerRepository> implements ProducerService {
 
     private ProducerRepository producerRepository;
 
@@ -47,7 +49,7 @@ public class ProducerServiceImpl extends AbstractSimpleService<Producer, Produce
     @Override
     public void validate(Producer entity) throws BusinessException {
         Producer existing = producerRepository.findUniqueOrNone( //
-                new SearchParameters().property(NamedEntity_.name, entity.getName()));
+                new SearchBuilder<Producer>().on(NamedEntity_.name).equalsTo(entity.getName()).build());
         if ((existing != null) && ((entity.getId() == null) || !existing.getId().equals(entity.getId()))) {
             throw new BusinessException(BusinessError.PRODUCER_00001);
         }
@@ -55,14 +57,16 @@ public class ProducerServiceImpl extends AbstractSimpleService<Producer, Produce
 
     @Override
     protected void validateDelete(Producer entity) throws BusinessException {
-        if (wineService.count(new SearchParameters().property(Wine_.producer, entity)) > 0) {
+        if (wineService.count(new SearchBuilder<Wine>().on(Wine_.producer).equalsTo(entity).build()) > 0) {
             throw new BusinessException(BusinessError.PRODUCER_00002);
         }
     }
 
-    /**
-     * @return the producerRepository
-     */
+    @Override
+    protected SearchParameters<Producer> addTermToSearchParametersParameters(String term, SearchParameters<Producer> searchParameters) {
+        return new SearchBuilder<>(searchParameters).fullText(NamedEntity_.name).search(term).build();
+    }
+
     @Override
     public ProducerRepository getRepository() {
         return producerRepository;

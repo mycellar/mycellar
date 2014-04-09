@@ -26,121 +26,51 @@ import fr.mycellar.domain.booking.BookingBottle;
 import fr.mycellar.domain.booking.BookingEvent;
 import fr.mycellar.domain.shared.exception.BusinessException;
 import fr.mycellar.domain.user.User;
-import fr.mycellar.infrastructure.shared.repository.SearchParameters;
+import fr.mycellar.infrastructure.shared.repository.query.SearchParameters;
 
 /**
  * @author speralta
  */
 public interface BookingServiceFacade {
 
-    /**
-     * @param searchParameters
-     * @return
-     */
-    long countBookings(SearchParameters searchParameters);
+    long countBookingEvents(SearchParameters<BookingEvent> search);
 
-    /**
-     * @param searchParameters
-     * @return
-     */
-    long countBookingEvents(SearchParameters searchParameters);
+    long countBookingEventsLike(String term, SearchParameters<BookingEvent> search);
 
-    /**
-     * @param bookingId
-     * @return
-     */
-    Booking getBookingById(Integer bookingId);
+    long countBookings(SearchParameters<Booking> search);
 
-    /**
-     * @param bookingEventId
-     * @return
-     */
-    BookingEvent getBookingEventById(Integer bookingEventId);
-
-    /**
-     * @param searchParameters
-     * @return
-     */
-    List<Booking> getBookings(SearchParameters searchParameters);
-
-    /**
-     * @param searchParameters
-     * @return
-     */
-    List<BookingEvent> getBookingEvents(SearchParameters searchParameters);
-
-    /**
-     * @param booking
-     * @throws BusinessException
-     */
-    Booking saveBooking(Booking booking) throws BusinessException;
-
-    /**
-     * @param bookingEvent
-     * @throws BusinessException
-     */
-    BookingEvent saveBookingEvent(BookingEvent bookingEvent) throws BusinessException;
-
-    /**
-     * @param booking
-     * @throws BusinessException
-     */
-    void deleteBooking(Booking booking) throws BusinessException;
-
-    /**
-     * @param bookingEvent
-     * @throws BusinessException
-     */
-    void deleteBookingEvent(BookingEvent bookingEvent) throws BusinessException;
-
-    /**
-     * @param term
-     * @return
-     */
-    List<BookingEvent> getBookingEventsLike(String term);
-
-    /**
-     * @return
-     */
-    List<BookingEvent> getCurrentBookingEvents();
-
-    /**
-     * @param customer
-     * @param count
-     * @param first
-     * @return
-     */
-    List<Booking> getBookings(User customer, int first, int count);
-
-    /**
-     * @param currentUser
-     * @return
-     */
     long countBookings(User currentUser);
 
-    /**
-     * @param bookingEvent
-     * @param customer
-     * @return
-     */
+    void deleteBooking(Booking booking) throws BusinessException;
+
+    void deleteBookingEvent(BookingEvent bookingEvent) throws BusinessException;
+
     Booking getBooking(BookingEvent bookingEvent, User customer);
 
-    /**
-     * @param bookingEvent
-     * @return
-     */
-    Map<BookingBottle, Long> getBookingsQuantities(BookingEvent bookingEvent);
+    Booking getBookingById(Integer bookingId);
 
-    /**
-     * @param bookingBottleId
-     * @return
-     */
+    BookingEvent getBookingEventById(Integer bookingEventId);
+
+    List<BookingEvent> getBookingEvents(SearchParameters<BookingEvent> search);
+
+    List<BookingEvent> getBookingEventsLike(String term, SearchParameters<BookingEvent> search);
+
+    List<Booking> getBookings(SearchParameters<Booking> search);
+
+    List<Booking> getBookings(User customer, int first, int count);
+
     List<Booking> getBookingsByBookingBottleId(Integer bookingBottleId);
 
-    /**
-     * @param bookingEventId
-     * @return
-     */
     List<Booking> getBookingsByBookingEventId(Integer bookingEventId);
+
+    Map<BookingBottle, Long> getBookingsQuantities(BookingEvent bookingEvent);
+
+    List<BookingEvent> getCurrentBookingEvents();
+
+    Booking saveBooking(Booking booking) throws BusinessException;
+
+    BookingEvent saveBookingEvent(BookingEvent bookingEvent) throws BusinessException;
+
+    void validateBookingEvent(BookingEvent bookingEvent) throws BusinessException;
 
 }

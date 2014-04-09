@@ -22,90 +22,39 @@ import java.util.List;
 
 import fr.mycellar.domain.shared.exception.BusinessException;
 import fr.mycellar.domain.user.User;
-import fr.mycellar.infrastructure.shared.repository.SearchParameters;
+import fr.mycellar.infrastructure.shared.repository.query.SearchParameters;
 
 /**
  * @author speralta
  */
 public interface UserServiceFacade {
 
-    /**
-     * @param email
-     * @param password
-     * @return
-     */
     User authenticateUser(String email, String password);
 
-    /**
-     * @param searchParameters
-     * @return
-     */
-    long countUsers(SearchParameters searchParameters);
+    long countUsers(SearchParameters<User> search);
 
-    /**
-     * @param userId
-     * @return
-     */
+    long countUsersLike(String term, SearchParameters<User> search);
+
     User getUserById(Integer userId);
 
-    /**
-     * @param email
-     * @return
-     */
     User getUserByEmail(String email);
 
-    /**
-     * @param searchParameters
-     * @return
-     */
-    List<User> getUsers(SearchParameters searchParameters);
+    List<User> getUsers(SearchParameters<User> search);
 
-    /**
-     * @param term
-     * @return
-     */
-    List<User> getUsersLike(String term);
+    List<User> getUsersLike(String term, SearchParameters<User> search);
 
-    /**
-     * @param user
-     * @return
-     * @throws BusinessException
-     */
     User saveUser(User user) throws BusinessException;
 
-    /**
-     * @param user
-     * @param password
-     * @return
-     * @throws BusinessException
-     */
     User saveUserPassword(User user, String password) throws BusinessException;
 
-    /**
-     * @param email
-     * @param url
-     * @throws BusinessException
-     */
     void resetPasswordRequest(String email, String url);
 
-    /**
-     * @param key
-     * @return
-     * @throws BusinessException
-     */
     String getEmailFromResetPasswordRequestByKey(String key) throws BusinessException;
 
-    /**
-     * @param user
-     * @throws BusinessException
-     */
     void deleteUser(User user) throws BusinessException;
 
-    /**
-     * @param key
-     * @param password
-     * @return
-     * @throws BusinessException
-     */
     User resetPassword(String key, String password) throws BusinessException;
+
+    void validateUser(User user) throws BusinessException;
+
 }

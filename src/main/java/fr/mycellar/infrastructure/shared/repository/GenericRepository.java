@@ -25,6 +25,7 @@ import javax.persistence.NonUniqueResultException;
 import javax.persistence.metamodel.Attribute;
 
 import fr.mycellar.domain.shared.Identifiable;
+import fr.mycellar.infrastructure.shared.repository.query.SearchParameters;
 
 /**
  * @author speralta
@@ -41,7 +42,7 @@ public interface GenericRepository<E extends Identifiable<PK>, PK extends Serial
      *            carries additional search information
      * @return the entities matching the search.
      */
-    List<E> find(SearchParameters searchParameters);
+    List<E> find(SearchParameters<E> searchParameters);
 
     /**
      * Count the number of E instances.
@@ -50,7 +51,7 @@ public interface GenericRepository<E extends Identifiable<PK>, PK extends Serial
      *            carries additional search information
      * @return the number of entities matching the search.
      */
-    long findCount(SearchParameters searchParameters);
+    long findCount(SearchParameters<E> searchParameters);
 
     /**
      * Find a list of E property.
@@ -66,7 +67,7 @@ public interface GenericRepository<E extends Identifiable<PK>, PK extends Serial
      *            the list of attributes to the property
      * @return the entities property matching the search.
      */
-    <T> List<T> findProperty(Class<T> propertyType, SearchParameters sp, Attribute<?, ?>... attributes);
+    <T> List<T> findProperty(Class<T> propertyType, SearchParameters<E> searchParameters, Attribute<?, ?>... attributes);
 
     /**
      * Count the number of E instances.
@@ -80,13 +81,13 @@ public interface GenericRepository<E extends Identifiable<PK>, PK extends Serial
      *            the list of attributes to the property
      * @return the number of entities matching the search.
      */
-    long findPropertyCount(SearchParameters sp, Attribute<?, ?>... attributes);
+    long findPropertyCount(SearchParameters<E> searchParameters, Attribute<?, ?>... attributes);
 
     /**
      * @param searchParameters
      * @return
      */
-    E findUnique(SearchParameters searchParameters);
+    E findUnique(SearchParameters<E> searchParameters);
 
     /**
      * We request at most 2, if there's more than one then we throw a
@@ -96,6 +97,6 @@ public interface GenericRepository<E extends Identifiable<PK>, PK extends Serial
      * @return
      * @throws NonUniqueResultException
      */
-    E findUniqueOrNone(SearchParameters searchParameters);
+    E findUniqueOrNone(SearchParameters<E> searchParameters);
 
 }

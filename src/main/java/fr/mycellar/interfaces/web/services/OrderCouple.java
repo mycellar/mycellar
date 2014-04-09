@@ -18,7 +18,7 @@
  */
 package fr.mycellar.interfaces.web.services;
 
-import fr.mycellar.infrastructure.shared.repository.OrderByDirection;
+import fr.mycellar.infrastructure.shared.repository.query.OrderByDirection;
 
 /**
  * @author speralta

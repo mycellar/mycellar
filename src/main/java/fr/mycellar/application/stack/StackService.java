@@ -26,9 +26,6 @@ import fr.mycellar.domain.stack.Stack;
  */
 public interface StackService extends SimpleService<Stack> {
 
-    /**
-     * @param throwable
-     */
     void onThrowable(Throwable throwable);
 
     void deleteAllStacks();

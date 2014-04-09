@@ -28,7 +28,7 @@ import fr.mycellar.domain.stock.Drink;
 import fr.mycellar.domain.stock.Movement;
 import fr.mycellar.domain.stock.Stock;
 import fr.mycellar.domain.user.User;
-import fr.mycellar.infrastructure.shared.repository.SearchParameters;
+import fr.mycellar.infrastructure.shared.repository.query.SearchParameters;
 
 /**
  * @author speralta
@@ -37,43 +37,57 @@ public interface StockServiceFacade {
 
     void arrival(Arrival arrival) throws BusinessException;
 
-    long countCellars(SearchParameters searchParameters);
+    long countCellars(SearchParameters<Cellar> search);
 
-    long countCellarShares(SearchParameters searchParameters);
+    long countCellarShares(SearchParameters<CellarShare> search);
 
-    long countMovements(SearchParameters searchParameters);
+    long countCellarsLike(String term, SearchParameters<Cellar> search);
 
-    long countStocks(SearchParameters searchParameters);
+    long countCellarsLike(String term, User user, SearchParameters<Cellar> search);
+
+    long countMovements(SearchParameters<Movement> search);
+
+    long countStocks(SearchParameters<Stock> search);
 
     void deleteCellar(Cellar cellar) throws BusinessException;
 
     void deleteCellarShare(CellarShare cellarShare) throws BusinessException;
 
-    void deleteStock(Stock stock) throws BusinessException;
-
     void deleteMovement(Movement movement) throws BusinessException;
+
+    void deleteStock(Stock stock) throws BusinessException;
 
     void drink(Drink drink) throws BusinessException;
 
     Cellar getCellarById(Integer cellarId);
 
-    CellarShare getCellarShareById(Integer cellarShareId);
-
-    Movement getMovementById(Integer movementId);
-
-    Stock getStockById(Integer stockId);
-
-    List<Cellar> getCellars(SearchParameters searchParameters);
+    List<Cellar> getCellars(SearchParameters<Cellar> search);
 
     List<Cellar> getCellars(User user);
 
-    List<CellarShare> getCellarShares(SearchParameters searchParameters);
+    CellarShare getCellarShareById(Integer cellarShareId);
 
-    List<Movement> getMovements(SearchParameters searchParameters);
+    List<CellarShare> getCellarShares(SearchParameters<CellarShare> search);
 
-    List<Stock> getStocks(SearchParameters searchParameters);
+    List<Cellar> getCellarsLike(String term, SearchParameters<Cellar> search);
+
+    List<Cellar> getCellarsLike(String term, User user, SearchParameters<Cellar> search);
+
+    Movement getMovementById(Integer movementId);
+
+    List<Movement> getMovements(SearchParameters<Movement> search);
+
+    Stock getStockById(Integer stockId);
 
     List<Stock> getStocks(Cellar cellar);
+
+    List<Stock> getStocks(SearchParameters<Stock> search);
+
+    boolean hasModifyRight(Integer cellarId, String userEmail);
+
+    boolean hasReadRight(Integer cellarId, String userEmail);
+
+    boolean isOwner(Integer cellarId, String userEmail);
 
     Cellar saveCellar(Cellar cellar) throws BusinessException;
 
@@ -90,11 +104,5 @@ public interface StockServiceFacade {
     void validateMovement(Movement movement) throws BusinessException;
 
     void validateStock(Stock stock) throws BusinessException;
-
-    boolean hasReadRight(Integer cellarId, String userEmail);
-
-    boolean hasModifyRight(Integer cellarId, String userEmail);
-
-    boolean isOwner(Integer cellarId, String userEmail);
 
 }

@@ -8,7 +8,7 @@
       class="form-control"
       ng-model="bookingEvent"
       placeholder="Campagne de réservation{{postLabel}}"
-      typeahead="bookingEvent as bookingEvent.name for bookingEvent in bookingEvents($viewValue)"
+      typeahead="bookingEvent as renderBookingEvent(bookingEvent) for bookingEvent in bookingEvents($viewValue)"
       typeahead-editable="false"
       typeahead-min-length="2"
       typeahead-wait-ms="200" />

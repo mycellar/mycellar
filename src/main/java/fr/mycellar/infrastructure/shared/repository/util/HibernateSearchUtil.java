@@ -16,13 +16,14 @@
  * You should have received a copy of the GNU General Public License
  * along with MyCellar. If not, see <http://www.gnu.org/licenses/>.
  */
-package fr.mycellar.infrastructure.shared.repository;
+package fr.mycellar.infrastructure.shared.repository.util;
 
 import static org.hibernate.search.jpa.Search.getFullTextEntityManager;
 
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 import javax.inject.Inject;
 import javax.inject.Named;
@@ -36,6 +37,8 @@ import org.hibernate.search.jpa.FullTextQuery;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import fr.mycellar.infrastructure.shared.repository.query.selector.TermSelector;
+
 @Named
 @Singleton
 public class HibernateSearchUtil {
@@ -46,43 +49,35 @@ public class HibernateSearchUtil {
     private LuceneQueryBuilder luceneQueryBuilder;
 
     @SuppressWarnings("unchecked")
-    public <T> List<T> find(Class<T> clazz, SearchParameters sp) {
-        logger.debug("Searching {} with terms : {}.", new Object[] { clazz.getSimpleName(), sp.getTerms() });
+    public <T> List<T> find(Class<? extends T> type, TermSelector<T> termSelector) {
+        logger.debug("Searching {} with term {}.", new Object[] { type.getSimpleName(), termSelector });
         FullTextEntityManager fullTextEntityManager = getFullTextEntityManager(entityManager);
-        Query query = luceneQueryBuilder.build(fullTextEntityManager, sp, clazz);
+        Query query = luceneQueryBuilder.build(fullTextEntityManager, termSelector, type);
 
         if (query == null) {
             return null;
         }
 
         FullTextQuery ftq = fullTextEntityManager.createFullTextQuery( //
-                query, clazz);
-        if (sp.getMaxResults() > 0) {
-            ftq.setMaxResults(sp.getMaxResults());
-        }
+                query, type);
+        ftq.limitExecutionTimeTo(500, TimeUnit.MILLISECONDS);
         return ftq.getResultList();
     }
 
-    /**
-     * Same as {@link #find(Class, SearchParameters, String[])} but will return
-     * only the id.
-     */
     @SuppressWarnings("unchecked")
-    public <T> List<Serializable> findId(Class<T> clazz, SearchParameters sp) {
-        logger.debug("Searching {} with terms : {}.", new Object[] { clazz.getSimpleName(), sp.getTerms() });
+    public <T> List<Serializable> findId(Class<? extends T> type, TermSelector<T> termSelector) {
+        logger.debug("Searching {} id with term {}.", new Object[] { type.getSimpleName(), termSelector });
         FullTextEntityManager fullTextEntityManager = getFullTextEntityManager(entityManager);
-        Query query = luceneQueryBuilder.build(fullTextEntityManager, sp, clazz);
+        Query query = luceneQueryBuilder.build(fullTextEntityManager, termSelector, type);
 
         if (query == null) {
             return null;
         }
 
         FullTextQuery ftq = fullTextEntityManager.createFullTextQuery( //
-                query, clazz);
+                query, type);
         ftq.setProjection("id");
-        if (sp.getMaxResults() > 0) {
-            ftq.setMaxResults(sp.getMaxResults());
-        }
+        ftq.limitExecutionTimeTo(500, TimeUnit.MILLISECONDS);
         List<Serializable> ids = new ArrayList<>();
         List<Object[]> resultList = ftq.getResultList();
         for (Object[] result : resultList) {

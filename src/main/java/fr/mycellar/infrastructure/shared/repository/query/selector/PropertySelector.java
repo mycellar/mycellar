@@ -16,11 +16,8 @@
  * You should have received a copy of the GNU General Public License
  * along with MyCellar. If not, see <http://www.gnu.org/licenses/>.
  */
-package fr.mycellar.infrastructure.shared.repository;
+package fr.mycellar.infrastructure.shared.repository.query.selector;
 
-import static com.google.common.base.Preconditions.checkNotNull;
-
-import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -30,29 +27,49 @@ import javax.persistence.metamodel.Attribute;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 
+import fr.mycellar.infrastructure.shared.repository.query.Path;
+import fr.mycellar.infrastructure.shared.repository.query.SearchMode;
+
 /**
  * Used to construct OR predicate for a property value. In other words you can
  * search all entities E having a given property set to one of the selected
  * values.
  */
-public class PropertySelector<E, F> implements Serializable {
+public class PropertySelector<E, F> implements SingleSelector<E, F, PropertySelector<E, F>> {
 
     private static final long serialVersionUID = 201308010800L;
 
-    private final Path path;
+    private final Path<E, F> path;
     private List<F> selected = new ArrayList<>();
-    private SearchMode searchMode; // for string property only.
+    private SearchMode searchMode = SearchMode.ANYWHERE;
     private Boolean notIncludingNull;
     private boolean orMode = true;
-    private Boolean caseSensitive = null;
+    private boolean caseSensitive = true;
     private boolean notMode = false;
 
-    public PropertySelector(Attribute<?, ?>... attributes) {
-        this.path = new Path(checkNotNull(attributes));
+    @SafeVarargs
+    public PropertySelector(Path<E, F> path, F... values) {
+        this.path = path;
+        selected = new ArrayList<>(Arrays.asList(values));
+    }
+
+    private PropertySelector(PropertySelector<E, F> toCopy) {
+        path = toCopy.path;
+        selected = new ArrayList<>(toCopy.selected);
+        searchMode = toCopy.searchMode;
+        notIncludingNull = toCopy.notIncludingNull;
+        orMode = toCopy.orMode;
+        caseSensitive = toCopy.caseSensitive;
+        notMode = toCopy.notMode;
+    }
+
+    @Override
+    public PropertySelector<E, F> copy() {
+        return new PropertySelector<E, F>(this);
     }
 
     public PropertySelector(String path, Class<E> from) {
-        this.path = new Path(path, from);
+        this.path = new Path<E, F>(path, from);
     }
 
     public List<Attribute<?, ?>> getAttributes() {
@@ -72,11 +89,7 @@ public class PropertySelector<E, F> implements Serializable {
         return this;
     }
 
-    public boolean isCaseSensitiveSet() {
-        return caseSensitive != null;
-    }
-
-    public Boolean isCaseSensitive() {
+    public boolean isCaseSensitive() {
         return caseSensitive;
     }
 
