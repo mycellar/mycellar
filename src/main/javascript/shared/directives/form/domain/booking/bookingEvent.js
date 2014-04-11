@@ -18,7 +18,7 @@ angular.module('mycellar.directives.form.domain.booking.bookingEvent').directive
       controller: function($scope) {
         $scope.bookingBottle = null;
         if ($scope.bookingEvent.bottles == undefined) {
-          $scope.bookingEvent.bottles = {};
+          $scope.bookingEvent.bottles = [];
         }
 
         $scope.edit = function(bookingBottle) {
