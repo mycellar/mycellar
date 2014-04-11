@@ -45,23 +45,27 @@ public class JpaBookingEventRepository extends JpaSimpleRepository<BookingEvent>
      */
     @Override
     public BookingEvent cleanSaveForBottles(BookingEvent bookingEvent) {
-        BookingEvent bookingEventInDb = getById(bookingEvent.getId());
-        int offset = bookingEventInDb.getBottles().size() + bookingEvent.getBottles().size();
+        if (bookingEvent.getId() == null) {
+            return save(bookingEvent);
+        } else {
+            BookingEvent bookingEventInDb = getById(bookingEvent.getId());
+            int offset = bookingEventInDb.getBottles().size() + bookingEvent.getBottles().size();
 
-        // we move bottles to position out of range
-        for (BookingBottle bottle : bookingEvent.getBottles()) {
-            bottle.setPosition(bottle.getPosition() + offset);
+            // we move bottles to position out of range
+            for (BookingBottle bottle : bookingEvent.getBottles()) {
+                bottle.setPosition(bottle.getPosition() + offset);
+            }
+
+            // we save the booking event and flush the modifications
+            BookingEvent saved = save(bookingEvent);
+            getEntityManager().flush();
+
+            // then we move the bottles to the real positions
+            for (BookingBottle bottle : saved.getBottles()) {
+                bottle.setPosition(bottle.getPosition() - offset);
+            }
+            return saved;
         }
-
-        // we save the booking event and flush the modifications
-        BookingEvent saved = save(bookingEvent);
-        getEntityManager().flush();
-
-        // then we move the bottles to the real positions
-        for (BookingBottle bottle : saved.getBottles()) {
-            bottle.setPosition(bottle.getPosition() - offset);
-        }
-        return saved;
     }
 
 }
