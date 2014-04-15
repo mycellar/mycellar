@@ -7,7 +7,7 @@ angular.module('mycellar.controllers.cellar.mycellars', [
   '$routeProvider',
   function($routeProvider) {
     $routeProvider.when('/cellar/mycellars', {
-      templateUrl: 'partials/cellar/mycellars.tpl.html',
+      templateUrl: 'partials/views/cellar/mycellars.tpl.html',
       controller: 'MyCellarsController',
       resolve: {
         cellars: ['Cellars', function(Cellars){

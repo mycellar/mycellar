@@ -6,7 +6,7 @@ angular.module('mycellar.controllers.vinopedia.pedia', [
   '$routeProvider', 
   function($routeProvider){
     $routeProvider.when('/vinopedia', {
-      templateUrl: 'partials/vinopedia/pedia.tpl.html',
+      templateUrl: 'partials/views/vinopedia/pedia.tpl.html',
       controller: 'VinopediaController',
       resolve: {
         tableContext: ['tableService', 'Wines', function(tableService, Wines) {

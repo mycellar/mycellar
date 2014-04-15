@@ -8,11 +8,11 @@ angular.module('mycellar.controllers.login', [
   '$routeProvider', 
   function($routeProvider){
     $routeProvider.when('/login', {
-      templateUrl: 'partials/login.tpl.html',
+      templateUrl: 'partials/views/login.tpl.html',
       controller: 'LoginController'
     });
     $routeProvider.when('/register', {
-      templateUrl: 'partials/login.tpl.html',
+      templateUrl: 'partials/views/login.tpl.html',
       controller: 'LoginController'
     });
   }

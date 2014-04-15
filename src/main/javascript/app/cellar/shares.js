@@ -7,7 +7,7 @@ angular.module('mycellar.controllers.cellar.shares', [
   '$routeProvider',
   function($routeProvider) {
     $routeProvider.when('/cellar/shares', {
-      templateUrl: 'partials/cellar/shares.tpl.html',
+      templateUrl: 'partials/views/cellar/shares.tpl.html',
       controller: 'SharesController',
       resolve: {
         cellars: ['Cellars', function(Cellars){

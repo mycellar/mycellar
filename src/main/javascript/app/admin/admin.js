@@ -8,7 +8,7 @@ angular.module('mycellar.controllers.admin.page', [
   '$routeProvider', 
   function($routeProvider){
     $routeProvider.when('/admin', {
-      templateUrl: 'partials/admin/admin.tpl.html',
+      templateUrl: 'partials/views/admin/admin.tpl.html',
       controller: 'AdminController',
       resolve: {
         winesCount: ['AdminWines', function(Wines){

@@ -5,7 +5,7 @@ angular.module('mycellar.controllers.home', [
   '$routeProvider', 
   function($routeProvider){
     $routeProvider.when('/home', {
-      templateUrl: 'partials/home.tpl.html',
+      templateUrl: 'partials/views/home.tpl.html',
       controller: 'HomeController',
       resolve: {
         winesCount: ['Wines', function(Wines){

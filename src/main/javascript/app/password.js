@@ -5,12 +5,12 @@ angular.module('mycellar.controllers.password', [
   '$routeProvider', 
   function($routeProvider){
     $routeProvider.when('/reset-password-request', {
-      templateUrl: 'partials/reset-password-request.tpl.html',
+      templateUrl: 'partials/views/reset-password-request.tpl.html',
       controller: 'ResetPasswordRequestController'
     });
     
     $routeProvider.when('/reset-password', {
-      templateUrl: 'partials/reset-password.tpl.html',
+      templateUrl: 'partials/views/reset-password.tpl.html',
       controller: 'ResetPasswordController',
       resolve: {
         key: ['$route', function ($route) {

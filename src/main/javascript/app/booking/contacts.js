@@ -8,7 +8,7 @@ angular.module('mycellar.controllers.booking.contacts', [
   '$routeProvider',
   function($routeProvider) {
     $routeProvider.when('/booking/contacts', {
-      templateUrl: 'partials/booking/contacts.tpl.html',
+      templateUrl: 'partials/views/booking/contacts.tpl.html',
       controller: 'ContactsController',
       resolve: {
         tableContext: [

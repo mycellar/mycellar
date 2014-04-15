@@ -113,7 +113,7 @@ angular.module('mycellar.services.admin.domain').provider('adminDomainService', 
       };
       
       var templateUrl = function(name) {
-        return '/partials' + baseUrl(name) + '.tpl.html';
+        return '/partials/views' + baseUrl(name) + '.tpl.html';
       };
       
       var controllerName = function(name) {

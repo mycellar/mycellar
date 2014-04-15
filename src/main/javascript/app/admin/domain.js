@@ -12,7 +12,7 @@ angular.module('mycellar.controllers.admin.domain', [
   '$routeProvider', 
   function($routeProvider){
     $routeProvider.when('/admin/domains', {
-      templateUrl: 'partials/admin/domain.tpl.html',
+      templateUrl: 'partials/views/admin/domain.tpl.html',
       controller: 'AdminDomainController',
     });
   }

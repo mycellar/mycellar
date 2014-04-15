@@ -7,7 +7,7 @@ angular.module('mycellar.controllers.cellar.drink', [
   '$routeProvider',
   function($routeProvider) {
     $routeProvider.when('/cellar/drinkBottles', {
-      templateUrl: 'partials/cellar/drink.tpl.html',
+      templateUrl: 'partials/views/cellar/drink.tpl.html',
       controller: 'DrinkController',
       resolve: {
       }

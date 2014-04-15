@@ -11,7 +11,7 @@ angular.module('mycellar.controllers.admin.tools', [
   '$routeProvider', 
   function($routeProvider){
     $routeProvider.when('/admin/newVintages', {
-      templateUrl: 'partials/admin/newVintages.tpl.html',
+      templateUrl: 'partials/views/admin/newVintages.tpl.html',
       controller: 'AdminNewVintagesController'
     });
   }
