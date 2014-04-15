@@ -32,6 +32,10 @@ body {
   cursor: pointer;
 }
 
+.table > thead > tr > th, .table > tbody > tr > th, .table > tfoot > tr > th, .table > thead > tr > td, .table > tbody > tr > td, .table > tfoot > tr > td {
+  vertical-align: middle;
+}
+
 /* END OF BOOTSTRAP overrides */
 
 footer {
@@ -53,10 +57,6 @@ footer {
   min-width: 64px;
   max-width: 64px;
   width: 64px;
-}
-
-.table td,.table th {
-  vertical-align: middle;
 }
 
 .loading {
