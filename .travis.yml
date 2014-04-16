@@ -3,8 +3,8 @@ branches:
   only:
   - master
 install:
-- mvn install -DskipTests
 - npm --no-color install
+- mvn install -DskipTests
 - node_modules/grunt-cli/bin/grunt --no-color install
 script: mvn verify
 after_success:
