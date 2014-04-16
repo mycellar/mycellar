@@ -19,15 +19,17 @@ angular.module('mycellar.controllers.login', [
 ]);
 
 angular.module('mycellar.controllers.login').controller('LoginController', [
-  '$scope', 'security', 'Users', '$location',
-  function ($scope, security, Users, $location) {
+  '$scope', 'security', '$location',
+  function ($scope, security, $location) {
     $scope.login = function() {
       $location.path('/');
     };
     $scope.logout = security.logout;
     $scope.register = security.register;
-    $scope.user = new Users();
-    $scope.user.password = '';
+    $scope.user = {
+      login: '',
+      password: ''
+    };
     $scope.password2 = '';
   }
 ]);
