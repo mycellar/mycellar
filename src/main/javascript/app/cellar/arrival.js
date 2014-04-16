@@ -7,7 +7,7 @@ angular.module('mycellar.controllers.cellar.arrival', [
   '$routeProvider',
   function($routeProvider) {
     $routeProvider.when('/cellar/packageArrival', {
-      templateUrl: 'partials/cellar/arrival.tpl.html',
+      templateUrl: 'partials/views/cellar/arrival.tpl.html',
       controller: 'ArrivalController',
       resolve: {
       }

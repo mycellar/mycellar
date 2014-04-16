@@ -72,6 +72,187 @@
     <slf4j.version>1.7.5</slf4j.version>
   </properties>
 
+  <profiles>
+    <profile>
+      <id>db-h2</id>
+      <activation>
+        <property>
+          <name>!db</name>
+        </property>
+      </activation>
+      <properties>
+        <db.driver>org.h2.Driver</db.driver>
+        <db.url>jdbc:h2:file:target/mycellar;AUTO_SERVER=TRUE</db.url>
+        <db.user>mycellar</db.user>
+        <db.pass></db.pass>
+        <db.validationQuery></db.validationQuery>
+        <db.driver.groupId>com.h2database</db.driver.groupId>
+        <db.driver.artifactId>h2</db.driver.artifactId>
+        <db.driver.version>${h2.version}</db.driver.version>
+        <spring.profiles>target,h2</spring.profiles>
+      </properties>
+      <build>
+        <plugins>
+          <plugin>
+            <groupId>org.codehaus.mojo</groupId>
+            <artifactId>sql-maven-plugin</artifactId>
+            <version>1.5</version>
+            <dependencies>
+              <dependency>
+                <groupId>com.h2database</groupId>
+                <artifactId>h2</artifactId>
+                <version>${h2.version}</version>
+              </dependency>
+            </dependencies>
+            <configuration>
+              <driver>${db.driver}</driver>
+              <url>${db.url}</url>
+              <username>${db.user}</username>
+              <password>${db.pass}</password>
+            </configuration>
+            <executions>
+              <execution>
+                <id>init-h2-database</id>
+                <phase>pre-integration-test</phase>
+                <goals>
+                  <goal>execute</goal>
+                </goals>
+                <configuration>
+                  <srcFiles>
+                    <srcFile>src/test/sql/create.sql</srcFile>
+                  </srcFiles>
+                </configuration>
+              </execution>
+            </executions>
+          </plugin>
+        </plugins>
+      </build>
+    </profile>
+    <profile>
+      <id>db-maria</id>
+      <activation>
+        <property>
+          <name>db</name>
+          <value>maria</value>
+        </property>
+      </activation>
+      <properties>
+        <db.driver>com.mysql.jdbc.Driver</db.driver>
+        <db.url>jdbc:mysql://localhost:3306/mycellar</db.url>
+        <db.user>mycellar</db.user>
+        <db.pass>pswcellar</db.pass>
+        <db.validationQuery>/* ping */</db.validationQuery>
+        <db.driver.groupId>mysql</db.driver.groupId>
+        <db.driver.artifactId>mysql-connector-java</db.driver.artifactId>
+        <db.driver.version>5.1.20</db.driver.version>
+        <spring.profiles>target,mysql</spring.profiles>
+      </properties>
+    </profile>
+    <profile>
+      <id>setupJS</id>
+      <build>
+        <plugins>
+          <plugin>
+            <artifactId>maven-antrun-plugin</artifactId>
+            <executions>
+              <execution>
+                <id>npm installation</id>
+                <phase>initialize</phase>
+                <goals>
+                  <goal>run</goal>
+                </goals>
+                <configuration>
+                  <target name="building">
+                    <echo>
+                      NPM INSTALL
+                    </echo>
+                    <exec executable="cmd" dir="${basedir}"
+                      osfamily="windows" failonerror="true">
+                      <arg line="/c npm install" />
+                    </exec>
+                    <exec executable="bash" dir="${basedir}"
+                      osfamily="unix" failonerror="true">
+                      <arg line="npm install" />
+                    </exec>
+                  </target>
+                </configuration>
+              </execution>
+            </executions>
+          </plugin>
+        </plugins>
+      </build>
+    </profile>
+    <profile>
+      <id>gruntUTs</id>
+      <activation>
+        <property>
+          <name>!skipTests</name>
+        </property>
+      </activation>
+      <build>
+        <plugins>
+          <plugin>
+            <groupId>org.codehaus.mojo</groupId>
+            <artifactId>exec-maven-plugin</artifactId>
+            <executions>
+              <execution>
+                <id>Grunt unit test</id>
+                <phase>test</phase>
+                <goals>
+                  <goal>exec</goal>
+                </goals>
+                <configuration>
+                  <executable>node</executable>
+                  <arguments>
+                    <argument>node_modules/grunt-cli/bin/grunt</argument>
+                    <argument>--no-color</argument>
+                    <argument>test:unit</argument>
+                  </arguments>
+                </configuration>
+              </execution>
+            </executions>
+          </plugin>
+        </plugins>
+      </build>
+    </profile>
+    <profile>
+      <id>gruntITs</id>
+      <activation>
+        <property>
+          <name>!skipTests</name>
+        </property>
+      </activation>
+      <properties>
+        <e2e>e2e</e2e>
+      </properties>
+      <build>
+        <plugins>
+          <plugin>
+            <groupId>org.codehaus.mojo</groupId>
+            <artifactId>exec-maven-plugin</artifactId>
+            <executions>
+              <execution>
+                <id>Grunt e2e test</id>
+                <phase>integration-test</phase>
+                <goals>
+                  <goal>exec</goal>
+                </goals>
+                <configuration>
+                  <executable>node</executable>
+                  <arguments>
+                    <argument>node_modules/grunt-cli/bin/grunt</argument>
+                    <argument>--no-color</argument>
+                    <argument>test:${e2e}</argument>
+                  </arguments>
+                </configuration>
+              </execution>
+            </executions>
+          </plugin>
+        </plugins>
+      </build>
+    </profile>
+  </profiles>
+
   <build>
     <pluginManagement>
       <plugins>
@@ -300,210 +481,29 @@
           <dryRun>true</dryRun>
         </configuration>
       </plugin>
+      <plugin>
+        <groupId>org.codehaus.mojo</groupId>
+        <artifactId>exec-maven-plugin</artifactId>
+        <executions>
+          <execution>
+            <id>Grunt</id>
+            <phase>generate-sources</phase>
+            <goals>
+              <goal>exec</goal>
+            </goals>
+            <configuration>
+              <executable>node</executable>
+              <arguments>
+                <argument>node_modules/grunt-cli/bin/grunt</argument>
+                <argument>--no-color</argument>
+                <argument>update</argument>
+              </arguments>
+            </configuration>
+          </execution>
+        </executions>
+      </plugin>
     </plugins>
   </build>
-
-  <profiles>
-    <profile>
-      <id>db-h2</id>
-      <activation>
-        <property>
-          <name>!db</name>
-        </property>
-      </activation>
-      <properties>
-        <db.driver>org.h2.Driver</db.driver>
-        <db.url>jdbc:h2:file:target/mycellar;AUTO_SERVER=TRUE</db.url>
-        <db.user>mycellar</db.user>
-        <db.pass></db.pass>
-        <db.validationQuery></db.validationQuery>
-        <db.driver.groupId>com.h2database</db.driver.groupId>
-        <db.driver.artifactId>h2</db.driver.artifactId>
-        <db.driver.version>${h2.version}</db.driver.version>
-        <spring.profiles>target,h2</spring.profiles>
-      </properties>
-      <build>
-        <plugins>
-          <plugin>
-            <groupId>org.codehaus.mojo</groupId>
-            <artifactId>sql-maven-plugin</artifactId>
-            <version>1.5</version>
-            <dependencies>
-              <dependency>
-                <groupId>com.h2database</groupId>
-                <artifactId>h2</artifactId>
-                <version>${h2.version}</version>
-              </dependency>
-            </dependencies>
-            <configuration>
-              <driver>${db.driver}</driver>
-              <url>${db.url}</url>
-              <username>${db.user}</username>
-              <password>${db.pass}</password>
-            </configuration>
-            <executions>
-              <execution>
-                <id>init-h2-database</id>
-                <phase>pre-integration-test</phase>
-                <goals>
-                  <goal>execute</goal>
-                </goals>
-                <configuration>
-                  <srcFiles>
-                    <srcFile>src/test/sql/create.sql</srcFile>
-                  </srcFiles>
-                </configuration>
-              </execution>
-            </executions>
-          </plugin>
-        </plugins>
-      </build>
-    </profile>
-    <profile>
-      <id>db-maria</id>
-      <activation>
-        <property>
-          <name>db</name>
-          <value>maria</value>
-        </property>
-      </activation>
-      <properties>
-        <db.driver>com.mysql.jdbc.Driver</db.driver>
-        <db.url>jdbc:mysql://localhost:3306/mycellar</db.url>
-        <db.user>mycellar</db.user>
-        <db.pass>pswcellar</db.pass>
-        <db.validationQuery>/* ping */</db.validationQuery>
-        <db.driver.groupId>mysql</db.driver.groupId>
-        <db.driver.artifactId>mysql-connector-java</db.driver.artifactId>
-        <db.driver.version>5.1.20</db.driver.version>
-        <spring.profiles>target,mysql</spring.profiles>
-      </properties>
-    </profile>
-    <profile>
-      <id>setupJS</id>
-      <build>
-        <plugins>
-          <plugin>
-            <artifactId>maven-antrun-plugin</artifactId>
-            <executions>
-              <execution>
-                <id>npm installation</id>
-                <phase>initialize</phase>
-                <goals>
-                  <goal>run</goal>
-                </goals>
-                <configuration>
-                  <target name="building">
-                    <echo>
-                      NPM INSTALL
-                    </echo>
-                    <exec executable="cmd" dir="${basedir}"
-                      osfamily="windows" failonerror="true">
-                      <arg line="/c npm install" />
-                    </exec>
-                    <exec executable="bash" dir="${basedir}"
-                      osfamily="unix" failonerror="true">
-                      <arg line="npm install" />
-                    </exec>
-                  </target>
-                </configuration>
-              </execution>
-            </executions>
-          </plugin>
-          <plugin>
-            <groupId>org.codehaus.mojo</groupId>
-            <artifactId>exec-maven-plugin</artifactId>
-            <executions>
-              <execution>
-                <id>Grunt</id>
-                <phase>generate-sources</phase>
-                <goals>
-                  <goal>exec</goal>
-                </goals>
-                <configuration>
-                  <executable>node</executable>
-                  <arguments>
-                    <argument>node_modules/grunt-cli/bin/grunt</argument>
-                    <argument>--no-color</argument>
-                    <argument>update</argument>
-                  </arguments>
-                </configuration>
-              </execution>
-            </executions>
-          </plugin>
-        </plugins>
-      </build>
-    </profile>
-    <profile>
-      <id>gruntUTs</id>
-      <activation>
-        <property>
-          <name>!skipTests</name>
-        </property>
-      </activation>
-      <build>
-        <plugins>
-          <plugin>
-            <groupId>org.codehaus.mojo</groupId>
-            <artifactId>exec-maven-plugin</artifactId>
-            <executions>
-              <execution>
-                <id>Grunt unit test</id>
-                <phase>test</phase>
-                <goals>
-                  <goal>exec</goal>
-                </goals>
-                <configuration>
-                  <executable>node</executable>
-                  <arguments>
-                    <argument>node_modules/grunt-cli/bin/grunt</argument>
-                    <argument>--no-color</argument>
-                    <argument>test:unit</argument>
-                  </arguments>
-                </configuration>
-              </execution>
-            </executions>
-          </plugin>
-        </plugins>
-      </build>
-    </profile>
-    <profile>
-      <id>gruntITs</id>
-      <activation>
-        <property>
-          <name>!skipTests</name>
-        </property>
-      </activation>
-      <properties>
-        <e2e>e2e</e2e>
-      </properties>
-      <build>
-        <plugins>
-          <plugin>
-            <groupId>org.codehaus.mojo</groupId>
-            <artifactId>exec-maven-plugin</artifactId>
-            <executions>
-              <execution>
-                <id>Grunt e2e test</id>
-                <phase>integration-test</phase>
-                <goals>
-                  <goal>exec</goal>
-                </goals>
-                <configuration>
-                  <executable>node</executable>
-                  <arguments>
-                    <argument>node_modules/grunt-cli/bin/grunt</argument>
-                    <argument>--no-color</argument>
-                    <argument>test:${e2e}</argument>
-                  </arguments>
-                </configuration>
-              </execution>
-            </executions>
-          </plugin>
-        </plugins>
-      </build>
-    </profile>
-  </profiles>
 
   <dependencies>
     <!-- Apache Commons -->
@@ -758,12 +758,16 @@
     <repository>
       <id>spring-snapshots</id>
       <url>http://repo.spring.io/snapshot</url>
-      <snapshots><enabled>true</enabled></snapshots>
+      <snapshots>
+        <enabled>true</enabled>
+      </snapshots>
     </repository>
     <repository>
       <id>spring-milestones</id>
       <url>http://repo.spring.io/milestone</url>
-      <snapshots><enabled>true</enabled></snapshots>
+      <snapshots>
+        <enabled>true</enabled>
+      </snapshots>
     </repository>
   </repositories>
   <pluginRepositories>

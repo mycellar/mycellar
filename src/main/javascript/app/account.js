@@ -5,7 +5,7 @@ angular.module('mycellar.controllers.account', [
   '$routeProvider', 
   function($routeProvider){
     $routeProvider.when('/account', {
-      templateUrl: 'partials/account.tpl.html',
+      templateUrl: 'partials/views/account.tpl.html',
       controller: 'AccountController'
     });
   }

@@ -7,7 +7,7 @@ angular.module('mycellar.controllers.booking.contact', [
   '$routeProvider',
   function($routeProvider) {
     $routeProvider.when('/booking/contact/:producerId?', {
-      templateUrl: 'partials/booking/contact.tpl.html',
+      templateUrl: 'partials/views/booking/contact.tpl.html',
       controller: 'ContactController',
       resolve: {
         producer: ['$route', 'Producers', function ($route, Producers) {

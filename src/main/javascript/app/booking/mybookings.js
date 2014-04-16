@@ -5,7 +5,7 @@ angular.module('mycellar.controllers.booking.mybookings', [
   '$routeProvider',
   function($routeProvider) {
     $routeProvider.when('/booking/mybookings', {
-      templateUrl: 'partials/booking/mybookings.tpl.html',
+      templateUrl: 'partials/views/booking/mybookings.tpl.html',
       controller: 'MyBookingsController',
       resolve: {
         bookings: ['Bookings', function(Bookings) {

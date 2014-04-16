@@ -30,7 +30,7 @@
                 </thead>
                 <tbody>
                   <tr ng-repeat="bookingBottle in booking.bookingEvent.bottles">
-                    <td>{{bookingBottle.bottle.wine | wineRenderer}}</td>
+                    <td><a href="{{bookingBottle.url}}" target="_blank">{{bookingBottle.bottle.wine | wineRenderer}}</a></td>
                     <td>{{bookingBottle.bottle.format | formatRenderer}}</td>
                     <td>{{bookingBottle.price | currency:"€"}}</td>
                     <td><input class="form-control" id="quantity-{{bookingBottle.id}}" name="quantity-{{bookingBottle.id}}" type="number" ng-model="booking.quantities[booking.bookingEvent.id + '-' + bookingBottle.id]" /></td>

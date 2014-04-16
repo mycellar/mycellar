@@ -7,7 +7,7 @@ angular.module('mycellar.controllers.cellar.io', [
   '$routeProvider',
   function($routeProvider) {
     $routeProvider.when('/cellar/io', {
-      templateUrl: 'partials/cellar/io.tpl.html',
+      templateUrl: 'partials/views/cellar/io.tpl.html',
       controller: 'InputOutputController',
       resolve: {
         cellars: ['Cellars', function(Cellars) {

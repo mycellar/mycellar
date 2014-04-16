@@ -6,7 +6,7 @@ angular.module('mycellar.controllers.admin.loggers', [
   '$routeProvider', 
   function($routeProvider){
     $routeProvider.when('/admin/loggers', {
-      templateUrl: 'partials/admin/loggers.tpl.html',
+      templateUrl: 'partials/views/admin/loggers.tpl.html',
       controller: 'AdminLoggersController',
       resolve: {
         loggers: ['Loggers', function(Loggers){
