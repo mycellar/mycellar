@@ -21,8 +21,8 @@ package fr.mycellar.infrastructure.stock.repository;
 import javax.inject.Named;
 import javax.inject.Singleton;
 
+import jpasearch.repository.JpaSimpleRepository;
 import fr.mycellar.domain.stock.Cellar;
-import fr.mycellar.infrastructure.shared.repository.JpaSimpleRepository;
 
 /**
  * @author speralta

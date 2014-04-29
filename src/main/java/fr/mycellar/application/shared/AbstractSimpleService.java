@@ -18,9 +18,9 @@
  */
 package fr.mycellar.application.shared;
 
+import jpasearch.repository.SimpleRepository;
 import fr.mycellar.domain.shared.IdentifiedEntity;
 import fr.mycellar.domain.shared.exception.BusinessException;
-import fr.mycellar.infrastructure.shared.repository.SimpleRepository;
 
 /**
  * @author speralta

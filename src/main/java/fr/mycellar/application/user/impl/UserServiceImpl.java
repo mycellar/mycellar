@@ -22,6 +22,9 @@ import javax.inject.Inject;
 import javax.inject.Named;
 import javax.inject.Singleton;
 
+import jpasearch.repository.query.SearchBuilder;
+import jpasearch.repository.query.SearchParameters;
+
 import org.jasypt.util.password.PasswordEncryptor;
 
 import fr.mycellar.application.booking.BookingService;
@@ -38,8 +41,6 @@ import fr.mycellar.domain.stock.Cellar_;
 import fr.mycellar.domain.user.ResetPasswordRequest;
 import fr.mycellar.domain.user.User;
 import fr.mycellar.domain.user.User_;
-import fr.mycellar.infrastructure.shared.repository.query.SearchBuilder;
-import fr.mycellar.infrastructure.shared.repository.query.SearchParameters;
 import fr.mycellar.infrastructure.user.repository.UserRepository;
 
 /**

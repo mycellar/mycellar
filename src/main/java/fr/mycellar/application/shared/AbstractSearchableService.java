@@ -20,9 +20,9 @@ package fr.mycellar.application.shared;
 
 import java.util.List;
 
+import jpasearch.repository.SimpleRepository;
+import jpasearch.repository.query.SearchParameters;
 import fr.mycellar.domain.shared.IdentifiedEntity;
-import fr.mycellar.infrastructure.shared.repository.SimpleRepository;
-import fr.mycellar.infrastructure.shared.repository.query.SearchParameters;
 
 /**
  * @author speralta

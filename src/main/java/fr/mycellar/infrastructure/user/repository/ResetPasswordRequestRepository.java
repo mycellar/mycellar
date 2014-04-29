@@ -18,9 +18,9 @@
  */
 package fr.mycellar.infrastructure.user.repository;
 
+import jpasearch.repository.SimpleRepository;
 import fr.mycellar.domain.user.ResetPasswordRequest;
 import fr.mycellar.domain.user.User;
-import fr.mycellar.infrastructure.shared.repository.SimpleRepository;
 
 /**
  * @author speralta

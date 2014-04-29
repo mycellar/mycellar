@@ -24,6 +24,8 @@ import javax.inject.Inject;
 import javax.inject.Named;
 import javax.inject.Singleton;
 
+import jpasearch.repository.query.SearchBuilder;
+
 import org.joda.time.LocalDate;
 
 import fr.mycellar.application.shared.AbstractSimpleService;
@@ -39,7 +41,6 @@ import fr.mycellar.domain.stock.Drink;
 import fr.mycellar.domain.stock.DrinkBottle;
 import fr.mycellar.domain.stock.Stock;
 import fr.mycellar.domain.stock.Stock_;
-import fr.mycellar.infrastructure.shared.repository.query.SearchBuilder;
 import fr.mycellar.infrastructure.stock.repository.StockRepository;
 
 /**

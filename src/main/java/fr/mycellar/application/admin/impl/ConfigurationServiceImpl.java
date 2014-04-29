@@ -22,6 +22,7 @@ import javax.inject.Inject;
 import javax.inject.Named;
 import javax.inject.Singleton;
 
+import jpasearch.repository.query.SearchBuilder;
 import fr.mycellar.application.admin.ConfigurationService;
 import fr.mycellar.application.shared.AbstractSimpleService;
 import fr.mycellar.domain.admin.Configuration;
@@ -31,7 +32,6 @@ import fr.mycellar.domain.shared.ValidationPattern;
 import fr.mycellar.domain.shared.exception.BusinessError;
 import fr.mycellar.domain.shared.exception.BusinessException;
 import fr.mycellar.infrastructure.admin.repository.ConfigurationRepository;
-import fr.mycellar.infrastructure.shared.repository.query.SearchBuilder;
 
 /**
  * @author speralta

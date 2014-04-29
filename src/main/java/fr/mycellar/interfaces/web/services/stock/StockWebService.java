@@ -33,6 +33,9 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.MediaType;
 
+import jpasearch.repository.query.SearchBuilder;
+import jpasearch.repository.query.SearchParameters;
+
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.access.prepost.PreAuthorize;
 
@@ -48,8 +51,6 @@ import fr.mycellar.domain.stock.Movement;
 import fr.mycellar.domain.stock.Movement_;
 import fr.mycellar.domain.stock.Stock;
 import fr.mycellar.domain.stock.Stock_;
-import fr.mycellar.infrastructure.shared.repository.query.SearchBuilder;
-import fr.mycellar.infrastructure.shared.repository.query.SearchParameters;
 import fr.mycellar.interfaces.facades.stock.StockServiceFacade;
 import fr.mycellar.interfaces.web.security.CurrentUserService;
 import fr.mycellar.interfaces.web.services.FilterCouple;

@@ -30,13 +30,13 @@ import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Root;
 
+import jpasearch.repository.JpaSimpleRepository;
 import fr.mycellar.domain.booking.Booking;
 import fr.mycellar.domain.booking.BookingBottle;
 import fr.mycellar.domain.booking.BookingBottle_;
 import fr.mycellar.domain.booking.BookingEvent;
 import fr.mycellar.domain.booking.BookingEvent_;
 import fr.mycellar.domain.booking.Booking_;
-import fr.mycellar.infrastructure.shared.repository.JpaSimpleRepository;
 
 /**
  * @author speralta

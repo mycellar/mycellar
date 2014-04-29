@@ -35,9 +35,9 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.MediaType;
 
+import jpasearch.repository.query.SearchParameters;
 import fr.mycellar.domain.shared.exception.BusinessException;
 import fr.mycellar.domain.user.User;
-import fr.mycellar.infrastructure.shared.repository.query.SearchParameters;
 import fr.mycellar.interfaces.facades.user.UserServiceFacade;
 import fr.mycellar.interfaces.web.services.FilterCouple;
 import fr.mycellar.interfaces.web.services.ListWithCount;

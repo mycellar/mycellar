@@ -35,6 +35,7 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.MediaType;
 
+import jpasearch.repository.query.SearchParameters;
 import fr.mycellar.domain.shared.exception.BusinessException;
 import fr.mycellar.domain.wine.Appellation;
 import fr.mycellar.domain.wine.Country;
@@ -42,7 +43,6 @@ import fr.mycellar.domain.wine.Format;
 import fr.mycellar.domain.wine.Producer;
 import fr.mycellar.domain.wine.Region;
 import fr.mycellar.domain.wine.Wine;
-import fr.mycellar.infrastructure.shared.repository.query.SearchParameters;
 import fr.mycellar.interfaces.facades.wine.WineServiceFacade;
 import fr.mycellar.interfaces.web.services.FilterCouple;
 import fr.mycellar.interfaces.web.services.ListWithCount;

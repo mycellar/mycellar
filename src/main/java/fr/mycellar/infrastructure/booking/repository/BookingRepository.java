@@ -21,10 +21,10 @@ package fr.mycellar.infrastructure.booking.repository;
 import java.util.List;
 import java.util.Map;
 
+import jpasearch.repository.SimpleRepository;
 import fr.mycellar.domain.booking.Booking;
 import fr.mycellar.domain.booking.BookingBottle;
 import fr.mycellar.domain.booking.BookingEvent;
-import fr.mycellar.infrastructure.shared.repository.SimpleRepository;
 
 /**
  * @author speralta

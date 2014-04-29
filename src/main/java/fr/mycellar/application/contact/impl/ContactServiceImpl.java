@@ -25,6 +25,9 @@ import javax.inject.Named;
 import javax.inject.Singleton;
 import javax.mail.internet.MimeMessage;
 
+import jpasearch.repository.query.SearchBuilder;
+import jpasearch.repository.query.SearchParameters;
+
 import org.joda.time.LocalDate;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
@@ -40,8 +43,6 @@ import fr.mycellar.domain.shared.exception.BusinessError;
 import fr.mycellar.domain.shared.exception.BusinessException;
 import fr.mycellar.domain.wine.Producer;
 import fr.mycellar.infrastructure.contact.repository.ContactRepository;
-import fr.mycellar.infrastructure.shared.repository.query.SearchBuilder;
-import fr.mycellar.infrastructure.shared.repository.query.SearchParameters;
 
 /**
  * @author speralta

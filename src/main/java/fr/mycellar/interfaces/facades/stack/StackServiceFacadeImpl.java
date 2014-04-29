@@ -24,6 +24,8 @@ import javax.inject.Inject;
 import javax.inject.Named;
 import javax.inject.Singleton;
 
+import jpasearch.repository.query.SearchParameters;
+
 import org.springframework.transaction.PlatformTransactionManager;
 import org.springframework.transaction.TransactionDefinition;
 import org.springframework.transaction.TransactionStatus;
@@ -34,7 +36,6 @@ import org.springframework.transaction.support.TransactionTemplate;
 import fr.mycellar.application.stack.StackService;
 import fr.mycellar.domain.shared.exception.BusinessException;
 import fr.mycellar.domain.stack.Stack;
-import fr.mycellar.infrastructure.shared.repository.query.SearchParameters;
 
 /**
  * @author speralta

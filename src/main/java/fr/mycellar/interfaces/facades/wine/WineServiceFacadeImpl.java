@@ -24,6 +24,8 @@ import javax.inject.Inject;
 import javax.inject.Named;
 import javax.inject.Singleton;
 
+import jpasearch.repository.query.SearchParameters;
+
 import org.springframework.transaction.annotation.Transactional;
 
 import fr.mycellar.application.wine.AppellationService;
@@ -41,7 +43,6 @@ import fr.mycellar.domain.wine.Region;
 import fr.mycellar.domain.wine.Wine;
 import fr.mycellar.domain.wine.WineColorEnum;
 import fr.mycellar.domain.wine.WineTypeEnum;
-import fr.mycellar.infrastructure.shared.repository.query.SearchParameters;
 
 /**
  * @author speralta

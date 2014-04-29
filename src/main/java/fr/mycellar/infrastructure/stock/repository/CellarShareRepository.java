@@ -18,8 +18,8 @@
  */
 package fr.mycellar.infrastructure.stock.repository;
 
+import jpasearch.repository.SimpleRepository;
 import fr.mycellar.domain.stock.CellarShare;
-import fr.mycellar.infrastructure.shared.repository.SimpleRepository;
 
 /**
  * @author speralta

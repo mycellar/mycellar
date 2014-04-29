@@ -30,6 +30,8 @@ import javax.inject.Inject;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 
+import jpasearch.repository.query.SearchBuilder;
+
 import org.joda.time.LocalDate;
 import org.junit.Before;
 import org.junit.Test;
@@ -51,7 +53,6 @@ import fr.mycellar.domain.stock.Output;
 import fr.mycellar.domain.stock.Stock;
 import fr.mycellar.domain.wine.Format;
 import fr.mycellar.domain.wine.Wine;
-import fr.mycellar.infrastructure.shared.repository.query.SearchBuilder;
 import fr.mycellar.infrastructure.stock.repository.MovementRepository;
 import fr.mycellar.infrastructure.stock.repository.StockRepository;
 

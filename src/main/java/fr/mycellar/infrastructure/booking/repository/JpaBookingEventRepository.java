@@ -21,9 +21,9 @@ package fr.mycellar.infrastructure.booking.repository;
 import javax.inject.Named;
 import javax.inject.Singleton;
 
+import jpasearch.repository.JpaSimpleRepository;
 import fr.mycellar.domain.booking.BookingBottle;
 import fr.mycellar.domain.booking.BookingEvent;
-import fr.mycellar.infrastructure.shared.repository.JpaSimpleRepository;
 
 /**
  * @author speralta

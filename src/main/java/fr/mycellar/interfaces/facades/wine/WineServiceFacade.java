@@ -20,6 +20,7 @@ package fr.mycellar.interfaces.facades.wine;
 
 import java.util.List;
 
+import jpasearch.repository.query.SearchParameters;
 import fr.mycellar.domain.shared.exception.BusinessException;
 import fr.mycellar.domain.wine.Appellation;
 import fr.mycellar.domain.wine.Country;
@@ -29,7 +30,6 @@ import fr.mycellar.domain.wine.Region;
 import fr.mycellar.domain.wine.Wine;
 import fr.mycellar.domain.wine.WineColorEnum;
 import fr.mycellar.domain.wine.WineTypeEnum;
-import fr.mycellar.infrastructure.shared.repository.query.SearchParameters;
 
 /**
  * @author speralta

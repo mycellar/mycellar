@@ -21,9 +21,9 @@ package fr.mycellar.application.shared;
 import java.io.Serializable;
 import java.util.List;
 
-import fr.mycellar.domain.shared.Identifiable;
-import fr.mycellar.infrastructure.shared.repository.GenericRepository;
-import fr.mycellar.infrastructure.shared.repository.query.SearchParameters;
+import jpasearch.domain.Identifiable;
+import jpasearch.repository.GenericRepository;
+import jpasearch.repository.query.SearchParameters;
 
 /**
  * @author speralta

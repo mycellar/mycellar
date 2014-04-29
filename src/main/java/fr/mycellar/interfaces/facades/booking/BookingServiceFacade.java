@@ -21,12 +21,12 @@ package fr.mycellar.interfaces.facades.booking;
 import java.util.List;
 import java.util.Map;
 
+import jpasearch.repository.query.SearchParameters;
 import fr.mycellar.domain.booking.Booking;
 import fr.mycellar.domain.booking.BookingBottle;
 import fr.mycellar.domain.booking.BookingEvent;
 import fr.mycellar.domain.shared.exception.BusinessException;
 import fr.mycellar.domain.user.User;
-import fr.mycellar.infrastructure.shared.repository.query.SearchParameters;
 
 /**
  * @author speralta

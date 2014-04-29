@@ -22,6 +22,8 @@ import javax.inject.Inject;
 import javax.inject.Named;
 import javax.inject.Singleton;
 
+import jpasearch.repository.query.SearchBuilder;
+import jpasearch.repository.query.SearchParameters;
 import fr.mycellar.application.shared.AbstractSearchableService;
 import fr.mycellar.application.wine.ProducerService;
 import fr.mycellar.application.wine.WineService;
@@ -31,8 +33,6 @@ import fr.mycellar.domain.shared.exception.BusinessException;
 import fr.mycellar.domain.wine.Producer;
 import fr.mycellar.domain.wine.Wine;
 import fr.mycellar.domain.wine.Wine_;
-import fr.mycellar.infrastructure.shared.repository.query.SearchBuilder;
-import fr.mycellar.infrastructure.shared.repository.query.SearchParameters;
 import fr.mycellar.infrastructure.wine.repository.ProducerRepository;
 
 /**

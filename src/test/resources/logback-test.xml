@@ -1,11 +1,24 @@
 <configuration>
-  <property name="LOG_FILE" value="./target/mycellar.log" />
+  <property name="CONSOLE_LOG_PATTERN" value="%clr(%d{yyyy-MM-dd HH:mm:ss.SSS}){faint} %clr(%5p) %clr(${PID:- }){magenta} %clr(---){faint} %clr([%15.15t{14}]){faint} %clr(%-40.40logger{39}){cyan} %clr(:){faint} %m%n%wex"/>
+  <conversionRule conversionWord="clr" converterClass="org.springframework.boot.logging.logback.ColorConverter" />
+  <conversionRule conversionWord="wex" converterClass="org.springframework.boot.logging.logback.WhitespaceThrowableProxyConverter" />
 
-  <include resource="org/springframework/boot/logging/logback/base.xml"/>
+  <appender name="CONSOLE" class="ch.qos.logback.core.ConsoleAppender">
+    <encoder>
+      <pattern>${CONSOLE_LOG_PATTERN}</pattern>
+    </encoder>
+  </appender>
 
-  <logger name="fr.mycellar" level="debug" />
-  <logger name="org.hibernate.SQL" level="debug" />
-  <!-- <logger name="org.hibernate.type" level="trace" /> -->
+  <logger name="fr.mycellar" level="DEBUG" />
 
-  <root level="warn" />
+  <!-- URLRWRITE -->
+  <!-- <logger name="org.tuckey.web.filters.urlrewrite" level="DEBUG" /> -->
+
+  <!-- HIBERNATE QUERIES -->
+  <!-- <logger name="org.hibernate.SQL" level="DEBUG" /> -->
+  <!-- <logger name="org.hibernate.type" level="TRACE" /> -->
+
+  <root level="WARN">
+    <appender-ref ref="CONSOLE" />
+  </root>
 </configuration>

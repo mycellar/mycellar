@@ -24,6 +24,8 @@ import javax.inject.Inject;
 import javax.inject.Named;
 import javax.inject.Singleton;
 
+import jpasearch.repository.query.SearchBuilder;
+import jpasearch.repository.query.SearchParameters;
 import fr.mycellar.application.shared.AbstractSearchableService;
 import fr.mycellar.application.stock.CellarService;
 import fr.mycellar.application.stock.CellarShareService;
@@ -39,8 +41,6 @@ import fr.mycellar.domain.stock.Cellar_;
 import fr.mycellar.domain.stock.Stock;
 import fr.mycellar.domain.stock.Stock_;
 import fr.mycellar.domain.user.User;
-import fr.mycellar.infrastructure.shared.repository.query.SearchBuilder;
-import fr.mycellar.infrastructure.shared.repository.query.SearchParameters;
 import fr.mycellar.infrastructure.stock.repository.CellarRepository;
 
 /**

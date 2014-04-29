@@ -18,6 +18,8 @@
  */
 package fr.mycellar;
 
+import jpasearch.repository.GenericRepository;
+
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.autoconfigure.web.DispatcherServletAutoConfiguration;
@@ -33,7 +35,7 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
  * @author speralta
  */
 @Configuration
-@ComponentScan
+@ComponentScan(basePackageClasses = { MyCellarApplication.class, GenericRepository.class })
 @EnableScheduling
 @EnableTransactionManagement
 @EnableAutoConfiguration(exclude = { WebMvcAutoConfiguration.class, DispatcherServletAutoConfiguration.class })

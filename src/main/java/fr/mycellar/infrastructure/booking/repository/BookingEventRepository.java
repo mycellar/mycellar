@@ -18,8 +18,8 @@
  */
 package fr.mycellar.infrastructure.booking.repository;
 
+import jpasearch.repository.SimpleRepository;
 import fr.mycellar.domain.booking.BookingEvent;
-import fr.mycellar.infrastructure.shared.repository.SimpleRepository;
 
 /**
  * @author speralta

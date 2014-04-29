@@ -27,6 +27,8 @@ import javax.inject.Inject;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 
+import jpasearch.repository.query.SearchBuilder;
+
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.boot.test.SpringApplicationConfiguration;
@@ -38,7 +40,6 @@ import org.springframework.transaction.annotation.Transactional;
 import fr.mycellar.MyCellarApplication;
 import fr.mycellar.domain.shared.NamedEntity_;
 import fr.mycellar.domain.wine.Appellation;
-import fr.mycellar.infrastructure.shared.repository.query.SearchBuilder;
 
 /**
  * @author speralta

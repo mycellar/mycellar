@@ -24,12 +24,13 @@ import javax.inject.Inject;
 import javax.inject.Named;
 import javax.inject.Singleton;
 
+import jpasearch.repository.query.SearchParameters;
+
 import org.springframework.transaction.annotation.Transactional;
 
 import fr.mycellar.application.admin.ConfigurationService;
 import fr.mycellar.domain.admin.Configuration;
 import fr.mycellar.domain.shared.exception.BusinessException;
-import fr.mycellar.infrastructure.shared.repository.query.SearchParameters;
 
 /**
  * @author speralta

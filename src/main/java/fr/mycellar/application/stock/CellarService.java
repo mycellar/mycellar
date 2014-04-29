@@ -20,10 +20,10 @@ package fr.mycellar.application.stock;
 
 import java.util.List;
 
+import jpasearch.repository.query.SearchParameters;
 import fr.mycellar.application.shared.SearchableService;
 import fr.mycellar.domain.stock.Cellar;
 import fr.mycellar.domain.user.User;
-import fr.mycellar.infrastructure.shared.repository.query.SearchParameters;
 
 /**
  * @author speralta

@@ -746,6 +746,13 @@
       <version>1.49.0</version>
     </dependency>
 
+    <!-- jpasearch -->
+    <dependency>
+      <groupId>io.github.jpasearch</groupId>
+      <artifactId>jpasearch</artifactId>
+      <version>0.1.0</version>
+    </dependency>
+
     <!-- Test -->
     <dependency>
       <groupId>com.h2database</groupId>

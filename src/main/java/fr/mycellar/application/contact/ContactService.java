@@ -20,12 +20,13 @@ package fr.mycellar.application.contact;
 
 import java.util.List;
 
+import jpasearch.repository.query.SearchParameters;
+
 import org.joda.time.LocalDate;
 
 import fr.mycellar.application.shared.SimpleService;
 import fr.mycellar.domain.contact.Contact;
 import fr.mycellar.domain.wine.Producer;
-import fr.mycellar.infrastructure.shared.repository.query.SearchParameters;
 
 /**
  * @author speralta

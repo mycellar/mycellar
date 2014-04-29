@@ -18,8 +18,8 @@
  */
 package fr.mycellar.infrastructure.wine.repository;
 
+import jpasearch.repository.SimpleRepository;
 import fr.mycellar.domain.wine.Wine;
-import fr.mycellar.infrastructure.shared.repository.SimpleRepository;
 
 /**
  * @author speralta

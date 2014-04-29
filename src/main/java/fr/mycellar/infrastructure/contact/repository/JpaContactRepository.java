@@ -29,13 +29,14 @@ import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
 import javax.persistence.criteria.Subquery;
 
+import jpasearch.repository.JpaSimpleRepository;
+import jpasearch.repository.query.SearchParameters;
+
 import org.joda.time.LocalDate;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import fr.mycellar.domain.contact.Contact;
-import fr.mycellar.infrastructure.shared.repository.JpaSimpleRepository;
-import fr.mycellar.infrastructure.shared.repository.query.SearchParameters;
 
 /**
  * @author speralta

@@ -23,6 +23,12 @@ import static org.junit.Assert.assertEquals;
 import java.util.ArrayList;
 import java.util.List;
 
+import jpasearch.repository.query.OrderByDirection;
+import jpasearch.repository.query.Path;
+import jpasearch.repository.query.SearchBuilder;
+import jpasearch.repository.query.SearchParameters;
+import jpasearch.repository.query.selector.Selector;
+
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.boot.test.SpringApplicationConfiguration;
@@ -32,11 +38,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import fr.mycellar.MyCellarApplication;
 import fr.mycellar.domain.wine.Wine;
-import fr.mycellar.infrastructure.shared.repository.query.OrderByDirection;
-import fr.mycellar.infrastructure.shared.repository.query.Path;
-import fr.mycellar.infrastructure.shared.repository.query.SearchBuilder;
-import fr.mycellar.infrastructure.shared.repository.query.SearchParameters;
-import fr.mycellar.infrastructure.shared.repository.query.selector.Selector;
 
 /**
  * @author speralta
@@ -70,8 +71,8 @@ public class SearchParametersUtilIT {
 
         SearchBuilder<Wine> expectedBuilder = new SearchBuilder<Wine>();
         expectedBuilder.paginate(first, count) //
-                .on(new Path<>(firstFilter, Wine.class)).anywhere(firstFilterValue) //
-                .on(new Path<>(secondFilter, Wine.class)).anywhere(secondFilterValue).and() //
+                .on(new Path<Wine, Object>(Wine.class, firstFilter)).anywhere(firstFilterValue) //
+                .on(new Path<Wine, Object>(Wine.class, secondFilter)).anywhere(secondFilterValue).and() //
                 .orderBy(OrderByDirection.ASC, firstOrder, Wine.class) //
                 .orderBy(OrderByDirection.DESC, secondOrder, Wine.class);
         SearchParameters<Wine> expected = expectedBuilder.build();

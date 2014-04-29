@@ -20,6 +20,7 @@ package fr.mycellar.interfaces.facades.stock;
 
 import java.util.List;
 
+import jpasearch.repository.query.SearchParameters;
 import fr.mycellar.domain.shared.exception.BusinessException;
 import fr.mycellar.domain.stock.Arrival;
 import fr.mycellar.domain.stock.Cellar;
@@ -28,7 +29,6 @@ import fr.mycellar.domain.stock.Drink;
 import fr.mycellar.domain.stock.Movement;
 import fr.mycellar.domain.stock.Stock;
 import fr.mycellar.domain.user.User;
-import fr.mycellar.infrastructure.shared.repository.query.SearchParameters;
 
 /**
  * @author speralta

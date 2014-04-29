@@ -24,12 +24,13 @@ import javax.inject.Inject;
 import javax.inject.Named;
 import javax.inject.Singleton;
 
+import jpasearch.repository.query.SearchParameters;
+
 import org.springframework.transaction.annotation.Transactional;
 
 import fr.mycellar.application.contact.ContactService;
 import fr.mycellar.domain.contact.Contact;
 import fr.mycellar.domain.shared.exception.BusinessException;
-import fr.mycellar.infrastructure.shared.repository.query.SearchParameters;
 
 /**
  * @author speralta

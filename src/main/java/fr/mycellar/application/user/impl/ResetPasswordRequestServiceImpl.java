@@ -27,6 +27,8 @@ import javax.inject.Named;
 import javax.inject.Singleton;
 import javax.mail.internet.MimeMessage;
 
+import jpasearch.repository.query.SearchBuilder;
+
 import org.jasypt.contrib.org.apache.commons.codec_1_3.binary.Base64;
 import org.joda.time.LocalDateTime;
 import org.springframework.mail.javamail.JavaMailSender;
@@ -42,7 +44,6 @@ import fr.mycellar.domain.shared.exception.BusinessException;
 import fr.mycellar.domain.user.ResetPasswordRequest;
 import fr.mycellar.domain.user.ResetPasswordRequest_;
 import fr.mycellar.domain.user.User;
-import fr.mycellar.infrastructure.shared.repository.query.SearchBuilder;
 import fr.mycellar.infrastructure.user.repository.ResetPasswordRequestRepository;
 
 /**

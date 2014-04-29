@@ -24,13 +24,14 @@ import javax.inject.Inject;
 import javax.inject.Named;
 import javax.inject.Singleton;
 
+import jpasearch.repository.query.SearchParameters;
+
 import org.springframework.transaction.annotation.Transactional;
 
 import fr.mycellar.application.user.ResetPasswordRequestService;
 import fr.mycellar.application.user.UserService;
 import fr.mycellar.domain.shared.exception.BusinessException;
 import fr.mycellar.domain.user.User;
-import fr.mycellar.infrastructure.shared.repository.query.SearchParameters;
 
 /**
  * @author speralta

@@ -24,6 +24,9 @@ import javax.inject.Inject;
 import javax.inject.Named;
 import javax.inject.Singleton;
 
+import jpasearch.repository.query.SearchBuilder;
+import jpasearch.repository.query.SearchParameters;
+
 import org.joda.time.LocalDate;
 
 import fr.mycellar.application.booking.BookingEventService;
@@ -37,8 +40,6 @@ import fr.mycellar.domain.shared.NamedEntity_;
 import fr.mycellar.domain.shared.exception.BusinessError;
 import fr.mycellar.domain.shared.exception.BusinessException;
 import fr.mycellar.infrastructure.booking.repository.BookingEventRepository;
-import fr.mycellar.infrastructure.shared.repository.query.SearchBuilder;
-import fr.mycellar.infrastructure.shared.repository.query.SearchParameters;
 
 /**
  * @author speralta

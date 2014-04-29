@@ -24,6 +24,8 @@ import javax.inject.Inject;
 import javax.inject.Named;
 import javax.inject.Singleton;
 
+import jpasearch.repository.query.SearchParameters;
+
 import org.springframework.transaction.annotation.Transactional;
 
 import fr.mycellar.application.stock.CellarService;
@@ -38,7 +40,6 @@ import fr.mycellar.domain.stock.Drink;
 import fr.mycellar.domain.stock.Movement;
 import fr.mycellar.domain.stock.Stock;
 import fr.mycellar.domain.user.User;
-import fr.mycellar.infrastructure.shared.repository.query.SearchParameters;
 
 /**
  * @author speralta

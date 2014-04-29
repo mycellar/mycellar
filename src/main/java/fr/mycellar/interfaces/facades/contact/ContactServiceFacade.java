@@ -20,9 +20,9 @@ package fr.mycellar.interfaces.facades.contact;
 
 import java.util.List;
 
+import jpasearch.repository.query.SearchParameters;
 import fr.mycellar.domain.contact.Contact;
 import fr.mycellar.domain.shared.exception.BusinessException;
-import fr.mycellar.infrastructure.shared.repository.query.SearchParameters;
 
 /**
  * @author speralta

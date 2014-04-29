@@ -22,6 +22,8 @@ import static org.junit.Assert.assertEquals;
 
 import javax.inject.Inject;
 
+import jpasearch.repository.query.SearchBuilder;
+
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -34,7 +36,6 @@ import fr.mycellar.MyCellarApplication;
 import fr.mycellar.application.booking.BookingService;
 import fr.mycellar.domain.booking.BookingEvent;
 import fr.mycellar.infrastructure.booking.repository.BookingEventRepository;
-import fr.mycellar.infrastructure.shared.repository.query.SearchBuilder;
 
 /**
  * @author speralta

@@ -20,9 +20,9 @@ package fr.mycellar.interfaces.facades.stack;
 
 import java.util.List;
 
+import jpasearch.repository.query.SearchParameters;
 import fr.mycellar.domain.shared.exception.BusinessException;
 import fr.mycellar.domain.stack.Stack;
-import fr.mycellar.infrastructure.shared.repository.query.SearchParameters;
 
 /**
  * @author speralta

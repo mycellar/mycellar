@@ -22,13 +22,13 @@ import javax.inject.Inject;
 import javax.inject.Named;
 import javax.inject.Singleton;
 
+import jpasearch.repository.query.SearchBuilder;
 import fr.mycellar.application.shared.AbstractSimpleService;
 import fr.mycellar.application.stock.CellarShareService;
 import fr.mycellar.domain.shared.exception.BusinessError;
 import fr.mycellar.domain.shared.exception.BusinessException;
 import fr.mycellar.domain.stock.CellarShare;
 import fr.mycellar.domain.stock.CellarShare_;
-import fr.mycellar.infrastructure.shared.repository.query.SearchBuilder;
 import fr.mycellar.infrastructure.stock.repository.CellarShareRepository;
 
 /**
