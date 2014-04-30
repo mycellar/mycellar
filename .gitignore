@@ -10,3 +10,4 @@
 /coverage
 /startDev.bat
 /startE2E.bat
+/infinitest.filters
