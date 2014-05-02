@@ -60,12 +60,16 @@ angular.module('mycellar.controllers.cellar.drink').controller('DrinkController'
         }
       });
     };
+    $scope.$watch('drinkDate', function() {
+      $scope.drink.date = $filter('date')($scope.drinkDate, 'yyyy-MM-dd');
+    });
     $scope.cancel = function() {
       $scope.drink = {
           drinkBottles: [],
           drinkWith: '',
           date: null
       };
+      $scope.drinkDate = new Date();
       $scope.drinkBottle = null;
     }
     $scope.cancel();

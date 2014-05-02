@@ -84,7 +84,7 @@
         <legend>Détails</legend>
         <div class="form-group" ng-class="{'has-error': drinkForm.date.$invalid}">
           <label class="control-label" for="date">Date de consommation</label>
-          <input class="form-control" id="date" name="date" type="date" ng-model="drink.date" placeholder="Date de consommation" required />
+          <input class="form-control" id="date" name="date" type="date" ng-model="drinkDate" placeholder="Date de consommation" required />
           <span class="help-block" ng-if="form.date.$error.required">Veuillez saisir une date</span>
         </div>
         <div class="form-group" ng-class="{'has-error': drinkForm.drinkWith.$invalid}">

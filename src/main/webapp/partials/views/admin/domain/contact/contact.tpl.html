@@ -10,13 +10,13 @@
       </producer>
       <div class="form-group" ng-class="{'has-error': form.current.$invalid}">
         <label class="control-label" for="current">Date du contact</label>
-        <input class="form-control" id="current" name="current" type="date" ng-model="contact.current" placeholder="Date du contact" required />
+        <input class="form-control" id="current" name="current" type="date" ng-model="contactCurrent" placeholder="Date du contact" required />
         <span class="help-block" ng-if="form.current.$error.required">Veuillez saisir une date</span>
         <span class="help-block" ng-if="form.current.$error.BusinessError_CONTACT_00001">Un contact existe déjà pour ce producteur à cette date</span>
       </div>
       <div class="form-group" ng-class="{'has-error': form.next.$invalid}">
         <label class="control-label" for="next">Prochain contact</label>
-        <input class="form-control" id="next" name="next" type="date" ng-model="contact.next" placeholder="Prochain contact" />
+        <input class="form-control" id="next" name="next" type="date" ng-model="contactNext" placeholder="Prochain contact" />
       </div>
       <div class="form-group" ng-class="{'has-error': form.text.$invalid}">
         <label class="control-label" for="text">Texte</label>

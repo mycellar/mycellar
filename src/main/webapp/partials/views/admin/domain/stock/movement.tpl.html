@@ -16,7 +16,7 @@
     </div>
     <div class="form-group" ng-class="{'has-error': form.date.$invalid}">
       <label class="control-label" for="date">Date</label>
-      <input class="form-control" id="date" name="date" type="date" ng-model="movement.date" placeholder="Date" required />
+      <input class="form-control" id="date" name="date" type="date" ng-model="movementDate" placeholder="Date" required />
       <span class="help-block" ng-if="form.date.$error.required">Veuillez saisir une date</span>
     </div>
     <cellar admin="true" form="form" cellar="movement.cellar" input-required="true">

@@ -66,14 +66,14 @@
           <div class="col-md-6">
             <div class="form-group" ng-class="{'has-error': contactForm.current.$invalid}">
               <label class="control-label" for="current">Date du contact</label>
-              <input class="form-control" id="current" name="current" type="date" ng-model="contact.current" placeholder="Date du contact" required />
+              <input class="form-control" id="current" name="current" type="date" ng-model="contactCurrent" placeholder="Date du contact" required />
               <span class="help-block" ng-if="contactForm.current.$error.required">Veuillez saisir une date de contact</span>
             </div>
           </div>
           <div class="col-md-6">
             <div class="form-group" ng-class="{'has-error': contactForm.next.$invalid}">
               <label class="control-label" for="next">Prochain contact</label>
-              <input class="form-control" id="next" name="next" type="date" ng-model="contact.next" placeholder="Prochain contact" />
+              <input class="form-control" id="next" name="next" type="date" ng-model="contactNext" placeholder="Prochain contact" />
             </div>
           </div>
         </div>

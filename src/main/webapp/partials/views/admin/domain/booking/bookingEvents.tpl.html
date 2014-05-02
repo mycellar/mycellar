@@ -20,8 +20,8 @@
         </thead>
         <tbody ng-controller="LoadingCtrl">
           <tr ng-repeat="bookingEvent in tableContext.items">
-            <td>{{bookingEvent.start}}</td>
-            <td>{{bookingEvent.end}}</td>
+            <td>{{bookingEvent.start | date : shortDate}}</td>
+            <td>{{bookingEvent.end | date : shortDate}}</td>
             <td>{{bookingEvent.name}}</td>
             <td>
               <a href ng-click="edit(bookingEvent.id)" class="btn btn-default btn-xs"><i class="fa fa-pencil"></i></a>

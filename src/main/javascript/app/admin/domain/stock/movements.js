@@ -42,5 +42,9 @@ angular.module('mycellar.controllers.admin.domain.stock.movements').controller('
       resourceName: 'Movement', 
       resource: item
     });
+    $scope.movementDate = new Date($scope.movement.date);
+    $scope.$watch('movementDate', function() {
+      $scope.movement.date = $filter('date')($scope.movementDate, 'yyyy-MM-dd');
+    });
   }
 ]);

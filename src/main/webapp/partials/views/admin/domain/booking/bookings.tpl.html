@@ -27,8 +27,8 @@
           <tr ng-repeat="booking in tableContext.items">
             <td>{{booking.customer.lastname + ' ' + booking.customer.firstname}}</td>
             <td>{{booking.bookingEvent.name}}</td>
-            <td>{{booking.bookingEvent.start}}</td>
-            <td>{{booking.bookingEvent.end}}</td>
+            <td>{{booking.bookingEvent.start | date : shortDate}}</td>
+            <td>{{booking.bookingEvent.end | date : shortDate}}</td>
             <td>
               <a href ng-click="edit(booking.id)" class="btn btn-default btn-xs"><i class="fa fa-pencil"></i></a>
               <a href ng-click="delete(booking.id)" class="btn btn-danger btn-xs"><i class="fa fa-minus-circle"></i></a>

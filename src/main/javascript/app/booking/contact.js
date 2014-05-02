@@ -66,11 +66,21 @@ angular.module('mycellar.controllers.booking.contact').controller('ContactContro
         }
       });
     };
-    
+
+    $scope.$watch('contactCurrent', function() {
+      $scope.contact.current = $filter('date')($scope.contactCurrent, 'yyyy-MM-dd');
+    });
+    $scope.$watch('contactNext', function() {
+      $scope.contact.next = $filter('date')($scope.contactNext, 'yyyy-MM-dd');
+    });
+
     $scope.editContact = function(contact) {
       $scope.contact = contact;
+
+      $scope.contactCurrent = new Date($scope.contact.current);
+      $scope.contactNext = new Date($scope.contact.next);
     };
-    
+
     $scope.addContact = function() {
       $scope.contact = Contacts.new();
       $scope.contact.producer = $scope.producer;

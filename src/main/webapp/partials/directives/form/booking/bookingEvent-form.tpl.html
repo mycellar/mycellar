@@ -8,12 +8,12 @@
     </div>
     <div class="form-group" ng-class="{'has-error': form.start.$invalid}">
       <label class="control-label" for="start">Début</label>
-      <input class="form-control" id="start" name="start" type="date" ng-model="bookingEvent.start" placeholder="Début" />
+      <input class="form-control" id="start" name="start" type="date" ng-model="bookingEventStart" placeholder="Début" />
       <span class="help-block" ng-if="form.start.$error.required">Veuillez saisir une date de début</span>
     </div>
     <div class="form-group" ng-class="{'has-error': form.end.$invalid}">
       <label class="control-label" for="end">Fin</label>
-      <input class="form-control" id="end" name="end" type="date" ng-model="bookingEvent.end" placeholder="Fin" />
+      <input class="form-control" id="end" name="end" type="date" ng-model="bookingEventEnd" placeholder="Fin" />
       <span class="help-block" ng-if="form.end.$error.required">Veuillez saisir une date de fin</span>
     </div>
   </fieldset>

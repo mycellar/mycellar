@@ -60,6 +60,9 @@ angular.module('mycellar.controllers.cellar.arrival').controller('ArrivalControl
         }
       });
     };
+    $scope.$watch('arrivalDate', function() {
+      $scope.arrival.date = $filter('date')($scope.arrivalDate, 'yyyy-MM-dd');
+    });
     $scope.cancel = function() {
       $scope.arrival = {
           arrivalBottles: [],
@@ -67,6 +70,7 @@ angular.module('mycellar.controllers.cellar.arrival').controller('ArrivalControl
           charges: 0,
           date: null
       };
+      $scope.arrivalDate = new Date();
       $scope.arrivalBottle = null;
     }
     $scope.cancel();
