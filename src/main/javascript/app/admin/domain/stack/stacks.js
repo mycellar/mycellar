@@ -22,8 +22,8 @@ angular.module('mycellar.controllers.admin.domain.stack.stacks', [
 ]);
 
 angular.module('mycellar.controllers.admin.domain.stack.stacks').controller('AdminDomainStacksController', [
-  '$scope', '$route', 'adminDomainService', 'tableContext',
-  function ($scope, $route, adminDomainService, tableContext) {
+  '$scope', '$route', 'adminDomainService', 'tableContext', 'AdminStacks',
+  function ($scope, $route, adminDomainService, tableContext, AdminStacks) {
     adminDomainService.listMethods({
       scope: $scope,
       group: 'stack', 
@@ -31,7 +31,7 @@ angular.module('mycellar.controllers.admin.domain.stack.stacks').controller('Adm
       tableContext: tableContext
     });
     $scope.deleteAll = function() {
-      Stacks.delete({}, function (value, headers) {
+      AdminStacks.deleteAll({}, function (value, headers) {
         if (value.errorKey != undefined) {
           $scope.errors.push({errorKey: value.errorKey});
         } else if (value.internalError != undefined) {

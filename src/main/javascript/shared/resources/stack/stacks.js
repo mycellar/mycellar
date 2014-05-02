@@ -7,6 +7,11 @@ angular.module('mycellar.resources.stack.stacks').factory('AdminStacks', [
   function (domainResource) {
     return domainResource.createResource({
       url: '/api/admin/domain/stack/stacks'
+    }, {
+      deleteAll: {
+        url: '/api/admin/domain/stack/stacks',
+        method: 'DELETE'
+      }
     });
   }
 ]);

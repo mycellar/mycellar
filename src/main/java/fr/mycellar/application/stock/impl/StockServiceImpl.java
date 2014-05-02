@@ -125,6 +125,15 @@ public class StockServiceImpl extends AbstractSimpleService<Stock, StockReposito
     }
 
     @Override
+    protected void deleteInternal(Stock entity) throws BusinessException {
+        if (entity.getQuantity() > 0) {
+            Stock removed = removeFromStock(entity.getCellar(), entity.getBottle(), entity.getQuantity(), new LocalDate(), "Régularisation", 0);
+            super.deleteInternal(removed);
+        }
+        super.deleteInternal(entity);
+    }
+
+    @Override
     protected Stock saveInternal(Stock entity) throws BusinessException {
         Stock existing = findStock(entity.getBottle(), entity.getCellar());
         if (existing != null) {

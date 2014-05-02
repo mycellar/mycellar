@@ -19,13 +19,13 @@ angular.module('mycellar.services.resource').factory('domainResource', [
         actions.validate = {
           url: parameters.validateUrl,
           method: 'POST'
-        }
+        };
       }
       if (parameters.likeUrl != undefined) {
         actions._like = {
           url: parameters.likeUrl,
           method: 'GET'
-        }
+        };
       }
       var resource = $resource(parameters.url+'/:id', {id: '@id'}, actions);
       resource.count = function() {

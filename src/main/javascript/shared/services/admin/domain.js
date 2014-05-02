@@ -11,8 +11,8 @@ angular.module('mycellar.services.admin.domain').provider('adminDomainService', 
     var resourcesPath = [];
     var domainParameters = [];
     this.$get = [
-      '$location', '$route',
-      function($location, $route) { 
+      '$location', '$route', '$injector',
+      function($location, $route, $injector) {
         var adminDomainService = {};
         
         adminDomainService.getMenu = function() {
@@ -24,7 +24,6 @@ angular.module('mycellar.services.admin.domain').provider('adminDomainService', 
          *          scope: the controller scope
          *          group: the group name
          *          resourceName: the name of the resource
-         *          resource: the resource service
          *          canDelete
          *          canCreate
          *          tableContext
@@ -49,7 +48,7 @@ angular.module('mycellar.services.admin.domain').provider('adminDomainService', 
           if (parameters.canDelete) {
             parameters.scope.delete = function(id) {
               var errors = this.errors;
-              parameters.resource.delete({id: id}, function (value, headers) {
+              $injector.get('Admin' + parameters.resourcesName).delete({id: id}, function (value, headers) {
                 if (value.errorKey != undefined) {
                   errors.push(value);
                 } else {

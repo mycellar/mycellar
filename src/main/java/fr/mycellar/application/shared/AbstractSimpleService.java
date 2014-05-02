@@ -35,6 +35,10 @@ public abstract class AbstractSimpleService<E extends IdentifiedEntity, R extend
     @Override
     public final void delete(E entity) throws BusinessException {
         validateDelete(entity);
+        deleteInternal(entity);
+    }
+
+    protected void deleteInternal(E entity) throws BusinessException {
         getRepository().delete(entity);
     }
 

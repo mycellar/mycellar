@@ -55,6 +55,18 @@ public class MovementServiceImpl extends AbstractSimpleService<Movement, Movemen
     }
 
     @Override
+    protected void deleteInternal(Movement entity) throws BusinessException {
+        if (entity instanceof Input) {
+            stockService.updateStock(entity.getCellar(), entity.getBottle(), -entity.getNumber());
+        } else if (entity instanceof Output) {
+            stockService.updateStock(entity.getCellar(), entity.getBottle(), entity.getNumber());
+        } else {
+            throw new IllegalStateException("Unknown movement type");
+        }
+        super.deleteInternal(entity);
+    }
+
+    @Override
     protected Movement saveInternal(Movement entity) throws BusinessException {
         if (entity.isIdSet()) {
             Movement existing = movementRepository.getById(entity.getId());

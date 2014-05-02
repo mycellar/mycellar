@@ -60,6 +60,7 @@ public class StackServiceFacadeImpl implements StackServiceFacade {
     }
 
     @Override
+    @Transactional(readOnly = false)
     public void deleteStack(Stack stack) throws BusinessException {
         stackService.delete(stack);
     }
