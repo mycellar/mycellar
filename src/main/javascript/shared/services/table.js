@@ -9,6 +9,7 @@ angular.module('mycellar.services.table').provider('tableService', [function ($q
           query: query,
           pageRange: 6,
           itemsPerPage: 10,
+          currentPage: 1,
           total: null,
           firstItem: null,
           parameters: parameters || {},
@@ -46,9 +47,8 @@ angular.module('mycellar.services.table').provider('tableService', [function ($q
             }
             return value;
           },
-          setPage: function(page) {
-            this.currentPage = page;
-            this.firstItem = (page - 1) * this.itemsPerPage;
+          setPage: function() {
+            this.firstItem = (this.currentPage - 1) * this.itemsPerPage;
             var sortParameter = [];
             for (var t in this.sort.properties) {
               sortParameter.push(this.sort.properties[t] + ',' + this.sort.ways[this.sort.properties[t]]);

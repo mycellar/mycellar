@@ -14,8 +14,7 @@ angular.module('mycellar.controllers.booking.reports', [
 angular.module('mycellar.controllers.booking.reports').controller('BookingReportsController', [
   '$scope', 'AdminBookingEvents', 'AdminBookings', '$anchorScroll',
   function($scope, AdminBookingEvents, AdminBookings, $anchorScroll) {
-    $scope.setPage = function(page) {
-      $scope.currentPage = page;
+    $scope.setPage = function() {
       $scope.firstItem = ($scope.currentPage - 1) * $scope.itemsPerPage;
       $scope.result = AdminBookingEvents.get({
         first: $scope.firstItem,

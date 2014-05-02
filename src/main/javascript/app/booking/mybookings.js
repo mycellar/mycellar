@@ -23,8 +23,7 @@ angular.module('mycellar.controllers.booking.mybookings').controller('MyBookings
   '$scope', 'Bookings', 'bookings', '$anchorScroll',
   function($scope, Bookings, bookings, $anchorScroll) {
     $scope.itemsPerPage = 5;
-    $scope.setPage = function(page) {
-      $scope.currentPage = page;
+    $scope.setPage = function() {
       $scope.firstItem = ($scope.currentPage - 1) * $scope.itemsPerPage;
       $scope.result = Bookings.getAllForCurrentUser({
         first: $scope.firstItem,

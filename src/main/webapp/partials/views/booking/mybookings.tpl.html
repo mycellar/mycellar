@@ -3,14 +3,14 @@
   <div class="row">
     <div class="col-md-2">
       <nav>
-        <pagination items-per-page="itemsPerPage" total-items="totalItems" page="currentPage" on-select-page="setPage(page)" max-size="4" boundary-links="false" direction-links="true"></pagination>
+        <pagination items-per-page="itemsPerPage" total-items="totalItems" ng-model="currentPage" ng-change="setPage()" max-size="4" boundary-links="false" direction-links="true"></pagination>
         <ul class="nav nav-pills nav-stacked">
           <li ng-repeat="booking in bookings" ng-class="{active: booking.id == $parent.booking.id}">
             Du {{booking.bookingEvent.start}} au {{booking.bookingEvent.end}} :<br />
             <a href ng-click="selectBooking(booking)">{{booking.bookingEvent.name}}</a>
           </li>
         </ul>
-        <pagination items-per-page="itemsPerPage" total-items="totalItems" page="currentPage" on-select-page="setPage(page)" max-size="4" boundary-links="false" direction-links="true"></pagination>
+        <pagination items-per-page="itemsPerPage" total-items="totalItems" ng-model="currentPage" ng-change="setPage()" max-size="4" boundary-links="false" direction-links="true"></pagination>
       </nav>
     </div>
     <div class="col-md-10">
