@@ -33,6 +33,17 @@
   <artifactId>mycellar</artifactId>
   <packaging>war</packaging>
   <name>MyCellar</name>
+  
+  <scm>
+    <url>https://github.com/mycellar/mycellar</url>
+    <connection>scm:git:https://github.com/mycellar/mycellar.git</connection>
+    <developerConnection>scm:git:git@github.com:mycellar/mycellar.git</developerConnection>
+    <tag>HEAD</tag>
+  </scm>
+  <issueManagement>
+    <system>GitHub</system>
+    <url>https://github.com/mycellar/mycellar/issues</url>
+  </issueManagement>
 
   <developers>
     <developer>
