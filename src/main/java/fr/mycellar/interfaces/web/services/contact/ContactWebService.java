@@ -78,7 +78,7 @@ public class ContactWebService {
     @GET
     @Produces(MediaType.APPLICATION_JSON)
     @Path("contacts")
-    @PreAuthorize("hasRole('ADMIN')")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     public ListWithCount<Contact> getContacts(@QueryParam("first") int first, //
             @QueryParam("count") @DefaultValue("10") int count, //
             @QueryParam("filters") List<FilterCouple> filters, //
@@ -96,14 +96,14 @@ public class ContactWebService {
     @GET
     @Produces(MediaType.APPLICATION_JSON)
     @Path("contacts/{id}")
-    @PreAuthorize("hasRole('ADMIN')")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     public Contact getContactById(@PathParam("id") int contactId) {
         return contactServiceFacade.getContactById(contactId);
     }
 
     @DELETE
     @Path("contacts/{id}")
-    @PreAuthorize("hasRole('ADMIN')")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     public void deleteContactById(@PathParam("id") int contactId) throws BusinessException {
         contactServiceFacade.deleteContact(contactServiceFacade.getContactById(contactId));
     }
@@ -112,7 +112,7 @@ public class ContactWebService {
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
     @Path("contacts/{id}")
-    @PreAuthorize("hasRole('ADMIN')")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     public Contact saveContact(@PathParam("id") int contactId, Contact contact) throws BusinessException {
         if ((contactId == contact.getId()) && (getContactById(contactId) != null)) {
             return contactServiceFacade.saveContact(contact);
@@ -124,7 +124,7 @@ public class ContactWebService {
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
     @Path("contacts")
-    @PreAuthorize("hasRole('ADMIN')")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     public Contact saveContact(Contact contact) throws BusinessException {
         if (contact.getId() == null) {
             return contactServiceFacade.saveContact(contact);

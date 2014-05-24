@@ -10,7 +10,7 @@ angular.module('mycellar.controllers.booking.contact', [
       templateUrl: 'partials/views/booking/contact.tpl.html',
       controller: 'ContactController',
       resolve: {
-        producer: ['$route', 'Producers', function ($route, Producers) {
+        producer: ['$route', 'AdminProducers', function ($route, Producers) {
           var id = $route.current.params.producerId;
           if (id != null && id > 0) {
             return Producers.get({id: id});
@@ -24,8 +24,8 @@ angular.module('mycellar.controllers.booking.contact', [
 ]);
 
 angular.module('mycellar.controllers.booking.contact').controller('ContactController', [
-  '$scope', 'producer', 'Contacts',
-  function($scope, producer, Contacts) {
+  '$scope', 'producer', 'Contacts', '$filter',
+  function($scope, producer, Contacts, $filter) {
     $scope.errors = [];
     $scope.setPage = function(page) {
       $scope.currentPage = page;
@@ -68,10 +68,14 @@ angular.module('mycellar.controllers.booking.contact').controller('ContactContro
     };
 
     $scope.$watch('contactCurrent', function() {
-      $scope.contact.current = $filter('date')($scope.contactCurrent, 'yyyy-MM-dd');
+      if ($scope.contact != null) {
+        $scope.contact.current = $filter('date')($scope.contactCurrent, 'yyyy-MM-dd');
+      }
     });
     $scope.$watch('contactNext', function() {
-      $scope.contact.next = $filter('date')($scope.contactNext, 'yyyy-MM-dd');
+      if ($scope.contact != null) {
+        $scope.contact.next = $filter('date')($scope.contactNext, 'yyyy-MM-dd');
+      }
     });
 
     $scope.editContact = function(contact) {
