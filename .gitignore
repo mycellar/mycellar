@@ -11,3 +11,5 @@
 /startDev.bat
 /startE2E.bat
 /infinitest.filters
+/.idea
+/mycellar.iml
