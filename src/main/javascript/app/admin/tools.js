@@ -34,6 +34,7 @@ angular.module('mycellar.controllers.admin.tools').controller('AdminNewVintagesC
     $scope.to = 2010;
     $scope.running = false;
     $scope.createVintages = function() {
+      $scope.wines = $scope.tableContext.items;
       $scope.count = 0;
       function createVintage(wines, idxs) {
         var idx = idxs.pop();
