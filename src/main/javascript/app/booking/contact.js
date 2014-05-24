@@ -86,7 +86,7 @@ angular.module('mycellar.controllers.booking.contact').controller('ContactContro
     };
 
     $scope.addContact = function() {
-      $scope.contact = Contacts.new();
+      $scope.contact = new Contacts();
       $scope.contact.producer = $scope.producer;
       $scope.contact.current;
     };
