@@ -6,14 +6,22 @@ angular.module('mycellar.controllers.booking.reports', [
   function($routeProvider) {
     $routeProvider.when('/booking/reports', {
       templateUrl: 'partials/views/booking/reports.tpl.html',
-      controller: 'BookingReportsController'
+      controller: 'BookingReportsController',
+      resolve: {
+        bookingEvents: ['AdminBookingEvents', function(AdminBookingEvents) {
+          return AdminBookingEvents.get({
+            first: 0,
+            count: 5
+          }).$promise;
+        }]
+      }
     });
   }
 ]);
 
 angular.module('mycellar.controllers.booking.reports').controller('BookingReportsController', [
-  '$scope', 'AdminBookingEvents', 'AdminBookings', '$anchorScroll',
-  function($scope, AdminBookingEvents, AdminBookings, $anchorScroll) {
+  '$scope', 'AdminBookingEvents', 'AdminBookings', '$anchorScroll', 'bookingEvents',
+  function($scope, AdminBookingEvents, AdminBookings, $anchorScroll, bookingEvents) {
     $scope.pageChanged = function() {
       $scope.firstItem = ($scope.currentPage - 1) * $scope.itemsPerPage;
       $scope.result = AdminBookingEvents.get({
@@ -32,8 +40,6 @@ angular.module('mycellar.controllers.booking.reports').controller('BookingReport
     };
 
     $scope.itemsPerPage = 5;
-    $scope.currentPage = 1;
-    $scope.pageChanged();
 
     $scope.selectBookingEvent = function(bookingEvent) {
       $scope.bookingBottle = null;
@@ -67,5 +73,15 @@ angular.module('mycellar.controllers.booking.reports').controller('BookingReport
         $scope.bookingTotal += value.price * $scope.booking.quantities[$scope.booking.bookingEvent.id + "-" + value.id];
       });
     };
+    
+    if (bookingEvents.list != null && bookingEvents.list.length > 0) {
+      $scope.selectBookingEvent(bookingEvents.list[0]);
+    } else {
+      $scope.selectBookingEvent(null);
+    }
+
+    $scope.pageCount = Math.ceil(bookingEvents.count / $scope.itemsPerPage);
+    $scope.bookingEvents = bookingEvents.list;
+    $scope.totalItems = bookingEvents.count;
   }
 ]);

@@ -1,6 +1,6 @@
 <div class="container">
   <header class="page-header"><h1>Suivi des réservations</h1></header>
-  <div class="row" ng-controller="LoadingCtrl">
+  <div class="row">
     <div class="col-md-3">
       <nav>
         <pagination items-per-page="itemsPerPage" total-items="totalItems" ng-model="currentPage" ng-change="pageChanged()" max-size="4" boundary-links="false" direction-links="true"></pagination>
@@ -13,7 +13,7 @@
         <pagination items-per-page="itemsPerPage" total-items="totalItems" ng-model="currentPage" ng-change="pageChanged()" max-size="4" boundary-links="false" direction-links="true"></pagination>
       </nav>
     </div>
-    <div class="col-md-9">
+    <div class="col-md-9" ng-controller="LoadingCtrl">
       <p ng-if="bookingEvent == null">Aucune réservation</p>
       <section ng-if="bookingEvent != null">
         <h2>{{bookingEvent.name}} du {{bookingEvent.start}} au {{bookingEvent.end}}</h2>
