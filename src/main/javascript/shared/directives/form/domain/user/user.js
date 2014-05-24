@@ -55,8 +55,8 @@ angular.module('mycellar.directives.form.domain.user.user').directive('userForm'
         }
       },
       controller: [
-        '$scope', '$location', '$filter', 'Users', 'AdminUsers',
-        function($scope, $location, $filter, Users, AdminUsers) {
+        '$scope', '$location', '$filter', 'AdminUsers',
+        function($scope, $location, $filter, AdminUsers) {
           var userFilter = $filter('userRenderer');
           $scope.renderUser = function(user) {
             if (user != null) {
@@ -65,12 +65,7 @@ angular.module('mycellar.directives.form.domain.user.user').directive('userForm'
               return '';
             }
           };
-          var resource;
-          if ($location.path().match(/\/admin/)) {
-            resource = AdminUsers;
-          } else {
-            resource = Users;
-          }
+          var resource = AdminUsers;
           $scope.errors = [];
           $scope.users = resource.like;
           $scope.new = function() {
