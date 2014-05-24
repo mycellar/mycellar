@@ -16,8 +16,8 @@ angular.module('mycellar.controllers.cellar.arrival', [
 ]);
 
 angular.module('mycellar.controllers.cellar.arrival').controller('ArrivalController', [
-  '$scope', 'Stocks', '$location',
-  function($scope, Stocks, $location) {
+  '$scope', 'Stocks', '$location', '$filter',
+  function($scope, Stocks, $location, $filter) {
     $scope.errors = [];
     $scope.edit = function(arrivalBottle) {
       $scope.arrivalBottle = arrivalBottle;
