@@ -11,7 +11,8 @@ angular.module('mycellar.controllers.booking.reports', [
         bookingEvents: ['AdminBookingEvents', function(AdminBookingEvents) {
           return AdminBookingEvents.get({
             first: 0,
-            count: 5
+            count: 5,
+            sort: ['start,desc']
           }).$promise;
         }]
       }
