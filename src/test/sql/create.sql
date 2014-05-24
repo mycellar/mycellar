@@ -320,7 +320,7 @@ alter table CELLAR
     references USER;
 
 alter table CELLAR_SHARE 
-    add constraint FK_b0.8.3-SNAPSHOTy7w88fml4e2h15e977l 
+    add constraint FK_b0w832y7w88fml4e2h15e977l 
     foreign key (CELLAR) 
     references CELLAR;
 
