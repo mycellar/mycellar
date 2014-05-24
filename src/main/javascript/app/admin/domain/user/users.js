@@ -41,7 +41,7 @@ angular.module('mycellar.controllers.admin.domain.user.users').controller('Admin
       scope: $scope,
       group: 'user',
       resourceName: 'User', 
-      resource: user
+      resource: item
     });
   }
 ]);
