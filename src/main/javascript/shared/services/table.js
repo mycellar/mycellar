@@ -1,16 +1,18 @@
-angular.module('mycellar.services.table', []);
+angular.module('mycellar.services.table', [
+  'mycellar.services.pagination'
+]);
 
 angular.module('mycellar.services.table').provider('tableService', [function ($q) {
-  this.$get = ['$q', function($q) {
+  this.$get = ['$q', 'paginationService', function($q, paginationService) {
     return {
       createTableContext: function(query, defaultSort, parameters) {
         var tableContext = {
           filtersIsCollapsed: true,
           query: query,
           pageRange: 6,
-          itemsPerPage: 10,
-          currentPage: 1,
-          total: null,
+          itemsPerPage: paginationService.getItemsPerPage() || 10,
+          currentPage: paginationService.getCurrentPage() || 1,
+          total: paginationService.getTotal(),
           firstItem: null,
           parameters: parameters || {},
           sort: {
@@ -69,12 +71,33 @@ angular.module('mycellar.services.table').provider('tableService', [function ($q
             }, function(value) {
               deferred.reject(tableContext);
             });
+
+            // SAVE PARAMETERS :
+            // total needed for angular-ui pagination
+            paginationService.setCurrentPage(this.currentPage);
+            paginationService.setItemsPerPage(this.itemsPerPage);
+            paginationService.setTotal(this.total);
+            paginationService.setSort(sortParameter);
+            paginationService.setFilters(filtersParameter);
+
             return deferred;
           }
         };
-        angular.forEach(defaultSort, function(sort) {
-          tableContext.sortBy(sort);
-        });
+        var storedSort = paginationService.getSort();
+        if (storedSort != null) {
+          var table = storedSort.split(',');
+          if (table.length > 1) {
+            for(var i = 0; i < table.length; i++) {
+              var property = table[i++];
+              tableContext.sort.properties.push(property);
+              tableContext.sort.ways[property] = table[i];
+            }
+          }
+        } else {
+          angular.forEach(defaultSort, function(sort) {
+            tableContext.sortBy(sort);
+          });
+        }
         return tableContext;
       }
     };
