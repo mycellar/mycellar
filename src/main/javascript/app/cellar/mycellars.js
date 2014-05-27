@@ -60,7 +60,7 @@ angular.module('mycellar.controllers.cellar.mycellars').controller('MyCellarsCon
         $scope.tableContext.parameters.cellarId = $scope.cellar.id;
         if (!started) {
           started = true;
-          $scope.tableContext.setPage(1);
+          $scope.tableContext.setPage();
         }
       }
     });
