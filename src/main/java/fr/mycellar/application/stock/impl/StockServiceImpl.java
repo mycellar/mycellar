@@ -108,6 +108,9 @@ public class StockServiceImpl extends AbstractSimpleService<Stock, StockReposito
 
     @Override
     public Stock findStock(Bottle bottle, Cellar cellar) {
+        if ((bottle == null) || (bottle.getFormat() == null) || !bottle.getFormat().isIdSet() || (bottle.getWine() == null) || !bottle.getWine().isIdSet()) {
+            return null;
+        }
         return stockRepository.findUniqueOrNone(new SearchBuilder<Stock>() //
                 .on(Stock_.bottle).equalsTo(bottle) //
                 .on(Stock_.cellar).equalsTo(cellar).build());
