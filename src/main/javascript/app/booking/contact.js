@@ -13,7 +13,7 @@ angular.module('mycellar.controllers.booking.contact', [
         producer: ['$route', 'AdminProducers', function ($route, Producers) {
           var id = $route.current.params.producerId;
           if (id != null && id > 0) {
-            return Producers.get({id: id});
+            return Producers.get({id: id}).$promise;
           } else {
             return null;
           }
@@ -24,7 +24,7 @@ angular.module('mycellar.controllers.booking.contact', [
 ]);
 
 angular.module('mycellar.controllers.booking.contact').controller('ContactController', [
-  '$scope', 'producer', 'Contacts', '$filter',
+  '$scope', 'producer', 'AdminContacts', '$filter',
   function($scope, producer, Contacts, $filter) {
     $scope.errors = [];
     $scope.setPage = function(page) {
@@ -42,13 +42,13 @@ angular.module('mycellar.controllers.booking.contact').controller('ContactContro
     };
 
     $scope.producer = producer;
-    $scope.itemsPerPage = 5;
+    $scope.itemsPerPage = 10;
     $scope.$watch('producer.id', function(value) {
       if (value != undefined) {
         $scope.setPage(1);
       }
     });
-    
+
     $scope.saveProducer = function() {
       $scope.errors = [];
       $scope.backup = {};
@@ -67,30 +67,36 @@ angular.module('mycellar.controllers.booking.contact').controller('ContactContro
       });
     };
 
-    $scope.$watch('contactCurrent', function() {
+    $scope.$watch('dates.contactCurrent', function() {
       if ($scope.contact != null) {
-        $scope.contact.current = $filter('date')($scope.contactCurrent, 'yyyy-MM-dd');
+        $scope.contact.current = $filter('date')($scope.dates.contactCurrent, 'yyyy-MM-dd');
       }
     });
-    $scope.$watch('contactNext', function() {
+    $scope.$watch('dates.contactNext', function() {
       if ($scope.contact != null) {
-        $scope.contact.next = $filter('date')($scope.contactNext, 'yyyy-MM-dd');
+        $scope.contact.next = $filter('date')($scope.dates.contactNext, 'yyyy-MM-dd');
       }
     });
 
     $scope.editContact = function(contact) {
-      $scope.contact = contact;
-
-      $scope.contactCurrent = new Date($scope.contact.current);
-      $scope.contactNext = new Date($scope.contact.next);
+      Contacts.get({id: contact.id}, function(value) {
+        $scope.contact = value;
+        $scope.dates = {
+          contactCurrent: new Date($scope.contact.current),
+          contactNext: $scope.contact.next != null ? new Date($scope.contact.next) : null
+        };
+      });
     };
 
     $scope.addContact = function() {
       $scope.contact = new Contacts();
       $scope.contact.producer = $scope.producer;
-      $scope.contact.current;
+      $scope.dates = {
+        contactCurrent: new Date(),
+        contactNext: null
+      };
     };
-    
+
     $scope.saveContact = function() {
       $scope.errors = [];
       $scope.backup = {};
@@ -110,7 +116,7 @@ angular.module('mycellar.controllers.booking.contact').controller('ContactContro
         }
       });
     };
-    
+
     $scope.cancelContact = function() {
       $scope.contact = null;
     };

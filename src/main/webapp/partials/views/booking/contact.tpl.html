@@ -2,7 +2,6 @@
   <header class="page-header"><h1>Contact : {{producer.name}}</h1></header>
   <section>
     <form name="producerForm" class="form">
-      <error-div errors="errors"></error-div>
       <producer form="producerForm" producer="producer" input-required="true">
         <span class="help-block" ng-if="producerForm.producer.$error.required">Veuillez saisir un producteur</span>
       </producer>
@@ -58,22 +57,22 @@
       </div>
     </form>
     <br />
-    <form id="contactForm" class="form" ng-if="contact != null">
-      <error-div errors="errors"></error-div>
+    <form name="contactForm" class="form" ng-if="contact != null">
       <fieldset>
-        <legend>Nouveau contact</legend>
+        <legend ng-if="contact.id == null">Nouveau contact</legend>
+        <legend ng-if="contact.id != null">Contact du {{contact.current | date: shortDate}}</legend>
         <div class="row">
           <div class="col-md-6">
             <div class="form-group" ng-class="{'has-error': contactForm.current.$invalid}">
               <label class="control-label" for="current">Date du contact</label>
-              <input class="form-control" id="current" name="current" type="date" ng-model="contactCurrent" placeholder="Date du contact" required />
+              <input class="form-control" id="current" name="current" type="date" ng-model="dates.contactCurrent" placeholder="Date du contact" required />
               <span class="help-block" ng-if="contactForm.current.$error.required">Veuillez saisir une date de contact</span>
             </div>
           </div>
           <div class="col-md-6">
             <div class="form-group" ng-class="{'has-error': contactForm.next.$invalid}">
               <label class="control-label" for="next">Prochain contact</label>
-              <input class="form-control" id="next" name="next" type="date" ng-model="contactNext" placeholder="Prochain contact" />
+              <input class="form-control" id="next" name="next" type="date" ng-model="dates.contactNext" placeholder="Prochain contact" />
             </div>
           </div>
         </div>
@@ -88,8 +87,8 @@
               rows="5"></textarea>
         </div>
       </fieldset>
-      <input type="submit" class="btn btn-primary" value="Save" ng-click="saveContact()" ng-disabled="contactForm.$invalid" />
-      <input type="submit" class="btn btn-warning" value="Cancel" ng-click="cancelContact()" />
+      <input type="submit" class="btn btn-primary" value="Sauvegarder" ng-click="saveContact()" ng-disabled="contactForm.$invalid" />
+      <input type="submit" class="btn btn-warning" value="Annuler" ng-click="cancelContact()" />
     </form>
     <br />
     <div class="panel panel-default" ng-repeat="contact in contacts">
@@ -98,13 +97,13 @@
           <div class="col-md-5">
             <dl class="dl-horizontal">
               <dt>Date du contact</dt>
-              <dd>{{contact.current}}</dd>
+              <dd>{{contact.current | date : shortDate}}</dd>
             </dl>
           </div>
           <div class="col-md-5">
             <dl class="dl-horizontal">
               <dt>Prochain contact date</dt>
-              <dd>{{contact.next}}</dd>
+              <dd>{{contact.next | date : shortDate}}</dd>
             </dl>
           </div>
           <div class="col-md-2">
