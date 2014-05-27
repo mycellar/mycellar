@@ -16,8 +16,8 @@ angular.module('mycellar.controllers.cellar.drink', [
 ]);
 
 angular.module('mycellar.controllers.cellar.drink').controller('DrinkController', [
-  '$scope', 'Stocks', '$location',
-  function($scope, Stocks, $location) {
+  '$scope', 'Stocks', '$location', '$filter',
+  function($scope, Stocks, $location, $filter) {
     $scope.errors = [];
     $scope.edit = function(drinkBottle) {
       $scope.drinkBottle = drinkBottle;
@@ -29,7 +29,7 @@ angular.module('mycellar.controllers.cellar.drink').controller('DrinkController'
           format: null
         },
         quantity: 0,
-        cellar: 0
+        cellar: null
       };
     };
     $scope.remove = function(drinkBottle) {
