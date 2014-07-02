@@ -23,6 +23,9 @@ import javax.persistence.Embeddable;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 
+import lombok.Getter;
+import lombok.Setter;
+
 import org.apache.commons.lang3.builder.ToStringBuilder;
 
 import fr.mycellar.domain.wine.Format;
@@ -36,27 +39,15 @@ public class Bottle {
 
     @ManyToOne(cascade = { CascadeType.PERSIST, CascadeType.MERGE })
     @JoinColumn(name = "FORMAT", nullable = false)
+    @Getter
+    @Setter
     private Format format;
 
     @ManyToOne(cascade = { CascadeType.PERSIST, CascadeType.MERGE })
     @JoinColumn(name = "WINE", nullable = false)
+    @Getter
+    @Setter
     private Wine wine;
-
-    public Format getFormat() {
-        return format;
-    }
-
-    public Wine getWine() {
-        return wine;
-    }
-
-    public void setFormat(Format format) {
-        this.format = format;
-    }
-
-    public void setWine(Wine wine) {
-        this.wine = wine;
-    }
 
     @Override
     public int hashCode() {

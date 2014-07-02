@@ -32,6 +32,10 @@ import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 import javax.persistence.UniqueConstraint;
 import javax.validation.Valid;
+import javax.validation.constraints.Min;
+
+import lombok.Getter;
+import lombok.Setter;
 
 import org.apache.commons.lang3.builder.ToStringBuilder;
 
@@ -49,10 +53,14 @@ public class Stock extends IdentifiedEntity {
 
     @Embedded
     @Valid
+    @Getter
+    @Setter
     private Bottle bottle;
 
     @ManyToOne(cascade = { CascadeType.PERSIST, CascadeType.MERGE })
     @JoinColumn(name = "CELLAR", nullable = false)
+    @Getter
+    @Setter
     private Cellar cellar;
 
     @Id
@@ -60,36 +68,15 @@ public class Stock extends IdentifiedEntity {
     @Column(name = "ID", nullable = false)
     private Integer id;
 
-    @Column(name = "QUANTITY")
+    @Column(name = "QUANTITY", nullable = false)
+    @Min(1)
+    @Getter
+    @Setter
     private Integer quantity;
-
-    public Bottle getBottle() {
-        return bottle;
-    }
-
-    public Cellar getCellar() {
-        return cellar;
-    }
 
     @Override
     public Integer getId() {
         return id;
-    }
-
-    public Integer getQuantity() {
-        return quantity;
-    }
-
-    public void setBottle(Bottle bottle) {
-        this.bottle = bottle;
-    }
-
-    public void setCellar(Cellar cellar) {
-        this.cellar = cellar;
-    }
-
-    public void setQuantity(Integer quantity) {
-        this.quantity = quantity;
     }
 
     @Override

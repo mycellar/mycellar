@@ -97,8 +97,13 @@ public class StockServiceImpl extends AbstractSimpleService<Stock, StockReposito
             stock.setQuantity(0);
         }
         stock.setQuantity(stock.getQuantity() + quantity);
-        validate(stock);
-        return stockRepository.save(stock);
+        if (stock.getQuantity() == 0) {
+            stockRepository.delete(stock);
+            return stock;
+        } else {
+            validate(stock);
+            return stockRepository.save(stock);
+        }
     }
 
     @Override
