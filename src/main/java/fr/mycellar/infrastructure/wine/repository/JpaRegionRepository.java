@@ -29,7 +29,7 @@ import fr.mycellar.domain.wine.Region;
  */
 @Named
 @Singleton
-public class JpaRegionRepository extends JpaSimpleRepository<Region> implements RegionRepository {
+public class JpaRegionRepository extends JpaSimpleRepository<Region, Integer> implements RegionRepository {
 
     /**
      * Default constructor.

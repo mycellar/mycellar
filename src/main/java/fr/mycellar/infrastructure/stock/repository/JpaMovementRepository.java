@@ -29,7 +29,7 @@ import fr.mycellar.domain.stock.Movement;
  */
 @Named
 @Singleton
-public class JpaMovementRepository extends JpaSimpleRepository<Movement> implements MovementRepository {
+public class JpaMovementRepository extends JpaSimpleRepository<Movement, Integer> implements MovementRepository {
 
     /**
      * Default constructor.

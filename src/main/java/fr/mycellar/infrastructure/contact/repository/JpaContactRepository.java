@@ -43,7 +43,7 @@ import fr.mycellar.domain.contact.Contact;
  */
 @Named
 @Singleton
-public class JpaContactRepository extends JpaSimpleRepository<Contact> implements ContactRepository {
+public class JpaContactRepository extends JpaSimpleRepository<Contact, Integer> implements ContactRepository {
 
     private final static Logger logger = LoggerFactory.getLogger(JpaContactRepository.class);
 

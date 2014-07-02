@@ -43,7 +43,7 @@ import fr.mycellar.domain.booking.Booking_;
  */
 @Named
 @Singleton
-public class JpaBookingRepository extends JpaSimpleRepository<Booking> implements BookingRepository {
+public class JpaBookingRepository extends JpaSimpleRepository<Booking, Integer> implements BookingRepository {
 
     /**
      * Default constructor.

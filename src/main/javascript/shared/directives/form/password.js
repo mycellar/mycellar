@@ -1,30 +1,20 @@
 angular.module('mycellar.directives.form.password', []);
 
-angular.module('mycellar.directives.form.password').directive('equals', [
+angular.module('mycellar.directives.form.password').directive('match', [
   function() {
     return {
       restrict: 'A',
       require: '?ngModel',
-      link: function(scope, elem, attrs, ngModel) {
-        if(!ngModel) return; // do nothing if no ng-model
+      link: function(scope, elem, attrs, ctrl) {
+        if (!ctrl) return;
 
-        // watch own value and re-validate on change
-        scope.$watch(attrs.ngModel, function() {
-          validate();
+        var match = '';
+        attrs.$observe('match', function(value) {
+          match = value;
+          ctrl.$validate();
         });
-
-        // observe the other value and re-validate on change
-        attrs.$observe('equals', function (val) {
-          validate();
-        });
-
-        var validate = function() {
-          // values
-          var val1 = ngModel.$viewValue;
-          var val2 = attrs.equals;
-
-          // set validity
-          ngModel.$setValidity('equals', val1 === val2);
+        ctrl.$validators.match = function(value) {
+          return match === value;
         };
       }
     }

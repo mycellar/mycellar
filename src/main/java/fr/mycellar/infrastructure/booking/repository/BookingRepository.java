@@ -29,7 +29,7 @@ import fr.mycellar.domain.booking.BookingEvent;
 /**
  * @author speralta
  */
-public interface BookingRepository extends SimpleRepository<Booking> {
+public interface BookingRepository extends SimpleRepository<Booking, Integer> {
 
     /**
      * @param bookingEvent

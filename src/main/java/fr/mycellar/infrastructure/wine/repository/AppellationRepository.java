@@ -24,6 +24,6 @@ import fr.mycellar.domain.wine.Appellation;
 /**
  * @author speralta
  */
-public interface AppellationRepository extends SimpleRepository<Appellation> {
+public interface AppellationRepository extends SimpleRepository<Appellation, Integer> {
 
 }

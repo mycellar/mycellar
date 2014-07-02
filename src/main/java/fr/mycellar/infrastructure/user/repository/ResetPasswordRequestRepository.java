@@ -25,7 +25,7 @@ import fr.mycellar.domain.user.User;
 /**
  * @author speralta
  */
-public interface ResetPasswordRequestRepository extends SimpleRepository<ResetPasswordRequest> {
+public interface ResetPasswordRequestRepository extends SimpleRepository<ResetPasswordRequest, Integer> {
 
     /**
      * @param user

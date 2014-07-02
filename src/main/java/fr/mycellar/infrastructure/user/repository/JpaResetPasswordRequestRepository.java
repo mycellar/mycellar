@@ -33,7 +33,7 @@ import fr.mycellar.domain.user.User;
  */
 @Named
 @Singleton
-public class JpaResetPasswordRequestRepository extends JpaSimpleRepository<ResetPasswordRequest> implements ResetPasswordRequestRepository {
+public class JpaResetPasswordRequestRepository extends JpaSimpleRepository<ResetPasswordRequest, Integer> implements ResetPasswordRequestRepository {
 
     /**
      * Default constructor.

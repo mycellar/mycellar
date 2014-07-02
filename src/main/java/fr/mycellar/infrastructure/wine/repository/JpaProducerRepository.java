@@ -29,7 +29,7 @@ import fr.mycellar.domain.wine.Producer;
  */
 @Named
 @Singleton
-public class JpaProducerRepository extends JpaSimpleRepository<Producer> implements ProducerRepository {
+public class JpaProducerRepository extends JpaSimpleRepository<Producer, Integer> implements ProducerRepository {
 
     /**
      * Default constructor.

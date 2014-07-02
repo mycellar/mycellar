@@ -24,6 +24,6 @@ import fr.mycellar.domain.wine.Region;
 /**
  * @author speralta
  */
-public interface RegionRepository extends SimpleRepository<Region> {
+public interface RegionRepository extends SimpleRepository<Region, Integer> {
 
 }

@@ -24,6 +24,6 @@ import fr.mycellar.domain.wine.Wine;
 /**
  * @author speralta
  */
-public interface WineRepository extends SimpleRepository<Wine> {
+public interface WineRepository extends SimpleRepository<Wine, Integer> {
 
 }

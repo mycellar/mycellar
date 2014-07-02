@@ -2,6 +2,8 @@ spring:
   application:
     name: MyCellar
   jpa:
+    generate-ddl: false
+    properties:
     hibernate:
       ddl-auto: none
       naming-strategy: org.hibernate.cfg.DefaultNamingStrategy
@@ -15,3 +17,19 @@ spring:
             worker:
               execution: async
               thread_pool_size: 3
+---
+spring:
+  profiles: mysql
+  jpa:
+    generate-ddl: true
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.MySQL5Dialect
+---
+spring:
+  profiles: h2
+  jpa:
+    generate-ddl: true
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.H2Dialect

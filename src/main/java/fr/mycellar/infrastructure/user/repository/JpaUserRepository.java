@@ -29,7 +29,7 @@ import fr.mycellar.domain.user.User;
  */
 @Named
 @Singleton
-public class JpaUserRepository extends JpaSimpleRepository<User> implements UserRepository {
+public class JpaUserRepository extends JpaSimpleRepository<User, Integer> implements UserRepository {
 
     /**
      * Default constructor.

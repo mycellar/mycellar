@@ -13,32 +13,34 @@
         </header>
         <form name="newUserForm" class="form">
           <error-form form="newUserForm"></error-form>
-          <div class="form-group" ng-class="{'has-error': newUserForm.lastname.$invalid}">
+          <div class="form-group" ng-class="{'has-error': !newUserForm.lastname.$pristine && newUserForm.lastname.$invalid}">
             <label class="control-label" for="lastname">Nom de famille</label>
-            <input id="lastname" name="lastname" type="text" class="form-control" placeholder="Nom de famille" ng-model="user.lastname" />
-            <error-ctrl ctrl="newUserForm.lastname"></error-ctrl>
+            <input id="lastname" name="lastname" type="text" class="form-control" placeholder="Nom de famille" ng-model="user.lastname" required />
+            <span class="help-block" ng-if="!newUserForm.lastname.$pristine && newUserForm.lastname.$error.required">Le nom est obligatoire.</span>
           </div>
-          <div class="form-group" ng-class="{'has-error': newUserForm.firstname.$invalid}">
+          <div class="form-group" ng-class="{'has-error': !newUserForm.firstname.$pristine && newUserForm.firstname.$invalid}">
             <label class="control-label" for="firstname">Prénom</label>
-            <input id="firstname" name="firstname" type="text" class="form-control" placeholder="Prénom" ng-model="user.firstname" />
-            <error-ctrl ctrl="newUserForm.firstname"></error-ctrl>
+            <input id="firstname" name="firstname" type="text" class="form-control" placeholder="Prénom" ng-model="user.firstname" required />
+            <span class="help-block" ng-if="!newUserForm.firstname.$pristine && newUserForm.firstname.$error.required">Le prénom est obligatoire.</span>
           </div>
-          <div class="form-group" ng-class="{'has-error': newUserForm.email.$invalid}">
+          <div class="form-group" ng-class="{'has-error': !newUserForm.email.$pristine && newUserForm.email.$invalid}">
             <label class="control-label" for="email">email</label>
-            <input id="email" name="email" type="email" class="form-control" placeholder="email" ng-model="user.email" />
-            <error-ctrl ctrl="newUserForm.email"></error-ctrl>
+            <input id="email" name="email" type="email" class="form-control" placeholder="email" ng-model="user.email" required />
+            <span class="help-block" ng-if="!newUserForm.email.$pristine && newUserForm.email.$error.required">L'email est obligatoire.</span>
+            <span class="help-block" ng-if="!newUserForm.email.$pristine && newUserForm.email.$error.email">L'email n'est pas correct.</span>
+            <span class="help-block" ng-if="!newUserForm.email.$pristine && newUserForm.email.$error.BusinessError_USER_00001">Un compte existe déjà pour cet email.</span>
           </div>
-          <div class="form-group" ng-class="{'has-error': newUserForm.password.$invalid}">
+          <div class="form-group" ng-class="{'has-error': !newUserForm.password.$pristine && newUserForm.password.$invalid}">
             <label class="control-label" for="password">Mot de passe</label>
-            <input type="password" id="password" name="password" class="form-control" placeholder="Mot de passe" ng-model="user.password" equals="{{password2}}" />
-            <error-ctrl ctrl="newUserForm.password"></error-ctrl>
+            <input type="password" id="password" name="password" class="form-control" placeholder="Mot de passe" ng-model="user.password" required />
+            <span class="help-block" ng-if="!newUserForm.password.$pristine && newUserForm.password.$error.required">Le mot de passe est obligatoire.</span>
           </div>
-          <div class="form-group" ng-class="{'has-error': newUserForm.password2.$invalid}">
+          <div class="form-group" ng-class="{'has-error': !newUserForm.password2.$pristine && newUserForm.password2.$invalid}">
             <label class="control-label" for="password2">Confirmation du mot de passe</label>
-            <input type="password" id="password2" name="password2" class="form-control" placeholder="Confirmation du mot de passe" ng-model="password2" equals="{{user.password}}" />
-            <error-ctrl ctrl="newUserForm.password2"></error-ctrl>
+            <input type="password" id="password2" name="password2" class="form-control" placeholder="Confirmation du mot de passe" ng-model="password2" match="{{user.password}}" />
+            <span class="help-block" ng-if="!newUserForm.password2.$pristine && newUserForm.password2.$error.match">La confirmation ne correspond pas au mot de passe.</span>
           </div>
-          <input type="submit" class="btn btn-primary" value="Créer un compte" ng-click="register(user)" />
+          <input type="submit" class="btn btn-primary" value="Créer un compte" ng-click="register(user)" ng-disabled="newUserForm.$invalid" />
         </form>
       </div>
     </div>

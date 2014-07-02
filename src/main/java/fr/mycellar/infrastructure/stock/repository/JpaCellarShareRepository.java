@@ -29,7 +29,7 @@ import fr.mycellar.domain.stock.CellarShare;
  */
 @Named
 @Singleton
-public class JpaCellarShareRepository extends JpaSimpleRepository<CellarShare> implements CellarShareRepository {
+public class JpaCellarShareRepository extends JpaSimpleRepository<CellarShare, Integer> implements CellarShareRepository {
 
     /**
      * Default constructor.

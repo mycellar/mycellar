@@ -24,7 +24,7 @@ import fr.mycellar.domain.stack.Stack;
 /**
  * @author speralta
  */
-public interface StackRepository extends SimpleRepository<Stack> {
+public interface StackRepository extends SimpleRepository<Stack, Integer> {
 
     /**
      * 

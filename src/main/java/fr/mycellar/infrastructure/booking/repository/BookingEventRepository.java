@@ -24,7 +24,7 @@ import fr.mycellar.domain.booking.BookingEvent;
 /**
  * @author speralta
  */
-public interface BookingEventRepository extends SimpleRepository<BookingEvent> {
+public interface BookingEventRepository extends SimpleRepository<BookingEvent, Integer> {
 
     BookingEvent cleanSaveForBottles(BookingEvent bookingEvent);
 

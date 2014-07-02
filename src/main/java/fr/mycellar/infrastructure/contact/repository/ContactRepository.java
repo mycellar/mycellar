@@ -27,7 +27,7 @@ import fr.mycellar.domain.contact.Contact;
 /**
  * @author speralta
  */
-public interface ContactRepository extends SimpleRepository<Contact> {
+public interface ContactRepository extends SimpleRepository<Contact, Integer> {
 
     List<Contact> getAllToContact();
 

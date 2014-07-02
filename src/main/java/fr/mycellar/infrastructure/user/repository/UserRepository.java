@@ -24,6 +24,6 @@ import fr.mycellar.domain.user.User;
 /**
  * @author speralta
  */
-public interface UserRepository extends SimpleRepository<User> {
+public interface UserRepository extends SimpleRepository<User, Integer> {
 
 }

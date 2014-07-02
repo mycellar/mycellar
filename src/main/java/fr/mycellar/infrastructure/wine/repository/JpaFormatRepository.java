@@ -29,7 +29,7 @@ import fr.mycellar.domain.wine.Format;
  */
 @Named
 @Singleton
-public class JpaFormatRepository extends JpaSimpleRepository<Format> implements FormatRepository {
+public class JpaFormatRepository extends JpaSimpleRepository<Format, Integer> implements FormatRepository {
 
     /**
      * Default constructor.

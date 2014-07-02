@@ -24,6 +24,6 @@ import fr.mycellar.domain.wine.Producer;
 /**
  * @author speralta
  */
-public interface ProducerRepository extends SimpleRepository<Producer> {
+public interface ProducerRepository extends SimpleRepository<Producer, Integer> {
 
 }

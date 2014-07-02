@@ -24,6 +24,6 @@ import fr.mycellar.domain.stock.Stock;
 /**
  * @author speralta
  */
-public interface StockRepository extends SimpleRepository<Stock> {
+public interface StockRepository extends SimpleRepository<Stock, Integer> {
 
 }

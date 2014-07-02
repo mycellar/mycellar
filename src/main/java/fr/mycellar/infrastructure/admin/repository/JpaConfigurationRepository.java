@@ -29,7 +29,7 @@ import fr.mycellar.domain.admin.Configuration;
  */
 @Named
 @Singleton
-public class JpaConfigurationRepository extends JpaSimpleRepository<Configuration> implements ConfigurationRepository {
+public class JpaConfigurationRepository extends JpaSimpleRepository<Configuration, Integer> implements ConfigurationRepository {
 
     /**
      * Default constructor.

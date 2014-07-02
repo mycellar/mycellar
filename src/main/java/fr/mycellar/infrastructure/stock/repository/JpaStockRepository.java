@@ -29,7 +29,7 @@ import fr.mycellar.domain.stock.Stock;
  */
 @Named
 @Singleton
-public class JpaStockRepository extends JpaSimpleRepository<Stock> implements StockRepository {
+public class JpaStockRepository extends JpaSimpleRepository<Stock, Integer> implements StockRepository {
 
     /**
      * Default constructor.

@@ -25,7 +25,7 @@ import fr.mycellar.domain.shared.exception.BusinessException;
 /**
  * @author speralta
  */
-public abstract class AbstractSimpleService<E extends IdentifiedEntity, R extends SimpleRepository<E>> extends AbstractGenericService<R, E, Integer> implements SimpleService<E> {
+public abstract class AbstractSimpleService<E extends IdentifiedEntity, R extends SimpleRepository<E, Integer>> extends AbstractGenericService<R, E, Integer> implements SimpleService<E> {
 
     @Override
     public final E getById(Integer id) {

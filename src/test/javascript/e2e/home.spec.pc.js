@@ -21,7 +21,7 @@ describe('E2E: Testing home', function() {
 
       // collapse nav
       homePage.getNavToggle().click();
-      browser.driver.sleep(200); // sleep to wait animation ending
+      browser.driver.sleep(1000); // sleep to wait animation ending
       expect(homePage.getNav().isDisplayed()).to.eventually.be.false;
     });
     

@@ -24,6 +24,6 @@ import fr.mycellar.domain.admin.Configuration;
 /**
  * @author speralta
  */
-public interface ConfigurationRepository extends SimpleRepository<Configuration> {
+public interface ConfigurationRepository extends SimpleRepository<Configuration, Integer> {
 
 }

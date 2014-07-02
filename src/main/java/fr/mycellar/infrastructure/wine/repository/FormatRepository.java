@@ -24,6 +24,6 @@ import fr.mycellar.domain.wine.Format;
 /**
  * @author speralta
  */
-public interface FormatRepository extends SimpleRepository<Format> {
+public interface FormatRepository extends SimpleRepository<Format, Integer> {
 
 }

@@ -29,7 +29,7 @@ import fr.mycellar.domain.wine.Country;
  */
 @Named
 @Singleton
-public class JpaCountryRepository extends JpaSimpleRepository<Country> implements CountryRepository {
+public class JpaCountryRepository extends JpaSimpleRepository<Country, Integer> implements CountryRepository {
 
     /**
      * Default constructor.

@@ -29,7 +29,7 @@ import fr.mycellar.domain.stack.Stack;
  */
 @Named
 @Singleton
-public class JpaStackRepository extends JpaSimpleRepository<Stack> implements StackRepository {
+public class JpaStackRepository extends JpaSimpleRepository<Stack, Integer> implements StackRepository {
 
     /**
      * Default constructor.

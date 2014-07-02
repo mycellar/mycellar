@@ -29,7 +29,7 @@ import fr.mycellar.domain.wine.Appellation;
  */
 @Named
 @Singleton
-public class JpaAppellationRepository extends JpaSimpleRepository<Appellation> implements AppellationRepository {
+public class JpaAppellationRepository extends JpaSimpleRepository<Appellation, Integer> implements AppellationRepository {
 
     /**
      * Default constructor.

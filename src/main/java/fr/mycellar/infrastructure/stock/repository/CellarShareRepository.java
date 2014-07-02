@@ -24,6 +24,6 @@ import fr.mycellar.domain.stock.CellarShare;
 /**
  * @author speralta
  */
-public interface CellarShareRepository extends SimpleRepository<CellarShare> {
+public interface CellarShareRepository extends SimpleRepository<CellarShare, Integer> {
 
 }

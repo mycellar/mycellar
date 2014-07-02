@@ -27,7 +27,7 @@ import fr.mycellar.domain.shared.IdentifiedEntity;
 /**
  * @author speralta
  */
-public abstract class AbstractSearchableService<E extends IdentifiedEntity, R extends SimpleRepository<E>> extends AbstractSimpleService<E, R> implements SearchableService<E> {
+public abstract class AbstractSearchableService<E extends IdentifiedEntity, R extends SimpleRepository<E, Integer>> extends AbstractSimpleService<E, R> implements SearchableService<E> {
 
     @Override
     public final long countAllLike(String term, SearchParameters<E> searchParameters) {

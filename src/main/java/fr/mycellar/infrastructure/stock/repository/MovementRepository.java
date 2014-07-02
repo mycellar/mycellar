@@ -24,6 +24,6 @@ import fr.mycellar.domain.stock.Movement;
 /**
  * @author speralta
  */
-public interface MovementRepository extends SimpleRepository<Movement> {
+public interface MovementRepository extends SimpleRepository<Movement, Integer> {
 
 }
