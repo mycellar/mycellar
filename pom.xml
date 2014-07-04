@@ -84,7 +84,7 @@
     <jetty.version>9.1.1.v20140108</jetty.version>
     <servlet-api.version>3.1.0</servlet-api.version>
     <hibernate-entitymanager.version>4.3.5.Final</hibernate-entitymanager.version>
-    <hibernate-search.version>5.0.0.Alpha2</hibernate-search.version>
+    <hibernate-search.version>5.0.0.Alpha4</hibernate-search.version>
     <jersey.version>1.18</jersey.version>
     <jackson.version>2.3.3</jackson.version>
   </properties>
@@ -750,7 +750,7 @@
     <dependency>
       <groupId>io.github.jpasearch</groupId>
       <artifactId>jpasearch</artifactId>
-      <version>0.2.1</version>
+      <version>0.2.2-SNAPSHOT</version>
     </dependency>
 
     <!-- Test -->
