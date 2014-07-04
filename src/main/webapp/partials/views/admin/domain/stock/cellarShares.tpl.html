@@ -22,7 +22,7 @@
             <th class="actions"><a href ng-click="new()" class="btn btn-default btn-xs"><i class="fa fa-plus-circle"></i></a></th>
           </tr>
         </thead>
-        <tbody ng-controller="LoadingCtrl">
+        <tbody>
           <tr ng-repeat="cellarShare in tableContext.items">
             <td>{{cellarShare.cellar.name}}</td>
             <td>{{cellarShare.email}}</td>
@@ -32,7 +32,7 @@
               <a href ng-click="delete(tableContext.id)" class="btn btn-danger btn-xs"><i class="fa fa-minus-circle"></i></a>
             </td>
           </tr>
-          <tr ng-if="!loading && tableContext.items.length == 0">
+          <tr ng-if="tableContext.items.length == 0">
             <td colspan="4" class="text-center">Aucune cave ne correspond aux filtres.</td>
           </tr>
         </tbody>

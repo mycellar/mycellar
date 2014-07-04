@@ -109,7 +109,7 @@
                     <th>Type <icon-sort attribute="type" table-context="tableContext" /></th>
                   </tr>
                 </thead>
-                <tbody ng-controller="LoadingCtrl" >
+                <tbody >
                   <tr ng-repeat="wine in tableContext.items">
                     <td>{{wine.appellation.region.country.name}}</td>
                     <td>{{wine.appellation.region.name}}</td>
@@ -120,7 +120,7 @@
                     <td>{{wine.color | wineColorRenderer}}</td>
                     <td>{{wine.type | wineTypeRenderer}}</td>
                   </tr>
-                  <tr ng-if="!loading && tableContext.items.length == 0">
+                  <tr ng-if="tableContext.items.length == 0">
                     <td colspan="8" class="text-center">Aucun vin ne correspond aux filtres</td>
                   </tr>
                 </tbody>

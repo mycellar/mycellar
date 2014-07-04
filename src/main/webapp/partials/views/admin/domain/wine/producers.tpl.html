@@ -16,7 +16,7 @@
             <th class="actions"><a href ng-click="new()" class="btn btn-default btn-xs"><i class="fa fa-plus-circle"></i></a></th>
           </tr>
         </thead>
-        <tbody ng-controller="LoadingCtrl">
+        <tbody>
           <tr ng-repeat="producer in tableContext.items">
             <td>{{producer.name}}</td>
             <td>
@@ -24,7 +24,7 @@
               <a href ng-click="delete(producer.id)" class="btn btn-danger btn-xs"><i class="fa fa-minus-circle"></i></a>
             </td>
           </tr>
-          <tr ng-if="!loading && tableContext.items.length == 0">
+          <tr ng-if="tableContext.items.length == 0">
             <td colspan="2" class="text-center">Aucun producteur ne correspond aux filtres.</td>
           </tr>
         </tbody>

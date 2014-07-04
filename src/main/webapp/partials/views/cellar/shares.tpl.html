@@ -28,7 +28,7 @@
                     <td>{{cellarShare.email}}</td>
                     <td>{{cellarShare.accessRight | accessRightRenderer}}</td>
                   </tr>
-                  <tr ng-if="!loading && tableContext.items.length == 0">
+                  <tr ng-if="tableContext.items.length == 0">
                     <td colspan="2" class="text-center">Aucun partage.</td>
                   </tr>
                 </tbody>

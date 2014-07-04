@@ -23,7 +23,7 @@
                 </th>
               </tr>
             </thead>
-            <tbody ng-controller="LoadingCtrl">
+            <tbody>
               <tr ng-repeat="drinkBottle in drink.drinkBottles">
                 <td>{{drinkBottle.bottle.wine.producer.name}}</td>
                 <td>{{drinkBottle.bottle.wine.appellation.name}}</td>
@@ -39,7 +39,7 @@
                   <a href ng-click="remove(drinkBottle)" class="btn btn-danger btn-xs"><i class="fa fa-minus-circle"></i></a>
                 </td>
               </tr>
-              <tr ng-if="!loading && drink.drinkBottles.length == 0">
+              <tr ng-if="drink.drinkBottles.length == 0">
                 <td colspan="10" class="text-center">Aucune bouteille dans le colis.</td>
               </tr>
             </tbody>

@@ -39,7 +39,7 @@
                     <td>{{movement.bottle.format | formatRenderer}}</td>
                     <td>{{movement.number}}</td>
                   </tr>
-                  <tr ng-if="!loading && tableContext.items.length == 0">
+                  <tr ng-if="tableContext.items.length == 0">
                     <td colspan="5" class="text-center">Ni entrée, ni sorties dans cette cave.</td>
                   </tr>
                 </tbody>

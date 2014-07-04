@@ -59,15 +59,6 @@ footer {
   width: 64px;
 }
 
-.loading {
-  top: 20%;
-  left: 40%;
-  position: fixed;
-  text-align: center;
-  width: 200px;
-  z-index: 1000;
-}
-
 .table th.stackCount, .table td.stackCount {
   text-align: center;
   min-width: 60px;

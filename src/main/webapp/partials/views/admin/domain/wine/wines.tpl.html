@@ -43,7 +43,7 @@
             <th class="actions"><a href ng-click="new()" class="btn btn-default btn-xs"><i class="fa fa-plus-circle"></i></a></th>
           </tr>
         </thead>
-        <tbody ng-controller="LoadingCtrl" >
+        <tbody >
           <tr ng-repeat="wine in tableContext.items">
             <td>{{wine.appellation.region.country.name}}</td>
             <td>{{wine.appellation.region.name}}</td>
@@ -58,7 +58,7 @@
               <a href ng-click="delete(wine.id)" class="btn btn-danger btn-xs"><i class="fa fa-minus-circle"></i></a>
             </td>
           </tr>
-          <tr ng-if="!loading && tableContext.items.length == 0">
+          <tr ng-if="tableContext.items.length == 0">
             <td colspan="9" class="text-center">Aucun vin ne correspond aux filtres.</td>
           </tr>
         </tbody>

@@ -13,7 +13,7 @@
         <pagination items-per-page="itemsPerPage" total-items="totalItems" ng-model="currentPage" ng-change="setPage()" max-size="4" boundary-links="false" direction-links="true"></pagination>
       </nav>
     </div>
-    <div class="col-md-10" ng-controller="LoadingCtrl">
+    <div class="col-md-10">
       <section>
         <div ng-if="booking != null">
           <h2>{{booking.bookingEvent.name}} du {{booking.bookingEvent.start}} au {{booking.bookingEvent.end}}</h2>
@@ -47,7 +47,7 @@
             </table>
           </div>
         </div>
-        <p ng-if="!loading && booking == null">Aucune réservation</p>
+        <p ng-if="booking == null">Aucune réservation</p>
       </section>
     </div>
   </div>

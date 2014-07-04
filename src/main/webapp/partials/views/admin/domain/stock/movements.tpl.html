@@ -50,7 +50,7 @@
             <th class="actions"><a href ng-click="new()" class="btn btn-default btn-xs"><i class="fa fa-plus-circle"></i></a></th>
           </tr>
         </thead>
-        <tbody ng-controller="LoadingCtrl">
+        <tbody>
           <tr ng-repeat="movement in tableContext.items">
             <td>{{movement.type}}</td>
             <td>{{movement.cellar.owner.email}}</td>
@@ -64,7 +64,7 @@
               <a href ng-click="delete(movement.id)" class="btn btn-danger btn-xs"><i class="fa fa-minus-circle"></i></a>
             </td>
           </tr>
-          <tr ng-if="!loading && tableContext.items.length == 0">
+          <tr ng-if="tableContext.items.length == 0">
             <td colspan="8" class="text-center">Aucune cave ne correspond aux filtres.</td>
           </tr>
         </tbody>

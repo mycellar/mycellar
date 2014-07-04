@@ -11,7 +11,7 @@ angular.module('mycellar', [
   'ngAnimate',
   'ui.bootstrap',
   'http-auth-interceptor',
-  'mycellar.loading',
+  'angular-loading-bar',
   'mycellar.services.menu',
   'mycellar.services.security',
   'mycellar.controllers.errors',

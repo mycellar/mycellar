@@ -18,7 +18,7 @@
             <th class="actions"><a href ng-click="new()" class="btn btn-default btn-xs"><i class="fa fa-plus-circle"></i></a></th>
           </tr>
         </thead>
-        <tbody ng-controller="LoadingCtrl">
+        <tbody>
           <tr ng-repeat="contact in tableContext.items">
             <td>{{contact.producer.name}}</td>
             <td>{{contact.current}}</td>
@@ -28,7 +28,7 @@
               <a href ng-click="delete(contact.id)" class="btn btn-danger btn-xs"><i class="fa fa-minus-circle"></i></a>
             </td>
           </tr>
-          <tr ng-if="!loading && tableContext.items.length == 0">
+          <tr ng-if="tableContext.items.length == 0">
             <td colspan="5" class="text-center">Aucun contact ne correspond aux filtres.</td>
           </tr>
         </tbody>

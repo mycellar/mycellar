@@ -38,7 +38,7 @@
             </th>
           </tr>
         </thead>
-        <tbody ng-controller="LoadingCtrl">
+        <tbody>
           <tr ng-repeat="bookingBottle in bookingEvent.bottles">
             <td>{{bookingBottle.position}}</td>
             <td>{{bookingBottle.bottle.wine.producer.name}}</td>
@@ -57,7 +57,7 @@
               <a href ng-click="removeBookingBottle(bookingBottle)" class="btn btn-danger btn-xs"><i class="fa fa-minus-circle"></i></a>
             </td>
           </tr>
-          <tr ng-if="!loading && bookingEvent.bottles.length == 0">
+          <tr ng-if="bookingEvent.bottles.length == 0">
             <td colspan="11" class="text-center">Aucune bouteille dans la campagne.</td>
           </tr>
         </tbody>

@@ -11,7 +11,7 @@
             <th class="actions"></th>
           </tr>
         </thead>
-        <tbody ng-controller="LoadingCtrl">
+        <tbody>
           <tr ng-repeat="configuration in tableContext.items">
             <td>{{configuration.key}}</td>
             <td>{{configuration.value}}</td>
@@ -19,7 +19,7 @@
               <a href ng-click="edit(configuration.id)" class="btn btn-default btn-xs"><i class="fa fa-pencil"></i></a>
             </td>
           </tr>
-          <tr ng-if="!loading && tableContext.items.length == 0">
+          <tr ng-if="tableContext.items.length == 0">
             <td colspan="3" class="text-center">Aucune configuration.</td>
           </tr>
         </tbody>

@@ -19,7 +19,7 @@
           <th class="actions"></th>
         </tr>
       </thead>
-      <tbody ng-controller="LoadingCtrl">
+      <tbody>
         <tr ng-repeat="logger in loggers | filter:tableContext.filters | orderBy:tableContext.orderByFilterPredicates()">
           <td>{{logger.name}}</td>
           <td>{{logger.level}}</td>
@@ -34,7 +34,7 @@
             </div>
           </td>
         </tr>
-        <tr ng-if="!loading && (loggers|filter:tableContext.filters).length == 0">
+        <tr ng-if="(loggers|filter:tableContext.filters).length == 0">
           <td colspan="3" class="text-center">Aucun logger ne correspond aux filtres.</td>
         </tr>
       </tbody>

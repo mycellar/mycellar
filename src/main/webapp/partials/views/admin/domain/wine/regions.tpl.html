@@ -21,7 +21,7 @@
             <th class="actions"><a href ng-click="new()" class="btn btn-default btn-xs"><i class="fa fa-plus-circle"></i></a></th>
           </tr>
         </thead>
-        <tbody ng-controller="LoadingCtrl">
+        <tbody>
           <tr ng-repeat="region in tableContext.items">
             <td>{{region.country.name}}</td>
             <td>{{region.name}}</td>
@@ -30,7 +30,7 @@
               <a href ng-click="delete(region.id)" class="btn btn-danger btn-xs"><i class="fa fa-minus-circle"></i></a>
             </td>
           </tr>
-          <tr ng-if="!loading && tableContext.items.length == 0">
+          <tr ng-if="tableContext.items.length == 0">
             <td colspan="3" class="text-center">Aucune région ne correspond aux filtres.</td>
           </tr>
         </tbody>

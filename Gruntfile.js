@@ -163,6 +163,7 @@ module.exports = function(grunt) {
           './bower_components/bootstrap/dist/css/bootstrap.css',
           './bower_components/bootstrap/dist/css/bootstrap-theme.css',
           './bower_components/font-awesome/css/font-awesome.css',
+          './bower_components/angular-loading-bar/build/loading-bar.css',
           './src/main/css/**/*.css'
         ]
       },
@@ -178,6 +179,7 @@ module.exports = function(grunt) {
           './bower_components/angular-route/angular-route.js',
           './bower_components/angular-animate/angular-animate.js',
           './bower_components/angular-i18n/angular-locale_fr-fr.js',
+          './bower_components/angular-loading-bar/build/loading-bar.js',
           './bower_components/angular-bootstrap/ui-bootstrap-tpls.js',
           './bower_components/angular-http-auth/src/http-auth-interceptor.js',
           './src/main/javascript/**/*.js'

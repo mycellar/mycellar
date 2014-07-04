@@ -12,7 +12,7 @@
             <th class="actions"><a href ng-click="deleteAll()" class="btn btn-danger btn-xs" alt="Purger les stacks"><i class="fa fa-minus-circle"></i></a></th>
           </tr>
         </thead>
-        <tbody ng-controller="LoadingCtrl">
+        <tbody>
           <tr ng-repeat="stack in tableContext.items">
             <td>{{stack.hashCode}}</td>
             <td class="stack">{{stack.stack | firstLine}}</td>
@@ -22,7 +22,7 @@
               <a href ng-click="delete(stack.id)" class="btn btn-danger btn-xs"><i class="fa fa-minus-circle"></i></a>
             </td>
           </tr>
-          <tr ng-if="!loading && tableContext.items.length == 0">
+          <tr ng-if="tableContext.items.length == 0">
             <td colspan="4" class="text-center">Aucune stack.</td>
           </tr>
         </tbody>
