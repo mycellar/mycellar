@@ -16,13 +16,13 @@
         <li class="divider-vertical"></li>
         <span ng-if="false" ng-repeat-start="menu in menuService.getAll()"></span>
         <li ng-if="menu.pages" ng-class="{active: menu.active}" class="dropdown">
-          <a href class="dropdown-toggle" title="{{menu.label}}"><i ng-if="menu.icon" class="fa fa-{{menu.icon}}"></i><span class="visible-xs visible-lg">&nbsp;{{menu.label}}</span> <b class="caret"></b></a>
+          <a href class="dropdown-toggle" title="{{menu.label}}"><i ng-if="menu.icon" class="fa fa-{{menu.icon}}"></i><span class="visible-xs-inline visible-lg-inline">&nbsp;{{menu.label}}</span> <b class="caret"></b></a>
           <ul class="dropdown-menu">
             <li ng-repeat="sub in menu.pages" ng-class="{active: sub.active}"><a ng-href="{{sub.route}}" ng-click="$emit('collapse')">{{sub.label}}</a></li>
           </ul>
         </li>
         <li ng-if="!menu.pages" ng-class="{active: menu.active}">
-          <a ng-href="{{menu.route}}" ng-click="$emit('collapse')" title="{{menu.label}}"><i ng-if="menu.icon" class="fa fa-{{menu.icon}}"></i><span class="visible-xs visible-lg">&nbsp;{{menu.label}}</span></a>
+          <a ng-href="{{menu.route}}" ng-click="$emit('collapse')" title="{{menu.label}}"><i ng-if="menu.icon" class="fa fa-{{menu.icon}}"></i><span class="visible-xs-inline visible-lg-inline">&nbsp;{{menu.label}}</span></a>
         </li>
         <span ng-if="false" ng-repeat-end></span>
         <li class="divider-vertical"></li>
