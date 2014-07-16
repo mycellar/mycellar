@@ -46,7 +46,7 @@ angular.module('mycellar.controllers.admin.domain.stack.stacks').controller('Adm
 
 angular.module('mycellar.controllers.admin.domain.stack.stacks').controller('AdminDomainStackController', [
   '$scope', 'adminDomainService', 'item', 
-  function ($scope, stack, adminDomainService, item) {
+  function ($scope, adminDomainService, item) {
     $scope.stack = item;
     adminDomainService.editMethods({
       scope: $scope,
