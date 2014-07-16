@@ -32,6 +32,9 @@ import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 import javax.xml.bind.annotation.XmlTransient;
 
+import lombok.Getter;
+import lombok.Setter;
+
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.hibernate.search.annotations.Indexed;
 
@@ -53,11 +56,14 @@ public class Format extends NamedEntity {
     private static final long serialVersionUID = 201111181451L;
 
     @Column(name = "CAPACITY")
+    @Getter
+    @Setter
     private float capacity;
 
     @Id
     @GeneratedValue(generator = "FORMAT_ID_GENERATOR")
     @Column(name = "ID", nullable = false)
+    @Getter
     private Integer id;
 
     @OneToMany(mappedBy = "bottle.format")
@@ -67,19 +73,6 @@ public class Format extends NamedEntity {
     @OneToMany(mappedBy = "bottle.format")
     @XmlTransient
     private final Set<Stock> stocks = new HashSet<Stock>();
-
-    public float getCapacity() {
-        return capacity;
-    }
-
-    @Override
-    public Integer getId() {
-        return id;
-    }
-
-    public void setCapacity(float capacity) {
-        this.capacity = capacity;
-    }
 
     @Override
     protected boolean dataEquals(IdentifiedEntity other) {

@@ -38,6 +38,9 @@ import javax.persistence.UniqueConstraint;
 import javax.validation.Valid;
 import javax.xml.bind.annotation.XmlTransient;
 
+import lombok.Getter;
+import lombok.Setter;
+
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.hibernate.search.annotations.Indexed;
 
@@ -64,47 +67,25 @@ public class Region extends NamedEntity {
     @Valid
     @ManyToOne(cascade = { CascadeType.PERSIST, CascadeType.MERGE })
     @JoinColumn(name = "COUNTRY", nullable = false)
+    @Getter
+    @Setter
     private Country country;
 
     @Column(name = "DESCRIPTION")
+    @Getter
+    @Setter
     private String description;
 
     @Id
     @GeneratedValue(generator = "REGION_ID_GENERATOR")
     @Column(name = "ID", nullable = false)
+    @Getter
     private Integer id;
 
     @Embedded
+    @Getter
+    @Setter
     private Map map;
-
-    public Country getCountry() {
-        return country;
-    }
-
-    public String getDescription() {
-        return description;
-    }
-
-    @Override
-    public Integer getId() {
-        return id;
-    }
-
-    public Map getMap() {
-        return map;
-    }
-
-    public void setCountry(Country country) {
-        this.country = country;
-    }
-
-    public void setDescription(String description) {
-        this.description = description;
-    }
-
-    public void setMap(Map map) {
-        this.map = map;
-    }
 
     @Override
     protected boolean dataEquals(IdentifiedEntity other) {

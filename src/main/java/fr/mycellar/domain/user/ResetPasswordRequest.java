@@ -29,6 +29,9 @@ import javax.persistence.ManyToOne;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
+import lombok.Getter;
+import lombok.Setter;
+
 import org.hibernate.annotations.Type;
 import org.joda.time.LocalDateTime;
 
@@ -47,47 +50,25 @@ public class ResetPasswordRequest extends IdentifiedEntity {
     @Id
     @GeneratedValue(generator = "RESET_PASSWORD_REQUEST_ID_GENERATOR")
     @Column(name = "ID", nullable = false)
+    @Getter
     private Integer id;
 
     @Column(name = "DATE_TIME")
     @Type(type = "org.jadira.usertype.dateandtime.joda.PersistentLocalDateTime")
+    @Getter
+    @Setter
     private LocalDateTime dateTime;
 
     @ManyToOne
     @JoinColumn(name = "USER", nullable = false)
+    @Getter
+    @Setter
     private User user;
 
     @Column(name = "REQUEST_KEY", length = 32, unique = true)
+    @Getter
+    @Setter
     private String key;
-
-    public LocalDateTime getDateTime() {
-        return dateTime;
-    }
-
-    public void setDateTime(LocalDateTime dateTime) {
-        this.dateTime = dateTime;
-    }
-
-    public User getUser() {
-        return user;
-    }
-
-    public void setUser(User user) {
-        this.user = user;
-    }
-
-    public String getKey() {
-        return key;
-    }
-
-    public void setKey(String key) {
-        this.key = key;
-    }
-
-    @Override
-    public Integer getId() {
-        return id;
-    }
 
     @Override
     protected boolean dataEquals(IdentifiedEntity other) {

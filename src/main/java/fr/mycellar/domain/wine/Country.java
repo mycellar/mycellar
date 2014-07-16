@@ -33,6 +33,9 @@ import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 import javax.xml.bind.annotation.XmlTransient;
 
+import lombok.Getter;
+import lombok.Setter;
+
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.hibernate.search.annotations.Indexed;
 
@@ -53,40 +56,24 @@ public class Country extends NamedEntity {
     private static final long serialVersionUID = 201111181451L;
 
     @Column(name = "DESCRIPTION")
+    @Getter
+    @Setter
     private String description;
 
     @Id
     @GeneratedValue(generator = "COUNTRY_ID_GENERATOR")
     @Column(name = "ID", nullable = false)
+    @Getter
     private Integer id;
 
     @Embedded
+    @Getter
+    @Setter
     private Map map;
 
     @OneToMany(mappedBy = "country")
     @XmlTransient
     private final Set<Region> regions = new HashSet<Region>();
-
-    public String getDescription() {
-        return description;
-    }
-
-    @Override
-    public Integer getId() {
-        return id;
-    }
-
-    public Map getMap() {
-        return map;
-    }
-
-    public void setDescription(String description) {
-        this.description = description;
-    }
-
-    public void setMap(Map map) {
-        this.map = map;
-    }
 
     @Override
     protected boolean dataEquals(IdentifiedEntity other) {

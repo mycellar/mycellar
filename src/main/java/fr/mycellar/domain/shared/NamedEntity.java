@@ -21,6 +21,9 @@ package fr.mycellar.domain.shared;
 import javax.persistence.Column;
 import javax.persistence.MappedSuperclass;
 
+import lombok.Getter;
+import lombok.Setter;
+
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.hibernate.search.annotations.Field;
 import org.hibernate.search.annotations.Indexed;
@@ -36,15 +39,9 @@ public abstract class NamedEntity extends IdentifiedEntity {
 
     @Column(name = "NAME", nullable = false)
     @Field
+    @Getter
+    @Setter
     private String name;
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
 
     @Override
     public String toString() {

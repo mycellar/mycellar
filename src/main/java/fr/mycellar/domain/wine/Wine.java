@@ -44,6 +44,9 @@ import javax.validation.Valid;
 import javax.validation.constraints.Pattern;
 import javax.xml.bind.annotation.XmlTransient;
 
+import lombok.Getter;
+import lombok.Setter;
+
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.hibernate.search.annotations.Indexed;
 
@@ -75,10 +78,14 @@ public class Wine extends NamedEntity {
     @Valid
     @ManyToOne(cascade = { CascadeType.PERSIST, CascadeType.MERGE })
     @JoinColumn(name = "APPELLATION", nullable = false)
+    @Getter
+    @Setter
     private Appellation appellation;
 
     @Column(name = "COLOR", nullable = false)
     @Enumerated(EnumType.ORDINAL)
+    @Getter
+    @Setter
     private WineColorEnum color;
 
     @ElementCollection
@@ -89,100 +96,44 @@ public class Wine extends NamedEntity {
     private final Map<Varietal, Integer> composition = new HashMap<Varietal, Integer>();
 
     @Column(name = "DESCRIPTION")
+    @Getter
+    @Setter
     private String description;
 
     @Id
     @GeneratedValue(generator = "WINE_ID_GENERATOR")
     @Column(name = "ID", nullable = false)
+    @Getter
     private Integer id;
 
     @Pattern(regexp = ValidationPattern.URL_PATTERN)
     @Column(name = "PHOTO_URL")
+    @Getter
+    @Setter
     private String photoUrl;
 
     @Valid
     @ManyToOne(cascade = { CascadeType.PERSIST, CascadeType.MERGE })
     @JoinColumn(name = "PRODUCER", nullable = false)
+    @Getter
+    @Setter
     private Producer producer;
 
     @Column(name = "RANKING")
+    @Getter
+    @Setter
     private String ranking;
 
     @Column(name = "TYPE", nullable = false)
     @Enumerated(EnumType.ORDINAL)
+    @Getter
+    @Setter
     private WineTypeEnum type;
 
     @Column(name = "VINTAGE")
+    @Getter
+    @Setter
     private Integer vintage;
-
-    public Appellation getAppellation() {
-        return appellation;
-    }
-
-    public WineColorEnum getColor() {
-        return color;
-    }
-
-    public String getDescription() {
-        return description;
-    }
-
-    @Override
-    public Integer getId() {
-        return id;
-    }
-
-    public String getPhotoUrl() {
-        return photoUrl;
-    }
-
-    public Producer getProducer() {
-        return producer;
-    }
-
-    public String getRanking() {
-        return ranking;
-    }
-
-    public WineTypeEnum getType() {
-        return type;
-    }
-
-    public Integer getVintage() {
-        return vintage;
-    }
-
-    public void setAppellation(Appellation appellation) {
-        this.appellation = appellation;
-    }
-
-    public void setColor(WineColorEnum color) {
-        this.color = color;
-    }
-
-    public void setDescription(String description) {
-        this.description = description;
-    }
-
-    public void setPhotoUrl(String photoUrl) {
-        this.photoUrl = photoUrl;
-    }
-
-    public void setProducer(Producer producer) {
-        this.producer = producer;
-    }
-
-    public void setRanking(String ranking) {
-        this.ranking = ranking;
-    }
-
-    public void setType(WineTypeEnum type) {
-        this.type = type;
-    }
-
-    public void setVintage(Integer vintage) {
-        this.vintage = vintage;
-    }
 
     @Override
     protected boolean dataEquals(IdentifiedEntity other) {

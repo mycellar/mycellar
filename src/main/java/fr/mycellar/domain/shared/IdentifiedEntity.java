@@ -26,6 +26,7 @@ import javax.persistence.Version;
 import javax.xml.bind.annotation.XmlTransient;
 
 import jpasearch.domain.Identifiable;
+import lombok.Getter;
 
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.commons.lang3.builder.ToStringBuilder;
@@ -41,6 +42,7 @@ public abstract class IdentifiedEntity implements Identifiable<Integer>, Seriali
 
     @Version
     @Column(name = "VERSION")
+    @Getter
     private int version;
 
     @Override
@@ -75,10 +77,6 @@ public abstract class IdentifiedEntity implements Identifiable<Integer>, Seriali
     @Override
     public boolean isIdSet() {
         return getId() != null;
-    }
-
-    public int getVersion() {
-        return version;
     }
 
     @Override

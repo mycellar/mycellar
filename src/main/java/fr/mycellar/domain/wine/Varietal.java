@@ -30,6 +30,9 @@ import javax.persistence.Id;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
+import lombok.Getter;
+import lombok.Setter;
+
 import org.apache.commons.lang3.builder.ToStringBuilder;
 
 import fr.mycellar.domain.shared.IdentifiedEntity;
@@ -49,49 +52,27 @@ public class Varietal extends NamedEntity {
     private static final long serialVersionUID = 201111181451L;
 
     @Column(name = "DESCRIPTION")
+    @Getter
+    @Setter
     private String description;
 
     @Column(name = "FLESH")
     @Enumerated(EnumType.STRING)
+    @Getter
+    @Setter
     private VarietalColorEnum flesh;
 
     @Id
     @GeneratedValue(generator = "VARIETAL_ID_GENERATOR")
     @Column(name = "ID", nullable = false)
+    @Getter
     private Integer id;
 
     @Column(name = "SKIN")
     @Enumerated(EnumType.STRING)
+    @Getter
+    @Setter
     private VarietalColorEnum skin;
-
-    public String getDescription() {
-        return description;
-    }
-
-    public VarietalColorEnum getFlesh() {
-        return flesh;
-    }
-
-    @Override
-    public Integer getId() {
-        return id;
-    }
-
-    public VarietalColorEnum getSkin() {
-        return skin;
-    }
-
-    public void setDescription(String description) {
-        this.description = description;
-    }
-
-    public void setFlesh(VarietalColorEnum flesh) {
-        this.flesh = flesh;
-    }
-
-    public void setSkin(VarietalColorEnum skin) {
-        this.skin = skin;
-    }
 
     @Override
     protected boolean dataEquals(IdentifiedEntity other) {

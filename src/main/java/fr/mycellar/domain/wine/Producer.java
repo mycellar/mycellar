@@ -34,6 +34,9 @@ import javax.persistence.Table;
 import javax.validation.constraints.Pattern;
 import javax.xml.bind.annotation.XmlTransient;
 
+import lombok.Getter;
+import lombok.Setter;
+
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.hibernate.search.annotations.Indexed;
 
@@ -55,96 +58,50 @@ public class Producer extends NamedEntity {
     private static final long serialVersionUID = 201111181451L;
 
     @Embedded
+    @Getter
+    @Setter
     private Address address;
 
     @Column(name = "DESCRIPTION", length = 10000)
+    @Getter
+    @Setter
     private String description;
 
     @Column(name = "CONTACT_INFORMATION", length = 10000)
+    @Getter
+    @Setter
     private String contactInformation;
 
     @Id
     @GeneratedValue(generator = "PRODUCER_ID_GENERATOR")
     @Column(name = "ID", nullable = false)
+    @Getter
     private Integer id;
 
     @Column(name = "PHONE")
+    @Getter
+    @Setter
     private String phone;
 
     @Column(name = "FAX")
+    @Getter
+    @Setter
     private String fax;
 
     @Column(name = "EMAIL")
+    @Getter
+    @Setter
     private String email;
 
     @Pattern(regexp = ValidationPattern.URL_PATTERN)
     @Column(name = "WEBSITE_URL")
+    @Getter
+    @Setter
     private String websiteUrl;
 
     @OneToMany(mappedBy = "producer")
     @XmlTransient
     private final Set<Wine> wines = new HashSet<Wine>();
-
-    public String getContactInformation() {
-        return contactInformation;
-    }
-
-    public void setContactInformation(String contactInformation) {
-        this.contactInformation = contactInformation;
-    }
-
-    public String getPhone() {
-        return phone;
-    }
-
-    public void setPhone(String phone) {
-        this.phone = phone;
-    }
-
-    public String getFax() {
-        return fax;
-    }
-
-    public void setFax(String fax) {
-        this.fax = fax;
-    }
-
-    public String getEmail() {
-        return email;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
-    }
-
-    public Address getAddress() {
-        return address;
-    }
-
-    public String getDescription() {
-        return description;
-    }
-
-    @Override
-    public Integer getId() {
-        return id;
-    }
-
-    public String getWebsiteUrl() {
-        return websiteUrl;
-    }
-
-    public void setAddress(Address address) {
-        this.address = address;
-    }
-
-    public void setDescription(String description) {
-        this.description = description;
-    }
-
-    public void setWebsiteUrl(String websiteUrl) {
-        this.websiteUrl = websiteUrl;
-    }
 
     @Override
     protected boolean dataEquals(IdentifiedEntity other) {

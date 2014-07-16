@@ -34,6 +34,9 @@ import javax.persistence.Table;
 import javax.persistence.UniqueConstraint;
 import javax.xml.bind.annotation.XmlTransient;
 
+import lombok.Getter;
+import lombok.Setter;
+
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.hibernate.search.annotations.Field;
 import org.hibernate.search.annotations.Indexed;
@@ -63,73 +66,39 @@ public class User extends IdentifiedEntity {
 
     @Column(name = "EMAIL", nullable = false)
     @Field
+    @Getter
+    @Setter
     private String email;
 
     @Column(name = "FIRSTNAME", nullable = false)
     @Field
+    @Getter
+    @Setter
     private String firstname;
 
     @Id
     @GeneratedValue(generator = "USER_ID_GENERATOR")
     @Column(name = "ID", nullable = false)
+    @Getter
     private Integer id;
 
     @Column(name = "LASTNAME", nullable = false)
     @Field
+    @Getter
+    @Setter
     private String lastname;
 
     @Column(name = "PASSWORD", nullable = false, length = 40)
     @XmlTransient
+    @Getter
+    @Setter
     private String password;
 
     @Column(name = "PROFILE")
     @Enumerated(EnumType.STRING)
+    @Getter
+    @Setter
     private ProfileEnum profile;
-
-    public ProfileEnum getProfile() {
-        return profile;
-    }
-
-    public void setProfile(ProfileEnum profile) {
-        this.profile = profile;
-    }
-
-    public String getEmail() {
-        return email;
-    }
-
-    public String getFirstname() {
-        return firstname;
-    }
-
-    @Override
-    public Integer getId() {
-        return id;
-    }
-
-    public String getLastname() {
-        return lastname;
-    }
-
-    public String getPassword() {
-        return password;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
-    }
-
-    public void setFirstname(String firstname) {
-        this.firstname = firstname;
-    }
-
-    public void setLastname(String lastname) {
-        this.lastname = lastname;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
-    }
 
     @Override
     protected boolean dataEquals(IdentifiedEntity other) {

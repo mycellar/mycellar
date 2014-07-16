@@ -37,6 +37,9 @@ import javax.persistence.Table;
 import javax.persistence.UniqueConstraint;
 import javax.xml.bind.annotation.XmlTransient;
 
+import lombok.Getter;
+import lombok.Setter;
+
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.hibernate.search.annotations.Indexed;
 
@@ -57,52 +60,30 @@ public class Appellation extends NamedEntity {
     private static final long serialVersionUID = 201111181451L;
 
     @Column(name = "DESCRIPTION")
+    @Getter
+    @Setter
     private String description;
 
     @Id
     @GeneratedValue(generator = "APPELLATION_ID_GENERATOR")
     @Column(name = "ID", nullable = false)
+    @Getter
     private Integer id;
 
     @Embedded
+    @Getter
+    @Setter
     private Map map;
 
     @ManyToOne(cascade = { CascadeType.PERSIST, CascadeType.MERGE })
     @JoinColumn(name = "REGION", nullable = false)
+    @Getter
+    @Setter
     private Region region;
 
     @OneToMany(mappedBy = "appellation")
     @XmlTransient
     private final Set<Wine> wines = new HashSet<Wine>();
-
-    public String getDescription() {
-        return description;
-    }
-
-    @Override
-    public Integer getId() {
-        return id;
-    }
-
-    public Map getMap() {
-        return map;
-    }
-
-    public Region getRegion() {
-        return region;
-    }
-
-    public void setDescription(String description) {
-        this.description = description;
-    }
-
-    public void setMap(Map map) {
-        this.map = map;
-    }
-
-    public void setRegion(Region region) {
-        this.region = region;
-    }
 
     @Override
     protected boolean dataEquals(IdentifiedEntity other) {

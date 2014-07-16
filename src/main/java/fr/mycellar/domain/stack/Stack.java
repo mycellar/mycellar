@@ -28,6 +28,9 @@ import javax.persistence.Lob;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
+import lombok.Getter;
+import lombok.Setter;
+
 import org.apache.commons.lang3.builder.ToStringBuilder;
 
 import fr.mycellar.domain.shared.IdentifiedEntity;
@@ -45,21 +48,23 @@ public class Stack extends IdentifiedEntity {
     @Id
     @GeneratedValue(generator = "STACK_ID_GENERATOR")
     @Column(name = "ID", nullable = false)
+    @Getter
     private Integer id;
 
     @Lob
     @Column(name = "STACK")
+    @Getter
     private String stack;
 
     @Column(name = "STACK_COUNT")
+    @Getter
+    @Setter
     private long count = 1;
 
     @Column(name = "STACK_HASH", unique = true)
+    @Getter
+    @Setter
     private int hashCode;
-
-    public long getCount() {
-        return count;
-    }
 
     /**
      * Count + 1.
@@ -68,22 +73,9 @@ public class Stack extends IdentifiedEntity {
         count++;
     }
 
-    public String getStack() {
-        return stack;
-    }
-
     public void setStack(String stack) {
         this.stack = stack;
         hashCode = stack.hashCode();
-    }
-
-    public int getHashCode() {
-        return hashCode;
-    }
-
-    @Override
-    public Integer getId() {
-        return id;
     }
 
     @Override
