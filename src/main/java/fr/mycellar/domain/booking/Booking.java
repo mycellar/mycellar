@@ -36,6 +36,8 @@ import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 import javax.persistence.UniqueConstraint;
 
+import lombok.Getter;
+import lombok.Setter;
 import fr.mycellar.domain.shared.IdentifiedEntity;
 import fr.mycellar.domain.user.User;
 
@@ -52,14 +54,19 @@ public class Booking extends IdentifiedEntity {
     @Id
     @GeneratedValue(generator = "BOOKING_ID_GENERATOR")
     @Column(name = "ID", nullable = false)
+    @Getter
     private Integer id;
 
     @ManyToOne
     @JoinColumn(name = "CUSTOMER", nullable = false)
+    @Getter
+    @Setter
     private User customer;
 
     @ManyToOne(cascade = { CascadeType.PERSIST, CascadeType.MERGE })
     @JoinColumn(name = "BOOKING_EVENT", nullable = false)
+    @Getter
+    @Setter
     private BookingEvent bookingEvent;
 
     // WARNING : DO NOT SET FETCHTYPE TO EAGER, hibernate bug with eager map
@@ -69,32 +76,8 @@ public class Booking extends IdentifiedEntity {
     @JoinTable(name = "BOOKING_QUANTITIES", joinColumns = @JoinColumn(name = "BOOKING"))
     @Column(name = "QUANTITY", nullable = false)
     @MapKeyJoinColumn(name = "BOOKING_BOTTLE")
+    @Getter
     private final Map<BookingBottle, Integer> quantities = new HashMap<BookingBottle, Integer>();
-
-    @Override
-    public Integer getId() {
-        return id;
-    }
-
-    public User getCustomer() {
-        return customer;
-    }
-
-    public void setCustomer(User user) {
-        customer = user;
-    }
-
-    public BookingEvent getBookingEvent() {
-        return bookingEvent;
-    }
-
-    public void setBookingEvent(BookingEvent bookingEvent) {
-        this.bookingEvent = bookingEvent;
-    }
-
-    public Map<BookingBottle, Integer> getQuantities() {
-        return quantities;
-    }
 
     @Override
     protected boolean dataEquals(IdentifiedEntity other) {

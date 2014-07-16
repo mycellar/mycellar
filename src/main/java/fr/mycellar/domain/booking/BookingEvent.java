@@ -37,6 +37,9 @@ import javax.persistence.UniqueConstraint;
 import javax.validation.Valid;
 import javax.xml.bind.annotation.XmlTransient;
 
+import lombok.Getter;
+import lombok.Setter;
+
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.hibernate.annotations.Type;
 import org.hibernate.search.annotations.Indexed;
@@ -77,6 +80,8 @@ public class BookingEvent extends NamedEntity {
     @Id
     @GeneratedValue(generator = "BOOKING_EVENT_ID_GENERATOR")
     @Column(name = "ID", nullable = false)
+    @Getter
+    @Setter
     private Integer id;
 
     @Valid
@@ -84,40 +89,20 @@ public class BookingEvent extends NamedEntity {
     @OrderBy("position")
     @JsonManagedReference("bookingEvent-bottles")
     @JsonDeserialize(as = BookingBottleSet.class)
+    @Getter
     private final Set<BookingBottle> bottles = new BookingBottleSet();
 
     @Column(name = "START", nullable = false)
     @Type(type = "org.jadira.usertype.dateandtime.joda.PersistentLocalDate")
+    @Getter
+    @Setter
     private LocalDate start;
 
     @Column(name = "END", nullable = false)
     @Type(type = "org.jadira.usertype.dateandtime.joda.PersistentLocalDate")
+    @Getter
+    @Setter
     private LocalDate end;
-
-    @Override
-    public Integer getId() {
-        return id;
-    }
-
-    public LocalDate getStart() {
-        return start;
-    }
-
-    public void setStart(LocalDate start) {
-        this.start = start;
-    }
-
-    public LocalDate getEnd() {
-        return end;
-    }
-
-    public void setEnd(LocalDate end) {
-        this.end = end;
-    }
-
-    public Set<BookingBottle> getBottles() {
-        return bottles;
-    }
 
     @Override
     protected boolean dataEquals(IdentifiedEntity other) {

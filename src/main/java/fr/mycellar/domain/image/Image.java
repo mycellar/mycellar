@@ -27,6 +27,9 @@ import javax.persistence.Id;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
+import lombok.Getter;
+import lombok.Setter;
+
 import org.apache.commons.lang3.builder.ToStringBuilder;
 
 import fr.mycellar.domain.shared.IdentifiedEntity;
@@ -42,59 +45,31 @@ public class Image extends NamedEntity {
 
     private static final long serialVersionUID = 201111181451L;
 
-    @Column(name = "CONTENT")
-    private byte[] content;
-
-    @Column(name = "CONTENT_TYPE", nullable = false)
-    private String contentType;
-
-    @Column(name = "HEIGHT")
-    private int height;
-
     @Id
     @GeneratedValue(generator = "IMAGE_ID_GENERATOR")
     @Column(name = "ID", nullable = false)
+    @Getter
     private Integer id;
 
+    @Column(name = "CONTENT")
+    @Getter
+    @Setter
+    private byte[] content;
+
+    @Column(name = "CONTENT_TYPE", nullable = false)
+    @Getter
+    @Setter
+    private String contentType;
+
+    @Column(name = "HEIGHT")
+    @Getter
+    @Setter
+    private int height;
+
     @Column(name = "WIDTH")
+    @Getter
+    @Setter
     private int width;
-
-    public byte[] getContent() {
-        return content;
-    }
-
-    public String getContentType() {
-        return contentType;
-    }
-
-    public int getHeight() {
-        return height;
-    }
-
-    @Override
-    public Integer getId() {
-        return id;
-    }
-
-    public int getWidth() {
-        return width;
-    }
-
-    public void setContent(byte[] content) {
-        this.content = content;
-    }
-
-    public void setContentType(String contentType) {
-        this.contentType = contentType;
-    }
-
-    public void setHeight(int height) {
-        this.height = height;
-    }
-
-    public void setWidth(int width) {
-        this.width = width;
-    }
 
     @Override
     protected boolean dataEquals(IdentifiedEntity other) {

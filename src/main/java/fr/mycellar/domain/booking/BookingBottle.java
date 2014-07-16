@@ -33,6 +33,9 @@ import javax.persistence.UniqueConstraint;
 import javax.validation.Valid;
 import javax.validation.constraints.Pattern;
 
+import lombok.Getter;
+import lombok.Setter;
+
 import com.fasterxml.jackson.annotation.JsonBackReference;
 
 import fr.mycellar.domain.shared.IdentifiedEntity;
@@ -52,83 +55,43 @@ public class BookingBottle extends IdentifiedEntity {
     @Id
     @GeneratedValue(generator = "BOOKING_BOTTLE_ID_GENERATOR")
     @Column(name = "ID", nullable = false)
+    @Getter
     private Integer id;
 
     @Valid
     @ManyToOne
     @JoinColumn(name = "BOOKING_EVENT")
     @JsonBackReference("bookingEvent-bottles")
+    @Getter
+    @Setter
     private BookingEvent bookingEvent;
 
     @Valid
     @Embedded
+    @Getter
+    @Setter
     private Bottle bottle;
 
     @Column(name = "PRICE", precision = 2, length = 6, nullable = false)
+    @Getter
+    @Setter
     private Float price;
 
     @Pattern(regexp = ValidationPattern.URL_PATTERN)
     @Column(name = "URL", nullable = false)
+    @Getter
+    @Setter
     private String url;
 
     @Column(name = "MAX", nullable = false)
+    @Getter
+    @Setter
     private Integer max;
 
     @Column(name = "POSITION", nullable = false)
+    @Getter
+    @Setter
     private Integer position;
-
-    @Override
-    public Integer getId() {
-        return id;
-    }
-
-    public Integer getPosition() {
-        return position;
-    }
-
-    public void setPosition(Integer position) {
-        this.position = position;
-    }
-
-    public Integer getMax() {
-        return max;
-    }
-
-    public void setMax(Integer max) {
-        this.max = max;
-    }
-
-    public Bottle getBottle() {
-        return bottle;
-    }
-
-    public void setBottle(Bottle bottle) {
-        this.bottle = bottle;
-    }
-
-    public BookingEvent getBookingEvent() {
-        return bookingEvent;
-    }
-
-    public void setBookingEvent(BookingEvent bookingEvent) {
-        this.bookingEvent = bookingEvent;
-    }
-
-    public Float getPrice() {
-        return price;
-    }
-
-    public void setPrice(Float price) {
-        this.price = price;
-    }
-
-    public String getUrl() {
-        return url;
-    }
-
-    public void setUrl(String url) {
-        this.url = url;
-    }
 
     @Override
     protected boolean dataEquals(IdentifiedEntity other) {

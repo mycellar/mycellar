@@ -29,6 +29,9 @@ import javax.persistence.Id;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
+import lombok.Getter;
+import lombok.Setter;
+
 import org.apache.commons.lang3.builder.ToStringBuilder;
 
 import fr.mycellar.domain.shared.IdentifiedEntity;
@@ -46,35 +49,19 @@ public class Configuration extends IdentifiedEntity {
     @Id
     @GeneratedValue(generator = "CONFIGURATION_ID_GENERATOR")
     @Column(name = "ID", nullable = false)
+    @Getter
     private Integer id;
 
     @Enumerated(EnumType.STRING)
     @Column(name = "CONFIG_KEY", unique = true, nullable = false)
+    @Getter
+    @Setter
     private ConfigurationKeyEnum key;
 
     @Column(name = "CONFIG_VALUE", length = 2000)
+    @Getter
+    @Setter
     private String value;
-
-    public ConfigurationKeyEnum getKey() {
-        return key;
-    }
-
-    public void setKey(ConfigurationKeyEnum key) {
-        this.key = key;
-    }
-
-    public String getValue() {
-        return value;
-    }
-
-    public void setValue(String value) {
-        this.value = value;
-    }
-
-    @Override
-    public Integer getId() {
-        return id;
-    }
 
     @Override
     protected boolean dataEquals(IdentifiedEntity other) {

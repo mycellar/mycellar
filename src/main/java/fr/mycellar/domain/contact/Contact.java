@@ -32,6 +32,9 @@ import javax.persistence.Table;
 import javax.persistence.UniqueConstraint;
 import javax.validation.Valid;
 
+import lombok.Getter;
+import lombok.Setter;
+
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.hibernate.annotations.Type;
 import org.hibernate.search.annotations.Field;
@@ -55,61 +58,33 @@ public class Contact extends IdentifiedEntity {
     @Id
     @GeneratedValue(generator = "CONTACT_ID_GENERATOR")
     @Column(name = "ID", nullable = false)
+    @Getter
     private Integer id;
 
     @Valid
     @ManyToOne(cascade = { CascadeType.PERSIST, CascadeType.MERGE })
     @JoinColumn(name = "PRODUCER", nullable = false)
+    @Getter
+    @Setter
     private Producer producer;
 
     @Column(name = "TEXT", length = 10000)
     @Field
+    @Getter
+    @Setter
     private String text;
 
     @Column(name = "CURRENT", nullable = false)
     @Type(type = "org.jadira.usertype.dateandtime.joda.PersistentLocalDate")
+    @Getter
+    @Setter
     private LocalDate current;
 
     @Column(name = "NEXT")
     @Type(type = "org.jadira.usertype.dateandtime.joda.PersistentLocalDate")
+    @Getter
+    @Setter
     private LocalDate next;
-
-    public Producer getProducer() {
-        return producer;
-    }
-
-    public void setProducer(Producer producer) {
-        this.producer = producer;
-    }
-
-    public String getText() {
-        return text;
-    }
-
-    public void setText(String text) {
-        this.text = text;
-    }
-
-    public LocalDate getCurrent() {
-        return current;
-    }
-
-    public void setCurrent(LocalDate current) {
-        this.current = current;
-    }
-
-    public LocalDate getNext() {
-        return next;
-    }
-
-    public void setNext(LocalDate next) {
-        this.next = next;
-    }
-
-    @Override
-    public Integer getId() {
-        return id;
-    }
 
     @Override
     protected boolean dataEquals(IdentifiedEntity other) {
