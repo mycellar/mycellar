@@ -379,6 +379,10 @@
           <jettyXml>${project.build.directory}/jetty/jetty.xml</jettyXml>
           <webApp>
             <defaultsDescriptor>${project.build.directory}/jetty/webdefault.xml</defaultsDescriptor>
+            <resourceBases>
+              <resourceBase>src/main/webapp</resourceBase>
+              <resourceBase>target/generated-sources/webapp</resourceBase>
+            </resourceBases>
           </webApp>
           <stopKey>stopJetty</stopKey>
           <stopPort>9999</stopPort>

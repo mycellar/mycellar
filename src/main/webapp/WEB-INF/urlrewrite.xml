@@ -13,6 +13,12 @@
     <to last="true">-</to>
   </rule>
   <rule>
+    <name>LIB</name>
+    <note>To throw an error for wrong lib.</note>
+    <from>^/lib/(.*)</from>
+    <to last="true">-</to>
+  </rule>
+  <rule>
     <name>JS</name>
     <note>To throw an error for wrong js.</note>
     <from>^/js/(.*)</from>
@@ -39,6 +45,11 @@
   <rule>
     <name>index</name>
     <from>^/index.html</from>
+    <to last="true">-</to>
+  </rule>
+  <rule>
+    <name>deps</name>
+    <from>^/deps.html</from>
     <to last="true">-</to>
   </rule>
   <rule>

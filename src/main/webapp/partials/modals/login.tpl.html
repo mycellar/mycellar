@@ -1,9 +1,10 @@
-<div class="modal-header">
-  <h3>Connectez-vous !</h3>
-</div>
-<div class="modal-body">
-  <login-form email="email" password="password"
-    on-login="$close()"
-    on-cancel="$dismiss({reason: 'Login cancelled by user.'})"
-    on-reset-password="$dismiss({reason: 'Forgot password', requestPassword: true})" />
-</div>
+<paper-dialog id="loginDialog" heading="Saisissez vos identifiants" transition="paper-transition-center" layered="true" opened="{{loginDialog != null}}" autoCloseDisabled="true" ng-controller="LoginDialogController">
+  <p>
+    <paper-input id="email" label="Email" type="email" floatingLabel="true" bind-polymer-input="email" required></paper-input>
+    <br/>
+    <paper-input id="password" label="Mot de passe" type="password" floatingLabel="true" bind-polymer-input="password" required></paper-input>
+  </p>
+  <paper-button label="J'ai oublié mon mot de passe" dismissive ng-click="forgotPassword()"></paper-button>
+  <paper-button label="Annuler" affirmative ng-click="cancel()"></paper-button>
+  <paper-button label="Se connecter" affirmative autofocus ng-click="login()"></paper-button>
+</paper-dialog>

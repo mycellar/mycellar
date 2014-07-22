@@ -16,7 +16,7 @@ angular.module('mycellar.services.security').factory('security', [
           menuService.reloadMenus();
         });
       },
-  
+
       // Attempt to logout the current user
       logout: function() {
         $http.post('/api/logout').then(function() {
@@ -25,13 +25,13 @@ angular.module('mycellar.services.security').factory('security', [
           menuService.reloadMenus();
         });
       },
-      
+
       // Forget the current user
       forceLogout: function() {
         $rootScope.currentUser = null;
         deleteToken();
       },
-      
+
       register: function(user) {
         return $http.post('/api/register', user).success(function(data, status, headers) {
           $rootScope.currentUser = data;
@@ -39,7 +39,7 @@ angular.module('mycellar.services.security').factory('security', [
           menuService.reloadMenus();
         });
       },
-  
+
       // Ask the backend to see if a user is already authenticated - this may be from a previous session.
       requestCurrentUser: function() {
         if ( service.isAuthenticated() ) {
@@ -48,36 +48,40 @@ angular.module('mycellar.services.security').factory('security', [
           $http.defaults.headers.common['Rest-Token'] = getToken();
           return $http.get('/api/current-user').then(function(response) {
             $rootScope.currentUser = response.data;
-            menuService.reloadMenus();
+            if (response.date != null) {
+              menuService.reloadMenus();
+            } else {
+              service.forceLogout();
+            }
             return $rootScope.currentUser;
           });
         }
       },
-  
+
       // Is the current user authenticated?
       isAuthenticated: function(){
         return !!$rootScope.currentUser && !!$rootScope.currentUser.email;
       },
-      
+
       sendPasswordResetMail: function(email) {
         return $http.post('/api/sendPasswordResetMail', email);
       },
-      
+
       resetPassword: function(key, password) {
         return $http.post('/api/resetPassword', {key: key, password: password});
       },
-      
+
       getMailFromRequestKey: function(key) {
         return $http.get('/api/requestedMail?key='+key);
       },
-      
+
       changeEmail: function(email, password) {
         return $http.post('/api/changeEmail', {email: email, password: password}).success(function(data, status, headers) {
           $rootScope.currentUser = data;
           setToken(headers(tokenHeaderName));
         }); 
       },
-      
+
       changePassword: function(oldPassword, password) {
         return $http.post('/api/changePassword', {oldPassword: oldPassword, password: password}).success(function(data, status, headers) {
           $rootScope.currentUser = data;
@@ -89,7 +93,7 @@ angular.module('mycellar.services.security').factory('security', [
         config.headers[tokenHeaderName] = getToken();
         return config;
       }
-      
+
     };
     // private API
     var tokenHeaderName = 'Rest-Token';

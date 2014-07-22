@@ -1,52 +1,8 @@
-<nav class="navbar navbar-inverse navbar-fixed-top" data-ng-controller="NavigationController" role="navigation">
-  <div class="container">
-    <div class="navbar-header">
-      <button type="button" class="navbar-toggle" ng-click="isCollapsed = !isCollapsed">
-        <span class="sr-only">{{isCollapsed ? 'Afficher':'Masquer'}} la navigation</span>
-        <span class="icon-bar"></span>
-        <span class="icon-bar"></span>
-        <span class="icon-bar"></span>
-      </button>
-      <header>
-        <a class="navbar-brand" href="/">MyCellar</a>
-      </header>
-    </div>
-    <div class="navbar-collapse" collapse="isCollapsed">
-      <ul class="nav navbar-nav">
-        <li class="divider-vertical"></li>
-        <span ng-if="false" ng-repeat-start="menu in menuService.getAll()"></span>
-        <li ng-if="menu.pages" ng-class="{active: menu.active}" class="dropdown">
-          <a href class="dropdown-toggle" title="{{menu.label}}"><i ng-if="menu.icon" class="fa fa-{{menu.icon}}"></i><span class="visible-xs-inline visible-lg-inline">&nbsp;{{menu.label}}</span> <b class="caret"></b></a>
-          <ul class="dropdown-menu">
-            <li ng-repeat="sub in menu.pages" ng-class="{active: sub.active}"><a ng-href="{{sub.route}}" ng-click="$emit('collapse')">{{sub.label}}</a></li>
-          </ul>
-        </li>
-        <li ng-if="!menu.pages" ng-class="{active: menu.active}">
-          <a ng-href="{{menu.route}}" ng-click="$emit('collapse')" title="{{menu.label}}"><i ng-if="menu.icon" class="fa fa-{{menu.icon}}"></i><span class="visible-xs-inline visible-lg-inline">&nbsp;{{menu.label}}</span></a>
-        </li>
-        <span ng-if="false" ng-repeat-end></span>
-        <li class="divider-vertical"></li>
-      </ul>
-      <form name="navLoginForm" class="navbar-form navbar-right" ng-hide="isLoggedIn()" role="login">
-        <div class="form-group">
-          <label for="email" class="sr-only">email</label>
-          <input type="email" id="email" class="form-control input-small" size="18" placeholder="email" ng-model="email" />
-        </div>
-        <div class="form-group">
-          <label for="password" class="sr-only">Mot de passe</label>
-          <input type="password" id="password" class="form-control input-small" size="8" placeholder="Mot de passe" ng-model="password" />
-        </div>
-        <input type="submit" class="btn btn-default btn-small" ng-click="login(email, password)" value="Se connecter" />
-        <a href="/register" class="btn btn-default btn-small">Nouvel utilisateur</a>
-      </form>
-      <ul class="nav navbar-nav navbar-right" ng-show="isLoggedIn()">
-        <li>
-          <a href="/account" title="Mon compte">{{$root.currentUser.email}} <i class="fa fa-user"></i></a>
-        </li>
-        <li>
-          <a href title="Se déconnecter" ng-click="logout()"><span class="sr-only">Se déconnecter</span> <i class="fa fa-power-off"></i></a>
-        </li>
-      </ul>
-    </div>
-  </div>
-</nav>
+<core-toolbar id="navheader">
+  <span>MyCellar</span>
+</core-toolbar>
+<core-menu ng-controller="NavigationController">
+  <span ng-if="false" ng-repeat-start="menu in menuService.getAll()"></span>
+  <core-item label="{{menu.label}}"></core-item>
+  <span ng-if="false" ng-repeat-end></span>
+</core-menu>

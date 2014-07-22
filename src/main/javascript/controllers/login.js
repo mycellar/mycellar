@@ -1,10 +1,10 @@
 angular.module('mycellar.controllers.login', [
   'ngRoute',
   'mycellar.resources.user.users',
+  'mycellar.services.login',
   'mycellar.services.security',
   'mycellar.services.validation',
-  'mycellar.directives.form.password',
-  'mycellar.directives.form.login'
+  'mycellar.directives.form.password'
 ], [
   '$routeProvider', 
   function($routeProvider){
@@ -42,5 +42,24 @@ angular.module('mycellar.controllers.login').controller('LoginController', [
       password: ''
     };
     $scope.password2 = '';
+  }
+]);
+
+angular.module('mycellar.controllers.login').controller('LoginDialogController', [
+  '$scope', 'security', '$location', 'loginDialogService',
+  function ($scope, security, $location, loginDialogService) {
+    $scope.login = function() {
+      security.login($scope.email, $scope.password).then(function(response) {
+        loginDialogService.loginSuccess();
+      }, function(response) {
+        loginDialogService.loginFailure();
+      });
+    };
+    $scope.cancel = function() {
+      loginDialogService.cancel();
+    };
+    $scope.forgotPassword = function() {
+      loginDialogService.forgotPassword();
+    };
   }
 ]);

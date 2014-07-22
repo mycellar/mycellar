@@ -1,5 +1,12 @@
 body {
-  padding-top: 70px;
+  font-family: RobotoDraft, 'Helvetica Neue', Helvetica, Arial;
+  font-size: 16px;
+  color: rgba(0, 0, 0, 0.87);
+}
+
+body /deep/ paper-button[autofocus] {
+  color: #4285f4;
+  fill: #4285f4;
 }
 
 /* START OF BOOTSTRAP overrides */

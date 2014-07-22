@@ -9,11 +9,11 @@ angular.extend(mycellar, {
 angular.module('mycellar', [
   'ngRoute',
   'ngAnimate',
-  'ui.bootstrap',
   'http-auth-interceptor',
   'angular-loading-bar',
   'mycellar.services.menu',
   'mycellar.services.security',
+  'mycellar.services.login',
   'mycellar.controllers.errors',
   'mycellar.controllers.home',
   'mycellar.controllers.login',
@@ -24,7 +24,7 @@ angular.module('mycellar', [
   'mycellar.controllers.cellar',
   'mycellar.controllers.navigation',
   'mycellar.controllers.password',
-  'mycellar.directives.form.login'
+  'mycellar.directives.bind'
 ]);
 
 angular.module('mycellar').config([
@@ -48,29 +48,16 @@ angular.module('mycellar').config([
 }]);
 
 angular.module('mycellar').run([
-  'security', 'authService', '$rootScope', '$modal', '$location',
-  function(security, authService, $rootScope, $modal, $location) {
-    var loginModal;
+  'security', 'authService', '$rootScope', '$q', '$location', 'loginDialogService',
+  function(security, authService, $rootScope, $q, $location, loginDialogService) {
     $rootScope.$on('event:auth-loginRequired', function() {
-      if (loginModal == null) {
-        loginModal = $modal.open({
-          templateUrl: 'partials/modals/login.tpl.html'
-        });
-        loginModal.result.then(function() {
-          authService.loginConfirmed(null, security.updateHeader);
-        }, function(reason) {
-          authService.loginCancelled(null, reason.reason);
-          if (!reason.requestPassword) {
-            $location.path('/');
-          }
-        });
-      }
+      loginDialogService.create();
     });
     $rootScope.$on('event:auth-loginConfirmed', function() {
-      loginModal = null;
+      loginDialogService.destroy();
     });
     $rootScope.$on('event:auth-loginCancelled', function() {
-      loginModal = null;
+      loginDialogService.destroy();
     });
 
     // Get the current user when the application starts
