@@ -48,11 +48,10 @@ angular.module('mycellar.services.security').factory('security', [
           $http.defaults.headers.common['Rest-Token'] = getToken();
           return $http.get('/api/current-user').then(function(response) {
             $rootScope.currentUser = response.data;
-            if (response.date != null) {
-              menuService.reloadMenus();
-            } else {
+            if (!$rootScope.currentUser) {
               service.forceLogout();
             }
+            menuService.reloadMenus();
             return $rootScope.currentUser;
           });
         }
