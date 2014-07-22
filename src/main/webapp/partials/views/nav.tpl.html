@@ -3,6 +3,13 @@
 </core-toolbar>
 <core-menu ng-controller="NavigationController">
   <span ng-if="false" ng-repeat-start="menu in menuService.getAll()"></span>
-  <core-item label="{{menu.label}}"></core-item>
+  <core-submenu label="{{menu.label}}" ng-if="menu.pages">
+    <core-item ng-repeat="sub in menu.pages" label="{{sub.label}}">
+      <a href="{{sub.route}}"></a>
+    </core-item>
+  </core-submenu>
+  <core-item label="{{menu.label}}" ng-if="!menu.pages">
+    <a href="{{menu.route}}"></a>
+  </core-item>
   <span ng-if="false" ng-repeat-end></span>
 </core-menu>
