@@ -1,27 +1,14 @@
 angular.module('mycellar').filter('wineRenderer', function() {
   return function(wine) {
-    var colorLabel = function(color) {
-      switch(color) {
-      case 'RED':
-        return ' - Rouge';
-      case 'WHITE':
-        return ' - Blanc';
-      case 'ROSE':
-        return ' - Rosé';
-      }
-      return '';
-    };
     return wine.producer.name +
-        ' - ' +wine.appellation.name +
         (wine.name != null && wine.name.length > 0 ? ' - ' + wine.name : '') +
-        (wine.vintage != null ? ' - ' + wine.vintage : '') +
-        colorLabel(wine.color);
-  }
+        (wine.vintage != null ? ' - ' + wine.vintage : '');
+  };
 }).filter('bookingEventRenderer', function(dateFilter) {
   return function(bookingEvent) {
     return bookingEvent.name + ' (du ' + dateFilter(bookingEvent.start, 'longDate') +
         ' au ' + dateFilter(bookingEvent.end, 'longDate') + ')';
-  }
+  };
 }).filter('formatRenderer', function(numberFilter) {
   return function(format) {
     return format.name + ' (' + numberFilter(format.capacity) + 'L)';
@@ -43,7 +30,7 @@ angular.module('mycellar').filter('wineRenderer', function() {
       return 'Autre';
     }
     return color;
-  }
+  };
 }).filter('wineColorRenderer', function() {
   return function(color) {
     switch(color) {
@@ -57,7 +44,7 @@ angular.module('mycellar').filter('wineRenderer', function() {
       return 'Autre';
     }
     return color;
-  }
+  };
 }).filter('accessRightRenderer', function() {
   return function(accessRight) {
     switch(accessRight) {
@@ -67,7 +54,7 @@ angular.module('mycellar').filter('wineRenderer', function() {
       return 'Modification';
     }
     return accessRight;
-  }
+  };
 }).filter('movementTypeRenderer', function() {
   return function(type) {
     switch(type) {
@@ -77,5 +64,5 @@ angular.module('mycellar').filter('wineRenderer', function() {
       return 'Sortie';
     }
     return type;
-  }
+  };
 });

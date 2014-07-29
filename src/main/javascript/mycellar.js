@@ -63,6 +63,31 @@ angular.module('mycellar').run([
     // Get the current user when the application starts
     // (in case they are still logged in from a previous session)
     security.requestCurrentUser();
+
+    // plug polymer drawer tap
+    var started = false;
+    var ready = function() {
+      var leftDrawerButtons = document.querySelectorAll('[left-drawer-button]');
+      angular.forEach(leftDrawerButtons, function(leftDrawerButton) {
+        leftDrawerButton.addEventListener('tap', function(e) {
+          document.querySelector('core-drawer-panel:not(.right-drawer)').togglePanel();
+        });
+      });
+      var rightDrawerButtons = document.querySelectorAll('[right-drawer-button]');
+      angular.forEach(rightDrawerButtons, function(rightDrawerButton) {
+        rightDrawerButton.addEventListener('tap', function(e) {
+          document.querySelector('core-drawer-panel.right-drawer').togglePanel();
+        });
+      });
+    };
+    $rootScope.$on('$viewContentLoaded', function() {
+      if (!started) {
+        window.addEventListener('polymer-ready', ready);
+        started = true;
+      } else {
+        ready();
+      }
+    });
   }
 ]);
 

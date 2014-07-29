@@ -34,11 +34,10 @@
       <a href="http://browsehappy.com/">Changez de navigateur internet</a> pour utiliser correctement ce site.
     </p>
     <![endif]-->
-    <core-scaffold>
-      <core-header-panel navigation flex ng-include="'partials/views/nav.tpl.html'"></core-header-panel>
-      <span tool>Title</span>
-      <div ng-view class="content slide"></div>
-    </core-scaffold>
+    <core-drawer-panel style="top: initial;">
+      <core-header-panel class="nav" drawer ng-include="'partials/views/nav.tpl.html'"></core-header-panel>
+      <core-header-panel main ng-view></core-header-panel>
+    </core-drawer-panel>
     <div ng-include="'partials/modals/login.tpl.html'"></div>
   </body>
 </html>

@@ -1,56 +1,3 @@
-body {
-  font-family: RobotoDraft, 'Helvetica Neue', Helvetica, Arial;
-  font-size: 16px;
-  color: rgba(0, 0, 0, 0.87);
-}
-
-body /deep/ paper-button[autofocus] {
-  color: #4285f4;
-  fill: #4285f4;
-}
-
-/* START OF BOOTSTRAP overrides */
-
-.page-header {
-  margin: 20px 0;
-}
-
-@media (min-width: 1200px) {
-  .container {
-    max-width: none; /* remove bootstrap max-width for super large screen */
-    width: 100%;
-  }
-}
-
-.list-group-item-heading {
-  text-transform: uppercase;
-}
-
-.list-group {
-  word-wrap: break-word;
-}
-
-.panel-heading dl {
-  padding: 0;
-  margin: 0;
-}
-
-.pagination {
-  cursor: pointer;
-}
-
-.table > thead > tr > th, .table > tbody > tr > th, .table > tfoot > tr > th, .table > thead > tr > td, .table > tbody > tr > td, .table > tfoot > tr > td {
-  vertical-align: middle;
-}
-
-/* END OF BOOTSTRAP overrides */
-
-footer {
-  border-top: 1px solid #E5E5E5;
-  margin-top: 10px;
-  padding: 30px;
-}
-
 * {
   -webkit-hyphens: auto;
   -moz-hyphens: auto;
@@ -59,26 +6,56 @@ footer {
   hyphens: auto;
 }
 
-.table th.actions {
-  text-align: center;
-  min-width: 64px;
-  max-width: 64px;
-  width: 64px;
+body {
+  font-family: RobotoDraft, 'Helvetica Neue', Helvetica, Arial;
+  font-size: 16px;
+  color: rgba(0, 0, 0, 0.87);
 }
 
-.table th.stackCount, .table td.stackCount {
-  text-align: center;
-  min-width: 60px;
-  max-width: 60px;
-  width: 60px;
+.nav {
+  background: #ffffff;
 }
 
-.table td.stack {
-  word-break: break-all;
-  word-wrap: break-word;
+body /deep/ core-toolbar {
+  background: #e51c23;
+  color: rgba(255, 255, 255, 0.87);
 }
 
-.sub-entity {
-  width: 96%;
-  margin: auto;
+body /deep/ core-toolbar /deep/ paper-menu-button-overlay-container {
+  color: rgba(0, 0, 0, 0.87);
+}
+
+body /deep/ paper-button[autofocus] {
+  color: #4285f4;
+  fill: #4285f4;
+}
+
+body /deep/ paper-fab {
+  position: fixed;
+  bottom: 16px;
+  right: 28px;
+  background: #6200ea;
+  color: rgba(255, 255, 255, 0.87);
+}
+
+core-drawer-panel:not([narrow]) .narrow,
+core-drawer-panel[narrow] .unnarrow {
+  display: none;
+}
+
+@media screen and (max-width: 500px) {
+  body /deep/ .xs-hide {
+    display: none;
+  }
+}
+
+body /deep/ .ellipsis {
+  text-overflow: ellipsis;
+  overflow: hidden;
+  white-space: nowrap;
+}
+
+footer {
+  border-top: 1px solid rgba(0, 0, 0, 0.12);
+  padding: 10px;
 }
