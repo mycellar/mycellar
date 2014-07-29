@@ -2,9 +2,7 @@
   <paper-icon-button left-drawer-button class="narrow" icon="menu"></paper-icon-button>
   <span>Mes caves > {{cellar.name}}</span>
   <paper-menu-button icon="arrow-drop-down" halign="right">
-  <small>
-    <paper-item label="{{cellar.name}} ({{cellar.owner.email}})" ng-click="selectCellar(cellar)" ng-repeat="cellar in cellars"></paper-item>
-    </small>
+    <paper-item style="font-size: 0.6em;" label="{{cellar.name}} ({{cellar.owner.email}})" ng-click="selectCellar(cellar)" ng-repeat="cellar in cellars"></paper-item>
   </paper-menu-button>
 </core-toolbar>
 <div main ng-if="cellar != null">
