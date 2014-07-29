@@ -11,7 +11,7 @@ angular.module('mycellar.controllers.cellar.mycellars', [
       controller: 'MyCellarsController',
       resolve: {
         cellars: ['Cellars', function(Cellars){
-          return Cellars.getAllForCurrentUser();
+          return Cellars.getAllForCurrentUser().$promise;
         }]
       }
     });
