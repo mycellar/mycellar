@@ -22,8 +22,9 @@ import javax.inject.Inject;
 import javax.inject.Named;
 import javax.inject.Singleton;
 
-import jpasearch.repository.query.SearchBuilder;
 import jpasearch.repository.query.SearchParameters;
+import jpasearch.repository.query.builder.ResultBuilder;
+import jpasearch.repository.query.builder.SearchBuilder;
 import fr.mycellar.application.shared.AbstractSearchableService;
 import fr.mycellar.application.wine.CountryService;
 import fr.mycellar.domain.shared.NamedEntity_;
@@ -57,7 +58,7 @@ public class CountryServiceImpl extends AbstractSearchableService<Country, Count
 
     @Override
     protected void validateDelete(Country entity) throws BusinessException {
-        if (countryRepository.findPropertyCount(new SearchBuilder<Country>().on(Country_.id).equalsTo(entity.getId()).build(), Country_.regions) > 0) {
+        if (countProperty(new SearchBuilder<Country>().on(Country_.id).equalsTo(entity.getId()).build(), new ResultBuilder<>(Country_.regions).build()) > 0) {
             throw new BusinessException(BusinessError.COUNTRY_00002);
         }
     }

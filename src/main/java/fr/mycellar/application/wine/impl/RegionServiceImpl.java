@@ -22,8 +22,9 @@ import javax.inject.Inject;
 import javax.inject.Named;
 import javax.inject.Singleton;
 
-import jpasearch.repository.query.SearchBuilder;
 import jpasearch.repository.query.SearchParameters;
+import jpasearch.repository.query.builder.ResultBuilder;
+import jpasearch.repository.query.builder.SearchBuilder;
 import fr.mycellar.application.shared.AbstractSearchableService;
 import fr.mycellar.application.wine.CountryService;
 import fr.mycellar.application.wine.RegionService;
@@ -66,8 +67,9 @@ public class RegionServiceImpl extends AbstractSearchableService<Region, RegionR
 
     @Override
     protected void validateDelete(Region entity) throws BusinessException {
-        if (regionRepository.findPropertyCount(new SearchBuilder<Region>() //
-                .on(Region_.id).equalsTo(entity.getId()).build(), Region_.appellations) > 0) {
+        if (countProperty(new SearchBuilder<Region>() //
+                .on(Region_.id).equalsTo(entity.getId()).build(), //
+                new ResultBuilder<>(Region_.appellations).build()) > 0) {
             throw new BusinessException(BusinessError.REGION_00003);
         }
     }

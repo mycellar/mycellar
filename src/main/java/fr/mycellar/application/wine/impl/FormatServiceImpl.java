@@ -22,8 +22,8 @@ import javax.inject.Inject;
 import javax.inject.Named;
 import javax.inject.Singleton;
 
-import jpasearch.repository.query.SearchBuilder;
 import jpasearch.repository.query.SearchParameters;
+import jpasearch.repository.query.builder.SearchBuilder;
 import fr.mycellar.application.booking.BookingEventService;
 import fr.mycellar.application.shared.AbstractSearchableService;
 import fr.mycellar.application.stock.StockService;

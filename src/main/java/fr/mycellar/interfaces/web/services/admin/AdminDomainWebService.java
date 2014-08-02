@@ -56,7 +56,7 @@ public class AdminDomainWebService {
     private SearchParametersUtil searchParametersUtil;
 
     // --------------
-    // BOOKING
+    // CONFIGURATION
     // --------------
 
     @GET
@@ -67,14 +67,14 @@ public class AdminDomainWebService {
             @QueryParam("count") @DefaultValue("20") int count, //
             @QueryParam("filters") List<FilterCouple> filters, //
             @QueryParam("sort") List<OrderCouple> orders) {
-        SearchParameters<Configuration> search = searchParametersUtil.getSearchParametersParametersForListWithCount(first, count, filters, orders, Configuration.class);
+        SearchParameters<Configuration> searchParameters = searchParametersUtil.getSearchParameters(first, count, filters, orders, Configuration.class);
         List<Configuration> configurations;
         if (count == 0) {
             configurations = new ArrayList<>();
         } else {
-            configurations = administrationServiceFacade.getConfigurations(search);
+            configurations = administrationServiceFacade.getConfigurations(searchParameters);
         }
-        return new ListWithCount<>(administrationServiceFacade.countConfigurations(search), configurations);
+        return new ListWithCount<>(administrationServiceFacade.countConfigurations(searchParameters), configurations);
     }
 
     @GET

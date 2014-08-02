@@ -33,49 +33,18 @@ import fr.mycellar.domain.user.User;
  */
 public interface BookingService extends SimpleService<Booking> {
 
-    /**
-     * @param bookingEvent
-     * @param customer
-     * @return
-     */
-    Booking getBooking(BookingEvent bookingEvent, User customer);
+    Booking getBooking(Integer bookingEventId, User customer);
 
-    /**
-     * @param customer
-     * @param count
-     * @param first
-     * @return
-     */
     List<Booking> getBookings(User customer, int first, int count);
 
-    /**
-     * @param customer
-     * @return
-     */
     long countBookings(User customer);
 
-    /**
-     * @param booking
-     * @throws BusinessException
-     */
     Booking saveOrDelete(Booking booking) throws BusinessException;
 
-    /**
-     * @param bookingEvent
-     * @return
-     */
     Map<BookingBottle, Long> getQuantities(BookingEvent bookingEvent);
 
-    /**
-     * @param bookingBottleId
-     * @return
-     */
     List<Booking> getAllByBookingBottleId(Integer bookingBottleId);
 
-    /**
-     * @param bookingEventId
-     * @return
-     */
     List<Booking> getAllByBookingEventId(Integer bookingEventId);
 
 }

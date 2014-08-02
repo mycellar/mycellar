@@ -1,8 +1,20 @@
-angular.module('mycellar').filter('wineRenderer', function() {
+angular.module('mycellar').filter('wineRenderer', ['wineColorRendererFilter', function(wineColorRenderer) {
   return function(wine) {
     return wine.producer.name +
         (wine.name != null && wine.name.length > 0 ? ' - ' + wine.name : '') +
-        (wine.vintage != null ? ' - ' + wine.vintage : '');
+        (wine.vintage != null ? ' - ' + wine.vintage : '') +
+        (wine.color != null ? ' - ' + wineColorRenderer(wine.color) : '');
+  };
+}]).filter('appellationRenderer', function() {
+  return function(appellation) {
+    return appellation.name +
+        (appellation.region != null ? 
+            ' - ' + appellation.region.name +
+            (appellation.region.country != null ? 
+                ' - ' + appellation.region.country.name
+                : '')
+            : '') +
+        (appellation.country != null ? ' - ' + appellation.country.name : '');
   };
 }).filter('bookingEventRenderer', function(dateFilter) {
   return function(bookingEvent) {

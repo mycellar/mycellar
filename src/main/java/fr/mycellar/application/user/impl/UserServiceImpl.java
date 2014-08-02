@@ -22,8 +22,8 @@ import javax.inject.Inject;
 import javax.inject.Named;
 import javax.inject.Singleton;
 
-import jpasearch.repository.query.SearchBuilder;
 import jpasearch.repository.query.SearchParameters;
+import jpasearch.repository.query.builder.SearchBuilder;
 
 import org.jasypt.util.password.PasswordEncryptor;
 

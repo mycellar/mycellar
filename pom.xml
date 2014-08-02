@@ -754,7 +754,7 @@
     <dependency>
       <groupId>io.github.jpasearch</groupId>
       <artifactId>jpasearch</artifactId>
-      <version>0.2.2-SNAPSHOT</version>
+      <version>0.2.3-SNAPSHOT</version>
     </dependency>
 
     <!-- Test -->

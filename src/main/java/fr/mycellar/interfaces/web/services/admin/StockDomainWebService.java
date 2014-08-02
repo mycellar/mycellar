@@ -71,7 +71,7 @@ public class StockDomainWebService {
             @QueryParam("count") @DefaultValue("10") int count, //
             @QueryParam("filters") List<FilterCouple> filters, //
             @QueryParam("sort") List<OrderCouple> orders) {
-        SearchParameters<Cellar> searchParameters = searchParametersUtil.getSearchParametersParametersForListWithCount(first, count, filters, orders, Cellar.class);
+        SearchParameters<Cellar> searchParameters = searchParametersUtil.getSearchParameters(first, count, filters, orders, Cellar.class);
         List<Cellar> cellars;
         if (count == 0) {
             cellars = new ArrayList<>();
@@ -131,7 +131,7 @@ public class StockDomainWebService {
             @QueryParam("count") @DefaultValue("10") int count, //
             @QueryParam("input") String input, //
             @QueryParam("sort") List<OrderCouple> orders) {
-        SearchParameters<Cellar> searchParameters = searchParametersUtil.getSearchParametersParametersForListWithCount(first, count, new ArrayList<FilterCouple>(), orders, Cellar.class);
+        SearchParameters<Cellar> searchParameters = searchParametersUtil.getSearchParameters(first, count, new ArrayList<FilterCouple>(), orders, Cellar.class);
         List<Cellar> cellars;
         if (count == 0) {
             cellars = new ArrayList<>();
@@ -153,7 +153,7 @@ public class StockDomainWebService {
             @QueryParam("count") @DefaultValue("10") int count, //
             @QueryParam("filters") List<FilterCouple> filters, //
             @QueryParam("sort") List<OrderCouple> orders) {
-        SearchParameters<CellarShare> searchParameters = searchParametersUtil.getSearchParametersParametersForListWithCount(first, count, filters, orders, CellarShare.class);
+        SearchParameters<CellarShare> searchParameters = searchParametersUtil.getSearchParameters(first, count, filters, orders, CellarShare.class);
         List<CellarShare> cellarShares;
         if (count == 0) {
             cellarShares = new ArrayList<>();
@@ -217,7 +217,7 @@ public class StockDomainWebService {
             @QueryParam("count") @DefaultValue("10") int count, //
             @QueryParam("filters") List<FilterCouple> filters, //
             @QueryParam("sort") List<OrderCouple> orders) {
-        SearchParameters<Stock> searchParameters = searchParametersUtil.getSearchParametersParametersForListWithCount(first, count, filters, orders, Stock.class);
+        SearchParameters<Stock> searchParameters = searchParametersUtil.getSearchParameters(first, count, filters, orders, Stock.class);
         List<Stock> stocks;
         if (count == 0) {
             stocks = new ArrayList<>();
@@ -281,7 +281,7 @@ public class StockDomainWebService {
             @QueryParam("count") @DefaultValue("10") int count, //
             @QueryParam("filters") List<FilterCouple> filters, //
             @QueryParam("sort") List<OrderCouple> orders) {
-        SearchParameters<Movement> searchParameters = searchParametersUtil.getSearchParametersParametersForListWithCount(first, count, filters, orders, Movement.class);
+        SearchParameters<Movement> searchParameters = searchParametersUtil.getSearchParameters(first, count, filters, orders, Movement.class);
         List<Movement> movements;
         if (count == 0) {
             movements = new ArrayList<>();

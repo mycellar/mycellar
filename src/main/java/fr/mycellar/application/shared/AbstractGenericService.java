@@ -23,6 +23,7 @@ import java.util.List;
 
 import jpasearch.domain.Identifiable;
 import jpasearch.repository.GenericRepository;
+import jpasearch.repository.query.ResultParameters;
 import jpasearch.repository.query.SearchParameters;
 
 /**
@@ -36,8 +37,18 @@ public abstract class AbstractGenericService<R extends GenericRepository<E, PK>,
     }
 
     @Override
+    public long countProperty(SearchParameters<E> search, ResultParameters<E, ?> resultParameters) {
+        return getRepository().findPropertyCount(search, resultParameters);
+    }
+
+    @Override
     public List<E> find(SearchParameters<E> search) {
         return getRepository().find(search);
+    }
+
+    @Override
+    public <X> List<X> findProperty(SearchParameters<E> search, ResultParameters<E, X> resultParameters) {
+        return getRepository().findProperty(search, resultParameters);
     }
 
     @Override

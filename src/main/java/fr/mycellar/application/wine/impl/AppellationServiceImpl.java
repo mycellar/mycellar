@@ -22,8 +22,9 @@ import javax.inject.Inject;
 import javax.inject.Named;
 import javax.inject.Singleton;
 
-import jpasearch.repository.query.SearchBuilder;
 import jpasearch.repository.query.SearchParameters;
+import jpasearch.repository.query.builder.ResultBuilder;
+import jpasearch.repository.query.builder.SearchBuilder;
 import fr.mycellar.application.shared.AbstractSearchableService;
 import fr.mycellar.application.wine.AppellationService;
 import fr.mycellar.application.wine.RegionService;
@@ -66,7 +67,7 @@ public class AppellationServiceImpl extends AbstractSearchableService<Appellatio
 
     @Override
     protected void validateDelete(Appellation entity) throws BusinessException {
-        if (appellationRepository.findPropertyCount(new SearchBuilder<Appellation>().on(Appellation_.id).equalsTo(entity.getId()).build(), Appellation_.wines) > 0) {
+        if (countProperty(new SearchBuilder<Appellation>().on(Appellation_.id).equalsTo(entity.getId()).build(), new ResultBuilder<>(Appellation_.wines).build()) > 0) {
             throw new BusinessException(BusinessError.APPELLATION_00003);
         }
     }

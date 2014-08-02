@@ -22,6 +22,7 @@ import java.io.Serializable;
 import java.util.List;
 
 import jpasearch.domain.Identifiable;
+import jpasearch.repository.query.ResultParameters;
 import jpasearch.repository.query.SearchParameters;
 
 /**
@@ -29,12 +30,16 @@ import jpasearch.repository.query.SearchParameters;
  */
 public interface GenericService<E extends Identifiable<PK>, PK extends Serializable> {
 
-    long count(SearchParameters<E> search);
+    long count(SearchParameters<E> searchParameters);
 
-    List<E> find(SearchParameters<E> search);
+    long countProperty(SearchParameters<E> searchParameters, ResultParameters<E, ?> resultParameters);
 
-    E findUnique(SearchParameters<E> search);
+    List<E> find(SearchParameters<E> searchParameters);
 
-    E findUniqueOrNone(SearchParameters<E> search);
+    <X> List<X> findProperty(SearchParameters<E> searchParameters, ResultParameters<E, X> resultParameters);
+
+    E findUnique(SearchParameters<E> searchParameters);
+
+    E findUniqueOrNone(SearchParameters<E> searchParameters);
 
 }

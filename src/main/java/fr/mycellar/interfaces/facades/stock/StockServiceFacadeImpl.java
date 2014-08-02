@@ -24,6 +24,7 @@ import javax.inject.Inject;
 import javax.inject.Named;
 import javax.inject.Singleton;
 
+import jpasearch.repository.query.ResultParameters;
 import jpasearch.repository.query.SearchParameters;
 
 import org.springframework.transaction.annotation.Transactional;
@@ -39,7 +40,6 @@ import fr.mycellar.domain.stock.CellarShare;
 import fr.mycellar.domain.stock.Drink;
 import fr.mycellar.domain.stock.Movement;
 import fr.mycellar.domain.stock.Stock;
-import fr.mycellar.domain.user.User;
 
 /**
  * @author speralta
@@ -64,38 +64,56 @@ public class StockServiceFacadeImpl implements StockServiceFacade {
 
     @Override
     @Transactional(readOnly = true)
-    public long countCellars(SearchParameters<Cellar> search) {
-        return cellarService.count(search);
+    public long countCellars(SearchParameters<Cellar> searchParameters) {
+        return cellarService.count(searchParameters);
     }
 
     @Override
     @Transactional(readOnly = true)
-    public long countCellarsLike(String term, SearchParameters<Cellar> search) {
-        return cellarService.countAllLike(term, search);
+    public long countFromCellars(SearchParameters<Cellar> searchParameters, ResultParameters<Cellar, ?> resultParameters) {
+        return cellarService.countProperty(searchParameters, resultParameters);
     }
 
     @Override
     @Transactional(readOnly = true)
-    public long countCellarsLike(String term, User user, SearchParameters<Cellar> search) {
-        return cellarService.countAllForUserLike(term, user, search);
+    public long countCellarsLike(String term, SearchParameters<Cellar> searchParameters) {
+        return cellarService.countAllLike(term, searchParameters);
     }
 
     @Override
     @Transactional(readOnly = true)
-    public long countCellarShares(SearchParameters<CellarShare> search) {
-        return cellarShareService.count(search);
+    public long countCellarShares(SearchParameters<CellarShare> searchParameters) {
+        return cellarShareService.count(searchParameters);
     }
 
     @Override
     @Transactional(readOnly = true)
-    public long countMovements(SearchParameters<Movement> search) {
-        return movementService.count(search);
+    public long countFromCellarShares(SearchParameters<CellarShare> searchParameters, ResultParameters<CellarShare, ?> resultParameters) {
+        return cellarShareService.countProperty(searchParameters, resultParameters);
     }
 
     @Override
     @Transactional(readOnly = true)
-    public long countStocks(SearchParameters<Stock> search) {
-        return stockService.count(search);
+    public long countMovements(SearchParameters<Movement> searchParameters) {
+        return movementService.count(searchParameters);
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public long countFromMovements(SearchParameters<Movement> searchParameters, ResultParameters<Movement, ?> resultParameters) {
+        return movementService.countProperty(searchParameters, resultParameters);
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public long countStocks(SearchParameters<Stock> searchParameters) {
+        return stockService.count(searchParameters);
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public long countFromStocks(SearchParameters<Stock> searchParameters, ResultParameters<Stock, ?> resultParameters) {
+        return stockService.countProperty(searchParameters, resultParameters);
     }
 
     @Override
@@ -153,37 +171,55 @@ public class StockServiceFacadeImpl implements StockServiceFacade {
 
     @Override
     @Transactional(readOnly = true)
-    public List<Cellar> getCellars(SearchParameters<Cellar> search) {
-        return cellarService.find(search);
+    public List<Cellar> getCellars(SearchParameters<Cellar> searchParameters) {
+        return cellarService.find(searchParameters);
     }
 
     @Override
     @Transactional(readOnly = true)
-    public List<Cellar> getCellarsLike(String term, SearchParameters<Cellar> search) {
-        return cellarService.getAllLike(term, search);
+    public <X> List<X> getFromCellars(SearchParameters<Cellar> searchParameters, ResultParameters<Cellar, X> resultParameters) {
+        return cellarService.findProperty(searchParameters, resultParameters);
     }
 
     @Override
     @Transactional(readOnly = true)
-    public List<Cellar> getCellarsLike(String term, User user, SearchParameters<Cellar> search) {
-        return cellarService.getAllForUserLike(term, user, search);
+    public List<Cellar> getCellarsLike(String term, SearchParameters<Cellar> searchParameters) {
+        return cellarService.getAllLike(term, searchParameters);
     }
 
     @Override
-    public List<CellarShare> getCellarShares(SearchParameters<CellarShare> search) {
-        return cellarShareService.find(search);
-    }
-
-    @Override
-    @Transactional(readOnly = true)
-    public List<Movement> getMovements(SearchParameters<Movement> search) {
-        return movementService.find(search);
+    public List<CellarShare> getCellarShares(SearchParameters<CellarShare> searchParameters) {
+        return cellarShareService.find(searchParameters);
     }
 
     @Override
     @Transactional(readOnly = true)
-    public List<Stock> getStocks(SearchParameters<Stock> search) {
-        return stockService.find(search);
+    public <X> List<X> getFromCellarShares(SearchParameters<CellarShare> searchParameters, ResultParameters<CellarShare, X> resultParameters) {
+        return cellarShareService.findProperty(searchParameters, resultParameters);
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public List<Movement> getMovements(SearchParameters<Movement> searchParameters) {
+        return movementService.find(searchParameters);
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public <X> List<X> getFromMovements(SearchParameters<Movement> searchParameters, ResultParameters<Movement, X> resultParameters) {
+        return movementService.findProperty(searchParameters, resultParameters);
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public List<Stock> getStocks(SearchParameters<Stock> searchParameters) {
+        return stockService.find(searchParameters);
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public <X> List<X> getFromStocks(SearchParameters<Stock> searchParameters, ResultParameters<Stock, X> resultParameters) {
+        return stockService.findProperty(searchParameters, resultParameters);
     }
 
     @Override
@@ -232,18 +268,6 @@ public class StockServiceFacadeImpl implements StockServiceFacade {
     @Transactional(readOnly = true)
     public void validateStock(Stock stock) throws BusinessException {
         stockService.validate(stock);
-    }
-
-    @Override
-    @Transactional(readOnly = true)
-    public List<Cellar> getCellars(User user) {
-        return cellarService.getAllForUser(user);
-    }
-
-    @Override
-    @Transactional(readOnly = true)
-    public List<Stock> getStocks(Cellar cellar) {
-        return stockService.getAllForCellar(cellar);
     }
 
     @Override

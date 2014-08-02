@@ -18,14 +18,12 @@
  */
 package fr.mycellar.application.stock.impl;
 
-import java.util.List;
-
 import javax.inject.Inject;
 import javax.inject.Named;
 import javax.inject.Singleton;
 
-import jpasearch.repository.query.SearchBuilder;
 import jpasearch.repository.query.SearchParameters;
+import jpasearch.repository.query.builder.SearchBuilder;
 import fr.mycellar.application.shared.AbstractSearchableService;
 import fr.mycellar.application.stock.CellarService;
 import fr.mycellar.application.stock.CellarShareService;
@@ -40,7 +38,6 @@ import fr.mycellar.domain.stock.CellarShare_;
 import fr.mycellar.domain.stock.Cellar_;
 import fr.mycellar.domain.stock.Stock;
 import fr.mycellar.domain.stock.Stock_;
-import fr.mycellar.domain.user.User;
 import fr.mycellar.infrastructure.stock.repository.CellarRepository;
 
 /**
@@ -55,21 +52,6 @@ public class CellarServiceImpl extends AbstractSearchableService<Cellar, CellarR
     private CellarShareService cellarShareService;
 
     private StockService stockService;
-
-    @Override
-    public long countAllForUserLike(String term, User user, SearchParameters<Cellar> search) {
-        return count(addUserToSearchParametersParameters(user, addTermToSearchParametersParameters(term, search)));
-    }
-
-    @Override
-    public List<Cellar> getAllForUserLike(String term, User user, SearchParameters<Cellar> search) {
-        return find(addUserToSearchParametersParameters(user, addTermToSearchParametersParameters(term, search)));
-    }
-
-    @Override
-    public List<Cellar> getAllForUser(User user) {
-        return find(addUserToSearchParametersParameters(user, new SearchBuilder<Cellar>().build()));
-    }
 
     @Override
     public boolean hasReadRight(Integer cellarId, String userEmail) {
@@ -115,13 +97,6 @@ public class CellarServiceImpl extends AbstractSearchableService<Cellar, CellarR
     @Override
     protected SearchParameters<Cellar> addTermToSearchParametersParameters(String term, SearchParameters<Cellar> search) {
         return new SearchBuilder<Cellar>(search).fullText(NamedEntity_.name).search(term).build();
-    }
-
-    protected SearchParameters<Cellar> addUserToSearchParametersParameters(User user, SearchParameters<Cellar> search) {
-        return new SearchBuilder<Cellar>(search).disjunction() //
-                .on(Cellar_.owner).equalsTo(user) //
-                .on(Cellar_.shares).to(CellarShare_.email).equalsTo(user.getEmail()) //
-                .and().build();
     }
 
     @Override

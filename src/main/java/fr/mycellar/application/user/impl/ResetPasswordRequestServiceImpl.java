@@ -27,7 +27,7 @@ import javax.inject.Named;
 import javax.inject.Singleton;
 import javax.mail.internet.MimeMessage;
 
-import jpasearch.repository.query.SearchBuilder;
+import jpasearch.repository.query.builder.SearchBuilder;
 
 import org.jasypt.contrib.org.apache.commons.codec_1_3.binary.Base64;
 import org.joda.time.LocalDateTime;

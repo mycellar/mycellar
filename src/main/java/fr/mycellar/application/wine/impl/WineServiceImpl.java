@@ -29,10 +29,10 @@ import javax.inject.Named;
 import javax.inject.Singleton;
 import javax.persistence.metamodel.SingularAttribute;
 
-import jpasearch.repository.query.SearchBuilder;
 import jpasearch.repository.query.SearchParameters;
 import jpasearch.repository.query.builder.DisjunctionSelectorsBuilder;
 import jpasearch.repository.query.builder.RootSelectorsBuilder;
+import jpasearch.repository.query.builder.SearchBuilder;
 import jpasearch.repository.query.builder.SelectorBuilder;
 import jpasearch.repository.query.selector.TermSelector;
 import jpasearch.repository.util.HibernateSearchUtil;

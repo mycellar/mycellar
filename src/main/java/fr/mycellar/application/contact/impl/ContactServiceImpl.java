@@ -25,8 +25,8 @@ import javax.inject.Named;
 import javax.inject.Singleton;
 import javax.mail.internet.MimeMessage;
 
-import jpasearch.repository.query.SearchBuilder;
 import jpasearch.repository.query.SearchParameters;
+import jpasearch.repository.query.builder.SearchBuilder;
 
 import org.joda.time.LocalDate;
 import org.springframework.mail.javamail.JavaMailSender;

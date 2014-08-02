@@ -9,7 +9,11 @@ angular.module('mycellar.resources.stock.stocks').factory('Stocks', [
       url: '/api/stock/stocks',
       validateUrl: '/api/stock/validateStock'
     }, {
-      getAllForCellar: {
+      getWinesForCellar: {
+        url: '/api/stock/wines',
+        method: 'GET'
+      },
+      getAllForWine: {
         url: '/api/stock/stocks',
         method: 'GET'
       },

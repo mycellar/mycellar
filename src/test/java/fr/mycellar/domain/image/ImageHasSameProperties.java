@@ -20,7 +20,6 @@ package fr.mycellar.domain.image;
 
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.CoreMatchers.is;
-import fr.mycellar.domain.image.Image;
 import fr.mycellar.domain.shared.NamedEntityHasSameProperties;
 
 /**

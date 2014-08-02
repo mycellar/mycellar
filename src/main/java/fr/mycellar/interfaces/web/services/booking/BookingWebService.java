@@ -32,10 +32,14 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.MediaType;
 
+import jpasearch.repository.query.SearchParameters;
+import jpasearch.repository.query.builder.SearchBuilder;
+
 import org.springframework.security.access.prepost.PreAuthorize;
 
 import fr.mycellar.domain.booking.Booking;
 import fr.mycellar.domain.booking.BookingEvent;
+import fr.mycellar.domain.booking.Booking_;
 import fr.mycellar.domain.shared.exception.BusinessException;
 import fr.mycellar.interfaces.facades.booking.BookingServiceFacade;
 import fr.mycellar.interfaces.web.security.CurrentUserService;
@@ -60,7 +64,11 @@ public class BookingWebService {
     public ListWithCount<Booking> getBookings( //
             @QueryParam("first") int first, //
             @QueryParam("count") @DefaultValue("10") int count) {
-        return new ListWithCount<>(bookingServiceFacade.countBookings(currentUserService.getCurrentUser()), bookingServiceFacade.getBookings(currentUserService.getCurrentUser(), first, count));
+        SearchParameters<Booking> searchParameters = new SearchBuilder<Booking>() //
+                .paginate(first, count) //
+                .on(Booking_.customer).equalsTo(currentUserService.getCurrentUser()) //
+                .build();
+        return new ListWithCount<>(bookingServiceFacade.countBookings(searchParameters), bookingServiceFacade.getBookings(searchParameters));
     }
 
     @GET
@@ -119,7 +127,7 @@ public class BookingWebService {
     @Path("bookingByBookingEvent")
     @PreAuthorize("hasRole('ROLE_BOOKING')")
     public Booking getBooking(@QueryParam("bookingEventId") Integer bookingEventId) {
-        return bookingServiceFacade.getBooking(bookingServiceFacade.getBookingEventById(bookingEventId), currentUserService.getCurrentUser());
+        return bookingServiceFacade.getBooking(bookingEventId, currentUserService.getCurrentUser());
     }
 
     @Inject

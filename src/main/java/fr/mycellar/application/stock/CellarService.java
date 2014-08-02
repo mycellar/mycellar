@@ -18,23 +18,13 @@
  */
 package fr.mycellar.application.stock;
 
-import java.util.List;
-
-import jpasearch.repository.query.SearchParameters;
 import fr.mycellar.application.shared.SearchableService;
 import fr.mycellar.domain.stock.Cellar;
-import fr.mycellar.domain.user.User;
 
 /**
  * @author speralta
  */
 public interface CellarService extends SearchableService<Cellar> {
-
-    long countAllForUserLike(String term, User user, SearchParameters<Cellar> search);
-
-    List<Cellar> getAllForUserLike(String term, User user, SearchParameters<Cellar> search);
-
-    List<Cellar> getAllForUser(User user);
 
     boolean hasReadRight(Integer cellarId, String userEmail);
 

@@ -21,7 +21,6 @@ package fr.mycellar.domain.user;
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.CoreMatchers.is;
 import fr.mycellar.domain.shared.IdentifiedEntityHasSameProperties;
-import fr.mycellar.domain.user.User;
 
 /**
  * @author speralta

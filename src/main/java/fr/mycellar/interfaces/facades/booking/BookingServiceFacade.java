@@ -39,13 +39,11 @@ public interface BookingServiceFacade {
 
     long countBookings(SearchParameters<Booking> search);
 
-    long countBookings(User currentUser);
-
     void deleteBooking(Booking booking) throws BusinessException;
 
     void deleteBookingEvent(BookingEvent bookingEvent) throws BusinessException;
 
-    Booking getBooking(BookingEvent bookingEvent, User customer);
+    Booking getBooking(Integer bookingEventId, User customer);
 
     Booking getBookingById(Integer bookingId);
 
@@ -56,8 +54,6 @@ public interface BookingServiceFacade {
     List<BookingEvent> getBookingEventsLike(String term, SearchParameters<BookingEvent> search);
 
     List<Booking> getBookings(SearchParameters<Booking> search);
-
-    List<Booking> getBookings(User customer, int first, int count);
 
     List<Booking> getBookingsByBookingBottleId(Integer bookingBottleId);
 

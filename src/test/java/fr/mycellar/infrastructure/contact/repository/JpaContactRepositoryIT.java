@@ -26,7 +26,7 @@ import javax.inject.Inject;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 
-import jpasearch.repository.query.SearchBuilder;
+import jpasearch.repository.query.builder.SearchBuilder;
 
 import org.joda.time.LocalDate;
 import org.junit.Test;

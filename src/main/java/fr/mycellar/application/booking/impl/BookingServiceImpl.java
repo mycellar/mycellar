@@ -26,7 +26,7 @@ import javax.inject.Inject;
 import javax.inject.Named;
 import javax.inject.Singleton;
 
-import jpasearch.repository.query.SearchBuilder;
+import jpasearch.repository.query.builder.SearchBuilder;
 import fr.mycellar.application.booking.BookingService;
 import fr.mycellar.application.shared.AbstractSimpleService;
 import fr.mycellar.domain.booking.Booking;
@@ -37,6 +37,7 @@ import fr.mycellar.domain.booking.Booking_;
 import fr.mycellar.domain.shared.exception.BusinessError;
 import fr.mycellar.domain.shared.exception.BusinessException;
 import fr.mycellar.domain.user.User;
+import fr.mycellar.infrastructure.booking.repository.BookingEventRepository;
 import fr.mycellar.infrastructure.booking.repository.BookingRepository;
 
 /**
@@ -47,6 +48,8 @@ import fr.mycellar.infrastructure.booking.repository.BookingRepository;
 public class BookingServiceImpl extends AbstractSimpleService<Booking, BookingRepository> implements BookingService {
 
     private BookingRepository bookingRepository;
+
+    private BookingEventRepository bookingEventRepository;
 
     @Override
     public Map<BookingBottle, Long> getQuantities(BookingEvent bookingEvent) {
@@ -86,14 +89,14 @@ public class BookingServiceImpl extends AbstractSimpleService<Booking, BookingRe
     }
 
     @Override
-    public Booking getBooking(BookingEvent bookingEvent, User customer) {
+    public Booking getBooking(Integer bookingEventId, User customer) {
         Booking booking = bookingRepository.findUniqueOrNone(new SearchBuilder<Booking>() //
-                .on(Booking_.bookingEvent).equalsTo(bookingEvent) //
+                .on(Booking_.bookingEvent).to(BookingEvent_.id).equalsTo(bookingEventId) //
                 .on(Booking_.customer).equalsTo(customer).build());
         if (booking == null) {
             booking = new Booking();
             booking.setCustomer(customer);
-            booking.setBookingEvent(bookingEvent);
+            booking.setBookingEvent(bookingEventRepository.getById(bookingEventId));
         }
         return booking;
     }
@@ -127,6 +130,11 @@ public class BookingServiceImpl extends AbstractSimpleService<Booking, BookingRe
     @Inject
     public void setBookingRepository(BookingRepository bookingRepository) {
         this.bookingRepository = bookingRepository;
+    }
+
+    @Inject
+    public void setBookingEventRepository(BookingEventRepository bookingEventRepository) {
+        this.bookingEventRepository = bookingEventRepository;
     }
 
 }

@@ -72,7 +72,7 @@ public class WineWebService {
             @QueryParam("count") @DefaultValue("10") int count, //
             @QueryParam("filters") List<FilterCouple> filters, //
             @QueryParam("sort") List<OrderCouple> orders) {
-        SearchParameters<Country> searchParameters = searchParametersUtil.getSearchParametersParametersForListWithCount(first, count, filters, orders, Country.class);
+        SearchParameters<Country> searchParameters = searchParametersUtil.getSearchParameters(first, count, filters, orders, Country.class);
         List<Country> countries;
         if (count == 0) {
             countries = new ArrayList<>();
@@ -132,7 +132,7 @@ public class WineWebService {
             @QueryParam("count") @DefaultValue("10") int count, //
             @QueryParam("input") String input, //
             @QueryParam("sort") List<OrderCouple> orders) {
-        SearchParameters<Country> searchParameters = searchParametersUtil.getSearchParametersParametersForListWithCount(first, count, new ArrayList<FilterCouple>(), orders, Country.class);
+        SearchParameters<Country> searchParameters = searchParametersUtil.getSearchParameters(first, count, new ArrayList<FilterCouple>(), orders, Country.class);
         List<Country> countries;
         if (count == 0) {
             countries = new ArrayList<>();
@@ -154,7 +154,7 @@ public class WineWebService {
             @QueryParam("count") @DefaultValue("10") int count, //
             @QueryParam("filters") List<FilterCouple> filters, //
             @QueryParam("sort") List<OrderCouple> orders) {
-        SearchParameters<Format> searchParameters = searchParametersUtil.getSearchParametersParametersForListWithCount(first, count, filters, orders, Format.class);
+        SearchParameters<Format> searchParameters = searchParametersUtil.getSearchParameters(first, count, filters, orders, Format.class);
         List<Format> formats;
         if (count == 0) {
             formats = new ArrayList<>();
@@ -214,7 +214,7 @@ public class WineWebService {
             @QueryParam("count") @DefaultValue("10") int count, //
             @QueryParam("input") String input, //
             @QueryParam("sort") List<OrderCouple> orders) {
-        SearchParameters<Format> searchParameters = searchParametersUtil.getSearchParametersParametersForListWithCount(first, count, new ArrayList<FilterCouple>(), orders, Format.class);
+        SearchParameters<Format> searchParameters = searchParametersUtil.getSearchParameters(first, count, new ArrayList<FilterCouple>(), orders, Format.class);
         List<Format> formats;
         if (count == 0) {
             formats = new ArrayList<>();
@@ -236,7 +236,7 @@ public class WineWebService {
             @QueryParam("count") @DefaultValue("10") int count, //
             @QueryParam("filters") List<FilterCouple> filters, //
             @QueryParam("sort") List<OrderCouple> orders) {
-        SearchParameters<Appellation> searchParameters = searchParametersUtil.getSearchParametersParametersForListWithCount(first, count, filters, orders, Appellation.class);
+        SearchParameters<Appellation> searchParameters = searchParametersUtil.getSearchParameters(first, count, filters, orders, Appellation.class);
         List<Appellation> appellations;
         if (count == 0) {
             appellations = new ArrayList<>();
@@ -296,7 +296,7 @@ public class WineWebService {
             @QueryParam("count") @DefaultValue("10") int count, //
             @QueryParam("input") String input, //
             @QueryParam("sort") List<OrderCouple> orders) {
-        SearchParameters<Appellation> searchParameters = searchParametersUtil.getSearchParametersParametersForListWithCount(first, count, new ArrayList<FilterCouple>(), orders, Appellation.class);
+        SearchParameters<Appellation> searchParameters = searchParametersUtil.getSearchParameters(first, count, new ArrayList<FilterCouple>(), orders, Appellation.class);
         List<Appellation> appellations;
         if (count == 0) {
             appellations = new ArrayList<>();
@@ -318,7 +318,7 @@ public class WineWebService {
             @QueryParam("count") @DefaultValue("10") int count, //
             @QueryParam("filters") List<FilterCouple> filters, //
             @QueryParam("sort") List<OrderCouple> orders) {
-        SearchParameters<Producer> searchParameters = searchParametersUtil.getSearchParametersParametersForListWithCount(first, count, filters, orders, Producer.class);
+        SearchParameters<Producer> searchParameters = searchParametersUtil.getSearchParameters(first, count, filters, orders, Producer.class);
         List<Producer> producers;
         if (count == 0) {
             producers = new ArrayList<>();
@@ -378,7 +378,7 @@ public class WineWebService {
             @QueryParam("count") @DefaultValue("10") int count, //
             @QueryParam("input") String input, //
             @QueryParam("sort") List<OrderCouple> orders) {
-        SearchParameters<Producer> searchParameters = searchParametersUtil.getSearchParametersParametersForListWithCount(first, count, new ArrayList<FilterCouple>(), orders, Producer.class);
+        SearchParameters<Producer> searchParameters = searchParametersUtil.getSearchParameters(first, count, new ArrayList<FilterCouple>(), orders, Producer.class);
         List<Producer> producers;
         if (count == 0) {
             producers = new ArrayList<>();
@@ -400,7 +400,7 @@ public class WineWebService {
             @QueryParam("count") @DefaultValue("10") int count, //
             @QueryParam("filters") List<FilterCouple> filters, //
             @QueryParam("sort") List<OrderCouple> orders) {
-        SearchParameters<Region> searchParameters = searchParametersUtil.getSearchParametersParametersForListWithCount(first, count, filters, orders, Region.class);
+        SearchParameters<Region> searchParameters = searchParametersUtil.getSearchParameters(first, count, filters, orders, Region.class);
         List<Region> regions;
         if (count == 0) {
             regions = new ArrayList<>();
@@ -460,7 +460,7 @@ public class WineWebService {
             @QueryParam("count") @DefaultValue("10") int count, //
             @QueryParam("input") String input, //
             @QueryParam("sort") List<OrderCouple> orders) {
-        SearchParameters<Region> searchParameters = searchParametersUtil.getSearchParametersParametersForListWithCount(first, count, new ArrayList<FilterCouple>(), orders, Region.class);
+        SearchParameters<Region> searchParameters = searchParametersUtil.getSearchParameters(first, count, new ArrayList<FilterCouple>(), orders, Region.class);
         List<Region> regions;
         if (count == 0) {
             regions = new ArrayList<>();
@@ -482,7 +482,7 @@ public class WineWebService {
             @QueryParam("count") @DefaultValue("10") int count, //
             @QueryParam("filters") List<FilterCouple> filters, //
             @QueryParam("sort") List<OrderCouple> orders) {
-        SearchParameters<Wine> searchParameters = searchParametersUtil.getSearchParametersParametersForListWithCount(first, count, filters, orders, Wine.class);
+        SearchParameters<Wine> searchParameters = searchParametersUtil.getSearchParameters(first, count, filters, orders, Wine.class);
         List<Wine> wines;
         if (count == 0) {
             wines = new ArrayList<>();
@@ -538,7 +538,7 @@ public class WineWebService {
     @Produces(MediaType.APPLICATION_JSON)
     @Path("wines/like")
     public ListWithCount<Wine> getWinesLike(@QueryParam("first") int first, @QueryParam("count") int count, @QueryParam("input") String input, @QueryParam("sort") List<OrderCouple> orders) {
-        SearchParameters<Wine> searchParameters = searchParametersUtil.getSearchParametersParametersForListWithCount(first, count, new ArrayList<FilterCouple>(), orders, Wine.class);
+        SearchParameters<Wine> searchParameters = searchParametersUtil.getSearchParameters(first, count, new ArrayList<FilterCouple>(), orders, Wine.class);
         List<Wine> wines;
         if (count == 0) {
             wines = new ArrayList<>();

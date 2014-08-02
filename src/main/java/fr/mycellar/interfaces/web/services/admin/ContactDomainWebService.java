@@ -67,7 +67,7 @@ public class ContactDomainWebService {
             @QueryParam("count") @DefaultValue("10") int count, //
             @QueryParam("filters") List<FilterCouple> filters, //
             @QueryParam("sort") List<OrderCouple> orders) {
-        SearchParameters<Contact> searchParameters = searchParametersUtil.getSearchParametersParametersForListWithCount(first, count, filters, orders, Contact.class);
+        SearchParameters<Contact> searchParameters = searchParametersUtil.getSearchParameters(first, count, filters, orders, Contact.class);
         List<Contact> contacts;
         if (count == 0) {
             contacts = new ArrayList<>();
