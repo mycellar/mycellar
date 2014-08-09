@@ -21,6 +21,10 @@ body /deep/ core-toolbar {
   color: rgba(255, 255, 255, 0.87);
 }
 
+body /deep/ core-toolbar /deep/ input {
+  color: rgba(255, 255, 255, 0.87);
+}
+
 body /deep/ core-toolbar /deep/ paper-menu-button-overlay-container {
   color: rgba(0, 0, 0, 0.87);
 }

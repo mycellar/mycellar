@@ -55,8 +55,8 @@ public class BookingEventServiceImpl extends AbstractSearchableService<BookingEv
     @Override
     public List<BookingEvent> getCurrentBookingEvents() {
         return bookingEventRepository.find(new SearchBuilder<BookingEvent>() //
-                .between(null, new LocalDate(), BookingEvent_.start) //
-                .between(new LocalDate(), null, BookingEvent_.end).build());
+                .rangeOn(BookingEvent_.start).lessThan(new LocalDate()).and() //
+                .rangeOn(BookingEvent_.end).moreThan(new LocalDate()).build());
     }
 
     @Override

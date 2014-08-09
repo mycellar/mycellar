@@ -48,7 +48,9 @@ import lombok.Getter;
 import lombok.Setter;
 
 import org.apache.commons.lang3.builder.ToStringBuilder;
+import org.hibernate.search.annotations.Field;
 import org.hibernate.search.annotations.Indexed;
+import org.hibernate.search.annotations.IndexedEmbedded;
 
 import fr.mycellar.domain.booking.BookingBottle;
 import fr.mycellar.domain.shared.IdentifiedEntity;
@@ -75,6 +77,7 @@ public class Wine extends NamedEntity {
     @XmlTransient
     private final Set<Stock> stocks = new HashSet<Stock>();
 
+    @IndexedEmbedded
     @Valid
     @ManyToOne(cascade = { CascadeType.PERSIST, CascadeType.MERGE })
     @JoinColumn(name = "APPELLATION", nullable = false)
@@ -112,6 +115,7 @@ public class Wine extends NamedEntity {
     @Setter
     private String photoUrl;
 
+    @IndexedEmbedded
     @Valid
     @ManyToOne(cascade = { CascadeType.PERSIST, CascadeType.MERGE })
     @JoinColumn(name = "PRODUCER", nullable = false)
@@ -130,6 +134,7 @@ public class Wine extends NamedEntity {
     @Setter
     private WineTypeEnum type;
 
+    @Field
     @Column(name = "VINTAGE")
     @Getter
     @Setter

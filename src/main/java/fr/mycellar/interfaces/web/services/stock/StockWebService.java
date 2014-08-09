@@ -38,9 +38,11 @@ import jpasearch.repository.query.SearchParameters;
 import jpasearch.repository.query.builder.ResultBuilder;
 import jpasearch.repository.query.builder.SearchBuilder;
 
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.access.prepost.PreAuthorize;
 
+import fr.mycellar.domain.shared.NamedEntity_;
 import fr.mycellar.domain.shared.exception.BusinessException;
 import fr.mycellar.domain.stock.Arrival;
 import fr.mycellar.domain.stock.Bottle_;
@@ -55,6 +57,7 @@ import fr.mycellar.domain.stock.Movement_;
 import fr.mycellar.domain.stock.Stock;
 import fr.mycellar.domain.stock.Stock_;
 import fr.mycellar.domain.user.User;
+import fr.mycellar.domain.wine.Appellation_;
 import fr.mycellar.domain.wine.Wine;
 import fr.mycellar.domain.wine.Wine_;
 import fr.mycellar.interfaces.facades.stock.StockServiceFacade;
@@ -116,8 +119,13 @@ public class StockWebService {
     @Produces(MediaType.APPLICATION_JSON)
     @Path("wines")
     @PreAuthorize("hasRole('ROLE_CELLAR')")
-    public ListWithCount<Wine> getWinesForCellar(@QueryParam("cellarId") Integer cellarId, @QueryParam("first") int first, @QueryParam("count") int count,
-            @QueryParam("filters") List<FilterCouple> filters, @QueryParam("sort") List<OrderCouple> orders) {
+    public ListWithCount<Wine> getWinesFromStocksForCellarLike( //
+            @QueryParam("cellarId") Integer cellarId, //
+            @QueryParam("input") String input, //
+            @QueryParam("first") int first, //
+            @QueryParam("count") int count, //
+            @QueryParam("filters") List<FilterCouple> filters, //
+            @QueryParam("sort") List<OrderCouple> orders) {
         if ((cellarId != null) && !stockServiceFacade.hasReadRight(cellarId, currentUserService.getCurrentUserEmail())) {
             throw new AccessDeniedException("No read access to this cellar.");
         }
@@ -129,6 +137,15 @@ public class StockWebService {
             searchBuilder.distinct().disjunction() //
                     .on(Stock_.cellar).to(Cellar_.owner).equalsTo(user) //
                     .on(Stock_.cellar).to(Cellar_.shares).to(CellarShare_.email).equalsTo(user.getEmail());
+        }
+        if (StringUtils.isNotBlank(input)) {
+            searchBuilder.fullText(Stock_.bottle).to(Bottle_.wine).to(Wine_.appellation).to(Appellation_.region).to(NamedEntity_.name) //
+                    .andOn(Stock_.bottle).to(Bottle_.wine).to(Wine_.appellation).to(NamedEntity_.name) //
+                    .andOn(Stock_.bottle).to(Bottle_.wine).to(Wine_.producer).to(NamedEntity_.name) //
+                    .andOn(Stock_.bottle).to(Bottle_.wine).to(NamedEntity_.name) //
+                    .andOn(Stock_.bottle).to(Bottle_.wine).to(Wine_.vintage) //
+                    .andOn(Stock_.bottle).to(Bottle_.format).to(NamedEntity_.name) //
+                    .search(input);
         }
         SearchParameters<Stock> searchParameters = searchBuilder.build();
         ResultParameters<Stock, Wine> resultParameters = new ResultBuilder<>(Stock_.bottle).to(Bottle_.wine).build();
@@ -221,9 +238,9 @@ public class StockWebService {
     @Path("cellars/like")
     @PreAuthorize("hasRole('ROLE_CELLAR')")
     public ListWithCount<Cellar> getCellarsLike( //
+            @QueryParam("input") String input, //
             @QueryParam("first") int first, //
             @QueryParam("count") @DefaultValue("10") int count, //
-            @QueryParam("input") String input, //
             @QueryParam("sort") List<OrderCouple> orders) {
         User user = currentUserService.getCurrentUser();
         SearchParameters<Cellar> searchParameters = searchParametersUtil.getSearchBuilder(first, count, new ArrayList<FilterCouple>(), orders, Cellar.class) //

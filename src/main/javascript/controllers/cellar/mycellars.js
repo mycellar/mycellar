@@ -15,8 +15,8 @@ angular.module('mycellar.controllers.cellar.mycellars', [
         }],
         wines: ['Stocks', function(Stocks) {
           return Stocks.getWinesForCellar({
-            first: 0, 
-            count: 50, 
+            first: 0,
+            count: 50,
             sort: [
               'bottle.wine.producer.name,asc',
               'bottle.wine.name,asc',
@@ -65,6 +65,9 @@ angular.module('mycellar.controllers.cellar.mycellars').controller('MyCellarsCon
       if (cellar != null) {
         parameters['cellarId'] = cellar.id;
       }
+      if ($scope.search != null && $scope.search != '') {
+        parameters['input'] = $scope.search;
+      }
       return Stocks.getWinesForCellar(parameters, callback);
     };
     var cellarCallback = function(value, cellar) {
@@ -77,6 +80,14 @@ angular.module('mycellar.controllers.cellar.mycellars').controller('MyCellarsCon
         $scope.title = 'Mes caves > Toutes';
       }
     };
+
+    $scope.search = '';
+    if (cellars != null) {
+      $scope.cellars = cellars.list;
+    }
+    if (wines != null) {
+      cellarCallback(wines, null);
+    }
 
     $scope.selectWine = function(wine) {
       $location.path('/cellar/mywine/' + wine.id);
@@ -94,12 +105,35 @@ angular.module('mycellar.controllers.cellar.mycellars').controller('MyCellarsCon
       });
     };
 
-    if (cellars != null) {
-      $scope.cellars = cellars.list;
-    }
-    if (wines != null) {
-      cellarCallback(wines, null);
-    }
+    $scope.toggleHidden = function() {
+      var hiddenElements = document.querySelectorAll('core-toolbar[main]>[hidden]');
+      var notHiddenElements = document.querySelectorAll('core-toolbar[main]>:not([hidden])');
+      angular.forEach(hiddenElements, function(element) {
+        element.removeAttribute('hidden');
+      });
+      angular.forEach(notHiddenElements, function(element) {
+        element.setAttribute('hidden', '');
+      });
+      var searchInput = document.querySelector('core-input#search');
+      if (searchInput.hasAttribute('hidden')) {
+        $scope.search = '';
+      } else {
+        searchInput.focus();
+      }
+    };
+
+    $scope.clearSearch = function() {
+      $scope.search = '';
+      document.querySelector('core-input#search').focus();
+    };
+
+    $scope.$watch('search', function(newValue, oldValue) {
+      if (newValue !== oldValue) {
+        return getWines($scope.cellar, 0, function(value) {
+          cellarCallback(value, $scope.cellar);
+        });
+      }
+    });
   }
 ]);
 

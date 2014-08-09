@@ -27,6 +27,8 @@ import lombok.Getter;
 import lombok.Setter;
 
 import org.apache.commons.lang3.builder.ToStringBuilder;
+import org.hibernate.search.annotations.Indexed;
+import org.hibernate.search.annotations.IndexedEmbedded;
 
 import fr.mycellar.domain.wine.Format;
 import fr.mycellar.domain.wine.Wine;
@@ -35,14 +37,17 @@ import fr.mycellar.domain.wine.Wine;
  * @author speralta
  */
 @Embeddable
+@Indexed
 public class Bottle {
 
+    @IndexedEmbedded
     @ManyToOne(cascade = { CascadeType.PERSIST, CascadeType.MERGE })
     @JoinColumn(name = "FORMAT", nullable = false)
     @Getter
     @Setter
     private Format format;
 
+    @IndexedEmbedded
     @ManyToOne(cascade = { CascadeType.PERSIST, CascadeType.MERGE })
     @JoinColumn(name = "WINE", nullable = false)
     @Getter
