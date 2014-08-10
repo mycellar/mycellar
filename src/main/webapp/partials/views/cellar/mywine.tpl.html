@@ -1,14 +1,13 @@
 <core-toolbar>
   <paper-icon-button class="narrow" icon="back"></paper-icon-button>
-  <span flex>Mes vins > {{wine | wineRenderer}}</span>
+  <span flex>Mes vins</span>
 </core-toolbar>
 <div main>
   <div>
     <h3>
       {{wine | wineRenderer}}<br/>
       <small>
-        {{wine.appellation | appellationRenderer}}<br/>
-        {{wine.color | wineColorRenderer}}
+        {{wine.appellation | appellationRenderer}}
       </small>
     </h3>
   </div>
