@@ -12,7 +12,7 @@ body {
   color: rgba(0, 0, 0, 0.87);
 }
 
-.nav {
+body /deep/ core-drawer-panel [drawer] {
   background: #ffffff;
 }
 
@@ -40,11 +40,6 @@ body /deep/ paper-fab {
   right: 28px;
   background: #6200ea;
   color: rgba(255, 255, 255, 0.87);
-}
-
-core-drawer-panel:not([narrow]) .narrow,
-core-drawer-panel[narrow] .unnarrow {
-  display: none;
 }
 
 @media screen and (max-width: 500px) {

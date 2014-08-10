@@ -1,14 +1,7 @@
-<div class="container">
-  <div class="row">
-    <div class="col-md-2">
-      <nav role="secondary">
-        <admin-domain-nav></admin-domain-nav>
-      </nav>
-    </div>
-    <div class="col-md-10" ng-transclude>
-    </div>
+<core-drawer-panel rightDrawer>
+  <nav role="secondary" drawer>
+    <admin-domain-nav></admin-domain-nav>
+  </nav>
+  <div main ng-transclude>
   </div>
-  <footer>
-    <p>2012-2014 Tous droits réservés, MyCellar GPL V3.</p>
-  </footer>
-</div>
+</core-drawer-panel>
