@@ -1,7 +1,7 @@
 <core-toolbar>
   <span>MyCellar</span>
 </core-toolbar>
-<nav>
+<nav flex>
   <core-menu ng-controller="NavigationController">
     <span ng-if="false" ng-repeat-start="menu in menuService.getAll()"></span>
     <core-submenu label="{{menu.label}}" ng-if="menu.pages">

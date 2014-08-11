@@ -12,6 +12,20 @@ body {
   color: rgba(0, 0, 0, 0.87);
 }
 
+body /deep/ :not([rightDrawer]) [drawer] /deep/ #mainContainer {
+  display: flex;
+  flex-direction: column;
+  border-right: 1px solid rgba(0, 0, 0, 0.12);
+}
+
+body /deep/ :not([rightDrawer]) [drawer] nav[flex] {
+  overflow: auto;
+}
+
+body /deep/ [rightDrawer] [drawer] {
+  border-left: 1px solid rgba(0, 0, 0, 0.12);
+}
+
 body /deep/ core-drawer-panel [drawer] {
   background: #ffffff;
 }
@@ -56,6 +70,15 @@ body /deep/ .ellipsis {
 
 body /deep/ paper-item.twoLines {
   height: 72px;
+}
+
+body /deep/ paper-item.threeLines {
+  height: 88px;
+}
+
+body /deep/ paper-menu-button[select] /deep/ #menu {
+  height: 100px;
+  overflow-y: scroll;
 }
 
 footer {
