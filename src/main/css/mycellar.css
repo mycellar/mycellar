@@ -16,6 +16,10 @@ body core-drawer-panel[rightDrawer] {
   overflow-y: auto;
 }
 
+body /deep/ core-drawer-panel[rightDrawer][narrow] /deep/ .rightNarrow {
+  display: none;
+}
+
 body /deep/ :not([rightDrawer]) [drawer] /deep/ #mainContainer {
   display: flex;
   flex-direction: column;

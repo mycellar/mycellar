@@ -18,11 +18,11 @@
           <paper-item ng-repeat="i in $root.getArray(25) track by $index" label="{{$index}}" ng-click="booking.quantities[booking.bookingEvent.id + '-' + bookingBottle.id] = $index"></paper-item>
         </paper-menu-button>
         <div flex>
-          <div class="ellipsis">{{bookingBottle.bottle.wine | wineRenderer}}</div>
-          <div><small>{{bookingBottle.bottle.format | formatRenderer}}</small></div>
-          <div><small>{{bookingBottle.price | currency:"€"}}</small></div>
+          <div class="ellipsis">{{bookingBottle.bottle.wine | wineNameRenderer}}</div>
+          <div class="ellipsis"><small>{{bookingBottle.bottle.wine.producer.name}} - {{bookingBottle.bottle.wine.color | wineColorRenderer}}</small></div>
+          <div class="ellipsis"><small>{{bookingBottle.price | currency:"€"}} / {{bookingBottle.bottle.format | formatRenderer}}</small></div>
         </div>
-        <div>{{bookingBottle.price * booking.quantities[booking.bookingEvent.id + '-' + bookingBottle.id] | currency:"€"}}</div>
+        <div class="rightNarrow">{{bookingBottle.price * booking.quantities[booking.bookingEvent.id + '-' + bookingBottle.id] | currency:"€"}}</div>
       </paper-item>
       <div horizontal layout style="padding: 10px;">
         <div flex>Total</div>

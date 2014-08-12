@@ -5,6 +5,12 @@ angular.module('mycellar').filter('wineRenderer', ['wineColorRendererFilter', fu
         (wine.vintage != null ? ' - ' + wine.vintage : '') +
         (wine.color != null ? ' - ' + wineColorRenderer(wine.color) : '');
   };
+}]).filter('wineNameRenderer', ['wineColorRendererFilter', function(wineColorRenderer) {
+  return function(wine) {
+    return wine.appellation.name + ' - ' +
+        (wine.name != null && wine.name.length > 0 ? wine.name : wine.producer.name) +
+        (wine.vintage != null ? ' - ' + wine.vintage : '');
+  };
 }]).filter('appellationRenderer', function() {
   return function(appellation) {
     return appellation.name +
