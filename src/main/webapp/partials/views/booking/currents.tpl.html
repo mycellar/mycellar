@@ -11,7 +11,7 @@
   </nav>
   <div main>
     <form ng-if="booking != null">
-      <h2 style="padding: 0 10px;">{{booking.bookingEvent.name}} du {{booking.bookingEvent.start | date}} au {{booking.bookingEvent.end | date}}</h2>
+      <h2 style="padding: 20px; margin: 0; text-align: center;">{{booking.bookingEvent.name}} du {{booking.bookingEvent.start | date}} au {{booking.bookingEvent.end | date}}</h2>
       <paper-item class="threeLines" ng-repeat="bookingBottle in booking.bookingEvent.bottles">
         <div>{{booking.quantities[booking.bookingEvent.id + '-' + bookingBottle.id]}}</div>
         <paper-menu-button select icon="arrow-drop-down" halign="right">
@@ -24,13 +24,17 @@
         </div>
         <div>{{bookingBottle.price * booking.quantities[booking.bookingEvent.id + '-' + bookingBottle.id] | currency:"€"}}</div>
       </paper-item>
-      <div horizontal layout style="padding: 10px; border: solid rgba(0, 0, 0, 0.12); border-width: 1px 0;">
+      <div horizontal layout style="padding: 10px;">
         <div flex>Total</div>
         <div>{{total | currency:"€"}}</div>
       </div>
-      <div style="padding: 10px;">
-        <paper-button raisedButton label="Réserver" ng-click="save(booking)"></paper-button>
-        <paper-button raisedButton label="Annuler la réservation" ng-click="delete(booking)"></paper-button>
+      <div horizontal layout style="border: solid rgba(0, 0, 0, 0.12); border-width: 1px 0;">
+        <div flex horizontal layout style="border-right: 1px solid rgba(0, 0, 0, 0.12);">
+          <paper-button flex label="Valider la réservation" ng-click="save(booking)"></paper-button>
+        </div>
+        <div flex horizontal layout>
+          <paper-button flex label="Annuler la réservation" ng-click="delete(booking)"></paper-button>
+        </div>
       </div>
     </form>
     <p ng-if="booking == null">Pas de réservation en cours</p>

@@ -12,6 +12,10 @@ body {
   color: rgba(0, 0, 0, 0.87);
 }
 
+body core-drawer-panel[rightDrawer] {
+  overflow-y: auto;
+}
+
 body /deep/ :not([rightDrawer]) [drawer] /deep/ #mainContainer {
   display: flex;
   flex-direction: column;
