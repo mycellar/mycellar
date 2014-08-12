@@ -12,7 +12,7 @@ body {
   color: rgba(0, 0, 0, 0.87);
 }
 
-body core-drawer-panel[rightDrawer] {
+body core-drawer-panel[rightDrawer] [main] {
   overflow-y: auto;
 }
 
