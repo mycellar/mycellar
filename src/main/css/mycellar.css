@@ -26,8 +26,8 @@ body /deep/ :not([rightDrawer]) [drawer] /deep/ #mainContainer {
   border-right: 1px solid rgba(0, 0, 0, 0.12);
 }
 
-body /deep/ :not([rightDrawer]) [drawer] nav[flex] {
-  overflow: auto;
+body /deep/ [drawer] nav, body /deep/ nav[drawer] {
+  overflow-y: auto;
 }
 
 body /deep/ [rightDrawer] [drawer] {

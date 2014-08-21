@@ -11,7 +11,7 @@ angular.module('mycellar.controllers.booking.mybookings', [
         bookings: ['Bookings', function(Bookings) {
           return Bookings.getAllForCurrentUser({
             first: 0,
-            count: 5
+            count: 10
           }).$promise;
         }]
       }
@@ -20,31 +20,33 @@ angular.module('mycellar.controllers.booking.mybookings', [
 ]);
 
 angular.module('mycellar.controllers.booking.mybookings').controller('MyBookingsController', [
-  '$scope', 'Bookings', 'bookings', '$anchorScroll',
-  function($scope, Bookings, bookings, $anchorScroll) {
-    $scope.itemsPerPage = 5;
-    $scope.setPage = function() {
-      $scope.firstItem = ($scope.currentPage - 1) * $scope.itemsPerPage;
-      $scope.result = Bookings.getAllForCurrentUser({
-        first: $scope.firstItem,
-        count: $scope.itemsPerPage
-      }, function(value) {
-        if (value.list != null && value.list.length > 0) {
-          $scope.selectBooking(value.list[0]);
-        } else {
-          $scope.selectBooking(null);
-        }
-
-        $scope.pageCount = Math.ceil(value.count / $scope.itemsPerPage);
-        $scope.bookings = value.list;
-        $scope.totalItems = value.count;
+  '$scope', 'Bookings', 'bookings',
+  function($scope, Bookings, bookings) {
+    $scope.more = function() {
+      var parameters = {
+        first: $scope.bookings.length, 
+        count: 10
+      };
+      if ($scope.search != null && $scope.search != '') {
+        parameters['input'] = $scope.search;
+      }
+      return Bookings.getAllForCurrentUser(parameters, function(value) {
+        $scope.bookings = $scope.bookings.concat(value.list);
       });
     };
 
     $scope.selectBooking = function(booking) {
       $scope.booking = booking;
-      $anchorScroll();
+      // TODO scroll to div[main] top
     };
+
+    if (bookings != null && bookings.list.length > 0) {
+      $scope.bookings = bookings.list;
+      $scope.size = bookings.count;
+      $scope.selectBooking($scope.bookings[0]);
+    } else {
+      $scope.selectBooking(null);
+    }
 
     $scope.total = 0;
     $scope.$watch('booking.quantities', function (value) {
@@ -55,15 +57,5 @@ angular.module('mycellar.controllers.booking.mybookings').controller('MyBookings
         });
       }
     }, true);
-
-    if (bookings.list != null && bookings.list.length > 0) {
-      $scope.selectBooking(bookings.list[0]);
-    } else {
-      $scope.selectBooking(null);
-    }
-
-    $scope.pageCount = Math.ceil(bookings.count / $scope.itemsPerPage);
-    $scope.bookings = bookings.list;
-    $scope.totalItems = bookings.count;
   }
 ]);
