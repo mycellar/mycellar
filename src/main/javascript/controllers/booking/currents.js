@@ -9,8 +9,23 @@ angular.module('mycellar.controllers.booking.currents', [
       templateUrl: 'partials/views/booking/currents.tpl.html',
       controller: 'CurrentBookingsController',
       resolve: {
-        bookingEvents: ['BookingEvents', function(BookingEvents){
-          return BookingEvents.currents().$promise;
+        startingData: ['BookingEvents', 'Bookings', '$q', function(BookingEvents, Bookings, $q){
+          var deferred = $q.defer();
+          var startingData = {
+            bookingEvents: BookingEvents.currents()
+          };
+          startingData.bookingEvents.$promise.then(function(value) {
+            if (value != null && value.list.length > 0) {
+              startingData.booking = Bookings.getByBookingEventForCurrentUser({bookingEventId: value.list[0].id});
+              startingData.booking.$promise.then(function() {
+                deferred.resolve(startingData);
+              }, function(reason) {
+                deferred.reject(reason);
+              });
+            }
+            return startingData;
+          });
+          return deferred.promise;
         }]
       }
     });
@@ -18,21 +33,20 @@ angular.module('mycellar.controllers.booking.currents', [
 ]);
 
 angular.module('mycellar.controllers.booking.currents').controller('CurrentBookingsController', [
-  '$scope', 'bookingEvents', 'Bookings', '$location', '$anchorScroll',
-  function($scope, bookingEvents, Bookings, $location, $anchorScroll) {
-    $scope.bookingEventsResource = bookingEvents;
-    $scope.$watch('bookingEventsResource.list', function() {
-      if ($scope.bookingEventsResource.list != undefined && $scope.bookingEventsResource.list.length > 0) {
-        $scope.bookingEvents = $scope.bookingEventsResource.list;
-        $scope.selectBooking($scope.bookingEvents[0]);
-      }
-    });
+  '$scope', 'startingData', 'Bookings', '$location',
+  function($scope, startingData, Bookings, $location) {
+    if (startingData.bookingEvents.list != undefined && startingData.bookingEvents.list.length > 0) {
+      $scope.bookingEvents = startingData.bookingEvents.list;
+    }
+    if (startingData.booking != null) {
+      $scope.booking = startingData.booking;
+    }
 
     $scope.selectBooking = function(bookingEvent) {
       $scope.booking = Bookings.getByBookingEventForCurrentUser({bookingEventId: bookingEvent.id});
-      $anchorScroll();
+      // TODO scroll to div[main] top
     };
-    
+
     $scope.save = function(booking) {
       var errors = $scope.errors;
       $scope.backup = {};
@@ -50,7 +64,7 @@ angular.module('mycellar.controllers.booking.currents').controller('CurrentBooki
         }
       });
     };
-    
+
     $scope.delete = function(booking) {
       var errors = $scope.errors;
       $scope.backup = {};
@@ -68,12 +82,12 @@ angular.module('mycellar.controllers.booking.currents').controller('CurrentBooki
         }
       });
     };
-    
+
     $scope.errors = [];
     $scope.total = 0;
     $scope.$watch('booking.quantities', function (value) {
+      $scope.total = 0;
       if ($scope.booking != null && $scope.booking.quantities != undefined) {
-        $scope.total = 0;
         angular.forEach($scope.booking.bookingEvent.bottles, function(value) {
           $scope.total += value.price * $scope.booking.quantities[$scope.booking.bookingEvent.id + "-" + value.id];
         });
