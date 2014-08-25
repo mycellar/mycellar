@@ -6,7 +6,12 @@
 <core-drawer-panel rightDrawer>
   <nav role="secondary" drawer>
     <core-menu>
-      <paper-item ng-repeat="bookingEvent in bookingEvents" label="{{bookingEvent.name}}" ng-click="selectBooking(bookingEvent)"></paper-item>
+      <paper-item class="twoLines" ng-repeat="bookingEvent in bookingEvents" ng-click="selectBooking(bookingEvent)">
+        <div>
+          <div class="ellipsis">{{bookingEvent.name}}</div>
+          <div class="ellipsis"><small>Du {{bookingEvent.start | date}} au {{bookingEvent.end | date}}</small></div>
+        </div>
+      </paper-item>
     </core-menu>
   </nav>
   <div main>
