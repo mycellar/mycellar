@@ -74,11 +74,6 @@ angular.module('mycellar.controllers.cellar.mycellars').controller('MyCellarsCon
       $scope.wines = value.list;
       $scope.size = value.count;
       $scope.cellar = cellar;
-      if ($scope.cellar != null && $scope.cellar.name != undefined) {
-        $scope.title = 'Mes caves > ' + $scope.cellar.name;
-      } else {
-        $scope.title = 'Mes caves > Toutes';
-      }
     };
 
     $scope.search = '';

@@ -1,9 +1,12 @@
 <core-toolbar main>
   <core-icon icon="search" hidden></core-icon>
   <drawer-button icon="menu"></drawer-button>
-  <span>{{title}}</span>
+  <span class="xs-hide">Mes caves</span>
+  <span class="xs-show" ng-if="cellar == null">Mes caves</span>
+  <span class="xs-hide" ng-if="cellar != null">&gt;</span>
+  <span ng-if="cellar != null">{{cellar.name}}</span>
   <paper-menu-button icon="arrow-drop-down" halign="right">
-    <paper-item style="font-size: 0.6em;" label="Tous" ng-click="selectCellar()"></paper-item>
+    <paper-item style="font-size: 0.6em;" label="Toutes" ng-click="selectCellar()"></paper-item>
     <paper-item style="font-size: 0.6em;" label="{{cellar.name}} ({{cellar.owner.email}})" ng-click="selectCellar(cellar)" ng-repeat="cellar in cellars"></paper-item>
   </paper-menu-button>
   <core-input id="search" bind-polymer-input="search" flex hidden></core-input>

@@ -74,12 +74,6 @@ body /deep/ paper-fab {
   color: rgba(255, 255, 255, 0.87);
 }
 
-@media screen and (max-width: 500px) {
-  body /deep/ .xs-hide {
-    display: none;
-  }
-}
-
 body /deep/ .ellipsis {
   text-overflow: ellipsis;
   overflow: hidden;
@@ -102,4 +96,22 @@ body /deep/ paper-menu-button[select] /deep/ #menu {
 footer {
   border-top: 1px solid rgba(0, 0, 0, 0.12);
   padding: 10px;
+}
+
+@media screen and (max-width: 500px) {
+  body /deep/ .xs-hide {
+    display: none;
+  }
+}
+
+body /deep/ .xs-show {
+  display: none;
+}
+@media screen and (max-width: 500px) {
+  body /deep/ .xs-show {
+    display: block;
+  }
+  body /deep/ span.xs-show {
+    display: inline;
+  }
 }
