@@ -33,13 +33,9 @@
         <div flex>Total</div>
         <div>{{total | currency:"€"}}</div>
       </div>
-      <div horizontal layout style="border: solid rgba(0, 0, 0, 0.12); border-width: 1px 0;">
-        <div flex horizontal layout style="border-right: 1px solid rgba(0, 0, 0, 0.12);">
-          <paper-button flex label="Valider la réservation" ng-click="save(booking)"></paper-button>
-        </div>
-        <div flex horizontal layout>
-          <paper-button flex label="Annuler la réservation" ng-click="delete(booking)"></paper-button>
-        </div>
+      <div horizontal layout style="padding: 10px;">
+        <paper-button style="margin: auto;" raisedButton primary label="Réserver" ng-click="save(booking)"></paper-button>
+        <paper-button style="margin: auto;" raisedButton label="Annuler" ng-click="delete(booking)"></paper-button>
       </div>
     </form>
     <p ng-if="booking == null">Pas de réservation en cours</p>
