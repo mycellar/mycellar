@@ -1,150 +1,79 @@
-<div class="container">
-  <header class="page-header"><h1>Suivi des réservations</h1></header>
-  <div class="row">
-    <div class="col-md-3">
-      <nav>
-        <pagination items-per-page="itemsPerPage" total-items="totalItems" ng-model="currentPage" ng-change="pageChanged()" max-size="4" boundary-links="false" direction-links="true"></pagination>
-          <ul class="nav nav-pills nav-stacked">
-            <li ng-repeat="bookingEvent in bookingEvents" ng-class="{active: bookingEvent.id == $parent.bookingEvent.id}">
-              Du {{bookingEvent.start}} au {{bookingEvent.end}} :<br />
-              <a href ng-click="selectBookingEvent(bookingEvent)">{{bookingEvent.name}}</a>
-            </li>
-          </ul>
-        <pagination items-per-page="itemsPerPage" total-items="totalItems" ng-model="currentPage" ng-change="pageChanged()" max-size="4" boundary-links="false" direction-links="true"></pagination>
-      </nav>
-    </div>
-    <div class="col-md-9">
-      <p ng-if="bookingEvent == null">Aucune réservation</p>
-      <section ng-if="bookingEvent != null">
-        <h2>{{bookingEvent.name}} du {{bookingEvent.start}} au {{bookingEvent.end}}</h2>
-        <div class="table-responsive">
-          <table class="table table-bordered table-striped table-condensed">
-            <thead>
-              <tr>
-                <th></th>
-                <th>Vin</th>
-                <th>Format</th>
-                <th>Prix</th>
-                <th>Quantité</th>
-                <th>Total</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr ng-repeat="bookingBottle in bookingEvent.bottles">
-                <td><a class="btn btn-default btn-xs" href ng-click="selectBookingBottle(bookingBottle)" title="Afficher les acheteurs"><i class="fa fa-user"></i></a></td>
-                <td>{{bookingBottle.bottle.wine | wineRenderer}}</td>
-                <td>{{bookingBottle.bottle.format | formatRenderer}}</td>
-                <td>{{bookingBottle.price | currency:"€"}}</td>
-                <td>{{quantities[bookingEvent.id + '-' + bookingBottle.id]}}</td>
-                <td>{{bookingBottle.price * quantities[bookingEvent.id + '-' + bookingBottle.id] | currency:"€"}}</td>
-              </tr>
-            </tbody>
-            <tfoot>
-              <tr>
-                <th colspan="4"></th>
-                <th>Total</th>
-                <th>{{total | currency:"€"}}</th>
-              </tr>
-            </tfoot>
-          </table>
+<core-toolbar>
+  <drawer-button icon="menu"></drawer-button>
+  <span flex>Suivi des réservations</span>
+  <drawer-button right icon="more-vert"></drawer-button>
+</core-toolbar>
+<core-drawer-panel rightDrawer>
+  <nav role="secondary" drawer>
+    <core-menu>
+      <paper-item class="twoLines" ng-repeat="bookingEvent in bookingEvents" ng-click="selectBookingEvent(bookingEvent)">
+        <div>
+          <div class="ellipsis">{{bookingEvent.name}}</div>
+          <div class="ellipsis"><small>Du {{bookingEvent.start | date}} au {{bookingEvent.end | date}}</small></div>
         </div>
-      </section>
-      <section ng-if="bookingBottle != null">
-        <h3>
-          {{bookingBottle.bottle.wine | wineRenderer}}
-          <small>
-            {{bookingBottle.bottle.format | formatRenderer}}
-            <i>{{bookingBottle.price | currency:"€"}}</i>
-          </small>
-        </h3>
-        <div class="table-responsive">
-          <table class="table table-bordered table-striped table-condensed">
-            <thead>
-              <tr>
-                <th></th>
-                <th>Client</th>
-                <th>Quantité</th>
-                <th>Total</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr ng-repeat="booking in bookings">
-                <td><a class="btn btn-default btn-xs" href ng-click="selectBooking(booking)" title="Afficher la commande du client"><i class="fa fa-shopping-cart"></i></a></td>
-                <td>{{booking.customer | userRenderer}}</td>
-                <td>{{booking.quantities[booking.bookingEvent.id + '-' + bookingBottle.id]}}</td>
-                <td>{{bookingBottle.price * booking.quantities[booking.bookingEvent.id + '-' + bookingBottle.id] | currency:"€"}}</td>
-              </tr>
-              <tr ng-if="bookings.length == 0">
-                <td colspan="4" class="text-center">Aucune bouteille vendue</td>
-              </tr>
-            </tbody>
-            <tfoot>
-              <tr>
-                <th colspan="2"></th>
-                <th>Total</th>
-                <th>{{bookingBottleTotal | currency:"€"}}</th>
-              </tr>
-            </tfoot>
-          </table>
+      </paper-item>
+      <paper-item ng-if="size > bookingEvents.length" label="Voir les {{size - bookingEvents.length > 10 ? 10 : size - bookingEvents.length}} suivantes sur {{size - bookingEvents.length}}" ng-click="more()"></paper-item>
+    </core-menu>
+  </nav>
+  <div main>
+    <section ng-if="bookingEvent != null">
+      <h2 style="padding: 20px; margin: 0; text-align: center;">{{bookingEvent.name}} du {{bookingEvent.start}} au {{bookingEvent.end}}</h2>
+      <paper-item class="threeLines" ng-repeat="bookingBottle in bookingEvent.bottles" ng-click="selectBookingBottle(bookingBottle)">
+        <div style="padding-right: 10px;">{{quantities[bookingEvent.id + '-' + bookingBottle.id]}}</div>
+        <div flex>
+          <div class="ellipsis">{{bookingBottle.bottle.wine | wineNameRenderer}}</div>
+          <div class="ellipsis"><small>{{bookingBottle.bottle.wine.producer.name}} - {{bookingBottle.bottle.wine.color | wineColorRenderer}}</small></div>
+          <div class="ellipsis"><small>{{bookingBottle.price | currency:"€"}} / {{bookingBottle.bottle.format | formatRenderer}}</small></div>
         </div>
-      </section>
-      <section ng-if="booking != null">
-        <h3>{{booking.customer | userRenderer}}</h3>
-        <div class="table-responsive">
-          <table class="table table-bordered table-striped table-condensed">
-            <thead>
-              <tr>
-                <th>Vin</th>
-                <th>Format</th>
-                <th>Prix</th>
-                <th>Quantité</th>
-                <th>Total</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr ng-repeat="bookingBottle in booking.bookingEvent.bottles" ng-if="booking.quantities[booking.bookingEvent.id + '-' + bookingBottle.id] != 0">
-                <td>{{bookingBottle.bottle.wine | wineRenderer}}</td>
-                <td>{{bookingBottle.bottle.format | formatRenderer}}</td>
-                <td>{{bookingBottle.price | currency:"€"}}</td>
-                <td>{{booking.quantities[booking.bookingEvent.id + '-' + bookingBottle.id]}}</td>
-                <td>{{bookingBottle.price * booking.quantities[booking.bookingEvent.id + '-' + bookingBottle.id] | currency:"€"}}</td>
-              </tr>
-            </tbody>
-            <tfoot>
-              <tr>
-                <th colspan="3"></th>
-                <th>Total</th>
-                <th>{{bookingTotal | currency:"€"}}</th>
-              </tr>
-            </tfoot>
-          </table>
+        <div class="rightNarrow">{{bookingBottle.price * quantities[bookingEvent.id + '-' + bookingBottle.id] | currency:"€"}}</div>
+      </paper-item>
+      <div horizontal layout style="padding: 10px;">
+        <div flex>Total</div>
+        <div>{{total | currency:"€"}}</div>
+      </div>
+    </section>
+    <section ng-if="bookingBottle != null">
+      <h3 style="padding: 20px; margin: 0; text-align: center;">
+        {{bookingBottle.bottle.wine | wineRenderer}}
+        <small>
+          {{bookingBottle.bottle.format | formatRenderer}}
+          <i>{{bookingBottle.price | currency:"€"}}</i>
+        </small>
+      </h3>
+      <paper-item ng-repeat="booking in bookings" ng-click="selectBooking(booking)">
+        <div style="padding-right: 10px;">{{booking.quantities[booking.bookingEvent.id + '-' + bookingBottle.id]}}</div>
+        <div flex class="ellipsis">{{booking.customer | userRenderer}}</div>
+        <div class="rightNarrow">{{bookingBottle.price * booking.quantities[booking.bookingEvent.id + '-' + bookingBottle.id] | currency:"€"}}</div>
+      </paper-item>
+      <p ng-if="bookings.length == 0">Aucune bouteille vendue</p>
+      <div horizontal layout style="padding: 10px;">
+        <div flex>Total</div>
+        <div>{{bookingBottleTotal | currency:"€"}}</div>
+      </div>
+    </section>
+    <section ng-if="booking != null">
+      <h3 style="padding: 20px; margin: 0; text-align: center;">{{booking.customer | userRenderer}}</h3>
+      <paper-item class="threeLines" ng-repeat="bookingBottle in booking.bookingEvent.bottles">
+        <div style="padding-right: 10px;">{{booking.quantities[booking.bookingEvent.id + '-' + bookingBottle.id]}}</div>
+        <div flex>
+          <div class="ellipsis">{{bookingBottle.bottle.wine | wineNameRenderer}}</div>
+          <div class="ellipsis"><small>{{bookingBottle.bottle.wine.producer.name}} - {{bookingBottle.bottle.wine.color | wineColorRenderer}}</small></div>
+          <div class="ellipsis"><small>{{bookingBottle.price | currency:"€"}} / {{bookingBottle.bottle.format | formatRenderer}}</small></div>
         </div>
-      </section>
-      <section ng-if="allBookings != null && allBookings.length != 0">
-        <h3>Réservations</h3>
-        <div class="table-responsive">
-          <table class="table table-bordered table-striped table-condensed">
-            <thead>
-              <tr>
-                <th></th>
-                <th>Client</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr ng-repeat="booking in allBookings">
-                <td><a class="btn btn-default btn-xs" href ng-click="selectBooking(booking)" title="Afficher la commande du client"><i class="fa fa-shopping-cart"></i></a></td>
-                <td>{{booking.customer | userRenderer}}</td>
-              </tr>
-              <tr ng-if="allBookings.length == 0">
-                <td colspan="2" class="text-center">Aucune réservation enregistrée</td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
-      </section>
-    </div>
+        <div class="rightNarrow">{{bookingBottle.price * booking.quantities[booking.bookingEvent.id + '-' + bookingBottle.id] | currency:"€"}}</div>
+      </paper-item>
+      <div horizontal layout style="padding: 10px;">
+        <div flex>Total</div>
+        <div>{{bookingTotal | currency:"€"}}</div>
+      </div>
+    </section>
+    <section ng-if="allBookings != null && allBookings.length != 0">
+      <h3 style="padding: 20px; margin: 0; text-align: center;">Réservations</h3>
+      <paper-item ng-repeat="booking in allBookings" ng-click="selectBooking(booking)">
+        <div flex class="ellipsis">{{booking.customer | userRenderer}}</div>
+      </paper-item>
+      <p ng-if="allBookings.length == 0">Aucune réservation enregistrée</p>
+    </section>
+    <section ng-if="bookingEvent == null"><p>Aucune réservation</p></section>
   </div>
-  <footer>
-    <p>2012-2014 Tous droits réservés, MyCellar GPL V3.</p>
-  </footer>
-</div>
+</core-drawer-panel>

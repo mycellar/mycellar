@@ -21,26 +21,21 @@ angular.module('mycellar.controllers.booking.reports', [
 ]);
 
 angular.module('mycellar.controllers.booking.reports').controller('BookingReportsController', [
-  '$scope', 'AdminBookingEvents', 'AdminBookings', '$anchorScroll', 'bookingEvents',
-  function($scope, AdminBookingEvents, AdminBookings, $anchorScroll, bookingEvents) {
-    $scope.pageChanged = function() {
-      $scope.firstItem = ($scope.currentPage - 1) * $scope.itemsPerPage;
-      $scope.result = AdminBookingEvents.get({
-        first: $scope.firstItem,
-        count: $scope.itemsPerPage,
+  '$scope', 'AdminBookingEvents', 'AdminBookings', 'bookingEvents',
+  function($scope, AdminBookingEvents, AdminBookings, bookingEvents) {
+    $scope.more = function() {
+      var parameters = {
+        first: $scope.bookingEvents.length,
+        count: 10,
         sort: ['start,desc']
-      }, function(value) {
-        if (value.list != null && value.list.length > 0) {
-          $scope.selectBookingEvent(value.list[0]);
-        }
-
-        $scope.pageCount = Math.ceil(value.count / $scope.itemsPerPage);
-        $scope.bookingEvents = value.list;
-        $scope.totalItems = value.count;
+      };
+      if ($scope.search != null && $scope.search != '') {
+        parameters['input'] = $scope.search;
+      }
+      return AdminBookingEvents.get(parameters, function(value) {
+        $scope.bookingEvents = $scope.bookingEvents.concat(value.list);
       });
     };
-
-    $scope.itemsPerPage = 5;
 
     $scope.selectBookingEvent = function(bookingEvent) {
       $scope.bookingBottle = null;
@@ -53,7 +48,7 @@ angular.module('mycellar.controllers.booking.reports').controller('BookingReport
         });
       });
       $scope.allBookings = AdminBookings.getByBookingEventId({bookingEventId: bookingEvent.id});
-      $anchorScroll();
+      // TODO scroll to div[main] top
     };
 
     $scope.selectBookingBottle = function(bookingBottle) {
@@ -76,13 +71,11 @@ angular.module('mycellar.controllers.booking.reports').controller('BookingReport
     };
     
     if (bookingEvents.list != null && bookingEvents.list.length > 0) {
-      $scope.selectBookingEvent(bookingEvents.list[0]);
+      $scope.bookingEvents = bookingEvents.list;
+      $scope.size = bookingEvents.count;
+      $scope.selectBookingEvent($scope.bookingEvents[0]);
     } else {
       $scope.selectBookingEvent(null);
     }
-
-    $scope.pageCount = Math.ceil(bookingEvents.count / $scope.itemsPerPage);
-    $scope.bookingEvents = bookingEvents.list;
-    $scope.totalItems = bookingEvents.count;
   }
 ]);
