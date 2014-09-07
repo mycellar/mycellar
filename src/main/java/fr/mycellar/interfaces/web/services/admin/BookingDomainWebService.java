@@ -98,7 +98,7 @@ public class BookingDomainWebService {
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
     @Path("bookings/{id}")
-    public Booking saveBooking(@PathParam("id") Integer id, Booking booking) throws BusinessException {
+    public Booking saveBooking(@PathParam("id") int id, Booking booking) throws BusinessException {
         if ((id == booking.getId()) && (bookingServiceFacade.getBookingById(id) != null)) {
             return bookingServiceFacade.saveBooking(booking);
         }
@@ -154,7 +154,7 @@ public class BookingDomainWebService {
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
     @Path("bookingEvents/{id}")
-    public BookingEvent saveBookingEvent(@PathParam("id") Integer id, BookingEvent bookingEvent) throws BusinessException {
+    public BookingEvent saveBookingEvent(@PathParam("id") int id, BookingEvent bookingEvent) throws BusinessException {
         if ((id == bookingEvent.getId()) && (bookingServiceFacade.getBookingEventById(id) != null)) {
             return bookingServiceFacade.saveBookingEvent(bookingEvent);
         }

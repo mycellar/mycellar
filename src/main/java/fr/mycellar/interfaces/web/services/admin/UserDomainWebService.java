@@ -95,7 +95,7 @@ public class UserDomainWebService {
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
     @Path("users/{id}")
-    public User saveUser(@PathParam("id") Integer id, User user) throws BusinessException {
+    public User saveUser(@PathParam("id") int id, User user) throws BusinessException {
         if ((id == user.getId()) && (userServiceFacade.getUserById(id) != null)) {
             return userServiceFacade.saveUser(user);
         }
@@ -130,8 +130,8 @@ public class UserDomainWebService {
         } else {
             users = userServiceFacade.getUsersLike(input, searchParametersUtil.getSearchParametersParametersForListWithCount(first, count, new ArrayList<FilterCouple>(), orders, User.class));
         }
-        return new ListWithCount<>(userServiceFacade.countUsersLike(input, searchParametersUtil.getSearchParametersParametersForListWithCount(first, count, new ArrayList<FilterCouple>(), orders, User.class)),
-                users);
+        return new ListWithCount<>(userServiceFacade.countUsersLike(input,
+                searchParametersUtil.getSearchParametersParametersForListWithCount(first, count, new ArrayList<FilterCouple>(), orders, User.class)), users);
     }
 
     // BEAN METHODS

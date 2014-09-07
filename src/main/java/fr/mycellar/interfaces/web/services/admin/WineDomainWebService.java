@@ -100,7 +100,7 @@ public class WineDomainWebService {
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
     @Path("countries/{id}")
-    public Country saveCountry(@PathParam("id") Integer id, Country country) throws BusinessException {
+    public Country saveCountry(@PathParam("id") int id, Country country) throws BusinessException {
         if ((id == country.getId()) && (wineServiceFacade.getCountryById(id) != null)) {
             return wineServiceFacade.saveCountry(country);
         }
@@ -182,7 +182,7 @@ public class WineDomainWebService {
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
     @Path("formats/{id}")
-    public Format saveFormat(@PathParam("id") Integer id, Format format) throws BusinessException {
+    public Format saveFormat(@PathParam("id") int id, Format format) throws BusinessException {
         if ((id == format.getId()) && (wineServiceFacade.getFormatById(id) != null)) {
             return wineServiceFacade.saveFormat(format);
         }
@@ -264,7 +264,7 @@ public class WineDomainWebService {
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
     @Path("appellations/{id}")
-    public Appellation saveAppellation(@PathParam("id") Integer id, Appellation appellation) throws BusinessException {
+    public Appellation saveAppellation(@PathParam("id") int id, Appellation appellation) throws BusinessException {
         if ((id == appellation.getId()) && (wineServiceFacade.getAppellationById(id) != null)) {
             return wineServiceFacade.saveAppellation(appellation);
         }
@@ -346,7 +346,7 @@ public class WineDomainWebService {
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
     @Path("producers/{id}")
-    public Producer saveProducer(@PathParam("id") Integer id, Producer producer) throws BusinessException {
+    public Producer saveProducer(@PathParam("id") int id, Producer producer) throws BusinessException {
         if ((id == producer.getId()) && (wineServiceFacade.getProducerById(id) != null)) {
             return wineServiceFacade.saveProducer(producer);
         }
@@ -428,7 +428,7 @@ public class WineDomainWebService {
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
     @Path("regions/{id}")
-    public Region saveRegion(@PathParam("id") Integer id, Region region) throws BusinessException {
+    public Region saveRegion(@PathParam("id") int id, Region region) throws BusinessException {
         if ((id == region.getId()) && (wineServiceFacade.getRegionById(id) != null)) {
             return wineServiceFacade.saveRegion(region);
         }
@@ -510,7 +510,7 @@ public class WineDomainWebService {
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
     @Path("wines/{id}")
-    public Wine saveWine(@PathParam("id") Integer id, Wine wine) throws BusinessException {
+    public Wine saveWine(@PathParam("id") int id, Wine wine) throws BusinessException {
         if ((id == wine.getId()) && (wineServiceFacade.getWineById(id) != null)) {
             return wineServiceFacade.saveWine(wine);
         }

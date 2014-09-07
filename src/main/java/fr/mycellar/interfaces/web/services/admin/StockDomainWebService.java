@@ -98,7 +98,7 @@ public class StockDomainWebService {
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
     @Path("cellars/{id}")
-    public Cellar saveCellar(@PathParam("id") Integer id, Cellar cellar) throws BusinessException {
+    public Cellar saveCellar(@PathParam("id") int id, Cellar cellar) throws BusinessException {
         if ((id == cellar.getId()) && (stockServiceFacade.getCellarById(id) != null)) {
             return stockServiceFacade.saveCellar(cellar);
         }
@@ -180,7 +180,7 @@ public class StockDomainWebService {
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
     @Path("cellarShares/{id}")
-    public CellarShare saveCellarShare(@PathParam("id") Integer id, CellarShare cellarShare) throws BusinessException {
+    public CellarShare saveCellarShare(@PathParam("id") int id, CellarShare cellarShare) throws BusinessException {
         if ((id == cellarShare.getId()) && (stockServiceFacade.getCellarShareById(id) != null)) {
             return stockServiceFacade.saveCellarShare(cellarShare);
         }
@@ -244,7 +244,7 @@ public class StockDomainWebService {
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
     @Path("stocks/{id}")
-    public Stock saveStock(@PathParam("id") Integer id, Stock stock) throws BusinessException {
+    public Stock saveStock(@PathParam("id") int id, Stock stock) throws BusinessException {
         if ((id == stock.getId()) && (stockServiceFacade.getStockById(id) != null)) {
             return stockServiceFacade.saveStock(stock);
         }
@@ -308,7 +308,7 @@ public class StockDomainWebService {
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
     @Path("movements/{id}")
-    public Movement saveMovement(@PathParam("id") Integer id, Movement movement) throws BusinessException {
+    public Movement saveMovement(@PathParam("id") int id, Movement movement) throws BusinessException {
         if ((id == movement.getId()) && (stockServiceFacade.getMovementById(id) != null)) {
             return stockServiceFacade.saveMovement(movement);
         }
