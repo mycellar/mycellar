@@ -88,7 +88,7 @@ body /deep/ paper-item.threeLines {
   height: 88px;
 }
 
-body /deep/ paper-item /deep/ small {
+body /deep/ small {
   color: rgba(0, 0, 0, 0.54);
 }
 

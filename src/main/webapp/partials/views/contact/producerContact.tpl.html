@@ -1,9 +1,41 @@
 <core-toolbar main>
   <drawer-button icon="menu"></drawer-button>
-  <span flex>Contact : {{producer.name}}</span>
+  <span ng-if="producer.id" flex>Contact : {{producer.name}}</span>
+  <span ng-if="!producer.id" flex>Nouveau contact</span>
+  <paper-icon-button icon="create" ng-if="!edit" ng-click="modifyProducer()"></paper-icon-button>
 </core-toolbar>
 <div main>
-  <section>
+  <section ng-hide="edit" style="padding: 1em;">
+    <div horizontal layout>
+      <div flex>
+        <div class="ellipsis">Téléphone</div>
+        <div class="ellipsis"><small>{{producer.phone}}&nbsp;</small></div>
+      </div>
+      <div flex>
+        <div class="ellipsis">Fax</div>
+        <div class="ellipsis"><small>{{producer.fax}}&nbsp;</small></div>
+      </div>
+    </div>
+    <div horizontal layout>
+      <div flex>
+        <div class="ellipsis">Email</div>
+        <div class="ellipsis"><small>{{producer.email}}&nbsp;</small></div>
+      </div>
+    </div>
+    <div horizontal layout ng-if="producer.description">
+      <div flex>
+        <div class="ellipsis">Description</div>
+        <div class="ellipsis"><small>{{producer.description}}</small></div>
+      </div>
+    </div>
+    <div horizontal layout ng-if="producer.contactInformation">
+      <div flex>
+        <div class="ellipsis">Informations</div>
+        <div class="ellipsis"><small>{{producer.contactInformation}}</small></div>
+      </div>
+    </div>
+  </section>
+  <section id="form" ng-show="edit">
     <form name="producerForm" style="padding: 1em;">
       <producer form="producerForm" producer="producer" input-required="true">
         <span class="help-block" ng-if="producerForm.producer.$error.required">Veuillez saisir un producteur</span>
@@ -21,18 +53,20 @@
       </div>
 
       <div horizontal layout>
-        <paper-button style="margin: auto;" raisedButton primary label="Sauvegarder le producteur" ng-click="saveProducer()" ng-disabled="producerForm.$invalid"></paper-button>
-        <paper-button style="margin: auto;" raisedButton label="Ajouter un contact" ng-click="addContact()"></paper-button>
+        <paper-button style="margin: auto;" raisedButton primary label="Sauvegarder" ng-click="saveProducer()" ng-disabled="producerForm.$invalid"></paper-button>
+        <paper-button style="margin: auto;" raisedButton label="Annuler" ng-click="cancelProducer()"></paper-button>
       </div>
     </form>
   </section>
-  <section>
+  <section ng-if="producer.id">
+    <core-item style="border-top: 1px solid rgba(0, 0, 0, 0.12); padding: 0 16px; height: 48px; font-size: 14px; color: rgba(0, 0, 0, 0.54);">Contacts déjà effectués</core-item>
     <paper-item class="twoLines" ng-repeat="contact in contacts" ng-click="editContact(contact)">
       <div flex>
         <div class="ellipsis">{{contact.current | date:'longDate'}}</div>
         <div class="ellipsis"><small>{{contact.text}}</small></div>
       </div>
     </paper-item>
-    <paper-item ng-if="size > contacts.length" label="Voir les {{size - contacts.length > 10 ? 10 : size - contacts.length}} suivantes sur {{size - contacts.length}}" ng-click="more()"></paper-item>
+    <paper-item ng-if="size > contacts.length" label="Voir les {{size - contacts.length > 5 ? 5 : size - contacts.length}} suivants sur {{size - contacts.length}}" ng-click="more()"></paper-item>
+    <paper-fab icon="add" raisedButton="false" ng-click="addContact()"></paper-fab>
   </section>
 </div>
