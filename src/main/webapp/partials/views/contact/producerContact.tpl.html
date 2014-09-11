@@ -1,5 +1,5 @@
 <core-toolbar main>
-  <drawer-button icon="menu"></drawer-button>
+  <paper-icon-button icon="chevron-left" ng-click="back()"></paper-icon-button>
   <span ng-if="producer.id" flex>Contact : {{producer.name}}</span>
   <span ng-if="!producer.id" flex>Nouveau contact</span>
   <paper-icon-button icon="create" ng-if="!edit" ng-click="modifyProducer()"></paper-icon-button>

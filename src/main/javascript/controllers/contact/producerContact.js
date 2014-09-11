@@ -99,5 +99,9 @@ angular.module('mycellar.controllers.contact.producer').controller('ProducerCont
     $scope.addContact = function() {
       $location.path('/contact/contact/producer/' + $scope.producer.id);
     };
+
+    $scope.back = function() {
+      $location.path('/contact/contacts/');
+    };
   }
 ]);
