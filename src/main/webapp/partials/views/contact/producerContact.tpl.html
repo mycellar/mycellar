@@ -1,0 +1,38 @@
+<core-toolbar main>
+  <drawer-button icon="menu"></drawer-button>
+  <span flex>Contact : {{producer.name}}</span>
+</core-toolbar>
+<div main>
+  <section>
+    <form name="producerForm" style="padding: 1em;">
+      <producer form="producerForm" producer="producer" input-required="true">
+        <span class="help-block" ng-if="producerForm.producer.$error.required">Veuillez saisir un producteur</span>
+      </producer>
+      <div horizontal layout>
+        <paper-input style="margin-right: 1em;" id="phone" label="Téléphone" floatingLabel bind-polymer-input="producer.phone"></paper-input>
+        <paper-input id="fax" label="Fax" floatingLabel bind-polymer-input="producer.fax"></paper-input>
+      </div>
+      <paper-input id="email" label="Email" type="email" floatingLabel bind-polymer-input="producer.email"></paper-input>
+      <div horizontal layout>
+        <paper-input flex id="description" label="Description" floatingLabel multiline bind-polymer-input="producer.description"></paper-input>
+      </div>
+      <div horizontal layout>
+        <paper-input flex id="information" label="Informations" floatingLabel multiline bind-polymer-input="producer.contactInformation"></paper-input>
+      </div>
+
+      <div horizontal layout>
+        <paper-button style="margin: auto;" raisedButton primary label="Sauvegarder le producteur" ng-click="saveProducer()" ng-disabled="producerForm.$invalid"></paper-button>
+        <paper-button style="margin: auto;" raisedButton label="Ajouter un contact" ng-click="addContact()"></paper-button>
+      </div>
+    </form>
+  </section>
+  <section>
+    <paper-item class="twoLines" ng-repeat="contact in contacts" ng-click="editContact(contact)">
+      <div flex>
+        <div class="ellipsis">{{contact.current | date:'longDate'}}</div>
+        <div class="ellipsis"><small>{{contact.text}}</small></div>
+      </div>
+    </paper-item>
+    <paper-item ng-if="size > contacts.length" label="Voir les {{size - contacts.length > 10 ? 10 : size - contacts.length}} suivantes sur {{size - contacts.length}}" ng-click="more()"></paper-item>
+  </section>
+</div>

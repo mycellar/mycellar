@@ -35,7 +35,7 @@ public class ContactsPageDescriptor extends AbstractDescriptor implements IMenuD
 
     @Override
     public String getRoute() {
-        return "/booking/contacts";
+        return "/contact/contacts";
     }
 
     @Override

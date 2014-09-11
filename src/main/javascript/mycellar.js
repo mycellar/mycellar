@@ -6,6 +6,10 @@ angular.extend(mycellar, {
   'version': version
 });
 
+window.addEventListener('polymer-ready', function() {
+  angular.bootstrap(wrap(document), ['mycellar']);
+});
+
 angular.module('mycellar', [
   'ngRoute',
   'ngAnimate',
@@ -22,6 +26,7 @@ angular.module('mycellar', [
   'mycellar.controllers.admin',
   'mycellar.controllers.booking',
   'mycellar.controllers.cellar',
+  'mycellar.controllers.contact',
   'mycellar.controllers.navigation',
   'mycellar.controllers.password',
   'mycellar.directives.bind'

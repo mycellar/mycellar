@@ -1,0 +1,20 @@
+<core-toolbar main>
+  <drawer-button icon="menu"></drawer-button>
+  <span flex>Contacts</span>
+  <core-input id="search" bind-polymer-input="search" flex hidden></core-input>
+  <paper-icon-button icon="cancel" hidden ng-show="search !== ''" ng-click="clearSearch()"></paper-icon-button>
+  <paper-icon-button icon="clear" hidden ng-show="search === ''" ng-click="toggleHidden()"></paper-icon-button>
+  <paper-icon-button icon="search" ng-click="toggleHidden()"></paper-icon-button>
+</core-toolbar>
+<div main>
+  <paper-item ng-if="contacts.length == 0">Aucun contact</paper-item>
+  <paper-item class="twoLines" ng-click="edit(contact)" ng-repeat="contact in contacts">
+    <div flex>
+      <div class="ellipsis">{{contact.producer | producerRenderer}}</div>
+      <div class="ellipsis"><small>Contacté le {{contact.current | date}}</small></div>
+    </div>
+    <div>{{contact.next | date}}</div>
+  </paper-item>
+  <paper-item ng-if="size > contacts.length" label="Voir les {{size - contacts.length > 50 ? 50 : size - contacts.length}} suivants sur {{size - contacts.length}}" ng-click="more()"></paper-item>
+  <paper-fab icon="add" raisedButton="false" ng-click="new()"></paper-fab>
+</div>

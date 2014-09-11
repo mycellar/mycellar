@@ -1,0 +1,17 @@
+<core-toolbar main>
+  <drawer-button icon="menu"></drawer-button>
+  <span flex>Contact : {{contact.producer | producerRenderer}}</span>
+</core-toolbar>
+<div main>
+  <form name="contactForm" style="padding: 1em;">
+    <paper-input id="current" label="Date du contact" type="date" floatingLabel bind-polymer-input="contact.current" required></paper-input>
+    <paper-input id="next" label="Prochain contact" type="date" floatingLabel bind-polymer-input="contact.next" required></paper-input>
+    <div horizontal layout>
+      <paper-input flex id="text" label="Texte" multiline floatingLabel bind-polymer-input="contact.text" required></paper-input>
+    </div>
+    <div horizontal layout>
+      <paper-button style="margin: auto;" primary raisedButton label="Sauvegarder" ng-click="saveContact()" ng-disabled="contactForm.$invalid"></paper-button>
+      <paper-button style="margin: auto;" raisedButton label="Annuler" ng-click="cancelContact()"></paper-button>
+    </div>
+  </form>
+</div>

@@ -31,6 +31,10 @@ angular.module('mycellar').filter('wineRenderer', ['wineColorRendererFilter', fu
   return function(format) {
     return format.name + ' (' + numberFilter(format.capacity) + 'L)';
   }
+}).filter('producerRenderer', function() {
+  return function(producer) {
+    return producer.name;
+  }
 }).filter('userRenderer', function() {
   return function(user) {
     return user.lastname + ' ' + user.firstname;

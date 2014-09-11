@@ -1,7 +1,6 @@
 <paper-dialog id="loginDialog" heading="Saisissez vos identifiants" transition="paper-transition-center" layered="true" opened="{{loginDialog != null}}" autoCloseDisabled="true" ng-controller="LoginDialogController">
   <p>
     <paper-input id="email" label="Email" type="email" floatingLabel="true" bind-polymer-input="email" required></paper-input>
-    <br/>
     <paper-input id="password" label="Mot de passe" type="password" floatingLabel="true" bind-polymer-input="password" required></paper-input>
   </p>
   <paper-button label="J'ai oublié mon mot de passe" dismissive ng-click="forgotPassword()"></paper-button>

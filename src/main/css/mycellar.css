@@ -88,6 +88,10 @@ body /deep/ paper-item.threeLines {
   height: 88px;
 }
 
+body /deep/ paper-item /deep/ small {
+  color: rgba(0, 0, 0, 0.54);
+}
+
 body /deep/ paper-menu-button[select] /deep/ #menu {
   height: 100px;
   overflow-y: scroll;
