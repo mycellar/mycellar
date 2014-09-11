@@ -95,7 +95,7 @@ public class UserDomainWebService {
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
     @Path("users/{id}")
-    public User saveUser(@PathParam("id") Integer id, User user) throws BusinessException {
+    public User saveUser(@PathParam("id") int id, User user) throws BusinessException {
         if ((id == user.getId()) && (userServiceFacade.getUserById(id) != null)) {
             return userServiceFacade.saveUser(user);
         }
