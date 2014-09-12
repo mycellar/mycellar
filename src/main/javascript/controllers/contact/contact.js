@@ -63,6 +63,7 @@ angular.module('mycellar.controllers.contact.contact').controller('ContactContro
             }
           });
           $scope.errors.push(value);
+          angular.copy($scope.backup, $scope.contact);
         } else {
           $scope.backup = undefined;
           $location.path('/contact/producer/' + $scope.contact.producer.id);

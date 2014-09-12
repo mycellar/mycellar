@@ -49,8 +49,8 @@ public class ContactServiceFacadeImpl implements ContactServiceFacade {
 
     @Override
     @Transactional(readOnly = true)
-    public long countLastContacts(SearchParameters<Contact> search) {
-        return contactService.countLastContacts(search);
+    public long countLastContacts(String input, SearchParameters<Contact> search) {
+        return contactService.countLastContacts(input, search);
     }
 
     @Override
@@ -67,8 +67,8 @@ public class ContactServiceFacadeImpl implements ContactServiceFacade {
 
     @Override
     @Transactional(readOnly = true)
-    public List<Contact> getLastContacts(SearchParameters<Contact> search) {
-        return contactService.getLastContacts(search);
+    public List<Contact> getLastContacts(String input, SearchParameters<Contact> search) {
+        return contactService.getLastContacts(input, search);
     }
 
     @Override

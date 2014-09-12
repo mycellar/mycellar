@@ -23,16 +23,29 @@ angular.module('mycellar.directives.form.domain.wine.producer').directive('produ
       transclude: true,
       templateUrl: 'partials/directives/form/wine/producer.tpl.html',
       scope: {
-        form: '=',
         producer: '=',
         postLabel: '@'
       },
-      compile: function(element, attrs) {
-        for (var attrName in attrs) {
-          if (attrName.indexOf("input") == 0) {
-            angular.element(element.find('input')[0]).attr(attrName.charAt(5).toLowerCase() + attrName.substring(6), attrs[attrName]);
-          }
-        }
+      link: function(scope, element, attrs) {
+        element[0].$.control.addEventListener('input', function() {
+          scope.input = element[0].$.control.inputValue;
+          scope.$apply();
+        });
+        scope.$watch('possibles', function(value) {
+          element[0].possibles = value;
+        });
+        element[0].render = function(producer) {
+          return producer.name;
+        };
+        element[0].clearInput = function() {
+          scope.input = '';
+          scope.$apply();
+        };
+        element[0].setValue = function(value) {
+          scope.setProducer(value);
+          scope.$apply();
+        };
+        element[0].value = scope.producer;
       },
       controller: [
         '$scope', '$location', 'Producers', 'AdminProducers',
@@ -43,31 +56,55 @@ angular.module('mycellar.directives.form.domain.wine.producer').directive('produ
           } else {
             resource = Producers;
           }
-          $scope.errors = [];
-          $scope.producers = resource.like;
-          $scope.new = function() {
-            $scope.newProducer = {};
-            $scope.showSub = true;
+
+          $scope.input = '';
+          $scope.$watch('input', function() {
+            if ($scope.input.length > 2) {
+              resource.like($scope.input).then(function(value) {
+                $scope.possibles = value;
+              });
+            } else {
+              $scope.possibles = [];
+            }
+          });
+
+          $scope.renderProducer = function(producer) {
+            return producer.name;
           };
-          $scope.cancel = function() {
-            $scope.showSub = false;
-          };
-          $scope.ok = function() {
-            $scope.errors = [];
-            resource.validate($scope.newProducer, function (value, headers) {
-              if (value.errorKey != undefined) {
-                angular.forEach(value.properties, function(property) {
-                  if ($scope.subProducerForm[property] != undefined) {
-                    $scope.subProducerForm[property].$setValidity(value.errorKey, false);
-                  }
-                });
-                $scope.errors.push(value);
-              } else {
-                $scope.producer = $scope.newProducer;
-                $scope.showSub = false;
-              }
-            });
-          };
+          $scope.setProducer = function(producer) {
+            if (producer != null) {
+              Producers.get({id: producer.id}, function(value) {
+                $scope.producer = value;
+              });
+            } else {
+              $scope.producer = null;
+            }
+          }
+          
+//          $scope.errors = [];
+//          $scope.new = function() {
+//            $scope.newProducer = {};
+//            $scope.showSub = true;
+//          };
+//          $scope.cancel = function() {
+//            $scope.showSub = false;
+//          };
+//          $scope.ok = function() {
+//            $scope.errors = [];
+//            resource.validate($scope.newProducer, function (value, headers) {
+//              if (value.errorKey != undefined) {
+//                angular.forEach(value.properties, function(property) {
+//                  if ($scope.subProducerForm[property] != undefined) {
+//                    $scope.subProducerForm[property].$setValidity(value.errorKey, false);
+//                  }
+//                });
+//                $scope.errors.push(value);
+//              } else {
+//                $scope.producer = $scope.newProducer;
+//                $scope.showSub = false;
+//              }
+//            });
+//          };
         }
       ]
     }

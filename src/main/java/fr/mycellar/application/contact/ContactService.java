@@ -24,21 +24,21 @@ import jpasearch.repository.query.SearchParameters;
 
 import org.joda.time.LocalDate;
 
-import fr.mycellar.application.shared.SimpleService;
+import fr.mycellar.application.shared.SearchableService;
 import fr.mycellar.domain.contact.Contact;
 import fr.mycellar.domain.wine.Producer;
 
 /**
  * @author speralta
  */
-public interface ContactService extends SimpleService<Contact> {
+public interface ContactService extends SearchableService<Contact> {
 
     Contact find(Producer producer, LocalDate current);
 
     void sendReminders();
 
-    long countLastContacts(SearchParameters<Contact> search);
+    long countLastContacts(String input, SearchParameters<Contact> search);
 
-    List<Contact> getLastContacts(SearchParameters<Contact> search);
+    List<Contact> getLastContacts(String input, SearchParameters<Contact> search);
 
 }

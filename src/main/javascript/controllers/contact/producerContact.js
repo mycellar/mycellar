@@ -15,7 +15,7 @@ angular.module('mycellar.controllers.contact.producer', [
           if (producerId) {
             return Producers.get({id: producerId}).$promise;
           } else {
-            return new Producers();
+            return null;
           }
         }],
         contacts: ['$route', 'AdminContacts', function ($route, Contacts) {
@@ -55,7 +55,7 @@ angular.module('mycellar.controllers.contact.producer').controller('ProducerCont
     $scope.producer = producer;
     $scope.contacts = contacts.list;
     $scope.size = contacts.count;
-    $scope.edit = producer.id == null;
+    $scope.edit = producer == null;
 
     $scope.modifyProducer = function() {
       $scope.edit = true;
@@ -85,7 +85,11 @@ angular.module('mycellar.controllers.contact.producer').controller('ProducerCont
 
     $scope.cancelProducer = function() {
       angular.copy($scope.backup, $scope.producer);
-      $scope.edit = false;
+      if ($scope.producer == null) {
+        $scope.back();
+      } else {
+        $scope.edit = false;
+      }
     }
 
     $scope.deleteContact = function(contact) {
@@ -103,5 +107,31 @@ angular.module('mycellar.controllers.contact.producer').controller('ProducerCont
     $scope.back = function() {
       $location.path('/contact/contacts/');
     };
+
+    $scope.$watch('producer', function(newValue, oldValue) {
+      if (newValue !== oldValue) {
+        if (newValue != null && newValue.id != null) {
+          var parameters = {
+              first: $scope.contacts.length,
+              count: 5,
+              sort: ['current,desc'],
+              filters: ['producer.id,' + newValue.id]
+            };
+          Contacts.get(parameters, function(value) {
+            $scope.contacts = value.list;
+            $scope.size = value.count;
+          });
+        } else {
+          $scope.contacts = [];
+          $scope.size = 0;
+        }
+      }
+    });
+
+    // fix two way data binding lost
+    $scope.fix = {producer: $scope.producer};
+    $scope.$watch('fix.producer', function() {
+      $scope.producer = $scope.fix.producer;
+    });
   }
 ]);

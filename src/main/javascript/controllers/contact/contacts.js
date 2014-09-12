@@ -16,7 +16,7 @@ angular.module('mycellar.controllers.contact.contacts', [
           function(Contacts) {
             return Contacts.getLastContacts({
               first: 0,
-              count: 50,
+              count: 20,
               sort: [
                 'next,asc'
               ]
@@ -29,17 +29,17 @@ angular.module('mycellar.controllers.contact.contacts', [
 ]);
 
 angular.module('mycellar.controllers.contact.contacts').controller('ContactsController', [
-  '$scope', '$location', 'contacts',
-  function($scope, $location, contacts) {
+  '$scope', '$location', 'contacts', 'Contacts',
+  function($scope, $location, contacts, Contacts) {
     var getContacts = function(first, callback) {
       var parameters = {
         first: first, 
-        count: 50, 
+        count: 20, 
         sort: [
           'next,asc'
         ]
       };
-      if ($scope.search != null && $scope.search != '') {
+      if ($scope.search != null && $scope.search.length > 2) {
         parameters['input'] = $scope.search;
       }
       return Contacts.getLastContacts(parameters, callback);

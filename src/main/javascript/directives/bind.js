@@ -7,7 +7,7 @@ angular.module('mycellar.directives.bind').directive('bindPolymerInput', [
       restrict: 'A',
       link: function(scope, element, attrs) {
         scope.$watch(attrs.bindPolymerInput, function(value) {
-          element[0].inputValue = value;
+          element[0].value = value;
         });
         element[0].addEventListener('input', function() {
           $parse(attrs.bindPolymerInput).assign(scope, element[0].inputValue);

@@ -39,6 +39,7 @@ import org.springframework.security.access.prepost.PreAuthorize;
 
 import fr.mycellar.domain.booking.Booking;
 import fr.mycellar.domain.booking.BookingEvent;
+import fr.mycellar.domain.booking.BookingEvent_;
 import fr.mycellar.domain.booking.Booking_;
 import fr.mycellar.domain.shared.exception.BusinessException;
 import fr.mycellar.interfaces.facades.booking.BookingServiceFacade;
@@ -66,6 +67,7 @@ public class BookingWebService {
             @QueryParam("count") @DefaultValue("10") int count) {
         SearchParameters<Booking> searchParameters = new SearchBuilder<Booking>() //
                 .paginate(first, count) //
+                .orderBy(Booking_.bookingEvent).and(BookingEvent_.start).desc() //
                 .on(Booking_.customer).equalsTo(currentUserService.getCurrentUser()) //
                 .build();
         return new ListWithCount<>(bookingServiceFacade.countBookings(searchParameters), bookingServiceFacade.getBookings(searchParameters));

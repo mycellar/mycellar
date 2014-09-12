@@ -5,7 +5,7 @@
   <paper-icon-button icon="create" ng-if="!edit" ng-click="modifyProducer()"></paper-icon-button>
 </core-toolbar>
 <div main>
-  <section ng-hide="edit" style="padding: 1em;">
+  <section ng-if="!edit" style="padding: 1em;">
     <div horizontal layout>
       <div flex>
         <div class="ellipsis">Téléphone</div>
@@ -35,31 +35,31 @@
       </div>
     </div>
   </section>
-  <section id="form" ng-show="edit">
-    <form name="producerForm" style="padding: 1em;">
-      <producer form="producerForm" producer="producer" input-required="true">
-        <span class="help-block" ng-if="producerForm.producer.$error.required">Veuillez saisir un producteur</span>
-      </producer>
-      <div horizontal layout>
-        <paper-input style="margin-right: 1em;" id="phone" label="Téléphone" floatingLabel bind-polymer-input="producer.phone"></paper-input>
-        <paper-input id="fax" label="Fax" floatingLabel bind-polymer-input="producer.fax"></paper-input>
-      </div>
-      <paper-input id="email" label="Email" type="email" floatingLabel bind-polymer-input="producer.email"></paper-input>
-      <div horizontal layout>
-        <paper-input flex id="description" label="Description" floatingLabel multiline bind-polymer-input="producer.description"></paper-input>
-      </div>
-      <div horizontal layout>
-        <paper-input flex id="information" label="Informations" floatingLabel multiline bind-polymer-input="producer.contactInformation"></paper-input>
-      </div>
-
-      <div horizontal layout>
-        <paper-button style="margin: auto;" raisedButton primary label="Sauvegarder" ng-click="saveProducer()" ng-disabled="producerForm.$invalid"></paper-button>
-        <paper-button style="margin: auto;" raisedButton label="Annuler" ng-click="cancelProducer()"></paper-button>
+  <section id="form" ng-if="edit" style="padding-bottom: 1em;">
+    <form name="producerForm">
+      <producer producer="fix.producer"></producer>
+      <div style="padding: 0 1em;">
+        <div horizontal layout>
+          <paper-input style="margin-right: 1em;" id="phone" label="Téléphone" floatingLabel bind-polymer-input="producer.phone"></paper-input>
+          <paper-input id="fax" label="Fax" floatingLabel bind-polymer-input="producer.fax"></paper-input>
+        </div>
+        <paper-input id="email" label="Email" type="email" floatingLabel bind-polymer-input="producer.email"></paper-input>
+        <div horizontal layout>
+          <paper-input flex id="description" label="Description" floatingLabel multiline bind-polymer-input="producer.description"></paper-input>
+        </div>
+        <div horizontal layout>
+          <paper-input flex id="information" label="Informations" floatingLabel multiline bind-polymer-input="producer.contactInformation"></paper-input>
+        </div>
+  
+        <div horizontal layout>
+          <paper-button style="margin: auto;" raisedButton primary label="Sauvegarder" ng-click="saveProducer()" ng-disabled="producerForm.$invalid"></paper-button>
+          <paper-button style="margin: auto;" raisedButton label="Annuler" ng-click="cancelProducer()"></paper-button>
+        </div>
       </div>
     </form>
   </section>
-  <section ng-if="producer.id">
-    <core-item style="border-top: 1px solid rgba(0, 0, 0, 0.12); padding: 0 16px; height: 48px; font-size: 14px; color: rgba(0, 0, 0, 0.54);">Contacts déjà effectués</core-item>
+  <section ng-if="producer.id" style="border-top: 1px solid rgba(0, 0, 0, 0.12);">
+    <core-item style="padding: 0 16px; height: 48px; font-size: 14px; color: rgba(0, 0, 0, 0.54);">Contacts déjà effectués</core-item>
     <paper-item class="twoLines" ng-repeat="contact in contacts" ng-click="editContact(contact)">
       <div flex>
         <div class="ellipsis">{{contact.current | date:'longDate'}}</div>

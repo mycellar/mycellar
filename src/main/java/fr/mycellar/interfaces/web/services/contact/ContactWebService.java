@@ -63,16 +63,19 @@ public class ContactWebService {
     @Produces(MediaType.APPLICATION_JSON)
     @Path("lastcontacts")
     @PreAuthorize("hasRole('ROLE_ADMIN')")
-    public ListWithCount<Contact> getLastContacts(@QueryParam("first") int first, @QueryParam("count") int count, @QueryParam("filters") List<FilterCouple> filters,
+    public ListWithCount<Contact> getLastContacts( //
+            @QueryParam("first") int first, //
+            @QueryParam("count") int count, //
+            @QueryParam("input") String input, //
             @QueryParam("sort") List<OrderCouple> orders) {
-        SearchParameters<Contact> searchParameters = searchParametersUtil.getSearchParameters(first, count, filters, orders, Contact.class);
+        SearchParameters<Contact> searchParameters = searchParametersUtil.getSearchParameters(first, count, new ArrayList<FilterCouple>(), orders, Contact.class);
         List<Contact> contacts;
         if (count == 0) {
             contacts = new ArrayList<>();
         } else {
-            contacts = contactServiceFacade.getLastContacts(searchParameters);
+            contacts = contactServiceFacade.getLastContacts(input, searchParameters);
         }
-        return new ListWithCount<>(contactServiceFacade.countLastContacts(searchParameters), contacts);
+        return new ListWithCount<>(contactServiceFacade.countLastContacts(input, searchParameters), contacts);
     }
 
     @GET

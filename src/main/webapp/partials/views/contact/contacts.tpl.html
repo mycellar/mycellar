@@ -15,6 +15,6 @@
     </div>
     <div>{{contact.next | date}}</div>
   </paper-item>
-  <paper-item ng-if="size > contacts.length" label="Voir les {{size - contacts.length > 50 ? 50 : size - contacts.length}} suivants sur {{size - contacts.length}}" ng-click="more()"></paper-item>
+  <paper-item ng-if="size > contacts.length" label="Voir les {{size - contacts.length > 20 ? 20 : size - contacts.length}} suivants sur {{size - contacts.length}}" ng-click="more()"></paper-item>
   <paper-fab icon="add" raisedButton="false" ng-click="new()"></paper-fab>
 </div>
