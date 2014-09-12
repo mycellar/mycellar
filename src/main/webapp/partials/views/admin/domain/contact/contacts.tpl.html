@@ -1,50 +1,27 @@
 <core-toolbar>
   <drawer-button icon="menu"></drawer-button>
   <span flex>Contacts</span>
+  <core-input id="search" bind-polymer-input="search" flex hidden></core-input>
+  <paper-icon-button icon="cancel" hidden ng-show="search !== ''" ng-click="clearSearch()"></paper-icon-button>
+  <paper-icon-button icon="clear" hidden ng-show="search === ''" ng-click="toggleHidden()"></paper-icon-button>
+  <paper-icon-button icon="search" ng-click="toggleHidden()"></paper-icon-button>
   <drawer-button right icon="more-vert"></drawer-button>
 </core-toolbar>
-<admin-domain>
-  <table-filters table-context="tableContext">
-    <div class="form-group">
-      <label class="control-label sr-only" for="producer.name">Nom du producteur</label>
-      <input class="form-control" id="producer.name" name="producer.name" placeholder="Nom du producteur" ng-model="tableContext.filters['producer.name']" type="text" />
-    </div>
-  </table-filters>
-  <error-div errors="errors"></error-div>
-  <paginated table-context="tableContext">
-    <div class="table-responsive">
-      <table class="table table-bordered table-striped table-condensed">
-        <thead>
-          <tr>
-            <th>Producteur <icon-sort attribute="producer.name" table-context="tableContext" /></th>
-            <th>Date du contact <icon-sort attribute="current" table-context="tableContext" /></th>
-            <th>Prochain contact <icon-sort attribute="next" table-context="tableContext" /></th>
-            <th class="actions"><a href ng-click="new()" class="btn btn-default btn-xs"><i class="fa fa-plus-circle"></i></a></th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr ng-repeat="contact in tableContext.items">
-            <td>{{contact.producer.name}}</td>
-            <td>{{contact.current}}</td>
-            <td>{{contact.next}}</td>
-            <td>
-              <a href ng-click="edit(contact.id)" class="btn btn-default btn-xs"><i class="fa fa-pencil"></i></a>
-              <a href ng-click="delete(contact.id)" class="btn btn-danger btn-xs"><i class="fa fa-minus-circle"></i></a>
-            </td>
-          </tr>
-          <tr ng-if="tableContext.items.length == 0">
-            <td colspan="5" class="text-center">Aucun contact ne correspond aux filtres.</td>
-          </tr>
-        </tbody>
-        <tfoot>
-          <tr>
-            <th>Producteur <icon-sort attribute="producer.name" table-context="tableContext" /></th>
-            <th>Date du contact <icon-sort attribute="current" table-context="tableContext" /></th>
-            <th>Prochain contact <icon-sort attribute="next" table-context="tableContext" /></th>
-            <th class="actions"><a href ng-click="new()" class="btn btn-default btn-xs"><i class="fa fa-plus-circle"></i></a></th>
-          </tr>
-        </tfoot>
-      </table>
-    </div>
-  </paginated>
-</admin-domain>
+<core-drawer-panel rightDrawer>
+  <nav role="secondary" drawer>
+    <admin-domain-nav></admin-domain-nav>
+  </nav>
+  <div main>
+    <paper-item ng-if="items.length == 0">Aucun contact</paper-item>
+    <paper-item class="twoLines" ng-click="edit(contact.id)" ng-repeat="contact in items">
+      <div flex>
+        <div class="ellipsis">{{contact.producer | producerRenderer}}</div>
+        <div class="ellipsis"><small>Contacté le {{contact.current | date:'longDate'}}</small></div>
+      </div>
+      <div>{{contact.next | date:'longDate'}}</div>
+      <paper-icon-button icon="remove-circle-outline" ng-click="delete(contact.id, $event)"></paper-icon-button>
+    </paper-item>
+    <paper-item ng-if="size > items.length" label="Voir les {{size - items.length > pageCount ? pageCount : size - items.length}} suivants sur {{size - items.length}}" ng-click="more()"></paper-item>
+    <paper-fab icon="add" raisedButton="false" ng-click="new()"></paper-fab>
+  </div>
+</core-drawer-panel>

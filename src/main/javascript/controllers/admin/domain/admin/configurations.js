@@ -1,6 +1,5 @@
 angular.module('mycellar.controllers.admin.domain.admin.configurations', [
   'mycellar.resources.admin.configurations', 
-  'mycellar.directives.table',
   'mycellar.directives.error',
   'mycellar.directives.form',
   'mycellar.directives.admin',
@@ -22,13 +21,13 @@ angular.module('mycellar.controllers.admin.domain.admin.configurations', [
 ]);
 
 angular.module('mycellar.controllers.admin.domain.admin.configurations').controller('AdminDomainConfigurationsController', [
-  '$scope', 'adminDomainService', 'tableContext',
-  function($scope, adminDomainService, tableContext) {
+  '$scope', 'adminDomainService', 'items',
+  function($scope, adminDomainService, items) {
     adminDomainService.listMethods({
       scope: $scope, 
       group: 'admin', 
       resourceName: 'Configuration',
-      tableContext: tableContext
+      items: items
     });
   }
 ]);

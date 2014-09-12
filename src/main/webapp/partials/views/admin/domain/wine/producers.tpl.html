@@ -1,44 +1,25 @@
 <core-toolbar>
   <drawer-button icon="menu"></drawer-button>
   <span flex>Producteurs</span>
+  <core-input id="search" bind-polymer-input="search" flex hidden></core-input>
+  <paper-icon-button icon="cancel" hidden ng-show="search !== ''" ng-click="clearSearch()"></paper-icon-button>
+  <paper-icon-button icon="clear" hidden ng-show="search === ''" ng-click="toggleHidden()"></paper-icon-button>
+  <paper-icon-button icon="search" ng-click="toggleHidden()"></paper-icon-button>
   <drawer-button right icon="more-vert"></drawer-button>
 </core-toolbar>
-<admin-domain>
-  <table-filters table-context="tableContext">
-    <div class="form-group">
-      <label class="control-label sr-only" for="name">Nom</label>
-      <input class="form-control" id="name" name="name" placeholder="Nom" ng-model="tableContext.filters['name']" type="text" />
-    </div>
-  </table-filters>
-  <error-div errors="errors"></error-div>
-  <paginated table-context="tableContext">
-    <div class="table-responsive">
-      <table class="table table-bordered table-striped table-condensed">
-        <thead>
-          <tr>
-            <th>Nom <icon-sort attribute="name" table-context="tableContext" /></th>
-            <th class="actions"><a href ng-click="new()" class="btn btn-default btn-xs"><i class="fa fa-plus-circle"></i></a></th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr ng-repeat="producer in tableContext.items">
-            <td>{{producer.name}}</td>
-            <td>
-              <a href ng-click="edit(producer.id)" class="btn btn-default btn-xs"><i class="fa fa-pencil"></i></a>
-              <a href ng-click="delete(producer.id)" class="btn btn-danger btn-xs"><i class="fa fa-minus-circle"></i></a>
-            </td>
-          </tr>
-          <tr ng-if="tableContext.items.length == 0">
-            <td colspan="2" class="text-center">Aucun producteur ne correspond aux filtres.</td>
-          </tr>
-        </tbody>
-        <tfoot>
-          <tr>
-            <th>Nom <icon-sort attribute="name" table-context="tableContext" /></th>
-            <th class="actions"><a href ng-click="new()" class="btn btn-default btn-xs"><i class="fa fa-plus-circle"></i></a></th>
-          </tr>
-        </tfoot>
-      </table>
-    </div>
-  </paginated>
-</admin-domain>
+<core-drawer-panel rightDrawer>
+  <nav role="secondary" drawer>
+    <admin-domain-nav></admin-domain-nav>
+  </nav>
+  <div main>
+    <paper-item ng-if="items.length == 0">Aucun producteur</paper-item>
+    <paper-item ng-click="edit(producer.id)" ng-repeat="producer in items">
+      <div flex>
+        <div class="ellipsis">{{producer | producerRenderer}}</div>
+      </div>
+      <paper-icon-button icon="remove-circle-outline" ng-click="delete(producer.id, $event)"></paper-icon-button>
+    </paper-item>
+    <paper-item ng-if="size > items.length" label="Voir les {{size - items.length > pageCount ? pageCount : size - items.length}} suivants sur {{size - items.length}}" ng-click="more()"></paper-item>
+    <paper-fab icon="add" raisedButton="false" ng-click="new()"></paper-fab>
+  </div>
+</core-drawer-panel>

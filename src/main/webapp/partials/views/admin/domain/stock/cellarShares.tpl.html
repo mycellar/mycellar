@@ -1,54 +1,27 @@
 <core-toolbar>
   <drawer-button icon="menu"></drawer-button>
   <span flex>Partages de cave</span>
+  <core-input id="search" bind-polymer-input="search" flex hidden></core-input>
+  <paper-icon-button icon="cancel" hidden ng-show="search !== ''" ng-click="clearSearch()"></paper-icon-button>
+  <paper-icon-button icon="clear" hidden ng-show="search === ''" ng-click="toggleHidden()"></paper-icon-button>
+  <paper-icon-button icon="search" ng-click="toggleHidden()"></paper-icon-button>
   <drawer-button right icon="more-vert"></drawer-button>
 </core-toolbar>
-<admin-domain>
-  <table-filters table-context="tableContext">
-    <div class="form-group">
-      <label class="control-label sr-only" for="name">Nom</label>
-      <input class="form-control" id="name" name="name" placeholder="Nom" ng-model="tableContext.filters['cellar.name']" type="text" />
-    </div>
-    <div class="form-group">
-      <label class="control-label sr-only" for="email">Email</label>
-      <input class="form-control" id="email" name="email" placeholder="Email" ng-model="tableContext.filters['email']" type="text" />
-    </div>
-  </table-filters>
-  <error-div errors="errors"></error-div>
-  <paginated table-context="tableContext">
-    <div class="table-responsive">
-      <table class="table table-bordered table-striped table-condensed">
-        <thead>
-          <tr>
-            <th>Nom <icon-sort attribute="cellar.name" table-context="tableContext" /></th>
-            <th>Email <icon-sort attribute="email" table-context="tableContext" /></th>
-            <th>Droit d'accès <icon-sort attribute="accessRight" table-context="tableContext" /></th>
-            <th class="actions"><a href ng-click="new()" class="btn btn-default btn-xs"><i class="fa fa-plus-circle"></i></a></th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr ng-repeat="cellarShare in tableContext.items">
-            <td>{{cellarShare.cellar.name}}</td>
-            <td>{{cellarShare.email}}</td>
-            <td>{{cellarShare.accessRight | accessRightRenderer}}</td>
-            <td>
-              <a href ng-click="edit(tableContext.id)" class="btn btn-default btn-xs"><i class="fa fa-pencil"></i></a>
-              <a href ng-click="delete(tableContext.id)" class="btn btn-danger btn-xs"><i class="fa fa-minus-circle"></i></a>
-            </td>
-          </tr>
-          <tr ng-if="tableContext.items.length == 0">
-            <td colspan="4" class="text-center">Aucune cave ne correspond aux filtres.</td>
-          </tr>
-        </tbody>
-        <tfoot>
-          <tr>
-            <th>Nom <icon-sort attribute="cellar.name" table-context="tableContext" /></th>
-            <th>Email <icon-sort attribute="email" table-context="tableContext" /></th>
-            <th>Droit d'accès <icon-sort attribute="accessRight" table-context="tableContext" /></th>
-            <th class="actions"><a href ng-click="new()" class="btn btn-default btn-xs"><i class="fa fa-plus-circle"></i></a></th>
-          </tr>
-        </tfoot>
-      </table>
-    </div>
-  </paginated>
-</admin-domain>
+<core-drawer-panel rightDrawer>
+  <nav role="secondary" drawer>
+    <admin-domain-nav></admin-domain-nav>
+  </nav>
+  <div main>
+    <paper-item ng-if="items.length == 0">Aucun partage de cave</paper-item>
+    <paper-item class="threeLines" ng-click="edit(cellarShare.id)" ng-repeat="cellarShare in items">
+      <div flex>
+        <div class="ellipsis">{{cellarShare.cellar.name}}</div>
+        <div class="ellipsis"><small>Propriétaire : {{cellarShare.cellar.owner | userRenderer}}</small></div>
+        <div class="ellipsis"><small>{{cellarShare.accessRight | accessRightRenderer}} : {{cellarShare.email}}</small></div>
+      </div>
+      <paper-icon-button icon="remove-circle-outline" ng-click="delete(cellarShare.id, $event)"></paper-icon-button>
+    </paper-item>
+    <paper-item ng-if="size > items.length" label="Voir les {{size - items.length > pageCount ? pageCount : size - items.length}} suivants sur {{size - items.length}}" ng-click="more()"></paper-item>
+    <paper-fab icon="add" raisedButton="false" ng-click="new()"></paper-fab>
+  </div>
+</core-drawer-panel>

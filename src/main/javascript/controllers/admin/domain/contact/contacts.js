@@ -1,7 +1,6 @@
 angular.module('mycellar.controllers.admin.domain.contact.contacts', [
   'ngRoute',
   'mycellar.resources.contact.contacts', 
-  'mycellar.directives.table', 
   'mycellar.directives.error',
   'mycellar.directives.form',
   'mycellar.directives.admin',
@@ -21,13 +20,13 @@ angular.module('mycellar.controllers.admin.domain.contact.contacts', [
 ]);
 
 angular.module('mycellar.controllers.admin.domain.contact.contacts').controller('AdminDomainContactsController', [
-  '$scope', 'adminDomainService', 'tableContext',
-  function ($scope, adminDomainService, tableContext) {
+  '$scope', 'adminDomainService', 'items',
+  function ($scope, adminDomainService, items) {
     adminDomainService.listMethods({
       scope: $scope,
       group: 'contact', 
       resourceName: 'Contact', 
-      tableContext: tableContext
+      items: items
     });
   }
 ]);

@@ -1,6 +1,5 @@
 angular.module('mycellar.controllers.vinopedia.pedia', [
   'ngRoute',
-  'mycellar.services.table',
   'mycellar.resources.wine.wines'
 ], [
   '$routeProvider', 

@@ -33,6 +33,7 @@ angular.module('mycellar.controllers.admin.page').controller('AdminController', 
   function ($scope, winesCount, usersCount, stacksCount, database) {
     $scope.angularVersion = angular.version.full;
     $scope.mycellarVersion = mycellar.version.full;
+    $scope.polymerVersion = window.Polymer.version;
     $scope.stacksCount = stacksCount;
     $scope.usersCount = usersCount;
     $scope.winesCount = winesCount;

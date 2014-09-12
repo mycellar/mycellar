@@ -1,7 +1,6 @@
 angular.module('mycellar.controllers.admin.domain.wine.countries', [
   'ngRoute',
   'mycellar.resources.wine.countries', 
-  'mycellar.directives.table',
   'mycellar.directives.error',
   'mycellar.directives.form',
   'mycellar.directives.admin',
@@ -21,13 +20,13 @@ angular.module('mycellar.controllers.admin.domain.wine.countries', [
 ]);
 
 angular.module('mycellar.controllers.admin.domain.wine.countries').controller('AdminDomainCountriesController', [
-  '$scope', 'adminDomainService', 'tableContext',
-  function ($scope, adminDomainService, tableContext) {
+  '$scope', 'adminDomainService', 'items',
+  function ($scope, adminDomainService, items) {
     adminDomainService.listMethods({
       scope: $scope,
       group: 'wine',
       resourceName: 'Country', 
-      tableContext: tableContext
+      items: items
     });
   }
 ]);

@@ -4,9 +4,7 @@ angular.module('mycellar.controllers.admin.tools', [
   'mycellar.resources.wine.countries',
   'mycellar.resources.wine.regions',
   'mycellar.resources.wine.appellations',
-  'mycellar.resources.wine.producers',
-  'mycellar.directives.table',
-  'mycellar.services.table'
+  'mycellar.resources.wine.producers'
 ], [
   '$routeProvider', 
   function($routeProvider){

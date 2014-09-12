@@ -1,8 +1,7 @@
 angular.module('mycellar.controllers.cellar.shares', [
   'ngRoute',
   'mycellar.resources.stock.cellars',
-  'mycellar.resources.stock.cellarShares',
-  'mycellar.services.table'
+  'mycellar.resources.stock.cellarShares'
 ], [
   '$routeProvider',
   function($routeProvider) {

@@ -1,5 +1,4 @@
 angular.module('mycellar.services.admin.domain', [
-  'mycellar.services.table',
   'ngRoute'
 ]);
 
@@ -26,7 +25,7 @@ angular.module('mycellar.services.admin.domain').provider('adminDomainService', 
          *          resourceName: the name of the resource
          *          canDelete
          *          canCreate
-         *          tableContext
+         *          items
          *          result
          *        }
          */
@@ -35,8 +34,13 @@ angular.module('mycellar.services.admin.domain').provider('adminDomainService', 
           parameters.canCreate = (parameters.canCreate != undefined ? parameters.canCreate : true);
           parameters.canDelete = (parameters.canDelete != undefined ? parameters.canDelete : true);
           parameters.scope.errors = [];
-          parameters.scope.tableContext = parameters.tableContext;
+          parameters.scope.items = parameters.items.list;
+          parameters.scope.size = parameters.items.count;
+          parameters.scope.pageCount = parameters.itemsPerPage;
           parameters.scope.result = parameters.result;
+          parameters.scope.more = function() {
+            
+          };
           parameters.scope.edit = function(id) {
             $location.path(resourcePath[parameters.group][parameters.resourceName] + '/' + id);
           };
@@ -46,7 +50,7 @@ angular.module('mycellar.services.admin.domain').provider('adminDomainService', 
             };
           }
           if (parameters.canDelete) {
-            parameters.scope.delete = function(id) {
+            parameters.scope.delete = function(id, event) {
               var errors = this.errors;
               $injector.get('Admin' + parameters.resourcesName).delete({id: id}, function (value, headers) {
                 if (value.errorKey != undefined) {
@@ -55,6 +59,7 @@ angular.module('mycellar.services.admin.domain').provider('adminDomainService', 
                   $route.reload();
                 }
               });
+              event.stopPropagation();
             };
           }
         };
@@ -102,11 +107,37 @@ angular.module('mycellar.services.admin.domain').provider('adminDomainService', 
      *          resourcesName: the name of the resource in plural form
      *          groupLabel: the group label
      *          resourcesLabel: the label of the resource in plural form
-     *          defaultSort: the default sort for list view,
+     *          defaultSort: the default sort for list view
+     *          itemsPerPage
      *          canCreate
      *        }
      */
     this.forDomain = function(parameters) {
+      var initSort = function(defaultSort) {
+        var sort = {
+          properties: [],
+          ways: {}
+        };
+        var sortBy = function(property) {
+          if (sort.ways[property] == 'asc') {
+            sort.ways[property] = 'desc';
+          } else if (sort.ways[property] == 'desc') {
+            sort.properties.splice(sort.properties.indexOf(property), 1);
+            sort.ways[property] = null;
+          } else {
+            sort.properties.push(property);
+            sort.ways[property] = 'asc';
+          }
+        };
+        angular.forEach(defaultSort, function(sort) {
+          sortBy(sort);
+        });
+        var sortParameter = [];
+        for (var t in sort.properties) {
+          sortParameter.push(sort.properties[t] + ',' + sort.ways[sort.properties[t]]);
+        }
+        return sortParameter;
+      };
       var baseUrl = function(name) {
         return '/admin/domain/' + parameters.group + '/' + name.charAt(0).toLowerCase() + name.substr(1);
       };
@@ -119,6 +150,8 @@ angular.module('mycellar.services.admin.domain').provider('adminDomainService', 
         return 'AdminDomain' + name + 'Controller';
       };
       
+      parameters.itemsPerPage = parameters.itemsPerPage || 10;
+      parameters.sortParameter = initSort(parameters.defaultSort);
       parameters.canCreate = (parameters.canCreate != undefined ? parameters.canCreate : true);
       var resourceRoute = baseUrl(parameters.resourceName) + '/:id';
       if (parameters.canCreate) {
@@ -160,11 +193,14 @@ angular.module('mycellar.services.admin.domain').provider('adminDomainService', 
             templateUrl: templateUrl(parameters.resourcesName),
             controller: controllerName(parameters.resourcesName),
             resolve: angular.extend({
-              tableContext: [
-                'tableService', 'Admin' + parameters.resourcesName,
-                function(tableService, resource) {
-                  var tableContext = tableService.createTableContext(resource.get, parameters.defaultSort);
-                  return tableContext.setPage(1).promise;
+              items: [
+                'Admin' + parameters.resourcesName,
+                function(resource) {
+                  return resource.get({
+                    first: 0,
+                    count: parameters.itemsPerPage,
+                    sort: parameters.sortParameter
+                  }).$promise;
                 }
               ]
             }, resolveListFns)

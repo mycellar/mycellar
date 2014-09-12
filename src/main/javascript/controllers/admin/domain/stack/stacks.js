@@ -1,7 +1,6 @@
 angular.module('mycellar.controllers.admin.domain.stack.stacks', [
   'ngRoute',
   'mycellar.resources.stack.stacks', 
-  'mycellar.directives.table',
   'mycellar.directives.error', 
   'mycellar.directives.form',
   'mycellar.directives.admin',
@@ -22,13 +21,13 @@ angular.module('mycellar.controllers.admin.domain.stack.stacks', [
 ]);
 
 angular.module('mycellar.controllers.admin.domain.stack.stacks').controller('AdminDomainStacksController', [
-  '$scope', '$route', 'adminDomainService', 'tableContext', 'AdminStacks',
-  function ($scope, $route, adminDomainService, tableContext, AdminStacks) {
+  '$scope', '$route', 'adminDomainService', 'items', 'AdminStacks',
+  function ($scope, $route, adminDomainService, items, AdminStacks) {
     adminDomainService.listMethods({
       scope: $scope,
       group: 'stack', 
       resourceName: 'Stack', 
-      tableContext: tableContext
+      items: items
     });
     $scope.deleteAll = function() {
       AdminStacks.deleteAll({}, function (value, headers) {

@@ -1,85 +1,26 @@
 <core-toolbar>
   <drawer-button icon="menu"></drawer-button>
   <span flex>Vins</span>
+  <core-input id="search" bind-polymer-input="search" flex hidden></core-input>
+  <paper-icon-button icon="cancel" hidden ng-show="search !== ''" ng-click="clearSearch()"></paper-icon-button>
+  <paper-icon-button icon="clear" hidden ng-show="search === ''" ng-click="toggleHidden()"></paper-icon-button>
+  <paper-icon-button icon="search" ng-click="toggleHidden()"></paper-icon-button>
   <drawer-button right icon="more-vert"></drawer-button>
 </core-toolbar>
-<admin-domain>
-  <table-filters table-context="tableContext">
-    <div class="form-group">
-      <label class="control-label sr-only" for="appellation.region.country.name">Nom du pays</label>
-      <input class="form-control" id="appellation.region.country.name" name="appellation.region.country.name" placeholder="Nom du pays" ng-model="tableContext.filters['appellation.region.country.name']" type="text" />
-    </div>
-    <div class="form-group">
-      <label class="control-label sr-only" for="appellation.region.name">Nom de la région</label>
-      <input class="form-control" id="appellation.region.name" name="appellation.region.name" placeholder="Nom de la région" ng-model="tableContext.filters['appellation.region.name']" type="text" />
-    </div>
-    <div class="form-group">
-      <label class="control-label sr-only" for="appellation.name">Nom de l'appellation</label>
-      <input class="form-control" id="appellation.name" name="appellation.name" placeholder="Nom de l'appellation" ng-model="tableContext.filters['appellation.name']" type="text" />
-    </div>
-    <div class="form-group">
-      <label class="control-label sr-only" for="producer.name">Nom du producteur</label>
-      <input class="form-control" id="producer.name" name="producer.name" placeholder="Nom du producteur" ng-model="tableContext.filters['producer.name']" type="text" />
-    </div>
-    <div class="form-group">
-      <label class="control-label sr-only" for="name">Nom</label>
-      <input class="form-control" id="name" name="name" placeholder="Nom" ng-model="tableContext.filters['name']" type="text" />
-    </div>
-    <div class="form-group">
-      <label class="control-label sr-only" for="vintage">Millésime</label>
-      <input class="form-control" id="vintage" name="vintage" placeholder="Millésime" ng-model="tableContext.filters['vintage']" type="text" />
-    </div>
-  </table-filters>
-  <error-div errors="errors"></error-div>
-  <paginated table-context="tableContext">
-    <div class="table-responsive">
-      <table class="table table-bordered table-striped table-condensed">
-        <thead>
-          <tr>
-            <th>Pays <icon-sort attribute="appellation.region.country.name" table-context="tableContext" /></th>
-            <th>Région <icon-sort attribute="appellation.region.name" table-context="tableContext" /></th>
-            <th>Appellation <icon-sort attribute="appellation.name" table-context="tableContext" /></th>
-            <th>Producteur <icon-sort attribute="producer.name" table-context="tableContext" /></th>
-            <th>Nom <icon-sort attribute="name" table-context="tableContext" /></th>
-            <th>Millésime <icon-sort attribute="vintage" table-context="tableContext" /></th>
-            <th>Couleur <icon-sort attribute="color" table-context="tableContext" /></th>
-            <th>Type <icon-sort attribute="type" table-context="tableContext" /></th>
-            <th class="actions"><a href ng-click="new()" class="btn btn-default btn-xs"><i class="fa fa-plus-circle"></i></a></th>
-          </tr>
-        </thead>
-        <tbody >
-          <tr ng-repeat="wine in tableContext.items">
-            <td>{{wine.appellation.region.country.name}}</td>
-            <td>{{wine.appellation.region.name}}</td>
-            <td>{{wine.appellation.name}}</td>
-            <td>{{wine.producer.name}}</td>
-            <td>{{wine.name}}</td>
-            <td>{{wine.vintage}}</td>
-            <td>{{wine.color | wineColorRenderer}}</td>
-            <td>{{wine.type | wineTypeRenderer}}</td>
-            <td>
-              <a href ng-click="edit(wine.id)" class="btn btn-default btn-xs"><i class="fa fa-pencil"></i></a>
-              <a href ng-click="delete(wine.id)" class="btn btn-danger btn-xs"><i class="fa fa-minus-circle"></i></a>
-            </td>
-          </tr>
-          <tr ng-if="tableContext.items.length == 0">
-            <td colspan="9" class="text-center">Aucun vin ne correspond aux filtres.</td>
-          </tr>
-        </tbody>
-        <tfoot>
-          <tr>
-            <th>Pays <icon-sort attribute="appellation.region.country.name" table-context="tableContext" /></th>
-            <th>Région <icon-sort attribute="appellation.region.name" table-context="tableContext" /></th>
-            <th>Appellation <icon-sort attribute="appellation.name" table-context="tableContext" /></th>
-            <th>Producteur <icon-sort attribute="producer.name" table-context="tableContext" /></th>
-            <th>Nom <icon-sort attribute="name" table-context="tableContext" /></th>
-            <th>Millésime <icon-sort attribute="vintage" table-context="tableContext" /></th>
-            <th>Couleur <icon-sort attribute="color" table-context="tableContext" /></th>
-            <th>Type <icon-sort attribute="type" table-context="tableContext" /></th>
-            <th class="actions"><a href ng-click="new()" class="btn btn-default btn-xs"><i class="fa fa-plus-circle"></i></a></th>
-          </tr>
-        </tfoot>
-      </table>
-    </div>
-  </paginated>
-</admin-domain>
+<core-drawer-panel rightDrawer>
+  <nav role="secondary" drawer>
+    <admin-domain-nav></admin-domain-nav>
+  </nav>
+  <div main>
+    <paper-item ng-if="items.length == 0">Aucun vin</paper-item>
+    <paper-item class="twoLines" ng-click="edit(wine.id)" ng-repeat="wine in items">
+      <div flex>
+        <div class="ellipsis">{{wine | wineRenderer}}</div>
+        <div class="ellipsis"><small>{{wine.appellation | appellationRenderer}}</small></div>
+      </div>
+      <paper-icon-button icon="remove-circle-outline" ng-click="delete(wine.id, $event)"></paper-icon-button>
+    </paper-item>
+    <paper-item ng-if="size > items.length" label="Voir les {{size - items.length > pageCount ? pageCount : size - items.length}} suivants sur {{size - items.length}}" ng-click="more()"></paper-item>
+    <paper-fab icon="add" raisedButton="false" ng-click="new()"></paper-fab>
+  </div>
+</core-drawer-panel>

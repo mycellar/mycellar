@@ -1,90 +1,30 @@
 <core-toolbar>
   <drawer-button icon="menu"></drawer-button>
   <span flex>Mouvements</span>
+    <core-input id="search" bind-polymer-input="search" flex hidden></core-input>
+  <paper-icon-button icon="cancel" hidden ng-show="search !== ''" ng-click="clearSearch()"></paper-icon-button>
+  <paper-icon-button icon="clear" hidden ng-show="search === ''" ng-click="toggleHidden()"></paper-icon-button>
+  <paper-icon-button icon="search" ng-click="toggleHidden()"></paper-icon-button>
   <drawer-button right icon="more-vert"></drawer-button>
 </core-toolbar>
-<admin-domain>
-  <table-filters table-context="tableContext">
-    <div class="form-group">
-      <label class="control-label sr-only" for="cellar.name">Nom de la cave</label>
-      <input class="form-control" id="cellar.name" name="cellar.name" placeholder="Nom de la cave" ng-model="tableContext.filters['cellar.name']" type="text" />
-    </div>
-    <div class="form-group">
-      <label class="control-label sr-only" for="cellar.owner.email">Email du propriétaire de la cave</label>
-      <input class="form-control" id="cellar.owner.email" name="cellar.owner.email" placeholder="Email du propriétaire de la cave" ng-model="tableContext.filters['cellar.owner.email']" type="text" />
-    </div>
-    <div class="form-group">
-      <label class="control-label sr-only" for="bottle.wine.appellation.region.country.name">Nom du pays</label>
-      <input class="form-control" id="bottle.wine.appellation.region.country.name" name="bottle.wine.appellation.region.country.name" placeholder="Nom du pays" ng-model="tableContext.filters['bottle.wine.appellation.region.country.name']" type="text" />
-    </div>
-    <div class="form-group">
-      <label class="control-label sr-only" for="bottle.wine.appellation.region.name">Nom de la région</label>
-      <input class="form-control" id="bottle.wine.appellation.region.name" name="bottle.wine.appellation.region.name" placeholder="Nom de la région" ng-model="tableContext.filters['bottle.wine.appellation.region.name']" type="text" />
-    </div>
-    <div class="form-group">
-      <label class="control-label sr-only" for="bottle.wine.appellation.name">Nom de l'appellation</label>
-      <input class="form-control" id="bottle.wine.appellation.name" name="bottle.wine.appellation.name" placeholder="Nom de l'appellation" ng-model="tableContext.filters['bottle.wine.appellation.name']" type="text" />
-    </div>
-    <div class="form-group">
-      <label class="control-label sr-only" for="bottle.wine.producer.name">Nom du producteur</label>
-      <input class="form-control" id="bottle.wine.producer.name" name="bottle.wine.producer.name" placeholder="Nom du producteur" ng-model="tableContext.filters['bottle.wine.producer.name']" type="text" />
-    </div>
-    <div class="form-group">
-      <label class="control-label sr-only" for="bottle.wine.name">Nom</label>
-      <input class="form-control" id="bottle.wine.name" name="bottle.wine.name" placeholder="Nom" ng-model="tableContext.filters['bottle.wine.name']" type="text" />
-    </div>
-    <div class="form-group">
-      <label class="control-label sr-only" for="bottle.wine.vintage">Millésime</label>
-      <input class="form-control" id="bottle.wine.vintage" name="bottle.wine.vintage" placeholder="Millésime" ng-model="tableContext.filters['bottle.wine.vintage']" type="text" />
-    </div>
-  </table-filters>
-  <error-div errors="errors"></error-div>
-  <paginated table-context="tableContext">
-    <div class="table-responsive">
-      <table class="table table-bordered table-striped table-condensed">
-        <thead>
-          <tr>
-            <th>I/O</th>
-            <th>Propriétaire <icon-sort attribute="cellar.owner.email" table-context="tableContext" /></th>
-            <th>Cave <icon-sort attribute="cellar.name" table-context="tableContext" /></th>
-            <th>Date <icon-sort attribute="date" table-context="tableContext" /></th>
-            <th>Vin</th>
-            <th>Format</th>
-            <th>Quantité <icon-sort attribute="number" table-context="tableContext" /></th>
-            <th class="actions"><a href ng-click="new()" class="btn btn-default btn-xs"><i class="fa fa-plus-circle"></i></a></th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr ng-repeat="movement in tableContext.items">
-            <td>{{movement.type}}</td>
-            <td>{{movement.cellar.owner.email}}</td>
-            <td>{{movement.cellar.name}}</td>
-            <td>{{movement.date}}</td>
-            <td>{{movement.bottle.wine | wineRenderer}}</td>
-            <td>{{movement.bottle.format | formatRenderer}}</td>
-            <td>{{movement.number}}</td>
-            <td>
-              <a href ng-click="edit(movement.id)" class="btn btn-default btn-xs"><i class="fa fa-pencil"></i></a>
-              <a href ng-click="delete(movement.id)" class="btn btn-danger btn-xs"><i class="fa fa-minus-circle"></i></a>
-            </td>
-          </tr>
-          <tr ng-if="tableContext.items.length == 0">
-            <td colspan="8" class="text-center">Aucune cave ne correspond aux filtres.</td>
-          </tr>
-        </tbody>
-        <tfoot>
-          <tr>
-            <th>I/O</th>
-            <th>Propriétaire <icon-sort attribute="cellar.owner.email" table-context="tableContext" /></th>
-            <th>Cave <icon-sort attribute="cellar.name" table-context="tableContext" /></th>
-            <th>Date <icon-sort attribute="date" table-context="tableContext" /></th>
-            <th>Vin</th>
-            <th>Format</th>
-            <th>Quantité <icon-sort attribute="number" table-context="tableContext" /></th>
-            <th class="actions"><a href ng-click="new()" class="btn btn-default btn-xs"><i class="fa fa-plus-circle"></i></a></th>
-          </tr>
-        </tfoot>
-      </table>
-    </div>
-  </paginated>
-</admin-domain>
+<core-drawer-panel rightDrawer>
+  <nav role="secondary" drawer>
+    <admin-domain-nav></admin-domain-nav>
+  </nav>
+  <div main>
+    <paper-item ng-if="items.length == 0">Aucun mouvement</paper-item>
+    <paper-item class="twoLines" ng-click="edit(movement.id)" ng-repeat="movement in items">
+      <div flex>
+        <div class="ellipsis">{{movement.bottle.wine | wineRenderer}}</div>
+        <div class="ellipsis"><small>{{movement.bottle.format | formatRenderer}}</small></div>
+      </div>
+      <div>
+        <div class="ellipsis">{{movement.type | movementTypeRenderer}} : {{movement.number}} le {{movement.date | date:'longDate'}}</div>
+        <div class="ellipsis"><small>{{movement.cellar.name}} {{movement.cellar.owner | userRenderer}}</small></div>
+      </div>
+      <paper-icon-button icon="remove-circle-outline" ng-click="delete(movement.id, $event)"></paper-icon-button>
+    </paper-item>
+    <paper-item ng-if="size > items.length" label="Voir les {{size - items.length > pageCount ? pageCount : size - items.length}} suivants sur {{size - items.length}}" ng-click="more()"></paper-item>
+    <paper-fab icon="add" raisedButton="false" ng-click="new()"></paper-fab>
+  </div>
+</core-drawer-panel>

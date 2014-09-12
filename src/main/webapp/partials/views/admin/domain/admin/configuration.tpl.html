@@ -1,18 +1,23 @@
-<admin-domain>
-  <header class="page-header"><h1>Configuration : {{configuration.key}}</h1></header>
-  <form name="form" novalidate>
-    <error-div errors="errors"></error-div>
-    <fieldset>
-      <legend>Détails</legend>
-      <div class="form-group" ng-class="{'has-error': form.value.$invalid}">
-        <label for="value" class="control-label">Valeur</label>
-        <input id="value" name="value" ng-model="configuration.value" placeholder="Valeur" type="text" class="form-control" required ng-maxlength="2000" business />
-        <span class="help-block" ng-if="form.value.$error.required">Veuillez saisir une valeur</span>
-        <span class="help-block" ng-if="form.value.$error.maxlength">Longueur maximum : 2000</span>
-        <span class="help-block" ng-if="form.value.$error.BusinessError_CONFIGURATION_00002">La valeur doit être un email.</span>
-      </div>
-    </fieldset>
-    <input type="submit" class="btn btn-primary" ng-click="save()" ng-disabled="form.$invalid" value="Sauvegarder" />
-    <input type="submit" class="btn btn-default" ng-click="cancel()" value="Annuler" />
-  </form>
-</admin-domain>
+<core-drawer-panel rightDrawer>
+  <nav role="secondary" drawer>
+    <admin-domain-nav></admin-domain-nav>
+  </nav>
+  <div main>
+    <header class="page-header"><h1>Configuration : {{configuration.key}}</h1></header>
+    <form name="form" novalidate>
+      <error-div errors="errors"></error-div>
+      <fieldset>
+        <legend>Détails</legend>
+        <div class="form-group" ng-class="{'has-error': form.value.$invalid}">
+          <label for="value" class="control-label">Valeur</label>
+          <input id="value" name="value" ng-model="configuration.value" placeholder="Valeur" type="text" class="form-control" required ng-maxlength="2000" business />
+          <span class="help-block" ng-if="form.value.$error.required">Veuillez saisir une valeur</span>
+          <span class="help-block" ng-if="form.value.$error.maxlength">Longueur maximum : 2000</span>
+          <span class="help-block" ng-if="form.value.$error.BusinessError_CONFIGURATION_00002">La valeur doit être un email.</span>
+        </div>
+      </fieldset>
+      <input type="submit" class="btn btn-primary" ng-click="save()" ng-disabled="form.$invalid" value="Sauvegarder" />
+      <input type="submit" class="btn btn-default" ng-click="cancel()" value="Annuler" />
+    </form>
+  </div>
+</core-drawer-panel>

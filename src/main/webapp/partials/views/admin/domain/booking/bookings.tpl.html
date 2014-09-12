@@ -1,57 +1,26 @@
 <core-toolbar>
   <drawer-button icon="menu"></drawer-button>
   <span flex>Réservations</span>
+  <core-input id="search" bind-polymer-input="search" flex hidden></core-input>
+  <paper-icon-button icon="cancel" hidden ng-show="search !== ''" ng-click="clearSearch()"></paper-icon-button>
+  <paper-icon-button icon="clear" hidden ng-show="search === ''" ng-click="toggleHidden()"></paper-icon-button>
+  <paper-icon-button icon="search" ng-click="toggleHidden()"></paper-icon-button>
   <drawer-button right icon="more-vert"></drawer-button>
 </core-toolbar>
-<admin-domain>
-  <table-filters table-context="tableContext">
-    <div class="form-group">
-      <label class="control-label sr-only" for="bookingEvent.name">Nom de la compagne de réservation</label>
-      <input class="form-control" id="bookingEvent.name" name="bookingEvent.name" placeholder="Nom de la compagne de réservation" ng-model="tableContext.filters['bookingEvent.name']" type="text" />
-    </div>
-    <div class="form-group">
-      <label class="control-label sr-only" for="customer.lastname">Nom de famille du client</label>
-      <input class="form-control" id="customer.lastname" name="customer.lastname" placeholder="Nom de famille du client" ng-model="tableContext.filters['customer.lastname']" type="text" />
-    </div>
-  </table-filters>
-  <error-div errors="errors"></error-div>
-  <paginated table-context="tableContext">
-    <div class="table-responsive">
-      <table class="table table-bordered table-striped table-condensed">
-        <thead>
-          <tr>
-            <th>Client <icon-sort attribute="customer.lastname" table-context="tableContext" /></th>
-            <th>Campagne <icon-sort attribute="bookingEvent.name" table-context="tableContext" /></th>
-            <th>Début <icon-sort attribute="bookingEvent.start" table-context="tableContext" /></th>
-            <th>Fin <icon-sort attribute="bookingEvent.end" table-context="tableContext" /></th>
-            <th class="actions"><a href ng-click="new()" class="btn btn-default btn-xs"><i class="fa fa-plus-circle"></i></a></th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr ng-repeat="booking in tableContext.items">
-            <td>{{booking.customer.lastname + ' ' + booking.customer.firstname}}</td>
-            <td>{{booking.bookingEvent.name}}</td>
-            <td>{{booking.bookingEvent.start | date : shortDate}}</td>
-            <td>{{booking.bookingEvent.end | date : shortDate}}</td>
-            <td>
-              <a href ng-click="edit(booking.id)" class="btn btn-default btn-xs"><i class="fa fa-pencil"></i></a>
-              <a href ng-click="delete(booking.id)" class="btn btn-danger btn-xs"><i class="fa fa-minus-circle"></i></a>
-            </td>
-          </tr>
-          <tr ng-if="tableContext.items.length == 0">
-            <td colspan="5" class="text-center">Aucune réservation ne correspond aux filtres.</td>
-          </tr>
-        </tbody>
-        <tfoot>
-          <tr>
-            <th>Client <icon-sort attribute="customer.lastname" table-context="tableContext" /></th>
-            <th>Campagne <icon-sort attribute="bookingEvent.name" table-context="tableContext" /></th>
-            <th>Début <icon-sort attribute="bookingEvent.start" table-context="tableContext" /></th>
-            <th>Fin <icon-sort attribute="bookingEvent.end" table-context="tableContext" /></th>
-            <th class="actions"><a href ng-click="new()" class="btn btn-default btn-xs"><i class="fa fa-plus-circle"></i></a></th>
-          </tr>
-        </tfoot>
-      </table>
-    </div>
-  </paginated>
-</admin-domain>
+<core-drawer-panel rightDrawer>
+  <nav role="secondary" drawer>
+    <admin-domain-nav></admin-domain-nav>
+  </nav>
+  <div main>
+    <paper-item ng-if="items.length == 0">Aucune réservation</paper-item>
+    <paper-item class="twoLines" ng-click="edit(booking.id)" ng-repeat="booking in items">
+      <div flex>
+        <div class="ellipsis">{{booking.customer | userRenderer:'long'}}</div>
+        <div class="ellipsis"><small>{{booking.bookingEvent.name}} du {{booking.bookingEvent.start | date:'longDate'}} au {{booking.bookingEvent.end | date:'longDate'}}</small></div>
+      </div>
+      <paper-icon-button icon="remove-circle-outline" ng-click="delete(booking.id, $event)"></paper-icon-button>
+    </paper-item>
+    <paper-item ng-if="size > items.length" label="Voir les {{size - items.length > pageCount ? pageCount : size - items.length}} suivantes sur {{size - items.length}}" ng-click="more()"></paper-item>
+    <paper-fab icon="add" raisedButton="false" ng-click="new()"></paper-fab>
+  </div>
+</core-drawer-panel>

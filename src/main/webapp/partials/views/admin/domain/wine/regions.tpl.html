@@ -1,51 +1,26 @@
 <core-toolbar>
   <drawer-button icon="menu"></drawer-button>
   <span flex>Régions</span>
+  <core-input id="search" bind-polymer-input="search" flex hidden></core-input>
+  <paper-icon-button icon="cancel" hidden ng-show="search !== ''" ng-click="clearSearch()"></paper-icon-button>
+  <paper-icon-button icon="clear" hidden ng-show="search === ''" ng-click="toggleHidden()"></paper-icon-button>
+  <paper-icon-button icon="search" ng-click="toggleHidden()"></paper-icon-button>
   <drawer-button right icon="more-vert"></drawer-button>
 </core-toolbar>
-<admin-domain>
-  <table-filters table-context="tableContext">
-    <div class="form-group">
-      <label class="control-label sr-only" for="country.name">Nom du pays</label>
-      <input class="form-control" id="country.name" name="country.name" placeholder="Nom du pays" ng-model="tableContext.filters['country.name']" type="text" />
-    </div>
-    <div class="form-group">
-      <label class="control-label sr-only" for="name">Nom</label>
-      <input class="form-control" id="name" name="name" placeholder="Nom" ng-model="tableContext.filters['name']" type="text" />
-    </div>
-  </table-filters>
-  <error-div errors="errors"></error-div>
-  <paginated table-context="tableContext">
-    <div class="table-responsive">
-      <table class="table table-bordered table-striped table-condensed">
-        <thead>
-          <tr>
-            <th>Pays <icon-sort attribute="country.name" table-context="tableContext" /></th>
-            <th>Nom <icon-sort attribute="name" table-context="tableContext" /></th>
-            <th class="actions"><a href ng-click="new()" class="btn btn-default btn-xs"><i class="fa fa-plus-circle"></i></a></th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr ng-repeat="region in tableContext.items">
-            <td>{{region.country.name}}</td>
-            <td>{{region.name}}</td>
-            <td>
-              <a href ng-click="edit(region.id)" class="btn btn-default btn-xs"><i class="fa fa-pencil"></i></a>
-              <a href ng-click="delete(region.id)" class="btn btn-danger btn-xs"><i class="fa fa-minus-circle"></i></a>
-            </td>
-          </tr>
-          <tr ng-if="tableContext.items.length == 0">
-            <td colspan="3" class="text-center">Aucune région ne correspond aux filtres.</td>
-          </tr>
-        </tbody>
-        <tfoot>
-          <tr>
-            <th>Pays <icon-sort attribute="country.name" table-context="tableContext" /></th>
-            <th>Nom <icon-sort attribute="name" table-context="tableContext" /></th>
-            <th class="actions"><a href ng-click="new()" class="btn btn-default btn-xs"><i class="fa fa-plus-circle"></i></a></th>
-          </tr>
-        </tfoot>
-      </table>
-    </div>
-  </paginated>
-</admin-domain>
+<core-drawer-panel rightDrawer>
+  <nav role="secondary" drawer>
+    <admin-domain-nav></admin-domain-nav>
+  </nav>
+  <div main>
+    <paper-item ng-if="items.length == 0">Aucune région</paper-item>
+    <paper-item class="twoLines" ng-click="edit(region.id)" ng-repeat="region in items">
+      <div flex>
+        <div class="ellipsis">{{region.name}}</div>
+        <div class="ellipsis"><small>{{region.country.name}}</small></div>
+      </div>
+      <paper-icon-button icon="remove-circle-outline" ng-click="delete(region.id, $event)"></paper-icon-button>
+    </paper-item>
+    <paper-item ng-if="size > items.length" label="Voir les {{size - items.length > pageCount ? pageCount : size - items.length}} suivantes sur {{size - items.length}}" ng-click="more()"></paper-item>
+    <paper-fab icon="add" raisedButton="false" ng-click="new()"></paper-fab>
+  </div>
+</core-drawer-panel>

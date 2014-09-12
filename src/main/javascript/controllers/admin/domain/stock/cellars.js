@@ -1,7 +1,6 @@
 angular.module('mycellar.controllers.admin.domain.stock.cellars', [
   'ngRoute',
   'mycellar.resources.stock.cellars',
-  'mycellar.directives.table',
   'mycellar.directives.error',
   'mycellar.directives.form',
   'mycellar.directives.admin',
@@ -21,13 +20,13 @@ angular.module('mycellar.controllers.admin.domain.stock.cellars', [
 ]);
 
 angular.module('mycellar.controllers.admin.domain.stock.cellars').controller('AdminDomainCellarsController', [
-  '$scope', 'adminDomainService', 'tableContext',
-  function ($scope, adminDomainService, tableContext) {
+  '$scope', 'adminDomainService', 'items',
+  function ($scope, adminDomainService, items) {
     adminDomainService.listMethods({
       scope: $scope,
       group: 'stock', 
       resourceName: 'Cellar', 
-      tableContext: tableContext
+      items: items
     });
   }
 ]);

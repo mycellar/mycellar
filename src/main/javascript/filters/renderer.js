@@ -36,8 +36,11 @@ angular.module('mycellar').filter('wineRenderer', ['wineColorRendererFilter', fu
     return producer.name;
   }
 }).filter('userRenderer', function() {
-  return function(user) {
-    return user.lastname + ' ' + user.firstname;
+  return function(user, format) {
+    if (format === 'long') {
+      return user.lastname + ' ' + user.firstname + ' (' + user.email + ')';
+    }
+    return user.lastname + ' ' + user.firstname;;    
   }
 }).filter('wineTypeRenderer', function() {
   return function(type) {

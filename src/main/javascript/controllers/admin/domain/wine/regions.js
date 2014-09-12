@@ -1,7 +1,6 @@
 angular.module('mycellar.controllers.admin.domain.wine.regions', [
   'ngRoute',
   'mycellar.resources.wine.regions', 
-  'mycellar.directives.table',
   'mycellar.directives.error',
   'mycellar.directives.form',
   'mycellar.directives.admin',
@@ -15,19 +14,19 @@ angular.module('mycellar.controllers.admin.domain.wine.regions', [
       resourcesName: 'Regions', 
       groupLabel: 'Vin',
       resourcesLabel: 'Régions',
-      defaultSort: ['country.name', 'name'] 
+      defaultSort: ['name'] 
     }).whenCrud();
   }
 ]);
 
 angular.module('mycellar.controllers.admin.domain.wine.regions').controller('AdminDomainRegionsController', [
-  '$scope', 'adminDomainService', 'tableContext',
-  function ($scope, adminDomainService, tableContext) {
+  '$scope', 'adminDomainService', 'items',
+  function ($scope, adminDomainService, items) {
     adminDomainService.listMethods({
       scope: $scope,
       group: 'wine', 
       resourceName: 'Region', 
-      tableContext: tableContext
+      items: items
     });
   }
 ]);

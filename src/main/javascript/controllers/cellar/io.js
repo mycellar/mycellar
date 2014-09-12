@@ -1,8 +1,7 @@
 angular.module('mycellar.controllers.cellar.io', [
   'ngRoute',
   'mycellar.resources.stock.cellars',
-  'mycellar.resources.stock.movements',
-  'mycellar.services.table'
+  'mycellar.resources.stock.movements'
 ], [
   '$routeProvider',
   function($routeProvider) {

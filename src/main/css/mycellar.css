@@ -67,7 +67,7 @@ body /deep/ paper-button[raisedButton] {
 }
 
 body /deep/ paper-fab {
-  position: fixed;
+  position: absolute;
   bottom: 16px;
   right: 28px;
   background: #0091ea;
@@ -118,4 +118,21 @@ body /deep/ .xs-show {
   body /deep/ span.xs-show {
     display: inline;
   }
+}
+
+body /deep/ .card {
+  margin: 8px;
+  border-radius: 2px;
+  background: #fff;
+  float: left;
+}
+
+body /deep/ .card header {
+  padding: 16px;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.12);
+}
+
+body /deep/ .card div {
+  padding: 16px;
+  font-size: 14px;
 }

@@ -1,8 +1,6 @@
 angular.module('mycellar.controllers.contact.contacts', [
   'ngRoute',
   'mycellar.resources.contact.contacts',
-  'mycellar.directives.table',
-  'mycellar.services.table',
   'mycellar.controllers.contact.producer'
 ], [
   '$routeProvider',

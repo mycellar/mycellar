@@ -1,7 +1,6 @@
 angular.module('mycellar.controllers.admin.domain.booking.bookingEvents', [
   'ngRoute',
   'mycellar.resources.booking.bookingEvents', 
-  'mycellar.directives.table',
   'mycellar.directives.error',
   'mycellar.directives.form',
   'mycellar.directives.admin',
@@ -21,13 +20,13 @@ angular.module('mycellar.controllers.admin.domain.booking.bookingEvents', [
 ]);
 
 angular.module('mycellar.controllers.admin.domain.booking.bookingEvents').controller('AdminDomainBookingEventsController', [
-  '$scope', 'adminDomainService', 'tableContext',
-  function ($scope, adminDomainService, tableContext) {
+  '$scope', 'adminDomainService', 'items',
+  function ($scope, adminDomainService, items) {
     adminDomainService.listMethods({
       scope: $scope,
       group: 'booking', 
       resourceName: 'BookingEvent',
-      tableContext: tableContext
+      items: items
     });
   }
 ]);

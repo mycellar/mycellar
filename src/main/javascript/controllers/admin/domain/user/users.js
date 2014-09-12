@@ -1,7 +1,6 @@
 angular.module('mycellar.controllers.admin.domain.user.users', [
   'ngRoute',
   'mycellar.resources.user.users', 
-  'mycellar.directives.table', 
   'mycellar.directives.error',
   'mycellar.directives.form',
   'mycellar.directives.admin',
@@ -22,13 +21,13 @@ angular.module('mycellar.controllers.admin.domain.user.users', [
 ]);
 
 angular.module('mycellar.controllers.admin.domain.user.users').controller('AdminDomainUsersController', [
-  '$scope', 'adminDomainService', 'tableContext',
-  function ($scope, adminDomainService, tableContext) {
+  '$scope', 'adminDomainService', 'items',
+  function ($scope, adminDomainService, items) {
     adminDomainService.listMethods({
       scope: $scope,
       group: 'user', 
       resourceName: 'User', 
-      tableContext: tableContext
+      items: items
     });
   }
 ]);

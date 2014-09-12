@@ -11,9 +11,9 @@
   <paper-item class="twoLines" ng-click="edit(contact)" ng-repeat="contact in contacts">
     <div flex>
       <div class="ellipsis">{{contact.producer | producerRenderer}}</div>
-      <div class="ellipsis"><small>Contacté le {{contact.current | date}}</small></div>
+      <div class="ellipsis"><small>Contacté le {{contact.current | date:'longDate'}}</small></div>
     </div>
-    <div>{{contact.next | date}}</div>
+    <div>{{contact.next | date:'longDate'}}</div>
   </paper-item>
   <paper-item ng-if="size > contacts.length" label="Voir les {{size - contacts.length > 20 ? 20 : size - contacts.length}} suivants sur {{size - contacts.length}}" ng-click="more()"></paper-item>
   <paper-fab icon="add" raisedButton="false" ng-click="new()"></paper-fab>

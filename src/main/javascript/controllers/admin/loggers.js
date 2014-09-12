@@ -1,7 +1,6 @@
 angular.module('mycellar.controllers.admin.loggers', [
   'ngRoute',
-  'mycellar.resources.admin.loggers',
-  'mycellar.services.table'
+  'mycellar.resources.admin.loggers'
 ], [
   '$routeProvider', 
   function($routeProvider){
