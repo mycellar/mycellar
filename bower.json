@@ -15,18 +15,18 @@
   ],
   "dependencies": {
     "bootstrap": "3.2.0",
-    "angular": "1.3.0-beta.9",
-    "angular-cookies": "1.3.0-beta.9",
-    "angular-resource": "1.3.0-beta.9",
-    "angular-route": "1.3.0-beta.9",
-    "angular-animate": "1.3.0-beta.9",
-    "angular-i18n": "1.3.0-beta.9",
+    "angular": "1.3.0-beta.8",
+    "angular-cookies": "1.3.0-beta.8",
+    "angular-resource": "1.3.0-beta.8",
+    "angular-route": "1.3.0-beta.8",
+    "angular-animate": "1.3.0-beta.8",
+    "angular-i18n": "1.3.0-beta.8",
     "angular-bootstrap": "0.11.0",
     "angular-http-auth": "1.2.1",
     "angular-loading-bar": "0.4.3",
     "font-awesome": "4.1.0"
   },
   "devDependencies": {
-    "angular-mocks": "1.3.0-beta.9"
+    "angular-mocks": "1.3.0-beta.8"
   }
 }
