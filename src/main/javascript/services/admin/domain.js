@@ -39,7 +39,17 @@ angular.module('mycellar.services.admin.domain').provider('adminDomainService', 
           parameters.scope.pageCount = parameters.itemsPerPage;
           parameters.scope.result = parameters.result;
           parameters.scope.more = function() {
-            
+            var params = {
+                first: parameters.scope.items.length,
+                count: parameters.itemsPerPage,
+                sort: parameters.sortParameter
+            };
+            if (parameters.scope.search != null && parameters.scope.search != '') {
+              params['input'] = parameters.scope.search;
+            }
+            return $injector.get('Admin' + parameters.resourcesName).get(params, function(value) {
+              parameters.scope.items = parameters.scope.items.concat(value.list);
+            });
           };
           parameters.scope.edit = function(id) {
             $location.path(resourcePath[parameters.group][parameters.resourceName] + '/' + id);
