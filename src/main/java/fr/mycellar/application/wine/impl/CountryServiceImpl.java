@@ -25,6 +25,7 @@ import javax.inject.Singleton;
 import jpasearch.repository.query.SearchParameters;
 import jpasearch.repository.query.builder.ResultBuilder;
 import jpasearch.repository.query.builder.SearchBuilder;
+import fr.mycellar.application.admin.ConfigurationService;
 import fr.mycellar.application.shared.AbstractSearchableService;
 import fr.mycellar.application.wine.CountryService;
 import fr.mycellar.domain.shared.NamedEntity_;
@@ -42,6 +43,8 @@ import fr.mycellar.infrastructure.wine.repository.CountryRepository;
 public class CountryServiceImpl extends AbstractSearchableService<Country, CountryRepository> implements CountryService {
 
     private CountryRepository countryRepository;
+
+    private ConfigurationService configurationService;
 
     @Override
     public Country find(String name) {
@@ -65,7 +68,10 @@ public class CountryServiceImpl extends AbstractSearchableService<Country, Count
 
     @Override
     protected SearchParameters<Country> addTermToSearchParametersParameters(String term, SearchParameters<Country> searchParameters) {
-        return new SearchBuilder<>(searchParameters).fullText(NamedEntity_.name).andMode().search(term).build();
+        return new SearchBuilder<>(searchParameters) //
+                .fullText(NamedEntity_.name) //
+                .searchSimilarity(configurationService.getDefaultSearchSimilarity()) //
+                .andMode().search(term).build();
     }
 
     @Override
@@ -76,6 +82,11 @@ public class CountryServiceImpl extends AbstractSearchableService<Country, Count
     @Inject
     public void setCountryRepository(CountryRepository countryRepository) {
         this.countryRepository = countryRepository;
+    }
+
+    @Inject
+    public void setConfigurationService(ConfigurationService configurationService) {
+        this.configurationService = configurationService;
     }
 
 }

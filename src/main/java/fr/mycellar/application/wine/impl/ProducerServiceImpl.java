@@ -24,6 +24,7 @@ import javax.inject.Singleton;
 
 import jpasearch.repository.query.SearchParameters;
 import jpasearch.repository.query.builder.SearchBuilder;
+import fr.mycellar.application.admin.ConfigurationService;
 import fr.mycellar.application.shared.AbstractSearchableService;
 import fr.mycellar.application.wine.ProducerService;
 import fr.mycellar.application.wine.WineService;
@@ -45,6 +46,7 @@ public class ProducerServiceImpl extends AbstractSearchableService<Producer, Pro
     private ProducerRepository producerRepository;
 
     private WineService wineService;
+    private ConfigurationService configurationService;
 
     @Override
     public void validate(Producer entity) throws BusinessException {
@@ -64,7 +66,10 @@ public class ProducerServiceImpl extends AbstractSearchableService<Producer, Pro
 
     @Override
     protected SearchParameters<Producer> addTermToSearchParametersParameters(String term, SearchParameters<Producer> searchParameters) {
-        return new SearchBuilder<>(searchParameters).fullText(NamedEntity_.name).andMode().search(term).build();
+        return new SearchBuilder<>(searchParameters) //
+                .fullText(NamedEntity_.name) //
+                .searchSimilarity(configurationService.getDefaultSearchSimilarity()) //
+                .andMode().search(term).build();
     }
 
     @Override
@@ -80,6 +85,11 @@ public class ProducerServiceImpl extends AbstractSearchableService<Producer, Pro
     @Inject
     public void setWineService(WineService wineService) {
         this.wineService = wineService;
+    }
+
+    @Inject
+    public void setConfigurationService(ConfigurationService configurationService) {
+        this.configurationService = configurationService;
     }
 
 }

@@ -28,6 +28,7 @@ import javax.inject.Singleton;
 
 import jpasearch.repository.query.SearchParameters;
 import jpasearch.repository.query.builder.SearchBuilder;
+import fr.mycellar.application.admin.ConfigurationService;
 import fr.mycellar.application.booking.BookingEventService;
 import fr.mycellar.application.shared.AbstractSearchableService;
 import fr.mycellar.application.stock.StockService;
@@ -62,6 +63,7 @@ public class WineServiceImpl extends AbstractSearchableService<Wine, WineReposit
 
     private BookingEventService bookingEventService;
     private StockService stockService;
+    private ConfigurationService configurationService;
 
     @Override
     public Wine find(Producer producer, Appellation appellation, WineTypeEnum type, WineColorEnum color, String name, Integer vintage) {
@@ -103,7 +105,8 @@ public class WineServiceImpl extends AbstractSearchableService<Wine, WineReposit
                 .andOn(Wine_.producer).to(NamedEntity_.name) //
                 .andOn(Wine_.vintage) //
                 .andOn(NamedEntity_.name) //
-                .searchSimilarity(2).andMode().search(term);
+                .searchSimilarity(configurationService.getDefaultSearchSimilarity()) //
+                .andMode().search(term);
         return searchBuilder.build();
     }
 
@@ -161,6 +164,11 @@ public class WineServiceImpl extends AbstractSearchableService<Wine, WineReposit
     @Inject
     public void setStockService(StockService stockService) {
         this.stockService = stockService;
+    }
+
+    @Inject
+    public void setConfigurationService(ConfigurationService configurationService) {
+        this.configurationService = configurationService;
     }
 
 }

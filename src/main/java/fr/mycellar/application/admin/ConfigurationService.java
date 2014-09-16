@@ -27,20 +27,12 @@ import fr.mycellar.domain.admin.ConfigurationKeyEnum;
  */
 public interface ConfigurationService extends SimpleService<Configuration> {
 
-    /**
-     * @param key
-     * @return
-     */
     Configuration find(ConfigurationKeyEnum key);
 
-    /**
-     * @return
-     */
     String[] getReminderAddressReceivers();
 
-    /**
-     * @return
-     */
     String getMailAddressSender();
+
+    Integer getDefaultSearchSimilarity();
 
 }

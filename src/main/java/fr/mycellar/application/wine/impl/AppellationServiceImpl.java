@@ -25,6 +25,7 @@ import javax.inject.Singleton;
 import jpasearch.repository.query.SearchParameters;
 import jpasearch.repository.query.builder.ResultBuilder;
 import jpasearch.repository.query.builder.SearchBuilder;
+import fr.mycellar.application.admin.ConfigurationService;
 import fr.mycellar.application.shared.AbstractSearchableService;
 import fr.mycellar.application.wine.AppellationService;
 import fr.mycellar.application.wine.RegionService;
@@ -45,6 +46,7 @@ public class AppellationServiceImpl extends AbstractSearchableService<Appellatio
     private AppellationRepository appellationRepository;
 
     private RegionService regionService;
+    private ConfigurationService configurationService;
 
     @Override
     public void validate(Appellation entity) throws BusinessException {
@@ -74,7 +76,10 @@ public class AppellationServiceImpl extends AbstractSearchableService<Appellatio
 
     @Override
     protected SearchParameters<Appellation> addTermToSearchParametersParameters(String term, SearchParameters<Appellation> searchParameters) {
-        return new SearchBuilder<>(searchParameters).fullText(NamedEntity_.name).andMode().search(term).build();
+        return new SearchBuilder<>(searchParameters) //
+                .fullText(NamedEntity_.name) //
+                .searchSimilarity(configurationService.getDefaultSearchSimilarity()) //
+                .andMode().search(term).build();
     }
 
     @Override
@@ -90,6 +95,11 @@ public class AppellationServiceImpl extends AbstractSearchableService<Appellatio
     @Inject
     public void setRegionService(RegionService regionService) {
         this.regionService = regionService;
+    }
+
+    @Inject
+    public void setConfigurationService(ConfigurationService configurationService) {
+        this.configurationService = configurationService;
     }
 
 }

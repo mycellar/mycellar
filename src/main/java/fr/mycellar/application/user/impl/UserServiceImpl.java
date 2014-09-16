@@ -27,6 +27,7 @@ import jpasearch.repository.query.builder.SearchBuilder;
 
 import org.jasypt.util.password.PasswordEncryptor;
 
+import fr.mycellar.application.admin.ConfigurationService;
 import fr.mycellar.application.booking.BookingService;
 import fr.mycellar.application.shared.AbstractSearchableService;
 import fr.mycellar.application.stock.CellarService;
@@ -50,15 +51,13 @@ import fr.mycellar.infrastructure.user.repository.UserRepository;
 @Singleton
 public class UserServiceImpl extends AbstractSearchableService<User, UserRepository> implements UserService {
 
-    private ResetPasswordRequestService resetPasswordRequestService;
-
     private UserRepository userRepository;
 
     private PasswordEncryptor passwordEncryptor;
-
+    private ResetPasswordRequestService resetPasswordRequestService;
     private BookingService bookingService;
-
     private CellarService cellarService;
+    private ConfigurationService configurationService;
 
     @Override
     public User saveUserPassword(User user, String password) throws BusinessException {
@@ -125,6 +124,7 @@ public class UserServiceImpl extends AbstractSearchableService<User, UserReposit
     protected SearchParameters<User> addTermToSearchParametersParameters(String term, SearchParameters<User> search) {
         return new SearchBuilder<User>(search) //
                 .fullText(User_.lastname).andOn(User_.firstname).andOn(User_.email) //
+                .searchSimilarity(configurationService.getDefaultSearchSimilarity()) //
                 .andMode().search(term).and().build();
     }
 
@@ -156,6 +156,11 @@ public class UserServiceImpl extends AbstractSearchableService<User, UserReposit
     @Inject
     public void setCellarService(CellarService cellarService) {
         this.cellarService = cellarService;
+    }
+
+    @Inject
+    public void setConfigurationService(ConfigurationService configurationService) {
+        this.configurationService = configurationService;
     }
 
 }

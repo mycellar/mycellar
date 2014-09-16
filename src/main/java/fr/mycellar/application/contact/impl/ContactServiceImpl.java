@@ -52,11 +52,10 @@ import fr.mycellar.infrastructure.contact.repository.ContactRepository;
 @Singleton
 public class ContactServiceImpl extends AbstractSearchableService<Contact, ContactRepository> implements ContactService {
 
-    private ConfigurationService configurationService;
-
     private ContactRepository contactRepository;
 
     private JavaMailSender javaMailSender;
+    private ConfigurationService configurationService;
 
     @Override
     public long countLastContacts(String input, SearchParameters<Contact> search) {
@@ -122,7 +121,10 @@ public class ContactServiceImpl extends AbstractSearchableService<Contact, Conta
 
     @Override
     protected SearchParameters<Contact> addTermToSearchParametersParameters(String term, SearchParameters<Contact> searchParameters) {
-        return new SearchBuilder<>(searchParameters).fullText(Contact_.producer).to(NamedEntity_.name).andMode().search(term).build();
+        return new SearchBuilder<>(searchParameters) //
+                .fullText(Contact_.producer).to(NamedEntity_.name) //
+                .searchSimilarity(configurationService.getDefaultSearchSimilarity()) //
+                .andMode().search(term).build();
     }
 
     @Override

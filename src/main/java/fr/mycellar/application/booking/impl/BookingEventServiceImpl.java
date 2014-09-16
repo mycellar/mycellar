@@ -29,6 +29,7 @@ import jpasearch.repository.query.builder.SearchBuilder;
 
 import org.joda.time.LocalDate;
 
+import fr.mycellar.application.admin.ConfigurationService;
 import fr.mycellar.application.booking.BookingEventService;
 import fr.mycellar.application.booking.BookingService;
 import fr.mycellar.application.shared.AbstractSearchableService;
@@ -51,6 +52,7 @@ public class BookingEventServiceImpl extends AbstractSearchableService<BookingEv
     private BookingEventRepository bookingEventRepository;
 
     private BookingService bookingService;
+    private ConfigurationService configurationService;
 
     @Override
     public List<BookingEvent> getCurrentBookingEvents() {
@@ -80,7 +82,10 @@ public class BookingEventServiceImpl extends AbstractSearchableService<BookingEv
 
     @Override
     protected SearchParameters<BookingEvent> addTermToSearchParametersParameters(String term, SearchParameters<BookingEvent> search) {
-        return new SearchBuilder<BookingEvent>(search).fullText(NamedEntity_.name).andMode().search(term).build();
+        return new SearchBuilder<BookingEvent>(search) //
+                .fullText(NamedEntity_.name) //
+                .searchSimilarity(configurationService.getDefaultSearchSimilarity()) //
+                .andMode().search(term).build();
     }
 
     @Override
@@ -96,6 +101,11 @@ public class BookingEventServiceImpl extends AbstractSearchableService<BookingEv
     @Inject
     public void setBookingService(BookingService bookingService) {
         this.bookingService = bookingService;
+    }
+
+    @Inject
+    public void setConfigurationService(ConfigurationService configurationService) {
+        this.configurationService = configurationService;
     }
 
 }

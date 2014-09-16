@@ -24,6 +24,7 @@ import javax.inject.Singleton;
 
 import jpasearch.repository.query.SearchParameters;
 import jpasearch.repository.query.builder.SearchBuilder;
+import fr.mycellar.application.admin.ConfigurationService;
 import fr.mycellar.application.shared.AbstractSearchableService;
 import fr.mycellar.application.stock.CellarService;
 import fr.mycellar.application.stock.CellarShareService;
@@ -50,8 +51,8 @@ public class CellarServiceImpl extends AbstractSearchableService<Cellar, CellarR
     private CellarRepository cellarRepository;
 
     private CellarShareService cellarShareService;
-
     private StockService stockService;
+    private ConfigurationService configurationService;
 
     @Override
     public boolean hasReadRight(Integer cellarId, String userEmail) {
@@ -96,7 +97,10 @@ public class CellarServiceImpl extends AbstractSearchableService<Cellar, CellarR
 
     @Override
     protected SearchParameters<Cellar> addTermToSearchParametersParameters(String term, SearchParameters<Cellar> search) {
-        return new SearchBuilder<Cellar>(search).fullText(NamedEntity_.name).andMode().search(term).build();
+        return new SearchBuilder<Cellar>(search) //
+                .fullText(NamedEntity_.name) //
+                .searchSimilarity(configurationService.getDefaultSearchSimilarity()) //
+                .andMode().search(term).build();
     }
 
     @Override
@@ -117,6 +121,11 @@ public class CellarServiceImpl extends AbstractSearchableService<Cellar, CellarR
     @Inject
     public void setStockService(StockService stockService) {
         this.stockService = stockService;
+    }
+
+    @Inject
+    public void setConfigurationService(ConfigurationService configurationService) {
+        this.configurationService = configurationService;
     }
 
 }
