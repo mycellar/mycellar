@@ -123,10 +123,9 @@ public class UserServiceImpl extends AbstractSearchableService<User, UserReposit
 
     @Override
     protected SearchParameters<User> addTermToSearchParametersParameters(String term, SearchParameters<User> search) {
-        return new SearchBuilder<User>(search).disjunction() //
-                .fullText(User_.lastname).search(term) //
-                .fullText(User_.firstname).search(term) //
-                .fullText(User_.email).search(term).and().build();
+        return new SearchBuilder<User>(search) //
+                .fullText(User_.lastname).andOn(User_.firstname).andOn(User_.email) //
+                .andMode().search(term).and().build();
     }
 
     @Override

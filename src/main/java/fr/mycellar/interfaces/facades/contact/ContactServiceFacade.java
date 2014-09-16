@@ -31,11 +31,15 @@ public interface ContactServiceFacade {
 
     long countContacts(SearchParameters<Contact> search);
 
+    long countContactsLike(String input, SearchParameters<Contact> search);
+
     long countLastContacts(String input, SearchParameters<Contact> search);
 
     Contact getContactById(Integer objectId);
 
     List<Contact> getContacts(SearchParameters<Contact> search);
+
+    List<Contact> getContactsLike(String input, SearchParameters<Contact> search);
 
     List<Contact> getLastContacts(String input, SearchParameters<Contact> search);
 

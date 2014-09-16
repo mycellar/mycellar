@@ -1,10 +1,6 @@
-<core-toolbar>
+<core-toolbar main>
   <drawer-button icon="menu"></drawer-button>
   <span flex>Partages de cave</span>
-  <core-input id="search" bind-polymer-input="search" flex hidden></core-input>
-  <paper-icon-button icon="cancel" hidden ng-show="search !== ''" ng-click="clearSearch()"></paper-icon-button>
-  <paper-icon-button icon="clear" hidden ng-show="search === ''" ng-click="toggleHidden()"></paper-icon-button>
-  <paper-icon-button icon="search" ng-click="toggleHidden()"></paper-icon-button>
   <drawer-button right icon="more-vert"></drawer-button>
 </core-toolbar>
 <core-drawer-panel rightDrawer>

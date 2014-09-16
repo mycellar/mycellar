@@ -10,7 +10,11 @@ angular.module('mycellar.controllers.cellar.mycellars', [
       controller: 'MyCellarsController',
       resolve: {
         cellars: ['Cellars', function(Cellars) {
-          return Cellars.getAllForCurrentUser().$promise;
+          return Cellars.get({
+            first: 0,
+            count: 10,
+            sort: ['name,asc']
+          }).$promise;
         }],
         wines: ['Stocks', function(Stocks) {
           return Stocks.getWinesForCellar({
@@ -49,26 +53,29 @@ angular.module('mycellar.controllers.cellar.mycellars', [
 ]);
 
 angular.module('mycellar.controllers.cellar.mycellars').controller('MyCellarsController', [
-  '$scope', 'cellars', 'wines', 'Stocks', '$location',
-  function($scope, cellars, wines, Stocks, $location) {
-    var getWines = function(cellar, first, callback) {
-      var parameters = {
-        first: first, 
-        count: 50, 
-        sort: [
-          'bottle.wine.producer.name,asc',
-          'bottle.wine.name,asc',
-          'bottle.wine.vintage,asc'
-        ]
-      };
-      if (cellar != null) {
-        parameters['cellarId'] = cellar.id;
+  '$scope', 'cellars', 'wines', 'Stocks', '$location', 'search',
+  function($scope, cellars, wines, Stocks, $location, search) {
+    var getWines = function(parameters) {
+      if (parameters.input === $scope.search) {
+        var params = {
+          first: parameters.first, 
+          count: 50, 
+          sort: [
+            'bottle.wine.producer.name,asc',
+            'bottle.wine.name,asc',
+            'bottle.wine.vintage,asc'
+          ]
+        };
+        if (parameters.cellar != null) {
+          params['cellarId'] = parameters.cellar.id;
+        }
+        if ($scope.search != null && $scope.search != '') {
+          params['input'] = $scope.search;
+        }
+        return Stocks.getWinesForCellar(params, parameters.callback);
       }
-      if ($scope.search != null && $scope.search != '') {
-        parameters['input'] = $scope.search;
-      }
-      return Stocks.getWinesForCellar(parameters, callback);
     };
+
     var cellarCallback = function(value, cellar) {
       $scope.wines = value.list;
       $scope.size = value.count;
@@ -88,43 +95,44 @@ angular.module('mycellar.controllers.cellar.mycellars').controller('MyCellarsCon
     };
 
     $scope.selectCellar = function(cellar) {
-      getWines(cellar, 0, function(value) {
-        cellarCallback(value, cellar);
+      getWines({
+        input: $scope.search, 
+        cellar: cellar, 
+        first: 0, 
+        callback: function(value) {
+          cellarCallback(value, cellar);
+        }
       });
     };
 
     $scope.more = function() {
-      getWines($scope.cellar, $scope.wines.length, function(value) {
-        $scope.wines = $scope.wines.concat(value.list);
+      getWines({
+        input:$scope.search, 
+        cellar: $scope.cellar, 
+        first: $scope.wines.length, 
+        callback: function(value) {
+          $scope.wines = $scope.wines.concat(value.list);
+        }
       });
     };
 
     $scope.toggleHidden = function() {
-      var hiddenElements = document.querySelectorAll('core-toolbar[main]>[hidden]');
-      var notHiddenElements = document.querySelectorAll('core-toolbar[main]>:not([hidden])');
-      angular.forEach(hiddenElements, function(element) {
-        element.removeAttribute('hidden');
-      });
-      angular.forEach(notHiddenElements, function(element) {
-        element.setAttribute('hidden', '');
-      });
-      var searchInput = document.querySelector('core-input#search');
-      if (searchInput.hasAttribute('hidden')) {
-        $scope.search = '';
-      } else {
-        searchInput.focus();
-      }
-    };
-
-    $scope.clearSearch = function() {
+      search.toggleHidden();
       $scope.search = '';
-      document.querySelector('core-input#search').focus();
     };
-
+    $scope.clearSearch = function() {
+      search.clearSearch();
+      $scope.search = '';
+    };
     $scope.$watch('search', function(newValue, oldValue) {
       if (newValue !== oldValue) {
-        return getWines($scope.cellar, 0, function(value) {
-          cellarCallback(value, $scope.cellar);
+        return search.scheduleSearch(getWines, {
+          input: newValue,
+          cellar: $scope.cellar,
+          first: 0,
+          callback: function(value) {
+            cellarCallback(value, $scope.cellar);
+          }
         });
       }
     });

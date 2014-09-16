@@ -7,8 +7,7 @@ angular.module('mycellar.resources.wine.wines').factory('Wines', [
   function(domainResource) {
     return domainResource.createResource({
       url: '/api/wine/wines',
-      validateUrl: '/api/wine/validateWine',
-      likeUrl: '/api/wine/wines/like'
+      validateUrl: '/api/wine/validateWine'
     });
   }
 ]);
@@ -18,8 +17,7 @@ angular.module('mycellar.resources.wine.wines').factory('AdminWines', [
   function(domainResource) {
     return domainResource.createResource({
       url: '/api/admin/domain/wine/wines',
-      validateUrl: '/api/admin/domain/wine/validateWine',
-      likeUrl: '/api/admin/domain/wine/wines/like'
+      validateUrl: '/api/admin/domain/wine/validateWine'
     });
   }
 ]);

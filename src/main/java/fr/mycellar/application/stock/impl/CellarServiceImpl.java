@@ -96,7 +96,7 @@ public class CellarServiceImpl extends AbstractSearchableService<Cellar, CellarR
 
     @Override
     protected SearchParameters<Cellar> addTermToSearchParametersParameters(String term, SearchParameters<Cellar> search) {
-        return new SearchBuilder<Cellar>(search).fullText(NamedEntity_.name).search(term).build();
+        return new SearchBuilder<Cellar>(search).fullText(NamedEntity_.name).andMode().search(term).build();
     }
 
     @Override

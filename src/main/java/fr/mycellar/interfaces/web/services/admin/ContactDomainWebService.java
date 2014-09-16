@@ -66,15 +66,16 @@ public class ContactDomainWebService {
     public ListWithCount<Contact> getContacts(@QueryParam("first") int first, //
             @QueryParam("count") @DefaultValue("10") int count, //
             @QueryParam("filters") List<FilterCouple> filters, //
-            @QueryParam("sort") List<OrderCouple> orders) {
+            @QueryParam("sort") List<OrderCouple> orders, //
+            @QueryParam("like") String term) {
         SearchParameters<Contact> searchParameters = searchParametersUtil.getSearchParameters(first, count, filters, orders, Contact.class);
         List<Contact> contacts;
         if (count == 0) {
             contacts = new ArrayList<>();
         } else {
-            contacts = contactServiceFacade.getContacts(searchParameters);
+            contacts = contactServiceFacade.getContactsLike(term, searchParameters);
         }
-        return new ListWithCount<>(contactServiceFacade.countContacts(searchParameters), contacts);
+        return new ListWithCount<>(contactServiceFacade.countContactsLike(term, searchParameters), contacts);
     }
 
     @GET

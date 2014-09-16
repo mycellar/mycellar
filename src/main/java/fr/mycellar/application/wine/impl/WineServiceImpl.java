@@ -21,7 +21,6 @@ package fr.mycellar.application.wine.impl;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
-import java.util.Scanner;
 
 import javax.inject.Inject;
 import javax.inject.Named;
@@ -29,9 +28,6 @@ import javax.inject.Singleton;
 
 import jpasearch.repository.query.SearchParameters;
 import jpasearch.repository.query.builder.SearchBuilder;
-
-import org.apache.commons.lang3.StringUtils;
-
 import fr.mycellar.application.booking.BookingEventService;
 import fr.mycellar.application.shared.AbstractSearchableService;
 import fr.mycellar.application.stock.StockService;
@@ -105,15 +101,9 @@ public class WineServiceImpl extends AbstractSearchableService<Wine, WineReposit
                 .andOn(Wine_.appellation).to(Appellation_.region).to(NamedEntity_.name) //
                 .andOn(Wine_.appellation).to(NamedEntity_.name) //
                 .andOn(Wine_.producer).to(NamedEntity_.name) //
+                .andOn(Wine_.vintage) //
                 .andOn(NamedEntity_.name) //
-                .searchSimilarity(2).search(term);
-        Scanner vintageScanner = new Scanner(term);
-        String vintageString = vintageScanner.findInLine("[0-9]{4}");
-        if (StringUtils.isNotBlank(vintageString)) {
-            Integer vintage = Integer.parseInt(vintageString);
-            searchBuilder.on(Wine_.vintage).equalsTo(vintage);
-        }
-        vintageScanner.close();
+                .searchSimilarity(2).andMode().search(term);
         return searchBuilder.build();
     }
 

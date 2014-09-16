@@ -85,13 +85,25 @@ public class StockWebService {
     @Produces(MediaType.APPLICATION_JSON)
     @Path("cellars")
     @PreAuthorize("hasRole('ROLE_CELLAR')")
-    public ListWithCount<Cellar> getCellarsForCurrentUser() {
+    public ListWithCount<Cellar> getCellarsForCurrentUser( //
+            @QueryParam("first") int first, //
+            @QueryParam("count") @DefaultValue("10") int count, //
+            @QueryParam("filters") List<FilterCouple> filters, //
+            @QueryParam("sort") List<OrderCouple> orders, //
+            @QueryParam("like") String term) {
         User user = currentUserService.getCurrentUser();
-        return new ListWithCount<>(stockServiceFacade.getCellars(new SearchBuilder<Cellar>() //
+        SearchParameters<Cellar> searchParameters = searchParametersUtil.getSearchBuilder(first, count, filters, orders, Cellar.class) //
                 .disjunction() //
                 .on(Cellar_.owner).equalsTo(user) //
                 .on(Cellar_.shares).to(CellarShare_.email).equalsTo(user.getEmail()) //
-                .and().build()));
+                .and().build();
+        List<Cellar> cellars;
+        if (count == 0) {
+            cellars = new ArrayList<>();
+        } else {
+            cellars = stockServiceFacade.getCellarsLike(term, searchParameters);
+        }
+        return new ListWithCount<>(stockServiceFacade.countCellarsLike(term, searchParameters), cellars);
     }
 
     @GET
@@ -145,7 +157,7 @@ public class StockWebService {
                     .andOn(Stock_.bottle).to(Bottle_.wine).to(NamedEntity_.name) //
                     .andOn(Stock_.bottle).to(Bottle_.wine).to(Wine_.vintage) //
                     .andOn(Stock_.bottle).to(Bottle_.format).to(NamedEntity_.name) //
-                    .search(input);
+                    .andMode().search(input);
         }
         SearchParameters<Stock> searchParameters = searchBuilder.build();
         ResultParameters<Stock, Wine> resultParameters = new ResultBuilder<>(Stock_.bottle).to(Bottle_.wine).build();
@@ -231,30 +243,6 @@ public class StockWebService {
     @PreAuthorize("hasRole('ROLE_CELLAR')")
     public void validateCellar(Cellar cellar) throws BusinessException {
         stockServiceFacade.validateCellar(cellar);
-    }
-
-    @GET
-    @Produces(MediaType.APPLICATION_JSON)
-    @Path("cellars/like")
-    @PreAuthorize("hasRole('ROLE_CELLAR')")
-    public ListWithCount<Cellar> getCellarsLike( //
-            @QueryParam("input") String input, //
-            @QueryParam("first") int first, //
-            @QueryParam("count") @DefaultValue("10") int count, //
-            @QueryParam("sort") List<OrderCouple> orders) {
-        User user = currentUserService.getCurrentUser();
-        SearchParameters<Cellar> searchParameters = searchParametersUtil.getSearchBuilder(first, count, new ArrayList<FilterCouple>(), orders, Cellar.class) //
-                .disjunction() //
-                .on(Cellar_.owner).equalsTo(user) //
-                .on(Cellar_.shares).to(CellarShare_.email).equalsTo(user.getEmail()) //
-                .and().build();
-        List<Cellar> cellars;
-        if (count == 0) {
-            cellars = new ArrayList<>();
-        } else {
-            cellars = stockServiceFacade.getCellarsLike(input, searchParameters);
-        }
-        return new ListWithCount<>(stockServiceFacade.countCellarsLike(input, searchParameters), cellars);
     }
 
     // BEANS

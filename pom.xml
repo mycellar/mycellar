@@ -23,7 +23,7 @@
   <parent>
     <groupId>org.springframework.boot</groupId>
     <artifactId>spring-boot-starter-parent</artifactId>
-    <version>1.1.5.RELEASE</version>
+    <version>1.1.6.RELEASE</version>
   </parent>
 
   <groupId>mycellar</groupId>
@@ -83,10 +83,8 @@
     <java.version>1.7</java.version>
     <jetty.version>9.1.1.v20140108</jetty.version>
     <servlet-api.version>3.1.0</servlet-api.version>
-    <hibernate-entitymanager.version>4.3.5.Final</hibernate-entitymanager.version>
-    <hibernate-search.version>5.0.0.Alpha4</hibernate-search.version>
+    <hibernate-search.version>5.0.0.Alpha6</hibernate-search.version>
     <jersey.version>1.18</jersey.version>
-    <jackson.version>2.3.3</jackson.version>
   </properties>
 
   <profiles>
@@ -500,7 +498,7 @@
     <dependency>
       <groupId>org.projectlombok</groupId>
       <artifactId>lombok</artifactId>
-      <version>1.12.6</version>
+      <version>1.14.6</version>
       <scope>provided</scope>
     </dependency>
 
@@ -508,12 +506,12 @@
     <dependency>
       <groupId>org.apache.commons</groupId>
       <artifactId>commons-lang3</artifactId>
-      <version>3.2.1</version>
+      <version>3.3.2</version>
     </dependency>
     <dependency>
       <groupId>commons-beanutils</groupId>
       <artifactId>commons-beanutils</artifactId>
-      <version>1.9.1</version>
+      <version>1.9.2</version>
       <exclusions>
         <exclusion>
           <groupId>commons-logging</groupId>
@@ -526,7 +524,7 @@
     <dependency>
       <groupId>com.google.guava</groupId>
       <artifactId>guava</artifactId>
-      <version>16.0.1</version>
+      <version>18.0</version>
     </dependency>
 
     <!-- HIBERNATE -->
@@ -560,7 +558,7 @@
     <dependency>
       <groupId>org.jadira.usertype</groupId>
       <artifactId>usertype.core</artifactId>
-      <version>3.1.0.CR10</version>
+      <version>3.2.0.GA</version>
       <exclusions>
         <exclusion>
           <groupId>org.hibernate</groupId>
@@ -747,14 +745,14 @@
     <dependency>
       <groupId>net.bull.javamelody</groupId>
       <artifactId>javamelody-core</artifactId>
-      <version>1.51.0</version>
+      <version>1.52.0</version>
     </dependency>
 
     <!-- jpasearch -->
     <dependency>
       <groupId>io.github.jpasearch</groupId>
       <artifactId>jpasearch</artifactId>
-      <version>0.2.3</version>
+      <version>0.2.5</version>
     </dependency>
 
     <!-- Test -->

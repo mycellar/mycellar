@@ -74,7 +74,7 @@ public class AppellationServiceImpl extends AbstractSearchableService<Appellatio
 
     @Override
     protected SearchParameters<Appellation> addTermToSearchParametersParameters(String term, SearchParameters<Appellation> searchParameters) {
-        return new SearchBuilder<>(searchParameters).fullText(NamedEntity_.name).search(term).build();
+        return new SearchBuilder<>(searchParameters).fullText(NamedEntity_.name).andMode().search(term).build();
     }
 
     @Override

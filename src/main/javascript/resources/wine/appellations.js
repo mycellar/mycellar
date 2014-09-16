@@ -7,8 +7,7 @@ angular.module('mycellar.resources.wine.appellations').factory('Appellations', [
   function(domainResource) {
     return domainResource.createResource({
       url: '/api/wine/appellations',
-      validateUrl: '/api/wine/validateAppellation',
-      likeUrl: '/api/wine/appellations/like'
+      validateUrl: '/api/wine/validateAppellation'
     });
   }
 ]);
@@ -18,8 +17,7 @@ angular.module('mycellar.resources.wine.appellations').factory('AdminAppellation
   function(domainResource) {
     return domainResource.createResource({
       url: '/api/admin/domain/wine/appellations',
-      validateUrl: '/api/admin/domain/wine/validateAppellation',
-      likeUrl: '/api/admin/domain/wine/appellations/like'
+      validateUrl: '/api/admin/domain/wine/validateAppellation'
     });
   }
 ]);

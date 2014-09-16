@@ -80,7 +80,7 @@ public class BookingEventServiceImpl extends AbstractSearchableService<BookingEv
 
     @Override
     protected SearchParameters<BookingEvent> addTermToSearchParametersParameters(String term, SearchParameters<BookingEvent> search) {
-        return new SearchBuilder<BookingEvent>(search).fullText(NamedEntity_.name).search(term).build();
+        return new SearchBuilder<BookingEvent>(search).fullText(NamedEntity_.name).andMode().search(term).build();
     }
 
     @Override

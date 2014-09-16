@@ -76,7 +76,7 @@ public class RegionServiceImpl extends AbstractSearchableService<Region, RegionR
 
     @Override
     protected SearchParameters<Region> addTermToSearchParametersParameters(String term, SearchParameters<Region> searchParameters) {
-        return new SearchBuilder<>(searchParameters).fullText(NamedEntity_.name).search(term).build();
+        return new SearchBuilder<>(searchParameters).fullText(NamedEntity_.name).andMode().search(term).build();
     }
 
     @Override

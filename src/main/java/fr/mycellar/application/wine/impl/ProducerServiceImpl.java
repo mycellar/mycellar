@@ -64,7 +64,7 @@ public class ProducerServiceImpl extends AbstractSearchableService<Producer, Pro
 
     @Override
     protected SearchParameters<Producer> addTermToSearchParametersParameters(String term, SearchParameters<Producer> searchParameters) {
-        return new SearchBuilder<>(searchParameters).fullText(NamedEntity_.name).search(term).build();
+        return new SearchBuilder<>(searchParameters).fullText(NamedEntity_.name).andMode().search(term).build();
     }
 
     @Override

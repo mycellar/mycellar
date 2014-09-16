@@ -1,7 +1,8 @@
-<core-toolbar>
+<core-toolbar main>
+  <core-icon icon="search" hidden></core-icon>
   <drawer-button icon="menu"></drawer-button>
   <span flex>Appellations</span>
-   <core-input id="search" bind-polymer-input="search" flex hidden></core-input>
+  <core-input id="search" bind-polymer-input="search" flex hidden></core-input>
   <paper-icon-button icon="cancel" hidden ng-show="search !== ''" ng-click="clearSearch()"></paper-icon-button>
   <paper-icon-button icon="clear" hidden ng-show="search === ''" ng-click="toggleHidden()"></paper-icon-button>
   <paper-icon-button icon="search" ng-click="toggleHidden()"></paper-icon-button>

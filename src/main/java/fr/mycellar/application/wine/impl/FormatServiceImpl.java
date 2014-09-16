@@ -77,7 +77,7 @@ public class FormatServiceImpl extends AbstractSearchableService<Format, FormatR
 
     @Override
     protected SearchParameters<Format> addTermToSearchParametersParameters(String term, SearchParameters<Format> searchParameters) {
-        return new SearchBuilder<>(searchParameters).fullText(NamedEntity_.name).search(term).build();
+        return new SearchBuilder<>(searchParameters).fullText(NamedEntity_.name).andMode().search(term).build();
     }
 
     @Override

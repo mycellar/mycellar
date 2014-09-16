@@ -27,6 +27,7 @@ angular.module('mycellar.controllers.admin.domain.admin.configurations').control
       scope: $scope, 
       group: 'admin', 
       resourceName: 'Configuration',
+      canSearch: false,
       items: items
     });
   }

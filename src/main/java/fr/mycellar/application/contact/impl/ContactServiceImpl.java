@@ -122,7 +122,7 @@ public class ContactServiceImpl extends AbstractSearchableService<Contact, Conta
 
     @Override
     protected SearchParameters<Contact> addTermToSearchParametersParameters(String term, SearchParameters<Contact> searchParameters) {
-        return new SearchBuilder<>(searchParameters).fullText(Contact_.producer).to(NamedEntity_.name).search(term).build();
+        return new SearchBuilder<>(searchParameters).fullText(Contact_.producer).to(NamedEntity_.name).andMode().search(term).build();
     }
 
     @Override

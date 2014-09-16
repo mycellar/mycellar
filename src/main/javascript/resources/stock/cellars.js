@@ -7,13 +7,7 @@ angular.module('mycellar.resources.stock.cellars').factory('Cellars', [
   function (domainResource) {
     return domainResource.createResource({
       url: '/api/stock/cellars',
-      validateUrl: '/api/stock/validateCellar',
-      likeUrl: '/api/stock/cellars/like'
-    }, {
-      getAllForCurrentUser: {
-        url: '/api/stock/cellars',
-        method: 'GET'
-      }
+      validateUrl: '/api/stock/validateCellar'
     });
   }
 ]);
@@ -23,8 +17,7 @@ angular.module('mycellar.resources.stock.cellars').factory('AdminCellars', [
   function (domainResource) {
     return domainResource.createResource({
       url: '/api/admin/domain/stock/cellars',
-      validateUrl: '/api/admin/domain/stock/validateCellar',
-      likeUrl: '/api/admin/domain/stock/cellars/like'
+      validateUrl: '/api/admin/domain/stock/validateCellar'
     });
   }
 ]);

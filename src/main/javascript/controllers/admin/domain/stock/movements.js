@@ -25,7 +25,8 @@ angular.module('mycellar.controllers.admin.domain.stock.movements').controller('
     adminDomainService.listMethods({
       scope: $scope,
       group: 'stock', 
-      resourceName: 'Movement', 
+      resourceName: 'Movement',
+      canSearch: false,
       items: items
     });
   }

@@ -49,6 +49,12 @@ public class ContactServiceFacadeImpl implements ContactServiceFacade {
 
     @Override
     @Transactional(readOnly = true)
+    public long countContactsLike(String input, SearchParameters<Contact> search) {
+        return contactService.countAllLike(input, search);
+    }
+
+    @Override
+    @Transactional(readOnly = true)
     public long countLastContacts(String input, SearchParameters<Contact> search) {
         return contactService.countLastContacts(input, search);
     }
@@ -63,6 +69,12 @@ public class ContactServiceFacadeImpl implements ContactServiceFacade {
     @Transactional(readOnly = true)
     public List<Contact> getContacts(SearchParameters<Contact> search) {
         return contactService.find(search);
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public List<Contact> getContactsLike(String input, SearchParameters<Contact> search) {
+        return contactService.getAllLike(input, search);
     }
 
     @Override

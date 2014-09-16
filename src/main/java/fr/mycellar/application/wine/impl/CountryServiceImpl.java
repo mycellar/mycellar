@@ -65,7 +65,7 @@ public class CountryServiceImpl extends AbstractSearchableService<Country, Count
 
     @Override
     protected SearchParameters<Country> addTermToSearchParametersParameters(String term, SearchParameters<Country> searchParameters) {
-        return new SearchBuilder<>(searchParameters).fullText(NamedEntity_.name).search(term).build();
+        return new SearchBuilder<>(searchParameters).fullText(NamedEntity_.name).andMode().search(term).build();
     }
 
     @Override

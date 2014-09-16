@@ -7,8 +7,7 @@ angular.module('mycellar.resources.user.users').factory('AdminUsers', [
   function (domainResource) {
     return domainResource.createResource({
       url: '/api/admin/domain/user/users',
-      validateUrl: '/api/admin/domain/user/validateUser',
-      likeUrl: '/api/admin/domain/user/users/like'
+      validateUrl: '/api/admin/domain/user/validateUser'
     });
   }
 ]);

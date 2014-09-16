@@ -123,18 +123,20 @@ public class BookingDomainWebService {
     @GET
     @Produces(MediaType.APPLICATION_JSON)
     @Path("bookingEvents")
-    public ListWithCount<BookingEvent> getBookingEvents(@QueryParam("first") int first, //
+    public ListWithCount<BookingEvent> getBookingEvents( //
+            @QueryParam("first") int first, //
             @QueryParam("count") @DefaultValue("10") int count, //
             @QueryParam("filters") List<FilterCouple> filters, //
-            @QueryParam("sort") List<OrderCouple> orders) {
+            @QueryParam("sort") List<OrderCouple> orders, //
+            @QueryParam("like") String term) {
         SearchParameters<BookingEvent> searchParameters = searchParametersUtil.getSearchParameters(first, count, filters, orders, BookingEvent.class);
         List<BookingEvent> bookingEvents;
         if (count == 0) {
             bookingEvents = new ArrayList<>();
         } else {
-            bookingEvents = bookingServiceFacade.getBookingEvents(searchParameters);
+            bookingEvents = bookingServiceFacade.getBookingEventsLike(term, searchParameters);
         }
-        return new ListWithCount<>(bookingServiceFacade.countBookingEvents(searchParameters), bookingEvents);
+        return new ListWithCount<>(bookingServiceFacade.countBookingEventsLike(term, searchParameters), bookingEvents);
     }
 
     @GET
@@ -177,21 +179,6 @@ public class BookingDomainWebService {
     @Path("validateBookingEvent")
     public void validateBookingEvent(BookingEvent bookingEvent) throws BusinessException {
         bookingServiceFacade.validateBookingEvent(bookingEvent);
-    }
-
-    @GET
-    @Produces(MediaType.APPLICATION_JSON)
-    @Path("bookingEvents/like")
-    public ListWithCount<BookingEvent> getBookingEventsLike(@QueryParam("first") int first, @QueryParam("count") int count, @QueryParam("input") String input,
-            @QueryParam("sort") List<OrderCouple> orders) {
-        SearchParameters<BookingEvent> searchParameters = searchParametersUtil.getSearchParameters(first, count, new ArrayList<FilterCouple>(), orders, BookingEvent.class);
-        List<BookingEvent> bookingEvents;
-        if (count == 0) {
-            bookingEvents = new ArrayList<>();
-        } else {
-            bookingEvents = bookingServiceFacade.getBookingEventsLike(input, searchParameters);
-        }
-        return new ListWithCount<>(bookingServiceFacade.countBookingEventsLike(input, searchParameters), bookingEvents);
     }
 
     // --------------

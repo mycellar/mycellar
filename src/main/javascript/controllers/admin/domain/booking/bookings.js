@@ -25,7 +25,8 @@ angular.module('mycellar.controllers.admin.domain.booking.bookings').controller(
     adminDomainService.listMethods({
       scope: $scope,
       group: 'booking', 
-      resourceName: 'Booking', 
+      resourceName: 'Booking',
+      canSearch: false,
       items: items
     });
   }

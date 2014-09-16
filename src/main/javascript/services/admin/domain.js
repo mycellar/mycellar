@@ -1,17 +1,18 @@
 angular.module('mycellar.services.admin.domain', [
-  'ngRoute'
+  'ngRoute',
+  'mycellar.services.search'
 ]);
 
 angular.module('mycellar.services.admin.domain').provider('adminDomainService', [
-  '$routeProvider', 
+  '$routeProvider',
   function ($routeProvider) {
     var menu = [];
     var resourcePath = [];
     var resourcesPath = [];
     var domainParameters = [];
     this.$get = [
-      '$location', '$route', '$injector',
-      function($location, $route, $injector) {
+      '$location', '$route', '$injector', 'search',
+      function($location, $route, $injector, search) {
         var adminDomainService = {};
         
         adminDomainService.getMenu = function() {
@@ -25,6 +26,7 @@ angular.module('mycellar.services.admin.domain').provider('adminDomainService', 
          *          resourceName: the name of the resource
          *          canDelete
          *          canCreate
+         *          canSearch
          *          items
          *          result
          *        }
@@ -33,6 +35,7 @@ angular.module('mycellar.services.admin.domain').provider('adminDomainService', 
           angular.extend(parameters, domainParameters[parameters.group][parameters.resourceName]);
           parameters.canCreate = (parameters.canCreate != undefined ? parameters.canCreate : true);
           parameters.canDelete = (parameters.canDelete != undefined ? parameters.canDelete : true);
+          parameters.canSearch = (parameters.canSearch != undefined ? parameters.canSearch : true);
           parameters.scope.errors = [];
           parameters.scope.items = parameters.items.list;
           parameters.scope.size = parameters.items.count;
@@ -40,12 +43,12 @@ angular.module('mycellar.services.admin.domain').provider('adminDomainService', 
           parameters.scope.result = parameters.result;
           parameters.scope.more = function() {
             var params = {
-                first: parameters.scope.items.length,
-                count: parameters.itemsPerPage,
-                sort: parameters.sortParameter
+              first: parameters.scope.items.length,
+              count: parameters.itemsPerPage,
+              sort: parameters.sortParameter
             };
-            if (parameters.scope.search != null && parameters.scope.search != '') {
-              params['input'] = parameters.scope.search;
+            if (parameters.canSearch && parameters.scope.search != null && parameters.scope.search.length > 2) {
+              params['like'] = parameters.scope.search;
             }
             return $injector.get('Admin' + parameters.resourcesName).get(params, function(value) {
               parameters.scope.items = parameters.scope.items.concat(value.list);
@@ -71,6 +74,37 @@ angular.module('mycellar.services.admin.domain').provider('adminDomainService', 
               });
               event.stopPropagation();
             };
+          }
+          if (parameters.canSearch) {
+            var getMatches = function(inputValue) {
+              if (inputValue === parameters.scope.search) {
+                var params = {
+                  first: 0,
+                  count: parameters.itemsPerPage,
+                  sort: parameters.sortParameter
+                };
+                if (inputValue != null && inputValue.length > 2) {
+                  params['like'] = parameters.scope.search;
+                }
+                return $injector.get('Admin' + parameters.resourcesName).get(params, function(value) {
+                  parameters.scope.items = value.list;
+                  parameters.scope.size = value.count;
+                });
+              }
+            };
+            parameters.scope.toggleHidden = function() {
+              search.toggleHidden();
+              parameters.scope.search = '';
+            };
+            parameters.scope.clearSearch = function() {
+              search.clearSearch();
+              parameters.scope.search = '';
+            };
+            parameters.scope.$watch('search', function(newValue, oldValue) {
+              if (newValue !== oldValue) {
+                search.scheduleSearch(getMatches, newValue);
+              }
+            });
           }
         };
         

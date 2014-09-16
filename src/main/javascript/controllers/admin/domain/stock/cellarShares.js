@@ -25,7 +25,8 @@ angular.module('mycellar.controllers.admin.domain.stock.cellarShares').controlle
     adminDomainService.listMethods({
       scope: $scope,
       group: 'stock',
-      resourceName: 'CellarShare', 
+      resourceName: 'CellarShare',
+      canSearch: false,
       items: items
     });
   }

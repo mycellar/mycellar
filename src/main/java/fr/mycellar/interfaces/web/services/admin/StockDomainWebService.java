@@ -70,15 +70,16 @@ public class StockDomainWebService {
             @QueryParam("first") int first, //
             @QueryParam("count") @DefaultValue("10") int count, //
             @QueryParam("filters") List<FilterCouple> filters, //
-            @QueryParam("sort") List<OrderCouple> orders) {
+            @QueryParam("sort") List<OrderCouple> orders, //
+            @QueryParam("like") String term) {
         SearchParameters<Cellar> searchParameters = searchParametersUtil.getSearchParameters(first, count, filters, orders, Cellar.class);
         List<Cellar> cellars;
         if (count == 0) {
             cellars = new ArrayList<>();
         } else {
-            cellars = stockServiceFacade.getCellars(searchParameters);
+            cellars = stockServiceFacade.getCellarsLike(term, searchParameters);
         }
-        return new ListWithCount<>(stockServiceFacade.countCellars(searchParameters), cellars);
+        return new ListWithCount<>(stockServiceFacade.countCellarsLike(term, searchParameters), cellars);
     }
 
     @GET
@@ -121,24 +122,6 @@ public class StockDomainWebService {
     @Path("validateCellar")
     public void validateCellar(Cellar cellar) throws BusinessException {
         stockServiceFacade.validateCellar(cellar);
-    }
-
-    @GET
-    @Produces(MediaType.APPLICATION_JSON)
-    @Path("cellars/like")
-    public ListWithCount<Cellar> getCellarsLike( //
-            @QueryParam("first") int first, //
-            @QueryParam("count") @DefaultValue("10") int count, //
-            @QueryParam("input") String input, //
-            @QueryParam("sort") List<OrderCouple> orders) {
-        SearchParameters<Cellar> searchParameters = searchParametersUtil.getSearchParameters(first, count, new ArrayList<FilterCouple>(), orders, Cellar.class);
-        List<Cellar> cellars;
-        if (count == 0) {
-            cellars = new ArrayList<>();
-        } else {
-            cellars = stockServiceFacade.getCellarsLike(input, searchParameters);
-        }
-        return new ListWithCount<>(stockServiceFacade.countCellarsLike(input, searchParameters), cellars);
     }
 
     // --------------

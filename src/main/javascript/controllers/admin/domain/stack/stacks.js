@@ -26,7 +26,8 @@ angular.module('mycellar.controllers.admin.domain.stack.stacks').controller('Adm
     adminDomainService.listMethods({
       scope: $scope,
       group: 'stack', 
-      resourceName: 'Stack', 
+      resourceName: 'Stack',
+      canSearch: false,
       items: items
     });
     $scope.deleteAll = function() {
