@@ -79,12 +79,14 @@ public class ContactServiceImpl extends AbstractSearchableService<Contact, Conta
                 content.append("Dernier contact le ").append(contact.getCurrent()).append(" :").append("\r\n").append(contact.getText()).append("\r\n");
                 content.append("------------------------------------------------").append("\r\n");
             }
+            final String[] to = configurationService.getReminderAddressReceivers();
+            final String from = configurationService.getMailAddressSender();
             MimeMessagePreparator mimeMessagePreparator = new MimeMessagePreparator() {
                 @Override
                 public void prepare(MimeMessage mimeMessage) throws Exception {
                     MimeMessageHelper helper = new MimeMessageHelper(mimeMessage);
-                    helper.setTo(configurationService.getReminderAddressReceivers());
-                    helper.setFrom(configurationService.getMailAddressSender());
+                    helper.setTo(to);
+                    helper.setFrom(from);
                     helper.setSubject("Contacts à recontacter");
                     helper.setText(content.toString());
                 }
