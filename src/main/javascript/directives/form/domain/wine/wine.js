@@ -25,20 +25,49 @@ angular.module('mycellar.directives.form.domain.wine.wine').directive('wineForm'
       transclude: true,
       templateUrl: 'partials/directives/form/wine/wine.tpl.html',
       scope: {
-        form: '=',
         wine: '=',
-        postLabel: '@'
+        label: '@'
       },
-      compile: function(element, attrs) {
-        for (var attrName in attrs) {
-          if (attrName.indexOf("input") == 0) {
-            angular.element(element.find('input')[0]).attr(attrName.charAt(5).toLowerCase() + attrName.substring(6), attrs[attrName]);
-          }
-        }
+      link: function(scope, element, attrs) {
+        element[0].$.control.addEventListener('input', function() {
+          scope.input = element[0].$.control.inputValue;
+          scope.$apply();
+        });
+        scope.$watch('possibles', function(value) {
+          element[0].possibles = value;
+        });
+        element[0].render = scope.renderWine;
+        element[0].clearInput = function() {
+          scope.input = '';
+          scope.$apply();
+        };
+        element[0].setValue = function(value) {
+          scope.setWine(value);
+          scope.$apply();
+        };
+        element[0].value = scope.wine;
       },
       controller: [
-        '$scope', '$location', '$filter', 'Wines', 'AdminWines',
-        function($scope, $location, $filter, Wines, AdminWines) {
+        '$scope', '$location', 'Wines', 'AdminWines', '$filter',
+        function($scope, $location, Wines, AdminWines, $filter) {
+          var resource;
+          if ($location.path().match(/\/admin/)) {
+            resource = AdminWines;
+          } else {
+            resource = Wines;
+          }
+
+          $scope.input = '';
+          $scope.$watch('input', function() {
+            if ($scope.input.length > 2) {
+              resource.like($scope.input).then(function(value) {
+                $scope.possibles = value;
+              });
+            } else {
+              $scope.possibles = [];
+            }
+          });
+
           var wineFilter = $filter('wineRenderer');
           $scope.renderWine = function(wine) {
             if (wine != null) {
@@ -47,37 +76,15 @@ angular.module('mycellar.directives.form.domain.wine.wine').directive('wineForm'
               return '';
             }
           };
-          var resource;
-          if ($location.path().match(/\/admin/)) {
-            resource = AdminWines;
-          } else {
-            resource = Wines;
+          $scope.setWine = function(wine) {
+            if (wine != null) {
+              resource.get({id: wine.id}, function(value) {
+                $scope.wine = value;
+              });
+            } else {
+              $scope.wine = null;
+            }
           }
-          $scope.errors = [];
-          $scope.wines = resource.like;
-          $scope.new = function() {
-            $scope.newWine = {};
-            $scope.showSub = true;
-          };
-          $scope.cancel = function() {
-            $scope.showSub = false;
-          };
-          $scope.ok = function() {
-            $scope.errors = [];
-            resource.validate($scope.newWine, function (value, headers) {
-              if (value.errorKey != undefined) {
-                angular.forEach(value.properties, function(property) {
-                  if ($scope.subWineForm[property] != undefined) {
-                    $scope.subWineForm[value.properties[property]].$setValidity(value.errorKey, false);
-                  }
-                });
-                $scope.errors.push(value);
-              } else {
-                $scope.wine = $scope.newWine;
-                $scope.showSub = false;
-              }
-            });
-          };
         }
       ]
     }

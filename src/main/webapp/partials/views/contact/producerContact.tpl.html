@@ -5,7 +5,7 @@
   <paper-icon-button icon="create" ng-if="!edit" ng-click="modifyProducer()"></paper-icon-button>
 </core-toolbar>
 <div main>
-  <section ng-if="!edit" style="padding: 1em;">
+  <section class="info" ng-if="!edit">
     <div horizontal layout>
       <div flex>
         <div class="ellipsis">Téléphone</div>
@@ -35,10 +35,10 @@
       </div>
     </div>
   </section>
-  <section id="form" ng-if="edit" style="padding-bottom: 1em;">
+  <section id="form" ng-if="edit">
     <form name="producerForm">
-      <producer producer="fix.producer"></producer>
-      <div style="padding: 0 1em;">
+      <producer producer="fix.producer" label="Producteur"></producer>
+      <div>
         <div horizontal layout>
           <paper-input style="margin-right: 1em;" id="phone" label="Téléphone" floatingLabel bind-polymer-input="producer.phone"></paper-input>
           <paper-input id="fax" label="Fax" floatingLabel bind-polymer-input="producer.fax"></paper-input>
@@ -58,8 +58,8 @@
       </div>
     </form>
   </section>
-  <section ng-if="producer.id" style="border-top: 1px solid rgba(0, 0, 0, 0.12);">
-    <core-item style="padding: 0 16px; height: 48px; font-size: 14px; color: rgba(0, 0, 0, 0.54);">Contacts déjà effectués</core-item>
+  <section ng-if="producer.id">
+    <core-item class="subheader">Contacts déjà effectués</core-item>
     <paper-item class="twoLines" ng-repeat="contact in contacts" ng-click="editContact(contact)">
       <div flex>
         <div class="ellipsis">{{contact.current | date:'longDate'}}</div>

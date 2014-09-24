@@ -59,6 +59,9 @@ angular.module('mycellar.directives.form.domain.booking.bookingEvent').directive
           }
           $scope.bookingBottle = null;
         };
+        $scope.cancelBottle = function() {
+          $scope.bookingBottle = null;
+        };
         $scope.isNew = function() {
           return $scope.bookingBottle.position == $scope.bookingEvent.bottles.length;
         };
@@ -86,20 +89,49 @@ angular.module('mycellar.directives.form.domain.booking.bookingEvent').directive
       transclude: true,
       templateUrl: 'partials/directives/form/booking/bookingEvent.tpl.html',
       scope: {
-        form: '=',
         bookingEvent: '=',
-        postLabel: '@'
+        label: '@'
       },
-      compile: function(element, attrs) {
-        for (var attrName in attrs) {
-          if (attrName.indexOf("input") == 0) {
-            angular.element(element.find('input')[0]).attr(attrName.charAt(5).toLowerCase() + attrName.substring(6), attrs[attrName]);
-          }
-        }
+      link: function(scope, element, attrs) {
+        element[0].$.control.addEventListener('input', function() {
+          scope.input = element[0].$.control.inputValue;
+          scope.$apply();
+        });
+        scope.$watch('possibles', function(value) {
+          element[0].possibles = value;
+        });
+        element[0].render = scope.renderBookingEvent;
+        element[0].clearInput = function() {
+          scope.input = '';
+          scope.$apply();
+        };
+        element[0].setValue = function(value) {
+          scope.setBookingEvent(value);
+          scope.$apply();
+        };
+        element[0].value = scope.bookingEvent;
       },
       controller: [
         '$scope', '$location', 'BookingEvents', 'AdminBookingEvents', '$filter',
         function($scope, $location, BookingEvents, AdminBookingEvents, $filter) {
+          var resource;
+          if ($location.path().match(/\/admin/)) {
+            resource = AdminBookingEvents;
+          } else {
+            resource = BookingEvents;
+          }
+
+          $scope.input = '';
+          $scope.$watch('input', function() {
+            if ($scope.input.length > 2) {
+              resource.like($scope.input).then(function(value) {
+                $scope.possibles = value;
+              });
+            } else {
+              $scope.possibles = [];
+            }
+          });
+
           var bookingEventFilter = $filter('bookingEventRenderer');
           $scope.renderBookingEvent = function(bookingEvent) {
             if (bookingEvent != null) {
@@ -108,37 +140,15 @@ angular.module('mycellar.directives.form.domain.booking.bookingEvent').directive
               return '';
             }
           };
-          var resource;
-          if ($location.path().match(/\/admin/)) {
-            resource = AdminBookingEvents;
-          } else {
-            resource = BookingEvents;
+          $scope.setBookingEvent = function(bookingEvent) {
+            if (bookingEvent != null) {
+              resource.get({id: bookingEvent.id}, function(value) {
+                $scope.bookingEvent = value;
+              });
+            } else {
+              $scope.bookingEvent = null;
+            }
           }
-          $scope.bookingEvents = resource.like;
-          $scope.errors = [];
-          $scope.new = function() {
-            $scope.newBookingEvent = {};
-            $scope.showSub = true;
-          };
-          $scope.cancel = function() {
-            $scope.showSub = false;
-          };
-          $scope.ok = function() {
-            $scope.errors = [];
-            resource.validate($scope.newBookingEvent, function (value, headers) {
-              if (value.errorKey != undefined) {
-                angular.forEach(value.properties, function(property) {
-                  if ($scope.subBookingEventForm[property] != undefined) {
-                    $scope.subBookingEventForm[property].$setValidity(value.errorKey, false);
-                  }
-                });
-                $scope.errors.push(value);
-              } else {
-                $scope.bookingEvent = $scope.newBookingEvent;
-                $scope.showSub = false;
-              }
-            });
-          };
         }
       ]
     }

@@ -16,9 +16,9 @@
     </core-menu>
   </nav>
   <div main>
-    <div ng-if="booking != null">
-      <h2 style="padding: 20px; margin: 0; text-align: center;">{{booking.bookingEvent.name}} du {{booking.bookingEvent.start | date}} au {{booking.bookingEvent.end | date}}</h2>
-      <paper-item class="threeLines" ng-repeat="bookingBottle in booking.bookingEvent.bottles">
+    <section ng-if="booking != null">
+      <h2 style="text-align: center;">{{booking.bookingEvent.name}} du {{booking.bookingEvent.start | date}} au {{booking.bookingEvent.end | date}}</h2>
+      <core-item class="threeLines" ng-repeat="bookingBottle in booking.bookingEvent.bottles">
         <div style="padding-right: 10px;">{{booking.quantities[booking.bookingEvent.id + '-' + bookingBottle.id]}}</div>
         <div flex>
           <div class="ellipsis">{{bookingBottle.bottle.wine | wineNameRenderer}}</div>
@@ -26,12 +26,12 @@
           <div class="ellipsis"><small>{{bookingBottle.price | currency:"€"}} / {{bookingBottle.bottle.format | formatRenderer}}</small></div>
         </div>
         <div class="rightNarrow">{{bookingBottle.price * booking.quantities[booking.bookingEvent.id + '-' + bookingBottle.id] | currency:"€"}}</div>
-      </paper-item>
-      <div horizontal layout style="padding: 10px;">
+      </core-item>
+      <core-item>
         <div flex>Total</div>
         <div>{{total | currency:"€"}}</div>
-      </div>
-    </div>
+      </core-item>
+    </section>
     <p ng-if="booking == null">Aucune réservation</p>
   </div>
 </core-drawer-panel>

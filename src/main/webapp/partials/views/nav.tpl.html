@@ -5,13 +5,13 @@
   <core-menu ng-controller="NavigationController">
     <span ng-if="false" ng-repeat-start="menu in menuService.getAll()"></span>
     <core-submenu label="{{menu.label}}" ng-if="menu.pages">
-      <core-item ng-repeat="sub in menu.pages" label="{{sub.label}}">
+      <paper-item ng-repeat="sub in menu.pages" label="{{sub.label}}">
         <a href="{{sub.route}}"></a>
-      </core-item>
+      </paper-item>
     </core-submenu>
-    <core-item label="{{menu.label}}" ng-if="!menu.pages">
+    <paper-item label="{{menu.label}}" ng-if="!menu.pages">
       <a href="{{menu.route}}"></a>
-    </core-item>
+    </paper-item>
     <span ng-if="false" ng-repeat-end></span>
   </core-menu>
 </nav>

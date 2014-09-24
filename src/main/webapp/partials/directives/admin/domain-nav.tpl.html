@@ -1,7 +1,7 @@
 <core-menu>
   <core-submenu label="{{header.label}}" ng-repeat="header in menu">
-    <core-item ng-repeat="menu in header.menus" label="{{menu.label}}">
+    <paper-item ng-repeat="menu in header.menus" label="{{menu.label}}">
       <a href="{{menu.route}}"></a>
-    </core-item>
+    </paper-item>
   </core-submenu>
 </core-menu>

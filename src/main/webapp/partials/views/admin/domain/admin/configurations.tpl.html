@@ -8,13 +8,15 @@
     <admin-domain-nav></admin-domain-nav>
   </nav>
   <div main>
-    <paper-item ng-if="items.length == 0">Aucune configuration</paper-item>
-    <paper-item class="twoLines" ng-click="edit(configuration.id)" ng-repeat="configuration in items">
-      <div flex>
-        <div class="ellipsis">{{configuration.key}}</div>
-        <div class="ellipsis"><small>{{configuration.value}}</small></div>
-      </div>
-    </paper-item>
-    <paper-item ng-if="size > items.length" label="Voir les {{size - items.length > pageCount ? pageCount : size - items.length}} suivantes sur {{size - items.length}}" ng-click="more()"></paper-item>
+    <section>
+      <paper-item ng-if="items.length == 0">Aucune configuration</paper-item>
+      <paper-item class="twoLines" ng-click="edit(configuration.id)" ng-repeat="configuration in items">
+        <div flex>
+          <div class="ellipsis">{{configuration.key}}</div>
+          <div class="ellipsis"><small>{{configuration.value}}</small></div>
+        </div>
+      </paper-item>
+      <paper-item ng-if="size > items.length" label="Voir les {{size - items.length > pageCount ? pageCount : size - items.length}} suivantes sur {{size - items.length}}" ng-click="more()"></paper-item>
+    </section>
   </div>
 </core-drawer-panel>

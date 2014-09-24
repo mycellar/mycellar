@@ -17,7 +17,7 @@
   </nav>
   <div main>
     <section ng-if="bookingEvent != null">
-      <h2 style="padding: 20px; margin: 0; text-align: center;">{{bookingEvent.name}} du {{bookingEvent.start}} au {{bookingEvent.end}}</h2>
+      <h2 style="text-align: center;">{{bookingEvent.name}} du {{bookingEvent.start}} au {{bookingEvent.end}}</h2>
       <paper-item class="threeLines" ng-repeat="bookingBottle in bookingEvent.bottles" ng-click="selectBookingBottle(bookingBottle)">
         <div style="padding-right: 10px;">{{quantities[bookingEvent.id + '-' + bookingBottle.id]}}</div>
         <div flex>
@@ -27,13 +27,13 @@
         </div>
         <div class="rightNarrow">{{bookingBottle.price * quantities[bookingEvent.id + '-' + bookingBottle.id] | currency:"€"}}</div>
       </paper-item>
-      <div horizontal layout style="padding: 10px;">
+      <core-item>
         <div flex>Total</div>
         <div>{{total | currency:"€"}}</div>
-      </div>
+      </core-item>
     </section>
     <section ng-if="bookingBottle != null">
-      <h3 style="padding: 20px; margin: 0; text-align: center;">
+      <h3 style="text-align: center;">
         {{bookingBottle.bottle.wine | wineRenderer}}
         <small>
           {{bookingBottle.bottle.format | formatRenderer}}
@@ -46,13 +46,13 @@
         <div class="rightNarrow">{{bookingBottle.price * booking.quantities[booking.bookingEvent.id + '-' + bookingBottle.id] | currency:"€"}}</div>
       </paper-item>
       <p ng-if="bookings.length == 0">Aucune bouteille vendue</p>
-      <div horizontal layout style="padding: 10px;">
+      <core-item>
         <div flex>Total</div>
         <div>{{bookingBottleTotal | currency:"€"}}</div>
-      </div>
+      </core-item>
     </section>
     <section ng-if="booking != null">
-      <h3 style="padding: 20px; margin: 0; text-align: center;">{{booking.customer | userRenderer}}</h3>
+      <h3 style="text-align: center;">{{booking.customer | userRenderer}}</h3>
       <paper-item class="threeLines" ng-repeat="bookingBottle in booking.bookingEvent.bottles">
         <div style="padding-right: 10px;">{{booking.quantities[booking.bookingEvent.id + '-' + bookingBottle.id]}}</div>
         <div flex>
@@ -62,10 +62,10 @@
         </div>
         <div class="rightNarrow">{{bookingBottle.price * booking.quantities[booking.bookingEvent.id + '-' + bookingBottle.id] | currency:"€"}}</div>
       </paper-item>
-      <div horizontal layout style="padding: 10px;">
+      <core-item>
         <div flex>Total</div>
         <div>{{bookingTotal | currency:"€"}}</div>
-      </div>
+      </core-item>
     </section>
     <section ng-if="allBookings != null && allBookings.length != 0">
       <h3 style="padding: 20px; margin: 0; text-align: center;">Réservations</h3>

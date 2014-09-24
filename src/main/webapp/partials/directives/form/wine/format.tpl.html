@@ -1,27 +1,3 @@
-<div class="form-group" ng-class="{'has-error': form.format.$invalid}">
-  <label class="control-label" for="format">Format{{postLabel}}</label>
-  <div class="input-group" ng-show="!showSub">
-    <input 
-      id="format"
-      name="format"
-      type="text"
-      class="form-control"
-      ng-model="format"
-      placeholder="Format{{postLabel}}"
-      typeahead="format as renderFormat(format) for format in formats($viewValue)"
-      typeahead-editable="false"
-      typeahead-min-length="3"
-      typeahead-wait-ms="200" />
-    <span class="input-group-btn">
-      <a class="btn btn-default" ng-click="new()"><i class="fa fa-plus"></i></a>
-    </span>
-  </div>
-  <div ng-if="showSub" class="sub-entity">
-    <ng-form name="subFormatForm">
-      <format-form form="subFormatForm" format="newFormat" post-label=" du format"></format-form>
-      <a class="btn btn-success" ng-click="ok()">Valider</a>
-      <a class="btn btn-warning" ng-click="cancel()">Annuler</a>
-    </ng-form>
-  </div>
-  <span ng-transclude />
-</div>
+<autocomplete-input
+  label="{{label}}"
+  input="{{inputValue}}" />

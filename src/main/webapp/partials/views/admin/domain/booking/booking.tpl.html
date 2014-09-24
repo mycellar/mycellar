@@ -1,51 +1,43 @@
-<admin-domain>
-  <header class="page-header"><h1>Réservation</h1></header>
-  <form name="form" novalidate>
-    <error-div errors="errors"></error-div>
-    <fieldset>
-      <legend>Détails</legend>
-      <booking-event form="form" booking-event="booking.bookingEvent" input-required="true">
-        <span class="help-block" ng-if="form.bookingEvent.$error.required">Veuillez saisir une campagne de réservation</span>
-        <span class="help-block" ng-if="form.bookingEvent.$error.BusinessError_BOOKING_00001">Une réservation existe déjà pour cette campagne de réservation et cet utilisateur</span>
-      </booking-event>
-      <user form="form" user="booking.customer" label="Client" sub-post-label="du client" input-required="true">
-        <span class="help-block" ng-if="form.user.$error.required">Veuillez saisir un utilisateur</span>
-        <span class="help-block" ng-if="form.user.$error.BusinessError_BOOKING_00001">Une réservation existe déjà pour cet utilisateur et cette campagne de réservation</span>
-      </user>
-    </fieldset>
-    <fieldset>
-      <legend>Réservation</legend>
-      <div class="table-responsive">
-        <table class="table table-bordered table-striped table-condensed">
-          <thead>
-            <tr>
-              <th>Vin</th>
-              <th>Format</th>
-              <th>Prix</th>
-              <th>Quantité</th>
-              <th>Total</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr ng-repeat="bookingBottle in booking.bookingEvent.bottles">
-              <td>{{bookingBottle.bottle.wine | wineRenderer}}</td>
-              <td>{{bookingBottle.bottle.format | formatRenderer}}</td>
-              <td>{{bookingBottle.price | currency:"€"}}</td>
-              <td><input class="form-control input-mini" id="quantity-{{bookingBottle.id}}" name="quantity-{{bookingBottle.id}}" type="number" ng-model="booking.quantities[booking.bookingEvent.id + '-' + bookingBottle.id]" /></td>
-              <td>{{bookingBottle.price * booking.quantities[booking.bookingEvent.id + '-' + bookingBottle.id] | currency:"€"}}</td>
-            </tr>
-          </tbody>
-          <tfoot>
-            <tr>
-              <th colspan="3"></th>
-              <th>Total</th>
-              <th>{{total | currency:"€"}}</th>
-            </tr>
-          </tfoot>
-        </table>
-      </div>
-    </fieldset>
-    <input type="submit" class="btn btn-primary" value="Sauvegarder" ng-click="save()" ng-disabled="form.$invalid" />
-    <input type="submit" class="btn btn-default" value="Annuler" ng-click="cancel()" />
-  </form>
-</admin-domain>
+<core-toolbar main>
+  <drawer-button icon="menu"></drawer-button>
+  <span flex>Réservation</span>
+  <drawer-button right icon="more-vert"></drawer-button>
+</core-toolbar>
+<core-drawer-panel rightDrawer>
+  <nav role="secondary" drawer>
+    <admin-domain-nav></admin-domain-nav>
+  </nav>
+  <div main>
+    <form name="form" novalidate>
+      <section>
+        <booking-event booking-event="fix.bookingEvent" label="Campagne de réservation"></booking-event>
+        <user user="fix.customer" label="Client"></user>
+      </section>
+      <section>
+        <core-item class="subheader">Quantités</core-item>
+        <core-item class="threeLines" ng-repeat="bookingBottle in booking.bookingEvent.bottles">
+          <div>{{booking.quantities[booking.bookingEvent.id + '-' + bookingBottle.id]}}</div>
+          <paper-menu-button select icon="arrow-drop-down" halign="right">
+            <paper-item ng-repeat="i in $root.getArray(25) track by $index" label="{{$index}}" ng-click="booking.quantities[booking.bookingEvent.id + '-' + bookingBottle.id] = $index"></paper-item>
+          </paper-menu-button>
+          <div flex>
+            <div class="ellipsis">{{bookingBottle.bottle.wine | wineNameRenderer}}</div>
+            <div class="ellipsis"><small>{{bookingBottle.bottle.wine.producer.name}} - {{bookingBottle.bottle.wine.color | wineColorRenderer}}</small></div>
+            <div class="ellipsis"><small>{{bookingBottle.price | currency:"€"}} / {{bookingBottle.bottle.format | formatRenderer}}</small></div>
+          </div>
+          <div class="rightNarrow">{{bookingBottle.price * booking.quantities[booking.bookingEvent.id + '-' + bookingBottle.id] | currency:"€"}}</div>
+        </core-item>
+        <core-item>
+          <div flex>Total</div>
+          <div>{{total | currency:"€"}}</div>
+        </core-item>
+      </section>
+      <section>
+        <div horizontal layout>
+          <paper-button style="margin: auto;" raisedButton primary ng-click="save()" ng-disabled="form.$invalid" label="Sauvegarder"></paper-button>
+          <paper-button style="margin: auto;" raisedButton ng-click="cancel()" label="Annuler"></paper-button>
+        </div>
+      </section>
+    </form>
+  </div>
+</core-drawer-panel>

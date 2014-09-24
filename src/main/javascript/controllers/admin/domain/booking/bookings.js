@@ -60,5 +60,17 @@ angular.module('mycellar.controllers.admin.domain.booking.bookings').controller(
         });
       }
     }, true);
+    
+    // fix two way data binding lost
+    $scope.fix = {
+      bookingEvent: $scope.booking.bookingEvent,
+      customer: $scope.booking.customer
+    };
+    $scope.$watch('fix.bookingEvent', function() {
+      $scope.booking.bookingEvent = $scope.fix.bookingEvent;
+    });
+    $scope.$watch('fix.customer', function() {
+      $scope.booking.customer = $scope.fix.customer;
+    });
   }
 ]);

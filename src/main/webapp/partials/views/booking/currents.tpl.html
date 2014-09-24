@@ -16,27 +16,33 @@
   </nav>
   <div main>
     <form ng-if="booking != null">
-      <h2 style="padding: 20px; margin: 0; text-align: center;">{{booking.bookingEvent.name}} du {{booking.bookingEvent.start | date}} au {{booking.bookingEvent.end | date}}</h2>
-      <paper-item class="threeLines" ng-repeat="bookingBottle in booking.bookingEvent.bottles">
-        <div>{{booking.quantities[booking.bookingEvent.id + '-' + bookingBottle.id]}}</div>
-        <paper-menu-button select icon="arrow-drop-down" halign="right">
-          <paper-item ng-repeat="i in $root.getArray(25) track by $index" label="{{$index}}" ng-click="booking.quantities[booking.bookingEvent.id + '-' + bookingBottle.id] = $index"></paper-item>
-        </paper-menu-button>
-        <div flex>
-          <div class="ellipsis">{{bookingBottle.bottle.wine | wineNameRenderer}}</div>
-          <div class="ellipsis"><small>{{bookingBottle.bottle.wine.producer.name}} - {{bookingBottle.bottle.wine.color | wineColorRenderer}}</small></div>
-          <div class="ellipsis"><small>{{bookingBottle.price | currency:"€"}} / {{bookingBottle.bottle.format | formatRenderer}}</small></div>
+      <section>
+        <h2 style="text-align: center;">{{booking.bookingEvent.name}} du {{booking.bookingEvent.start | date:'longDate'}} au {{booking.bookingEvent.end | date: 'longDate'}}</h2>
+      </section>
+      <section>
+        <core-item class="threeLines" ng-repeat="bookingBottle in booking.bookingEvent.bottles">
+          <div>{{booking.quantities[booking.bookingEvent.id + '-' + bookingBottle.id]}}</div>
+          <paper-menu-button select icon="arrow-drop-down" halign="right">
+            <paper-item ng-repeat="i in $root.getArray(25) track by $index" label="{{$index}}" ng-click="booking.quantities[booking.bookingEvent.id + '-' + bookingBottle.id] = $index"></paper-item>
+          </paper-menu-button>
+          <div flex>
+            <div class="ellipsis">{{bookingBottle.bottle.wine | wineNameRenderer}}</div>
+            <div class="ellipsis"><small>{{bookingBottle.bottle.wine.producer.name}} - {{bookingBottle.bottle.wine.color | wineColorRenderer}}</small></div>
+            <div class="ellipsis"><small>{{bookingBottle.price | currency:"€"}} / {{bookingBottle.bottle.format | formatRenderer}}</small></div>
+          </div>
+          <div class="rightNarrow">{{bookingBottle.price * booking.quantities[booking.bookingEvent.id + '-' + bookingBottle.id] | currency:"€"}}</div>
+        </core-item>
+        <core-item>
+          <div flex>Total</div>
+          <div>{{total | currency:"€"}}</div>
+        </core-item>
+      </section>
+      <section>
+        <div horizontal layout>
+          <paper-button style="margin: auto;" raisedButton primary label="Réserver" ng-click="save(booking)"></paper-button>
+          <paper-button style="margin: auto;" raisedButton label="Annuler" ng-click="delete(booking)"></paper-button>
         </div>
-        <div class="rightNarrow">{{bookingBottle.price * booking.quantities[booking.bookingEvent.id + '-' + bookingBottle.id] | currency:"€"}}</div>
-      </paper-item>
-      <div horizontal layout style="padding: 10px;">
-        <div flex>Total</div>
-        <div>{{total | currency:"€"}}</div>
-      </div>
-      <div horizontal layout style="padding: 10px;">
-        <paper-button style="margin: auto;" raisedButton primary label="Réserver" ng-click="save(booking)"></paper-button>
-        <paper-button style="margin: auto;" raisedButton label="Annuler" ng-click="delete(booking)"></paper-button>
-      </div>
+      </section>
     </form>
     <p ng-if="booking == null">Pas de réservation en cours</p>
   </div>

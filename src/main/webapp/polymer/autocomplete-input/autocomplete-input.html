@@ -9,20 +9,21 @@
   <template>
     <style>
       :host #target {
-        border-bottom: 1px solid rgba(0, 0, 0, 0.12);
-        padding: 0 1em;
         min-height: 48px;
       }
       :host #display, :host #icon {
         margin: auto;
       }
+      :host #overlay {
+        overflow-y: auto;
+      }
     </style>
     <div id="target" horizontal layout>
       <paper-input id="control" flex hidden?="{{value}}" label="{{label}}" type="text" value="{{inputValue}}"></paper-input>
-      <span id="display" flex hidden?="{{!value}}">{{renderFn(value)}}</span>
+      <span id="display" flex hidden?="{{!value}}">{{label}} : {{renderFn(value)}}</span>
       <paper-icon-button id="icon" hidden?="{{!value}}" icon="cancel" on-tap="{{cancelAction}}"></paper-icon-button>
     </div>
-    <autocomplete-overlay id="overlay" relatedTarget="{{$.target}}" opened="{{possibles && possibles.length > 0}}" style="overflow-y: scroll;">
+    <autocomplete-overlay id="overlay" relatedTarget="{{$.target}}" opened="{{possibles && possibles.length > 0}}">
       <core-menu>
         <template repeat="{{possible in possibles}}">
           <paper-item on-tap="{{selectAction}}">{{renderFn(possible)}}</paper-item>

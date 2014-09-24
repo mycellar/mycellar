@@ -5,7 +5,7 @@
   <style>
     :host {
       display: block;
-      border-bottom: 1px solid rgba(0, 0, 0, 0.12);
+      border: 1px solid rgba(0, 0, 0, 0.12);
       background-color: #fff;
       max-height: inherit;
     }
@@ -16,21 +16,12 @@
     Polymer({
 
       publish: {
-
-        /**
-         * The `relatedTarget` is an element used to position the overlay, for example a
-         * button the user taps to show a menu.
-         *
-         * @attribute relatedTarget
-         * @type Element
-         */
         relatedTarget: null,
         applyFocus: function() {
         },
         layered: true,
         margin: 12,
         transition: 'core-transition-top'
-
       },
 
       positionTarget: function() {

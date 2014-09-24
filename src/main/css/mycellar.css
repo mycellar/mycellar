@@ -12,6 +12,30 @@ body {
   color: rgba(0, 0, 0, 0.87);
 }
 
+body /deep/ core-icon {
+  color: rgba(0, 0, 0, 0.54);
+}
+
+body /deep/ section {
+  padding: 0 16px;
+}
+
+body /deep/ section > div[horizontal][layout] {
+  margin: 16px 0;
+}
+
+body /deep/ section > core-item:first-child:not(.subheader), body /deep/ section > paper-item:first-child:not(.subheader) {
+  margin-top: 8px;
+}
+
+body /deep/ section paper-item {
+  padding: 0;
+}
+
+body /deep/ section:not(:first-child) {
+  border-top: 1px solid rgba(0, 0, 0, 0.12);
+}
+
 body core-drawer-panel[rightDrawer] [main] {
   overflow-y: auto;
 }
@@ -41,6 +65,10 @@ body /deep/ core-drawer-panel [drawer] {
 body /deep/ core-toolbar {
   background: #e51c23;
   color: rgba(255, 255, 255, 0.87);
+}
+
+body /deep/ core-toolbar /deep/ core-icon {
+  color: rgba(255, 255, 255, 0.54);
 }
 
 body /deep/ core-toolbar /deep/ input {
@@ -80,11 +108,17 @@ body /deep/ .ellipsis {
   white-space: nowrap;
 }
 
-body /deep/ paper-item.twoLines {
+body /deep/ core-item.subheader {
+  height: 48px;
+  font-size: 14px;
+  color: rgba(0, 0, 0, 0.54);
+}
+
+body /deep/ paper-item.twoLines, body /deep/ core-item.twoLines {
   height: 72px;
 }
 
-body /deep/ paper-item.threeLines {
+body /deep/ paper-item.threeLines, body /deep/ core-item.threeLines {
   height: 88px;
 }
 
@@ -135,4 +169,18 @@ body /deep/ .card header {
 body /deep/ .card div {
   padding: 16px;
   font-size: 14px;
+}
+
+/* OVERRIDE POLYMER */
+html /deep/ core-menu {
+  display: block;
+  margin: 0;
+}
+
+html /deep/ core-submenu {
+  padding: 0 16px;
+}
+
+html /deep/ core-submenu /deep/ #submenu {
+  margin-left: 0;
 }

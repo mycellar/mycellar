@@ -8,12 +8,16 @@
     <admin-domain-nav></admin-domain-nav>
   </nav>
   <div main>
-    <form name="form" novalidate style="padding: 1em;">
-      <paper-input label="Valeur" floatingLabel type="text" bind-polymer-input="configuration.value" required></paper-input>
-      <div horizontal layout>
-        <paper-button style="margin: auto;" raisedButton primary ng-click="save()" ng-disabled="form.$invalid" label="Sauvegarder"></paper-button>
-        <paper-button style="margin: auto;" raisedButton ng-click="cancel()" label="Annuler"></paper-button>
-      </div>
+    <form name="form" novalidate>
+      <section>
+        <paper-input id="value" label="Valeur" floatingLabel type="text" bind-polymer-input="configuration.value" required></paper-input>
+      </section>
+      <section>
+        <div horizontal layout>
+          <paper-button style="margin: auto;" raisedButton primary ng-click="save()" ng-disabled="form.$invalid" label="Sauvegarder"></paper-button>
+          <paper-button style="margin: auto;" raisedButton ng-click="cancel()" label="Annuler"></paper-button>
+        </div>
+      </section>
     </form>
   </div>
 </core-drawer-panel>

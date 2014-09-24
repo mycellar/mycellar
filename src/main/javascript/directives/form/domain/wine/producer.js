@@ -24,7 +24,7 @@ angular.module('mycellar.directives.form.domain.wine.producer').directive('produ
       templateUrl: 'partials/directives/form/wine/producer.tpl.html',
       scope: {
         producer: '=',
-        postLabel: '@'
+        label: '@'
       },
       link: function(scope, element, attrs) {
         element[0].$.control.addEventListener('input', function() {
@@ -34,9 +34,7 @@ angular.module('mycellar.directives.form.domain.wine.producer').directive('produ
         scope.$watch('possibles', function(value) {
           element[0].possibles = value;
         });
-        element[0].render = function(producer) {
-          return producer.name;
-        };
+        element[0].render = scope.renderProducer;
         element[0].clearInput = function() {
           scope.input = '';
           scope.$apply();
@@ -73,38 +71,13 @@ angular.module('mycellar.directives.form.domain.wine.producer').directive('produ
           };
           $scope.setProducer = function(producer) {
             if (producer != null) {
-              Producers.get({id: producer.id}, function(value) {
+              resource.get({id: producer.id}, function(value) {
                 $scope.producer = value;
               });
             } else {
               $scope.producer = null;
             }
           }
-          
-//          $scope.errors = [];
-//          $scope.new = function() {
-//            $scope.newProducer = {};
-//            $scope.showSub = true;
-//          };
-//          $scope.cancel = function() {
-//            $scope.showSub = false;
-//          };
-//          $scope.ok = function() {
-//            $scope.errors = [];
-//            resource.validate($scope.newProducer, function (value, headers) {
-//              if (value.errorKey != undefined) {
-//                angular.forEach(value.properties, function(property) {
-//                  if ($scope.subProducerForm[property] != undefined) {
-//                    $scope.subProducerForm[property].$setValidity(value.errorKey, false);
-//                  }
-//                });
-//                $scope.errors.push(value);
-//              } else {
-//                $scope.producer = $scope.newProducer;
-//                $scope.showSub = false;
-//              }
-//            });
-//          };
         }
       ]
     }
