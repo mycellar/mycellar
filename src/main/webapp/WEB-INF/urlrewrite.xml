@@ -59,6 +59,11 @@
     <to last="true">-</to>
   </rule>
   <rule>
+    <name>monitoring</name>
+    <from>^/monitoring</from>
+    <to last="true">-</to>
+  </rule>
+  <rule>
     <name>default</name>
     <note>Redirect to index.html.</note>
     <from>^/(.*)</from>
