@@ -13,14 +13,16 @@
     <admin-domain-nav></admin-domain-nav>
   </nav>
   <div main>
-    <paper-item ng-if="items.length == 0">Aucun producteur</paper-item>
-    <paper-item ng-click="edit(producer.id)" ng-repeat="producer in items">
-      <div flex>
-        <div class="ellipsis">{{producer | producerRenderer}}</div>
-      </div>
-      <paper-icon-button icon="remove-circle-outline" ng-click="delete(producer.id, $event)"></paper-icon-button>
-    </paper-item>
-    <paper-item ng-if="size > items.length" label="Voir les {{size - items.length > pageCount ? pageCount : size - items.length}} suivants sur {{size - items.length}}" ng-click="more()"></paper-item>
-    <paper-fab icon="add" raisedButton="false" ng-click="new()"></paper-fab>
+    <section>
+      <paper-item ng-if="items.length == 0">Aucun producteur</paper-item>
+      <paper-item ng-click="edit(producer.id)" ng-repeat="producer in items">
+        <div flex>
+          <div class="ellipsis">{{producer | producerRenderer}}</div>
+        </div>
+        <paper-icon-button icon="remove-circle-outline" ng-click="delete(producer.id, $event)"></paper-icon-button>
+      </paper-item>
+      <paper-item ng-if="size > items.length" label="Voir les {{size - items.length > pageCount ? pageCount : size - items.length}} suivants sur {{size - items.length}}" ng-click="more()"></paper-item>
+      <paper-fab icon="add" raisedButton="false" ng-click="new()"></paper-fab>
+    </section>
   </div>
 </core-drawer-panel>

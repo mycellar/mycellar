@@ -11,17 +11,7 @@ angular.module('mycellar.directives.form.domain.user.user').directive('userForm'
       scope: {
         form: '=',
         user: '=',
-        postLabel: '@',
-        label: '@',
-        subPostLabel: '@'
-      },
-      link: function(scope, iElement, iAttrs, controller, transcludeFn) {
-        if (scope.label == null || scope.label == '') {
-          scope.label = 'Utilisateur';
-        }
-        if (scope.subPostLabel == null || scope.subPostLabel == '') {
-          scope.subPostLabel = ' de l\'utilisateur';
-        }
+        passwords: '='
       }
     }
   }

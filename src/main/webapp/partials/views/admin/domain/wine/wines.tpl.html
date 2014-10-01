@@ -13,15 +13,17 @@
     <admin-domain-nav></admin-domain-nav>
   </nav>
   <div main>
-    <paper-item ng-if="items.length == 0">Aucun vin</paper-item>
-    <paper-item class="twoLines" ng-click="edit(wine.id)" ng-repeat="wine in items">
-      <div flex>
-        <div class="ellipsis">{{wine | wineRenderer}}</div>
-        <div class="ellipsis"><small>{{wine.appellation | appellationRenderer}}</small></div>
-      </div>
-      <paper-icon-button icon="remove-circle-outline" ng-click="delete(wine.id, $event)"></paper-icon-button>
-    </paper-item>
-    <paper-item ng-if="size > items.length" label="Voir les {{size - items.length > pageCount ? pageCount : size - items.length}} suivants sur {{size - items.length}}" ng-click="more()"></paper-item>
-    <paper-fab icon="add" raisedButton="false" ng-click="new()"></paper-fab>
+    <section>
+      <paper-item ng-if="items.length == 0">Aucun vin</paper-item>
+      <paper-item class="twoLines" ng-click="edit(wine.id)" ng-repeat="wine in items">
+        <div flex>
+          <div class="ellipsis">{{wine | wineRenderer}}</div>
+          <div class="ellipsis"><small>{{wine.appellation | appellationRenderer}}</small></div>
+        </div>
+        <paper-icon-button icon="remove-circle-outline" ng-click="delete(wine.id, $event)"></paper-icon-button>
+      </paper-item>
+      <paper-item ng-if="size > items.length" label="Voir les {{size - items.length > pageCount ? pageCount : size - items.length}} suivants sur {{size - items.length}}" ng-click="more()"></paper-item>
+      <paper-fab icon="add" raisedButton="false" ng-click="new()"></paper-fab>
+    </section>
   </div>
 </core-drawer-panel>

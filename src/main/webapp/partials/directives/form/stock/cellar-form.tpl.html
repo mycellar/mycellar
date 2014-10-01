@@ -1,8 +1,5 @@
-<fieldset>
-  <legend>Détails</legend>
-  <div class="form-group" ng-class="{'has-error': form.name.$invalid}">
-    <label class="control-label" for="name">Nom</label>
-    <input class="form-control" id="name" name="name" type="text" ng-model="cellar.name" placeholder="Nom" required />
-    <span class="help-block" ng-if="form.name.$error.required">Veuillez saisir un nom</span>
-  </div>
-</fieldset>
+<div>
+  <section>
+    <paper-input id="name" floatingLabel label="Nom" type="text" bind-polymer-input="cellar.name" required></paper-input>
+  </section>
+</div>

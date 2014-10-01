@@ -121,6 +121,16 @@ public class UserDomainWebService {
         userServiceFacade.validateUser(user);
     }
 
+    @POST
+    @Consumes(MediaType.APPLICATION_JSON)
+    @Path("createUser")
+    public User createUser(User user) throws BusinessException {
+        if (user.getId() == null) {
+            return userServiceFacade.saveUserPassword(user, user.getPassword());
+        }
+        throw new RuntimeException();
+    }
+
     // BEAN METHODS
 
     @Inject

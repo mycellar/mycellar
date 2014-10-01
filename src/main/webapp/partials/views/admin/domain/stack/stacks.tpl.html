@@ -8,15 +8,17 @@
     <admin-domain-nav></admin-domain-nav>
   </nav>
   <div main>
-    <paper-item ng-if="items.length == 0">Aucune stack</paper-item>
-    <paper-item class="twoLines" ng-click="edit(stack.id)" ng-repeat="stack in items">
-      <div flex>
-        <div class="ellipsis">{{stack.hashCode}}</div>
-        <div class="ellipsis"><small>{{stack.stack | firstLine}}</small></div>
-      </div>
-      <div>{{stack.count}}</div>
-      <paper-icon-button icon="remove-circle-outline" ng-click="delete(stack.id, $event)"></paper-icon-button>
-    </paper-item>
-    <paper-item ng-if="size > items.length" label="Voir les {{size - items.length > pageCount ? pageCount : size - items.length}} suivantes sur {{size - items.length}}" ng-click="more()"></paper-item>
+    <section>
+      <paper-item ng-if="items.length == 0">Aucune stack</paper-item>
+      <paper-item class="twoLines" ng-click="edit(stack.id)" ng-repeat="stack in items">
+        <div flex>
+          <div class="ellipsis">{{stack.hashCode}}</div>
+          <div class="ellipsis"><small>{{stack.stack | firstLine}}</small></div>
+        </div>
+        <div>{{stack.count}}</div>
+        <paper-icon-button icon="remove-circle-outline" ng-click="delete(stack.id, $event)"></paper-icon-button>
+      </paper-item>
+      <paper-item ng-if="size > items.length" label="Voir les {{size - items.length > pageCount ? pageCount : size - items.length}} suivantes sur {{size - items.length}}" ng-click="more()"></paper-item>
+    </section>
   </div>
 </core-drawer-panel>

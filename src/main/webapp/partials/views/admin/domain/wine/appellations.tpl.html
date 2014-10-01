@@ -13,15 +13,17 @@
     <admin-domain-nav></admin-domain-nav>
   </nav>
   <div main>
-    <paper-item ng-if="items.length == 0">Aucune appellation</paper-item>
-    <paper-item class="twoLines" ng-click="edit(appellation.id)" ng-repeat="appellation in items">
-      <div flex>
-        <div class="ellipsis">{{appellation.name}}</div>
-        <div class="ellipsis"><small>{{appellation.region.name}} - {{appellation.region.country.name}}</small></div>
-      </div>
-      <paper-icon-button icon="remove-circle-outline" ng-click="delete(appellation.id, $event)"></paper-icon-button>
-    </paper-item>
-    <paper-item ng-if="size > items.length" label="Voir les {{size - items.length > pageCount ? pageCount : size - items.length}} suivantes sur {{size - items.length}}" ng-click="more()"></paper-item>
-    <paper-fab icon="add" raisedButton="false" ng-click="new()"></paper-fab>
+    <section>
+      <paper-item ng-if="items.length == 0">Aucune appellation</paper-item>
+      <paper-item class="twoLines" ng-click="edit(appellation.id)" ng-repeat="appellation in items">
+        <div flex>
+          <div class="ellipsis">{{appellation.name}}</div>
+          <div class="ellipsis"><small>{{appellation.region.name}} - {{appellation.region.country.name}}</small></div>
+        </div>
+        <paper-icon-button icon="remove-circle-outline" ng-click="delete(appellation.id, $event)"></paper-icon-button>
+      </paper-item>
+      <paper-item ng-if="size > items.length" label="Voir les {{size - items.length > pageCount ? pageCount : size - items.length}} suivantes sur {{size - items.length}}" ng-click="more()"></paper-item>
+      <paper-fab icon="add" raisedButton="false" ng-click="new()"></paper-fab>
+    </section>
   </div>
 </core-drawer-panel>

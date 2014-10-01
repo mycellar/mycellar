@@ -8,19 +8,21 @@
     <admin-domain-nav></admin-domain-nav>
   </nav>
   <div main>
-    <paper-item ng-if="items.length == 0">Aucun stock</paper-item>
-    <paper-item class="twoLines" ng-click="edit(stock.id)" ng-repeat="stock in items">
-      <div flex>
-        <div class="ellipsis">{{stock.bottle.wine | wineRenderer}}</div>
-        <div class="ellipsis"><small>{{stock.bottle.format | formatRenderer}}</small></div>
-      </div>
-      <div>
-        <div>{{stock.quantity}} dans {{stock.cellar.name}}</div>
-        <div><small>{{stock.cellar.owner | userRenderer}}</small></div>
-      </div>
-      <paper-icon-button icon="remove-circle-outline" ng-click="delete(stock.id, $event)"></paper-icon-button>
-    </paper-item>
-    <paper-item ng-if="size > items.length" label="Voir les {{size - items.length > pageCount ? pageCount : size - items.length}} suivants sur {{size - items.length}}" ng-click="more()"></paper-item>
-    <paper-fab icon="add" raisedButton="false" ng-click="new()"></paper-fab>
+    <section>
+      <paper-item ng-if="items.length == 0">Aucun stock</paper-item>
+      <paper-item class="twoLines" ng-click="edit(stock.id)" ng-repeat="stock in items">
+        <div flex>
+          <div class="ellipsis">{{stock.bottle.wine | wineRenderer}}</div>
+          <div class="ellipsis"><small>{{stock.bottle.format | formatRenderer}}</small></div>
+        </div>
+        <div>
+          <div>{{stock.quantity}} dans {{stock.cellar.name}}</div>
+          <div><small>{{stock.cellar.owner | userRenderer}}</small></div>
+        </div>
+        <paper-icon-button icon="remove-circle-outline" ng-click="delete(stock.id, $event)"></paper-icon-button>
+      </paper-item>
+      <paper-item ng-if="size > items.length" label="Voir les {{size - items.length > pageCount ? pageCount : size - items.length}} suivants sur {{size - items.length}}" ng-click="more()"></paper-item>
+      <paper-fab icon="add" raisedButton="false" ng-click="new()"></paper-fab>
+    </section>
   </div>
 </core-drawer-panel>

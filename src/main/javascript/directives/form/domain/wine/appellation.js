@@ -11,8 +11,7 @@ angular.module('mycellar.directives.form.domain.wine.appellation').directive('ap
       templateUrl: 'partials/directives/form/wine/appellation-form.tpl.html',
       scope: {
         form: '=',
-        appellation: '=',
-        postLabel: '@'
+        appellation: '='
       }
     }
   }
@@ -24,50 +23,66 @@ angular.module('mycellar.directives.form.domain.wine.appellation').directive('ap
       transclude: true,
       templateUrl: 'partials/directives/form/wine/appellation.tpl.html',
       scope: {
-        form: '=',
         appellation: '=',
-        postLabel: '@'
+        label: '@'
       },
-      compile: function(element, attrs) {
-        for (var attrName in attrs) {
-          if (attrName.indexOf("input") == 0) {
-            angular.element(element.find('input')[0]).attr(attrName.charAt(5).toLowerCase() + attrName.substring(6), attrs[attrName]);
-          }
-        }
+      link: function(scope, element, attrs) {
+        element[0].$.control.addEventListener('input', function() {
+          scope.input = element[0].$.control.inputValue;
+          scope.$apply();
+        });
+        scope.$watch('possibles', function(value) {
+          element[0].possibles = value;
+        });
+        element[0].render = scope.renderAppellation;
+        element[0].clearInput = function() {
+          scope.input = '';
+          scope.$apply();
+        };
+        element[0].setValue = function(value) {
+          scope.setAppellation(value);
+          scope.$apply();
+        };
+        element[0].value = scope.appellation;
       },
       controller: [
-        '$scope', '$location', 'Appellations', 'AdminAppellations',
-        function($scope, $location, Appellations, AdminAppellations) {
+        '$scope', '$location', 'Appellations', 'AdminAppellations', '$filter',
+        function($scope, $location, Appellations, AdminAppellations, $filter) {
           var resource;
           if ($location.path().match(/\/admin/)) {
             resource = AdminAppellations;
           } else {
             resource = Appellations;
           }
-          $scope.errors = [];
-          $scope.appellations = resource.like;
-          $scope.new = function() {
-            $scope.newAppellation = {};
-            $scope.showSub = true;
+
+          $scope.input = '';
+          $scope.$watch('input', function() {
+            if ($scope.input.length > 2) {
+              resource.like($scope.input).then(function(value) {
+                $scope.possibles = value;
+              });
+            } else {
+              $scope.possibles = [];
+            }
+          });
+
+          var appellationFilter = $filter('appellationRenderer');
+          $scope.renderAppellation = function(appellation) {
+            if (appellation != null) {
+              return appellationFilter(appellation);
+            } else {
+              return '';
+            }
           };
-          $scope.cancel = function() {
-            $scope.showSub = false;
-          };
-          $scope.ok = function() {
-            resource.validate($scope.newAppellation, function (value, headers) {
-              if (value.errorKey != undefined) {
-                angular.forEach(value.properties, function(property) {
-                  if ($scope.subAppellationForm[property] != undefined) {
-                    $scope.subAppellationForm[property].$setValidity(value.errorKey, false);
-                  }
-                });
-                $scope.errors.push(value);
-              } else {
-                $scope.appellation = $scope.newAppellation;
-                $scope.showSub = false;
-              }
-            });
-          };
+          $scope.setAppellation = function(appellation) {
+            if (appellation != null) {
+              resource.get({id: appellation.id}, function(value) {
+                $scope.appellation = value;
+              });
+            } else {
+              $scope.appellation = null;
+            }
+          }
         }
       ]
     }

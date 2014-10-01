@@ -41,13 +41,5 @@ angular.module('mycellar.controllers.admin.domain.contact.contacts').controller(
       resourceName: 'Contact', 
       resource: item
     });
-    $scope.contactCurrent = new Date($scope.contact.current);
-    $scope.contactNext = new Date($scope.contact.next);
-    $scope.$watch('contactCurrent', function() {
-      $scope.contact.current = $filter('date')($scope.contactCurrent, 'yyyy-MM-dd');
-    });
-    $scope.$watch('contactNext', function() {
-      $scope.contact.next = $filter('date')($scope.contactNext, 'yyyy-MM-dd');
-    });
   }
 ]);

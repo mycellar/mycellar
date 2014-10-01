@@ -8,6 +8,11 @@ angular.module('mycellar.resources.user.users').factory('AdminUsers', [
     return domainResource.createResource({
       url: '/api/admin/domain/user/users',
       validateUrl: '/api/admin/domain/user/validateUser'
+    }, {
+      createUser: {
+        url: '/api/admin/domain/user/createUser',
+        method: 'POST'
+      }
     });
   }
 ]);

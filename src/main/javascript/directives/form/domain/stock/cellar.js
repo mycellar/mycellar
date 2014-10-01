@@ -10,8 +10,7 @@ angular.module('mycellar.directives.form.domain.stock.cellar').directive('cellar
       templateUrl: 'partials/directives/form/stock/cellar-form.tpl.html',
       scope: {
         form: '=',
-        cellar: '=',
-        postLabel: '@'
+        cellar: '='
       }
     }
   }
@@ -23,16 +22,27 @@ angular.module('mycellar.directives.form.domain.stock.cellar').directive('cellar
       transclude: true,
       templateUrl: 'partials/directives/form/stock/cellar.tpl.html',
       scope: {
-        form: '=',
         cellar: '=',
-        postLabel: '@'
+        label: '@'
       },
-      compile: function(element, attrs) {
-        for (var attrName in attrs) {
-          if (attrName.indexOf("input") == 0) {
-            angular.element(element.find('input')[0]).attr(attrName.charAt(5).toLowerCase() + attrName.substring(6), attrs[attrName]);
-          }
-        }
+      link: function(scope, element, attrs) {
+        element[0].$.control.addEventListener('input', function() {
+          scope.input = element[0].$.control.inputValue;
+          scope.$apply();
+        });
+        scope.$watch('possibles', function(value) {
+          element[0].possibles = value;
+        });
+        element[0].render = scope.renderCellar;
+        element[0].clearInput = function() {
+          scope.input = '';
+          scope.$apply();
+        };
+        element[0].setValue = function(value) {
+          scope.setCellar(value);
+          scope.$apply();
+        };
+        element[0].value = scope.cellar;
       },
       controller: [
         '$scope', '$location', 'Cellars', 'AdminCellars',
@@ -43,31 +53,34 @@ angular.module('mycellar.directives.form.domain.stock.cellar').directive('cellar
           } else {
             resource = Cellars;
           }
-          $scope.cellars = resource.like;
-          $scope.errors = [];
-          $scope.new = function() {
-            $scope.newCellar = {};
-            $scope.showSub = true;
+
+          $scope.input = '';
+          $scope.$watch('input', function() {
+            if ($scope.input.length > 2) {
+              resource.like($scope.input).then(function(value) {
+                $scope.possibles = value;
+              });
+            } else {
+              $scope.possibles = [];
+            }
+          });
+
+          $scope.renderCellar = function(cellar) {
+            if (cellar != null) {
+              return cellar.name;
+            } else {
+              return '';
+            }
           };
-          $scope.cancel = function() {
-            $scope.showSub = false;
-          };
-          $scope.ok = function() {
-            $scope.errors = [];
-            resource.validate($scope.newCellar, function (value, headers) {
-              if (value.errorKey != undefined) {
-                angular.forEach(value.properties, function(property) {
-                  if ($scope.subCellarForm[property] != undefined) {
-                    $scope.subCellarForm[property].$setValidity(value.errorKey, false);
-                  }
-                });
-                $scope.errors.push(value);
-              } else {
-                $scope.cellar = $scope.newCellar;
-                $scope.showSub = false;
-              }
-            });
-          };
+          $scope.setCellar = function(cellar) {
+            if (cellar != null) {
+              resource.get({id: cellar.id}, function(value) {
+                $scope.cellar = value;
+              });
+            } else {
+              $scope.cellar = null;
+            }
+          }
         }
       ]
     }

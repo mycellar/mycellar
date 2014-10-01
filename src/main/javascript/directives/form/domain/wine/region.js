@@ -11,8 +11,7 @@ angular.module('mycellar.directives.form.domain.wine.region').directive('regionF
       templateUrl: 'partials/directives/form/wine/region-form.tpl.html',
       scope: {
         form: '=',
-        region: '=',
-        postLabel: '@'
+        region: '='
       }
     }
   }
@@ -24,51 +23,66 @@ angular.module('mycellar.directives.form.domain.wine.region').directive('regionF
       transclude: true,
       templateUrl: 'partials/directives/form/wine/region.tpl.html',
       scope: {
-        form: '=',
         region: '=',
-        postLabel: '@'
+        label: '@'
       },
-      compile: function(element, attrs) {
-        for (var attrName in attrs) {
-          if (attrName.indexOf("input") == 0) {
-            angular.element(element.find('input')[0]).attr(attrName.charAt(5).toLowerCase() + attrName.substring(6), attrs[attrName]);
-          }
-        }
+      link: function(scope, element, attrs) {
+        element[0].$.control.addEventListener('input', function() {
+          scope.input = element[0].$.control.inputValue;
+          scope.$apply();
+        });
+        scope.$watch('possibles', function(value) {
+          element[0].possibles = value;
+        });
+        element[0].render = scope.renderRegion;
+        element[0].clearInput = function() {
+          scope.input = '';
+          scope.$apply();
+        };
+        element[0].setValue = function(value) {
+          scope.setRegion(value);
+          scope.$apply();
+        };
+        element[0].value = scope.region;
       },
       controller: [
-        '$scope', '$location', 'Regions', 'AdminRegions',
-        function($scope, $location, Regions, AdminRegions) {
+        '$scope', '$location', 'Regions', 'AdminRegions', '$filter',
+        function($scope, $location, Regions, AdminRegions, $filter) {
           var resource;
           if ($location.path().match(/\/admin/)) {
             resource = AdminRegions;
           } else {
             resource = Regions;
           }
-          $scope.errors = [];
-          $scope.regions = resource.like;
-          $scope.new = function() {
-            $scope.newRegion = {};
-            $scope.showSub = true;
+
+          $scope.input = '';
+          $scope.$watch('input', function() {
+            if ($scope.input.length > 2) {
+              resource.like($scope.input).then(function(value) {
+                $scope.possibles = value;
+              });
+            } else {
+              $scope.possibles = [];
+            }
+          });
+
+          var regionFilter = $filter('regionRenderer');
+          $scope.renderRegion = function(region) {
+            if (region != null) {
+              return regionFilter(region);
+            } else {
+              return '';
+            }
           };
-          $scope.cancel = function() {
-            $scope.showSub = false;
-          };
-          $scope.ok = function() {
-            $scope.errors = [];
-            resource.validate($scope.newRegion, function (value, headers) {
-              if (value.errorKey != undefined) {
-                angular.forEach(value.properties, function(property) {
-                  if ($scope.subRegionForm[property] != undefined) {
-                    $scope.subRegionForm[property].$setValidity(value.errorKey, false);
-                  }
-                });
-                $scope.errors.push(value);
-              } else {
-                $scope.region = $scope.newRegion;
-                $scope.showSub = false;
-              }
-            });
-          };
+          $scope.setRegion = function(region) {
+            if (region != null) {
+              resource.get({id: region.id}, function(value) {
+                $scope.region = value;
+              });
+            } else {
+              $scope.region = null;
+            }
+          }
         }
       ]
     }

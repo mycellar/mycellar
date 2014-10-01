@@ -16,15 +16,6 @@ angular.module('mycellar.directives.form.domain.booking.bookingEvent').directive
         postLabel: '@'
       }, 
       controller: function($scope, $filter) {
-        $scope.bookingEventStart = new Date($scope.bookingEvent.start);
-        $scope.bookingEventEnd = new Date($scope.bookingEvent.end);
-        $scope.$watch('bookingEventStart', function() {
-          $scope.bookingEvent.start = $filter('date')($scope.bookingEventStart, 'yyyy-MM-dd');
-        });
-        $scope.$watch('bookingEventEnd', function() {
-          $scope.bookingEvent.end = $filter('date')($scope.bookingEventEnd, 'yyyy-MM-dd');
-        });
-
         $scope.bookingBottle = null;
         if ($scope.bookingEvent.bottles == undefined) {
           $scope.bookingEvent.bottles = [];

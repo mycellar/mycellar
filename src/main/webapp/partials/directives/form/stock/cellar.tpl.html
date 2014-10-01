@@ -1,27 +1,4 @@
-<div class="form-group" ng-class="{'has-error': form.cellar.$invalid}">
-  <label class="control-label" for="cellar">Cave{{postLabel}}</label>
-  <div class="input-group" ng-show="!showSub">
-    <input 
-      id="cellar"
-      name="cellar"
-      type="text"
-      class="form-control"
-      ng-model="cellar"
-      placeholder="Cave{{postLabel}}"
-      typeahead="cellar as cellar.name for cellar in cellars($viewValue)"
-      typeahead-editable="false"
-      typeahead-min-length="3"
-      typeahead-wait-ms="200" />
-    <span class="input-group-btn">
-      <a class="btn btn-default" ng-click="new()"><i class="fa fa-plus"></i></a>
-    </span>
-  </div>
-  <div ng-if="showSub" class="sub-entity">
-    <ng-form name="subCellarForm">
-      <cellar-form form="subCellarForm" cellar="newCellar" post-label=" de la cave"></cellar-form>
-      <a class="btn btn-success" ng-click="ok()">Valider</a>
-      <a class="btn btn-warning" ng-click="cancel()">Annuler</a>
-    </ng-form>
-  </div>
-  <span ng-transclude />
-</div>
+<autocomplete-input
+  label="{{label}}"
+  inputValue="{{input}}"
+  />
