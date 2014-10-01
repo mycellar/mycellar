@@ -18,27 +18,17 @@
  */
 package fr.mycellar.application.wine.impl;
 
-import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
-import java.util.Scanner;
 
 import javax.inject.Inject;
 import javax.inject.Named;
 import javax.inject.Singleton;
-import javax.persistence.metamodel.SingularAttribute;
 
-import jpasearch.repository.query.SearchBuilder;
 import jpasearch.repository.query.SearchParameters;
-import jpasearch.repository.query.builder.DisjunctionSelectorsBuilder;
-import jpasearch.repository.query.builder.RootSelectorsBuilder;
-import jpasearch.repository.query.builder.SelectorBuilder;
-import jpasearch.repository.query.selector.TermSelector;
-import jpasearch.repository.util.HibernateSearchUtil;
-
-import org.apache.commons.lang3.StringUtils;
-
+import jpasearch.repository.query.builder.SearchBuilder;
+import fr.mycellar.application.admin.ConfigurationService;
 import fr.mycellar.application.booking.BookingEventService;
 import fr.mycellar.application.shared.AbstractSearchableService;
 import fr.mycellar.application.stock.StockService;
@@ -54,11 +44,7 @@ import fr.mycellar.domain.stock.Stock;
 import fr.mycellar.domain.stock.Stock_;
 import fr.mycellar.domain.wine.Appellation;
 import fr.mycellar.domain.wine.Appellation_;
-import fr.mycellar.domain.wine.Country;
-import fr.mycellar.domain.wine.Country_;
 import fr.mycellar.domain.wine.Producer;
-import fr.mycellar.domain.wine.Producer_;
-import fr.mycellar.domain.wine.Region;
 import fr.mycellar.domain.wine.Region_;
 import fr.mycellar.domain.wine.Wine;
 import fr.mycellar.domain.wine.WineColorEnum;
@@ -73,11 +59,11 @@ import fr.mycellar.infrastructure.wine.repository.WineRepository;
 @Singleton
 public class WineServiceImpl extends AbstractSearchableService<Wine, WineRepository> implements WineService {
 
-    private HibernateSearchUtil hibernateSearchUtil;
     private WineRepository wineRepository;
 
     private BookingEventService bookingEventService;
     private StockService stockService;
+    private ConfigurationService configurationService;
 
     @Override
     public Wine find(Producer producer, Appellation appellation, WineTypeEnum type, WineColorEnum color, String name, Integer vintage) {
@@ -113,42 +99,15 @@ public class WineServiceImpl extends AbstractSearchableService<Wine, WineReposit
     @Override
     protected SearchParameters<Wine> addTermToSearchParametersParameters(String term, SearchParameters<Wine> searchParameters) {
         SearchBuilder<Wine> searchBuilder = new SearchBuilder<>(searchParameters);
-        DisjunctionSelectorsBuilder<Wine, RootSelectorsBuilder<Wine>> disjunction = searchBuilder.disjunction();
-        restrict(disjunction.on(Wine_.appellation).to(Appellation_.region).to(Region_.country).to(Country_.id), Country.class, NamedEntity_.name, term);
-        restrict(disjunction.on(Wine_.appellation).to(Appellation_.region).to(Region_.id), Region.class, NamedEntity_.name, term);
-        restrict(disjunction.on(Wine_.appellation).to(Appellation_.id), Appellation.class, NamedEntity_.name, term);
-        restrict(disjunction.on(Wine_.producer).to(Producer_.id), Producer.class, NamedEntity_.name, term);
-        disjunction.fullText(NamedEntity_.name).search(term);
-        Scanner vintageScanner = new Scanner(term);
-        String vintageString = vintageScanner.findInLine("[0-9]{4}");
-        if (StringUtils.isNotBlank(vintageString)) {
-            Integer vintage = Integer.parseInt(vintageString);
-            searchBuilder.on(Wine_.vintage).equalsTo(vintage);
-        }
-        vintageScanner.close();
+        searchBuilder.fullText(Wine_.appellation).to(Appellation_.region).to(Region_.country).to(NamedEntity_.name) //
+                .andOn(Wine_.appellation).to(Appellation_.region).to(NamedEntity_.name) //
+                .andOn(Wine_.appellation).to(NamedEntity_.name) //
+                .andOn(Wine_.producer).to(NamedEntity_.name) //
+                .andOn(Wine_.vintage) //
+                .andOn(NamedEntity_.name) //
+                .searchSimilarity(configurationService.getDefaultSearchSimilarity()) //
+                .andMode().search(term);
         return searchBuilder.build();
-    }
-
-    // Waiting deep full text search in jpasearch
-    private <X> void restrict(SelectorBuilder<Wine, X, Integer, DisjunctionSelectorsBuilder<Wine, RootSelectorsBuilder<Wine>>> builder, Class<X> from, SingularAttribute<? super X, String> attribute,
-            String term) {
-        List<Integer> realIds = null;
-        TermSelector<X> termSelector = new TermSelector<>(attribute).selected(term);
-        termSelector.setSearchSimilarity(1);
-        List<Serializable> ids = hibernateSearchUtil.findId(from, termSelector);
-        if ((ids == null) || ids.isEmpty()) {
-            termSelector.setSearchSimilarity(2);
-            ids = hibernateSearchUtil.findId(from, termSelector);
-        }
-        if ((ids != null) && (ids.size() > 0)) {
-            realIds = new ArrayList<>();
-            for (Serializable id : ids) {
-                realIds.add((Integer) id);
-            }
-        }
-        if (realIds != null) {
-            builder.equalsTo(realIds.toArray(new Integer[realIds.size()]));
-        }
     }
 
     @Override
@@ -208,8 +167,8 @@ public class WineServiceImpl extends AbstractSearchableService<Wine, WineReposit
     }
 
     @Inject
-    public void setHibernateSearchUtil(HibernateSearchUtil hibernateSearchUtil) {
-        this.hibernateSearchUtil = hibernateSearchUtil;
+    public void setConfigurationService(ConfigurationService configurationService) {
+        this.configurationService = configurationService;
     }
 
 }

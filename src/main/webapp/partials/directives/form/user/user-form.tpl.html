@@ -1,28 +1,18 @@
-<fieldset>
-  <legend>Détails</legend>
-  <div class="form-group" ng-class="{'has-error': form.lastname.$invalid}">
-    <label class="control-label" for="lastname">Nom de famille</label>
-    <input class="form-control" id="lastname" name="lastname" type="text" ng-model="user.lastname" placeholder="Nom de famille" required />
-    <span class="help-block" ng-if="form.lastname.$error.required">Veuillez saisir un nom de famille</span>
-  </div>
-  <div class="form-group" ng-class="{'has-error': form.firstname.$invalid}">
-    <label class="control-label" for="firstname">Prénom</label>
-    <input class="form-control" id="firstname" name="firstname" type="text" ng-model="user.firstname" placeholder="Prénom" />
-    <span class="help-block" ng-if="form.firstname.$error.required">Veuillez saisir un prénom</span>
-  </div>
-  <div class="form-group" ng-class="{'has-error': form.email.$invalid}">
-    <label class="control-label" for="email">Email</label>
-    <input class="form-control" id="email" name="email" type="email" ng-model="user.email" placeholder="Email" required />
-    <span class="help-block" ng-if="form.email.$error.required">Veuillez saisir un email</span>
-  </div>
-  <div class="form-group" ng-class="{'has-error': form.profile.$invalid}">
-    <label class="control-label" for="profile">Profile</label>
-    <select class="form-control" id="profile" name="profile" ng-model="user.profile">
-      <option label="Basic">BASIC</option>
-      <option label="Gestion de cave">CELLAR</option>
-      <option label="Réservation">BOOKING</option>
-      <option label="Complet">MYCELLAR</option>
-      <option label="Administrateur">ADMIN</option>
-    </select>
-  </div>
-</fieldset>
+<div>
+  <section>
+    <paper-input id="lastname" floatingLabel label="Nom de famille" type="text" bind-polymer-input="user.lastname" required></paper-input>
+    <paper-input id="firstname" floatingLabel label="Prénom" type="text" bind-polymer-input="user.firstname" required></paper-input>
+    <paper-input id="email" floatingLabel label="Email" type="email" bind-polymer-input="user.email" required></paper-input>
+    <paper-dropdown-menu bind-polymer-select="user.profile" valueattr="value">
+      <paper-item label="Basique" value="BASIC"></paper-item>
+      <paper-item label="Gestion de cave" value="CELLAR"></paper-item>
+      <paper-item label="Réservation" value="BOOKING"></paper-item>
+      <paper-item label="Complet" value="MYCELLAR"></paper-item>
+      <paper-item label="Administrateur" value="ADMIN"></paper-item>
+    </paper-dropdown-menu>
+  </section>
+  <section ng-if="user.id == null">
+    <paper-input id="password" floatingLabel label="Mot de passe" type="password" bind-polymer-input="passwords.first" required></paper-input>
+    <paper-input id="password2" floatingLabel label="Confirmation du mot de passe" type="password" bind-polymer-input="passwords.second" required></paper-input>
+  </section>
+</div>

@@ -33,14 +33,19 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.MediaType;
 
-import jpasearch.repository.query.SearchBuilder;
+import jpasearch.repository.query.ResultParameters;
 import jpasearch.repository.query.SearchParameters;
+import jpasearch.repository.query.builder.ResultBuilder;
+import jpasearch.repository.query.builder.SearchBuilder;
 
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.access.prepost.PreAuthorize;
 
+import fr.mycellar.domain.shared.NamedEntity_;
 import fr.mycellar.domain.shared.exception.BusinessException;
 import fr.mycellar.domain.stock.Arrival;
+import fr.mycellar.domain.stock.Bottle_;
 import fr.mycellar.domain.stock.Cellar;
 import fr.mycellar.domain.stock.CellarShare;
 import fr.mycellar.domain.stock.CellarShare_;
@@ -51,6 +56,10 @@ import fr.mycellar.domain.stock.Movement;
 import fr.mycellar.domain.stock.Movement_;
 import fr.mycellar.domain.stock.Stock;
 import fr.mycellar.domain.stock.Stock_;
+import fr.mycellar.domain.user.User;
+import fr.mycellar.domain.wine.Appellation_;
+import fr.mycellar.domain.wine.Wine;
+import fr.mycellar.domain.wine.Wine_;
 import fr.mycellar.interfaces.facades.stock.StockServiceFacade;
 import fr.mycellar.interfaces.web.security.CurrentUserService;
 import fr.mycellar.interfaces.web.services.FilterCouple;
@@ -76,8 +85,25 @@ public class StockWebService {
     @Produces(MediaType.APPLICATION_JSON)
     @Path("cellars")
     @PreAuthorize("hasRole('ROLE_CELLAR')")
-    public ListWithCount<Cellar> getCellarsForCurrentUser() {
-        return new ListWithCount<>(stockServiceFacade.getCellars(currentUserService.getCurrentUser()));
+    public ListWithCount<Cellar> getCellarsForCurrentUser( //
+            @QueryParam("first") int first, //
+            @QueryParam("count") @DefaultValue("10") int count, //
+            @QueryParam("filters") List<FilterCouple> filters, //
+            @QueryParam("sort") List<OrderCouple> orders, //
+            @QueryParam("like") String term) {
+        User user = currentUserService.getCurrentUser();
+        SearchParameters<Cellar> searchParameters = searchParametersUtil.getSearchBuilder(first, count, filters, orders, Cellar.class) //
+                .disjunction() //
+                .on(Cellar_.owner).equalsTo(user) //
+                .on(Cellar_.shares).to(CellarShare_.email).equalsTo(user.getEmail()) //
+                .and().build();
+        List<Cellar> cellars;
+        if (count == 0) {
+            cellars = new ArrayList<>();
+        } else {
+            cellars = stockServiceFacade.getCellarsLike(term, searchParameters);
+        }
+        return new ListWithCount<>(stockServiceFacade.countCellarsLike(term, searchParameters), cellars);
     }
 
     @GET
@@ -89,8 +115,9 @@ public class StockWebService {
         if (!stockServiceFacade.hasReadRight(cellarId, currentUserService.getCurrentUserEmail())) {
             throw new AccessDeniedException("No read access to this cellar.");
         }
-        SearchParameters<Movement> searchParameters = searchParametersUtil.getSearchParametersParametersForListWithCount(first, count, filters, orders, Movement.class);
-        searchParameters = new SearchBuilder<Movement>(searchParameters).on(Movement_.cellar).to(Cellar_.id).equalsTo(cellarId).build();
+        SearchParameters<Movement> searchParameters = searchParametersUtil.getSearchBuilder(first, count, filters, orders, Movement.class) //
+                .on(Movement_.cellar).to(Cellar_.id).equalsTo(cellarId) //
+                .build();
         List<Movement> movements;
         if (count == 0) {
             movements = new ArrayList<>();
@@ -102,15 +129,60 @@ public class StockWebService {
 
     @GET
     @Produces(MediaType.APPLICATION_JSON)
-    @Path("stocks")
+    @Path("wines")
     @PreAuthorize("hasRole('ROLE_CELLAR')")
-    public ListWithCount<Stock> getStocks(@QueryParam("cellarId") Integer cellarId, @QueryParam("first") int first, @QueryParam("count") int count, @QueryParam("filters") List<FilterCouple> filters,
+    public ListWithCount<Wine> getWinesFromStocksForCellarLike( //
+            @QueryParam("cellarId") Integer cellarId, //
+            @QueryParam("input") String input, //
+            @QueryParam("first") int first, //
+            @QueryParam("count") int count, //
+            @QueryParam("filters") List<FilterCouple> filters, //
             @QueryParam("sort") List<OrderCouple> orders) {
-        if (!stockServiceFacade.hasReadRight(cellarId, currentUserService.getCurrentUserEmail())) {
+        if ((cellarId != null) && !stockServiceFacade.hasReadRight(cellarId, currentUserService.getCurrentUserEmail())) {
             throw new AccessDeniedException("No read access to this cellar.");
         }
-        SearchParameters<Stock> searchParameters = searchParametersUtil.getSearchParametersParametersForListWithCount(first, count, filters, orders, Stock.class);
-        searchParameters = new SearchBuilder<Stock>(searchParameters).on(Stock_.cellar).to(Cellar_.id).equalsTo(cellarId).build();
+        SearchBuilder<Stock> searchBuilder = searchParametersUtil.getSearchBuilder(first, count, filters, orders, Stock.class);
+        if (cellarId != null) {
+            searchBuilder.distinct().on(Stock_.cellar).to(Cellar_.id).equalsTo(cellarId);
+        } else {
+            User user = currentUserService.getCurrentUser();
+            searchBuilder.distinct().disjunction() //
+                    .on(Stock_.cellar).to(Cellar_.owner).equalsTo(user) //
+                    .on(Stock_.cellar).to(Cellar_.shares).to(CellarShare_.email).equalsTo(user.getEmail());
+        }
+        if (StringUtils.isNotBlank(input)) {
+            searchBuilder.fullText(Stock_.bottle).to(Bottle_.wine).to(Wine_.appellation).to(Appellation_.region).to(NamedEntity_.name) //
+                    .andOn(Stock_.bottle).to(Bottle_.wine).to(Wine_.appellation).to(NamedEntity_.name) //
+                    .andOn(Stock_.bottle).to(Bottle_.wine).to(Wine_.producer).to(NamedEntity_.name) //
+                    .andOn(Stock_.bottle).to(Bottle_.wine).to(NamedEntity_.name) //
+                    .andOn(Stock_.bottle).to(Bottle_.wine).to(Wine_.vintage) //
+                    .andOn(Stock_.bottle).to(Bottle_.format).to(NamedEntity_.name) //
+                    .andMode().search(input);
+        }
+        SearchParameters<Stock> searchParameters = searchBuilder.build();
+        ResultParameters<Stock, Wine> resultParameters = new ResultBuilder<>(Stock_.bottle).to(Bottle_.wine).build();
+        List<Wine> wines;
+        if (count == 0) {
+            wines = new ArrayList<>();
+        } else {
+            wines = stockServiceFacade.getFromStocks(searchParameters, resultParameters);
+        }
+        return new ListWithCount<>(stockServiceFacade.countFromStocks(searchParameters, resultParameters), wines);
+    }
+
+    @GET
+    @Produces(MediaType.APPLICATION_JSON)
+    @Path("stocks")
+    @PreAuthorize("hasRole('ROLE_CELLAR')")
+    public ListWithCount<Stock> getStocksForWine(@QueryParam("wineId") Integer wineId, @QueryParam("first") int first, @QueryParam("count") int count,
+            @QueryParam("filters") List<FilterCouple> filters, @QueryParam("sort") List<OrderCouple> orders) {
+        User user = currentUserService.getCurrentUser();
+        SearchParameters<Stock> searchParameters = searchParametersUtil.getSearchBuilder(first, count, filters, orders, Stock.class) //
+                .on(Stock_.bottle).to(Bottle_.wine).to(Wine_.id).equalsTo(wineId) //
+                .disjunction() //
+                .on(Stock_.cellar).to(Cellar_.owner).equalsTo(user) //
+                .on(Stock_.cellar).to(Cellar_.shares).to(CellarShare_.email).equalsTo(user.getEmail()) //
+                .and().build();
         List<Stock> stocks;
         if (count == 0) {
             stocks = new ArrayList<>();
@@ -129,8 +201,9 @@ public class StockWebService {
         if (!stockServiceFacade.isOwner(cellarId, currentUserService.getCurrentUserEmail())) {
             throw new AccessDeniedException("Current user isn't the owner of the cellar.");
         }
-        SearchParameters<CellarShare> searchParameters = searchParametersUtil.getSearchParametersParametersForListWithCount(first, count, filters, orders, CellarShare.class);
-        searchParameters = new SearchBuilder<CellarShare>(searchParameters).on(CellarShare_.cellar).to(Cellar_.id).equalsTo(cellarId).build();
+        SearchParameters<CellarShare> searchParameters = searchParametersUtil.getSearchBuilder(first, count, filters, orders, CellarShare.class) //
+                .on(CellarShare_.cellar).to(Cellar_.id).equalsTo(cellarId) //
+                .and().build();
         List<CellarShare> cellarShares;
         if (count == 0) {
             cellarShares = new ArrayList<>();
@@ -172,24 +245,7 @@ public class StockWebService {
         stockServiceFacade.validateCellar(cellar);
     }
 
-    @GET
-    @Produces(MediaType.APPLICATION_JSON)
-    @Path("cellars/like")
-    @PreAuthorize("hasRole('ROLE_CELLAR')")
-    public ListWithCount<Cellar> getCellarsLike( //
-            @QueryParam("first") int first, //
-            @QueryParam("count") @DefaultValue("10") int count, //
-            @QueryParam("input") String input, //
-            @QueryParam("sort") List<OrderCouple> orders) {
-        SearchParameters<Cellar> searchParameters = searchParametersUtil.getSearchParametersParametersForListWithCount(first, count, new ArrayList<FilterCouple>(), orders, Cellar.class);
-        List<Cellar> cellars;
-        if (count == 0) {
-            cellars = new ArrayList<>();
-        } else {
-            cellars = stockServiceFacade.getCellarsLike(input, currentUserService.getCurrentUser(), searchParameters);
-        }
-        return new ListWithCount<>(stockServiceFacade.countCellarsLike(input, currentUserService.getCurrentUser(), searchParameters), cellars);
-    }
+    // BEANS
 
     @Inject
     public void setStockServiceFacade(StockServiceFacade stockServiceFacade) {

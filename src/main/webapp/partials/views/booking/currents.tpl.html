@@ -1,60 +1,49 @@
-<div class="container">
-  <header class="page-header"><h1>Campagne de réservations en cours</h1></header>
-  <div class="row">
-    <div class="col-md-2">
-      <nav>
-        <ul class="nav nav-pills nav-stacked">
-          <li ng-repeat="bookingEvent in bookingEvents" ng-class="{active: booking.bookingEvent.id == bookingEvent.id}">
-            Du {{bookingEvent.start}} au {{bookingEvent.end}} :<br />
-            <a href ng-click="selectBooking(bookingEvent)">{{bookingEvent.name}}</a>
-          </li>
-        </ul>
-      </nav>
-    </div>
-    <div class="col-md-10">
+<core-toolbar>
+  <drawer-button icon="menu"></drawer-button>
+  <span flex>Réservations en cours</span>
+  <drawer-button right icon="more-vert"></drawer-button>
+</core-toolbar>
+<core-drawer-panel rightDrawer>
+  <nav role="secondary" drawer>
+    <core-menu>
+      <paper-item class="twoLines" ng-repeat="bookingEvent in bookingEvents" ng-click="selectBooking(bookingEvent)">
+        <div>
+          <div class="ellipsis">{{bookingEvent.name}}</div>
+          <div class="ellipsis"><small>Du {{bookingEvent.start | date}} au {{bookingEvent.end | date}}</small></div>
+        </div>
+      </paper-item>
+    </core-menu>
+  </nav>
+  <div main>
+    <form ng-if="booking != null">
       <section>
-        <error-div errors="errors"></error-div>
-        <form ng-if="booking != null">
-          <fieldset>
-            <legend>{{booking.bookingEvent.name}} du {{booking.bookingEvent.start}} au {{booking.bookingEvent.end}}</legend>
-            <div class="table-responsive">
-              <table class="table table-bordered table-striped table-condensed">
-                <thead>
-                  <tr>
-                    <th>Vin</th>
-                    <th>Format</th>
-                    <th>Prix</th>
-                    <th>Quantité</th>
-                    <th>Total</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <tr ng-repeat="bookingBottle in booking.bookingEvent.bottles">
-                    <td><a href="{{bookingBottle.url}}" target="_blank">{{bookingBottle.bottle.wine | wineRenderer}}</a></td>
-                    <td>{{bookingBottle.bottle.format | formatRenderer}}</td>
-                    <td>{{bookingBottle.price | currency:"€"}}</td>
-                    <td><input class="form-control" id="quantity-{{bookingBottle.id}}" name="quantity-{{bookingBottle.id}}" type="number" ng-model="booking.quantities[booking.bookingEvent.id + '-' + bookingBottle.id]" /></td>
-                    <td>{{bookingBottle.price * booking.quantities[booking.bookingEvent.id + '-' + bookingBottle.id] | currency:"€"}}</td>
-                  </tr>
-                </tbody>
-                <tfoot>
-                  <tr>
-                    <th colspan="3"></th>
-                    <th>Total</th>
-                    <th>{{total | currency:"€"}}</th>
-                  </tr>
-                </tfoot>
-              </table>
-            </div>
-          </fieldset>
-          <input type="submit" class="btn btn-primary" value="Réserver" ng-click="save(booking)" />
-          <input type="submit" class="btn btn-warning" value="Annuler la réservation" ng-click="delete(booking)" />
-        </form>
-        <p ng-if="booking == null">Pas de réservation en cours</p>
+        <h2 style="text-align: center;">{{booking.bookingEvent.name}} du {{booking.bookingEvent.start | date:'longDate'}} au {{booking.bookingEvent.end | date: 'longDate'}}</h2>
       </section>
-    </div>
+      <section>
+        <core-item class="threeLines" ng-repeat="bookingBottle in booking.bookingEvent.bottles">
+          <div>{{booking.quantities[booking.bookingEvent.id + '-' + bookingBottle.id]}}</div>
+          <paper-menu-button select icon="arrow-drop-down" halign="right">
+            <paper-item ng-repeat="i in $root.getArray(25) track by $index" label="{{$index}}" ng-click="booking.quantities[booking.bookingEvent.id + '-' + bookingBottle.id] = $index"></paper-item>
+          </paper-menu-button>
+          <div flex>
+            <div class="ellipsis">{{bookingBottle.bottle.wine | wineNameRenderer}}</div>
+            <div class="ellipsis"><small>{{bookingBottle.bottle.wine.producer.name}} - {{bookingBottle.bottle.wine.color | wineColorRenderer}}</small></div>
+            <div class="ellipsis"><small>{{bookingBottle.price | currency:"€"}} / {{bookingBottle.bottle.format | formatRenderer}}</small></div>
+          </div>
+          <div class="rightNarrow">{{bookingBottle.price * booking.quantities[booking.bookingEvent.id + '-' + bookingBottle.id] | currency:"€"}}</div>
+        </core-item>
+        <core-item>
+          <div flex>Total</div>
+          <div>{{total | currency:"€"}}</div>
+        </core-item>
+      </section>
+      <section>
+        <div horizontal layout>
+          <paper-button style="margin: auto;" raisedButton primary label="Réserver" ng-click="save(booking)"></paper-button>
+          <paper-button style="margin: auto;" raisedButton label="Annuler" ng-click="delete(booking)"></paper-button>
+        </div>
+      </section>
+    </form>
+    <p ng-if="booking == null">Pas de réservation en cours</p>
   </div>
-  <footer>
-    <p>2012-2014 Tous droits réservés, MyCellar GPL V3.</p>
-  </footer>
-</div>
+</core-drawer-panel>

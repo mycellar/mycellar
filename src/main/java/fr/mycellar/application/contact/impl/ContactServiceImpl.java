@@ -25,8 +25,8 @@ import javax.inject.Named;
 import javax.inject.Singleton;
 import javax.mail.internet.MimeMessage;
 
-import jpasearch.repository.query.SearchBuilder;
 import jpasearch.repository.query.SearchParameters;
+import jpasearch.repository.query.builder.SearchBuilder;
 
 import org.joda.time.LocalDate;
 import org.springframework.mail.javamail.JavaMailSender;
@@ -36,9 +36,10 @@ import org.springframework.scheduling.annotation.Scheduled;
 
 import fr.mycellar.application.admin.ConfigurationService;
 import fr.mycellar.application.contact.ContactService;
-import fr.mycellar.application.shared.AbstractSimpleService;
+import fr.mycellar.application.shared.AbstractSearchableService;
 import fr.mycellar.domain.contact.Contact;
 import fr.mycellar.domain.contact.Contact_;
+import fr.mycellar.domain.shared.NamedEntity_;
 import fr.mycellar.domain.shared.exception.BusinessError;
 import fr.mycellar.domain.shared.exception.BusinessException;
 import fr.mycellar.domain.wine.Producer;
@@ -49,22 +50,21 @@ import fr.mycellar.infrastructure.contact.repository.ContactRepository;
  */
 @Named
 @Singleton
-public class ContactServiceImpl extends AbstractSimpleService<Contact, ContactRepository> implements ContactService {
-
-    private ConfigurationService configurationService;
+public class ContactServiceImpl extends AbstractSearchableService<Contact, ContactRepository> implements ContactService {
 
     private ContactRepository contactRepository;
 
     private JavaMailSender javaMailSender;
+    private ConfigurationService configurationService;
 
     @Override
-    public long countLastContacts(SearchParameters<Contact> search) {
-        return contactRepository.countLastContacts(search);
+    public long countLastContacts(String input, SearchParameters<Contact> search) {
+        return contactRepository.countLastContacts(addTermToSearchParametersParameters(input, search));
     }
 
     @Override
-    public List<Contact> getLastContacts(SearchParameters<Contact> search) {
-        return contactRepository.getLastContacts(search);
+    public List<Contact> getLastContacts(String input, SearchParameters<Contact> search) {
+        return contactRepository.getLastContacts(addTermToSearchParametersParameters(input, search));
     }
 
     @Override
@@ -78,12 +78,14 @@ public class ContactServiceImpl extends AbstractSimpleService<Contact, ContactRe
                 content.append("Dernier contact le ").append(contact.getCurrent()).append(" :").append("\r\n").append(contact.getText()).append("\r\n");
                 content.append("------------------------------------------------").append("\r\n");
             }
+            final String[] to = configurationService.getReminderAddressReceivers();
+            final String from = configurationService.getMailAddressSender();
             MimeMessagePreparator mimeMessagePreparator = new MimeMessagePreparator() {
                 @Override
                 public void prepare(MimeMessage mimeMessage) throws Exception {
                     MimeMessageHelper helper = new MimeMessageHelper(mimeMessage);
-                    helper.setTo(configurationService.getReminderAddressReceivers());
-                    helper.setFrom(configurationService.getMailAddressSender());
+                    helper.setTo(to);
+                    helper.setFrom(from);
                     helper.setSubject("Contacts à recontacter");
                     helper.setText(content.toString());
                 }
@@ -115,6 +117,14 @@ public class ContactServiceImpl extends AbstractSimpleService<Contact, ContactRe
         return contactRepository.findUniqueOrNone(new SearchBuilder<Contact>()//
                 .on(Contact_.producer).equalsTo(producer) //
                 .on(Contact_.current).equalsTo(current).build());
+    }
+
+    @Override
+    protected SearchParameters<Contact> addTermToSearchParametersParameters(String term, SearchParameters<Contact> searchParameters) {
+        return new SearchBuilder<>(searchParameters) //
+                .fullText(Contact_.producer).to(NamedEntity_.name) //
+                .searchSimilarity(configurationService.getDefaultSearchSimilarity()) //
+                .andMode().search(term).build();
     }
 
     @Override

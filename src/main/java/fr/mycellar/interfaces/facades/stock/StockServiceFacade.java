@@ -20,6 +20,7 @@ package fr.mycellar.interfaces.facades.stock;
 
 import java.util.List;
 
+import jpasearch.repository.query.ResultParameters;
 import jpasearch.repository.query.SearchParameters;
 import fr.mycellar.domain.shared.exception.BusinessException;
 import fr.mycellar.domain.stock.Arrival;
@@ -28,7 +29,6 @@ import fr.mycellar.domain.stock.CellarShare;
 import fr.mycellar.domain.stock.Drink;
 import fr.mycellar.domain.stock.Movement;
 import fr.mycellar.domain.stock.Stock;
-import fr.mycellar.domain.user.User;
 
 /**
  * @author speralta
@@ -37,17 +37,23 @@ public interface StockServiceFacade {
 
     void arrival(Arrival arrival) throws BusinessException;
 
-    long countCellars(SearchParameters<Cellar> search);
+    long countCellars(SearchParameters<Cellar> searchParameters);
 
-    long countCellarShares(SearchParameters<CellarShare> search);
+    long countFromCellars(SearchParameters<Cellar> searchParameters, ResultParameters<Cellar, ?> resultParameters);
 
-    long countCellarsLike(String term, SearchParameters<Cellar> search);
+    long countCellarsLike(String term, SearchParameters<Cellar> searchParameters);
 
-    long countCellarsLike(String term, User user, SearchParameters<Cellar> search);
+    long countCellarShares(SearchParameters<CellarShare> searchParameters);
 
-    long countMovements(SearchParameters<Movement> search);
+    long countFromCellarShares(SearchParameters<CellarShare> searchParameters, ResultParameters<CellarShare, ?> resultParameters);
 
-    long countStocks(SearchParameters<Stock> search);
+    long countMovements(SearchParameters<Movement> searchParameters);
+
+    long countFromMovements(SearchParameters<Movement> searchParameters, ResultParameters<Movement, ?> resultParameters);
+
+    long countStocks(SearchParameters<Stock> searchParameters);
+
+    long countFromStocks(SearchParameters<Stock> searchParameters, ResultParameters<Stock, ?> resultParameters);
 
     void deleteCellar(Cellar cellar) throws BusinessException;
 
@@ -61,33 +67,29 @@ public interface StockServiceFacade {
 
     Cellar getCellarById(Integer cellarId);
 
-    List<Cellar> getCellars(SearchParameters<Cellar> search);
-
-    List<Cellar> getCellars(User user);
-
     CellarShare getCellarShareById(Integer cellarShareId);
-
-    List<CellarShare> getCellarShares(SearchParameters<CellarShare> search);
-
-    List<Cellar> getCellarsLike(String term, SearchParameters<Cellar> search);
-
-    List<Cellar> getCellarsLike(String term, User user, SearchParameters<Cellar> search);
 
     Movement getMovementById(Integer movementId);
 
-    List<Movement> getMovements(SearchParameters<Movement> search);
-
     Stock getStockById(Integer stockId);
 
-    List<Stock> getStocks(Cellar cellar);
+    List<Cellar> getCellars(SearchParameters<Cellar> searchParameters);
 
-    List<Stock> getStocks(SearchParameters<Stock> search);
+    List<Cellar> getCellarsLike(String term, SearchParameters<Cellar> searchParameters);
 
-    boolean hasModifyRight(Integer cellarId, String userEmail);
+    <X> List<X> getFromCellars(SearchParameters<Cellar> searchParameters, ResultParameters<Cellar, X> resultParameters);
 
-    boolean hasReadRight(Integer cellarId, String userEmail);
+    List<CellarShare> getCellarShares(SearchParameters<CellarShare> searchParameters);
 
-    boolean isOwner(Integer cellarId, String userEmail);
+    <X> List<X> getFromCellarShares(SearchParameters<CellarShare> searchParameters, ResultParameters<CellarShare, X> resultParameters);
+
+    List<Movement> getMovements(SearchParameters<Movement> searchParameters);
+
+    <X> List<X> getFromMovements(SearchParameters<Movement> searchParameters, ResultParameters<Movement, X> resultParameters);
+
+    List<Stock> getStocks(SearchParameters<Stock> searchParameters);
+
+    <X> List<X> getFromStocks(SearchParameters<Stock> searchParameters, ResultParameters<Stock, X> resultParameters);
 
     Cellar saveCellar(Cellar cellar) throws BusinessException;
 
@@ -104,5 +106,11 @@ public interface StockServiceFacade {
     void validateMovement(Movement movement) throws BusinessException;
 
     void validateStock(Stock stock) throws BusinessException;
+
+    boolean hasModifyRight(Integer cellarId, String userEmail);
+
+    boolean hasReadRight(Integer cellarId, String userEmail);
+
+    boolean isOwner(Integer cellarId, String userEmail);
 
 }

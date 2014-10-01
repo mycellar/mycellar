@@ -20,7 +20,6 @@ package fr.mycellar.domain.position;
 
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.CoreMatchers.is;
-import fr.mycellar.domain.position.Position;
 import fr.mycellar.test.matchers.PropertiesMatcher;
 
 /**

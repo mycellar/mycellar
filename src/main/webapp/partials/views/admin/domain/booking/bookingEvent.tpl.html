@@ -1,9 +1,21 @@
-<admin-domain>
-  <header class="page-header"><h1>Campagne de réservation : {{bookingEvent.name}}</h1></header>
-  <form name="form" class="form">
-    <error-div errors="errors"></error-div>
-    <booking-event-form form="form" booking-event="bookingEvent"></booking-event-form>
-    <input type="submit" class="btn btn-primary" value="Sauvegarder" ng-click="save()" ng-disabled="form.$invalid" />
-    <input type="submit" class="btn btn-default" value="Annuler" ng-click="cancel()" />
-  </form>
-</admin-domain>
+<core-toolbar main>
+  <drawer-button icon="menu"></drawer-button>
+  <span flex>Campagne de réservation : {{bookingEvent.name}}</span>
+  <drawer-button right icon="more-vert"></drawer-button>
+</core-toolbar>
+<core-drawer-panel rightDrawer>
+  <nav role="secondary" drawer>
+    <admin-domain-nav></admin-domain-nav>
+  </nav>
+  <div main>
+    <form name="form" class="form">
+      <booking-event-form form="form" booking-event="bookingEvent"></booking-event-form>
+      <section>
+        <div horizontal layout>
+          <paper-button style="margin: auto;" raisedButton primary ng-click="save()" ng-disabled="form.$invalid" label="Sauvegarder"></paper-button>
+          <paper-button style="margin: auto;" raisedButton ng-click="cancel()" label="Annuler"></paper-button>
+        </div>
+      </section>
+    </form>
+  </div>
+</core-drawer-panel>

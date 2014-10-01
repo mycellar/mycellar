@@ -22,7 +22,7 @@ import static org.junit.Assert.assertEquals;
 
 import javax.inject.Inject;
 
-import jpasearch.repository.query.SearchBuilder;
+import jpasearch.repository.query.builder.SearchBuilder;
 
 import org.junit.Before;
 import org.junit.Test;

@@ -20,7 +20,6 @@ package fr.mycellar.domain.shared;
 
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.CoreMatchers.is;
-import fr.mycellar.domain.shared.NamedEntity;
 
 /**
  * @author speralta

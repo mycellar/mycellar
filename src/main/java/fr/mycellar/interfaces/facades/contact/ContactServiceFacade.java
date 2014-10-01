@@ -29,46 +29,22 @@ import fr.mycellar.domain.shared.exception.BusinessException;
  */
 public interface ContactServiceFacade {
 
-    /**
-     * @param search
-     * @return
-     */
     long countContacts(SearchParameters<Contact> search);
 
-    /**
-     * @param search
-     * @return
-     */
-    long countLastContacts(SearchParameters<Contact> search);
+    long countContactsLike(String input, SearchParameters<Contact> search);
 
-    /**
-     * @param objectId
-     * @return
-     */
+    long countLastContacts(String input, SearchParameters<Contact> search);
+
     Contact getContactById(Integer objectId);
 
-    /**
-     * @param search
-     * @return
-     */
     List<Contact> getContacts(SearchParameters<Contact> search);
 
-    /**
-     * @param search
-     * @return
-     */
-    List<Contact> getLastContacts(SearchParameters<Contact> search);
+    List<Contact> getContactsLike(String input, SearchParameters<Contact> search);
 
-    /**
-     * @param contact
-     * @throws BusinessException
-     */
+    List<Contact> getLastContacts(String input, SearchParameters<Contact> search);
+
     Contact saveContact(Contact contact) throws BusinessException;
 
-    /**
-     * @param object
-     * @throws BusinessException
-     */
     void deleteContact(Contact contact) throws BusinessException;
 
 }

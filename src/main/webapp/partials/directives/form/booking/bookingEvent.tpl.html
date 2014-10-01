@@ -1,27 +1,4 @@
-<div class="form-group" ng-class="{'has-error': form.bookingEvent.$invalid}">
-  <label class="control-label" for="bookingEvent">Campagne de réservation{{postLabel}}</label>
-  <div class="input-group" ng-show="!showSub">
-    <input 
-      id="bookingEvent"
-      name="bookingEvent"
-      type="text"
-      class="form-control"
-      ng-model="bookingEvent"
-      placeholder="Campagne de réservation{{postLabel}}"
-      typeahead="bookingEvent as renderBookingEvent(bookingEvent) for bookingEvent in bookingEvents($viewValue)"
-      typeahead-editable="false"
-      typeahead-min-length="3"
-      typeahead-wait-ms="200" />
-    <span class="input-group-btn">
-      <a class="btn btn-default" ng-click="new()"><i class="fa fa-plus"></i></a>
-    </span>
-  </div>
-  <div ng-if="showSub" class="sub-entity">
-    <ng-form name="subBookingEventForm">
-      <bookingEvent-form form="subBookingEventForm" bookingEvent="newBookingEvent" post-label=" de la campagne de réservation"></bookingEvent-form>
-      <a class="btn btn-success" ng-click="ok()">Valider</a>
-      <a class="btn btn-warning" ng-click="cancel()">Annuler</a>
-    </ng-form>
-  </div>
-  <span ng-transclude />
-</div>
+<autocomplete-input 
+  label="{{label}}"
+  inputValue="{{input}}"
+  />

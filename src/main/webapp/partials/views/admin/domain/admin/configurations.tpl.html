@@ -1,36 +1,22 @@
-<admin-domain>
-  <header class="page-header"><h1>Configurations</h1></header>
-  <error-div errors="errors"></error-div>
-  <paginated table-context="tableContext">
-    <div class="table-responsive">
-      <table class="table table-bordered table-striped table-condensed">
-        <thead>
-          <tr>
-            <th>Clé <icon-sort attribute="key" table-context="tableContext" /></th>
-            <th>Valeur</th>
-            <th class="actions"></th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr ng-repeat="configuration in tableContext.items">
-            <td>{{configuration.key}}</td>
-            <td>{{configuration.value}}</td>
-            <td>
-              <a href ng-click="edit(configuration.id)" class="btn btn-default btn-xs"><i class="fa fa-pencil"></i></a>
-            </td>
-          </tr>
-          <tr ng-if="tableContext.items.length == 0">
-            <td colspan="3" class="text-center">Aucune configuration.</td>
-          </tr>
-        </tbody>
-        <tfoot>
-          <tr>
-            <th>Clé <icon-sort attribute="key" table-context="tableContext" /></th>
-            <th>Valeur</th>
-            <th class="actions"></th>
-          </tr>
-        </tfoot>
-      </table>
-    </div>
-  </paginated>
-</admin-domain>
+<core-toolbar main>
+  <drawer-button icon="menu"></drawer-button>
+  <span flex>Configurations</span>
+  <drawer-button right icon="more-vert"></drawer-button>
+</core-toolbar>
+<core-drawer-panel rightDrawer>
+  <nav role="secondary" drawer>
+    <admin-domain-nav></admin-domain-nav>
+  </nav>
+  <div main>
+    <section>
+      <paper-item ng-if="items.length == 0">Aucune configuration</paper-item>
+      <paper-item class="twoLines" ng-click="edit(configuration.id)" ng-repeat="configuration in items">
+        <div flex>
+          <div class="ellipsis">{{configuration.key}}</div>
+          <div class="ellipsis"><small>{{configuration.value}}</small></div>
+        </div>
+      </paper-item>
+      <paper-item ng-if="size > items.length" label="Voir les {{size - items.length > pageCount ? pageCount : size - items.length}} suivantes sur {{size - items.length}}" ng-click="more()"></paper-item>
+    </section>
+  </div>
+</core-drawer-panel>

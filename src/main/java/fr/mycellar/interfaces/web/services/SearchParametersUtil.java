@@ -24,8 +24,8 @@ import javax.inject.Named;
 import javax.inject.Singleton;
 
 import jpasearch.repository.query.Path;
-import jpasearch.repository.query.SearchBuilder;
 import jpasearch.repository.query.SearchParameters;
+import jpasearch.repository.query.builder.SearchBuilder;
 
 /**
  * @author speralta
@@ -34,7 +34,7 @@ import jpasearch.repository.query.SearchParameters;
 @Singleton
 public class SearchParametersUtil {
 
-    public <E> SearchParameters<E> getSearchParametersParametersForListWithCount(int first, int count, List<FilterCouple> filters, List<OrderCouple> orders, Class<E> clazz) {
+    public <E> SearchBuilder<E> getSearchBuilder(int first, int count, List<FilterCouple> filters, List<OrderCouple> orders, Class<E> clazz) {
         SearchBuilder<E> searchBuilder = new SearchBuilder<E>();
         for (FilterCouple filter : filters) {
             if (filter.isFilterSet()) {
@@ -45,7 +45,11 @@ public class SearchParametersUtil {
         for (OrderCouple order : orders) {
             searchBuilder.orderBy(order.getDirection(), order.getProperty(), clazz);
         }
-        return searchBuilder.build();
+        return searchBuilder;
+    }
+
+    public <E> SearchParameters<E> getSearchParameters(int first, int count, List<FilterCouple> filters, List<OrderCouple> orders, Class<E> clazz) {
+        return getSearchBuilder(first, count, filters, orders, clazz).build();
     }
 
 }

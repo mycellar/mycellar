@@ -22,8 +22,10 @@ import javax.inject.Inject;
 import javax.inject.Named;
 import javax.inject.Singleton;
 
-import jpasearch.repository.query.SearchBuilder;
 import jpasearch.repository.query.SearchParameters;
+import jpasearch.repository.query.builder.ResultBuilder;
+import jpasearch.repository.query.builder.SearchBuilder;
+import fr.mycellar.application.admin.ConfigurationService;
 import fr.mycellar.application.shared.AbstractSearchableService;
 import fr.mycellar.application.wine.CountryService;
 import fr.mycellar.application.wine.RegionService;
@@ -44,6 +46,7 @@ public class RegionServiceImpl extends AbstractSearchableService<Region, RegionR
     private RegionRepository regionRepository;
 
     private CountryService countryService;
+    private ConfigurationService configurationService;
 
     @Override
     public void validate(Region entity) throws BusinessException {
@@ -66,15 +69,19 @@ public class RegionServiceImpl extends AbstractSearchableService<Region, RegionR
 
     @Override
     protected void validateDelete(Region entity) throws BusinessException {
-        if (regionRepository.findPropertyCount(new SearchBuilder<Region>() //
-                .on(Region_.id).equalsTo(entity.getId()).build(), Region_.appellations) > 0) {
+        if (countProperty(new SearchBuilder<Region>() //
+                .on(Region_.id).equalsTo(entity.getId()).build(), //
+                new ResultBuilder<>(Region_.appellations).build()) > 0) {
             throw new BusinessException(BusinessError.REGION_00003);
         }
     }
 
     @Override
     protected SearchParameters<Region> addTermToSearchParametersParameters(String term, SearchParameters<Region> searchParameters) {
-        return new SearchBuilder<>(searchParameters).fullText(NamedEntity_.name).search(term).build();
+        return new SearchBuilder<>(searchParameters) //
+                .fullText(NamedEntity_.name) //
+                .searchSimilarity(configurationService.getDefaultSearchSimilarity()) //
+                .andMode().search(term).build();
     }
 
     @Override
@@ -90,6 +97,11 @@ public class RegionServiceImpl extends AbstractSearchableService<Region, RegionR
     @Inject
     public void setCountryService(CountryService countryService) {
         this.countryService = countryService;
+    }
+
+    @Inject
+    public void setConfigurationService(ConfigurationService configurationService) {
+        this.configurationService = configurationService;
     }
 
 }

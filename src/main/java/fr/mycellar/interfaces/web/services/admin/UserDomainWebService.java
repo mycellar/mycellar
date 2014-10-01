@@ -67,15 +67,16 @@ public class UserDomainWebService {
             @QueryParam("first") int first, //
             @QueryParam("count") @DefaultValue("10") int count, //
             @QueryParam("filters") List<FilterCouple> filters, //
-            @QueryParam("sort") List<OrderCouple> orders) {
-        SearchParameters<User> searchParameters = searchParametersUtil.getSearchParametersParametersForListWithCount(first, count, filters, orders, User.class);
+            @QueryParam("sort") List<OrderCouple> orders, //
+            @QueryParam("like") String term) {
+        SearchParameters<User> searchParameters = searchParametersUtil.getSearchParameters(first, count, filters, orders, User.class);
         List<User> users;
         if (count == 0) {
             users = new ArrayList<>();
         } else {
-            users = userServiceFacade.getUsers(searchParameters);
+            users = userServiceFacade.getUsersLike(term, searchParameters);
         }
-        return new ListWithCount<>(userServiceFacade.countUsers(searchParameters), users);
+        return new ListWithCount<>(userServiceFacade.countUsersLike(term, searchParameters), users);
     }
 
     @GET
@@ -120,18 +121,14 @@ public class UserDomainWebService {
         userServiceFacade.validateUser(user);
     }
 
-    @GET
-    @Produces(MediaType.APPLICATION_JSON)
-    @Path("users/like")
-    public ListWithCount<User> getUsersLike(@QueryParam("first") int first, @QueryParam("count") int count, @QueryParam("input") String input, @QueryParam("sort") List<OrderCouple> orders) {
-        List<User> users;
-        if (count == 0) {
-            users = new ArrayList<>();
-        } else {
-            users = userServiceFacade.getUsersLike(input, searchParametersUtil.getSearchParametersParametersForListWithCount(first, count, new ArrayList<FilterCouple>(), orders, User.class));
+    @POST
+    @Consumes(MediaType.APPLICATION_JSON)
+    @Path("createUser")
+    public User createUser(User user) throws BusinessException {
+        if (user.getId() == null) {
+            return userServiceFacade.saveUserPassword(user, user.getPassword());
         }
-        return new ListWithCount<>(userServiceFacade.countUsersLike(input,
-                searchParametersUtil.getSearchParametersParametersForListWithCount(first, count, new ArrayList<FilterCouple>(), orders, User.class)), users);
+        throw new RuntimeException();
     }
 
     // BEAN METHODS

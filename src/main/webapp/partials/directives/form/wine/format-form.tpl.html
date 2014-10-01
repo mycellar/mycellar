@@ -1,23 +1,7 @@
-<fieldset>
-  <legend>Détails</legend>
-  <div class="form-group" ng-class="{'has-error': form.name.$invalid}">
-    <label class="control-label" for="name">Nom{{postLabel}}</label>
-    <input class="form-control" id="name" name="name" type="text" ng-model="format.name" placeholder="Nom{{postLabel}}" required />
-    <span class="help-block" ng-if="form.name.$error.required">Veuillez saisir un nom</span>
-  </div>
-  <div class="form-group" ng-class="{'has-error': form.capacity.$invalid}">
-    <label class="control-label" for="name">Contenance{{postLabel}}</label>
-    <input class="form-control" id="capacity" name="capacity" type="number" ng-model="format.capacity" placeholder="Contenance{{postLabel}}" required />
-    <span class="help-block" ng-if="form.capacity.$error.required">Veuillez saisir une contenance</span>
-  </div>
-  <div class="form-group" ng-class="{'has-error': form.description.$invalid}">
-    <label class="control-label" for="description">Description{{postLabel}}</label>
-    <textarea 
-        id="description"
-        name="description"
-        ng-model="format.description"
-        placeholder="Description{{postLabel}}"
-        class="form-control"
-        rows="5"></textarea>
-  </div>
-</fieldset>
+<div>
+  <section>
+    <paper-input id="name" label="Nom" floatingLabel type="text" bind-polymer-input="format.name" required></paper-input>
+    <paper-input id="capacity" label="Contenance" floatingLabel type="number" bind-polymer-input="format.capacity" required></paper-input>
+    <paper-input id="description" label="Description" floatingLabel type="text" multiline bind-polymer-input="format.description"></paper-input>
+  </section>
+</div>

@@ -18,8 +18,6 @@
  */
 package fr.mycellar.application.stock;
 
-import java.util.List;
-
 import org.joda.time.LocalDate;
 
 import fr.mycellar.application.shared.SimpleService;
@@ -46,7 +44,5 @@ public interface StockService extends SimpleService<Stock> {
     void drink(Drink drink) throws BusinessException;
 
     void stock(Arrival arrival) throws BusinessException;
-
-    List<Stock> getAllForCellar(Cellar cellar);
 
 }

@@ -148,22 +148,38 @@ module.exports = function(grunt) {
     },
 
     copy: {
-      fonts: {
+      lib: {
         expand: true,
-        cwd: './bower_components/font-awesome/fonts/',
-        src: '*',
-        dest: './src/main/webapp/fonts/'
+        cwd: './bower_components/',
+        src: [
+          '**/*'
+        ],
+        dest: './target/generated-sources/webapp/lib/'
+      },
+      http_auth: {
+        expand: true,
+        cwd: './bower_components/angular-http-auth/src/',
+        src: [
+          'http-auth-interceptor.js'
+        ],
+        dest: './target/generated-sources/webapp/lib/angular-http-auth/'
+      },
+      loading_bar: {
+        expand: true,
+        cwd: './bower_components/angular-loading-bar/build/',
+        src: [
+          'loading-bar.min.js',
+          'loading-bar.min.js.map',
+          'loading-bar.css'
+        ],
+        dest: './target/generated-sources/webapp/lib/angular-loading-bar/'
       }
     },
 
     concat: {
       styles: {
-        dest: './src/main/webapp/css/mycellar.css',
+        dest: './target/generated-sources/webapp/css/mycellar.css',
         src: [
-          './bower_components/bootstrap/dist/css/bootstrap.css',
-          './bower_components/bootstrap/dist/css/bootstrap-theme.css',
-          './bower_components/font-awesome/css/font-awesome.css',
-          './bower_components/angular-loading-bar/build/loading-bar.css',
           './src/main/css/**/*.css'
         ]
       },
@@ -171,22 +187,18 @@ module.exports = function(grunt) {
         options: {
           separator: ';'
         },
-        dest: './src/main/webapp/js/mycellar.js',
+        dest: './target/generated-sources/webapp/js/mycellar.js',
         src: [
-          './bower_components/angular/angular.js',
-          './bower_components/angular-resource/angular-resource.js',
-          './bower_components/angular-cookies/angular-cookies.js',
-          './bower_components/angular-route/angular-route.js',
-          './bower_components/angular-animate/angular-animate.js',
-          './bower_components/angular-i18n/angular-locale_fr-fr.js',
-          './bower_components/angular-loading-bar/build/loading-bar.js',
-          './bower_components/angular-bootstrap/ui-bootstrap-tpls.js',
-          './bower_components/angular-http-auth/src/http-auth-interceptor.js',
-          './src/main/javascript/**/*.js'
+          './src/main/javascript/mycellar.js',
+          './src/main/javascript/services/**/*.js',
+          './src/main/javascript/resources/**/*.js',
+          './src/main/javascript/filters/**/*.js',
+          './src/main/javascript/directives/**/*.js',
+          './src/main/javascript/controllers/**/*.js'
         ]
       }
     },
-    
+
     // 3 PC & 3 MAC (saucelabs os limitation)
     concurrent: {
       sauce_test: [

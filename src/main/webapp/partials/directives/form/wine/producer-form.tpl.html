@@ -1,18 +1,6 @@
-<fieldset>
-  <legend>Détails</legend>
-  <div class="form-group" ng-class="{'has-error': form.name.$invalid}">
-    <label class="control-label" for="name">Nom{{postLabel}}</label>
-    <input class="form-control" id="name" name="name" type="text" ng-model="producer.name" placeholder="Nom{{postLabel}}" required />
-    <span class="help-block" ng-if="form.name.$error.required">Veuillez saisir un nom</span>
-  </div>
-  <div class="form-group" ng-class="{'has-error': form.description.$invalid}">
-    <label class="control-label" for="description">Description{{postLabel}}</label>
-    <textarea 
-        id="description"
-        name="description"
-        ng-model="producer.description"
-        placeholder="Description{{postLabel}}"
-        class="form-control"
-        rows="5"></textarea>
-  </div>
-</fieldset>
+<div>
+  <section>
+    <paper-input id="name" label="Nom" floatingLabel type="text" bind-polymer-input="producer.name" required></paper-input>
+    <paper-input id="description" label="Description" floatingLabel type="text" multiline bind-polymer-input="producer.description"></paper-input>
+  </section>
+</div>

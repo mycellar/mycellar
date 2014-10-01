@@ -18,13 +18,11 @@
  */
 package fr.mycellar.application.stock.impl;
 
-import java.util.List;
-
 import javax.inject.Inject;
 import javax.inject.Named;
 import javax.inject.Singleton;
 
-import jpasearch.repository.query.SearchBuilder;
+import jpasearch.repository.query.builder.SearchBuilder;
 
 import org.joda.time.LocalDate;
 
@@ -104,11 +102,6 @@ public class StockServiceImpl extends AbstractSimpleService<Stock, StockReposito
             validate(stock);
             return stockRepository.save(stock);
         }
-    }
-
-    @Override
-    public List<Stock> getAllForCellar(Cellar cellar) {
-        return find(new SearchBuilder<Stock>().on(Stock_.cellar).equalsTo(cellar).build());
     }
 
     @Override

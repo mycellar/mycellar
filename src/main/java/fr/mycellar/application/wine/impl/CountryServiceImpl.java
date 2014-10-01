@@ -22,8 +22,10 @@ import javax.inject.Inject;
 import javax.inject.Named;
 import javax.inject.Singleton;
 
-import jpasearch.repository.query.SearchBuilder;
 import jpasearch.repository.query.SearchParameters;
+import jpasearch.repository.query.builder.ResultBuilder;
+import jpasearch.repository.query.builder.SearchBuilder;
+import fr.mycellar.application.admin.ConfigurationService;
 import fr.mycellar.application.shared.AbstractSearchableService;
 import fr.mycellar.application.wine.CountryService;
 import fr.mycellar.domain.shared.NamedEntity_;
@@ -42,6 +44,8 @@ public class CountryServiceImpl extends AbstractSearchableService<Country, Count
 
     private CountryRepository countryRepository;
 
+    private ConfigurationService configurationService;
+
     @Override
     public Country find(String name) {
         return countryRepository.findUniqueOrNone(new SearchBuilder<Country>().on(NamedEntity_.name).equalsTo(name).build());
@@ -57,14 +61,17 @@ public class CountryServiceImpl extends AbstractSearchableService<Country, Count
 
     @Override
     protected void validateDelete(Country entity) throws BusinessException {
-        if (countryRepository.findPropertyCount(new SearchBuilder<Country>().on(Country_.id).equalsTo(entity.getId()).build(), Country_.regions) > 0) {
+        if (countProperty(new SearchBuilder<Country>().on(Country_.id).equalsTo(entity.getId()).build(), new ResultBuilder<>(Country_.regions).build()) > 0) {
             throw new BusinessException(BusinessError.COUNTRY_00002);
         }
     }
 
     @Override
     protected SearchParameters<Country> addTermToSearchParametersParameters(String term, SearchParameters<Country> searchParameters) {
-        return new SearchBuilder<>(searchParameters).fullText(NamedEntity_.name).search(term).build();
+        return new SearchBuilder<>(searchParameters) //
+                .fullText(NamedEntity_.name) //
+                .searchSimilarity(configurationService.getDefaultSearchSimilarity()) //
+                .andMode().search(term).build();
     }
 
     @Override
@@ -75,6 +82,11 @@ public class CountryServiceImpl extends AbstractSearchableService<Country, Count
     @Inject
     public void setCountryRepository(CountryRepository countryRepository) {
         this.countryRepository = countryRepository;
+    }
+
+    @Inject
+    public void setConfigurationService(ConfigurationService configurationService) {
+        this.configurationService = configurationService;
     }
 
 }

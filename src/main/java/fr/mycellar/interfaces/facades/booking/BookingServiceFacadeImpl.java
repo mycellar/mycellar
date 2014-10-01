@@ -56,8 +56,8 @@ public class BookingServiceFacadeImpl implements BookingServiceFacade {
 
     @Override
     @Transactional(readOnly = true)
-    public Booking getBooking(BookingEvent bookingEvent, User customer) {
-        Booking booking = bookingService.getBooking(bookingEvent, customer);
+    public Booking getBooking(Integer bookingEventId, User customer) {
+        Booking booking = bookingService.getBooking(bookingEventId, customer);
         updateBooking(booking);
         return booking;
     }
@@ -66,22 +66,6 @@ public class BookingServiceFacadeImpl implements BookingServiceFacade {
     @Transactional(readOnly = true)
     public List<BookingEvent> getCurrentBookingEvents() {
         return bookingEventService.getCurrentBookingEvents();
-    }
-
-    @Override
-    @Transactional(readOnly = true)
-    public long countBookings(User customer) {
-        return bookingService.countBookings(customer);
-    }
-
-    @Override
-    @Transactional(readOnly = true)
-    public List<Booking> getBookings(User customer, int first, int count) {
-        List<Booking> bookings = bookingService.getBookings(customer, first, count);
-        for (Booking booking : bookings) {
-            updateBooking(booking);
-        }
-        return bookings;
     }
 
     @Override

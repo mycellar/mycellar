@@ -1,10 +1,7 @@
-<ul class="list-group">
-  <li class="list-group-item" ng-repeat="header in menu">
-    <span class="list-group-item-heading">{{header.label}}</span>
-    <ul class="nav nav-pills nav-stacked text-center">
-      <li ng-repeat="menu in header.menus" ng-class="{active: (currentLocation == menu.route || currentLocation.search(menu.route.substr(0, menu.route.length - 1)+'/')) > -1}">
-        <a href="{{menu.route}}"> {{menu.label}}</a>
-      </li>
-    </ul>
-  </li>
-</ul>
+<core-menu>
+  <core-submenu label="{{header.label}}" ng-repeat="header in menu">
+    <paper-item ng-repeat="menu in header.menus" label="{{menu.label}}">
+      <a href="{{menu.route}}"></a>
+    </paper-item>
+  </core-submenu>
+</core-menu>

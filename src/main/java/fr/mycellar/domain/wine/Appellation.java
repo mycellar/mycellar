@@ -42,6 +42,7 @@ import lombok.Setter;
 
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.hibernate.search.annotations.Indexed;
+import org.hibernate.search.annotations.IndexedEmbedded;
 
 import fr.mycellar.domain.position.Map;
 import fr.mycellar.domain.shared.IdentifiedEntity;
@@ -75,6 +76,7 @@ public class Appellation extends NamedEntity {
     @Setter
     private Map map;
 
+    @IndexedEmbedded
     @ManyToOne(cascade = { CascadeType.PERSIST, CascadeType.MERGE })
     @JoinColumn(name = "REGION", nullable = false)
     @Getter

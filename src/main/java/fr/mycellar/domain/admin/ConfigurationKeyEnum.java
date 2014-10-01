@@ -22,5 +22,10 @@ package fr.mycellar.domain.admin;
  * @author speralta
  */
 public enum ConfigurationKeyEnum {
-    MAIL_ADDRESS_SENDER, REMINDER_ADDRESS_RECEIVERS
+    // mail information for reminder
+    MAIL_ADDRESS_SENDER, //
+    REMINDER_ADDRESS_RECEIVERS, //
+
+    // Search similarity for xService.xLike
+    DEFAULT_SEARCH_SIMILARITY, //
 }

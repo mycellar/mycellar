@@ -1,9 +1,0 @@
-<form id="form" class="form-inline">
-  <fieldset>
-    <legend><a href ng-click="tableContext.filtersIsCollapsed = !tableContext.filtersIsCollapsed"><i class="fa" ng-class="tableContext.filtersIsCollapsed ? 'fa-caret-square-o-right' : 'fa-caret-square-o-down'"></i></a> Filtres</legend>
-    <div collapse="tableContext.filtersIsCollapsed">
-      <span ng-transclude></span>
-      <input type="button" class="btn btn-default" value="Purger les filtres" ng-click="tableContext.clearFilters()" />
-    </div>
-  </fieldset>
-</form>

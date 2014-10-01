@@ -39,6 +39,7 @@ import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.hibernate.annotations.Type;
 import org.hibernate.search.annotations.Field;
 import org.hibernate.search.annotations.Indexed;
+import org.hibernate.search.annotations.IndexedEmbedded;
 import org.joda.time.LocalDate;
 
 import fr.mycellar.domain.shared.IdentifiedEntity;
@@ -61,6 +62,7 @@ public class Contact extends IdentifiedEntity {
     @Getter
     private Integer id;
 
+    @IndexedEmbedded
     @Valid
     @ManyToOne(cascade = { CascadeType.PERSIST, CascadeType.MERGE })
     @JoinColumn(name = "PRODUCER", nullable = false)

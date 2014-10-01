@@ -21,7 +21,6 @@ package fr.mycellar.domain.wine;
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.CoreMatchers.is;
 import fr.mycellar.domain.shared.NamedEntityHasSameProperties;
-import fr.mycellar.domain.wine.Producer;
 
 /**
  * @author speralta

@@ -38,6 +38,8 @@ import lombok.Getter;
 import lombok.Setter;
 
 import org.apache.commons.lang3.builder.ToStringBuilder;
+import org.hibernate.search.annotations.Indexed;
+import org.hibernate.search.annotations.IndexedEmbedded;
 
 import fr.mycellar.domain.shared.IdentifiedEntity;
 
@@ -45,6 +47,7 @@ import fr.mycellar.domain.shared.IdentifiedEntity;
  * @author bperalta
  */
 @Entity
+@Indexed
 @Table(name = "STOCK", uniqueConstraints = @UniqueConstraint(columnNames = { "WINE", "FORMAT", "CELLAR" }))
 @SequenceGenerator(name = "STOCK_ID_GENERATOR", allocationSize = 1)
 public class Stock extends IdentifiedEntity {
@@ -52,11 +55,13 @@ public class Stock extends IdentifiedEntity {
     private static final long serialVersionUID = 201111181451L;
 
     @Embedded
+    @IndexedEmbedded
     @Valid
     @Getter
     @Setter
     private Bottle bottle;
 
+    @IndexedEmbedded
     @ManyToOne(cascade = { CascadeType.PERSIST, CascadeType.MERGE })
     @JoinColumn(name = "CELLAR", nullable = false)
     @Getter

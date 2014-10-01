@@ -1,0 +1,62 @@
+<link rel="import" href="../../lib/polymer/polymer.html">
+<link rel="import" href="../../lib/paper-input/paper-input.html">
+<link rel="import" href="../../lib/paper-icon-button/paper-icon-button.html">
+<link rel="import" href="../../lib/core-menu/core-menu.html">
+<link rel="import" href="../../lib/paper-item/paper-item.html">
+<link rel="import" href="autocomplete-overlay.html">
+
+<polymer-element name="autocomplete-input" attributes="label inputValue">
+  <template>
+    <style>
+      :host #target {
+        min-height: 48px;
+      }
+      :host #display, :host #icon {
+        margin: auto;
+      }
+      :host #overlay {
+        overflow-y: auto;
+      }
+    </style>
+    <div id="target" horizontal layout>
+      <paper-input id="control" flex hidden?="{{value}}" label="{{label}}" type="text" value="{{inputValue}}"></paper-input>
+      <span id="display" flex hidden?="{{!value}}">{{label}} : {{renderFn(value)}}</span>
+      <paper-icon-button id="icon" hidden?="{{!value}}" icon="cancel" on-tap="{{cancelAction}}"></paper-icon-button>
+    </div>
+    <autocomplete-overlay id="overlay" relatedTarget="{{$.target}}" opened="{{possibles && possibles.length > 0}}">
+      <core-menu>
+        <template repeat="{{possible in possibles}}">
+          <paper-item on-tap="{{selectAction}}">{{renderFn(possible)}}</paper-item>
+        </template>
+      </core-menu>
+    </autocomplete-overlay>
+  </template>
+  <script>
+    Polymer('autocomplete-input', {
+      ready: function() {
+      },
+      cancelAction: function(event, detail, sender) {
+        this.changeValue(null);
+      },
+      selectAction: function(event, detail, sender) {
+        this.changeValue(sender.templateInstance.model.possible);
+      },
+      changeValue: function(value) {
+        if (this.clearInput) {
+          this.clearInput();
+        }
+        this.value = value;
+        if (this.setValue) {
+          this.setValue(this.value);
+        }
+      },
+      renderFn: function(value) {
+        if (this.render && value) {
+          return this.render(value);
+        } else {
+          return value;
+        }
+      }
+    });
+  </script>
+</polymer-element>

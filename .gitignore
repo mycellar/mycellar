@@ -2,14 +2,10 @@
 .settings
 .classpath
 /target
-/src/main/webapp/js
-/src/main/webapp/css
-/src/main/webapp/fonts
 /node_modules
 /bower_components
 /coverage
 /startDev.bat
-/startE2E.bat
 /infinitest.filters
 /.idea
 /mycellar.iml

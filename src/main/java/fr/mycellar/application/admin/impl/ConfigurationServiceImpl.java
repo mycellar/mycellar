@@ -22,7 +22,10 @@ import javax.inject.Inject;
 import javax.inject.Named;
 import javax.inject.Singleton;
 
-import jpasearch.repository.query.SearchBuilder;
+import jpasearch.repository.query.builder.SearchBuilder;
+
+import org.apache.commons.lang3.StringUtils;
+
 import fr.mycellar.application.admin.ConfigurationService;
 import fr.mycellar.application.shared.AbstractSimpleService;
 import fr.mycellar.domain.admin.Configuration;
@@ -50,6 +53,28 @@ public class ConfigurationServiceImpl extends AbstractSimpleService<Configuratio
     @Override
     public String getMailAddressSender() {
         return find(ConfigurationKeyEnum.MAIL_ADDRESS_SENDER).getValue();
+    }
+
+    @Override
+    public Integer getDefaultSearchSimilarity() {
+        String searchSimilarity = find(ConfigurationKeyEnum.DEFAULT_SEARCH_SIMILARITY).getValue();
+        if (StringUtils.isNotBlank(searchSimilarity)) {
+            Integer value;
+            try {
+                value = Integer.parseInt(searchSimilarity);
+            } catch (NumberFormatException e) {
+                value = null;
+            }
+            if (value != null) {
+                switch (value) {
+                case 1:
+                    return 1;
+                case 2:
+                    return 2;
+                }
+            }
+        }
+        return null;
     }
 
     @Override

@@ -1,0 +1,50 @@
+<link rel="import" href="../../lib/polymer/polymer.html">
+<link rel="import" href="../../lib/core-overlay/core-overlay.html">
+<polymer-element name="autocomplete-overlay" extends="core-overlay">
+<template>
+  <style>
+    :host {
+      display: block;
+      border: 1px solid rgba(0, 0, 0, 0.12);
+      background-color: #fff;
+      max-height: inherit;
+    }
+  </style>
+  <content></content>
+</template>
+<script>
+    Polymer({
+
+      publish: {
+        relatedTarget: null,
+        applyFocus: function() {
+        },
+        layered: true,
+        margin: 12,
+        transition: 'core-transition-top'
+      },
+
+      positionTarget: function() {
+        if (!this.relatedTarget) {
+          this.super();
+          return;
+        }
+
+        var ref = this.relatedTarget.getBoundingClientRect();
+
+        this.target.style.top = ref.bottom + 'px';
+        this.target.style.left = ref.left + 'px';
+      },
+
+      sizeTarget: function() {
+        var rect = this.relatedTarget.getBoundingClientRect();
+        var sizer = this.sizingTarget || this.target;
+
+        sizer.style.minWidth = rect.width + 'px';
+
+        this.super();
+      }
+
+    });
+  </script>
+</polymer-element>

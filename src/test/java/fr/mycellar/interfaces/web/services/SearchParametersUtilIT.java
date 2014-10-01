@@ -25,8 +25,8 @@ import java.util.List;
 
 import jpasearch.repository.query.OrderByDirection;
 import jpasearch.repository.query.Path;
-import jpasearch.repository.query.SearchBuilder;
 import jpasearch.repository.query.SearchParameters;
+import jpasearch.repository.query.builder.SearchBuilder;
 import jpasearch.repository.query.selector.Selector;
 
 import org.junit.Test;
@@ -77,7 +77,7 @@ public class SearchParametersUtilIT {
                 .orderBy(OrderByDirection.DESC, secondOrder, Wine.class);
         SearchParameters<Wine> expected = expectedBuilder.build();
 
-        SearchParameters<Wine> searchParameters = searchParametersUtil.getSearchParametersParametersForListWithCount(first, count, filters, orders, Wine.class);
+        SearchParameters<Wine> searchParameters = searchParametersUtil.getSearchParameters(first, count, filters, orders, Wine.class);
 
         assertEquals(expected.getFirstResult(), searchParameters.getFirstResult());
         assertEquals(expected.getMaxResults(), searchParameters.getMaxResults());
