@@ -68,7 +68,9 @@ public class JpaAppellationRepositoryIT {
     private List<Appellation> searchByNameTerm(String input) {
         return jpaAppellationRepository.find( //
                 new SearchBuilder<Appellation>() //
-                        .fullText(NamedEntity_.name).search(input) //
+                        .fullText(NamedEntity_.name) //
+                        .searchSimilarity(2) //
+                        .search(input) //
                         .build());
     }
 

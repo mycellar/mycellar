@@ -19,6 +19,10 @@
 package fr.mycellar.application.booking.impl;
 
 import static org.junit.Assert.assertEquals;
+import static org.mockito.Mockito.only;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
+import static org.mockito.MockitoAnnotations.initMocks;
 
 import javax.inject.Inject;
 
@@ -27,12 +31,14 @@ import jpasearch.repository.query.builder.SearchBuilder;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.mockito.Mock;
 import org.springframework.boot.test.SpringApplicationConfiguration;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.transaction.annotation.Transactional;
 
 import fr.mycellar.MyCellarApplication;
+import fr.mycellar.application.admin.ConfigurationService;
 import fr.mycellar.application.booking.BookingService;
 import fr.mycellar.domain.booking.BookingEvent;
 import fr.mycellar.infrastructure.booking.repository.BookingEventRepository;
@@ -52,18 +58,26 @@ public class BookingEventServiceImplIT {
     private BookingService bookingService;
     @Inject
     private BookingEventRepository bookingEventRepository;
+    @Mock
+    private ConfigurationService configurationService;
 
     @Before
     public void setUp() {
+        initMocks(this);
         bookingEventServiceImpl = new BookingEventServiceImpl();
         bookingEventServiceImpl.setBookingEventRepository(bookingEventRepository);
         bookingEventServiceImpl.setBookingService(bookingService);
+        bookingEventServiceImpl.setConfigurationService(configurationService);
     }
 
     @Test
     public void test() {
+        when(configurationService.getDefaultSearchSimilarity()).thenReturn(2);
+
         assertEquals(2, bookingEventServiceImpl.countAllLike("Campag", new SearchBuilder<BookingEvent>().build()));
         assertEquals(2, bookingEventServiceImpl.countAllLike("test", new SearchBuilder<BookingEvent>().build()));
         assertEquals(0, bookingEventServiceImpl.countAllLike("carnage", new SearchBuilder<BookingEvent>().build()));
+
+        verify(configurationService, only());
     }
 }
