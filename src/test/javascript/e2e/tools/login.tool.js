@@ -1,16 +1,13 @@
 var expect = require('./chai.tool');
 
 module.exports = {
-
   loginWith: function(mail, password) {
-    var loginPage = new LoginPage();
-    loginPage.get();
+    var loginDialog = new LoginDialog();
+    loginDialog.setEmail(mail);
+    loginDialog.setPassword(password);
+    loginDialog.login();
 
-    loginPage.emailInput.sendKeys(mail);
-    loginPage.passwordInput.sendKeys(password);
-    loginPage.loginButton.click();
-
-    expect(loginPage.accountLink.getText()).to.eventually.equal(mail);
+    expect(loginDialog.accountLink.getText()).to.eventually.equal(mail);
   },
 
   login: function() {
@@ -18,19 +15,23 @@ module.exports = {
   },
 
   logout: function() {
-    element(by.xpath('//a[@title="Se déconnecter"]')).click();
-    expect(element(by.xpath('//a[@title="Se déconnecter"]')).isDisplayed()).to.eventually.be.false;
+    var loginDialog = new LoginDialog();
+    loginDialog.logoutLink.click();
+    expect(loginDialog.logoutLink.isDisplayed()).to.eventually.be.false;
   }
 
 };
 
-var LoginPage = function() {
-  this.get = function() {
-    browser.get('/login');
-  }
-
-  this.emailInput = element(by.xpath('//form[@name="loginForm"]//input[@id="email"]'));
-  this.passwordInput = element(by.xpath('//form[@name="loginForm"]//input[@id="password"]'));
-  this.loginButton = element(by.xpath('//form[@name="loginForm"]//input[@type="submit"]'));
+var LoginDialog = function() {
+  this.setEmail = function(email) {
+    element(by.xpath('//*[@id="input"][@type="email"]')).sendKeys(email);
+  };
+  this.setPassword = function(password) {
+    element(by.xpath('//*[@id="input"][@type="password"]')).sendKeys(password);
+  };
+  this.login = function() {
+    element(by.xpath('//paper-dialog[@id="loginDialog"]//input[@type="submit"]')).click();
+  };
   this.accountLink = element(by.xpath('//a[@title="Mon compte"]'));
+  this.logoutLink = element(by.xpath('//a[@title="Se déconnecter"]'));
 };

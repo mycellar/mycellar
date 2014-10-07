@@ -13,7 +13,7 @@ describe('E2E: Testing home', function() {
 
 var HomePage = function() {
   this.get = function() {
-    browser.get('/');
+    browser.polymerGet('/home');
   };
 
   this.getWineCount = function() {
