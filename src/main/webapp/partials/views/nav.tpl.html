@@ -1,5 +1,8 @@
 <core-toolbar>
-  <span>MyCellar</span>
+  <div vertical layout>
+    <span>MyCellar</span>
+    <a href="/account"><span ng-if="currentUser != null"><small>{{currentUser.email}}</small></span></a>
+  </div>
 </core-toolbar>
 <nav flex>
   <core-menu ng-controller="NavigationController">

@@ -2,34 +2,36 @@
   <drawer-button icon="menu"></drawer-button>
   <span flex>Actualités du site</span>
 </core-toolbar>
-<article>
-  <h1>Réservations disponibles</h1>
-  <p>L'outil de réservation pour les campagnes de Cave et Terroirs est en ligne. Utilisez-le pour effectuer vos réservations !</p>
-  <p><a class="btn btn-primary" href="booking/currents">Voir les campagnes en cours</a></p>
-</article>
-<article>
-  <div class="panel panel-default">
-    <div class="panel-heading">
+<section>
+  <article class="card">
+    <paper-shadow z="1"></paper-shadow>
+    <header>Réservations disponibles</header>
+    <div>
+      <p>L'outil de réservation pour les campagnes de Cave et Terroirs est en ligne. Utilisez-le pour effectuer vos réservations !</p>
+      <p><a href="booking/currents">Voir les campagnes en cours</a></p>
+    </div>
+  </article>
+  <article class="card" ng-if="currentUser == null">
+    <paper-shadow z="1"></paper-shadow>
+    <header>
       <a href="http://www.cave-et-terroirs.fr/">Cave et Terroirs</a>
+    </header>
+    <div>
+      <p>Pour pouvoir accéder aux réservations, vous devez être inscrit.</p>
+      <p><a href="register">Inscrivez-vous</a> ou <a href="/booking/currents">connectez-vous</a> !</p>
     </div>
-    <div class="panel-body">
-      <p>Pour pouvoir accéder aux réservations, votre inscription doit être validée. Inscrivez-vous en cliquant sur le bouton ci-dessous, nous vous tiendrons informé dans les plus brefs délais.</p>
-      <p><a class="btn btn-default" href="register">Créer un nouveau compte</a></p>
-    </div>
-  </div>
-</article>
-<article>
-  <div class="panel panel-default">
-    <div class="panel-body">
+  </article>
+  <article class="card">
+    <paper-shadow z="1"></paper-shadow>
+    <header>
+      <a class="btn btn-default" href="vinopedia">Accéder à Vinopedia</a>
+    </header>
+    <div>
       <p>Une bibliothèque des vins contenant plus de {{wineCount}} références !</p>
-      <p><a class="btn btn-default" href="pedia">Accéder à Vinopedia</a></p>
     </div>
-  </div>
-</article>
-<article>
-  <div class="panel panel-default">
-    <div class="panel-body">
-      <p>Bientôt en ligne : un outil de gestion cave couplé à vos réservations.</p>
-    </div>
-  </div>
-</article>
+  </article>
+  <article class="card">
+    <paper-shadow z="1"></paper-shadow>
+    <div><p>Bientôt en ligne : un outil de gestion cave couplé à vos réservations.</p></div>
+  </article>
+</section>

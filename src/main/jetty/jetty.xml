@@ -21,8 +21,8 @@
       <New class="org.eclipse.jetty.jndi.factories.MailSessionReference">
         <Set name="properties">
           <New class="java.util.Properties">
-            <Put name="mail.smtp.host">smtp.peralta.fr</Put>
-            <Put name="mail.smtp.port">10025</Put>
+            <Put name="mail.smtp.host">smtp.free.fr</Put>
+            <Put name="mail.smtp.port">25</Put>
           </New>
         </Set>
       </New>

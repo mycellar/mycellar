@@ -39,7 +39,9 @@ angular.module('mycellar.controllers.password').controller('ResetPasswordRequest
   '$scope', 'security',
   function ($scope, security) {
     $scope.email = '';
+    $scope.disabled = false;
     $scope.requestPasswordReset = function() {
+      $scope.disabled = true;
       security.sendPasswordResetMail($scope.email).success(function() {
         $scope.mailSent = true;
       });
@@ -52,12 +54,16 @@ angular.module('mycellar.controllers.password').controller('ResetPasswordControl
   '$scope', 'security', 'key', 'email', '$location',
   function ($scope, security, key, email, $location) {
     $scope.email = email;
-    $scope.password = '';
-    $scope.password2 = '';
+    $scope.passwords = {
+      password: '',
+      password2: ''
+    };
     $scope.resetPassword = function() {
-      security.resetPassword(key, $scope.password).success(function() {
-        $location.path('/');
-      });
+      if  ($scope.passwords.password !== '' && $scope.passwords.password === $scope.passwords.password2) {
+        security.resetPassword(key, $scope.passwords.password).success(function() {
+          security.login($scope.email, $scope.passwords.password);
+        });
+      }
     }
   }
 ]);

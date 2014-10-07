@@ -37,6 +37,7 @@ angular.module('mycellar.services.security').factory('security', [
           $rootScope.currentUser = data;
           setToken(headers(tokenHeaderName));
           menuService.reloadMenus();
+          $location.path('/account');
         });
       },
 

@@ -12,8 +12,8 @@ angular.module('mycellar.controllers.account', [
 ]);
 
 angular.module('mycellar.controllers.account').controller('AccountController', [
-  '$scope', '$rootScope', 'security',
-  function ($scope, $rootScope, security) {
+  '$scope', '$rootScope', 'security', '$location',
+  function ($scope, $rootScope, security, $location) {
     $scope.hasProfile = false;
     $scope.hasBooking = false;
     $scope.hasCellar = false;
@@ -40,6 +40,8 @@ angular.module('mycellar.controllers.account').controller('AccountController', [
         }
         $scope.userEmail = $rootScope.currentUser.email;
         $scope.userName = $rootScope.currentUser.name;
+      } else {
+        $rootScope.$broadcast('event:auth-loginRequired');
       }
     };
     var resetScope = function() {
@@ -73,8 +75,14 @@ angular.module('mycellar.controllers.account').controller('AccountController', [
       security.changePassword($scope.oldPassword, $scope.password);
       $scope.hideForms();
     };
+    $scope.cancelChangePassword = function() {
+      $scope.hideForms();
+    };
     $scope.changeEmail = function() {
       security.changeEmail($scope.email, $scope.password);
+      $scope.hideForms();
+    };
+    $scope.cancelChangeEmail = function() {
       $scope.hideForms();
     };
   }

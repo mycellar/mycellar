@@ -12,6 +12,10 @@ body {
   color: rgba(0, 0, 0, 0.87);
 }
 
+body /deep/ a {
+  text-decoration: none;
+}
+
 body /deep/ core-icon {
   color: rgba(0, 0, 0, 0.54);
 }
@@ -67,7 +71,7 @@ body /deep/ core-toolbar {
   color: rgba(255, 255, 255, 0.87);
 }
 
-body /deep/ core-toolbar /deep/ core-icon {
+body /deep/ core-toolbar /deep/ small, body /deep/ core-toolbar /deep/ core-icon {
   color: rgba(255, 255, 255, 0.54);
 }
 
@@ -159,6 +163,8 @@ body /deep/ .card {
   border-radius: 2px;
   background: #fff;
   float: left;
+  max-width: 300px;
+  min-height: 200px;
 }
 
 body /deep/ .card header {
