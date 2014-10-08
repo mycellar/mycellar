@@ -4,10 +4,10 @@ exports.config = {
 
   suites: {
     all: [
-      './e2e/**/*.spec.js',
-      './e2e/**/*.spec.pc.js',
+      '../e2e/**/*.spec.js',
+      '../e2e/**/*.spec.pc.js',
     ],
-    home: './e2e/home.spec.js'
+    home: '../e2e/home.spec.js'
   },
 
   capabilities: {
