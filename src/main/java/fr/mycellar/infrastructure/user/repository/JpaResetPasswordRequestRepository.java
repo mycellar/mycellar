@@ -23,7 +23,7 @@ import javax.inject.Singleton;
 
 import jpasearch.repository.JpaSimpleRepository;
 
-import org.joda.time.LocalDate;
+import org.joda.time.LocalDateTime;
 
 import fr.mycellar.domain.user.ResetPasswordRequest;
 import fr.mycellar.domain.user.User;
@@ -44,7 +44,7 @@ public class JpaResetPasswordRequestRepository extends JpaSimpleRepository<Reset
 
     @Override
     public void deleteOldRequests() {
-        getEntityManager().createQuery("DELETE " + ResetPasswordRequest.class.getSimpleName() + " WHERE dateTime <= :dateTime").setParameter("dateTime", new LocalDate().minusDays(1)).executeUpdate();
+        getEntityManager().createQuery("DELETE " + ResetPasswordRequest.class.getSimpleName() + " WHERE dateTime <= :dateTime").setParameter("dateTime", new LocalDateTime().minusDays(1)).executeUpdate();
     }
 
     @Override
