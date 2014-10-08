@@ -2,10 +2,13 @@ exports.config = {
   sauceUser: process.env.SAUCE_USERNAME,
   sauceKey: process.env.SAUCE_ACCESS_KEY,
 
-  specs: [
-    '../e2e/**/*.spec.js',
-    '../e2e/**/*.spec.pc.js'
-  ],
+  suites: {
+    all: [
+      './e2e/**/*.spec.js',
+      './e2e/**/*.spec.pc.js',
+    ],
+    home: './e2e/home.spec.js'
+  },
 
   capabilities: {
     'browserName': 'firefox',
@@ -20,6 +23,7 @@ exports.config = {
   framework: 'mocha',
   mochaOpts: {
     reporter: 'spec',
-    slow: 3000
+    slow: 3000,
+    timeout: 300000
   }
 };

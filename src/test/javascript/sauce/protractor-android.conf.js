@@ -2,9 +2,12 @@ exports.config = {
   sauceUser: process.env.SAUCE_USERNAME,
   sauceKey: process.env.SAUCE_ACCESS_KEY,
 
-  specs: [
-    '../e2e/**/*.spec.js'
-  ],
+  suites: {
+    all: [
+      './e2e/**/*.spec.js',
+    ],
+    home: './e2e/home.spec.js'
+  },
 
   capabilities: {
     'browserName': 'android',
@@ -20,6 +23,7 @@ exports.config = {
   framework: 'mocha',
   mochaOpts: {
     reporter: 'spec',
-    slow: 3000
+    slow: 3000,
+    timeout: 300000
   }
 };

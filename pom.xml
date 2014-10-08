@@ -256,6 +256,7 @@
                     <argument>node_modules/grunt-cli/bin/grunt</argument>
                     <argument>--no-color</argument>
                     <argument>test:${e2e}</argument>
+                    <argument>--suite home</argument>
                   </arguments>
                 </configuration>
               </execution>
