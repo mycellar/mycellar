@@ -30,6 +30,7 @@ import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
+import javax.persistence.UniqueConstraint;
 import javax.xml.bind.annotation.XmlTransient;
 
 import lombok.Getter;
@@ -48,8 +49,8 @@ import fr.mycellar.domain.stock.Stock;
  */
 @Entity
 @Indexed
-@Table(name = "FORMAT")
-@AttributeOverride(name = "name", column = @Column(name = "NAME", nullable = false, unique = true))
+@Table(name = "FORMAT", uniqueConstraints = @UniqueConstraint(columnNames = { "NAME", "CAPACITY" }))
+@AttributeOverride(name = "name", column = @Column(name = "NAME", nullable = false, unique = false))
 @SequenceGenerator(name = "FORMAT_ID_GENERATOR", allocationSize = 1)
 public class Format extends NamedEntity {
 

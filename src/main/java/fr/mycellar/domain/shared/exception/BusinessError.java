@@ -99,7 +99,7 @@ public enum BusinessError {
     /*
      * Format
      */
-    FORMAT_00001(Format_.name), //
+    FORMAT_00001(Format_.name, Format_.capacity), //
     FORMAT_00002(Format_.bookingBottles), //
     FORMAT_00003(Format_.stocks), //
 
