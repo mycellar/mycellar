@@ -27,7 +27,7 @@
   </parent>
 
   <groupId>mycellar</groupId>
-  <version>0.9.0</version>
+  <version>0.9.1-SNAPSHOT</version>
   <artifactId>mycellar</artifactId>
   <packaging>war</packaging>
   <name>MyCellar</name>
