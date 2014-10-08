@@ -8,7 +8,8 @@ create table APPELLATION (
     LATITUDE float,
     LONGITUDE float,
     IMAGE integer,
-    REGION integer not null,
+    REGION integer,
+    COUNTRY integer,
     primary key (ID)
 );
 
@@ -225,7 +226,7 @@ create table WINE_VARIETAL (
 );
 
 alter table APPELLATION 
-    add constraint UK_9ame1yvu2kl9fr12ggxxb4dyd unique (NAME, REGION);
+    add constraint UK_9ame1yvu2kl9fr12ggxxb4dyd unique (NAME, REGION, COUNTRY);
 
 alter table BOOKING 
     add constraint UK_ilrd55eelword070ye6g7iyvb unique (CUSTOMER, BOOKING_EVENT);
@@ -278,6 +279,11 @@ alter table APPELLATION
     add constraint FK_tkk2tew0ul3i360x4neejqc3w 
     foreign key (REGION) 
     references REGION;
+
+alter table APPELLATION 
+    add constraint FK_tkk2tew0ul3i360x4neejqc3s 
+    foreign key (COUNTRY) 
+    references COUNTRY;
 
 alter table BOOKING 
     add constraint FK_5b1jwhbj4briq5atqtqxtg3aq 
