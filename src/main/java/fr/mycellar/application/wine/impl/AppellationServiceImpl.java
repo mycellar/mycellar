@@ -28,6 +28,7 @@ import jpasearch.repository.query.builder.SearchBuilder;
 import fr.mycellar.application.admin.ConfigurationService;
 import fr.mycellar.application.shared.AbstractSearchableService;
 import fr.mycellar.application.wine.AppellationService;
+import fr.mycellar.application.wine.CountryService;
 import fr.mycellar.application.wine.RegionService;
 import fr.mycellar.domain.shared.NamedEntity_;
 import fr.mycellar.domain.shared.exception.BusinessError;
@@ -46,21 +47,29 @@ public class AppellationServiceImpl extends AbstractSearchableService<Appellatio
     private AppellationRepository appellationRepository;
 
     private RegionService regionService;
+    private CountryService countryService;
     private ConfigurationService configurationService;
 
     @Override
     public void validate(Appellation entity) throws BusinessException {
-        if (entity.getRegion() == null) {
+        if ((entity.getRegion() == null) && (entity.getCountry() == null)) {
             throw new BusinessException(BusinessError.APPELLATION_00001);
-        } else {
+        } else if (entity.getRegion() != null) {
             try {
                 regionService.validate(entity.getRegion());
+            } catch (BusinessException e) {
+                throw new BusinessException(BusinessError.APPELLATION_00004, e);
+            }
+        } else if (entity.getCountry() != null) {
+            try {
+                countryService.validate(entity.getCountry());
             } catch (BusinessException e) {
                 throw new BusinessException(BusinessError.APPELLATION_00004, e);
             }
         }
         Appellation existing = appellationRepository.findUniqueOrNone(new SearchBuilder<Appellation>() //
                 .on(Appellation_.region).equalsTo(entity.getRegion()) //
+                .on(Appellation_.country).equalsTo(entity.getCountry()) //
                 .on(NamedEntity_.name).equalsTo(entity.getName()).build());
         if ((existing != null) && ((entity.getId() == null) || !existing.getId().equals(entity.getId()))) {
             throw new BusinessException(BusinessError.APPELLATION_00002);
@@ -78,6 +87,8 @@ public class AppellationServiceImpl extends AbstractSearchableService<Appellatio
     protected SearchParameters<Appellation> addTermToSearchParametersParameters(String term, SearchParameters<Appellation> searchParameters) {
         return new SearchBuilder<>(searchParameters) //
                 .fullText(NamedEntity_.name) //
+                .andOn(Appellation_.region).to(NamedEntity_.name) //
+                .andOn(Appellation_.country).to(NamedEntity_.name) //
                 .searchSimilarity(configurationService.getDefaultSearchSimilarity()) //
                 .andMode().search(term).build();
     }
@@ -95,6 +106,11 @@ public class AppellationServiceImpl extends AbstractSearchableService<Appellatio
     @Inject
     public void setRegionService(RegionService regionService) {
         this.regionService = regionService;
+    }
+
+    @Inject
+    public void setCountryService(CountryService countryService) {
+        this.countryService = countryService;
     }
 
     @Inject

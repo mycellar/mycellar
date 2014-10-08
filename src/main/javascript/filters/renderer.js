@@ -20,11 +20,14 @@ angular.module('mycellar').filter('wineRenderer', ['wineColorRendererFilter', fu
     return region.name +
         (region.country != null ? ' - ' + countryRenderer(region.country) : '');
   };
-}]).filter('appellationRenderer', ['countryRendererFilter', 'regionRendererFilter', function(countryRenderer, regionRenderer) {
+}]).filter('appellationRenderer', ['appellationSubRendererFilter', function(appellationSubRenderer) {
   return function(appellation) {
-    return appellation.name +
-        (appellation.region != null ? ' - ' + regionRenderer(appellation.region) : '') +
-        (appellation.country != null ? ' - ' + countryRenderer(appellation.country) : '');
+    return appellation.name + ' - ' + appellationSubRenderer(appellation);
+  };
+}]).filter('appellationSubRenderer', ['countryRendererFilter', 'regionRendererFilter', function(countryRenderer, regionRenderer) {
+  return function(appellation) {
+    return (appellation.region != null ? regionRenderer(appellation.region) : '') +
+        (appellation.country != null ? countryRenderer(appellation.country) : '');
   };
 }]).filter('bookingEventRenderer', function(dateFilter) {
   return function(bookingEvent) {

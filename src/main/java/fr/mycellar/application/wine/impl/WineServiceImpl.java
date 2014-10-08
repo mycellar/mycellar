@@ -101,6 +101,7 @@ public class WineServiceImpl extends AbstractSearchableService<Wine, WineReposit
         SearchBuilder<Wine> searchBuilder = new SearchBuilder<>(searchParameters);
         searchBuilder.fullText(Wine_.appellation).to(Appellation_.region).to(Region_.country).to(NamedEntity_.name) //
                 .andOn(Wine_.appellation).to(Appellation_.region).to(NamedEntity_.name) //
+                .andOn(Wine_.appellation).to(Appellation_.country).to(NamedEntity_.name) //
                 .andOn(Wine_.appellation).to(NamedEntity_.name) //
                 .andOn(Wine_.producer).to(NamedEntity_.name) //
                 .andOn(Wine_.vintage) //

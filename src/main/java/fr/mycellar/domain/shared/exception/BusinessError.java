@@ -45,10 +45,11 @@ public enum BusinessError {
     /*
      * Appellation
      */
-    APPELLATION_00001(Appellation_.region), // region is not set
-    APPELLATION_00002(Appellation_.name, Appellation_.region), //
+    APPELLATION_00001(Appellation_.region, Appellation_.country), //
+    APPELLATION_00002(Appellation_.name, Appellation_.region, Appellation_.country), //
     APPELLATION_00003(Appellation_.wines), //
     APPELLATION_00004(Appellation_.region), // region is not valid
+    APPELLATION_00005(Appellation_.country), // country is not valid
 
     /*
      * Booking

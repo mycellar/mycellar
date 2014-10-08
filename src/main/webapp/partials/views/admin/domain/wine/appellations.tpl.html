@@ -18,7 +18,7 @@
       <paper-item class="twoLines" ng-click="edit(appellation.id)" ng-repeat="appellation in items">
         <div flex>
           <div class="ellipsis">{{appellation.name}}</div>
-          <div class="ellipsis"><small>{{appellation.region.name}} - {{appellation.region.country.name}}</small></div>
+          <div class="ellipsis"><small>{{appellation | appellationSubRenderer}}</small></div>
         </div>
         <paper-icon-button icon="remove-circle-outline" ng-click="delete(appellation.id, $event)"></paper-icon-button>
       </paper-item>

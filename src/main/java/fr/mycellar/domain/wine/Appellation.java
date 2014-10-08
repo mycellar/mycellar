@@ -53,7 +53,7 @@ import fr.mycellar.domain.shared.NamedEntity;
  */
 @Entity
 @Indexed
-@Table(name = "APPELLATION", uniqueConstraints = @UniqueConstraint(columnNames = { "NAME", "REGION" }))
+@Table(name = "APPELLATION", uniqueConstraints = @UniqueConstraint(columnNames = { "NAME", "REGION", "COUNTRY" }))
 @AttributeOverride(name = "name", column = @Column(name = "NAME", nullable = false))
 @SequenceGenerator(name = "APPELLATION_ID_GENERATOR", allocationSize = 1)
 public class Appellation extends NamedEntity {
@@ -78,10 +78,17 @@ public class Appellation extends NamedEntity {
 
     @IndexedEmbedded
     @ManyToOne(cascade = { CascadeType.PERSIST, CascadeType.MERGE })
-    @JoinColumn(name = "REGION", nullable = false)
+    @JoinColumn(name = "REGION", nullable = true)
     @Getter
     @Setter
     private Region region;
+
+    @IndexedEmbedded
+    @ManyToOne(cascade = { CascadeType.PERSIST, CascadeType.MERGE })
+    @JoinColumn(name = "COUNTRY", nullable = true)
+    @Getter
+    @Setter
+    private Country country;
 
     @OneToMany(mappedBy = "appellation")
     @XmlTransient

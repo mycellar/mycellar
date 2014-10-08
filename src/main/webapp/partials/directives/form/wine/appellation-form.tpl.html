@@ -1,6 +1,7 @@
 <div>
   <section>
-    <region region="appellation.region" label="Région"></region>
+    <region region="appellation.region" label="Région" ng-if="appellation.country == null"></region>
+    <country country="appellation.country" label="Pays" ng-if="appellation.region == null"></country>
     <paper-input id="name" label="Nom" floatingLabel type="text" bind-polymer-input="appellation.name" required></paper-input>
     <paper-input id="description" label="Description" floatingLabel type="text" multiline bind-polymer-input="appellation.description"></paper-input>
   </section>
