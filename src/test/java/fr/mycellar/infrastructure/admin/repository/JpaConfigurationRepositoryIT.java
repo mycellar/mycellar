@@ -54,7 +54,7 @@ public class JpaConfigurationRepositoryIT {
     @Inject
     private JpaConfigurationRepository jpaConfigurationRepository;
 
-    private static final int NB_CONFIGURATIONS = 2;
+    private static final int NB_CONFIGURATIONS = 3;
 
     @Test
     @Rollback
