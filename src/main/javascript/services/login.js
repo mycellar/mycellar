@@ -9,7 +9,8 @@ angular.module('mycellar.services.login').factory('loginDialogService', [
     var service = {
       create: function() {
         if ($rootScope.loginDialog == null) {
-          $rootScope.loginDialog = document.querySelector("#loginDialog");
+          $rootScope.loginDialog = document.querySelector("body /deep/ #loginDialog");
+          $rootScope.loginDialog.toggle();
           $rootScope.loginDialog.result = $q.defer();
           $rootScope.loginDialog.result.promise.then(function() {
             authService.loginConfirmed(null, security.updateHeader);
@@ -27,13 +28,9 @@ angular.module('mycellar.services.login').factory('loginDialogService', [
         $rootScope.loginDialog = null;
       },
       loginFailure: function() {
-        $rootScope.loginDialog.querySelector('#email').$.input.setCustomValidity('Vos identifiants ne sont pas reconnus.');
-        $rootScope.loginDialog.querySelector('#password').$.input.setCustomValidity('Vos identifiants ne sont pas reconnus.');
-        var toggleFunction = function(e) {
-          $rootScope.loginDialog.removeEventListener('core-overlay-open', toggleFunction);
-          $rootScope.loginDialog.toggle();
-        };
-        $rootScope.loginDialog.addEventListener('core-overlay-open', toggleFunction); 
+        $rootScope.loginDialog.querySelector('#email').setCustomValidity('Vos identifiants ne sont pas reconnus.');
+        $rootScope.loginDialog.querySelector('#password').setCustomValidity('Vos identifiants ne sont pas reconnus.');
+        $rootScope.loginDialog.toggle();
       },
       loginSuccess: function() {
         $rootScope.loginDialog.result.resolve();
