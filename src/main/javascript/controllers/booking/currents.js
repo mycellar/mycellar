@@ -22,6 +22,9 @@ angular.module('mycellar.controllers.booking.currents', [
               }, function(reason) {
                 deferred.reject(reason);
               });
+            } else {
+              startingData.booking = null;
+              deferred.resolve(startingData);
             }
             return startingData;
           });
