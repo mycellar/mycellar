@@ -13,7 +13,7 @@
     <admin-domain-nav></admin-domain-nav>
   </nav>
   <div main>
-    <section>
+    <section class="list">
       <paper-item ng-if="items.length == 0">Aucun vin</paper-item>
       <paper-item class="twoLines" ng-click="edit(wine.id)" ng-repeat="wine in items">
         <div flex>

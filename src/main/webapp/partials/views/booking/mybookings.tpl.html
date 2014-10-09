@@ -32,6 +32,8 @@
         <div>{{total | currency:"€"}}</div>
       </core-item>
     </section>
-    <p ng-if="booking == null">Aucune réservation</p>
+    <section ng-if="booking == null">
+      <p>Aucune réservation</p>
+    </section>
   </div>
 </core-drawer-panel>

@@ -24,16 +24,16 @@ body /deep/ section {
   padding: 0 16px;
 }
 
+body /deep/ section.list {
+  padding: 0;
+}
+
 body /deep/ section > div[horizontal][layout] {
   margin: 16px 0;
 }
 
 body /deep/ section > core-item:first-child:not(.subheader), body /deep/ section > paper-item:first-child:not(.subheader) {
   margin-top: 8px;
-}
-
-body /deep/ section paper-item {
-  padding: 0;
 }
 
 body /deep/ section:not(:first-child) {
@@ -183,10 +183,14 @@ html /deep/ core-menu {
   margin: 0;
 }
 
-html /deep/ core-submenu {
+html /deep/ core-submenu /deep/ core-item {
   padding: 0 16px;
 }
 
 html /deep/ core-submenu /deep/ #submenu {
   margin-left: 0;
+}
+
+html /deep/ core-submenu /deep/ paper-item {
+  padding-left: 32px;
 }
