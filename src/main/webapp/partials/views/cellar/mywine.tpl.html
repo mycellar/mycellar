@@ -3,15 +3,16 @@
   <span flex>Mes vins</span>
 </core-toolbar>
 <div main>
-  <div>
+  <section>
     <h3>
       {{wine | wineRenderer}}<br/>
       <small>
         {{wine.appellation | appellationRenderer}}
       </small>
     </h3>
-  </div>
-  <div>
+  </section>
+  <section class="list">
+    <core-item class="subheader">Stock</core-item>
     <paper-item ng-if="stocks.length == 0">
       Aucun stock
     </paper-item>
@@ -22,5 +23,5 @@
       </div>
       <paper-icon-button icon="remove-circle"></paper-icon-button>
     </paper-item>
-  </div>
+  </section>
 </div>

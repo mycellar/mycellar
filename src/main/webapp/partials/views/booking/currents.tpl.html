@@ -19,7 +19,7 @@
       <section>
         <h2 style="text-align: center;">{{booking.bookingEvent.name}} du {{booking.bookingEvent.start | date:'longDate'}} au {{booking.bookingEvent.end | date: 'longDate'}}</h2>
       </section>
-      <section>
+      <section class="list">
         <core-item class="threeLines" ng-repeat="bookingBottle in booking.bookingEvent.bottles">
           <div>{{booking.quantities[booking.bookingEvent.id + '-' + bookingBottle.id]}}</div>
           <paper-menu-button select icon="arrow-drop-down" halign="right">

@@ -31,6 +31,10 @@ body /deep/ section > div[horizontal][layout] {
   margin: 16px 0;
 }
 
+html /deep/ core-item {
+  padding: 0 16px;
+}
+
 body /deep/ section > core-item:first-child:not(.subheader), body /deep/ section > paper-item:first-child:not(.subheader) {
   margin-top: 8px;
 }
@@ -180,10 +184,6 @@ body /deep/ .card div {
 html /deep/ core-menu {
   display: block;
   margin: 0;
-}
-
-html /deep/ core-submenu /deep/ core-item {
-  padding: 0 16px;
 }
 
 html /deep/ core-submenu /deep/ #submenu {

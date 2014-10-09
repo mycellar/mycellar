@@ -13,7 +13,7 @@
         <booking-event booking-event="fix.bookingEvent" label="Campagne de réservation"></booking-event>
         <user user="fix.customer" label="Client"></user>
       </section>
-      <section>
+      <section class="list">
         <core-item class="subheader">Quantités</core-item>
         <core-item class="threeLines" ng-repeat="bookingBottle in booking.bookingEvent.bottles">
           <div>{{booking.quantities[booking.bookingEvent.id + '-' + bookingBottle.id]}}</div>

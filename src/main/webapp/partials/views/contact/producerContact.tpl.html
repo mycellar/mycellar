@@ -58,7 +58,7 @@
       </div>
     </form>
   </section>
-  <section ng-if="producer.id">
+  <section class="list" ng-if="producer.id">
     <core-item class="subheader">Contacts déjà effectués</core-item>
     <paper-item class="twoLines" ng-repeat="contact in contacts" ng-click="editContact(contact)">
       <div flex>
