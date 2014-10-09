@@ -40,8 +40,8 @@
       <paper-input flex id="text" label="Texte" multiline floatingLabel bind-polymer-input="contact.text" required></paper-input>
     </div>
     <div horizontal layout>
-      <paper-button style="margin: auto;" primary raisedButton label="Sauvegarder" ng-click="saveContact()" ng-disabled="contactForm.$invalid"></paper-button>
-      <paper-button style="margin: auto;" raisedButton label="Annuler" ng-click="cancelContact()"></paper-button>
+      <paper-button style="margin: auto;" primary raised ng-click="saveContact()" ng-disabled="contactForm.$invalid">Sauvegarder</paper-button>
+      <paper-button style="margin: auto;" raised ng-click="cancelContact()">Annuler</paper-button>
     </div>
   </form>
 </div>

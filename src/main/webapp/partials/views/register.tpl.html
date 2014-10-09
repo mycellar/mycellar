@@ -10,7 +10,7 @@
       <paper-input id="email" floatingLabel label="Email" type="email" bind-polymer-input="user.email" required></paper-input>
       <paper-input id="password" floatingLabel label="Mot de passe" type="password" bind-polymer-input="passwords.first" required></paper-input>
       <paper-input id="password2" floatingLabel label="Confirmation du mot de passe" type="password" bind-polymer-input="passwords.second" required></paper-input>
-      <paper-button label="Créer un compte" ng-click="register()" ng-disabled="newUserForm.$invalid" raisedButton primary></paper-button>
+      <paper-button ng-click="register()" ng-disabled="newUserForm.$invalid" raised primary>Créer un compte</paper-button>
     </form>
   </section>
 </div>

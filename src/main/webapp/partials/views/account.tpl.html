@@ -13,22 +13,22 @@
   </section>
   <section>
     <div horizontal layout ng-hide="changeEmailFormDisplayed || changePasswordFormDisplayed">
-      <paper-button style="margin: auto;" raisedButton label="Changer votre email" ng-click="displayChangeEmailForm()"></paper-button>
-      <paper-button style="margin: auto;" raisedButton label="Changer votre mot de passe" ng-click="displayChangePasswordForm()"></paper-button>
+      <paper-button style="margin: auto;" raised ng-click="displayChangeEmailForm()">Changer votre email</paper-button>
+      <paper-button style="margin: auto;" raised ng-click="displayChangePasswordForm()">Changer votre mot de passe</paper-button>
     </div>
     <form name="changeEmailForm" ng-show="changeEmailFormDisplayed">
       <paper-input id="email" label="Email" floatingLabel type="email" bind-polymer-input="email"></paper-input>
       <paper-input id="email2" label="Confirmation de l'email" floatingLabel type="email" bind-polymer-input="email2"></paper-input>
       <paper-input id="password" label="Mot de passe" floatingLabel type="password" bind-polymer-input="password"></paper-input>
-      <paper-button raisedButton primary label="Changer mon email" ng-click="changeEmail()"></paper-button>
-      <paper-button raisedButton label="Annuler" ng-click="cancelChangeEmail()"></paper-button>
+      <paper-button raised primary ng-click="changeEmail()">Changer mon email</paper-button>
+      <paper-button raised ng-click="cancelChangeEmail()">Annuler</paper-button>
     </form>
     <form name="changePasswordForm" class="form-horizontal" ng-show="changePasswordFormDisplayed">
       <paper-input id="oldPassword" label="Ancien mot de passe" floatingLabel type="password" bind-polymer-input="oldPassword"></paper-input>
       <paper-input id="password" label="Mot de passe" floatingLabel type="password" bind-polymer-input="password"></paper-input>
       <paper-input id="password2" label="Confirmation du mot de passe" floatingLabel type="password" bind-polymer-input="password2"></paper-input>
-      <paper-button raisedButton primary label="Changer mon mot de passe" ng-click="changePassword()"></paper-button>
-      <paper-button raisedButton label="Annuler" ng-click="cancelChangePassword()"></paper-button>
+      <paper-button raised primary ng-click="changePassword()">Changer mon mot de passe</paper-button>
+      <paper-button raised ng-click="cancelChangePassword()">Annuler</paper-button>
     </form>
   </section>
 </div>

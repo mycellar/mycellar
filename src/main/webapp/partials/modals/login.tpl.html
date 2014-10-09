@@ -3,7 +3,7 @@
     <paper-input id="email" label="Email" type="email" floatingLabel="true" bind-polymer-input="email" required></paper-input>
     <paper-input id="password" label="Mot de passe" type="password" floatingLabel="true" bind-polymer-input="password" required></paper-input>
   </p>
-  <paper-button label="J'ai oublié mon mot de passe" dismissive ng-click="forgotPassword()"></paper-button>
-  <paper-button label="Annuler" affirmative ng-click="cancel()"></paper-button>
-  <paper-button label="Se connecter" affirmative autofocus ng-click="login()"></paper-button>
+  <paper-button dismissive ng-click="forgotPassword()">J'ai oublié mon mot de passe</paper-button>
+  <paper-button affirmative ng-click="cancel()">Annuler</paper-button>
+  <paper-button affirmative autofocus ng-click="login()">Se connecter</paper-button>
 </paper-dialog>
