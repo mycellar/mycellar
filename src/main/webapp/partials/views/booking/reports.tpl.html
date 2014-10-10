@@ -53,7 +53,7 @@
     </section>
     <section class="list" ng-if="booking != null">
       <h3 style="text-align: center;">{{booking.customer | userRenderer}}</h3>
-      <paper-item class="threeLines" ng-repeat="bookingBottle in booking.bookingEvent.bottles">
+      <paper-item class="threeLines" ng-repeat="bookingBottle in booking.bookingEvent.bottles" ng-if="booking.quantities[booking.bookingEvent.id + '-' + bookingBottle.id] != 0">
         <div style="padding-right: 10px;">{{booking.quantities[booking.bookingEvent.id + '-' + bookingBottle.id]}}</div>
         <div flex>
           <div class="ellipsis">{{bookingBottle.bottle.wine | wineNameRenderer}}</div>
