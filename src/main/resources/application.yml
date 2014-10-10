@@ -9,6 +9,9 @@ spring:
       naming-strategy: org.hibernate.cfg.DefaultNamingStrategy
     properties:
       hibernate:
+        event:
+          merge:
+            entity_copy_observer: allow
         show_sql: false
         search:
           analyzer: org.apache.lucene.analysis.fr.FrenchAnalyzer
