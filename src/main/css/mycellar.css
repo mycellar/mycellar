@@ -91,12 +91,12 @@ body /deep/ paper-button[autofocus] {
   fill: #4285f4;
 }
 
-body /deep/ paper-button[raisedButton][primary] {
+body /deep/ paper-button[raised][primary] {
   background: #0091ea;
   color: rgba(255, 255, 255, 0.87);
 }
 
-body /deep/ paper-button[raisedButton] {
+body /deep/ paper-button[raised] {
   background: #ffffff;
   color: rgba(0, 0, 0, 0.87);
 }
