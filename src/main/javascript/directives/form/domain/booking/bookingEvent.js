@@ -14,7 +14,7 @@ angular.module('mycellar.directives.form.domain.booking.bookingEvent').directive
         form: '=',
         bookingEvent: '=',
         postLabel: '@'
-      }, 
+      },
       controller: function($scope, $filter) {
         $scope.bookingBottle = null;
         if ($scope.bookingEvent.bottles == undefined) {
@@ -57,17 +57,10 @@ angular.module('mycellar.directives.form.domain.booking.bookingEvent').directive
           return $scope.bookingBottle.position == $scope.bookingEvent.bottles.length;
         };
 
-        $scope.moveUp = function(bookingBottle) {
-          var position = bookingBottle.position;
-          $scope.bookingEvent.bottles[position - 1].position++;
-          $scope.bookingEvent.bottles[position].position--;
-          $scope.bookingEvent.bottles[position] = $scope.bookingEvent.bottles.splice(position - 1, 1, $scope.bookingEvent.bottles[position])[0];
-        };
-        $scope.moveDown = function(bookingBottle) {
-          var position = bookingBottle.position;
-          $scope.bookingEvent.bottles[position].position++;
-          $scope.bookingEvent.bottles[position + 1].position--;
-          $scope.bookingEvent.bottles[position] = $scope.bookingEvent.bottles.splice(position + 1, 1, $scope.bookingEvent.bottles[position])[0];
+        $scope.bookingBottleMoved = function(bookingBottle) {
+          for (var i = 0; i < $scope.bookingEvent.bottles.length; i++) {
+            $scope.bookingEvent.bottles[i].position = i;
+          }
         };
       }
     }

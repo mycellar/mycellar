@@ -29,7 +29,8 @@ angular.module('mycellar', [
   'mycellar.controllers.contact',
   'mycellar.controllers.navigation',
   'mycellar.controllers.password',
-  'mycellar.directives.bind'
+  'mycellar.directives.bind',
+  'mycellar.directives.drag'
 ]);
 
 angular.module('mycellar').config([

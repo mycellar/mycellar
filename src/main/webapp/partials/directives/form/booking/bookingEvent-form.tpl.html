@@ -6,12 +6,16 @@
     <paper-input id="start" label="Début" floatingLabel type="date" bind-polymer-input="bookingEvent.start" required></paper-input>
     <paper-input id="end" label="Fin" floatingLabel type="date" bind-polymer-input="bookingEvent.end" required></paper-input>
   </section>
-  <section>
+  <section drag-drop="bookingEvent.bottles">
     <core-item class="subheader">
       <div flex>Bouteilles</div>
       <paper-icon-button icon="add" ng-click="addBookingBottle()"></paper-icon-button>
     </core-item>
-    <paper-item class="threeLines" ng-repeat="bookingBottle in bookingEvent.bottles" ng-click="edit(bookingBottle)">
+    <paper-item class="threeLines"
+        ng-repeat="bookingBottle in bookingEvent.bottles"
+        ng-click="edit(bookingBottle)"
+        drag-item="$index"
+        post-drag="bookingBottleMoved(bookingBottle)">
       <div flex>
         <div class="ellipsis">{{bookingBottle.bottle.wine | wineNameRenderer}}</div>
         <div class="ellipsis"><small>{{bookingBottle.bottle.wine.producer.name}} - {{bookingBottle.bottle.wine.color | wineColorRenderer}}</small></div>

@@ -129,6 +129,11 @@ body /deep/ paper-item.threeLines, body /deep/ core-item.threeLines {
   height: 88px;
 }
 
+body /deep/ paper-item.drag-placeholder {
+  margin: 5px;
+  border: 1px dotted rgba(0, 0, 0, 0.12);
+}
+
 body /deep/ small {
   color: rgba(0, 0, 0, 0.54);
 }
