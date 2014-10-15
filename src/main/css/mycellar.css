@@ -185,6 +185,10 @@ body /deep/ .card div {
   font-size: 14px;
 }
 
+paper-progress::shadow #secondaryProgress {
+  background-color: #e51c23;
+}
+
 /* OVERRIDE POLYMER */
 html /deep/ core-menu {
   display: block;

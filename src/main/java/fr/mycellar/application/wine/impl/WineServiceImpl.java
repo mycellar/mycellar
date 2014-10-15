@@ -21,6 +21,7 @@ package fr.mycellar.application.wine.impl;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Scanner;
 
 import javax.inject.Inject;
 import javax.inject.Named;
@@ -58,6 +59,8 @@ import fr.mycellar.infrastructure.wine.repository.WineRepository;
 @Named
 @Singleton
 public class WineServiceImpl extends AbstractSearchableService<Wine, WineRepository> implements WineService {
+
+    private static final String VINTAGE_PATTERN = "\\d{4}";
 
     private WineRepository wineRepository;
 
@@ -108,7 +111,27 @@ public class WineServiceImpl extends AbstractSearchableService<Wine, WineReposit
                 .andOn(NamedEntity_.name) //
                 .searchSimilarity(configurationService.getDefaultSearchSimilarity()) //
                 .andMode().search(term);
+        List<Integer> vintages = extractVintages(term);
+        if (vintages.size() > 0) {
+            searchBuilder.on(Wine_.vintage).equalsTo(vintages.toArray(new Integer[vintages.size()]));
+        }
         return searchBuilder.build();
+    }
+
+    private List<Integer> extractVintages(String term) {
+        List<Integer> vintages = new ArrayList<>();
+        if (term != null) {
+            Scanner vintageScanner = new Scanner(term);
+            try {
+                String vintage;
+                while ((vintage = vintageScanner.findInLine(VINTAGE_PATTERN)) != null) {
+                    vintages.add(Integer.parseInt(vintage));
+                }
+            } finally {
+                vintageScanner.close();
+            }
+        }
+        return vintages;
     }
 
     @Override
