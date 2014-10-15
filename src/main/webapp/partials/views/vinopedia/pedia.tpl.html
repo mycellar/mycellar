@@ -9,7 +9,7 @@
 </core-toolbar>
 <div main>
   <section>
-    <core-item ng-if="items.length == 0">Aucun vin</core-item>
+    <core-item ng-if="wines.length == 0">Aucun vin</core-item>
     <core-item class="twoLines" ng-repeat="wine in wines">
       <div flex>
         <div class="ellipsis">{{wine | wineRenderer}}</div>
