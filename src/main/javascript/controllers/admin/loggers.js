@@ -17,14 +17,24 @@ angular.module('mycellar.controllers.admin.loggers', [
 ]);
 
 angular.module('mycellar.controllers.admin.loggers').controller('AdminLoggersController', [
-  '$scope', 'loggers', 'Loggers', 'tableService',
-  function ($scope, loggers, Loggers, tableService) {
-    $scope.tableContext = tableService.createTableContext();
+  '$scope', 'loggers', 'Loggers', 'search',
+  function ($scope, loggers, Loggers, search) {
+    $scope.filters = {
+      name: ''
+    };
     $scope.loggers = loggers;
     $scope.changeLevel = function(logger, level) {
       Loggers.changeLevel({name: logger.name, level: level}, function() {
         $scope.loggers = Loggers.query();
       });
+    };
+    $scope.toggleHidden = function() {
+      search.toggleHidden();
+      $scope.filters.name = '';
+    };
+    $scope.clearSearch = function() {
+      search.clearSearch();
+      $scope.filters.name = '';
     };
   }
 ]);

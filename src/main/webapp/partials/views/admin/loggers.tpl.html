@@ -1,53 +1,29 @@
-<div class="container">
-  <header class="page-header"><h1>Listes des loggers</h1></header>
-  <table-filters table-context="tableContext">
-    <div class="form-group">
-      <label class="control-label sr-only" for="name">Nom</label>
-      <input class="form-control" id="name" name="name" placeholder="Nom" ng-model="tableContext.filters['name']" type="text" />
-    </div>
-    <div class="form-group">
-      <label class="control-label sr-only" for="level">Level</label>
-      <input class="form-control" id="level" name="level" placeholder="Level" ng-model="tableContext.filters['level']" type="text" />
-    </div>
-  </table-filters>
-  <div class="table-responsive">
-    <table class="table table-bordered table-striped table-condensed">
-      <thead>
-        <tr>
-          <th>Logger <icon-sort attribute="name" table-context="tableContext" /></th>
-          <th>Level <icon-sort attribute="level" table-context="tableContext" /></th>
-          <th class="actions"></th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr ng-repeat="logger in loggers | filter:tableContext.filters | orderBy:tableContext.orderByFilterPredicates()">
-          <td>{{logger.name}}</td>
-          <td>{{logger.level}}</td>
-          <td>
-            <div class="btn-group" style="width: 300px;">
-              <button ng-click="changeLevel(logger, 'TRACE')" ng-class="(logger.level=='TRACE') ? 'btn-danger' : 'btn-default'" class="btn btn-xs">TRACE</button>
-              <button ng-click="changeLevel(logger, 'DEBUG')" ng-class="(logger.level=='DEBUG') ? 'btn-warning' : 'btn-default'" class="btn btn-xs">DEBUG</button>
-              <button ng-click="changeLevel(logger, 'INFO')" ng-class="(logger.level=='INFO') ? 'btn-info' : 'btn-default'" class="btn btn-xs">INFO</button>
-              <button ng-click="changeLevel(logger, 'WARN')" ng-class="(logger.level=='WARN') ? 'btn-success' : 'btn-default'" class="btn btn-xs">WARN</button>
-              <button ng-click="changeLevel(logger, 'ERROR')" ng-class="(logger.level=='ERROR') ? 'btn-primary' : 'btn-default'" class="btn btn-xs">ERROR</button>
-              <button ng-click="changeLevel(logger, 'OFF')" ng-class="(logger.level=='OFF') ? 'btn-danger' : 'btn-default'" class="btn btn-xs">OFF</button>
-            </div>
-          </td>
-        </tr>
-        <tr ng-if="(loggers|filter:tableContext.filters).length == 0">
-          <td colspan="3" class="text-center">Aucun logger ne correspond aux filtres.</td>
-        </tr>
-      </tbody>
-      <tfoot>
-        <tr>
-          <th>Logger <icon-sort attribute="name" table-context="tableContext" /></th>
-          <th>Level <icon-sort attribute="level" table-context="tableContext" /></th>
-          <th class="actions"></th>
-        </tr>
-      </tfoot>
-    </table>
-  </div>
-  <footer>
-    <p>2012-2014 Tous droits réservés, MyCellar GPL V3.</p>
-  </footer>
+<core-toolbar main>
+  <core-icon icon="search" hidden></core-icon>
+  <drawer-button icon="menu"></drawer-button>
+  <span flex>Loggers</span>
+  <core-input id="search" bind-polymer-input="filters.name" flex hidden></core-input>
+  <paper-icon-button icon="cancel" hidden ng-show="filters.name !== ''" ng-click="clearSearch()"></paper-icon-button>
+  <paper-icon-button icon="clear" hidden ng-show="filters.name === ''" ng-click="toggleHidden()"></paper-icon-button>
+  <paper-icon-button icon="search" ng-click="toggleHidden()"></paper-icon-button>
+</core-toolbar>
+<div main>
+  <section class="list">
+    <core-item ng-if="(loggers|filter:filters).length == 0">Aucun logger ne correspond aux filtres.</core-item>
+    <core-item class="twoLines" ng-repeat="logger in loggers | filter:filters | limitTo:20">
+      <div flex>
+        <div class="ellipsis">{{logger.name}}</div>
+        <div class="ellipsis"><small>{{logger.level}}</small></div>
+      </div>
+      <paper-menu-button icon="more-vert" halign="right">
+        <paper-icon-button ng-click="changeLevel(logger, 'ERROR')" icon="error" class="red"></paper-icon-button>
+        <paper-icon-button ng-click="changeLevel(logger, 'WARN')" icon="warning" class="orange"></paper-icon-button>
+        <paper-icon-button ng-click="changeLevel(logger, 'INFO')" icon="info"></paper-icon-button>
+        <paper-icon-button ng-click="changeLevel(logger, 'DEBUG')" icon="info" class="orange"></paper-icon-button>
+        <paper-icon-button ng-click="changeLevel(logger, 'TRACE')" icon="info" class="red"></paper-icon-button>
+        <paper-icon-button ng-click="changeLevel(logger, 'OFF')" icon="visibility-off"></paper-icon-button>
+      </paper-menu-button>
+    </core-item>
+    <core-item ng-if="(loggers|filter:filters).length > 20">D'autres loggers sont masqués.</core-item>
+  </section>
 </div>
