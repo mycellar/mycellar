@@ -1,6 +1,6 @@
 <link rel="import" href="../../lib/polymer/polymer.html">
-<link rel="import" href="../../lib/core-overlay/core-overlay.html">
-<polymer-element name="autocomplete-overlay" extends="core-overlay">
+<link rel="import" href="../../lib/core-dropdown/core-dropdown-overlay.html">
+<polymer-element name="autocomplete-overlay" extends="core-dropdown-overlay">
 <template>
   <style>
     :host {
@@ -25,22 +25,18 @@
       },
 
       positionTarget: function() {
-        if (!this.relatedTarget) {
-          this.super();
-          return;
-        }
-
         var ref = this.relatedTarget.getBoundingClientRect();
-
+        this.dimensions.position.v = 'top';
+        this.dimensions.position.h = 'left';
         this.target.style.top = ref.bottom + 'px';
-        this.target.style.left = ref.left + 'px';
+        this.target.style.left = (ref.left - this.relatedTarget.offsetLeft) + 'px';
       },
 
       sizeTarget: function() {
         var rect = this.relatedTarget.getBoundingClientRect();
         var sizer = this.sizingTarget || this.target;
 
-        sizer.style.minWidth = rect.width + 'px';
+        sizer.style.minWidth = (rect.width + 2 * this.relatedTarget.offsetLeft) + 'px';
 
         this.super();
       }
