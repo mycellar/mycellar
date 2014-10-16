@@ -9,7 +9,7 @@ angular.module('mycellar.resources.stock.cellarShares').factory('CellarShares', 
       url: '/api/stock/cellarShares',
       validateUrl: '/api/stock/validateCellarShare'
     }, {
-      getAllForCellar: {
+      getAllForCurrentUser: {
         url: '/api/stock/cellarShares',
         method: 'GET'
       }

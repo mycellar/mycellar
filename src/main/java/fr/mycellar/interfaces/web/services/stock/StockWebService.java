@@ -25,10 +25,12 @@ import javax.inject.Inject;
 import javax.inject.Named;
 import javax.inject.Singleton;
 import javax.ws.rs.Consumes;
+import javax.ws.rs.DELETE;
 import javax.ws.rs.DefaultValue;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
+import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.MediaType;
@@ -104,6 +106,73 @@ public class StockWebService {
             cellars = stockServiceFacade.getCellarsLike(term, searchParameters);
         }
         return new ListWithCount<>(stockServiceFacade.countCellarsLike(term, searchParameters), cellars);
+    }
+
+    @GET
+    @Produces(MediaType.APPLICATION_JSON)
+    @Path("cellars/{id}")
+    @PreAuthorize("hasRole('ROLE_CELLAR')")
+    public Cellar getCellarById(@PathParam("id") int cellarId) {
+        User user = currentUserService.getCurrentUser();
+        if (!stockServiceFacade.hasReadRight(cellarId, user.getEmail())) {
+            throw new AccessDeniedException("Cannot access to this cellar.");
+        }
+        return stockServiceFacade.getCellarById(cellarId);
+    }
+
+    @DELETE
+    @Path("cellars/{id}")
+    @PreAuthorize("hasRole('ROLE_CELLAR')")
+    public void deleteCellarById(@PathParam("id") int cellarId) throws BusinessException {
+        User user = currentUserService.getCurrentUser();
+        if (!stockServiceFacade.isOwner(cellarId, user.getEmail())) {
+            throw new AccessDeniedException("Cannot delete this cellar.");
+        }
+        stockServiceFacade.deleteCellar(stockServiceFacade.getCellarById(cellarId));
+    }
+
+    @POST
+    @Consumes(MediaType.APPLICATION_JSON)
+    @Produces(MediaType.APPLICATION_JSON)
+    @Path("cellars/{id}")
+    @PreAuthorize("hasRole('ROLE_CELLAR')")
+    public Cellar saveCellar(@PathParam("id") int id, Cellar cellar) throws BusinessException {
+        User user = currentUserService.getCurrentUser();
+        if (!stockServiceFacade.isOwner(id, user.getEmail())) {
+            throw new AccessDeniedException("Cannot modify this cellar.");
+        }
+        if ((id == cellar.getId()) && (stockServiceFacade.getCellarById(id) != null)) {
+            return stockServiceFacade.saveCellar(cellar);
+        }
+        throw new RuntimeException();
+    }
+
+    @POST
+    @Consumes(MediaType.APPLICATION_JSON)
+    @Produces(MediaType.APPLICATION_JSON)
+    @Path("cellars")
+    @PreAuthorize("hasRole('ROLE_CELLAR')")
+    public Cellar saveCellar(Cellar cellar) throws BusinessException {
+        User user = currentUserService.getCurrentUser();
+        if (cellar.getId() == null) {
+            cellar.setOwner(user);
+            return stockServiceFacade.saveCellar(cellar);
+        }
+        throw new RuntimeException();
+    }
+
+    @POST
+    @Consumes(MediaType.APPLICATION_JSON)
+    @Path("validateCellar")
+    @PreAuthorize("hasRole('ROLE_CELLAR')")
+    public void validateCellar(Cellar cellar) throws BusinessException {
+        if (cellar.getOwner() != null) {
+            User user = currentUserService.getCurrentUser();
+            if (!user.equals(cellar.getOwner())) {
+                throw new AccessDeniedException("Cannot modify this cellar.");
+            }
+        }
+        stockServiceFacade.validateCellar(cellar);
     }
 
     @GET
@@ -196,13 +265,18 @@ public class StockWebService {
     @Produces(MediaType.APPLICATION_JSON)
     @Path("cellarShares")
     @PreAuthorize("hasRole('ROLE_CELLAR')")
-    public ListWithCount<CellarShare> getCellarShares(@QueryParam("cellarId") Integer cellarId, @QueryParam("first") int first, @QueryParam("count") int count,
-            @QueryParam("filters") List<FilterCouple> filters, @QueryParam("sort") List<OrderCouple> orders) {
-        if (!stockServiceFacade.isOwner(cellarId, currentUserService.getCurrentUserEmail())) {
-            throw new AccessDeniedException("Current user isn't the owner of the cellar.");
-        }
+    public ListWithCount<CellarShare> getCellarSharesForCurrentUser( //
+            @QueryParam("first") int first, //
+            @QueryParam("count") @DefaultValue("10") int count, //
+            @QueryParam("filters") List<FilterCouple> filters, //
+            @QueryParam("sort") List<OrderCouple> orders, //
+            @QueryParam("like") String term) {
+        User user = currentUserService.getCurrentUser();
         SearchParameters<CellarShare> searchParameters = searchParametersUtil.getSearchBuilder(first, count, filters, orders, CellarShare.class) //
-                .on(CellarShare_.cellar).to(Cellar_.id).equalsTo(cellarId) //
+                .distinct() //
+                .disjunction() //
+                .on(CellarShare_.cellar).to(Cellar_.owner).equalsTo(user) //
+                .on(CellarShare_.cellar).to(Cellar_.shares).to(CellarShare_.email).equalsTo(user.getEmail()) //
                 .and().build();
         List<CellarShare> cellarShares;
         if (count == 0) {
@@ -211,6 +285,68 @@ public class StockWebService {
             cellarShares = stockServiceFacade.getCellarShares(searchParameters);
         }
         return new ListWithCount<>(stockServiceFacade.countCellarShares(searchParameters), cellarShares);
+    }
+
+    @GET
+    @Produces(MediaType.APPLICATION_JSON)
+    @Path("cellarShares/{id}")
+    @PreAuthorize("hasRole('ROLE_CELLAR')")
+    public CellarShare getCellarShareById(@PathParam("id") int cellarShareId) {
+        User user = currentUserService.getCurrentUser();
+        CellarShare cellarShare = stockServiceFacade.getCellarShareById(cellarShareId);
+        if ((cellarShare != null) && !user.equals(cellarShare.getCellar().getOwner())) {
+            throw new AccessDeniedException("No access to this cellar share.");
+        }
+        return cellarShare;
+    }
+
+    @DELETE
+    @Path("cellarShares/{id}")
+    @PreAuthorize("hasRole('ROLE_CELLAR')")
+    public void deleteCellarShareById(@PathParam("id") int cellarShareId) throws BusinessException {
+        CellarShare cellarShare = getCellarShareById(cellarShareId);
+        stockServiceFacade.deleteCellarShare(cellarShare);
+    }
+
+    @POST
+    @Consumes(MediaType.APPLICATION_JSON)
+    @Produces(MediaType.APPLICATION_JSON)
+    @Path("cellarShares/{id}")
+    @PreAuthorize("hasRole('ROLE_CELLAR')")
+    public CellarShare saveCellarShare(@PathParam("id") int id, CellarShare cellarShare) throws BusinessException {
+        CellarShare inBase = getCellarShareById(id);
+        if ((id == cellarShare.getId()) && (inBase != null)) {
+            return stockServiceFacade.saveCellarShare(cellarShare);
+        }
+        throw new RuntimeException();
+    }
+
+    @POST
+    @Consumes(MediaType.APPLICATION_JSON)
+    @Produces(MediaType.APPLICATION_JSON)
+    @Path("cellarShares")
+    @PreAuthorize("hasRole('ROLE_CELLAR')")
+    public CellarShare saveCellarShare(CellarShare cellarShare) throws BusinessException {
+        User user = currentUserService.getCurrentUser();
+        if (!user.equals(cellarShare.getCellar().getOwner())) {
+            throw new AccessDeniedException("Cannot modify a cellar share which is not owned by user.");
+        }
+        if (cellarShare.getId() == null) {
+            return stockServiceFacade.saveCellarShare(cellarShare);
+        }
+        throw new RuntimeException();
+    }
+
+    @POST
+    @Consumes(MediaType.APPLICATION_JSON)
+    @Path("validateCellarShare")
+    @PreAuthorize("hasRole('ROLE_CELLAR')")
+    public void validateCellarShare(CellarShare cellarShare) throws BusinessException {
+        User user = currentUserService.getCurrentUser();
+        if (!user.equals(cellarShare.getCellar().getOwner())) {
+            throw new AccessDeniedException("Cannot modify a cellar share which is not owned by user.");
+        }
+        stockServiceFacade.validateCellarShare(cellarShare);
     }
 
     @POST
@@ -235,14 +371,6 @@ public class StockWebService {
             }
         }
         stockServiceFacade.drink(drink);
-    }
-
-    @POST
-    @Consumes(MediaType.APPLICATION_JSON)
-    @Path("validateCellar")
-    @PreAuthorize("hasRole('ROLE_CELLAR')")
-    public void validateCellar(Cellar cellar) throws BusinessException {
-        stockServiceFacade.validateCellar(cellar);
     }
 
     // BEANS

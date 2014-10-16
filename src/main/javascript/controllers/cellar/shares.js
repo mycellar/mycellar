@@ -9,11 +9,11 @@ angular.module('mycellar.controllers.cellar.shares', [
       templateUrl: 'partials/views/cellar/shares.tpl.html',
       controller: 'SharesController',
       resolve: {
-        cellars: ['Cellars', function(Cellars){
-          return Cellars.getAllForCurrentUser();
-        }],
-        tableContext: ['tableService', 'CellarShares', function(tableService, CellarShares) {
-          return tableService.createTableContext(CellarShares.getAllForCellar, ['email'], {cellarId: 0});
+        cellarShares: ['CellarShares', function(CellarShares){
+          return CellarShares.getAllForCurrentUser({
+            first: 0,
+            count: 10
+          }).$promise;
         }]
       }
     });
@@ -21,30 +21,60 @@ angular.module('mycellar.controllers.cellar.shares', [
 ]);
 
 angular.module('mycellar.controllers.cellar.shares').controller('SharesController', [
-  '$scope', 'cellars', 'tableContext',
-  function($scope, cellars, tableContext) {
-    $scope.cellarsResource = cellars;
-    $scope.tableContext = tableContext;
-    $scope.$watch('cellarsResource.list', function() {
-      if ($scope.cellarsResource.list != undefined && $scope.cellarsResource.list.length > 0) {
-        $scope.cellars = $scope.cellarsResource.list;
-        $scope.selectCellar($scope.cellars[0]);
-      }
-    });
-
-    $scope.selectCellar = function(cellar) {
-      $scope.cellar = cellar;
+  '$scope', 'cellarShares', 'CellarShares', '$route',
+  function($scope, cellarShares, CellarShares, $route) {
+    $scope.pageCount = 10;
+    $scope.cellarShares = cellarShares.list;
+    $scope.size = cellarShares.count;
+    $scope.edit = function(cellarShare) {
+      CellarShares.get({id: cellarShare.id}, function(cellarShare) {
+        $scope.cellarShare = cellarShare;
+      });
     };
-
-    var started = false;
-    $scope.$watch('cellar.id', function (value) {
-      if ($scope.cellar != null && $scope.cellar.id != undefined) {
-        $scope.tableContext.parameters.cellarId = $scope.cellar.id;
-        if (!started) {
-          started = true;
-          $scope.tableContext.setPage(1);
+    $scope.new = function() {
+      $scope.cellarShare = new CellarShares();
+    };
+    $scope.cancel = function() {
+      $scope.cellarShare = null;
+    };
+    $scope.save = function() {
+      $scope.backup = {};
+      angular.copy($scope.cellarShare, $scope.backup);
+      $scope.cellarShare.$save(function (value, headers) {
+        if (value.errorKey != undefined) {
+          errors.push({errorKey: value.errorKey});
+          angular.copy($scope.backup, $scope.cellarShare);
+        } else if (value.internalError != undefined) {
+          errors.push({errorKey: value.internalError});
+          angular.copy($scope.backup, $scope.cellarShare);
+        } else {
+          $route.reload();
         }
-      }
-    });
+      });
+    };
+    $scope.delete = function(cellarShare, event) {
+      CellarShares.delete({id: cellarShare.id}, function() {
+        $route.reload();
+      });
+      event.stopPropagation();
+    };
+    $scope.more = function() {
+      return getCellarShares({
+        first: $scope.cellarShares.length,
+        callback: function(value) {
+          $scope.cellarShares = $scope.cellarShares.concat(value.list);
+        }
+      });
+    };
+    var getCellarShares = function(parameters) {
+      var params = {
+        first: parameters.first, 
+        count: $scope.pageCount, 
+        sort: [
+          'cellar.name,asc'
+        ]
+      };
+      return CellarShares.getAllForCurrentUser(params, parameters.callback);
+    }
   }
 ]);
