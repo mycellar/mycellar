@@ -9,19 +9,31 @@ angular.module('mycellar.services.login').factory('loginDialogService', [
     var service = {
       create: function() {
         if ($rootScope.loginDialog == null) {
-          $rootScope.loginDialog = document.querySelector("body /deep/ #loginDialog");
-          $rootScope.loginDialog.toggle();
-          $rootScope.loginDialog.result = $q.defer();
-          $rootScope.loginDialog.result.promise.then(function() {
-            authService.loginConfirmed(null, security.updateHeader);
-          }, function(reason) {
-            authService.loginCancelled(null, reason.reason);
-            if (reason.requestPassword) {
-              $location.path('/reset-password-request');
+          var deferred = $q.defer();
+          var getLoginDialog = function() {
+            var loginDialog = document.querySelector("body /deep/ #loginDialog");
+            if (loginDialog) {
+              deferred.resolve(loginDialog);
             } else {
-              $location.path('/');
+              setTimeout(getLoginDialog, 50);
             }
+          };
+          deferred.promise.then(function(value) {
+            $rootScope.loginDialog = value;
+            $rootScope.loginDialog.toggle();
+            $rootScope.loginDialog.result = $q.defer();
+            $rootScope.loginDialog.result.promise.then(function() {
+              authService.loginConfirmed(null, security.updateHeader);
+            }, function(reason) {
+              authService.loginCancelled(null, reason.reason);
+              if (reason.requestPassword) {
+                $location.path('/reset-password-request');
+              } else {
+                $location.path('/');
+              }
+            });
           });
+          getLoginDialog();
         }
       },
       destroy: function() {
