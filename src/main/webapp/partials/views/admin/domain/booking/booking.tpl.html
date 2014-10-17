@@ -13,7 +13,7 @@
         <booking-event booking-event="fix.bookingEvent" label="Campagne de réservation"></booking-event>
         <user user="fix.customer" label="Client"></user>
       </section>
-      <section class="list">
+      <section>
         <core-item class="subheader">Quantités</core-item>
         <core-item class="threeLines" ng-repeat="bookingBottle in booking.bookingEvent.bottles">
           <div>{{booking.quantities[booking.bookingEvent.id + '-' + bookingBottle.id]}}</div>
@@ -32,12 +32,10 @@
           <div>{{total | currency:"€"}}</div>
         </core-item>
       </section>
-      <section>
-        <div horizontal layout>
-          <paper-button style="margin: auto;" raised primary ng-click="save()" ng-disabled="form.$invalid">Sauvegarder</paper-button>
-          <paper-button style="margin: auto;" raised ng-click="cancel()">Annuler</paper-button>
-        </div>
-      </section>
+      <div horizontal layout class="buttons">
+        <paper-button raised primary ng-click="save()" ng-disabled="form.$invalid">Sauvegarder</paper-button>
+        <paper-button raised ng-click="cancel()">Annuler</paper-button>
+      </div>
     </form>
   </div>
 </core-drawer-panel>

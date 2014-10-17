@@ -4,24 +4,24 @@
 </core-toolbar>
 <div main>
   <section>
-    <h3>
-      {{wine | wineRenderer}}<br/>
-      <small>
-        {{wine.appellation | appellationRenderer}}
-      </small>
-    </h3>
+    <div horizontal layout>
+      <h3>
+        {{wine | wineRenderer}}<br/>
+        <small>
+          {{wine.appellation | appellationRenderer}}
+        </small>
+      </h3>
+    </div>
   </section>
-  <section class="list">
+  <section>
     <core-item class="subheader">Stock</core-item>
-    <paper-item ng-if="stocks.length == 0">
-      Aucun stock
-    </paper-item>
-    <paper-item style="height: 72px" ng-repeat="stock in stocks">
+    <core-item ng-if="stocks.length == 0">Aucun stock</core-item>
+    <core-item style="height: 72px" ng-repeat="stock in stocks">
       <div flex>
         <div>{{stock.quantity}}<span class="xs-hide"> {{stock.bottle.format.name}}{{stock.quantity != 1?'s':''}}</span> ({{stock.bottle.format.capacity | number}}L)</div>
         <div class="ellipsis"><small>{{stock.cellar.name}}</small></div>
       </div>
       <paper-icon-button icon="remove-circle"></paper-icon-button>
-    </paper-item>
+    </core-item>
   </section>
 </div>

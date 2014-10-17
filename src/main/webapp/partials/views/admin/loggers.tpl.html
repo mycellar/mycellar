@@ -8,7 +8,7 @@
   <paper-icon-button icon="search" ng-click="toggleHidden()"></paper-icon-button>
 </core-toolbar>
 <div main>
-  <section class="list">
+  <section>
     <core-item ng-if="(loggers|filter:filters).length == 0">Aucun logger ne correspond aux filtres.</core-item>
     <core-item class="twoLines" ng-repeat="logger in loggers | filter:filters | limitTo:20">
       <div flex>

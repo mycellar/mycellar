@@ -22,6 +22,7 @@
       <paper-input id="control" flex hidden?="{{value}}" label="{{label}}" type="text" value="{{inputValue}}"></paper-input>
       <span id="display" flex hidden?="{{!value}}">{{label}} : {{renderFn(value)}}</span>
       <paper-icon-button id="icon" hidden?="{{!value}}" icon="cancel" on-tap="{{cancelAction}}"></paper-icon-button>
+      <content></content>
     </div>
     <autocomplete-overlay id="overlay" relatedTarget="{{$.target}}" opened="{{possibles && possibles.length > 0}}">
       <core-menu>

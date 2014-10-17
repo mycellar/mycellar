@@ -27,30 +27,42 @@ body /deep/ paper-icon-button.red /deep/ core-icon {
   color: rgba(255, 0, 0, 0.54);
 }
 
-body /deep/ section {
-  padding: 0 16px;
+body /deep/ section:not(:first-child) {
+  border-top: 1px solid rgba(0, 0, 0, 0.12);
 }
 
-body /deep/ section.list {
-  padding: 0;
+body /deep/ section.isolated {
+  border-top: 1px solid rgba(0, 0, 0, 0.12);
+  border-bottom: 1px solid rgba(0, 0, 0, 0.12);
 }
 
-body /deep/ section > div[horizontal][layout] {
+body /deep/ section > div[horizontal][layout],
+body /deep/ section > paper-input,
+body /deep/ section > paper-dropdown-menu,
+body /deep/ section > autocomplete-input::shadow div#target,
+body /deep/ section > form > div[horizontal][layout],
+body /deep/ section > form > paper-input,
+body /deep/ section > form > paper-dropdown-menu,
+body /deep/ section > form > autocomplete-input::shadow div#target {
+  margin: 0 16px;
+}
+
+body /deep/ div[horizontal][layout].buttons {
   margin: 16px 0;
+}
+
+body /deep/ div[horizontal][layout].buttons > paper-button {
+  margin: auto;
 }
 
 html /deep/ core-item {
   padding: 0 16px;
 }
 
-body /deep/ section > core-item:first-child:not(.subheader), body /deep/ section > paper-item:first-child:not(.subheader) {
+body /deep/ section > core-item:first-child:not(.subheader),
+body /deep/ section > paper-item:first-child:not(.subheader) {
   margin-top: 8px;
 }
-
-body /deep/ section:not(:first-child) {
-  border-top: 1px solid rgba(0, 0, 0, 0.12);
-}
-
 body core-drawer-panel[rightDrawer] [main] {
   overflow-y: auto;
 }
@@ -82,7 +94,8 @@ body /deep/ core-toolbar {
   color: rgba(255, 255, 255, 0.87);
 }
 
-body /deep/ core-toolbar /deep/ small, body /deep/ core-toolbar /deep/ core-icon {
+body /deep/ core-toolbar /deep/ small,
+body /deep/ core-toolbar /deep/ core-icon {
   color: rgba(255, 255, 255, 0.54);
 }
 
@@ -129,11 +142,13 @@ body /deep/ core-item.subheader {
   color: rgba(0, 0, 0, 0.54);
 }
 
-body /deep/ paper-item.twoLines, body /deep/ core-item.twoLines {
+body /deep/ paper-item.twoLines,
+body /deep/ core-item.twoLines {
   height: 72px;
 }
 
-body /deep/ paper-item.threeLines, body /deep/ core-item.threeLines {
+body /deep/ paper-item.threeLines,
+body /deep/ core-item.threeLines {
   height: 88px;
 }
 

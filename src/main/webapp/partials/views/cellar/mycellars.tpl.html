@@ -16,7 +16,7 @@
   <paper-icon-button icon="search" ng-click="toggleHidden()"></paper-icon-button>
 </core-toolbar>
 <div main>
-  <section class="list">
+  <section>
     <paper-item ng-if="wines.length == 0">Aucun stock</paper-item>
     <paper-item class="twoLines" ng-click="selectWine(wine)" ng-repeat="wine in wines">
       <div flex>

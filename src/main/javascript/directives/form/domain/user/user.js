@@ -27,23 +27,26 @@ angular.module('mycellar.directives.form.domain.user.user').directive('userForm'
         label: '@'
       },
       link: function(scope, element, attrs) {
-        element[0].$.control.addEventListener('input', function() {
-          scope.input = element[0].$.control.inputValue;
+        var autocomplete = element[0].querySelector('autocomplete-input');
+        autocomplete.$.control.addEventListener('input', function() {
+          scope.input = autocomplete.$.control.inputValue;
           scope.$apply();
         });
         scope.$watch('possibles', function(value) {
-          element[0].possibles = value;
+          autocomplete.possibles = value;
         });
-        element[0].render = scope.renderUser;
-        element[0].clearInput = function() {
+        autocomplete.render = scope.renderUser;
+        autocomplete.clearInput = function() {
           scope.input = '';
           scope.$apply();
         };
-        element[0].setValue = function(value) {
+        autocomplete.setValue = function(value) {
           scope.setUser(value);
           scope.$apply();
         };
-        element[0].value = scope.user;
+        scope.$watch('user', function() {
+          autocomplete.value = scope.user;
+        });
       },
       controller: [
         '$scope', '$location', '$filter', 'AdminUsers',
@@ -77,7 +80,31 @@ angular.module('mycellar.directives.form.domain.user.user').directive('userForm'
             } else {
               $scope.user = null;
             }
-          }
+          };
+
+          $scope.createMode = false;
+          $scope.new = function() {
+            $scope.createMode = true;
+            $scope.newUser = {};
+          };
+          $scope.cancel = function() {
+            $scope.createMode = false;
+            $scope.newUser = null;
+          };
+          $scope.validate = function() {
+            resource.validate($scope.newUser, function (value, headers) {
+              if (value.errorKey != undefined) {
+                angular.forEach(value.properties, function(property) {
+                  if ($scope.subUserForm[property] != undefined) {
+                    $scope.subUserForm[property].$setValidity(value.errorKey, false);
+                  }
+                });
+              } else {
+                $scope.user = $scope.newUser;
+                $scope.createMode = false;
+              }
+            });
+          };
         }
       ]
     }

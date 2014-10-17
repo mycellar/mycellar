@@ -12,12 +12,10 @@
       <section>
         <paper-input id="value" label="Valeur" floatingLabel type="text" bind-polymer-input="configuration.value" required></paper-input>
       </section>
-      <section>
-        <div horizontal layout>
-          <paper-button style="margin: auto;" raised primary ng-click="save()" ng-disabled="form.$invalid">Sauvegarder</paper-button>
-          <paper-button style="margin: auto;" raised ng-click="cancel()">Annuler</paper-button>
-        </div>
-      </section>
+      <div horizontal layout class="buttons">
+        <paper-button raised primary ng-click="save()" ng-disabled="form.$invalid">Sauvegarder</paper-button>
+        <paper-button raised ng-click="cancel()">Annuler</paper-button>
+      </div>
     </form>
   </div>
 </core-drawer-panel>

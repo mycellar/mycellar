@@ -16,11 +16,9 @@
           <paper-input flex id="stack" label="Stack" multiline floatingLabel bind-polymer-input="stack.stack" required></paper-input>
         </div>
       </section>
-      <section>
-        <div horizontal layout>
-          <paper-button style="margin: auto;" raised ng-click="cancel()">Annuler</paper-button>
-        </div>
-      </section>
+      <div horizontal layout class="buttons">
+        <paper-button raised ng-click="cancel()">Annuler</paper-button>
+      </div>
     </form>
   </div>
 </core-drawer-panel>

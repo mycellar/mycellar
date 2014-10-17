@@ -27,23 +27,24 @@ angular.module('mycellar.directives.form.domain.wine.appellation').directive('ap
         label: '@'
       },
       link: function(scope, element, attrs) {
-        element[0].$.control.addEventListener('input', function() {
-          scope.input = element[0].$.control.inputValue;
+        var autocomplete = element[0].querySelector('autocomplete-input');
+        autocomplete.$.control.addEventListener('input', function() {
+          scope.input = autocomplete.$.control.inputValue;
           scope.$apply();
         });
         scope.$watch('possibles', function(value) {
-          element[0].possibles = value;
+          autocomplete.possibles = value;
         });
-        element[0].render = scope.renderAppellation;
-        element[0].clearInput = function() {
+        autocomplete.render = scope.renderAppellation;
+        autocomplete.clearInput = function() {
           scope.input = '';
           scope.$apply();
         };
-        element[0].setValue = function(value) {
+        autocomplete.setValue = function(value) {
           scope.setAppellation(value);
           scope.$apply();
         };
-        element[0].value = scope.appellation;
+        autocomplete.value = scope.appellation;
       },
       controller: [
         '$scope', '$location', 'Appellations', 'AdminAppellations', '$filter',
@@ -82,7 +83,33 @@ angular.module('mycellar.directives.form.domain.wine.appellation').directive('ap
             } else {
               $scope.appellation = null;
             }
-          }
+          };
+
+          $scope.createMode = false;
+          $scope.new = function() {
+            $scope.createMode = true;
+            $scope.newAppellation = {
+              name: $scope.input
+            };
+          };
+          $scope.cancel = function() {
+            $scope.createMode = false;
+            $scope.newAppellation = null;
+          };
+          $scope.validate = function() {
+            resource.validate($scope.newAppellation, function (value, headers) {
+              if (value.errorKey != undefined) {
+                angular.forEach(value.properties, function(property) {
+                  if ($scope.subAppellationForm[property] != undefined) {
+                    $scope.subAppellationForm[property].$setValidity(value.errorKey, false);
+                  }
+                });
+              } else {
+                $scope.appellation = $scope.newAppellation;
+                $scope.createMode = false;
+              }
+            });
+          };
         }
       ]
     }

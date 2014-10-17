@@ -77,23 +77,26 @@ angular.module('mycellar.directives.form.domain.booking.bookingEvent').directive
         label: '@'
       },
       link: function(scope, element, attrs) {
-        element[0].$.control.addEventListener('input', function() {
-          scope.input = element[0].$.control.inputValue;
+        var autocomplete = element[0].querySelector('autocomplete-input');
+        autocomplete.$.control.addEventListener('input', function() {
+          scope.input = autocomplete.$.control.inputValue;
           scope.$apply();
         });
         scope.$watch('possibles', function(value) {
-          element[0].possibles = value;
+          autocomplete.possibles = value;
         });
-        element[0].render = scope.renderBookingEvent;
-        element[0].clearInput = function() {
+        autocomplete.render = scope.renderBookingEvent;
+        autocomplete.clearInput = function() {
           scope.input = '';
           scope.$apply();
         };
-        element[0].setValue = function(value) {
+        autocomplete.setValue = function(value) {
           scope.setBookingEvent(value);
           scope.$apply();
         };
-        element[0].value = scope.bookingEvent;
+        scope.$watch('bookingEvent', function() {
+          autocomplete.value = scope.bookingEvent;
+        });
       },
       controller: [
         '$scope', '$location', 'BookingEvents', 'AdminBookingEvents', '$filter',
@@ -132,7 +135,33 @@ angular.module('mycellar.directives.form.domain.booking.bookingEvent').directive
             } else {
               $scope.bookingEvent = null;
             }
-          }
+          };
+
+          $scope.createMode = false;
+          $scope.new = function() {
+            $scope.createMode = true;
+            $scope.newBookingEvent = {
+              name: $scope.input
+            };
+          };
+          $scope.cancel = function() {
+            $scope.createMode = false;
+            $scope.newBookingEvent = null;
+          };
+          $scope.validate = function() {
+            resource.validate($scope.newBookingEvent, function (value, headers) {
+              if (value.errorKey != undefined) {
+                angular.forEach(value.properties, function(property) {
+                  if ($scope.subBookingEventForm[property] != undefined) {
+                    $scope.subBookingEventForm[property].$setValidity(value.errorKey, false);
+                  }
+                });
+              } else {
+                $scope.bookingEvent = $scope.newBookingEvent;
+                $scope.createMode = false;
+              }
+            });
+          };
         }
       ]
     }

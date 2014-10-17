@@ -5,7 +5,7 @@
   <paper-icon-button icon="create" ng-if="!edit" ng-click="modifyProducer()"></paper-icon-button>
 </core-toolbar>
 <div main>
-  <section ng-if="!edit">
+  <section ng-if="!edit" style="margin: 16px 0;">
     <div horizontal layout>
       <div flex>
         <div class="ellipsis">Téléphone</div>
@@ -49,13 +49,13 @@
       <div horizontal layout>
         <paper-input flex id="information" label="Informations" floatingLabel multiline bind-polymer-input="producer.contactInformation"></paper-input>
       </div>
-      <div horizontal layout style="margin-bottom: 16px">
-        <paper-button style="margin: auto;" raised primary ng-click="saveProducer()" ng-disabled="producerForm.$invalid">Sauvegarder</paper-button>
-        <paper-button style="margin: auto;" raised ng-click="cancelProducer()">Annuler</paper-button>
+      <div horizontal layout class="buttons">
+        <paper-button raised primary ng-click="saveProducer()" ng-disabled="producerForm.$invalid">Sauvegarder</paper-button>
+        <paper-button raised ng-click="cancelProducer()">Annuler</paper-button>
       </div>
     </form>
   </section>
-  <section class="list" ng-if="producer.id">
+  <section ng-if="producer.id">
     <core-item class="subheader">Contacts déjà effectués</core-item>
     <paper-item class="twoLines" ng-repeat="contact in contacts" ng-click="editContact(contact)">
       <div flex>

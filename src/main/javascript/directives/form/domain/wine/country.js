@@ -26,23 +26,26 @@ angular.module('mycellar.directives.form.domain.wine.country').directive('countr
         label: '@'
       },
       link: function(scope, element, attrs) {
-        element[0].$.control.addEventListener('input', function() {
-          scope.input = element[0].$.control.inputValue;
+        var autocomplete = element[0].querySelector('autocomplete-input');
+        autocomplete.$.control.addEventListener('input', function() {
+          scope.input = autocomplete.$.control.inputValue;
           scope.$apply();
         });
         scope.$watch('possibles', function(value) {
-          element[0].possibles = value;
+          autocomplete.possibles = value;
         });
-        element[0].render = scope.renderCountry;
-        element[0].clearInput = function() {
+        autocomplete.render = scope.renderCountry;
+        autocomplete.clearInput = function() {
           scope.input = '';
           scope.$apply();
         };
-        element[0].setValue = function(value) {
+        autocomplete.setValue = function(value) {
           scope.setCountry(value);
           scope.$apply();
         };
-        element[0].value = scope.country;
+        scope.$watch('country', function() {
+          autocomplete.value = scope.country;
+        });
       },
       controller: [
         '$scope', '$location', 'Countries', 'AdminCountries', '$filter',
@@ -81,7 +84,33 @@ angular.module('mycellar.directives.form.domain.wine.country').directive('countr
             } else {
               $scope.country = null;
             }
-          }
+          };
+
+          $scope.createMode = false;
+          $scope.new = function() {
+            $scope.createMode = true;
+            $scope.newCountry = {
+              name: $scope.input
+            };
+          };
+          $scope.cancel = function() {
+            $scope.createMode = false;
+            $scope.newCountry = null;
+          };
+          $scope.validate = function() {
+            resource.validate($scope.newCountry, function (value, headers) {
+              if (value.errorKey != undefined) {
+                angular.forEach(value.properties, function(property) {
+                  if ($scope.subCountryForm[property] != undefined) {
+                    $scope.subCountryForm[property].$setValidity(value.errorKey, false);
+                  }
+                });
+              } else {
+                $scope.country = $scope.newCountry;
+                $scope.createMode = false;
+              }
+            });
+          };
         }
       ]
     }

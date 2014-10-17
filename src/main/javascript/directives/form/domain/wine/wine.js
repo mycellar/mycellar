@@ -29,23 +29,26 @@ angular.module('mycellar.directives.form.domain.wine.wine').directive('wineForm'
         label: '@'
       },
       link: function(scope, element, attrs) {
-        element[0].$.control.addEventListener('input', function() {
-          scope.input = element[0].$.control.inputValue;
+        var autocomplete = element[0].querySelector('autocomplete-input');
+        autocomplete.$.control.addEventListener('input', function() {
+          scope.input = autocomplete.$.control.inputValue;
           scope.$apply();
         });
         scope.$watch('possibles', function(value) {
-          element[0].possibles = value;
+          autocomplete.possibles = value;
         });
-        element[0].render = scope.renderWine;
-        element[0].clearInput = function() {
+        autocomplete.render = scope.renderWine;
+        autocomplete.clearInput = function() {
           scope.input = '';
           scope.$apply();
         };
-        element[0].setValue = function(value) {
+        autocomplete.setValue = function(value) {
           scope.setWine(value);
           scope.$apply();
         };
-        element[0].value = scope.wine;
+        scope.$watch('wine', function() {
+          autocomplete.value = scope.wine;
+        });
       },
       controller: [
         '$scope', '$location', 'Wines', 'AdminWines', '$filter',
@@ -84,7 +87,33 @@ angular.module('mycellar.directives.form.domain.wine.wine').directive('wineForm'
             } else {
               $scope.wine = null;
             }
-          }
+          };
+
+          $scope.createMode = false;
+          $scope.new = function() {
+            $scope.createMode = true;
+            $scope.newWine = {
+              name: $scope.input
+            };
+          };
+          $scope.cancel = function() {
+            $scope.createMode = false;
+            $scope.newWine = null;
+          };
+          $scope.validate = function() {
+            resource.validate($scope.newWine, function (value, headers) {
+              if (value.errorKey != undefined) {
+                angular.forEach(value.properties, function(property) {
+                  if ($scope.subWineForm[property] != undefined) {
+                    $scope.subWineForm[property].$setValidity(value.errorKey, false);
+                  }
+                });
+              } else {
+                $scope.country = $scope.newWine;
+                $scope.createMode = false;
+              }
+            });
+          };
         }
       ]
     }

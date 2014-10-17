@@ -27,23 +27,26 @@ angular.module('mycellar.directives.form.domain.wine.region').directive('regionF
         label: '@'
       },
       link: function(scope, element, attrs) {
-        element[0].$.control.addEventListener('input', function() {
-          scope.input = element[0].$.control.inputValue;
+        var autocomplete = element[0].querySelector('autocomplete-input');
+        autocomplete.$.control.addEventListener('input', function() {
+          scope.input = autocomplete.$.control.inputValue;
           scope.$apply();
         });
         scope.$watch('possibles', function(value) {
-          element[0].possibles = value;
+          autocomplete.possibles = value;
         });
-        element[0].render = scope.renderRegion;
-        element[0].clearInput = function() {
+        autocomplete.render = scope.renderRegion;
+        autocomplete.clearInput = function() {
           scope.input = '';
           scope.$apply();
         };
-        element[0].setValue = function(value) {
+        autocomplete.setValue = function(value) {
           scope.setRegion(value);
           scope.$apply();
         };
-        element[0].value = scope.region;
+        scope.$watch('region', function() {
+          autocomplete.value = scope.region;
+        });
       },
       controller: [
         '$scope', '$location', 'Regions', 'AdminRegions', '$filter',
@@ -82,7 +85,33 @@ angular.module('mycellar.directives.form.domain.wine.region').directive('regionF
             } else {
               $scope.region = null;
             }
-          }
+          };
+
+          $scope.createMode = false;
+          $scope.new = function() {
+            $scope.createMode = true;
+            $scope.newRegion = {
+              name: $scope.input
+            };
+          };
+          $scope.cancel = function() {
+            $scope.createMode = false;
+            $scope.newRegion = null;
+          };
+          $scope.validate = function() {
+            resource.validate($scope.newRegion, function (value, headers) {
+              if (value.errorKey != undefined) {
+                angular.forEach(value.properties, function(property) {
+                  if ($scope.subRegionForm[property] != undefined) {
+                    $scope.subRegionForm[property].$setValidity(value.errorKey, false);
+                  }
+                });
+              } else {
+                $scope.region = $scope.newRegion;
+                $scope.createMode = false;
+              }
+            });
+          };
         }
       ]
     }

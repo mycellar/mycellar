@@ -7,8 +7,8 @@
   <paper-icon-button icon="search" ng-click="toggleHidden()"></paper-icon-button>
 </core-toolbar>
 <div main>
-  <section class="list">
-    <paper-item ng-if="contacts.length == 0">Aucun contact</paper-item>
+  <section>
+    <core-item ng-if="contacts.length == 0">Aucun contact</core-item>
     <paper-item class="twoLines" ng-click="edit(contact)" ng-repeat="contact in contacts">
       <div flex>
         <div class="ellipsis">{{contact.producer | producerRenderer}}</div>

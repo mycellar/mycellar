@@ -8,7 +8,7 @@
   <paper-icon-button icon="search" ng-click="toggleHidden()"></paper-icon-button>
 </core-toolbar>
 <div main>
-  <section class="list">
+  <section>
     <core-item class="subheader">Vins à dupliquer</core-item>
     <core-item ng-if="wines.length == 0">Aucun</core-item>
     <core-item class="twoLines" ng-repeat="wine in wines">
@@ -29,7 +29,7 @@
       <paper-progress flex value="{{messages.length}}" secondaryProgress="{{messages.length + errors.length}}" max="{{wines.length}}"></paper-progress>
     </div>
   </section>
-  <section class="list">
+  <section>
     <core-item ng-repeat="error in errors">{{error.wine | wineRenderer}} : {{error.errorKey}}</core-item>
     <core-item ng-repeat="message in messages">{{message.wine | wineRenderer}} : {{message.count}} millésimes créés.</core-item>
   </section>

@@ -3,7 +3,7 @@
   <span flex>Contact : {{contact.producer | producerRenderer}}</span>
 </core-toolbar>
 <div main>
-  <section style="padding: 1em;">
+  <section style="margin: 16px 0;">
     <div horizontal layout>
       <div flex>
         <div class="ellipsis">Téléphone</div>
@@ -33,15 +33,17 @@
       </div>
     </div>
   </section>
-  <form name="contactForm" style="padding: 1em; border-top: 1px solid rgba(0, 0, 0, 0.12);">
-    <paper-input id="current" label="Date du contact" type="date" floatingLabel bind-polymer-input="contact.current" required></paper-input>
-    <paper-input id="next" label="Prochain contact" type="date" floatingLabel bind-polymer-input="contact.next" required></paper-input>
-    <div horizontal layout>
-      <paper-input flex id="text" label="Texte" multiline floatingLabel bind-polymer-input="contact.text" required></paper-input>
-    </div>
-    <div horizontal layout>
-      <paper-button style="margin: auto;" primary raised ng-click="saveContact()" ng-disabled="contactForm.$invalid">Sauvegarder</paper-button>
-      <paper-button style="margin: auto;" raised ng-click="cancelContact()">Annuler</paper-button>
-    </div>
-  </form>
+  <section>
+    <form name="contactForm">
+      <paper-input id="current" label="Date du contact" type="date" floatingLabel bind-polymer-input="contact.current" required></paper-input>
+      <paper-input id="next" label="Prochain contact" type="date" floatingLabel bind-polymer-input="contact.next" required></paper-input>
+      <div horizontal layout>
+        <paper-input flex id="text" label="Texte" multiline floatingLabel bind-polymer-input="contact.text" required></paper-input>
+      </div>
+      <div horizontal layout class="buttons">
+        <paper-button primary raised ng-click="saveContact()" ng-disabled="contactForm.$invalid">Sauvegarder</paper-button>
+        <paper-button raised ng-click="cancelContact()">Annuler</paper-button>
+      </div>
+    </form>
+  </section>
 </div>

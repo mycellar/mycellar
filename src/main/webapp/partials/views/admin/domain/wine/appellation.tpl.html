@@ -10,12 +10,10 @@
   <div main>
     <form name="form" novalidate>
       <appellation-form form="form" appellation="appellation"></appellation-form>
-      <section>
-        <div horizontal layout>
-          <paper-button style="margin: auto;" raised primary ng-click="save()" ng-disabled="form.$invalid">Sauvegarder</paper-button>
-          <paper-button style="margin: auto;" raised ng-click="cancel()">Annuler</paper-button>
-        </div>
-      </section>
+      <div horizontal layout class="buttons">
+        <paper-button raised primary ng-click="save()" ng-disabled="form.$invalid">Sauvegarder</paper-button>
+        <paper-button raised ng-click="cancel()">Annuler</paper-button>
+      </div>
     </form>
   </div>
 </core-drawer-panel>

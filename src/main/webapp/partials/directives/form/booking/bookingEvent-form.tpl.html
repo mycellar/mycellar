@@ -25,15 +25,15 @@
     </paper-item>
   </section>
   <section ng-if="bookingBottle != null">
-    <h3>{{isNew() ? 'Ajouter une bouteille à la campagne' : 'Modifier une bouteille de la campagne' }}</h3>
+    <core-item class="subheader">{{isNew() ? 'Ajouter une bouteille à la campagne' : 'Modifier une bouteille de la campagne' }}</core-item>
     <wine label="Vin" wine="bookingBottle.bottle.wine"></wine>
     <format label="Format" format="bookingBottle.bottle.format"></format>
     <paper-input id="price" label="Prix" floatingLabel type="number" bind-polymer-input="bookingBottle.price" required></paper-input>
     <paper-input id="max" label="Nombre maximum de bouteilles par client" floatingLabel type="number" bind-polymer-input="bookingBottle.max" required></paper-input>
     <paper-input id="url" label="URL de la fiche sur cave-et-terroirs.fr" floatingLabel type="url" bind-polymer-input="bookingBottle.url" required></paper-input>
-    <div horizontal layout>
-      <paper-button style="margin: auto;" raised primary ng-click="addBottle()" ng-disabled="form.$invalid">{{isNew() ? 'Ajouter' : 'Modifier'}}</paper-button>
-      <paper-button style="margin: auto;" raised ng-click="cancelBottle()">Annuler</paper-button>
+    <div horizontal layout class="buttons">
+      <paper-button raised primary ng-click="addBottle()" ng-disabled="form.$invalid">{{isNew() ? 'Ajouter' : 'Modifier'}}</paper-button>
+      <paper-button raised ng-click="cancelBottle()">Annuler</paper-button>
     </div>
   </section>
 </div>
