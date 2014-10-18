@@ -21,10 +21,7 @@
       </section>
       <section>
         <core-item class="threeLines" ng-repeat="bookingBottle in booking.bookingEvent.bottles">
-          <div>{{booking.quantities[booking.bookingEvent.id + '-' + bookingBottle.id]}}</div>
-          <paper-menu-button select icon="arrow-drop-down" halign="right">
-            <paper-item ng-repeat="i in $root.getArray(25) track by $index" label="{{$index}}" ng-click="booking.quantities[booking.bookingEvent.id + '-' + bookingBottle.id] = $index"></paper-item>
-          </paper-menu-button>
+          <paper-input style="width: 50px;" type="number" bind-polymer-input="booking.quantities[booking.bookingEvent.id + '-' + bookingBottle.id]"></paper-input>
           <div flex>
             <div class="ellipsis">{{bookingBottle.bottle.wine | wineNameRenderer}}</div>
             <div class="ellipsis"><small>{{bookingBottle.bottle.wine.producer.name}} - {{bookingBottle.bottle.wine.color | wineColorRenderer}}</small></div>

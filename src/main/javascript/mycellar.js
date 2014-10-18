@@ -69,10 +69,6 @@ angular.module('mycellar').run([
     // Get the current user when the application starts
     // (in case he is still logged in from a previous session)
     security.requestCurrentUser();
-
-    $rootScope.getArray = function(number) {
-      return new Array(number);
-    }
   }
 ]);
 
