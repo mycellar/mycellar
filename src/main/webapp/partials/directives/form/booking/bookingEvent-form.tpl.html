@@ -17,7 +17,7 @@
         drag-item="$index"
         post-drag="bookingBottleMoved(bookingBottle)">
       <div flex>
-        <div class="ellipsis">{{bookingBottle.bottle.wine | wineNameRenderer}}</div>
+        <div class="ellipsis">{{bookingBottle.bottle.wine | wineRenderer}}</div>
         <div class="ellipsis"><small>{{bookingBottle.bottle.wine.producer.name}} - {{bookingBottle.bottle.wine.color | wineColorRenderer}}</small></div>
         <div class="ellipsis"><small>{{bookingBottle.price | currency:"€"}} / {{bookingBottle.bottle.format | formatRenderer}}</small></div>
       </div>

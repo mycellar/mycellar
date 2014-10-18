@@ -1,17 +1,12 @@
 angular.module('mycellar').filter('wineRenderer', ['wineColorRendererFilter', function(wineColorRenderer) {
   return function(wine) {
     return wine.producer.name +
+        ' - ' + wine.appellation.name +
         (wine.name != null && wine.name.length > 0 ? ' - ' + wine.name : '') +
         (wine.vintage != null ? ' - ' + wine.vintage : '') +
         (wine.color != null ? ' - ' + wineColorRenderer(wine.color) : '');
   };
-}]).filter('wineNameRenderer', function() {
-  return function(wine) {
-    return wine.appellation.name + ' - ' +
-        (wine.name != null && wine.name.length > 0 ? wine.name : wine.producer.name) +
-        (wine.vintage != null ? ' - ' + wine.vintage : '');
-  };
-}).filter('countryRenderer', function() {
+}]).filter('countryRenderer', function() {
   return function(country) {
     return country.name;
   };
