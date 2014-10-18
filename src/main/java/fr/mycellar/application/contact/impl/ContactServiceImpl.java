@@ -74,8 +74,8 @@ public class ContactServiceImpl extends AbstractSearchableService<Contact, Conta
         List<Contact> contacts = contactRepository.getAllToContact();
         if ((contacts != null) && (contacts.size() > 0)) {
             for (Contact contact : contacts) {
-                content.append("Domaine ").append(contact.getProducer().getName()).append(" à recontacter le ").append(contact.getNext()).append("\r\n");
-                content.append("Dernier contact le ").append(contact.getCurrent()).append(" :").append("\r\n").append(contact.getText()).append("\r\n");
+                content.append("Domaine ").append(contact.getProducer().getName()).append(" à recontacter le ").append(contact.getNext().toString("dd/MM/yyyy")).append("\r\n");
+                content.append("Dernier contact le ").append(contact.getCurrent().toString("dd/MM/yyyy")).append(" :").append("\r\n").append(contact.getText()).append("\r\n");
                 content.append("------------------------------------------------").append("\r\n");
             }
             final String[] to = configurationService.getReminderAddressReceivers();
