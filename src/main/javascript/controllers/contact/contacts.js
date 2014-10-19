@@ -53,7 +53,7 @@ angular.module('mycellar.controllers.contact.contacts').controller('ContactsCont
     }
 
     $scope.more = function() {
-      getContacts($scope.wines.length, function(value) {
+      getContacts($scope.contacts.length, function(value) {
         $scope.contacts = $scope.contacts.concat(value.list);
       });
     };
