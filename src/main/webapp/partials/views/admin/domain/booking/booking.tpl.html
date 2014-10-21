@@ -16,9 +16,9 @@
       <section>
         <core-item class="subheader">Quantités</core-item>
         <core-item class="threeLines" ng-repeat="bookingBottle in booking.bookingEvent.bottles">
-          <paper-input style="width: 50px;" type="number" bind-polymer-input="booking.quantities[booking.bookingEvent.id + '-' + bookingBottle.id]"></paper-input>
+          <paper-input style="width: 50px; margin-right: 5px;" type="number" bind-polymer-input="booking.quantities[booking.bookingEvent.id + '-' + bookingBottle.id]"></paper-input>
           <div flex>
-            <div class="ellipsis">{{bookingBottle.bottle.wine | wineRenderer}}</div>
+            <div class="ellipsis">{{bookingBottle.bottle.wine | wineNameRenderer}}</div>
             <div class="ellipsis"><small>{{bookingBottle.bottle.wine.producer.name}} - {{bookingBottle.bottle.wine.color | wineColorRenderer}}</small></div>
             <div class="ellipsis"><small>{{bookingBottle.price | currency:"€"}} / {{bookingBottle.bottle.format | formatRenderer}}</small></div>
           </div>
