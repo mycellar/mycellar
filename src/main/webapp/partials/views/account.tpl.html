@@ -12,9 +12,9 @@
     </div>
   </section>
   <section>
-    <div horizontal layout ng-hide="changeEmailFormDisplayed || changePasswordFormDisplayed">
-      <paper-button style="margin: auto;" raised ng-click="displayChangeEmailForm()">Changer votre email</paper-button>
-      <paper-button style="margin: auto;" raised ng-click="displayChangePasswordForm()">Changer votre mot de passe</paper-button>
+    <div class="buttons" horizontal layout ng-hide="changeEmailFormDisplayed || changePasswordFormDisplayed">
+      <paper-button raised ng-click="displayChangeEmailForm()">Changer votre email</paper-button>
+      <paper-button raised ng-click="displayChangePasswordForm()">Changer votre mot de passe</paper-button>
     </div>
     <form name="changeEmailForm" ng-show="changeEmailFormDisplayed">
       <paper-input id="email" label="Email" floatingLabel type="email" bind-polymer-input="email"></paper-input>
