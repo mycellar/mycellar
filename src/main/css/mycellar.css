@@ -225,3 +225,16 @@ html /deep/ core-submenu /deep/ #submenu {
 html /deep/ core-submenu /deep/ paper-item {
   padding-left: 32px;
 }
+
+html /deep/ core-submenu /deep/ core-item {
+  padding: 0;
+}
+
+html /deep/ core-submenu /deep/ paper-item.item-content {
+  padding-left: 16px;
+}
+
+html /deep/ core-submenu /deep/ paper-item.item-content #icon {
+  margin-left: 0;
+  margin-right: 8px;
+}

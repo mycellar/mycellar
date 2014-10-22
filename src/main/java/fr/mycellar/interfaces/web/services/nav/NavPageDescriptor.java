@@ -18,6 +18,8 @@
  */
 package fr.mycellar.interfaces.web.services.nav;
 
+import lombok.Getter;
+
 /**
  * @author speralta
  */
@@ -25,50 +27,21 @@ public class NavPageDescriptor implements NavDescriptor {
 
     private static final long serialVersionUID = 201011122248L;
 
+    @Getter
     private final String route;
-
+    @Getter
     private final String label;
-
+    @Getter
     private final String icon;
 
-    /**
-     * @param route
-     * @param label
-     */
     public NavPageDescriptor(String route, String label) {
         this(route, label, null);
     }
 
-    /**
-     * @param route
-     * @param label
-     * @param icon
-     */
     public NavPageDescriptor(String route, String label, String icon) {
         this.route = route;
         this.label = label;
         this.icon = icon;
-    }
-
-    /**
-     * @return the label
-     */
-    public String getLabel() {
-        return label;
-    }
-
-    /**
-     * @return the route
-     */
-    public String getRoute() {
-        return route;
-    }
-
-    /**
-     * @return the icon
-     */
-    public String getIcon() {
-        return icon;
     }
 
 }

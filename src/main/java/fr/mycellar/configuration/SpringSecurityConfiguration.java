@@ -88,7 +88,9 @@ public class SpringSecurityConfiguration extends WebSecurityConfigurerAdapter {
                 .antMatchers("/api/**").permitAll() //
                 .antMatchers("/cellar/**").hasRole("CELLAR") //
                 .antMatchers("/admin/**").hasRole("ADMIN") //
+                .antMatchers("/booking/reports").hasRole("ADMIN") //
                 .antMatchers("/booking/**").hasRole("BOOKING") //
+                .antMatchers("/contact/**").hasRole("ADMIN") //
                 .antMatchers("/monitoring/**").hasRole("MONITORING");
     }
 }

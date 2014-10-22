@@ -7,12 +7,13 @@
 <nav flex>
   <core-menu ng-controller="NavigationController">
     <span ng-if="false" ng-repeat-start="menu in menuService.getAll()"></span>
-    <core-submenu label="{{menu.label}}" ng-if="menu.pages">
-      <paper-item ng-repeat="sub in menu.pages" label="{{sub.label}}">
+    <core-submenu ng-if="menu.pages">
+      <paper-item flex class="item-content" label="{{menu.label}}" icon="{{menu.icon}}"></paper-item>
+      <paper-item ng-repeat="sub in menu.pages" label="{{sub.label}}" icon="{{sub.icon}}">
         <a href="{{sub.route}}"></a>
       </paper-item>
     </core-submenu>
-    <paper-item label="{{menu.label}}" ng-if="!menu.pages">
+    <paper-item label="{{menu.label}}" icon="{{menu.icon}}" ng-if="!menu.pages">
       <a href="{{menu.route}}"></a>
     </paper-item>
     <span ng-if="false" ng-repeat-end></span>

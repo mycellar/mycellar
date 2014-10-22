@@ -19,9 +19,14 @@
 package fr.mycellar.interfaces.web.services.nav;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Map.Entry;
+import java.util.Set;
 import java.util.SortedMap;
 import java.util.TreeMap;
+
+import lombok.Getter;
 
 /**
  * @author speralta
@@ -32,53 +37,28 @@ public class NavHeaderDescriptor implements NavDescriptor {
 
     private final SortedMap<Integer, NavPageDescriptor> pages = new TreeMap<Integer, NavPageDescriptor>();
 
+    @Getter
     private final String label;
-
+    @Getter
     private final String icon;
 
-    /**
-     * @param label
-     */
     public NavHeaderDescriptor(String label) {
         this(label, null);
     }
 
-    /**
-     * @param label
-     * @param icon
-     */
     public NavHeaderDescriptor(String label, String icon) {
         this.label = label;
         this.icon = icon;
     }
 
-    /**
-     * @return the label
-     */
-    public String getLabel() {
-        return label;
-    }
-
-    /**
-     * @return the icon
-     */
-    public String getIcon() {
-        return icon;
-    }
-
-    /**
-     * @return the pages
-     */
     public List<NavPageDescriptor> getPages() {
-        return new ArrayList<NavPageDescriptor>(pages.values());
+        return new ArrayList<>(pages.values());
     }
 
-    /**
-     * @param key
-     * @param value
-     * @return
-     * @see java.util.Map#put(java.lang.Object, java.lang.Object)
-     */
+    public Set<Entry<Integer, NavPageDescriptor>> children() {
+        return new HashSet<>(pages.entrySet());
+    }
+
     public NavHeaderDescriptor addPage(Integer key, NavPageDescriptor value) {
         Integer finalKey = key;
         while (pages.get(finalKey) != null) {

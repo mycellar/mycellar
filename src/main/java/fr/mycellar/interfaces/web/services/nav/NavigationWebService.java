@@ -21,6 +21,7 @@ package fr.mycellar.interfaces.web.services.nav;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
+import java.util.Map.Entry;
 import java.util.ResourceBundle;
 import java.util.SortedMap;
 import java.util.TreeMap;
@@ -114,8 +115,15 @@ public class NavigationWebService {
                 }
             } else if (descriptor instanceof NavHeaderDescriptor) {
                 NavHeaderDescriptor headerDescriptor = (NavHeaderDescriptor) descriptor;
-                if (webInvocationPrivilegeEvaluator.isAllowed(headerDescriptor.getPages().get(0).getRoute(), context.getAuthentication())) {
-                    filtered.add(headerDescriptor);
+                NavHeaderDescriptor copy = new NavHeaderDescriptor(headerDescriptor.getLabel(), headerDescriptor.getIcon());
+                for (Entry<Integer, NavPageDescriptor> entry : headerDescriptor.children()) {
+                    NavPageDescriptor pageDescriptor = entry.getValue();
+                    if (webInvocationPrivilegeEvaluator.isAllowed(pageDescriptor.getRoute(), context.getAuthentication())) {
+                        copy.addPage(entry.getKey(), pageDescriptor);
+                    }
+                }
+                if (!copy.children().isEmpty()) {
+                    filtered.add(copy);
                 }
             }
         }
