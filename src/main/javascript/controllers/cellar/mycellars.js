@@ -107,9 +107,9 @@ angular.module('mycellar.controllers.cellar.mycellars').controller('MyCellarsCon
 
     $scope.more = function() {
       getWines({
-        input:$scope.search, 
-        cellar: $scope.cellar, 
-        first: $scope.wines.length, 
+        input: $scope.search,
+        cellar: $scope.cellar,
+        first: $scope.wines.length,
         callback: function(value) {
           $scope.wines = $scope.wines.concat(value.list);
         }
