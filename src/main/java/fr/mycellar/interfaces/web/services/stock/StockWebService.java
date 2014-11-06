@@ -181,12 +181,19 @@ public class StockWebService {
     @PreAuthorize("hasRole('ROLE_CELLAR')")
     public ListWithCount<Movement> getMovements(@QueryParam("cellarId") Integer cellarId, @QueryParam("first") int first, @QueryParam("count") int count,
             @QueryParam("filters") List<FilterCouple> filters, @QueryParam("sort") List<OrderCouple> orders) {
-        if (!stockServiceFacade.hasReadRight(cellarId, currentUserService.getCurrentUserEmail())) {
+        if ((cellarId != null) && !stockServiceFacade.hasReadRight(cellarId, currentUserService.getCurrentUserEmail())) {
             throw new AccessDeniedException("No read access to this cellar.");
         }
-        SearchParameters<Movement> searchParameters = searchParametersUtil.getSearchBuilder(first, count, filters, orders, Movement.class) //
-                .on(Movement_.cellar).to(Cellar_.id).equalsTo(cellarId) //
-                .build();
+        SearchBuilder<Movement> searchBuilder = searchParametersUtil.getSearchBuilder(first, count, filters, orders, Movement.class);
+        if (cellarId != null) {
+            searchBuilder.distinct().on(Movement_.cellar).to(Cellar_.id).equalsTo(cellarId);
+        } else {
+            User user = currentUserService.getCurrentUser();
+            searchBuilder.distinct().disjunction() //
+            .on(Movement_.cellar).to(Cellar_.owner).equalsTo(user) //
+            .on(Movement_.cellar).to(Cellar_.shares).to(CellarShare_.email).equalsTo(user.getEmail());
+        }
+        SearchParameters<Movement> searchParameters = searchBuilder.build();
         List<Movement> movements;
         if (count == 0) {
             movements = new ArrayList<>();
@@ -216,17 +223,17 @@ public class StockWebService {
         } else {
             User user = currentUserService.getCurrentUser();
             searchBuilder.distinct().disjunction() //
-                    .on(Stock_.cellar).to(Cellar_.owner).equalsTo(user) //
-                    .on(Stock_.cellar).to(Cellar_.shares).to(CellarShare_.email).equalsTo(user.getEmail());
+            .on(Stock_.cellar).to(Cellar_.owner).equalsTo(user) //
+            .on(Stock_.cellar).to(Cellar_.shares).to(CellarShare_.email).equalsTo(user.getEmail());
         }
         if (StringUtils.isNotBlank(input)) {
             searchBuilder.fullText(Stock_.bottle).to(Bottle_.wine).to(Wine_.appellation).to(Appellation_.region).to(NamedEntity_.name) //
-                    .andOn(Stock_.bottle).to(Bottle_.wine).to(Wine_.appellation).to(NamedEntity_.name) //
-                    .andOn(Stock_.bottle).to(Bottle_.wine).to(Wine_.producer).to(NamedEntity_.name) //
-                    .andOn(Stock_.bottle).to(Bottle_.wine).to(NamedEntity_.name) //
-                    .andOn(Stock_.bottle).to(Bottle_.wine).to(Wine_.vintage) //
-                    .andOn(Stock_.bottle).to(Bottle_.format).to(NamedEntity_.name) //
-                    .andMode().search(input);
+            .andOn(Stock_.bottle).to(Bottle_.wine).to(Wine_.appellation).to(NamedEntity_.name) //
+            .andOn(Stock_.bottle).to(Bottle_.wine).to(Wine_.producer).to(NamedEntity_.name) //
+            .andOn(Stock_.bottle).to(Bottle_.wine).to(NamedEntity_.name) //
+            .andOn(Stock_.bottle).to(Bottle_.wine).to(Wine_.vintage) //
+            .andOn(Stock_.bottle).to(Bottle_.format).to(NamedEntity_.name) //
+            .andMode().search(input);
         }
         SearchParameters<Stock> searchParameters = searchBuilder.build();
         ResultParameters<Stock, Wine> resultParameters = new ResultBuilder<>(Stock_.bottle).to(Bottle_.wine).build();

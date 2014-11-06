@@ -41,6 +41,9 @@ angular.module('mycellar.controllers.cellar.arrival').controller('ArrivalControl
       }
       $scope.arrivalBottle = null;
     };
+    $scope.cancelBottle = function() {
+      $scope.arrivalBottle = null;
+    };
     $scope.isNew = function() {
       return $scope.arrival.arrivalBottles.indexOf($scope.arrivalBottle) == -1;
     };
@@ -60,15 +63,12 @@ angular.module('mycellar.controllers.cellar.arrival').controller('ArrivalControl
         }
       });
     };
-    $scope.$watch('arrivalDate', function() {
-      $scope.arrival.date = $filter('date')($scope.arrivalDate, 'yyyy-MM-dd');
-    });
     $scope.cancel = function() {
       $scope.arrival = {
-          arrivalBottles: [],
-          source: '',
-          charges: 0,
-          date: null
+        arrivalBottles: [],
+        source: '',
+        charges: 0,
+        date: null
       };
       $scope.arrivalDate = new Date();
       $scope.arrivalBottle = null;
