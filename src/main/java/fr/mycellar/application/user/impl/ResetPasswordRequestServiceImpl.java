@@ -35,6 +35,7 @@ import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.mail.javamail.MimeMessagePreparator;
 import org.springframework.scheduling.annotation.Scheduled;
+import org.springframework.transaction.annotation.Transactional;
 
 import fr.mycellar.application.admin.ConfigurationService;
 import fr.mycellar.application.shared.AbstractSimpleService;
@@ -61,6 +62,7 @@ public class ResetPasswordRequestServiceImpl extends AbstractSimpleService<Reset
 
     @Override
     @Scheduled(cron = "0 0 0 * * *")
+    @Transactional
     public void cleanOldRequests() {
         resetPasswordRequestRepository.deleteOldRequests();
     }
