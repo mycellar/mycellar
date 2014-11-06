@@ -14,7 +14,7 @@
   </nav>
   <div main>
     <section>
-      <paper-item ng-if="items.length == 0">Aucun pays</paper-item>
+      <core-item ng-if="items.length == 0">Aucun pays</core-item>
       <paper-item ng-click="edit(country.id)" ng-repeat="country in items">
         <div flex>
           <div class="ellipsis">{{country.name}}</div>

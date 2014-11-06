@@ -14,7 +14,7 @@
   </nav>
   <div main>
     <section>
-      <paper-item ng-if="items.length == 0">Aucune région</paper-item>
+      <core-item ng-if="items.length == 0">Aucune région</core-item>
       <paper-item class="twoLines" ng-click="edit(region.id)" ng-repeat="region in items">
         <div flex>
           <div class="ellipsis">{{region.name}}</div>

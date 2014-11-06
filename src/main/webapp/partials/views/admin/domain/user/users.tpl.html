@@ -14,7 +14,7 @@
   </nav>
   <div main>
     <section>
-      <paper-item ng-if="items.length == 0">Aucun utilisateur</paper-item>
+      <core-item ng-if="items.length == 0">Aucun utilisateur</core-item>
       <paper-item class="twoLines" ng-click="edit(user.id)" ng-repeat="user in items">
         <div flex>
           <div class="ellipsis">{{user | userRenderer}}</div>

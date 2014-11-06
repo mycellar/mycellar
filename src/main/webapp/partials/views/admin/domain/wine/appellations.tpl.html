@@ -14,7 +14,7 @@
   </nav>
   <div main>
     <section>
-      <paper-item ng-if="items.length == 0">Aucune appellation</paper-item>
+      <core-item ng-if="items.length == 0">Aucune appellation</core-item>
       <paper-item class="twoLines" ng-click="edit(appellation.id)" ng-repeat="appellation in items">
         <div flex>
           <div class="ellipsis">{{appellation.name}}</div>

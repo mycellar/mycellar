@@ -14,7 +14,7 @@
   </nav>
   <div main>
     <section>
-      <paper-item ng-if="items.length == 0">Aucun producteur</paper-item>
+      <core-item ng-if="items.length == 0">Aucun producteur</core-item>
       <paper-item ng-click="edit(producer.id)" ng-repeat="producer in items">
         <div flex>
           <div class="ellipsis">{{producer | producerRenderer}}</div>

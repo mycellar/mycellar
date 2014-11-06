@@ -14,7 +14,7 @@
   </nav>
   <div main>
     <section>
-      <paper-item ng-if="items.length == 0">Aucun format</paper-item>
+      <core-item ng-if="items.length == 0">Aucun format</core-item>
       <paper-item ng-click="edit(format.id)" ng-repeat="format in items">
         <div flex>
           <div class="ellipsis">{{format | formatRenderer}}</div>

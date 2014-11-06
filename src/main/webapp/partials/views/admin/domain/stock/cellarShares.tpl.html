@@ -9,7 +9,7 @@
   </nav>
   <div main>
     <section>
-      <paper-item ng-if="items.length == 0">Aucun partage de cave</paper-item>
+      <core-item ng-if="items.length == 0">Aucun partage de cave</core-item>
       <paper-item class="threeLines" ng-click="edit(cellarShare.id)" ng-repeat="cellarShare in items">
         <div flex>
           <div class="ellipsis">{{cellarShare.cellar.name}}</div>

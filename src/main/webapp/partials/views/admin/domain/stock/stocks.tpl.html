@@ -9,7 +9,7 @@
   </nav>
   <div main>
     <section>
-      <paper-item ng-if="items.length == 0">Aucun stock</paper-item>
+      <core-item ng-if="items.length == 0">Aucun stock</core-item>
       <paper-item class="twoLines" ng-click="edit(stock.id)" ng-repeat="stock in items">
         <div flex>
           <div class="ellipsis">{{stock.bottle.wine | wineRenderer}}</div>
