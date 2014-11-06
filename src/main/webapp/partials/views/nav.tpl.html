@@ -9,7 +9,7 @@
     <span ng-if="false" ng-repeat-start="menu in menuService.getAll()"></span>
     <core-submenu ng-if="menu.pages">
       <paper-item flex class="item-content" label="{{menu.label}}" icon="{{menu.icon}}"></paper-item>
-      <paper-item ng-repeat="sub in menu.pages" label="{{sub.label}}" icon="{{sub.icon}}">
+      <paper-item ng-repeat="sub in menu.pages" label="{{sub.label}}">
         <a href="{{sub.route}}"></a>
       </paper-item>
     </core-submenu>

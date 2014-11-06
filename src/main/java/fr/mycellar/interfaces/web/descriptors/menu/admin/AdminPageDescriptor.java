@@ -31,7 +31,7 @@ public class AdminPageDescriptor extends AbstractDescriptor implements IMenuDesc
 
     @Override
     public String getIcon() {
-        return "wrench";
+        return "settings";
     }
 
     @Override
