@@ -6,6 +6,18 @@
     <paper-input id="start" label="Début" floatingLabel type="date" bind-polymer-input="bookingEvent.start" required></paper-input>
     <paper-input id="end" label="Fin" floatingLabel type="date" bind-polymer-input="bookingEvent.end" required></paper-input>
   </section>
+  <section ng-if="bookingBottle != null">
+    <core-item class="subheader">{{isNew() ? 'Ajouter une bouteille à la campagne' : 'Modifier une bouteille de la campagne' }}</core-item>
+    <wine label="Vin" wine="bookingBottle.bottle.wine"></wine>
+    <format label="Format" format="bookingBottle.bottle.format"></format>
+    <paper-input id="price" label="Prix" floatingLabel type="number" bind-polymer-input="bookingBottle.price" required></paper-input>
+    <paper-input id="max" label="Nombre maximum de bouteilles par client" floatingLabel type="number" bind-polymer-input="bookingBottle.max" required></paper-input>
+    <paper-input id="url" label="URL de la fiche sur cave-et-terroirs.fr" floatingLabel type="url" bind-polymer-input="bookingBottle.url" required></paper-input>
+    <div horizontal layout class="buttons">
+      <paper-button raised primary ng-click="addBottle()" ng-disabled="form.$invalid">{{isNew() ? 'Ajouter' : 'Modifier'}}</paper-button>
+      <paper-button raised ng-click="cancelBottle()">Annuler</paper-button>
+    </div>
+  </section>
   <section drag-drop="bookingEvent.bottles">
     <core-item class="subheader">
       <div flex>Bouteilles</div>
@@ -23,17 +35,5 @@
       </div>
       <paper-icon-button icon="delete" ng-click="removeBookingBottle(bookingBottle)"></paper-icon-button>
     </paper-item>
-  </section>
-  <section ng-if="bookingBottle != null">
-    <core-item class="subheader">{{isNew() ? 'Ajouter une bouteille à la campagne' : 'Modifier une bouteille de la campagne' }}</core-item>
-    <wine label="Vin" wine="bookingBottle.bottle.wine"></wine>
-    <format label="Format" format="bookingBottle.bottle.format"></format>
-    <paper-input id="price" label="Prix" floatingLabel type="number" bind-polymer-input="bookingBottle.price" required></paper-input>
-    <paper-input id="max" label="Nombre maximum de bouteilles par client" floatingLabel type="number" bind-polymer-input="bookingBottle.max" required></paper-input>
-    <paper-input id="url" label="URL de la fiche sur cave-et-terroirs.fr" floatingLabel type="url" bind-polymer-input="bookingBottle.url" required></paper-input>
-    <div horizontal layout class="buttons">
-      <paper-button raised primary ng-click="addBottle()" ng-disabled="form.$invalid">{{isNew() ? 'Ajouter' : 'Modifier'}}</paper-button>
-      <paper-button raised ng-click="cancelBottle()">Annuler</paper-button>
-    </div>
   </section>
 </div>
