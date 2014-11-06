@@ -11,9 +11,9 @@
         <paper-item label="Lecture seule" value="READ"></paper-item>
         <paper-item label="Modification" value="MODIFY"></paper-item>
       </paper-dropdown-menu>
-      <div horizontal layout style="margin-bottom: 16px;">
-        <paper-button style="margin: auto;" raised primary ng-click="save()" ng-disabled="form.$invalid">Sauvegarder</paper-button>
-        <paper-button style="margin: auto;" raised ng-click="cancel()">Annuler</paper-button>
+      <div horizontal layout class="buttons">
+        <paper-button raised primary ng-click="save()" ng-disabled="form.$invalid">Sauvegarder</paper-button>
+        <paper-button raised ng-click="cancel()">Annuler</paper-button>
       </div>
     </form>
   </section>
