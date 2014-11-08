@@ -10,7 +10,7 @@
     <core-item class="subheader">{{isNew() ? 'Ajouter une bouteille à la campagne' : 'Modifier une bouteille de la campagne' }}</core-item>
     <wine label="Vin" wine="bookingBottle.bottle.wine"></wine>
     <format label="Format" format="bookingBottle.bottle.format"></format>
-    <paper-input id="price" label="Prix" floatingLabel type="number" bind-polymer-input="bookingBottle.price" required></paper-input>
+    <paper-input id="price" label="Prix" floatingLabel type="number" bind-polymer-input="bookingBottle.price" required min="0" step="any"></paper-input>
     <paper-input id="max" label="Nombre maximum de bouteilles par client" floatingLabel type="number" bind-polymer-input="bookingBottle.max" required></paper-input>
     <paper-input id="url" label="URL de la fiche sur cave-et-terroirs.fr" floatingLabel type="url" bind-polymer-input="bookingBottle.url" required></paper-input>
     <div horizontal layout class="buttons">
