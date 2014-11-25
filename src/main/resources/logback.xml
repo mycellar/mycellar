@@ -12,7 +12,7 @@
   
   <logger name="fr.mycellar" level="INFO" />
 
-  <!-- URLRWRITE -->
+  <!-- URLREWRITE -->
   <!-- <logger name="org.tuckey.web.filters.urlrewrite" level="DEBUG" /> -->
 
   <!-- HIBERNATE QUERIES -->

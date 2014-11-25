@@ -4,11 +4,9 @@ spring:
   jpa:
     generate-ddl: false
     properties:
-    hibernate:
-      ddl-auto: none
-      naming-strategy: org.hibernate.cfg.DefaultNamingStrategy
-    properties:
       hibernate:
+        ddl-auto: none
+        naming-strategy: org.hibernate.cfg.DefaultNamingStrategy
         event:
           merge:
             entity_copy_observer: allow
