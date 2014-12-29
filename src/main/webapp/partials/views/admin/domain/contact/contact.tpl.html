@@ -11,12 +11,24 @@
     <form name="form" novalidate>
       <section>
         <producer label="Producteur" producer="contact.producer"></producer>
-        <paper-input id="current" label="Date du contact" type="date" floatingLabel bind-polymer-input="contact.current" required></paper-input>
-        <paper-input id="next" label="Prochain contact" type="date" floatingLabel bind-polymer-input="contact.next" required></paper-input>
         <div horizontal layout>
-          <paper-input flex id="text" label="Texte" multiline floatingLabel bind-polymer-input="contact.text" required></paper-input>
+          <my-input-decorator flex floatingLabel labelVisible="false" label="Date du contact" isInvalid="{{form.current.$invalid}}">
+            <input name="current" type="date" ng-model="contactCurrent" required></input>
+            <error-span class="error" ctrl="form.current"></error-span>
+          </my-input-decorator>
+          <my-input-decorator flex floatingLabel labelVisible="false" label="Date du prochain contact" isInvalid="{{form.next.$invalid}}">
+            <input name="next" type="date" ng-model="contactNext"></input>
+            <error-span class="error" ctrl="form.next"></error-span>
+          </my-input-decorator>
         </div>
+        <my-input-decorator flex floatingLabel label="Texte" isInvalid="{{form.text.$invalid}}">
+          <paper-autogrow-textarea>
+            <textarea name="text" ng-model="contact.text"></textarea>
+            <error-span class="error" ctrl="form.text"></error-span>
+          </paper-autogrow-textarea>
+        </my-input-decorator>
       </section>
+      <error-div form="form"></error-div>
       <div horizontal layout class="buttons">
         <paper-button raised primary ng-click="save()" ng-disabled="form.$invalid">Sauvegarder</paper-button>
         <paper-button raised ng-click="cancel()">Annuler</paper-button>

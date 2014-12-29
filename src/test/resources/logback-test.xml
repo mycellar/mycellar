@@ -11,6 +11,9 @@
 
   <logger name="fr.mycellar" level="DEBUG" />
 
+  <!-- SPRING -->
+  <logger name="org.springframework" level="INFO" />
+
   <!-- URLRWRITE -->
   <!-- <logger name="org.tuckey.web.filters.urlrewrite" level="DEBUG" /> -->
 

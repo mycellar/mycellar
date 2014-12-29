@@ -7,7 +7,7 @@
   <section ng-if="createMode" class="isolated">
     <ng-form name="subAppellationForm">
       <core-item class="subheader">Création d'une nouvelle appellation :</core-item>
-      <appellation-form appellation="newAppellation"></appellation-form>
+      <appellation-form form="subAppellationForm" appellation="newAppellation"></appellation-form>
       <div horizontal layout class="buttons">
         <paper-button raised ng-click="validate()">Valider</paper-button>
         <paper-button raised ng-click="cancel()">Annuler</paper-button>

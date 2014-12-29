@@ -10,11 +10,19 @@
   <div main>
     <form name="form" novalidate>
       <section>
-        <paper-input id="hashCode" floatingLabel label="HashCode" type="text" bind-polymer-input="stack.hashCode" required></paper-input>
-        <paper-input id="count" floatingLabel label="Nombre" type="number" bind-polymer-input="stack.count" required></paper-input>
         <div horizontal layout>
-          <paper-input flex id="stack" label="Stack" multiline floatingLabel bind-polymer-input="stack.stack" required></paper-input>
+          <my-input-decorator flex disabled floatingLabel label="HashCode">
+            <input name="hashCode" type="text" ng-model="stack.hashCode" disabled></input>
+          </my-input-decorator>
+          <my-input-decorator flex disabled floatingLabel labelVisible="false" label="Nombre">
+            <input name="count" type="number" ng-model="stack.count" disabled></input>
+          </my-input-decorator>
         </div>
+        <my-input-decorator flex disabled floatingLabel label="Stack">
+          <paper-autogrow-textarea>
+            <textarea name="stack" ng-model="stack.stack" disabled></textarea>
+          </paper-autogrow-textarea>
+        </my-input-decorator>
       </section>
       <div horizontal layout class="buttons">
         <paper-button raised ng-click="cancel()">Annuler</paper-button>

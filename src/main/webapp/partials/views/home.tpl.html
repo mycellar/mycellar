@@ -3,16 +3,14 @@
   <span flex>Actualités du site</span>
 </core-toolbar>
 <section>
-  <article class="card">
-    <paper-shadow z="1"></paper-shadow>
+  <paper-shadow z="1" class="card">
     <header>Réservations disponibles</header>
     <div>
       <p>L'outil de réservation pour les campagnes de Cave et Terroirs est en ligne. Utilisez-le pour effectuer vos réservations !</p>
       <p><a href="booking/currents">Voir les campagnes en cours</a></p>
     </div>
-  </article>
-  <article class="card" ng-if="currentUser == null">
-    <paper-shadow z="1"></paper-shadow>
+  </paper-shadow>
+  <paper-shadow z="1" class="card" ng-if="currentUser == null">
     <header>
       <a href="http://www.cave-et-terroirs.fr/">Cave et Terroirs</a>
     </header>
@@ -20,18 +18,16 @@
       <p>Pour pouvoir accéder aux réservations, vous devez être inscrit.</p>
       <p><a href="register">Inscrivez-vous</a> ou <a href="/booking/currents">connectez-vous</a> !</p>
     </div>
-  </article>
-  <article class="card">
-    <paper-shadow z="1"></paper-shadow>
+  </paper-shadow>
+  <paper-shadow z="1" class="card">
     <header>
       <a class="btn btn-default" href="vinopedia">Accéder à Vinopedia</a>
     </header>
     <div>
       <p>Une bibliothèque des vins contenant plus de {{wineCount}} références !</p>
     </div>
-  </article>
-  <article class="card">
-    <paper-shadow z="1"></paper-shadow>
+  </paper-shadow>
+  <paper-shadow z="1" class="card">
     <div><p>Bientôt en ligne : un outil de gestion cave couplé à vos réservations.</p></div>
-  </article>
+  </paper-shadow>
 </section>

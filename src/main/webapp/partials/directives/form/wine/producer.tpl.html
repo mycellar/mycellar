@@ -7,7 +7,7 @@
   <section ng-if="createMode" class="isolated">
     <ng-form name="subProducerForm">
       <core-item class="subheader">Création d'un nouveau producteur :</core-item>
-      <producer-form producer="newProducer"></producer-form>
+      <producer-form form="subProducerForm" producer="newProducer"></producer-form>
       <div horizontal layout class="buttons">
         <paper-button raised ng-click="validate()">Valider</paper-button>
         <paper-button raised ng-click="cancel()">Annuler</paper-button>

@@ -13,8 +13,12 @@
         <cellar label="Cave" cellar="stock.cellar"></cellar>
         <wine label="Vin" wine="stock.bottle.wine"></wine>
         <format label="Format" format="stock.bottle.format"></format>
-        <paper-input id="quantity" floatingLabel label="Quantité" type="number" bind-polymer-input="stock.quantity" required></paper-input>
+        <my-input-decorator floatingLabel labelVisible="false" label="Quantité" isInvalid="{{form.quantity.$invalid}}">
+          <input name="quantity" type="number" ng-model="stock.quantity" required></input>
+          <error-span class="error" ctrl="form.quantity"></error-span>
+        </my-input-decorator>
       </section>
+      <error-div form="form"></error-div>
       <div horizontal layout class="buttons">
         <paper-button raised primary ng-click="save()" ng-disabled="form.$invalid">Sauvegarder</paper-button>
         <paper-button raised ng-click="cancel()">Annuler</paper-button>

@@ -1,18 +1,37 @@
 <div>
   <section>
-    <paper-input id="lastname" floatingLabel label="Nom de famille" type="text" bind-polymer-input="user.lastname" required></paper-input>
-    <paper-input id="firstname" floatingLabel label="Prénom" type="text" bind-polymer-input="user.firstname" required></paper-input>
-    <paper-input id="email" floatingLabel label="Email" type="email" bind-polymer-input="user.email" required></paper-input>
-    <paper-dropdown-menu bind-polymer-select="user.profile" valueattr="value">
-      <paper-item label="Basique" value="BASIC"></paper-item>
-      <paper-item label="Gestion de cave" value="CELLAR"></paper-item>
-      <paper-item label="Réservation" value="BOOKING"></paper-item>
-      <paper-item label="Complet" value="MYCELLAR"></paper-item>
-      <paper-item label="Administrateur" value="ADMIN"></paper-item>
+    <my-input-decorator label="Nom de famille" floatingLabel isInvalid="{{form.lastname.$invalid}}">
+      <input name="lastname" type="text" ng-model="user.lastname" required></input>
+      <error-span class="error" ctrl="form.lastname"></error-span>
+    </my-input-decorator>
+    <my-input-decorator label="Prénom" floatingLabel isInvalid="{{form.firstname.$invalid}}">
+      <input name="firstname" type="text" ng-model="user.firstname" required></input>
+      <error-span class="error" ctrl="form.firstname"></error-span>
+    </my-input-decorator>
+    <my-input-decorator label="E-mail" floatingLabel isInvalid="{{form.email.$invalid}}">
+      <input name="email" type="email" ng-model="user.email" required></input>
+      <error-span class="error" ctrl="form.email"></error-span>
+    </my-input-decorator>
+    <paper-dropdown-menu label="Rôle" style="width: 200px;">
+      <paper-dropdown class="dropdown" style="width: 200px;">
+        <core-menu class="menu" bind-polymer-select="user.profile" valueattr="value">
+          <paper-item value="BASIC">Basique</paper-item>
+          <paper-item value="CELLAR">Gestion de cave</paper-item>
+          <paper-item value="BOOKING">Réservation</paper-item>
+          <paper-item value="MYCELLAR">Complet</paper-item>
+          <paper-item value="ADMIN">Administrateur</paper-item>
+        </core-menu>
+      </paper-dropdown>
     </paper-dropdown-menu>
   </section>
   <section ng-if="user.id == null">
-    <paper-input id="password" floatingLabel label="Mot de passe" type="password" bind-polymer-input="passwords.first" required></paper-input>
-    <paper-input id="password2" floatingLabel label="Confirmation du mot de passe" type="password" bind-polymer-input="passwords.second" required></paper-input>
+    <my-input-decorator label="Mot de passe" floatingLabel isInvalid="{{form.password.$invalid}}">
+      <input name="password" type="password" ng-model="user.password" match="form.password2" required></input>
+      <error-span class="error" ctrl="form.password"></error-span>
+    </my-input-decorator>
+    <my-input-decorator label="Confirmation du mot de passe" floatingLabel isInvalid="{{form.password2.$invalid}}">
+      <input name="password2" type="password" ng-model="user.password2" match="form.password" required></input>
+      <error-span class="error" ctrl="form.password2"></error-span>
+    </my-input-decorator>
   </section>
 </div>

@@ -16,7 +16,7 @@
           <div class="ellipsis"><small>{{configuration.value}}</small></div>
         </div>
       </paper-item>
-      <paper-item ng-if="size > items.length" label="Voir les {{size - items.length > pageCount ? pageCount : size - items.length}} suivantes sur {{size - items.length}}" ng-click="more()"></paper-item>
+      <paper-item ng-if="size > items.length" ng-click="more()">Voir les {{size - items.length > pageCount ? pageCount : size - items.length}} suivantes sur {{size - items.length}}</paper-item>
     </section>
   </div>
 </core-drawer-panel>

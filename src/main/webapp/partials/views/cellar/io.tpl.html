@@ -15,6 +15,6 @@
         <div class="ellipsis"><small>{{movement.cellar.name}} de {{movement.cellar.owner | userRenderer}}</small></div>
       </div>
     </core-item>
-    <paper-item ng-if="size > movements.length" label="Voir les {{size - movements.length > pageCount ? pageCount : size - movements.length}} suivants sur {{size - movements.length}}" ng-click="more()"></paper-item>
+    <paper-item ng-if="size > movements.length" ng-click="more()">Voir les {{size - movements.length > pageCount ? pageCount : size - movements.length}} suivants sur {{size - movements.length}}</paper-item>
   </section>
 </div>

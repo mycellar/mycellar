@@ -50,7 +50,7 @@ public class CellarsPageDescriptor extends AbstractDescriptor implements IMenuDe
 
     @Override
     public int getWeight() {
-        return 3000;
+        return 6000;
     }
 
 }

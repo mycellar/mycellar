@@ -3,8 +3,7 @@
   <span flex>Tableau de bord</span>
 </core-toolbar>
 <section>
-  <div class="card">
-    <paper-shadow z="1"></paper-shadow>
+  <paper-shadow z="1" class="card">
     <header>Versions</header>
     <div>
       <dl>
@@ -13,9 +12,8 @@
         <dt>Polymer</dt><dd>{{polymerVersion}}</dd>
       </dl>
     </div>
-  </div>
-  <div class="card">
-    <paper-shadow z="1"></paper-shadow>
+  </paper-shadow>
+  <paper-shadow z="1" class="card">
     <header>Statistiques</header>
     <div>
       <dl>
@@ -24,9 +22,8 @@
         <dt>Nombre de stacks</dt><dd>{{stacksCount}}</dd>
       </dl>
     </div>
-  </div>
-  <div class="card">
-    <paper-shadow z="1"></paper-shadow>
+  </paper-shadow>
+  <paper-shadow z="1" class="card">
     <header>Base de données</header>
     <div>
       <dl>
@@ -35,14 +32,13 @@
         <dt>User name</dt><dd>{{userName}}</dd>
       </dl>
     </div>
-  </div>
-  <div class="card">
-    <paper-shadow z="1"></paper-shadow>
+  </paper-shadow>
+  <paper-shadow z="1" class="card">
     <header>Outils</header>
     <div vertical layout>
       <paper-button ng-click="deleteAllStacks()">Purger les stacks</paper-button>
       <paper-button ng-click="goToCreateVintages()">Créer des millésimes</paper-button>
       <paper-button ng-click="goToMonitoring()">Monitoring</paper-button>
     </div>
-  </div>
+  </paper-shadow>
 </section>

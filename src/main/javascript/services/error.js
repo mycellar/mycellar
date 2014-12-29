@@ -1,7 +1,7 @@
-angular.module('mycellar.services.validation', [
+angular.module('mycellar.services.error', [
 ]);
 
-angular.module('mycellar.services.validation').factory('validityHelper', [
+angular.module('mycellar.services.error').factory('validityHelper', [
   function() {
     var validityHelper = {};
     validityHelper.sinceChanged = function(ctrl, key) {

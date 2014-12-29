@@ -2,7 +2,6 @@ spring:
   application:
     name: MyCellar
   jpa:
-    generate-ddl: false
     properties:
       hibernate:
         ddl-auto: none
@@ -22,15 +21,17 @@ spring:
 spring:
   profiles: mysql
   jpa:
-    generate-ddl: true
+    hibernate:
+      ddl-auto: update
     properties:
       hibernate:
-        dialect: org.hibernate.dialect.MySQL5Dialect
+        dialect: org.hibernate.dialect.MySQL5InnoDBDialect
 ---
 spring:
   profiles: h2
   jpa:
-    generate-ddl: true
+    hibernate:
+      ddl-auto: update
     properties:
       hibernate:
         dialect: org.hibernate.dialect.H2Dialect

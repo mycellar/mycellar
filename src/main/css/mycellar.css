@@ -27,6 +27,36 @@ body /deep/ paper-icon-button.red /deep/ core-icon {
   color: rgba(255, 0, 0, 0.54);
 }
 
+/* MENU */
+body /deep/ .menu-item:first-child a:first-child paper-item {
+  margin-top: 8px;
+}
+
+body /deep/ .menu-item paper-item {
+  font-size: 14px;
+}
+
+body /deep/ .menu-item:not(:first-child) {
+  border-top: 1px solid rgba(0, 0, 0, 0.12);
+}
+
+body /deep/ .menu-item-content:first-child {
+  margin-left: 56px;
+}
+
+body /deep/ .menu-item-content:not(:first-child) {
+  margin-left: 32px;
+}
+/* MENU END */
+
+body /deep/ section {
+  margin-bottom: 16px;
+}
+
+body /deep/ section.margin {
+  margin: 0 16px;
+}
+
 body /deep/ section:not(:first-child) {
   border-top: 1px solid rgba(0, 0, 0, 0.12);
 }
@@ -36,14 +66,10 @@ body /deep/ section.isolated {
   border-bottom: 1px solid rgba(0, 0, 0, 0.12);
 }
 
-body /deep/ section > div[horizontal][layout],
-body /deep/ section > paper-input,
-body /deep/ section > paper-dropdown-menu,
-body /deep/ section > autocomplete-input::shadow div#target,
-body /deep/ section > form > div[horizontal][layout],
-body /deep/ section > form > paper-input,
-body /deep/ section > form > paper-dropdown-menu,
-body /deep/ section > form > autocomplete-input::shadow div#target {
+body /deep/ section my-input-decorator,
+body /deep/ section paper-input-decorator,
+body /deep/ section paper-dropdown-menu,
+body /deep/ section autocomplete-input /deep/ div#target {
   margin: 0 16px;
 }
 
@@ -60,9 +86,17 @@ html /deep/ core-item {
 }
 
 body /deep/ section > core-item:first-child:not(.subheader),
-body /deep/ section > paper-item:first-child:not(.subheader) {
+body /deep/ section > paper-item:first-child:not(.subheader),
+body /deep/ core-selector /deep/ paper-item:first-child:not(.subheader) {
   margin-top: 8px;
 }
+
+body /deep/ core-item.subheader {
+  height: 48px;
+  font-size: 14px;
+  color: rgba(0, 0, 0, 0.54);
+}
+
 body core-drawer-panel[rightDrawer] [main] {
   overflow-y: auto;
 }
@@ -103,8 +137,9 @@ body /deep/ core-toolbar /deep/ input {
   color: rgba(255, 255, 255, 0.87);
 }
 
-body /deep/ core-toolbar /deep/ paper-menu-button-overlay-container {
+body /deep/ core-toolbar /deep/ paper-menu-button /deep/ paper-item {
   color: rgba(0, 0, 0, 0.87);
+  font-size: 0.6em;
 }
 
 body /deep/ paper-button[autofocus] {
@@ -134,12 +169,6 @@ body /deep/ .ellipsis {
   text-overflow: ellipsis;
   overflow: hidden;
   white-space: nowrap;
-}
-
-body /deep/ core-item.subheader {
-  height: 48px;
-  font-size: 14px;
-  color: rgba(0, 0, 0, 0.54);
 }
 
 body /deep/ paper-item.twoLines,
@@ -189,13 +218,12 @@ body /deep/ .xs-show {
   }
 }
 
+/* CARD */
 body /deep/ .card {
   margin: 8px;
   border-radius: 2px;
   background: #fff;
   float: left;
-  max-width: 300px;
-  min-height: 200px;
 }
 
 body /deep/ .card header {
@@ -207,34 +235,12 @@ body /deep/ .card div {
   padding: 16px;
   font-size: 14px;
 }
+/* CARD END */
 
 paper-progress::shadow #secondaryProgress {
   background-color: #e51c23;
 }
 
-/* OVERRIDE POLYMER */
-html /deep/ core-menu {
-  display: block;
-  margin: 0;
-}
-
-html /deep/ core-submenu /deep/ #submenu {
-  margin-left: 0;
-}
-
-html /deep/ core-submenu /deep/ paper-item {
-  padding-left: 32px;
-}
-
-html /deep/ core-submenu /deep/ core-item {
-  padding: 0;
-}
-
-html /deep/ core-submenu /deep/ paper-item.item-content {
-  padding-left: 16px;
-}
-
-html /deep/ core-submenu /deep/ paper-item.item-content #icon {
-  margin-left: 0;
-  margin-right: 8px;
+body /deep/ .core-tooltip.bottom {
+  margin-top: 0;
 }

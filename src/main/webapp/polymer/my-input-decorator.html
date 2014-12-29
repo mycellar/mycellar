@@ -1,0 +1,41 @@
+<link rel="import" href="../lib/polymer/polymer.html">
+<link rel="import" href="../lib/paper-input/paper-input-decorator.html">
+
+<polymer-element name="my-input-decorator" extends="paper-input-decorator">
+  <template>
+
+    <link href="../lib/paper-input/paper-input-decorator.css" rel="stylesheet">
+    <core-style ref="paper-input-decorator"></core-style>
+
+    <div class="floated-label" aria-hidden="true" hidden?="{{!floatingLabel}}" invisible?="{{!floatingLabelVisible || labelAnimated}}">
+      <!-- needed for floating label animation measurement -->
+      <span id="floatedLabelText" class="label-text">{{label}}</span>
+    </div>
+
+    <div class="input-body" auto relative>
+
+      <div class="label" fit invisible aria-hidden="true">
+        <!-- needed for floating label animation measurement -->
+        <span id="labelText" class="label-text" invisible?="{{!_labelVisible}}" animated?="{{labelAnimated}}">{{label}}</span>
+      </div>
+
+      <content select=":not(.error)"></content>
+
+    </div>
+
+    <div id="underline" class="underline" relative>
+      <div class="unfocused-underline" fit invisible?="{{disabled}}"></div>
+      <div id="focusedUnderline" class="focused-underline" fit invisible?="{{!focused}}" animated?="{{underlineAnimated}}"></div>
+    </div>
+
+    <div class="error" layout horizontal center hidden?="{{!isInvalid}}">
+      <div class="error-text" flex auto role="alert" aria-hidden="{{!isInvalid}}"><content id="error" select=".error"></content></div>
+      <core-icon class="error-icon" icon="warning"></core-icon>
+    </div>
+
+  </template>
+  <script>
+    Polymer('my-input-decorator', {
+    });
+  </script>
+</polymer-element>

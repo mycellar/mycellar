@@ -2,21 +2,45 @@
   <section>
     <appellation appellation="wine.appellation" label="Appellation"></appellation>
     <producer producer="wine.producer" label="Producteur"></producer>
-    <paper-dropdown-menu label="Type" bind-polymer-select="wine.type" valueattr="value">
-      <paper-item label="Tranquille" value="STILL"></paper-item>
-      <paper-item label="Pétillant" value="SPARKLING"></paper-item>
-      <paper-item label="Spiritueux" value="SPIRIT"></paper-item>
-      <paper-item label="Autre" value="OTHER"></paper-item>
-    </paper-dropdown-menu>
-    <paper-dropdown-menu label="Couleur" bind-polymer-select="wine.color" valueattr="value">
-      <paper-item label="Rouge" value="RED"></paper-item>
-      <paper-item label="Blanc" value="WHITE"></paper-item>
-      <paper-item label="Rosé" value="ROSE"></paper-item>
-      <paper-item label="Autre" value="OTHER"></paper-item>
-    </paper-dropdown-menu>
-    <paper-input id="name" label="Nom" floatingLabel type="text" bind-polymer-input="wine.name"></paper-input>
-    <paper-input id="vintage" label="Millésime" floatingLabel type="number" bind-polymer-input="wine.vintage"></paper-input>
-    <paper-input id="ranking" label="Classement" floatingLabel type="text" bind-polymer-input="wine.ranking"></paper-input>
-    <paper-input id="description" label="Description" floatingLabel type="text" multiline bind-polymer-input="wine.description"></paper-input>
+    <div horizontal layout>
+      <paper-dropdown-menu label="Type">
+        <paper-dropdown class="dropdown">
+          <core-menu class="menu" valueattr="value" bind-polymer-select="wine.type">
+            <paper-item value="STILL">Tranquille</paper-item>
+            <paper-item value="SPARKLING">Pétillant</paper-item>
+            <paper-item value="SPIRIT">Spiritueux</paper-item>
+            <paper-item value="OTHER">Autre</paper-item>
+          </core-menu>
+        </paper-dropdown>
+      </paper-dropdown-menu>
+      <paper-dropdown-menu label="Couleur">
+        <paper-dropdown class="dropdown">
+          <core-menu class="menu" valueattr="value" bind-polymer-select="wine.color">
+            <paper-item value="RED">Rouge</paper-item>
+            <paper-item value="WHITE">Blanc</paper-item>
+            <paper-item value="ROSE">Rosé</paper-item>
+            <paper-item value="OTHER">Autre</paper-item>
+          </core-menu>
+        </paper-dropdown>
+      </paper-dropdown-menu>
+    </div>
+    <my-input-decorator label="Nom" floatingLabel isInvalid="{{form.name.$invalid}}">
+      <input name="name" type="text" ng-model="wine.name"></input>
+      <error-span class="error" ctrl="form.name"></error-span>
+    </my-input-decorator>
+    <my-input-decorator label="Millésime" floatingLabel isInvalid="{{form.vintage.$invalid}}">
+      <input name="vintage" type="number" ng-model="wine.vintage"></input>
+      <error-span class="error" ctrl="form.vintage"></error-span>
+    </my-input-decorator>
+    <my-input-decorator label="Classement" floatingLabel isInvalid="{{form.ranking.$invalid}}">
+      <input name="ranking" type="text" ng-model="wine.ranking"></input>
+      <error-span class="error" ctrl="form.ranking"></error-span>
+    </my-input-decorator>
+    <my-input-decorator floatingLabel label="Description" isInvalid="{{form.description.$invalid}}">
+      <paper-autogrow-textarea>
+        <textarea name="description" ng-model="wine.description"></textarea>
+        <error-span class="error" ctrl="form.description"></error-span>
+      </paper-autogrow-textarea>
+    </my-input-decorator>
   </section>
 </div>

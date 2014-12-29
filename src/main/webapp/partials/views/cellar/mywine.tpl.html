@@ -3,13 +3,11 @@
   <span flex>Mes vins</span>
 </core-toolbar>
 <div main>
-  <section>
+  <section class="margin">
     <div horizontal layout>
       <h3>
         {{wine | wineRenderer}}<br/>
-        <small>
-          {{wine.appellation | appellationRenderer}}
-        </small>
+        <small>{{wine.appellation | appellationRenderer}}</small>
       </h3>
     </div>
   </section>

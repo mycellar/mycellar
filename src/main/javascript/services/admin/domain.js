@@ -1,6 +1,7 @@
 angular.module('mycellar.services.admin.domain', [
   'ngRoute',
-  'mycellar.services.search'
+  'mycellar.services.search',
+  'mycellar.services.error'
 ]);
 
 angular.module('mycellar.services.admin.domain').provider('adminDomainService', [
@@ -11,8 +12,8 @@ angular.module('mycellar.services.admin.domain').provider('adminDomainService', 
     var resourcesPath = [];
     var domainParameters = [];
     this.$get = [
-      '$location', '$route', '$injector', 'search',
-      function($location, $route, $injector, search) {
+      '$location', '$route', '$injector', 'search', 'validityHelper',
+      function($location, $route, $injector, search, validityHelper) {
         var adminDomainService = {};
         
         adminDomainService.getMenu = function() {
@@ -122,18 +123,21 @@ angular.module('mycellar.services.admin.domain').provider('adminDomainService', 
               self.backup = {};
               self.errors = [];
               angular.copy(parameters.resource, self.backup);
-              parameters.resource.$save(function (value, headers) {
-                if (value.errorKey != undefined) {
-                  angular.forEach(value.properties, function(property) {
+              parameters.resource.$save().then(function (value, headers) {
+                self.backup = undefined;
+                $location.path(resourcesPath[parameters.group][parameters.resourceName]);
+              }, function (response) {
+                if (response.status === 400 && response.data.errorKey != undefined) {
+                  angular.forEach(response.data.properties, function(property) {
                     if (self[parameters.formName][property] != undefined) {
-                      self[parameters.formName][property].$setValidity(value.errorKey, false);
+                      validityHelper.sinceChanged(self[parameters.formName][property], response.data.errorKey);
                     }
                   });
-                  self.errors.push(value.errorKey);
+                  self.errors.push(response.data.errorKey);
                   angular.copy(self.backup, parameters.resource);
                 } else {
-                  self.backup = undefined;
-                  $location.path(resourcesPath[parameters.group][parameters.resourceName]);
+                  self.errors.push('Unknown error: ' + response.status);
+                  angular.copy(self.backup, parameters.resource);
                 }
               });
             };

@@ -16,6 +16,7 @@ angular.module('mycellar', [
   'http-auth-interceptor',
   'angular-loading-bar',
   'mycellar.services.menu',
+  'mycellar.services.error',
   'mycellar.services.security',
   'mycellar.services.login',
   'mycellar.controllers.errors',
@@ -30,7 +31,8 @@ angular.module('mycellar', [
   'mycellar.controllers.navigation',
   'mycellar.controllers.password',
   'mycellar.directives.bind',
-  'mycellar.directives.drag'
+  'mycellar.directives.drag',
+  'mycellar.directives.error'
 ]);
 
 angular.module('mycellar').config([
@@ -71,14 +73,3 @@ angular.module('mycellar').run([
     security.requestCurrentUser();
   }
 ]);
-
-angular.module('mycellar').constant('paginationConfig', {
-  boundaryLinks: true,
-  directionLinks: true,
-  firstText: '«',
-  previousText: '‹',
-  nextText: '›',
-  lastText: '»',
-  rotate: true,
-  itemsPerPage: 10
-});

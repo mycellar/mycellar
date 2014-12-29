@@ -3,7 +3,7 @@
   <span flex>Contact : {{contact.producer | producerRenderer}}</span>
 </core-toolbar>
 <div main>
-  <section style="margin: 16px 0;">
+  <section style="margin: 16px;">
     <div horizontal layout>
       <div flex>
         <div class="ellipsis">Téléphone</div>
@@ -35,11 +35,22 @@
   </section>
   <section>
     <form name="contactForm">
-      <paper-input id="current" label="Date du contact" type="date" floatingLabel bind-polymer-input="contact.current" required></paper-input>
-      <paper-input id="next" label="Prochain contact" type="date" floatingLabel bind-polymer-input="contact.next" required></paper-input>
       <div horizontal layout>
-        <paper-input flex id="text" label="Texte" multiline floatingLabel bind-polymer-input="contact.text" required></paper-input>
+        <my-input-decorator flex floatingLabel labelVisible="false" label="Date du contact" isInvalid="{{contactForm.current.$invalid}}">
+          <input name="current" type="date" ng-model="contactCurrent" required></input>
+          <error-span class="error" ctrl="contactForm.current"></error-span>
+        </my-input-decorator>
+        <my-input-decorator flex floatingLabel labelVisible="false" label="Date du prochain contact" isInvalid="{{contactForm.next.$invalid}}">
+          <input name="next" type="date" ng-model="contactNext"></input>
+          <error-span class="error" ctrl="contactForm.next"></error-span>
+        </my-input-decorator>
       </div>
+      <my-input-decorator flex floatingLabel label="Texte" isInvalid="{{contactForm.text.$invalid}}">
+        <paper-autogrow-textarea>
+          <textarea name="text" ng-model="contact.text"></textarea>
+          <error-span class="error" ctrl="contactForm.text"></error-span>
+        </paper-autogrow-textarea>
+      </my-input-decorator>
       <div horizontal layout class="buttons">
         <paper-button primary raised ng-click="saveContact()" ng-disabled="contactForm.$invalid">Sauvegarder</paper-button>
         <paper-button raised ng-click="cancelContact()">Annuler</paper-button>

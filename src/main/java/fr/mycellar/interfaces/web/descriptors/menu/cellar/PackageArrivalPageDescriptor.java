@@ -30,7 +30,7 @@ import fr.mycellar.interfaces.web.descriptors.shared.AbstractDescriptor;
 public class PackageArrivalPageDescriptor extends AbstractDescriptor implements IMenuDescriptor {
     @Override
     public String getIcon() {
-        return "folder-open";
+        return "input";
     }
 
     @Override
@@ -50,7 +50,7 @@ public class PackageArrivalPageDescriptor extends AbstractDescriptor implements 
 
     @Override
     public int getWeight() {
-        return 3300;
+        return 6300;
     }
 
 }

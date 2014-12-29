@@ -6,7 +6,7 @@ angular.module('mycellar.directives.error.div').directive('errorDiv', [function(
     replace: true,
     templateUrl: 'partials/directives/error/div.tpl.html',
     scope: {
-      errors: '='
+      form: '='
     }
   }
 }]);

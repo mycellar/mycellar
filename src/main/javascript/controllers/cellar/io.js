@@ -20,7 +20,7 @@ angular.module('mycellar.controllers.cellar.io', [
           return Movements.getAllForCellar({
             first: 0,
             count: 50,
-            sort: ['date,asc']
+            sort: ['date,desc']
           }).$promise;
         }]
       }
@@ -37,7 +37,7 @@ angular.module('mycellar.controllers.cellar.io').controller('InputOutputControll
         first: parameters.first, 
         count: $scope.pageCount, 
         sort: [
-          'date,asc'
+          'date,desc'
         ]
       };
       if (parameters.cellar != null) {

@@ -6,20 +6,37 @@
   <form name="arrivalForm">
     <section>
       <cellar cellar="arrival.cellar" label="Cave"></cellar>
-      <paper-input id="date" label="Date de réception" floatingLabel type="date" bind-polymer-input="arrival.date" required></paper-input>
-      <paper-input id="source" label="Source" floatingLabel type="text" bind-polymer-input="arrival.source" required></paper-input>
-      <paper-input id="charges" label="Charges" floatingLabel type="number" bind-polymer-input="arrival.charges" required></paper-input> 
+      <my-input-decorator floatingLabel labelVisible="false" label="Date de réception" isInvalid="{{arrivalForm.date.$invalid}}">
+        <input name="date" type="date" ng-model="arrivalDate" required></input>
+        <error-span class="error" ctrl="arrivalForm.date"></error-span>
+      </my-input-decorator>
+      <my-input-decorator label="Source" floatingLabel isInvalid="{{arrivalForm.source.$invalid}}">
+        <input name="source" type="text" ng-model="arrival.source" required></input>
+        <error-span class="error" ctrl="arrivalForm.source"></error-span>
+      </my-input-decorator>
+      <my-input-decorator label="Charges" floatingLabel labelVisible="false" isInvalid="{{arrivalForm.charges.$invalid}}">
+        <input name="charges" type="number" ng-model="arrival.charges" required></input>
+        <error-span class="error" ctrl="arrivalForm.charges"></error-span>
+      </my-input-decorator>
     </section>
     <section ng-if="arrivalBottle != null">
-      <core-item class="subheader">{{isNew() ? 'Ajouter une bouteille au colis' : 'Modifier une bouteille du colis' }}</core-item>
-      <wine wine="arrivalBottle.bottle.wine" label="Vin"></wine>
-      <format format="arrivalBottle.bottle.format" label="Format"></format>
-      <paper-input id="price" label="Prix" floatingLabel type="number" bind-polymer-input="arrivalBottle.price" required></paper-input>
-      <paper-input id="max" label="Quantité" floatingLabel type="number" bind-polymer-input="arrivalBottle.quantity" required></paper-input>
-      <div horizontal layout class="buttons">
-        <paper-button raised primary ng-click="addBottle()">{{isNew() ? 'Ajouter' : 'Modifier'}}</paper-button>
-        <paper-button raised ng-click="cancelBottle()">Annuler</paper-button>
-      </div>
+      <ng-form name="bottleForm">
+        <core-item class="subheader">{{isNew() ? 'Ajouter une bouteille au colis' : 'Modifier une bouteille du colis' }}</core-item>
+        <wine wine="arrivalBottle.bottle.wine" label="Vin"></wine>
+        <format format="arrivalBottle.bottle.format" label="Format"></format>
+        <my-input-decorator label="Prix" floatingLabel labelVisible="false" isInvalid="{{bottleForm.price.$invalid}}">
+          <input name="price" type="number" ng-model="arrivalBottle.price" required></input>
+          <error-span class="error" ctrl="bottleForm.price"></error-span>
+        </my-input-decorator>
+        <my-input-decorator label="Quantité" floatingLabel labelVisible="false" isInvalid="{{bottleForm.quantity.$invalid}}">
+          <input name="quantity" type="number" ng-model="arrivalBottle.quantity" required></input>
+          <error-span class="error" ctrl="bottleForm.quantity"></error-span>
+        </my-input-decorator>
+        <div horizontal layout class="buttons">
+          <paper-button raised primary ng-click="addBottle()" ng-disabled="bottleForm.$invalid">{{isNew() ? 'Ajouter' : 'Modifier'}}</paper-button>
+          <paper-button raised ng-click="cancelBottle()">Annuler</paper-button>
+        </div>
+      </ng-form>
     </section>
     <section>
       <core-item class="subheader">

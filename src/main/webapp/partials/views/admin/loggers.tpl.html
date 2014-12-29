@@ -2,7 +2,7 @@
   <core-icon icon="search" hidden></core-icon>
   <drawer-button icon="menu"></drawer-button>
   <span flex>Loggers</span>
-  <core-input id="search" bind-polymer-input="filters.name" flex hidden></core-input>
+  <input is="core-input" name="search" ng-model="filters.name" flex hidden></core-input>
   <paper-icon-button icon="cancel" hidden ng-show="filters.name !== ''" ng-click="clearSearch()"></paper-icon-button>
   <paper-icon-button icon="clear" hidden ng-show="filters.name === ''" ng-click="toggleHidden()"></paper-icon-button>
   <paper-icon-button icon="search" ng-click="toggleHidden()"></paper-icon-button>
@@ -15,13 +15,30 @@
         <div class="ellipsis">{{logger.name}}</div>
         <div class="ellipsis"><small>{{logger.level}}</small></div>
       </div>
-      <paper-menu-button icon="more-vert" halign="right">
-        <paper-icon-button ng-click="changeLevel(logger, 'ERROR')" icon="error" class="red"></paper-icon-button>
-        <paper-icon-button ng-click="changeLevel(logger, 'WARN')" icon="warning" class="orange"></paper-icon-button>
-        <paper-icon-button ng-click="changeLevel(logger, 'INFO')" icon="info"></paper-icon-button>
-        <paper-icon-button ng-click="changeLevel(logger, 'DEBUG')" icon="info" class="orange"></paper-icon-button>
-        <paper-icon-button ng-click="changeLevel(logger, 'TRACE')" icon="info" class="red"></paper-icon-button>
-        <paper-icon-button ng-click="changeLevel(logger, 'OFF')" icon="visibility-off"></paper-icon-button>
+      <paper-menu-button>
+        <paper-icon-button icon="more-vert" noink></paper-icon-button>
+        <paper-dropdown class="dropdown" style="width: 52px; height: 300px;">
+          <div vertical layout>
+            <core-tooltip noarrow label="ERROR">
+              <paper-icon-button ng-click="changeLevel(logger, 'ERROR')" icon="error" class="red"></paper-icon-button>
+            </core-tooltip>
+            <core-tooltip noarrow label="WARN">
+              <paper-icon-button ng-click="changeLevel(logger, 'WARN')" icon="warning" class="orange"></paper-icon-button>
+            </core-tooltip>
+            <core-tooltip noarrow label="INFO">
+              <paper-icon-button ng-click="changeLevel(logger, 'INFO')" icon="info"></paper-icon-button>
+            </core-tooltip>
+            <core-tooltip noarrow label="DEBUG">
+              <paper-icon-button ng-click="changeLevel(logger, 'DEBUG')" icon="info" class="orange"></paper-icon-button>
+            </core-tooltip>
+            <core-tooltip noarrow label="TRACE">
+              <paper-icon-button ng-click="changeLevel(logger, 'TRACE')" icon="info" class="red"></paper-icon-button>
+            </core-tooltip>
+            <core-tooltip noarrow label="OFF">
+              <paper-icon-button ng-click="changeLevel(logger, 'OFF')" icon="visibility-off"></paper-icon-button>
+            </core-tooltip>
+          </div>
+        </paper-dropdown>
       </paper-menu-button>
     </core-item>
     <core-item ng-if="(loggers|filter:filters).length > 20">D'autres loggers sont masqués.</core-item>

@@ -46,10 +46,18 @@ angular.module('mycellar.controllers.contact.contact', [
 ]);
 
 angular.module('mycellar.controllers.contact.contact').controller('ContactController', [
-  '$scope', 'contact', '$location',
-  function($scope, contact, $location) {
+  '$scope', 'contact', '$location', '$filter',
+  function($scope, contact, $location, $filter) {
     $scope.errors = [];
     $scope.contact = contact;
+    $scope.contactCurrent = new Date($scope.contact.current);
+    $scope.contactNext = new Date($scope.contact.next);
+    $scope.$watch('contactCurrent', function() {
+      $scope.contact.current = $filter('date')($scope.contactCurrent, 'yyyy-MM-dd');
+    });
+    $scope.$watch('contactNext', function() {
+      $scope.contact.next = $filter('date')($scope.contactNext, 'yyyy-MM-dd');
+    });
 
     $scope.saveContact = function() {
       $scope.errors = [];

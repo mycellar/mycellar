@@ -49,8 +49,10 @@ import lombok.Setter;
 
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.hibernate.search.annotations.Field;
+import org.hibernate.search.annotations.FieldBridge;
 import org.hibernate.search.annotations.Indexed;
 import org.hibernate.search.annotations.IndexedEmbedded;
+import org.hibernate.search.bridge.builtin.IntegerBridge;
 
 import fr.mycellar.domain.booking.BookingBottle;
 import fr.mycellar.domain.shared.IdentifiedEntity;
@@ -134,7 +136,7 @@ public class Wine extends NamedEntity {
     @Setter
     private WineTypeEnum type;
 
-    @Field
+    @Field(bridge = @FieldBridge(impl = IntegerBridge.class))
     @Column(name = "VINTAGE")
     @Getter
     @Setter

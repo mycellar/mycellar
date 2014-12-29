@@ -1,9 +1,13 @@
-<paper-dialog id="loginDialog" heading="Saisissez vos identifiants" transition="paper-transition-center" layered="true" autoCloseDisabled="true" ng-controller="LoginDialogController">
+<paper-action-dialog id="loginDialog" heading="Saisissez vos identifiants" transition="paper-transition-center" layered="true" autoCloseDisabled="true" ng-controller="LoginDialogController">
   <p>
-    <paper-input id="email" label="Email" type="email" floatingLabel="true" bind-polymer-input="email" required></paper-input>
-    <paper-input id="password" label="Mot de passe" type="password" floatingLabel="true" bind-polymer-input="password" required></paper-input>
+    <paper-input-decorator floatingLabel label="Email">
+      <input id="email" type="email" ng-model="email" required></input>
+    </paper-input-decorator>
+    <paper-input-decorator floatingLabel label="Mot de passe">
+      <input id="password" type="password" ng-model="password" required></input>
+    </paper-input-decorator>
   </p>
   <paper-button dismissive ng-click="forgotPassword()">J'ai oublié mon mot de passe</paper-button>
   <paper-button style="min-width: 100px;" affirmative ng-click="cancel()">Annuler</paper-button>
   <paper-button style="min-width: 130px;" affirmative autofocus ng-click="login()">Se connecter</paper-button>
-</paper-dialog>
+</paper-action-dialog>

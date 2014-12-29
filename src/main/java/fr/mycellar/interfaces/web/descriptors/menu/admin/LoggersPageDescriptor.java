@@ -30,7 +30,7 @@ import fr.mycellar.interfaces.web.descriptors.shared.AbstractDescriptor;
 public class LoggersPageDescriptor extends AbstractDescriptor implements IMenuDescriptor {
     @Override
     public String getIcon() {
-        return "settings";
+        return "bug-report";
     }
 
     @Override

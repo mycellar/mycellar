@@ -30,7 +30,7 @@ import fr.mycellar.interfaces.web.descriptors.shared.AbstractDescriptor;
 public class InputOutputPageDescriptor extends AbstractDescriptor implements IMenuDescriptor {
     @Override
     public String getIcon() {
-        return "folder-open";
+        return "swap-horiz";
     }
 
     @Override
@@ -50,7 +50,7 @@ public class InputOutputPageDescriptor extends AbstractDescriptor implements IMe
 
     @Override
     public int getWeight() {
-        return 3200;
+        return 6200;
     }
 
 }

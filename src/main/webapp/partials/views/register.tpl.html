@@ -5,11 +5,26 @@
 <div main>
   <section>
     <form name="newUserForm" class="form">
-      <paper-input id="lastname" floatingLabel label="Nom de famille" type="text" bind-polymer-input="user.lastname" required></paper-input>
-      <paper-input id="firstname" floatingLabel label="Prénom" type="text" bind-polymer-input="user.firstname" required></paper-input>
-      <paper-input id="email" floatingLabel label="Email" type="email" bind-polymer-input="user.email" required></paper-input>
-      <paper-input id="password" floatingLabel label="Mot de passe" type="password" bind-polymer-input="passwords.first" required></paper-input>
-      <paper-input id="password2" floatingLabel label="Confirmation du mot de passe" type="password" bind-polymer-input="passwords.second" required></paper-input>
+      <my-input-decorator label="Nom de famille" floatingLabel isInvalid="{{newUserForm.lastname.$invalid}}">
+        <input name="lastname" type="text" ng-model="user.lastname" required></input>
+        <error-span class="error" ctrl="newUserForm.lastname"></error-span>
+      </my-input-decorator>
+      <my-input-decorator label="Prénom" floatingLabel isInvalid="{{newUserForm.firstname.$invalid}}">
+        <input name="firstname" type="text" ng-model="user.firstname" required></input>
+        <error-span class="error" ctrl="newUserForm.firstname"></error-span>
+      </my-input-decorator>
+      <my-input-decorator label="E-mail" floatingLabel isInvalid="{{newUserForm.email.$invalid}}">
+        <input name="email" type="email" ng-model="user.email" required></input>
+        <error-span class="error" ctrl="newUserForm.email"></error-span>
+      </my-input-decorator>
+      <my-input-decorator label="Mot de passe" floatingLabel isInvalid="{{newUserForm.password.$invalid}}">
+        <input name="password" type="password" ng-model="passwords.first" match="newUserForm.password2" required></input>
+        <error-span class="error" ctrl="newUserForm.password"></error-span>
+      </my-input-decorator>
+      <my-input-decorator label="Confirmation du mot de passe" floatingLabel isInvalid="{{newUserForm.password2.$invalid}}">
+        <input name="password2" type="password" ng-model="passwords.second" match="newUserForm.password" required></input>
+        <error-span class="error" ctrl="newUserForm.password2"></error-span>
+      </my-input-decorator>
       <paper-button ng-click="register()" ng-disabled="newUserForm.$invalid" raised primary>Créer un compte</paper-button>
     </form>
   </section>

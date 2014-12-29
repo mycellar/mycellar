@@ -33,14 +33,18 @@ angular.module('mycellar.controllers.admin.domain.stock.movements').controller('
 ]);
 
 angular.module('mycellar.controllers.admin.domain.stock.movements').controller('AdminDomainMovementController', [
-  '$scope', 'adminDomainService', 'item',
-  function ($scope, adminDomainService, item) {
+  '$scope', 'adminDomainService', 'item', '$filter',
+  function ($scope, adminDomainService, item, $filter) {
     $scope.movement = item;
     adminDomainService.editMethods({
       scope: $scope,
       group: 'stock', 
       resourceName: 'Movement', 
       resource: item
+    });
+    $scope.movementDate = new Date($scope.movement.date);
+    $scope.$watch('movementDate', function() {
+      $scope.movement.date = $filter('date')($scope.movementDate, 'yyyy-MM-dd');
     });
   }
 ]);

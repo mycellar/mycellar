@@ -4,20 +4,26 @@
     <a href="/account"><span ng-if="currentUser != null"><small>{{currentUser.email}}</small></span></a>
   </div>
 </core-toolbar>
-<nav flex>
-  <core-menu ng-controller="NavigationController">
-    <span ng-if="false" ng-repeat-start="menu in menuService.getAll()"></span>
-    <core-submenu ng-if="menu.pages">
-      <paper-item flex class="item-content" label="{{menu.label}}" icon="{{menu.icon}}"></paper-item>
-      <paper-item ng-repeat="sub in menu.pages" label="{{sub.label}}">
-        <a href="{{sub.route}}"></a>
-      </paper-item>
-    </core-submenu>
-    <paper-item label="{{menu.label}}" icon="{{menu.icon}}" ng-if="!menu.pages">
-      <a href="{{menu.route}}"></a>
-    </paper-item>
-    <span ng-if="false" ng-repeat-end></span>
-  </core-menu>
+<nav flex ng-controller="NavigationController">
+  <core-selector>
+    <div class="menu-item" ng-repeat="menu in menuService.getAll()">
+      <core-item class="subheader" ng-if="menu.pages">
+        {{menu.label}}
+      </core-item>
+      <a href="{{sub.route}}" ng-repeat="sub in menu.pages">
+        <paper-item>
+          <core-icon ng-if="sub.icon" icon="{{sub.icon}}"></core-icon>
+          <span class="menu-item-content">{{sub.label}}</span>
+        </paper-item>
+      </a>
+      <a href="{{menu.route}}" ng-if="!menu.pages">
+        <paper-item>
+          <core-icon ng-if="menu.icon" icon="{{menu.icon}}"></core-icon> 
+          <span class="menu-item-content">{{menu.label}}</span>
+        </paper-item>
+      </a>
+    </div>
+  </core-selector>
 </nav>
 <footer>
   <small>2012-2014 Tous droits réservés, MyCellar GPL V3.</small>

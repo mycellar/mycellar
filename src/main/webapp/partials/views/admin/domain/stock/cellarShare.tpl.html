@@ -11,12 +11,20 @@
     <form name="form" novalidate>
       <section>
         <cellar label="Cave" cellar="cellarShare.cellar"></cellar>
-        <paper-input id="email" floatingLabel label="Email" type="email" bind-polymer-input="cellarShare.email"></paper-input>
-        <paper-dropdown-menu label="Droit d'accès" bind-polymer-select="cellarShare.accessRight" valueattr="value">
-          <paper-item label="Lecture seule" value="READ"></paper-item>
-          <paper-item label="Modification" value="MODIFY"></paper-item>
+        <my-input-decorator floatingLabel label="Email" isInvalid="{{form.email.$invalid}}">
+          <input name="email" type="email" ng-model="cellarShare.email" required></input>
+          <error-span class="error" ctrl="form.email"></error-span>
+        </my-input-decorator>
+        <paper-dropdown-menu label="Droit d'accès">
+          <paper-dropdown class="dropdown">
+            <core-menu bind-polymer-select="cellarShare.accessRight" valueattr="value">
+              <paper-item value="READ">Lecture seule</paper-item>
+              <paper-item value="MODIFY">Modification</paper-item>
+            </core-menu>
+          </paper-dropdown>
         </paper-dropdown-menu>
       </section>
+      <error-div form="form"></error-div>
       <div horizontal layout class="buttons">
         <paper-button raised primary ng-click="save()" ng-disabled="form.$invalid">Sauvegarder</paper-button>
         <paper-button raised ng-click="cancel()">Annuler</paper-button>

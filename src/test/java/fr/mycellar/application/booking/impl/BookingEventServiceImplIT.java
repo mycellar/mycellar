@@ -19,7 +19,7 @@
 package fr.mycellar.application.booking.impl;
 
 import static org.junit.Assert.assertEquals;
-import static org.mockito.Mockito.only;
+import static org.mockito.Mockito.atLeastOnce;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 import static org.mockito.MockitoAnnotations.initMocks;
@@ -39,7 +39,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import fr.mycellar.MyCellarApplication;
 import fr.mycellar.application.admin.ConfigurationService;
-import fr.mycellar.application.booking.BookingService;
 import fr.mycellar.domain.booking.BookingEvent;
 import fr.mycellar.infrastructure.booking.repository.BookingEventRepository;
 
@@ -55,8 +54,6 @@ public class BookingEventServiceImplIT {
     private BookingEventServiceImpl bookingEventServiceImpl;
 
     @Inject
-    private BookingService bookingService;
-    @Inject
     private BookingEventRepository bookingEventRepository;
     @Mock
     private ConfigurationService configurationService;
@@ -66,7 +63,6 @@ public class BookingEventServiceImplIT {
         initMocks(this);
         bookingEventServiceImpl = new BookingEventServiceImpl();
         bookingEventServiceImpl.setBookingEventRepository(bookingEventRepository);
-        bookingEventServiceImpl.setBookingService(bookingService);
         bookingEventServiceImpl.setConfigurationService(configurationService);
     }
 
@@ -78,6 +74,6 @@ public class BookingEventServiceImplIT {
         assertEquals(2, bookingEventServiceImpl.countAllLike("test", new SearchBuilder<BookingEvent>().build()));
         assertEquals(0, bookingEventServiceImpl.countAllLike("carnage", new SearchBuilder<BookingEvent>().build()));
 
-        verify(configurationService, only());
+        verify(configurationService, atLeastOnce()).getDefaultSearchSimilarity();
     }
 }

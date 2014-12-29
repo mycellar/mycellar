@@ -1,6 +1,14 @@
 <div>
   <section>
-    <paper-input id="name" label="Nom" floatingLabel type="text" bind-polymer-input="producer.name" required></paper-input>
-    <paper-input id="description" label="Description" floatingLabel type="text" multiline bind-polymer-input="producer.description"></paper-input>
+    <my-input-decorator label="Nom" floatingLabel isInvalid="{{form.name.$invalid}}">
+      <input name="name" type="text" ng-model="producer.name" required></input>
+      <error-span class="error" ctrl="form.name"></error-span>
+    </my-input-decorator>
+    <my-input-decorator flex floatingLabel label="Description" isInvalid="{{form.description.$invalid}}">
+      <paper-autogrow-textarea>
+        <textarea name="description" ng-model="producer.description"></textarea>
+        <error-span class="error" ctrl="form.description"></error-span>
+      </paper-autogrow-textarea>
+    </my-input-decorator>
   </section>
 </div>

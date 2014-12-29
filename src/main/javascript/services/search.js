@@ -18,13 +18,13 @@ angular.module('mycellar.services.search').factory('search', [
       angular.forEach(notHiddenElements, function(element) {
         element.setAttribute('hidden', '');
       });
-      var searchInput = document.querySelector('core-input#search');
+      var searchInput = document.querySelector('input[name="search"]');
       if (!searchInput.hasAttribute('hidden')) {
         searchInput.focus();
       }
     };
     search.clearSearch = function(scope, attr) {
-      var searchInput = document.querySelector('core-input#search');
+      var searchInput = document.querySelector('input[name="search"]');
       searchInput.focus();
     };
     search.scheduleSearch = function(method, parameters) {

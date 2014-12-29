@@ -17,7 +17,7 @@
         </div>
         <paper-icon-button icon="remove-circle-outline" ng-click="delete(booking.id, $event)"></paper-icon-button>
       </paper-item>
-      <paper-item ng-if="size > items.length" label="Voir les {{size - items.length > pageCount ? pageCount : size - items.length}} suivantes sur {{size - items.length}}" ng-click="more()"></paper-item>
+      <paper-item ng-if="size > items.length" ng-click="more()">Voir les {{size - items.length > pageCount ? pageCount : size - items.length}} suivantes sur {{size - items.length}}</paper-item>
       <paper-fab icon="add" raisedButton="false" ng-click="new()"></paper-fab>
     </section>
   </div>

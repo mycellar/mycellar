@@ -2,7 +2,7 @@
   <core-icon icon="search" hidden></core-icon>
   <drawer-button icon="menu"></drawer-button>
   <span flex>Vinopedia</span>
-  <core-input id="search" bind-polymer-input="search" flex hidden></core-input>
+  <input is="core-input" name="search" type="text" ng-model="search" flex hidden></input>
   <paper-icon-button icon="cancel" hidden ng-show="search !== ''" ng-click="clearSearch()"></paper-icon-button>
   <paper-icon-button icon="clear" hidden ng-show="search === ''" ng-click="toggleHidden()"></paper-icon-button>
   <paper-icon-button icon="search" ng-click="toggleHidden()"></paper-icon-button>
@@ -16,6 +16,6 @@
         <div class="ellipsis"><small>{{wine.appellation | appellationRenderer}}</small></div>
       </div>
     </core-item>
-    <paper-item ng-if="size > wines.length" label="Voir les {{size - wines.length > pageCount ? pageCount : size - wines.length}} suivants sur {{size - wines.length}}" ng-click="more()"></paper-item>
+    <paper-item ng-if="size > wines.length" ng-click="more()">Voir les {{size - wines.length > pageCount ? pageCount : size - wines.length}} suivants sur {{size - wines.length}}</paper-item>
   </section>
 </div>

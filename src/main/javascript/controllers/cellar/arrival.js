@@ -19,6 +19,9 @@ angular.module('mycellar.controllers.cellar.arrival').controller('ArrivalControl
   '$scope', 'Stocks', '$location', '$filter',
   function($scope, Stocks, $location, $filter) {
     $scope.errors = [];
+    $scope.$watch('arrivalDate', function() {
+      $scope.arrival.date = $filter('date')($scope.arrivalDate, 'yyyy-MM-dd');
+    });
     $scope.edit = function(arrivalBottle) {
       $scope.arrivalBottle = arrivalBottle;
     };

@@ -1,8 +1,10 @@
-<core-menu>
-  <core-submenu ng-repeat="header in menu">
-    <paper-item flex class="item-content" label="{{header.label}}"></paper-item>
-    <paper-item ng-repeat="menu in header.menus" label="{{menu.label}}">
-      <a href="{{menu.route}}"></a>
-    </paper-item>
-  </core-submenu>
-</core-menu>
+<core-selector>
+  <div class="menu-item" ng-repeat="header in menu">
+    <core-item class="subheader">
+      {{header.label}}
+    </core-item>
+    <a href="{{menu.route}}" ng-repeat="menu in header.menus">
+      <paper-item>{{menu.label}}</paper-item>
+    </a>
+  </div>
+</core-selector>

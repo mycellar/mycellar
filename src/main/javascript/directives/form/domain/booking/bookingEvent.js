@@ -16,13 +16,23 @@ angular.module('mycellar.directives.form.domain.booking.bookingEvent').directive
         postLabel: '@'
       },
       controller: function($scope, $filter) {
+        $scope.bookingEventStart = new Date($scope.bookingEvent.start);
+        $scope.bookingEventEnd = new Date($scope.bookingEvent.end);
+        $scope.$watch('bookingEventStart', function() {
+          $scope.bookingEvent.start = $filter('date')($scope.bookingEventStart, 'yyyy-MM-dd');
+        });
+        $scope.$watch('bookingEventEnd', function() {
+          $scope.bookingEvent.end = $filter('date')($scope.bookingEventEnd, 'yyyy-MM-dd');
+        });
+
         $scope.bookingBottle = null;
         if ($scope.bookingEvent.bottles == undefined) {
           $scope.bookingEvent.bottles = [];
         }
 
         $scope.edit = function(bookingBottle) {
-          $scope.bookingBottle = bookingBottle;
+          $scope.backup = bookingBottle;
+          $scope.bookingBottle = angular.copy(bookingBottle);
         };
         $scope.addBookingBottle = function() {
           $scope.bookingBottle = {
@@ -47,6 +57,8 @@ angular.module('mycellar.directives.form.domain.booking.bookingEvent').directive
         $scope.addBottle = function() {
           if ($scope.isNew()) {
             $scope.bookingEvent.bottles.push($scope.bookingBottle);
+          } else {
+            $scope.bookingEvent.bottles[$scope.bookingEvent.bottles.indexOf($scope.backup)] = $scope.bookingBottle;
           }
           $scope.bookingBottle = null;
         };

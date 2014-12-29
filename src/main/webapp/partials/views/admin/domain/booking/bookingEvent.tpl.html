@@ -8,8 +8,9 @@
     <admin-domain-nav></admin-domain-nav>
   </nav>
   <div main>
-    <form name="form" class="form">
+    <form name="form">
       <booking-event-form form="form" booking-event="bookingEvent"></booking-event-form>
+      <error-div form="form"></error-div>
       <div horizontal layout class="buttons">
         <paper-button raised primary ng-click="save()" ng-disabled="form.$invalid">Sauvegarder</paper-button>
         <paper-button raised ng-click="cancel()">Annuler</paper-button>

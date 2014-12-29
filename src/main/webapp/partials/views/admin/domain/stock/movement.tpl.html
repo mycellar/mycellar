@@ -14,9 +14,18 @@
         <wine label="Vin" wine="movement.bottle.wine"></wine>
         <format label="Format" format="movement.bottle.format"></format>
         <!-- select type -->
-        <paper-input id="date" label="Date" type="date" floatingLabel bind-polymer-input="movement.date" required></paper-input>
-        <paper-input id="quantity" floatingLabel label="Quantité" type="number" bind-polymer-input="movement.number" required></paper-input>
+        <div horizontal layout>
+          <my-input-decorator flex floatingLabel labelVisible="false" label="Date" isInvalid="{{form.date.$invalid}}">
+            <input name="date" type="date" ng-model="movementDate" required></input>
+            <error-span class="error" ctrl="form.date"></error-span>
+          </my-input-decorator>
+          <my-input-decorator flex floatingLabel labelVisible="false" label="Quantité" isInvalid="{{form.quantity.$invalid}}">
+            <input name="quantity" type="number" ng-model="movement.number" required></input>
+            <error-span class="error" ctrl="form.quantity"></error-span>
+          </my-input-decorator>
+        </div>
       </section>
+      <error-div form="form"></error-div>
       <div horizontal layout class="buttons">
         <paper-button raised primary ng-click="save()" ng-disabled="form.$invalid">Sauvegarder</paper-button>
         <paper-button raised ng-click="cancel()">Annuler</paper-button>

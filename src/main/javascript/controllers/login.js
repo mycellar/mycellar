@@ -3,7 +3,7 @@ angular.module('mycellar.controllers.login', [
   'mycellar.resources.user.users',
   'mycellar.services.login',
   'mycellar.services.security',
-  'mycellar.services.validation',
+  'mycellar.services.error',
   'mycellar.directives.form.password'
 ], [
   '$routeProvider', 

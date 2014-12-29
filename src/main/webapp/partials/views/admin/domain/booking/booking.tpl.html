@@ -16,7 +16,12 @@
       <section>
         <core-item class="subheader">Quantités</core-item>
         <core-item class="threeLines" ng-repeat="bookingBottle in booking.bookingEvent.bottles">
-          <paper-input style="width: 50px; margin-right: 5px;" type="number" bind-polymer-input="booking.quantities[booking.bookingEvent.id + '-' + bookingBottle.id]"></paper-input>
+          <ng-form name="quantityForm">
+            <my-input-decorator label="" isInvalid="{{quantityForm.quantity.$invalid}}" style="width: 48px; margin-right: 16px;" >
+              <input name="quantity" type="number" ng-model="booking.quantities[booking.bookingEvent.id + '-' + bookingBottle.id]" required min="0"></input>
+              <error-span class="error" ctrl="quantityForm.quantity"></error-span>
+            </my-input-decorator>
+          </ng-form>
           <div flex>
             <div class="ellipsis">{{bookingBottle.bottle.wine | wineNameRenderer}}</div>
             <div class="ellipsis"><small>{{bookingBottle.bottle.wine.producer.name}} - {{bookingBottle.bottle.wine.color | wineColorRenderer}}</small></div>
@@ -29,6 +34,7 @@
           <div>{{total | currency:"€"}}</div>
         </core-item>
       </section>
+      <error-div form="form"></error-div>
       <div horizontal layout class="buttons">
         <paper-button raised primary ng-click="save()" ng-disabled="form.$invalid">Sauvegarder</paper-button>
         <paper-button raised ng-click="cancel()">Annuler</paper-button>

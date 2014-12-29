@@ -7,7 +7,7 @@
   <section ng-if="createMode" class="isolated">
     <ng-form name="subCellarForm">
       <core-item class="subheader">Création d'une nouvelle cave :</core-item>
-      <cellar-form cellar="newCellar"></cellar-form>
+      <cellar-form form="subCellarForm" cellar="newCellar"></cellar-form>
       <div horizontal layout class="buttons">
         <paper-button raised ng-click="validate()">Valider</paper-button>
         <paper-button raised ng-click="cancel()">Annuler</paper-button>

@@ -18,7 +18,7 @@
         <div>{{stack.count}}</div>
         <paper-icon-button icon="remove-circle-outline" ng-click="delete(stack.id, $event)"></paper-icon-button>
       </paper-item>
-      <paper-item ng-if="size > items.length" label="Voir les {{size - items.length > pageCount ? pageCount : size - items.length}} suivantes sur {{size - items.length}}" ng-click="more()"></paper-item>
+      <paper-item ng-if="size > items.length" ng-click="more()">Voir les {{size - items.length > pageCount ? pageCount : size - items.length}} suivantes sur {{size - items.length}}</paper-item>
     </section>
   </div>
 </core-drawer-panel>

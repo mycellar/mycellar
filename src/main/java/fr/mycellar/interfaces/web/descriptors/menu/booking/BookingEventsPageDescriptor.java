@@ -51,7 +51,7 @@ public class BookingEventsPageDescriptor extends AbstractDescriptor implements I
 
     @Override
     public int getWeight() {
-        return 6000;
+        return 3000;
     }
 
 }

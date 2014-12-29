@@ -30,7 +30,7 @@ import fr.mycellar.interfaces.web.descriptors.shared.AbstractDescriptor;
 public class BookingReportsPageDescriptor extends AbstractDescriptor implements IMenuDescriptor {
     @Override
     public String getIcon() {
-        return "shopping-cart";
+        return "store";
     }
 
     @Override
@@ -50,7 +50,7 @@ public class BookingReportsPageDescriptor extends AbstractDescriptor implements 
 
     @Override
     public int getWeight() {
-        return 6400;
+        return 3400;
     }
 
 }

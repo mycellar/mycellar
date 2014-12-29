@@ -8,13 +8,11 @@ angular.module('mycellar.directives.form.password').directive('match', [
       link: function(scope, elem, attrs, ctrl) {
         if (!ctrl) return;
 
-        var match = '';
-        attrs.$observe('match', function(value) {
-          match = value;
-          ctrl.$validate();
-        });
         ctrl.$validators.match = function(value) {
-          return match === value;
+          var other = scope.$eval(attrs.match);
+          var match = other.$viewValue === value;
+          other.$setValidity('match', match);
+          return match;
         };
       }
     }

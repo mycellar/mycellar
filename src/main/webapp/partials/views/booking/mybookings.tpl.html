@@ -5,21 +5,21 @@
 </core-toolbar>
 <core-drawer-panel rightDrawer>
   <nav role="secondary" drawer>
-    <core-menu>
+    <core-selector>
       <paper-item class="twoLines" ng-repeat="booking in bookings" ng-click="selectBooking(booking)">
         <div>
           <div class="ellipsis">{{booking.bookingEvent.name}}</div>
           <div class="ellipsis"><small>Du {{booking.bookingEvent.start | date:'longDate'}} au {{booking.bookingEvent.end | date:'longDate'}}</small></div>
         </div>
       </paper-item>
-      <paper-item ng-if="size > bookings.length" label="Voir les {{size - bookings.length > 10 ? 10 : size - bookings.length}} suivantes sur {{size - bookings.length}}" ng-click="more()"></paper-item>
-    </core-menu>
+      <paper-item ng-if="size > bookings.length" ng-click="more()">Voir les {{size - bookings.length > 10 ? 10 : size - bookings.length}} suivantes sur {{size - bookings.length}}</paper-item>
+    </core-selector>
   </nav>
   <div main>
     <section ng-if="booking != null">
       <h2 style="text-align: center;">{{booking.bookingEvent.name}} du {{booking.bookingEvent.start | date:'longDate'}} au {{booking.bookingEvent.end | date:'longDate'}}</h2>
       <core-item class="threeLines" ng-repeat="bookingBottle in booking.bookingEvent.bottles">
-        <div style="padding-right: 10px;">{{booking.quantities[booking.bookingEvent.id + '-' + bookingBottle.id]}}</div>
+        <div style="width: 32px; padding-right: 16px;">{{booking.quantities[booking.bookingEvent.id + '-' + bookingBottle.id]}}</div>
         <div flex>
           <div class="ellipsis">{{bookingBottle.bottle.wine | wineNameRenderer}}</div>
           <div class="ellipsis"><small>{{bookingBottle.bottle.wine.producer.name}} - {{bookingBottle.bottle.wine.color | wineColorRenderer}}</small></div>

@@ -31,7 +31,7 @@ public class DrinkBottlesPageDescriptor extends AbstractDescriptor implements IM
 
     @Override
     public String getIcon() {
-        return "folder-open";
+        return "open-in-new";
     }
 
     @Override
@@ -51,7 +51,7 @@ public class DrinkBottlesPageDescriptor extends AbstractDescriptor implements IM
 
     @Override
     public int getWeight() {
-        return 3400;
+        return 6400;
     }
 
 }

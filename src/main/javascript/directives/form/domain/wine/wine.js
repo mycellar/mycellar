@@ -31,7 +31,7 @@ angular.module('mycellar.directives.form.domain.wine.wine').directive('wineForm'
       link: function(scope, element, attrs) {
         var autocomplete = element[0].querySelector('autocomplete-input');
         autocomplete.$.control.addEventListener('input', function() {
-          scope.input = autocomplete.$.control.inputValue;
+          scope.input = autocomplete.inputValue;
           scope.$apply();
         });
         scope.$watch('possibles', function(value) {

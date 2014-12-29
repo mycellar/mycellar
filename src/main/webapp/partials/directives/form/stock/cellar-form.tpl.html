@@ -1,5 +1,8 @@
 <div>
   <section>
-    <paper-input id="name" floatingLabel label="Nom" type="text" bind-polymer-input="cellar.name" required></paper-input>
+    <my-input-decorator floatingLabel label="Nom" isInvalid="{{form.name.$invalid}}">
+      <input name="name" type="text" ng-model="cellar.name" required></input>
+      <error-span class="error" ctrl="form.name"></error-span>
+    </my-input-decorator>
   </section>
 </div>

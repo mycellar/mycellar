@@ -10,8 +10,12 @@
   <div main>
     <form name="form" novalidate>
       <section>
-        <paper-input id="value" label="Valeur" floatingLabel type="text" bind-polymer-input="configuration.value" required></paper-input>
+        <my-input-decorator floatingLabel label="Valeur" isInvalid="{{form.value.$invalid}}">
+          <input name="value" type="text" ng-model="configuration.value" required></input>
+          <error-span class="error" ctrl="form.value"></error-span>
+        </my-input-decorator>
       </section>
+      <error-div form="form"></error-div>
       <div horizontal layout class="buttons">
         <paper-button raised primary ng-click="save()" ng-disabled="form.$invalid">Sauvegarder</paper-button>
         <paper-button raised ng-click="cancel()">Annuler</paper-button>
