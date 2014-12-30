@@ -47,17 +47,19 @@ public class ConfigurationServiceImpl extends AbstractSimpleService<Configuratio
 
     @Override
     public String[] getReminderAddressReceivers() {
-        return find(ConfigurationKeyEnum.REMINDER_ADDRESS_RECEIVERS).getValue().split(",");
+        String value = find(ConfigurationKeyEnum.REMINDER_ADDRESS_RECEIVERS).getValue();
+        return value != null ? value.split(",") : new String[0];
     }
 
     @Override
     public String getMailAddressSender() {
-        return find(ConfigurationKeyEnum.MAIL_ADDRESS_SENDER).getValue();
+        String value = getValue(ConfigurationKeyEnum.MAIL_ADDRESS_SENDER);
+        return value != null ? value : "donot@reply.com";
     }
 
     @Override
     public Integer getDefaultSearchSimilarity() {
-        String searchSimilarity = find(ConfigurationKeyEnum.DEFAULT_SEARCH_SIMILARITY).getValue();
+        String searchSimilarity = getValue(ConfigurationKeyEnum.DEFAULT_SEARCH_SIMILARITY);
         if (StringUtils.isNotBlank(searchSimilarity)) {
             Integer value;
             try {
@@ -74,7 +76,17 @@ public class ConfigurationServiceImpl extends AbstractSimpleService<Configuratio
                 }
             }
         }
-        return null;
+        // by default
+        return 1;
+    }
+
+    private String getValue(ConfigurationKeyEnum key) {
+        Configuration configuration = find(key);
+        if (configuration != null) {
+            return configuration.getValue();
+        } else {
+            return null;
+        }
     }
 
     @Override
