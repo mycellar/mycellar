@@ -24,6 +24,9 @@ angular.module('mycellar.controllers.admin.tools', [
           }).$promise;
         }]
       }
+    }).when('/admin/nextBookingEvent', {
+      templateUrl: 'partials/views/admin/nextBookingEvent.tpl.html',
+      controller: 'AdminNextBookingEventController'
     });
   }
 ]);
@@ -111,5 +114,18 @@ angular.module('mycellar.controllers.admin.tools').controller('AdminNewVintagesC
         });
       }
     });
+  }
+]);
+
+angular.module('mycellar.controllers.admin.tools').controller('AdminNextBookingEventController', [
+  '$scope', '$location', 'AdminBookingEvents',
+  function ($scope, $location, BookingEvents) {
+    $scope.nextBookingEvent = function() {
+      if ($scope.fix.bookingEvent != null) {
+        BookingEvents.nextBookingEvent({id: $scope.fix.bookingEvent.id}).$promise.then(function(result) {
+          $location.path('/admin/domain/booking/bookingEvent/' + result.id);
+        });
+      }
+    };
   }
 ]);

@@ -21,6 +21,11 @@
       <paper-item ng-if="size > wines.length" ng-click="more()">Voir les {{size - wines.length > pageCount ? pageCount : size - wines.length}} suivants sur {{size - wines.length}}</paper-item>
     </section>
     <section>
+      <div flex>
+        <p>
+          Tous les vins dans la liste seront dupliqués : attention donc à restreindre la recherche à un seul millésime de chaque vin à dupliquer.
+        </p>
+      </div>
       <div horizontal layout>
         <my-input-decorator floatingLabel label="Depuis" isInvalid="{{form.from.$invalid}}">
           <input name="from" type="number" ng-model="vintages.from" required min="0"></input>

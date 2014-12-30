@@ -187,6 +187,12 @@ public class BookingServiceFacadeImpl implements BookingServiceFacade {
         }
     }
 
+    @Override
+    @Transactional(readOnly = false)
+    public BookingEvent nextBookingEvent(Integer id) throws BusinessException {
+        return bookingEventService.nextBookingEvent(id);
+    }
+
     @Inject
     public void setBookingEventService(BookingEventService bookingEventService) {
         this.bookingEventService = bookingEventService;

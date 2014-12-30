@@ -27,19 +27,24 @@ import javax.inject.Singleton;
 import jpasearch.repository.query.SearchParameters;
 import jpasearch.repository.query.builder.SearchBuilder;
 
+import org.joda.time.DateTimeConstants;
 import org.joda.time.LocalDate;
 
 import fr.mycellar.application.admin.ConfigurationService;
 import fr.mycellar.application.booking.BookingEventService;
 import fr.mycellar.application.booking.BookingService;
 import fr.mycellar.application.shared.AbstractSearchableService;
+import fr.mycellar.application.wine.WineService;
 import fr.mycellar.domain.booking.Booking;
+import fr.mycellar.domain.booking.BookingBottle;
 import fr.mycellar.domain.booking.BookingEvent;
 import fr.mycellar.domain.booking.BookingEvent_;
 import fr.mycellar.domain.booking.Booking_;
 import fr.mycellar.domain.shared.NamedEntity_;
 import fr.mycellar.domain.shared.exception.BusinessError;
 import fr.mycellar.domain.shared.exception.BusinessException;
+import fr.mycellar.domain.stock.Bottle;
+import fr.mycellar.domain.wine.Wine;
 import fr.mycellar.infrastructure.booking.repository.BookingEventRepository;
 
 /**
@@ -51,8 +56,52 @@ public class BookingEventServiceImpl extends AbstractSearchableService<BookingEv
 
     private BookingEventRepository bookingEventRepository;
 
+    private WineService wineService;
     private BookingService bookingService;
     private ConfigurationService configurationService;
+
+    @Override
+    public BookingEvent nextBookingEvent(Integer id) throws BusinessException {
+        BookingEvent bookingEvent = getById(id);
+        if (bookingEvent == null) {
+            throw new BusinessException(BusinessError.OTHER_00003);
+        }
+
+        BookingEvent next = new BookingEvent();
+        next.setName(bookingEvent.getName());
+
+        LocalDate today = new LocalDate();
+        LocalDate friday = today.withDayOfWeek(DateTimeConstants.FRIDAY);
+        if (!friday.isAfter(today)) {
+            friday = friday.plusWeeks(1);
+        }
+        next.setStart(friday);
+        next.setEnd(friday.plusWeeks(1).withDayOfWeek(DateTimeConstants.WEDNESDAY));
+
+        for (BookingBottle bookingBottle : bookingEvent.getBottles()) {
+            BookingBottle copy = new BookingBottle();
+            copy.setBookingEvent(next);
+            copy.setBottle(new Bottle());
+            copy.getBottle().setFormat(bookingBottle.getBottle().getFormat());
+            Wine wine;
+            Wine original = bookingBottle.getBottle().getWine();
+            if (original.getVintage() == null) {
+                wine = original;
+            } else {
+                wine = wineService.find(original.getProducer(), original.getAppellation(), original.getType(), original.getColor(), original.getName(), original.getVintage() + 1);
+                if (wine == null) {
+                    wine = wineService.createVintages(original, original.getVintage() + 1, original.getVintage() + 1).get(0);
+                }
+            }
+            copy.getBottle().setWine(wine);
+            copy.setMax(bookingBottle.getMax());
+            copy.setPosition(bookingBottle.getPosition());
+            copy.setPrice(bookingBottle.getPrice());
+            copy.setUrl(bookingBottle.getUrl());
+            next.getBottles().add(copy);
+        }
+        return save(next);
+    }
 
     @Override
     public List<BookingEvent> getCurrentBookingEvents() {
@@ -101,6 +150,11 @@ public class BookingEventServiceImpl extends AbstractSearchableService<BookingEv
     @Inject
     public void setBookingService(BookingService bookingService) {
         this.bookingService = bookingService;
+    }
+
+    @Inject
+    public void setWineService(WineService wineService) {
+        this.wineService = wineService;
     }
 
     @Inject

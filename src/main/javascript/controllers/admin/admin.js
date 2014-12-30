@@ -29,8 +29,8 @@ angular.module('mycellar.controllers.admin.page', [
 ]);
 
 angular.module('mycellar.controllers.admin.page').controller('AdminController', [
-  '$scope', 'winesCount', 'usersCount', 'stacksCount', 'database', '$location', '$window',
-  function ($scope, winesCount, usersCount, stacksCount, database, $location, $window) {
+  '$scope', 'AdminStacks', 'winesCount', 'usersCount', 'stacksCount', 'database', '$window', '$route',
+  function ($scope, Stacks, winesCount, usersCount, stacksCount, database, $window, $route) {
     $scope.angularVersion = angular.version.full;
     $scope.mycellarVersion = mycellar.version.full;
     $scope.polymerVersion = window.Polymer.version;
@@ -41,11 +41,13 @@ angular.module('mycellar.controllers.admin.page').controller('AdminController', 
     $scope.userName = database.userName;
     $scope.url= database.url;
     
+    $scope.deleteAllStacks = function() {
+      Stacks.deleteAll().$promise.then(function() {
+        $route.reload();
+      });
+    };
     $scope.goToMonitoring = function() {
       $window.location.href = '/monitoring';
-    };
-    $scope.goToCreateVintages = function() {
-      $location.path('/admin/newVintages');
     };
   }
 ]);

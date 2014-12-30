@@ -69,4 +69,6 @@ public interface BookingServiceFacade {
 
     void validateBookingEvent(BookingEvent bookingEvent) throws BusinessException;
 
+    BookingEvent nextBookingEvent(Integer id) throws BusinessException;
+
 }

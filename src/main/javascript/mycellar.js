@@ -47,6 +47,8 @@ angular.module('mycellar').config([
         responseError: function(rejection) {
           if (rejection.status === 403) {
             $location.path('/403');
+          } else if (rejection.status === 500) {
+            $location.path('/500');
           }
           return $q.reject(rejection);
         }

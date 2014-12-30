@@ -1,0 +1,32 @@
+<core-toolbar main>
+  <drawer-button icon="menu"></drawer-button>
+  <span flex>Création d'une campagne à partir d'une existante</span>
+</core-toolbar>
+<div main>
+  <section class="margin">
+    <form name="form">
+      <div flex>
+        La campagne sera dupliquée en suivant les règles suivantes :
+        <ul>
+          <li>La campagne commencera Vendredi prochain</li>
+          <li>La campagne se terminera le Mercredi suivant le Vendredi prochain</li>
+          <li>Tous les articles de la campagne seront repris</li>
+          <li>Si des articles sont millésimés, les millésimes seront avancés</li>
+        </ul>
+      </div>
+      <booking-event label="Campagne à dupliquer" booking-event="fix.bookingEvent"></booking-event>
+      <div horizontal layout class="buttons">
+        <paper-button raised primary ng-click="nextBookingEvent()" ng-disabled="{{form.$invalid}}">Dupliquer</paper-button>
+      </div>
+    </form>
+  </section>
+  <section ng-if="fix.bookingEvent != null">
+    <core-item class="threeLines" ng-repeat="bookingBottle in fix.bookingEvent.bottles">
+      <div flex>
+        <div class="ellipsis">{{bookingBottle.bottle.wine | wineNameRenderer}}</div>
+        <div class="ellipsis"><small>{{bookingBottle.bottle.wine.producer.name}} - {{bookingBottle.bottle.wine.color | wineColorRenderer}}</small></div>
+        <div class="ellipsis"><small>{{bookingBottle.price | currency:"€"}} / {{bookingBottle.bottle.format | formatRenderer}}</small></div>
+      </div>
+    </core-item>
+  </section>
+</div>

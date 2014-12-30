@@ -19,7 +19,6 @@
 package fr.mycellar.application.wine.impl;
 
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Scanner;
 
@@ -103,14 +102,14 @@ public class WineServiceImpl extends AbstractSearchableService<Wine, WineReposit
     protected SearchParameters<Wine> addTermToSearchParametersParameters(String term, SearchParameters<Wine> searchParameters) {
         SearchBuilder<Wine> searchBuilder = new SearchBuilder<>(searchParameters);
         searchBuilder.fullText(Wine_.appellation).to(Appellation_.region).to(Region_.country).to(NamedEntity_.name) //
-                .andOn(Wine_.appellation).to(Appellation_.region).to(NamedEntity_.name) //
-                .andOn(Wine_.appellation).to(Appellation_.country).to(NamedEntity_.name) //
-                .andOn(Wine_.appellation).to(NamedEntity_.name) //
-                .andOn(Wine_.producer).to(NamedEntity_.name) //
-                .andOn(Wine_.vintage) //
-                .andOn(NamedEntity_.name) //
-                .searchSimilarity(configurationService.getDefaultSearchSimilarity()) //
-                .andMode().search(term);
+        .andOn(Wine_.appellation).to(Appellation_.region).to(NamedEntity_.name) //
+        .andOn(Wine_.appellation).to(Appellation_.country).to(NamedEntity_.name) //
+        .andOn(Wine_.appellation).to(NamedEntity_.name) //
+        .andOn(Wine_.producer).to(NamedEntity_.name) //
+        .andOn(Wine_.vintage) //
+        .andOn(NamedEntity_.name) //
+        .searchSimilarity(configurationService.getDefaultSearchSimilarity()) //
+        .andMode().search(term);
         List<Integer> vintages = extractVintages(term);
         if (vintages.size() > 0) {
             searchBuilder.on(Wine_.vintage).equalsTo(vintages.toArray(new Integer[vintages.size()]));
@@ -143,18 +142,17 @@ public class WineServiceImpl extends AbstractSearchableService<Wine, WineReposit
         for (int i = from; i <= to; i++) {
             wines.add(createVintage(wine, i));
         }
-        for (Iterator<Wine> iterator = wines.iterator(); iterator.hasNext();) {
+        List<Wine> result = new ArrayList<>();
+        for (Wine toSave : wines) {
             try {
-                save(iterator.next());
+                result.add(save(toSave));
             } catch (BusinessException e) {
                 if (e.getBusinessError() != BusinessError.WINE_00001) {
                     throw e;
-                } else {
-                    iterator.remove();
                 }
             }
         }
-        return wines;
+        return result;
     }
 
     private Wine createVintage(Wine wine, int year) {

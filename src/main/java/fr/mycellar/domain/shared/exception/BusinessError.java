@@ -153,6 +153,7 @@ public enum BusinessError {
      */
     OTHER_00001, //
     OTHER_00002, //
+    OTHER_00003, //
     ;
 
     private final Attribute<?, ?>[] properties;

@@ -54,7 +54,7 @@ body /deep/ section {
 }
 
 body /deep/ section.margin {
-  margin: 0 16px;
+  margin: 16px;
 }
 
 body /deep/ section:not(:first-child) {

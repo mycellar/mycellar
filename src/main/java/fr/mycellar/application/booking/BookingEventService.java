@@ -33,4 +33,6 @@ public interface BookingEventService extends SearchableService<BookingEvent> {
 
     BookingEvent cleanSaveForBottles(BookingEvent bookingEvent) throws BusinessException;
 
+    BookingEvent nextBookingEvent(Integer id) throws BusinessException;
+
 }

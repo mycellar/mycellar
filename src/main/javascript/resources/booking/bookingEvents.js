@@ -27,6 +27,10 @@ angular.module('mycellar.resources.booking.bookingEvents').factory('AdminBooking
       getQuantities: {
         url: '/api/admin/domain/booking/quantities/:id',
         method: 'GET'
+      },
+      nextBookingEvent: {
+        url: '/api/admin/tools/nextBookingEvent',
+        method: 'POST'
       }
     });
   }

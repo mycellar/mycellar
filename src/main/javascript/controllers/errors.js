@@ -9,5 +9,8 @@ angular.module('mycellar.controllers.errors', [
     $routeProvider.when('/404', {
       templateUrl: 'partials/views/404.tpl.html'
     });
+    $routeProvider.when('/500', {
+      templateUrl: 'partials/views/500.tpl.html'
+    });
   }
 ]);

@@ -30,9 +30,11 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.MediaType;
 
+import fr.mycellar.domain.booking.BookingEvent;
 import fr.mycellar.domain.shared.exception.BusinessError;
 import fr.mycellar.domain.shared.exception.BusinessException;
 import fr.mycellar.domain.wine.Wine;
+import fr.mycellar.interfaces.facades.booking.BookingServiceFacade;
 import fr.mycellar.interfaces.facades.wine.WineServiceFacade;
 
 /**
@@ -45,6 +47,8 @@ public class ToolsWebService {
 
     private WineServiceFacade wineServiceFacade;
 
+    private BookingServiceFacade bookingServiceFacade;
+
     @POST
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
@@ -56,11 +60,24 @@ public class ToolsWebService {
         return wineServiceFacade.createVintages(wine, from, to);
     }
 
+    @POST
+    @Consumes(MediaType.APPLICATION_JSON)
+    @Produces(MediaType.APPLICATION_JSON)
+    @Path("nextBookingEvent")
+    public BookingEvent nextBookingEvent(@QueryParam("id") Integer id) throws BusinessException {
+        return bookingServiceFacade.nextBookingEvent(id);
+    }
+
     // BEANS METHODS
 
     @Inject
     public void setWineServiceFacade(WineServiceFacade wineServiceFacade) {
         this.wineServiceFacade = wineServiceFacade;
+    }
+
+    @Inject
+    public void setBookingServiceFacade(BookingServiceFacade bookingServiceFacade) {
+        this.bookingServiceFacade = bookingServiceFacade;
     }
 
 }
