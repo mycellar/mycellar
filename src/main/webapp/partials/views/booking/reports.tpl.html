@@ -75,5 +75,6 @@
       <core-item ng-if="allBookings.length == 0">Aucune réservation enregistrée</core-item>
     </section>
     <section ng-if="bookingEvent == null"><p>Aucune réservation</p></section>
+    <paper-fab icon="add" raisedButton="false" ng-if="bookingEvent != null" ng-click="new(bookingEvent)"></paper-fab>
   </div>
 </core-drawer-panel>

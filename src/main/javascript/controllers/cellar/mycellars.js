@@ -91,7 +91,7 @@ angular.module('mycellar.controllers.cellar.mycellars').controller('MyCellarsCon
     }
 
     $scope.selectWine = function(wine) {
-      $location.path('/cellar/mywine/' + wine.id);
+      $location.url('/cellar/mywine/' + wine.id);
     };
 
     $scope.selectCellar = function(cellar) {

@@ -62,7 +62,7 @@ angular.module('mycellar.controllers.cellar.arrival').controller('ArrivalControl
           });
           $scope.errors.push(value);
         } else {
-          $location.path('/cellar/io');
+          $location.url('/cellar/io');
         }
       });
     };

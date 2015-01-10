@@ -123,7 +123,7 @@ angular.module('mycellar.controllers.admin.tools').controller('AdminNextBookingE
     $scope.nextBookingEvent = function() {
       if ($scope.fix.bookingEvent != null) {
         BookingEvents.nextBookingEvent({id: $scope.fix.bookingEvent.id}).$promise.then(function(result) {
-          $location.path('/admin/domain/booking/bookingEvent/' + result.id);
+          $location.url('/admin/domain/booking/bookingEvent/' + result.id);
         });
       }
     };

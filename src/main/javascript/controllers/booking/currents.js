@@ -63,7 +63,7 @@ angular.module('mycellar.controllers.booking.currents').controller('CurrentBooki
           angular.copy($scope.backup, $scope.booking);
         } else {
           $scope.backup = undefined;
-          $location.path('booking/mybookings');
+          $location.url('booking/mybookings');
         }
       });
     };
@@ -81,7 +81,7 @@ angular.module('mycellar.controllers.booking.currents').controller('CurrentBooki
           angular.copy($scope.backup, $scope.booking);
         } else {
           $scope.backup = undefined;
-          $location.path('booking/mybookings');
+          $location.url('booking/mybookings');
         }
       });
     };

@@ -21,8 +21,8 @@ angular.module('mycellar.controllers.booking.reports', [
 ]);
 
 angular.module('mycellar.controllers.booking.reports').controller('BookingReportsController', [
-  '$scope', 'AdminBookingEvents', 'AdminBookings', 'bookingEvents',
-  function($scope, AdminBookingEvents, AdminBookings, bookingEvents) {
+  '$scope', 'AdminBookingEvents', 'AdminBookings', 'bookingEvents', '$location',
+  function($scope, AdminBookingEvents, AdminBookings, bookingEvents, $location) {
     $scope.more = function() {
       var parameters = {
         first: $scope.bookingEvents.length,
@@ -69,7 +69,11 @@ angular.module('mycellar.controllers.booking.reports').controller('BookingReport
         $scope.bookingTotal += value.price * $scope.booking.quantities[$scope.booking.bookingEvent.id + "-" + value.id];
       });
     };
-    
+
+    $scope.new = function(bookingEvent) {
+      $location.path('/admin/domain/booking/booking/').search('bookingEvent', bookingEvent.id);
+    };
+
     if (bookingEvents.list != null && bookingEvents.list.length > 0) {
       $scope.bookingEvents = bookingEvents.list;
       $scope.size = bookingEvents.count;

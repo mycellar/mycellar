@@ -1,10 +1,12 @@
-<core-selector>
-  <div class="menu-item" ng-repeat="header in menu">
+<nav flex>
+  <core-menu selectedAttribute="" excludedLocalNames="core-item">
+    <span ng-if="false" ng-repeat-start="header in menu"></span>
     <core-item class="subheader">
       {{header.label}}
     </core-item>
-    <a href="{{menu.route}}" ng-repeat="menu in header.menus">
-      <paper-item>{{menu.label}}</paper-item>
-    </a>
-  </div>
-</core-selector>
+    <paper-item ng-repeat="menu in header.menus" ng-click="goto(menu)">
+      <span>{{menu.label}}</span>
+    </paper-item>
+    <span ng-if="false" ng-repeat-end></span>
+  </core-menu>
+</nav>

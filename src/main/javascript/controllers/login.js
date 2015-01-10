@@ -19,7 +19,7 @@ angular.module('mycellar.controllers.login').controller('RegisterController', [
   '$scope', 'security', '$location', 'validityHelper',
   function ($scope, security, $location, validityHelper) {
     $scope.login = function() {
-      $location.path('/');
+      $location.url('/');
     };
     $scope.logout = security.logout;
     $scope.register = function() {

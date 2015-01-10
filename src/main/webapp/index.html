@@ -28,14 +28,14 @@
 
     <link rel="import" href="deps.html">
   </head>
-  <body fullbleed vertical layout unresolved>
+  <body fullbleed unresolved>
     <!--[if lt IE 9]>
     <p class="alert alert-error">Votre est navigateur est <em>trop vieux !</em>
       <a href="http://browsehappy.com/">Changez de navigateur internet</a> pour utiliser correctement ce site.
     </p>
     <![endif]-->
-    <core-drawer-panel responsiveWidth="900px">
-      <core-header-panel drawer ng-include="'partials/views/nav.tpl.html'"></core-header-panel>
+    <core-drawer-panel responsiveWidth="900px" drawerWidth="{{drawerWidth}}">
+      <navigation></navigation>
       <core-header-panel main ng-view></core-header-panel>
     </core-drawer-panel>
     <div ng-include="'partials/modals/login.tpl.html'"></div>

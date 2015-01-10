@@ -12,14 +12,19 @@ angular.module('mycellar.services.admin.domain').provider('adminDomainService', 
     var resourcesPath = [];
     var domainParameters = [];
     this.$get = [
-      '$location', '$route', '$injector', 'search', 'validityHelper',
-      function($location, $route, $injector, search, validityHelper) {
+      '$location', '$route', '$injector', 'search', 'validityHelper', '$rootScope',
+      function($location, $route, $injector, search, validityHelper, $rootScope) {
         var adminDomainService = {};
-        
+        $rootScope.$on('$routeChangeSuccess', function() {
+          if ($location.path().indexOf('/admin/domain/') != 0) {
+            adminDomainService.selected = -1;
+          }
+        });
+
         adminDomainService.getMenu = function() {
           return menu;
         };
-        
+
         /**
          * @param parameters {
          *          scope: the controller scope
@@ -56,11 +61,11 @@ angular.module('mycellar.services.admin.domain').provider('adminDomainService', 
             });
           };
           parameters.scope.edit = function(id) {
-            $location.path(resourcePath[parameters.group][parameters.resourceName] + '/' + id);
+            $location.url(resourcePath[parameters.group][parameters.resourceName] + '/' + id);
           };
           if (parameters.canCreate) {
             parameters.scope.new = function() {
-              $location.path(resourcePath[parameters.group][parameters.resourceName] + '/');
+              $location.url(resourcePath[parameters.group][parameters.resourceName] + '/');
             };
           }
           if (parameters.canDelete) {
@@ -108,14 +113,14 @@ angular.module('mycellar.services.admin.domain').provider('adminDomainService', 
             });
           }
         };
-        
+
         adminDomainService.editMethods = function(parameters) {
           angular.extend(parameters, domainParameters[parameters.group][parameters.resourceName]);
           parameters.canSave = (parameters.canSave != undefined ? parameters.canSave : true);
           parameters.formName = parameters.formName || "form";
           parameters.scope.errors = [];
           parameters.scope.cancel = function () {
-            $location.path(resourcesPath[parameters.group][parameters.resourceName]);
+            $location.url(resourcesPath[parameters.group][parameters.resourceName]);
           };
           if (parameters.canSave) {
             parameters.scope.save = function () {
@@ -125,7 +130,7 @@ angular.module('mycellar.services.admin.domain').provider('adminDomainService', 
               angular.copy(parameters.resource, self.backup);
               parameters.resource.$save().then(function (value, headers) {
                 self.backup = undefined;
-                $location.path(resourcesPath[parameters.group][parameters.resourceName]);
+                $location.url(resourcesPath[parameters.group][parameters.resourceName]);
               }, function (response) {
                 if (response.status === 400 && response.data.errorKey != undefined) {
                   angular.forEach(response.data.properties, function(property) {
@@ -143,11 +148,11 @@ angular.module('mycellar.services.admin.domain').provider('adminDomainService', 
             };
           }
         };
-        
+
         return adminDomainService;
       }
     ];
-    
+
     /**
      * @param parameters {
      *          group: the group name
@@ -189,15 +194,15 @@ angular.module('mycellar.services.admin.domain').provider('adminDomainService', 
       var baseUrl = function(name) {
         return '/admin/domain/' + parameters.group + '/' + name.charAt(0).toLowerCase() + name.substr(1);
       };
-      
+
       var templateUrl = function(name) {
         return '/partials/views' + baseUrl(name) + '.tpl.html';
       };
-      
+
       var controllerName = function(name) {
         return 'AdminDomain' + name + 'Controller';
       };
-      
+
       parameters.itemsPerPage = parameters.itemsPerPage || 10;
       parameters.sortParameter = initSort(parameters.defaultSort);
       parameters.canCreate = (parameters.canCreate != undefined ? parameters.canCreate : true);
@@ -206,7 +211,7 @@ angular.module('mycellar.services.admin.domain').provider('adminDomainService', 
         resourceRoute += '?';
       }
       var resourcesRoute = baseUrl(parameters.resourcesName);
-      
+
       // This is the object that our `forDomain()` function returns.  It decorates `$routeProvider`,
       // delegating the `when()` and `otherwise()` functions but also exposing some new functions for
       // creating CRUD routes.
@@ -236,7 +241,7 @@ angular.module('mycellar.services.admin.domain').provider('adminDomainService', 
             domainParameters[parameters.group] = [];
           }
           domainParameters[parameters.group][parameters.resourceName] = parameters;
-          
+
           routeBuilder.when(resourcesRoute, {
             templateUrl: templateUrl(parameters.resourcesName),
             controller: controllerName(parameters.resourcesName),

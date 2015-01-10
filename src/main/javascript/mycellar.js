@@ -28,38 +28,42 @@ angular.module('mycellar', [
   'mycellar.controllers.booking',
   'mycellar.controllers.cellar',
   'mycellar.controllers.contact',
-  'mycellar.controllers.navigation',
   'mycellar.controllers.password',
   'mycellar.directives.bind',
   'mycellar.directives.drag',
-  'mycellar.directives.error'
+  'mycellar.directives.error',
+  'mycellar.directives.navigation'
 ]);
 
 angular.module('mycellar').config([
-  '$routeProvider', '$locationProvider', '$httpProvider', 
-  function ($routeProvider, $locationProvider, $httpProvider) {
-  $locationProvider.html5Mode(true);
-  $routeProvider.when('/', {redirectTo: '/home'}).otherwise({redirectTo:'/404'});
-  $httpProvider.interceptors.push([
-    '$q', '$location',
-    function($q, $location) {
-      return {
-        responseError: function(rejection) {
-          if (rejection.status === 403) {
-            $location.path('/403');
-          } else if (rejection.status === 500) {
-            $location.path('/500');
-          }
-          return $q.reject(rejection);
-        }
-      };
+  '$routeProvider', '$locationProvider', '$httpProvider', '$compileProvider',
+  function ($routeProvider, $locationProvider, $httpProvider, $compileProvider) {
+    if (window.location.host.indexOf('localhost') != 0) {
+      $compileProvider.debugInfoEnabled(false);
     }
-  ]);
-}]);
+    $locationProvider.html5Mode(true);
+    $routeProvider.when('/', {redirectTo: '/home'}).otherwise({redirectTo:'/404'});
+    $httpProvider.interceptors.push([
+      '$q', '$location',
+      function($q, $location) {
+        return {
+          responseError: function(rejection) {
+            if (rejection.status === 403) {
+              $location.url('/403');
+            } else if (rejection.status === 500) {
+              $location.url('/500');
+            }
+            return $q.reject(rejection);
+          }
+        };
+      }
+    ]);
+  }
+]);
 
 angular.module('mycellar').run([
-  'security', 'authService', '$rootScope', '$q', '$location', 'loginDialogService',
-  function(security, authService, $rootScope, $q, $location, loginDialogService) {
+  'security', 'authService', '$rootScope', '$q', '$location', 'loginDialogService', '$window',
+  function(security, authService, $rootScope, $q, $location, loginDialogService, $window) {
     $rootScope.$on('event:auth-loginRequired', function() {
       loginDialogService.create();
     });
@@ -73,5 +77,14 @@ angular.module('mycellar').run([
     // Get the current user when the application starts
     // (in case he is still logged in from a previous session)
     security.requestCurrentUser();
+
+    var drawerSize = function() {
+      $rootScope.drawerWidth = Math.min(Math.max(200, $window.innerWidth - 64), 300) + 'px';
+    };
+    angular.element($window).bind('resize', function() {
+      drawerSize();
+      $rootScope.$apply();
+    });
+    drawerSize();
   }
 ]);

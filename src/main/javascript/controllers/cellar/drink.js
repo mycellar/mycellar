@@ -56,7 +56,7 @@ angular.module('mycellar.controllers.cellar.drink').controller('DrinkController'
           });
           $scope.errors.push(value);
         } else {
-          $location.path('/cellar/io');
+          $location.url('/cellar/io');
         }
       });
     };

@@ -21,7 +21,7 @@ angular.module('mycellar.services.security').factory('security', [
       logout: function() {
         $http.post('/api/logout').then(function() {
           service.forceLogout();
-          $location.path('/');
+          $location.url('/');
           menuService.reloadMenus();
         });
       },
@@ -37,7 +37,7 @@ angular.module('mycellar.services.security').factory('security', [
           $rootScope.currentUser = data;
           setToken(headers(tokenHeaderName));
           menuService.reloadMenus();
-          $location.path('/account');
+          $location.url('/account');
         });
       },
 

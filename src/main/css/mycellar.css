@@ -6,10 +6,62 @@
 }
 
 body {
-  font-family: RobotoDraft, 'Helvetica Neue', Helvetica, Arial;
+  font-family: "RobotoDraft", sans-serif;
+  font-weight: 400;
   font-size: 16px;
   color: rgba(0, 0, 0, 0.87);
 }
+
+/* DRAWER */
+[drawer] {
+  background: #ffffff;
+}
+
+:not([rightDrawer]) [drawer] {
+  box-shadow: 1px 0 1px rgba(0, 0, 0, 0.1);
+}
+
+[rightDrawer] [drawer] {
+  box-shadow: -1px 0 1px rgba(0, 0, 0, 0.1);
+}
+
+:not([rightDrawer]) [drawer] /deep/ #mainContainer {
+  display: flex;
+  flex-direction: column;
+}
+
+[rightDrawer] [main],
+nav {
+  overflow-y: auto;
+}
+
+[rightDrawer][narrow] .rightNarrow {
+  display: none;
+}
+/* DRAWER END */
+
+/* MENU */
+core-menu  {
+  margin: 8px 0 0 0;
+  font-weight: 500;
+  font-size: 14px;
+  color: rgba(0, 0, 0, 0.87);
+}
+
+core-menu paper-item {
+  font-size: 14px;
+  height: 48px;
+}
+
+core-menu paper-item core-icon {
+  margin-right: 32px;
+}
+
+core-menu core-item:not(:first-child),
+core-menu paper-item.only:not(:first-of-type) {
+  border-top: 1px solid rgba(0, 0, 0, 0.12);
+}
+/* MENU END */
 
 body /deep/ a {
   text-decoration: none;
@@ -26,28 +78,6 @@ body /deep/ paper-icon-button.orange /deep/ core-icon {
 body /deep/ paper-icon-button.red /deep/ core-icon {
   color: rgba(255, 0, 0, 0.54);
 }
-
-/* MENU */
-body /deep/ .menu-item:first-child a:first-child paper-item {
-  margin-top: 8px;
-}
-
-body /deep/ .menu-item paper-item {
-  font-size: 14px;
-}
-
-body /deep/ .menu-item:not(:first-child) {
-  border-top: 1px solid rgba(0, 0, 0, 0.12);
-}
-
-body /deep/ .menu-item-content:first-child {
-  margin-left: 56px;
-}
-
-body /deep/ .menu-item-content:not(:first-child) {
-  margin-left: 32px;
-}
-/* MENU END */
 
 body /deep/ section {
   margin-bottom: 16px;
@@ -81,46 +111,21 @@ body /deep/ div[horizontal][layout].buttons > paper-button {
   margin: auto;
 }
 
-html /deep/ core-item {
+core-item {
   padding: 0 16px;
+}
+
+core-item.subheader {
+  margin-top: 8px;
+  height: 48px;
+  font-size: 14px;
+  color: rgba(0, 0, 0, 0.54);
 }
 
 body /deep/ section > core-item:first-child:not(.subheader),
 body /deep/ section > paper-item:first-child:not(.subheader),
 body /deep/ core-selector /deep/ paper-item:first-child:not(.subheader) {
   margin-top: 8px;
-}
-
-body /deep/ core-item.subheader {
-  height: 48px;
-  font-size: 14px;
-  color: rgba(0, 0, 0, 0.54);
-}
-
-body core-drawer-panel[rightDrawer] [main] {
-  overflow-y: auto;
-}
-
-body /deep/ core-drawer-panel[rightDrawer][narrow] /deep/ .rightNarrow {
-  display: none;
-}
-
-body /deep/ :not([rightDrawer]) [drawer] /deep/ #mainContainer {
-  display: flex;
-  flex-direction: column;
-  border-right: 1px solid rgba(0, 0, 0, 0.12);
-}
-
-body /deep/ [drawer] nav, body /deep/ nav[drawer] {
-  overflow-y: auto;
-}
-
-body /deep/ [rightDrawer] [drawer] {
-  border-left: 1px solid rgba(0, 0, 0, 0.12);
-}
-
-body /deep/ core-drawer-panel [drawer] {
-  background: #ffffff;
 }
 
 body /deep/ core-toolbar {

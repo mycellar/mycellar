@@ -15,7 +15,19 @@ angular.module('mycellar.controllers.admin.domain.booking.bookings', [
       groupLabel: 'Réservation', 
       resourcesLabel: 'Réservations',
       defaultSort: ['bookingEvent.start', 'bookingEvent.start', 'customer.lastname']
-    }).whenCrud();
+    }).whenCrud({}, {
+      bookingEvent: [
+        'AdminBookingEvents', '$location',
+        function(BookingEvents, $location) {
+          var search = $location.search();
+          if (search.bookingEvent != null) {
+            return BookingEvents.get({id: search.bookingEvent}).$promise;
+          } else {
+            return null;
+          }
+        }
+      ]
+    });
   }
 ]);
 
@@ -33,8 +45,8 @@ angular.module('mycellar.controllers.admin.domain.booking.bookings').controller(
 ]);
 
 angular.module('mycellar.controllers.admin.domain.booking.bookings').controller('AdminDomainBookingController', [
-  '$scope', 'adminDomainService', 'item',
-  function ($scope, adminDomainService, item) {
+  '$scope', 'adminDomainService', 'item', 'bookingEvent',
+  function ($scope, adminDomainService, item, bookingEvent) {
     $scope.booking = item;
     adminDomainService.editMethods({
       scope: $scope,
@@ -42,7 +54,7 @@ angular.module('mycellar.controllers.admin.domain.booking.bookings').controller(
       resourceName: 'Booking', 
       resource: item
     });
-    
+
     $scope.total = 0;
     $scope.$watch('booking.bookingEvent', function(newValue, oldValue) {
       if (oldValue != newValue && $scope.booking.bookingEvent != undefined) {
@@ -60,7 +72,15 @@ angular.module('mycellar.controllers.admin.domain.booking.bookings').controller(
         });
       }
     }, true);
-    
+
+    if (bookingEvent != null) {
+      $scope.booking.bookingEvent = bookingEvent;
+      $scope.booking.quantities = {};
+      angular.forEach($scope.booking.bookingEvent.bottles, function(value) {
+        $scope.booking.quantities[$scope.booking.bookingEvent.id + "-" + value.id] = 0;
+      });
+    }
+
     // fix two way data binding lost
     $scope.fix = {
       bookingEvent: $scope.booking.bookingEvent,

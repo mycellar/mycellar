@@ -1,0 +1,28 @@
+<core-header-panel drawer>
+  <core-toolbar>
+    <div vertical layout>
+      <span>MyCellar</span>
+      <a href="/account"><span ng-if="$root.currentUser"><small>{{$root.currentUser.email}}</small></span></a>
+    </div>
+  </core-toolbar>
+  <nav flex>
+    <core-menu selectedAttribute="" excludedLocalNames="core-item">
+      <span ng-if="false" ng-repeat-start="menu in menuService.menus"></span>
+      <core-item class="subheader" ng-if="menu.pages">
+        {{menu.label}}
+      </core-item>
+      <paper-item ng-repeat="sub in menu.pages" ng-click="goto(sub)">
+        <core-icon ng-if="sub.icon" icon="{{sub.icon}}"></core-icon>
+        <span>{{sub.label}}</span>
+      </paper-item>
+      <paper-item class="only" ng-if="!menu.pages" ng-click="goto(menu)">
+        <core-icon ng-if="menu.icon" icon="{{menu.icon}}"></core-icon>
+        <span>{{menu.label}}</span>
+      </paper-item>
+      <span ng-if="false" ng-repeat-end></span>
+    </core-menu>
+  </nav>
+  <footer>
+    <small>2012-{{::year}} Tous droits réservés, MyCellar GPL V3.</small>
+  </footer>
+</core-header-panel>

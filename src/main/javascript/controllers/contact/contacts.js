@@ -59,10 +59,10 @@ angular.module('mycellar.controllers.contact.contacts').controller('ContactsCont
     };
 
     $scope.new = function() {
-      $location.path('/contact/producer/');
+      $location.url('/contact/producer/');
     };
     $scope.edit = function(contact) {
-      $location.path('/contact/producer/' + contact.producer.id);
+      $location.url('/contact/producer/' + contact.producer.id);
     };
 
     $scope.toggleHidden = function() {

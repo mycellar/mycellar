@@ -74,13 +74,13 @@ angular.module('mycellar.controllers.contact.contact').controller('ContactContro
           angular.copy($scope.backup, $scope.contact);
         } else {
           $scope.backup = undefined;
-          $location.path('/contact/producer/' + $scope.contact.producer.id);
+          $location.url('/contact/producer/' + $scope.contact.producer.id);
         }
       });
     };
     
     $scope.cancelContact = function() {
-      $location.path('/contact/producer/' + $scope.contact.producer.id);
+      $location.url('/contact/producer/' + $scope.contact.producer.id);
     }
   }
 ]);

@@ -97,15 +97,15 @@ angular.module('mycellar.controllers.contact.producer').controller('ProducerCont
     }
 
     $scope.editContact = function(contact) {
-      $location.path('/contact/contact/' + contact.id);
+      $location.url('/contact/contact/' + contact.id);
     };
 
     $scope.addContact = function() {
-      $location.path('/contact/contact/producer/' + $scope.producer.id);
+      $location.url('/contact/contact/producer/' + $scope.producer.id);
     };
 
     $scope.back = function() {
-      $location.path('/contact/contacts/');
+      $location.url('/contact/contacts/');
     };
 
     $scope.$watch('producer', function(newValue, oldValue) {

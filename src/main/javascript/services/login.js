@@ -27,9 +27,9 @@ angular.module('mycellar.services.login').factory('loginDialogService', [
             }, function(reason) {
               authService.loginCancelled(null, reason.reason);
               if (reason.requestPassword) {
-                $location.path('/reset-password-request');
+                $location.url('/reset-password-request');
               } else {
-                $location.path('/');
+                $location.url('/');
               }
             });
           });

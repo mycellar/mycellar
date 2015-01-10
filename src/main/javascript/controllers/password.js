@@ -21,12 +21,12 @@ angular.module('mycellar.controllers.password', [
           if (key != null && key != '') {
             return security.getMailFromRequestKey(key).then(function(value) {
               if (value == null || value.status != '200') {
-                $location.path('/');
+                $location.url('/');
               }
               return value.data;
             });
           } else {
-            $location.path('/');
+            $location.url('/');
             return null;
           }
         }]
