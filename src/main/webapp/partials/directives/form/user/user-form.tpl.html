@@ -26,11 +26,11 @@
   </section>
   <section ng-if="user.id == null">
     <my-input-decorator label="Mot de passe" floatingLabel isInvalid="{{form.password.$invalid}}">
-      <input name="password" type="password" ng-model="user.password" match="form.password2" required></input>
+      <input name="password" type="password" ng-model="passwords.first" match="form.password2" required></input>
       <error-span class="error" ctrl="form.password"></error-span>
     </my-input-decorator>
     <my-input-decorator label="Confirmation du mot de passe" floatingLabel isInvalid="{{form.password2.$invalid}}">
-      <input name="password2" type="password" ng-model="user.password2" match="form.password" required></input>
+      <input name="password2" type="password" ng-model="passwords.second" match="form.password" required></input>
       <error-span class="error" ctrl="form.password2"></error-span>
     </my-input-decorator>
   </section>
