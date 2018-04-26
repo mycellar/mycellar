@@ -1,5 +1,5 @@
 /*
- * Copyright 2011, MyCellar
+ * Copyright 2018, MyCellar
  *
  * This file is part of MyCellar.
  *
@@ -22,92 +22,119 @@ import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
 
-import javax.persistence.AttributeOverride;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
-import javax.persistence.Embedded;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
-import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 import javax.persistence.UniqueConstraint;
-import javax.xml.bind.annotation.XmlTransient;
+import javax.validation.Valid;
 
-import lombok.Getter;
-import lombok.Setter;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
-import org.apache.commons.lang3.builder.ToStringBuilder;
-import org.hibernate.search.annotations.Indexed;
-import org.hibernate.search.annotations.IndexedEmbedded;
-
-import fr.mycellar.domain.position.Map;
-import fr.mycellar.domain.shared.IdentifiedEntity;
-import fr.mycellar.domain.shared.NamedEntity;
+import fr.mycellar.domain.shared.AbstractAuditingEntity;
 
 /**
  * @author speralta
  */
 @Entity
-@Indexed
-@Table(name = "APPELLATION", uniqueConstraints = @UniqueConstraint(columnNames = { "NAME", "REGION", "COUNTRY" }))
-@AttributeOverride(name = "name", column = @Column(name = "NAME", nullable = false))
-@SequenceGenerator(name = "APPELLATION_ID_GENERATOR", allocationSize = 1)
-public class Appellation extends NamedEntity {
+@Table(name = "appellation", uniqueConstraints = @UniqueConstraint(columnNames = { "name", "region", "country" }))
+public class Appellation extends AbstractAuditingEntity {
 
-    private static final long serialVersionUID = 201111181451L;
+	private static final long serialVersionUID = 201804261330L;
 
-    @Column(name = "DESCRIPTION")
-    @Getter
-    @Setter
-    private String description;
+	@Id
+	@GeneratedValue
+	@Column(name = "id", nullable = false)
+	private Long id;
 
-    @Id
-    @GeneratedValue(generator = "APPELLATION_ID_GENERATOR")
-    @Column(name = "ID", nullable = false)
-    @Getter
-    private Integer id;
+	@Column(name = "name", unique = true)
+	private String name;
 
-    @Embedded
-    @Getter
-    @Setter
-    private Map map;
+	@Column(name = "description")
+	private String description;
 
-    @IndexedEmbedded
-    @ManyToOne(cascade = { CascadeType.PERSIST, CascadeType.MERGE })
-    @JoinColumn(name = "REGION", nullable = true)
-    @Getter
-    @Setter
-    private Region region;
+	@Valid
+	@ManyToOne(cascade = { CascadeType.PERSIST, CascadeType.MERGE })
+	@JoinColumn(name = "country", nullable = true)
+	private Country country;
 
-    @IndexedEmbedded
-    @ManyToOne(cascade = { CascadeType.PERSIST, CascadeType.MERGE })
-    @JoinColumn(name = "COUNTRY", nullable = true)
-    @Getter
-    @Setter
-    private Country country;
+	@Valid
+	@ManyToOne(cascade = { CascadeType.PERSIST, CascadeType.MERGE })
+	@JoinColumn(name = "region", nullable = false)
+	private Region region;
 
-    @OneToMany(mappedBy = "appellation")
-    @XmlTransient
-    private final Set<Wine> wines = new HashSet<Wine>();
+	@JsonIgnore
+	@OneToMany(mappedBy = "appellation")
+	private final Set<Wine> wines = new HashSet<>();
 
-    @Override
-    protected boolean dataEquals(IdentifiedEntity other) {
-        Appellation appellation = (Appellation) other;
-        return Objects.equals(getName(), appellation.getName()) && Objects.equals(getRegion(), appellation.getRegion());
-    }
+	public String getName() {
+		return name;
+	}
 
-    @Override
-    protected Object[] getHashCodeData() {
-        return new Object[] { getName() };
-    }
+	public void setName(String name) {
+		this.name = name;
+	}
 
-    @Override
-    public String toString() {
-        return new ToStringBuilder(this).appendSuper(super.toString()).append("description", description).append("map", map).append("region", region).build();
-    }
+	public String getDescription() {
+		return description;
+	}
+
+	public void setDescription(String description) {
+		this.description = description;
+	}
+
+	public Country getCountry() {
+		return country;
+	}
+
+	public void setCountry(Country country) {
+		this.country = country;
+	}
+
+	public Long getId() {
+		return id;
+	}
+
+	public Region getRegion() {
+		return region;
+	}
+
+	public void setRegion(Region region) {
+		this.region = region;
+	}
+
+	public Set<Wine> getWines() {
+		return wines;
+	}
+
+	@Override
+	public boolean equals(Object o) {
+		if (this == o) {
+			return true;
+		}
+		if (o == null || getClass() != o.getClass()) {
+			return false;
+		}
+		Appellation appellation = (Appellation) o;
+		if (appellation.getId() == null || getId() == null) {
+			return false;
+		}
+		return Objects.equals(getId(), appellation.getId());
+	}
+
+	@Override
+	public int hashCode() {
+		return Objects.hashCode(getId());
+	}
+
+	@Override
+	public String toString() {
+		return "Appellation{id=" + getId() + ", name='" + getName() + "'}";
+	}
 
 }

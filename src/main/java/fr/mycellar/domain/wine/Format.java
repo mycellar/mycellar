@@ -1,5 +1,5 @@
 /*
- * Copyright 2011, MyCellar
+ * Copyright 2018, MyCellar
  *
  * This file is part of MyCellar.
  *
@@ -18,77 +18,80 @@
  */
 package fr.mycellar.domain.wine;
 
-import java.util.HashSet;
 import java.util.Objects;
-import java.util.Set;
 
-import javax.persistence.AttributeOverride;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
-import javax.persistence.OneToMany;
-import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 import javax.persistence.UniqueConstraint;
-import javax.xml.bind.annotation.XmlTransient;
 
-import lombok.Getter;
-import lombok.Setter;
-
-import org.apache.commons.lang3.builder.ToStringBuilder;
-import org.hibernate.search.annotations.Indexed;
-
-import fr.mycellar.domain.booking.BookingBottle;
-import fr.mycellar.domain.shared.IdentifiedEntity;
-import fr.mycellar.domain.shared.NamedEntity;
-import fr.mycellar.domain.stock.Stock;
+import fr.mycellar.domain.shared.AbstractAuditingEntity;
 
 /**
  * @author speralta
  */
 @Entity
-@Indexed
-@Table(name = "FORMAT", uniqueConstraints = @UniqueConstraint(columnNames = { "NAME", "CAPACITY" }))
-@AttributeOverride(name = "name", column = @Column(name = "NAME", nullable = false, unique = false))
-@SequenceGenerator(name = "FORMAT_ID_GENERATOR", allocationSize = 1)
-public class Format extends NamedEntity {
+@Table(name = "format", uniqueConstraints = @UniqueConstraint(columnNames = { "name", "capacity" }))
+public class Format extends AbstractAuditingEntity {
 
-    private static final long serialVersionUID = 201111181451L;
+	private static final long serialVersionUID = 201804261330L;
 
-    @Column(name = "CAPACITY")
-    @Getter
-    @Setter
-    private float capacity;
+	@Id
+	@GeneratedValue
+	@Column(name = "id", nullable = false)
+	private Long id;
 
-    @Id
-    @GeneratedValue(generator = "FORMAT_ID_GENERATOR")
-    @Column(name = "ID", nullable = false)
-    @Getter
-    private Integer id;
+	@Column(name = "name", unique = true)
+	private String name;
 
-    @OneToMany(mappedBy = "bottle.format")
-    @XmlTransient
-    private final Set<BookingBottle> bookingBottles = new HashSet<BookingBottle>();
+	@Column(name = "capacity")
+	private float capacity;
 
-    @OneToMany(mappedBy = "bottle.format")
-    @XmlTransient
-    private final Set<Stock> stocks = new HashSet<Stock>();
+	public String getName() {
+		return name;
+	}
 
-    @Override
-    protected boolean dataEquals(IdentifiedEntity other) {
-        Format format = (Format) other;
-        return Objects.equals(getName(), format.getName());
-    }
+	public void setName(String name) {
+		this.name = name;
+	}
 
-    @Override
-    protected Object[] getHashCodeData() {
-        return new Object[] { getName() };
-    }
+	public float getCapacity() {
+		return capacity;
+	}
 
-    @Override
-    public String toString() {
-        return new ToStringBuilder(this).appendSuper(super.toString()).append("capacity", capacity).build();
-    }
+	public void setCapacity(float capacity) {
+		this.capacity = capacity;
+	}
+
+	public Long getId() {
+		return id;
+	}
+
+	@Override
+	public boolean equals(Object o) {
+		if (this == o) {
+			return true;
+		}
+		if (o == null || getClass() != o.getClass()) {
+			return false;
+		}
+		Format format = (Format) o;
+		if (format.getId() == null || getId() == null) {
+			return false;
+		}
+		return Objects.equals(getId(), format.getId());
+	}
+
+	@Override
+	public int hashCode() {
+		return Objects.hashCode(getId());
+	}
+
+	@Override
+	public String toString() {
+		return "Format{id=" + getId() + ", name='" + getName() + ", capacity='" + getCapacity() + "'}";
+	}
 
 }

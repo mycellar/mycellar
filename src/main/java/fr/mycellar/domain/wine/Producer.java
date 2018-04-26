@@ -1,5 +1,5 @@
 /*
- * Copyright 2011, MyCellar
+ * Copyright 2018, MyCellar
  *
  * This file is part of MyCellar.
  *
@@ -22,101 +22,77 @@ import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
 
-import javax.persistence.AttributeOverride;
 import javax.persistence.Column;
-import javax.persistence.Embedded;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
-import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
-import javax.validation.constraints.Pattern;
-import javax.xml.bind.annotation.XmlTransient;
 
-import lombok.Getter;
-import lombok.Setter;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
-import org.apache.commons.lang3.builder.ToStringBuilder;
-import org.hibernate.search.annotations.Indexed;
-
-import fr.mycellar.domain.position.Address;
-import fr.mycellar.domain.shared.IdentifiedEntity;
-import fr.mycellar.domain.shared.NamedEntity;
-import fr.mycellar.domain.shared.ValidationPattern;
+import fr.mycellar.domain.shared.AbstractAuditingEntity;
 
 /**
  * @author speralta
  */
 @Entity
-@Indexed
-@Table(name = "PRODUCER")
-@AttributeOverride(name = "name", column = @Column(name = "NAME", nullable = false))
-@SequenceGenerator(name = "PRODUCER_ID_GENERATOR", allocationSize = 1)
-public class Producer extends NamedEntity {
+@Table(name = "producer")
+public class Producer extends AbstractAuditingEntity {
 
-    private static final long serialVersionUID = 201111181451L;
+	private static final long serialVersionUID = 201804261330L;
 
-    @Embedded
-    @Getter
-    @Setter
-    private Address address;
+	@Id
+	@GeneratedValue
+	@Column(name = "id", nullable = false)
+	private Long id;
 
-    @Column(name = "DESCRIPTION", length = 10000)
-    @Getter
-    @Setter
-    private String description;
+	@Column(name = "name", unique = true)
+	private String name;
 
-    @Column(name = "CONTACT_INFORMATION", length = 10000)
-    @Getter
-    @Setter
-    private String contactInformation;
+	@JsonIgnore
+	@OneToMany(mappedBy = "producer")
+	private final Set<Wine> wines = new HashSet<>();
 
-    @Id
-    @GeneratedValue(generator = "PRODUCER_ID_GENERATOR")
-    @Column(name = "ID", nullable = false)
-    @Getter
-    private Integer id;
+	public String getName() {
+		return name;
+	}
 
-    @Column(name = "PHONE")
-    @Getter
-    @Setter
-    private String phone;
+	public void setName(String name) {
+		this.name = name;
+	}
 
-    @Column(name = "FAX")
-    @Getter
-    @Setter
-    private String fax;
+	public Long getId() {
+		return id;
+	}
 
-    @Column(name = "EMAIL")
-    @Getter
-    @Setter
-    private String email;
+	public Set<Wine> getWines() {
+		return wines;
+	}
 
-    @Pattern(regexp = ValidationPattern.URL_PATTERN)
-    @Column(name = "WEBSITE_URL")
-    @Getter
-    @Setter
-    private String websiteUrl;
+	@Override
+	public boolean equals(Object o) {
+		if (this == o) {
+			return true;
+		}
+		if (o == null || getClass() != o.getClass()) {
+			return false;
+		}
+		Producer producer = (Producer) o;
+		if (producer.getId() == null || getId() == null) {
+			return false;
+		}
+		return Objects.equals(getId(), producer.getId());
+	}
 
-    @OneToMany(mappedBy = "producer")
-    @XmlTransient
-    private final Set<Wine> wines = new HashSet<Wine>();
+	@Override
+	public int hashCode() {
+		return Objects.hashCode(getId());
+	}
 
-    @Override
-    protected boolean dataEquals(IdentifiedEntity other) {
-        Producer producer = (Producer) other;
-        return Objects.equals(getName(), producer.getName());
-    }
-
-    @Override
-    protected Object[] getHashCodeData() {
-        return new Object[] { getName() };
-    }
-
-    @Override
-    public String toString() {
-        return new ToStringBuilder(this).appendSuper(super.toString()).append("address", address).append("description", description).append("websiteUrl", websiteUrl).build();
-    }
+	@Override
+	public String toString() {
+		return "Producer{id=" + getId() + ", name='" + getName() + "'}";
+	}
 
 }

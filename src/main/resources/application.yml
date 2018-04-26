@@ -1,38 +1,5 @@
 spring:
-  application:
-    name: MyCellar
-  jpa:
-    hibernate:
-      ddl-auto: none
-      naming-strategy: org.hibernate.cfg.DefaultNamingStrategy
-    properties:
-      hibernate:
-        event:
-          merge:
-            entity_copy_observer: allow
-        show_sql: false
-        search:
-          analyzer: org.apache.lucene.analysis.fr.FrenchAnalyzer
-          default: 
-            directory_provider: ram
-            worker:
-              execution: async
-              thread_pool_size: 3
----
-spring:
-  profiles: mysql
-  jpa:
-    hibernate:
-      ddl-auto: update
-    properties:
-      hibernate:
-        dialect: org.hibernate.dialect.MySQL5InnoDBDialect
----
-spring:
-  profiles: h2
-  jpa:
-    hibernate:
-      ddl-auto: update
-    properties:
-      hibernate:
-        dialect: org.hibernate.dialect.H2Dialect
+  application.name: MyCellar
+
+mycellar:
+  jwtSecret: ${JWT_SECRET:secret}

@@ -1,5 +1,5 @@
 /*
- * Copyright 2011, MyCellar
+ * Copyright 2018, MyCellar
  *
  * This file is part of MyCellar.
  *

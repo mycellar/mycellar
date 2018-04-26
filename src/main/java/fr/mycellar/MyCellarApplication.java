@@ -1,5 +1,5 @@
 /*
- * Copyright 2014, MyCellar
+ * Copyright 2018, MyCellar
  *
  * This file is part of MyCellar.
  *
@@ -18,37 +18,20 @@
  */
 package fr.mycellar;
 
-import jpasearch.repository.GenericRepository;
-
 import org.springframework.boot.SpringApplication;
-import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
-import org.springframework.boot.autoconfigure.web.DispatcherServletAutoConfiguration;
-import org.springframework.boot.autoconfigure.web.ErrorMvcAutoConfiguration;
-import org.springframework.boot.autoconfigure.web.WebMvcAutoConfiguration;
-import org.springframework.boot.builder.SpringApplicationBuilder;
-import org.springframework.boot.context.web.SpringBootServletInitializer;
-import org.springframework.context.annotation.ComponentScan;
-import org.springframework.context.annotation.Configuration;
-import org.springframework.scheduling.annotation.EnableScheduling;
-import org.springframework.transaction.annotation.EnableTransactionManagement;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.boot.context.properties.EnableConfigurationProperties;
+
+import fr.mycellar.configuration.MyCellarProperties;
 
 /**
  * @author speralta
  */
-@Configuration
-@ComponentScan(basePackageClasses = { MyCellarApplication.class, GenericRepository.class })
-@EnableScheduling
-@EnableTransactionManagement
-@EnableAutoConfiguration(exclude = { WebMvcAutoConfiguration.class, DispatcherServletAutoConfiguration.class, ErrorMvcAutoConfiguration.class })
-public class MyCellarApplication extends SpringBootServletInitializer {
+@EnableConfigurationProperties(MyCellarProperties.class)
+@SpringBootApplication
+public class MyCellarApplication {
 
-    @Override
-    protected SpringApplicationBuilder configure(SpringApplicationBuilder application) {
-        return application.sources(MyCellarApplication.class);
-    }
-
-    public static void main(String... args) {
-        SpringApplication.run(MyCellarApplication.class, args);
-    }
-
+	public static void main(String[] args) {
+		SpringApplication.run(MyCellarApplication.class, args);
+	}
 }

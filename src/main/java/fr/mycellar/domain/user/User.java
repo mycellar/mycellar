@@ -1,5 +1,5 @@
 /*
- * Copyright 2011, MyCellar
+ * Copyright 2018, MyCellar
  *
  * This file is part of MyCellar.
  *
@@ -18,102 +18,160 @@
  */
 package fr.mycellar.domain.user;
 
+import java.time.Instant;
 import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.EnumType;
-import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
-import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
-import javax.persistence.UniqueConstraint;
-import javax.xml.bind.annotation.XmlTransient;
 
-import lombok.Getter;
-import lombok.Setter;
+import org.hibernate.annotations.BatchSize;
 
-import org.apache.commons.lang3.builder.ToStringBuilder;
-import org.hibernate.search.annotations.Field;
-import org.hibernate.search.annotations.Indexed;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import fr.mycellar.domain.booking.Booking;
-import fr.mycellar.domain.shared.IdentifiedEntity;
-import fr.mycellar.domain.stock.Cellar;
+import fr.mycellar.domain.shared.AbstractAuditingEntity;
 
 /**
- * @author bperalta
+ * @author speralta
  */
 @Entity
-@Indexed
-@Table(name = "USER", uniqueConstraints = @UniqueConstraint(columnNames = { "EMAIL" }))
-@SequenceGenerator(name = "USER_ID_GENERATOR", allocationSize = 1)
-public class User extends IdentifiedEntity {
+@Table(name = "mycellar_user")
+public class User extends AbstractAuditingEntity {
 
-    private static final long serialVersionUID = 201111181451L;
+	private static final long serialVersionUID = 201804261302L;
 
-    @OneToMany(mappedBy = "owner")
-    @XmlTransient
-    private final Set<Cellar> cellars = new HashSet<Cellar>();
+	@Id
+	@GeneratedValue
+	@Column(name = "id", nullable = false)
+	private Long id;
 
-    @OneToMany(mappedBy = "customer")
-    @XmlTransient
-    private final Set<Booking> bookings = new HashSet<Booking>();
+	@Column(name = "email", nullable = false, unique = true)
+	private String email;
 
-    @Column(name = "EMAIL", nullable = false)
-    @Field
-    @Getter
-    @Setter
-    private String email;
+	@JsonIgnore
+	@Column(name = "password_hash", nullable = false, length = 60)
+	private String password;
 
-    @Column(name = "FIRSTNAME", nullable = false)
-    @Field
-    @Getter
-    @Setter
-    private String firstname;
+	@Column(name = "firstname", nullable = false)
+	private String firstname;
 
-    @Id
-    @GeneratedValue(generator = "USER_ID_GENERATOR")
-    @Column(name = "ID", nullable = false)
-    @Getter
-    private Integer id;
+	@Column(name = "lastname", nullable = false)
+	private String lastname;
 
-    @Column(name = "LASTNAME", nullable = false)
-    @Field
-    @Getter
-    @Setter
-    private String lastname;
+	@JsonIgnore
+	@Column(name = "reset_key", length = 20)
+	private String resetKey;
 
-    @Column(name = "PASSWORD", nullable = false, length = 40)
-    @XmlTransient
-    @Getter
-    @Setter
-    private String password;
+	@Column(name = "reset_date")
+	private Instant resetDate;
 
-    @Column(name = "PROFILE")
-    @Enumerated(EnumType.STRING)
-    @Getter
-    @Setter
-    private ProfileEnum profile;
+	@JsonIgnore
+	@ManyToMany
+	@JoinTable(name = "mycellar_user_authority", joinColumns = {
+			@JoinColumn(name = "user_id", referencedColumnName = "id") }, inverseJoinColumns = {
+					@JoinColumn(name = "authority_name", referencedColumnName = "name") })
+	@BatchSize(size = 20)
+	private Set<Authority> authorities = new HashSet<>();
 
-    @Override
-    protected boolean dataEquals(IdentifiedEntity other) {
-        User user = (User) other;
-        return Objects.equals(getEmail(), user.getEmail());
-    }
+	@JsonIgnore
+	@OneToMany(mappedBy = "customer")
+	private final Set<Booking> bookings = new HashSet<>();
 
-    @Override
-    protected Object[] getHashCodeData() {
-        return new Object[] { getEmail() };
-    }
+	public String getEmail() {
+		return email;
+	}
 
-    @Override
-    public String toString() {
-        return new ToStringBuilder(this).appendSuper(super.toString()).append("email", email).append("firstname", firstname).append("lastname", lastname).append("profile", profile).build();
-    }
+	public void setEmail(String email) {
+		this.email = email;
+	}
 
+	public String getPassword() {
+		return password;
+	}
+
+	public void setPassword(String password) {
+		this.password = password;
+	}
+
+	public String getFirstname() {
+		return firstname;
+	}
+
+	public void setFirstname(String firstname) {
+		this.firstname = firstname;
+	}
+
+	public String getLastname() {
+		return lastname;
+	}
+
+	public void setLastname(String lastname) {
+		this.lastname = lastname;
+	}
+
+	public String getResetKey() {
+		return resetKey;
+	}
+
+	public void setResetKey(String resetKey) {
+		this.resetKey = resetKey;
+	}
+
+	public Instant getResetDate() {
+		return resetDate;
+	}
+
+	public void setResetDate(Instant resetDate) {
+		this.resetDate = resetDate;
+	}
+
+	public Set<Authority> getAuthorities() {
+		return authorities;
+	}
+
+	public void setAuthorities(Set<Authority> authorities) {
+		this.authorities = authorities;
+	}
+
+	public Long getId() {
+		return id;
+	}
+
+	public Set<Booking> getBookings() {
+		return bookings;
+	}
+
+	@Override
+	public boolean equals(Object o) {
+		if (this == o) {
+			return true;
+		}
+		if (o == null || getClass() != o.getClass()) {
+			return false;
+		}
+		User user = (User) o;
+		if (user.getId() == null || getId() == null) {
+			return false;
+		}
+		return Objects.equals(getId(), user.getId());
+	}
+
+	@Override
+	public int hashCode() {
+		return Objects.hashCode(getId());
+	}
+
+	@Override
+	public String toString() {
+		return "User{id=" + getId() + ", email='" + getEmail() + "'}";
+	}
 }

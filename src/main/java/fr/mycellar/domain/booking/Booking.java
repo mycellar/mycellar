@@ -1,5 +1,5 @@
 /*
- * Copyright 2011, MyCellar
+ * Copyright 2018, MyCellar
  *
  * This file is part of MyCellar.
  *
@@ -22,7 +22,6 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
 
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
@@ -32,62 +31,89 @@ import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToOne;
 import javax.persistence.MapKeyJoinColumn;
-import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 import javax.persistence.UniqueConstraint;
 
-import lombok.Getter;
-import lombok.Setter;
-import fr.mycellar.domain.shared.IdentifiedEntity;
+import fr.mycellar.domain.shared.AbstractAuditingEntity;
 import fr.mycellar.domain.user.User;
 
 /**
  * @author speralta
  */
 @Entity
-@Table(name = "BOOKING", uniqueConstraints = @UniqueConstraint(columnNames = { "CUSTOMER", "BOOKING_EVENT" }))
-@SequenceGenerator(name = "BOOKING_ID_GENERATOR", allocationSize = 1)
-public class Booking extends IdentifiedEntity {
+@Table(name = "booking", uniqueConstraints = @UniqueConstraint(columnNames = { "customer", "booking_event" }))
+public class Booking extends AbstractAuditingEntity {
 
-    private static final long serialVersionUID = 201205220734L;
+	private static final long serialVersionUID = 201205220734L;
 
-    @Id
-    @GeneratedValue(generator = "BOOKING_ID_GENERATOR")
-    @Column(name = "ID", nullable = false)
-    @Getter
-    private Integer id;
+	@Id
+	@GeneratedValue
+	@Column(name = "id", nullable = false)
+	private Long id;
 
-    @ManyToOne
-    @JoinColumn(name = "CUSTOMER", nullable = false)
-    @Getter
-    @Setter
-    private User customer;
+	@ManyToOne
+	@JoinColumn(name = "customer", nullable = false)
+	private User customer;
 
-    @ManyToOne(cascade = { CascadeType.PERSIST, CascadeType.MERGE })
-    @JoinColumn(name = "BOOKING_EVENT", nullable = false)
-    @Getter
-    @Setter
-    private BookingEvent bookingEvent;
+	@ManyToOne
+	@JoinColumn(name = "booking_event", nullable = false)
+	private BookingEvent bookingEvent;
 
-    // WARNING : DO NOT SET FETCHTYPE TO EAGER, hibernate bug with eager map
-    // association (insert uninitialized entities in hashmap (so wrong hash) and
-    // initialize them after)
-    @ElementCollection
-    @JoinTable(name = "BOOKING_QUANTITIES", joinColumns = @JoinColumn(name = "BOOKING"))
-    @Column(name = "QUANTITY", nullable = false)
-    @MapKeyJoinColumn(name = "BOOKING_BOTTLE")
-    @Getter
-    private final Map<BookingBottle, Integer> quantities = new HashMap<BookingBottle, Integer>();
+	// WARNING : DO NOT SET FETCHTYPE TO EAGER, hibernate bug with eager map
+	// association (insert uninitialized entities in hashmap (so wrong hash) and
+	// initialize them after)
+	@ElementCollection
+	@JoinTable(name = "booking_quantities", joinColumns = @JoinColumn(name = "booking"))
+	@Column(name = "quantity", nullable = false)
+	@MapKeyJoinColumn(name = "booking_bottle")
+	private final Map<BookingBottle, Integer> quantities = new HashMap<>();
 
-    @Override
-    protected boolean dataEquals(IdentifiedEntity other) {
-        Booking booking = (Booking) other;
-        return Objects.equals(getCustomer(), booking.getCustomer()) && Objects.equals(getBookingEvent(), booking.getBookingEvent());
-    }
+	public User getCustomer() {
+		return customer;
+	}
 
-    @Override
-    protected Object[] getHashCodeData() {
-        return new Object[] { getCustomer(), getBookingEvent() };
-    }
+	public void setCustomer(User customer) {
+		this.customer = customer;
+	}
 
+	public BookingEvent getBookingEvent() {
+		return bookingEvent;
+	}
+
+	public void setBookingEvent(BookingEvent bookingEvent) {
+		this.bookingEvent = bookingEvent;
+	}
+
+	public Long getId() {
+		return id;
+	}
+
+	public Map<BookingBottle, Integer> getQuantities() {
+		return quantities;
+	}
+
+	@Override
+	public boolean equals(Object o) {
+		if (this == o) {
+			return true;
+		}
+		if (o == null || getClass() != o.getClass()) {
+			return false;
+		}
+		Booking booking = (Booking) o;
+		if (booking.getId() == null || getId() == null) {
+			return false;
+		}
+		return Objects.equals(getId(), booking.getId());
+	}
+
+	@Override
+	public int hashCode() {
+		return Objects.hashCode(getId());
+	}
+
+	@Override
+	public String toString() {
+		return "Booking{id=" + getId() + ", customer='" + getCustomer() + ", bookingEvent='" + getBookingEvent() + "'}";
+	}
 }

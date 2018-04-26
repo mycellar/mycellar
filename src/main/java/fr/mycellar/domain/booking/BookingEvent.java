@@ -1,5 +1,5 @@
 /*
- * Copyright 2011, MyCellar
+ * Copyright 2018, MyCellar
  *
  * This file is part of MyCellar.
  *
@@ -31,93 +31,123 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.OrderBy;
-import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 import javax.persistence.UniqueConstraint;
 import javax.validation.Valid;
-import javax.xml.bind.annotation.XmlTransient;
 
-import lombok.Getter;
-import lombok.Setter;
+import org.joda.time.Instant;
 
-import org.apache.commons.lang3.builder.ToStringBuilder;
-import org.hibernate.annotations.Type;
-import org.hibernate.search.annotations.Indexed;
-import org.joda.time.LocalDate;
-
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 
 import fr.mycellar.domain.booking.comparator.BookingBottlePositionComparator;
-import fr.mycellar.domain.shared.IdentifiedEntity;
-import fr.mycellar.domain.shared.NamedEntity;
+import fr.mycellar.domain.shared.AbstractAuditingEntity;
 
 /**
  * @author speralta
  */
 @Entity
-@Indexed
-@Table(name = "BOOKING_EVENT", uniqueConstraints = @UniqueConstraint(columnNames = { "NAME", "START", "END" }))
-@SequenceGenerator(name = "BOOKING_EVENT_ID_GENERATOR", allocationSize = 1)
-public class BookingEvent extends NamedEntity {
+@Table(name = "booking_event", uniqueConstraints = @UniqueConstraint(columnNames = { "name", "start", "end" }))
+public class BookingEvent extends AbstractAuditingEntity {
 
-    public static class BookingBottleSet extends TreeSet<BookingBottle> {
+	public static class BookingBottleSet extends TreeSet<BookingBottle> {
 
-        private static final long serialVersionUID = 201307221610L;
+		private static final long serialVersionUID = 201307221610L;
 
-        public BookingBottleSet() {
-            super(new BookingBottlePositionComparator());
-        }
+		public BookingBottleSet() {
+			super(new BookingBottlePositionComparator());
+		}
 
-    }
+	}
 
-    private static final long serialVersionUID = 201205220734L;
+	private static final long serialVersionUID = 201804261402L;
 
-    @OneToMany(mappedBy = "bookingEvent")
-    @XmlTransient
-    private final Set<Booking> bookings = new HashSet<Booking>();
+	@Id
+	@GeneratedValue
+	@Column(name = "id", nullable = false)
+	private Long id;
 
-    @Id
-    @GeneratedValue(generator = "BOOKING_EVENT_ID_GENERATOR")
-    @Column(name = "ID", nullable = false)
-    @Getter
-    @Setter
-    private Integer id;
+	@Column(name = "name", unique = true)
+	private String name;
 
-    @Valid
-    @OneToMany(mappedBy = "bookingEvent", cascade = { CascadeType.MERGE, CascadeType.PERSIST }, fetch = FetchType.EAGER, orphanRemoval = true)
-    @OrderBy("position")
-    @JsonManagedReference("bookingEvent-bottles")
-    @JsonDeserialize(as = BookingBottleSet.class)
-    @Getter
-    private final Set<BookingBottle> bottles = new BookingBottleSet();
+	@Valid
+	@OneToMany(mappedBy = "bookingEvent", cascade = { CascadeType.MERGE,
+			CascadeType.PERSIST }, fetch = FetchType.EAGER, orphanRemoval = true)
+	@OrderBy("position")
+	@JsonManagedReference("bookingEvent-bottles")
+	@JsonDeserialize(as = BookingBottleSet.class)
+	private final Set<BookingBottle> bottles = new BookingBottleSet();
 
-    @Column(name = "START", nullable = false)
-    @Type(type = "org.jadira.usertype.dateandtime.joda.PersistentLocalDate")
-    @Getter
-    @Setter
-    private LocalDate start;
+	@Column(name = "start", nullable = false)
+	private Instant start;
 
-    @Column(name = "END", nullable = false)
-    @Type(type = "org.jadira.usertype.dateandtime.joda.PersistentLocalDate")
-    @Getter
-    @Setter
-    private LocalDate end;
+	@Column(name = "end", nullable = false)
+	private Instant end;
 
-    @Override
-    protected boolean dataEquals(IdentifiedEntity other) {
-        BookingEvent bookingEvent = (BookingEvent) other;
-        return Objects.equals(getStart(), bookingEvent.getStart()) && Objects.equals(getEnd(), bookingEvent.getEnd()) && Objects.equals(getName(), bookingEvent.getName());
-    }
+	@JsonIgnore
+	@OneToMany(mappedBy = "bookingEvent")
+	private final Set<Booking> bookings = new HashSet<Booking>();
 
-    @Override
-    protected Object[] getHashCodeData() {
-        return new Object[] { getName(), getStart(), getEnd() };
-    }
+	public String getName() {
+		return name;
+	}
 
-    @Override
-    public String toString() {
-        return new ToStringBuilder(this).appendSuper(super.toString()).append("start", start).append("end", end).build();
-    }
+	public void setName(String name) {
+		this.name = name;
+	}
 
+	public Instant getStart() {
+		return start;
+	}
+
+	public void setStart(Instant start) {
+		this.start = start;
+	}
+
+	public Instant getEnd() {
+		return end;
+	}
+
+	public void setEnd(Instant end) {
+		this.end = end;
+	}
+
+	public Long getId() {
+		return id;
+	}
+
+	public Set<BookingBottle> getBottles() {
+		return bottles;
+	}
+
+	public Set<Booking> getBookings() {
+		return bookings;
+	}
+
+	@Override
+	public boolean equals(Object o) {
+		if (this == o) {
+			return true;
+		}
+		if (o == null || getClass() != o.getClass()) {
+			return false;
+		}
+		BookingEvent appellation = (BookingEvent) o;
+		if (appellation.getId() == null || getId() == null) {
+			return false;
+		}
+		return Objects.equals(getId(), appellation.getId());
+	}
+
+	@Override
+	public int hashCode() {
+		return Objects.hashCode(getId());
+	}
+
+	@Override
+	public String toString() {
+		return "BookingEvent{id=" + getId() + ", name='" + getName() + ", start='" + getStart() + ", end='" + getEnd()
+				+ "'}";
+	}
 }

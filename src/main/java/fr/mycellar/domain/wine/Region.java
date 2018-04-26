@@ -1,5 +1,5 @@
 /*
- * Copyright 2011, MyCellar
+ * Copyright 2018, MyCellar
  *
  * This file is part of MyCellar.
  *
@@ -22,87 +22,105 @@ import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
 
-import javax.persistence.AttributeOverride;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
-import javax.persistence.Embedded;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
-import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 import javax.persistence.UniqueConstraint;
 import javax.validation.Valid;
-import javax.xml.bind.annotation.XmlTransient;
 
-import lombok.Getter;
-import lombok.Setter;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
-import org.apache.commons.lang3.builder.ToStringBuilder;
-import org.hibernate.search.annotations.Indexed;
-import org.hibernate.search.annotations.IndexedEmbedded;
-
-import fr.mycellar.domain.position.Map;
-import fr.mycellar.domain.shared.IdentifiedEntity;
-import fr.mycellar.domain.shared.NamedEntity;
+import fr.mycellar.domain.shared.AbstractAuditingEntity;
 
 /**
  * @author speralta
  */
 @Entity
-@Indexed
-@Table(name = "REGION", uniqueConstraints = @UniqueConstraint(columnNames = { "NAME", "COUNTRY" }))
-@AttributeOverride(name = "name", column = @Column(name = "NAME", nullable = false))
-@SequenceGenerator(name = "REGION_ID_GENERATOR", allocationSize = 1)
-public class Region extends NamedEntity {
+@Table(name = "region", uniqueConstraints = @UniqueConstraint(columnNames = { "name", "country" }))
+public class Region extends AbstractAuditingEntity {
 
-    private static final long serialVersionUID = 201111181451L;
+	private static final long serialVersionUID = 201804261330L;
 
-    @OneToMany(mappedBy = "region")
-    @XmlTransient
-    private final Set<Appellation> appellations = new HashSet<Appellation>();
+	@Id
+	@GeneratedValue
+	@Column(name = "id", nullable = false)
+	private Long id;
 
-    @IndexedEmbedded
-    @Valid
-    @ManyToOne(cascade = { CascadeType.PERSIST, CascadeType.MERGE })
-    @JoinColumn(name = "COUNTRY", nullable = false)
-    @Getter
-    @Setter
-    private Country country;
+	@Column(name = "name", unique = true)
+	private String name;
 
-    @Column(name = "DESCRIPTION")
-    @Getter
-    @Setter
-    private String description;
+	@Column(name = "description")
+	private String description;
 
-    @Id
-    @GeneratedValue(generator = "REGION_ID_GENERATOR")
-    @Column(name = "ID", nullable = false)
-    @Getter
-    private Integer id;
+	@Valid
+	@ManyToOne(cascade = { CascadeType.PERSIST, CascadeType.MERGE })
+	@JoinColumn(name = "country", nullable = false)
+	private Country country;
 
-    @Embedded
-    @Getter
-    @Setter
-    private Map map;
+	@JsonIgnore
+	@OneToMany(mappedBy = "region")
+	private final Set<Appellation> appellations = new HashSet<>();
 
-    @Override
-    protected boolean dataEquals(IdentifiedEntity other) {
-        Region region = (Region) other;
-        return Objects.equals(getName(), region.getName()) && Objects.equals(getCountry(), region.getCountry());
-    }
+	public String getName() {
+		return name;
+	}
 
-    @Override
-    protected Object[] getHashCodeData() {
-        return new Object[] { getName() };
-    }
+	public void setName(String name) {
+		this.name = name;
+	}
 
-    @Override
-    public String toString() {
-        return new ToStringBuilder(this).appendSuper(super.toString()).append("country", country).append("description", description).append("map", map).build();
-    }
+	public String getDescription() {
+		return description;
+	}
 
+	public void setDescription(String description) {
+		this.description = description;
+	}
+
+	public Country getCountry() {
+		return country;
+	}
+
+	public void setCountry(Country country) {
+		this.country = country;
+	}
+
+	public Long getId() {
+		return id;
+	}
+
+	public Set<Appellation> getAppellations() {
+		return appellations;
+	}
+
+	@Override
+	public boolean equals(Object o) {
+		if (this == o) {
+			return true;
+		}
+		if (o == null || getClass() != o.getClass()) {
+			return false;
+		}
+		Region region = (Region) o;
+		if (region.getId() == null || getId() == null) {
+			return false;
+		}
+		return Objects.equals(getId(), region.getId());
+	}
+
+	@Override
+	public int hashCode() {
+		return Objects.hashCode(getId());
+	}
+
+	@Override
+	public String toString() {
+		return "Region{id=" + getId() + ", name='" + getName() + "'}";
+	}
 }

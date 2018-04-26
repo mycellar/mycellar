@@ -1,5 +1,5 @@
 /*
- * Copyright 2011, MyCellar
+ * Copyright 2018, MyCellar
  *
  * This file is part of MyCellar.
  *
@@ -21,87 +21,137 @@ package fr.mycellar.domain.booking;
 import java.util.Objects;
 
 import javax.persistence.Column;
-import javax.persistence.Embedded;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
-import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 import javax.persistence.UniqueConstraint;
 import javax.validation.Valid;
-import javax.validation.constraints.Pattern;
-
-import lombok.Getter;
-import lombok.Setter;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
 
-import fr.mycellar.domain.shared.IdentifiedEntity;
-import fr.mycellar.domain.shared.ValidationPattern;
-import fr.mycellar.domain.stock.Bottle;
+import fr.mycellar.domain.shared.AbstractAuditingEntity;
+import fr.mycellar.domain.wine.Format;
+import fr.mycellar.domain.wine.Wine;
 
 /**
  * @author speralta
  */
 @Entity
-@Table(name = "BOOKING_BOTTLE", uniqueConstraints = { @UniqueConstraint(columnNames = { "FORMAT", "WINE", "BOOKING_EVENT" }), @UniqueConstraint(columnNames = { "BOOKING_EVENT", "POSITION" }) })
-@SequenceGenerator(name = "BOOKING_BOTTLE_ID_GENERATOR", allocationSize = 1)
-public class BookingBottle extends IdentifiedEntity {
+@Table(name = "booking_bottle", uniqueConstraints = {
+		@UniqueConstraint(columnNames = { "format", "wine", "booking_event" }),
+		@UniqueConstraint(columnNames = { "booking_event", "position" }) })
+public class BookingBottle extends AbstractAuditingEntity {
 
-    private static final long serialVersionUID = 201205220734L;
+	private static final long serialVersionUID = 201804261330L;
 
-    @Id
-    @GeneratedValue(generator = "BOOKING_BOTTLE_ID_GENERATOR")
-    @Column(name = "ID", nullable = false)
-    @Getter
-    private Integer id;
+	@Id
+	@GeneratedValue
+	@Column(name = "id", nullable = false)
+	private Long id;
 
-    @Valid
-    @ManyToOne
-    @JoinColumn(name = "BOOKING_EVENT")
-    @JsonBackReference("bookingEvent-bottles")
-    @Getter
-    @Setter
-    private BookingEvent bookingEvent;
+	@Valid
+	@ManyToOne
+	@JoinColumn(name = "booking_event")
+	@JsonBackReference("bookingEvent-bottles")
+	private BookingEvent bookingEvent;
 
-    @Valid
-    @Embedded
-    @Getter
-    @Setter
-    private Bottle bottle;
+	@Valid
+	@ManyToOne
+	@JoinColumn(name = "format")
+	private Format format;
 
-    @Column(name = "PRICE", precision = 2, length = 6, nullable = false)
-    @Getter
-    @Setter
-    private Float price;
+	@Valid
+	@ManyToOne
+	@JoinColumn(name = "wine")
+	private Wine wine;
 
-    @Pattern(regexp = ValidationPattern.URL_PATTERN)
-    @Column(name = "URL", nullable = false)
-    @Getter
-    @Setter
-    private String url;
+	@Column(name = "price", precision = 2, length = 6, nullable = false)
+	private Float price;
 
-    @Column(name = "MAX", nullable = false)
-    @Getter
-    @Setter
-    private Integer max;
+	@Column(name = "max", nullable = false)
+	private Integer max;
 
-    @Column(name = "POSITION", nullable = false)
-    @Getter
-    @Setter
-    private Integer position;
+	@Column(name = "position", nullable = false)
+	private Integer position;
 
-    @Override
-    protected boolean dataEquals(IdentifiedEntity other) {
-        BookingBottle bookingBottle = (BookingBottle) other;
-        return Objects.equals(getBookingEvent(), bookingBottle.getBookingEvent()) && Objects.equals(getBottle(), bookingBottle.getBottle());
-    }
+	public BookingEvent getBookingEvent() {
+		return bookingEvent;
+	}
 
-    @Override
-    protected Object[] getHashCodeData() {
-        return new Object[] { getBookingEvent(), getBottle() };
-    }
+	public void setBookingEvent(BookingEvent bookingEvent) {
+		this.bookingEvent = bookingEvent;
+	}
+
+	public Format getFormat() {
+		return format;
+	}
+
+	public void setFormat(Format format) {
+		this.format = format;
+	}
+
+	public Wine getWine() {
+		return wine;
+	}
+
+	public void setWine(Wine wine) {
+		this.wine = wine;
+	}
+
+	public Float getPrice() {
+		return price;
+	}
+
+	public void setPrice(Float price) {
+		this.price = price;
+	}
+
+	public Integer getMax() {
+		return max;
+	}
+
+	public void setMax(Integer max) {
+		this.max = max;
+	}
+
+	public Integer getPosition() {
+		return position;
+	}
+
+	public void setPosition(Integer position) {
+		this.position = position;
+	}
+
+	public Long getId() {
+		return id;
+	}
+
+	@Override
+	public boolean equals(Object o) {
+		if (this == o) {
+			return true;
+		}
+		if (o == null || getClass() != o.getClass()) {
+			return false;
+		}
+		BookingBottle bookingBottle = (BookingBottle) o;
+		if (bookingBottle.getId() == null || getId() == null) {
+			return false;
+		}
+		return Objects.equals(getId(), bookingBottle.getId());
+	}
+
+	@Override
+	public int hashCode() {
+		return Objects.hashCode(getId());
+	}
+
+	@Override
+	public String toString() {
+		return "BookingBottle{id=" + getId() + ", position='" + getPosition() + "'}";
+	}
 
 }

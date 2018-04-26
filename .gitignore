@@ -9,3 +9,5 @@
 /infinitest.filters
 /.idea
 /mycellar.iml
+/.gradle/
+/bin/

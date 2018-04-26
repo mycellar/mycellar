@@ -1,5 +1,5 @@
 /*
- * Copyright 2011, MyCellar
+ * Copyright 2018, MyCellar
  *
  * This file is part of MyCellar.
  *
@@ -22,73 +22,87 @@ import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
 
-import javax.persistence.AttributeOverride;
 import javax.persistence.Column;
-import javax.persistence.Embedded;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
-import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
-import javax.xml.bind.annotation.XmlTransient;
 
-import lombok.Getter;
-import lombok.Setter;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
-import org.apache.commons.lang3.builder.ToStringBuilder;
-import org.hibernate.search.annotations.Indexed;
-
-import fr.mycellar.domain.position.Map;
-import fr.mycellar.domain.shared.IdentifiedEntity;
-import fr.mycellar.domain.shared.NamedEntity;
+import fr.mycellar.domain.shared.AbstractAuditingEntity;
 
 /**
  * @author speralta
  */
 @Entity
-@Indexed
-@Table(name = "COUNTRY")
-@AttributeOverride(name = "name", column = @Column(name = "NAME", nullable = false, unique = true))
-@SequenceGenerator(name = "COUNTRY_ID_GENERATOR", allocationSize = 1)
-public class Country extends NamedEntity {
+@Table(name = "country")
+public class Country extends AbstractAuditingEntity {
 
-    private static final long serialVersionUID = 201111181451L;
+	private static final long serialVersionUID = 201804261310L;
 
-    @Column(name = "DESCRIPTION")
-    @Getter
-    @Setter
-    private String description;
+	@Id
+	@GeneratedValue
+	@Column(name = "id", nullable = false)
+	private Long id;
 
-    @Id
-    @GeneratedValue(generator = "COUNTRY_ID_GENERATOR")
-    @Column(name = "ID", nullable = false)
-    @Getter
-    private Integer id;
+	@Column(name = "name", unique = true)
+	private String name;
 
-    @Embedded
-    @Getter
-    @Setter
-    private Map map;
+	@Column(name = "description")
+	private String description;
 
-    @OneToMany(mappedBy = "country")
-    @XmlTransient
-    private final Set<Region> regions = new HashSet<Region>();
+	@JsonIgnore
+	@OneToMany(mappedBy = "country")
+	private final Set<Region> regions = new HashSet<Region>();
 
-    @Override
-    protected boolean dataEquals(IdentifiedEntity other) {
-        Country country = (Country) other;
-        return Objects.equals(getName(), country.getName());
-    }
+	public String getName() {
+		return name;
+	}
 
-    @Override
-    protected Object[] getHashCodeData() {
-        return new Object[] { getName() };
-    }
+	public void setName(String name) {
+		this.name = name;
+	}
 
-    @Override
-    public String toString() {
-        return new ToStringBuilder(this).appendSuper(super.toString()).append("description", description).append("map", map).build();
-    }
+	public String getDescription() {
+		return description;
+	}
 
+	public void setDescription(String description) {
+		this.description = description;
+	}
+
+	public Long getId() {
+		return id;
+	}
+
+	public Set<Region> getRegions() {
+		return regions;
+	}
+
+	@Override
+	public boolean equals(Object o) {
+		if (this == o) {
+			return true;
+		}
+		if (o == null || getClass() != o.getClass()) {
+			return false;
+		}
+		Country country = (Country) o;
+		if (country.getId() == null || getId() == null) {
+			return false;
+		}
+		return Objects.equals(getId(), country.getId());
+	}
+
+	@Override
+	public int hashCode() {
+		return Objects.hashCode(getId());
+	}
+
+	@Override
+	public String toString() {
+		return "Country{id=" + getId() + ", name='" + getName() + "'}";
+	}
 }
